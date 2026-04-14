@@ -146,11 +146,15 @@
   </div>
 
   <div class="video-wrapper">
-    <iframe
-      src="https://drive.google.com/file/d/1TBqeiCn6KC_BP_u5jLGYvZ5CckzJtyA7/preview"
-      allow="autoplay"
-      allowfullscreen>
-    </iframe>
+    <div style="position:relative; width:100%; height:480px;">
+      <iframe
+        src="https://drive.google.com/file/d/1TBqeiCn6KC_BP_u5jLGYvZ5CckzJtyA7/preview"
+        style="width:100%; height:100%; border:none; display:block;"
+        allow="autoplay">
+      </iframe>
+      <!-- Versteckt den Vollbild-Button von Google Drive -->
+      <div style="position:absolute; top:0; right:0; width:56px; height:56px; background:#1a2a4a; z-index:10; border-radius:0 0 0 6px;"></div>
+    </div>
     <div class="video-footer">
       <span class="label">📹 Modul 0 — Ankervideo 1</span>
       <span class="badge">GASTRO-OS</span>
@@ -169,4 +173,4 @@
 </div>
 
 </body>
-</html> 
+</html>
