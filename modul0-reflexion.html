@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GASTRO-OS – Modul 0 | Reflexionsaufgabe</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f5f0e8;
+    color: #1a2a4a;
+    min-height: 100vh;
+  }
+
+  .header {
+    background: #1a2a4a;
+    padding: 22px 40px;
+    text-align: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+  }
+  .header .brand {
+    font-family: Georgia, serif;
+    font-size: 22px;
+    color: #d4af37;
+    letter-spacing: 4px;
+    font-weight: normal;
+  }
+  .header .modul-label {
+    font-size: 11px;
+    color: #a0b0c8;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+  .gold-bar { height: 3px; background: linear-gradient(90deg, #1a2a4a, #d4af37, #1a2a4a); }
+
+  .main {
+    max-width: 860px;
+    margin: 36px auto;
+    padding: 0 24px;
+  }
+
+  .intro { margin-bottom: 24px; }
+  .intro h1 {
+    font-family: Georgia, serif;
+    font-size: 24px;
+    color: #1a2a4a;
+    margin-bottom: 8px;
+  }
+  .gold-rule { width: 56px; height: 2px; background: #d4af37; margin: 10px 0 12px; }
+  .intro p {
+    font-size: 14px;
+    color: #5060a0;
+    line-height: 1.7;
+    max-width: 640px;
+  }
+
+  /* Score Cards */
+  .score-title {
+    font-family: Georgia, serif;
+    font-size: 16px;
+    color: #1a2a4a;
+    margin-bottom: 12px;
+  }
+  .score-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .score-card {
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+  }
+  .score-card.red   { background: #fde8e4; border: 1.5px solid #d06050; }
+  .score-card.amber { background: #fff3d0; border: 1.5px solid #d4af37; }
+  .score-card.green { background: #e4f5e8; border: 1.5px solid #4aaa60; }
+  .score-card .icon { font-size: 24px; margin-bottom: 6px; }
+  .score-card .range {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-bottom: 5px;
+  }
+  .score-card.red   .range { color: #a03020; }
+  .score-card.amber .range { color: #8a6000; }
+  .score-card.green .range { color: #1a6030; }
+  .score-card .name {
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+  .score-card.red   .name { color: #c03020; }
+  .score-card.amber .name { color: #9a7000; }
+  .score-card.green .name { color: #2a8040; }
+  .score-card .desc {
+    font-size: 11px;
+    color: #666;
+    line-height: 1.5;
+  }
+
+  /* Punkte Hinweis */
+  .punkte-hinweis {
+    background: #fff;
+    border: 1px solid #e8dfc8;
+    border-left: 4px solid #d4af37;
+    border-radius: 0 8px 8px 0;
+    padding: 14px 18px;
+    margin-bottom: 24px;
+    font-size: 13px;
+    color: #5060a0;
+    line-height: 1.7;
+  }
+  .punkte-hinweis strong { color: #1a2a4a; }
+  .punkte-row {
+    display: flex;
+    gap: 20px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+  }
+  .punkte-badge {
+    background: #f5f0e8;
+    border: 1px solid #d4af37;
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #7a5a00;
+  }
+
+  /* Form wrapper */
+  .form-wrapper {
+    background: #fff;
+    border: 2px solid #d4af37;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(26,42,74,0.12);
+  }
+  .form-header {
+    background: #1a2a4a;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .form-header .label {
+    font-size: 12px;
+    color: #a0b0c8;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .form-header .badge {
+    background: rgba(212,175,55,0.15);
+    border: 1px solid #d4af37;
+    color: #d4af37;
+    font-size: 11px;
+    padding: 3px 12px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+  }
+  .form-wrapper iframe {
+    width: 100%;
+    height: 950px;
+    border: none;
+    display: block;
+  }
+
+  .footer {
+    background: #1a2a4a;
+    margin-top: 48px;
+    padding: 16px 40px;
+    text-align: center;
+    font-size: 11px;
+    color: #8090a8;
+    letter-spacing: 1px;
+  }
+  .footer strong { color: #d4af37; }
+
+  @media (max-width: 600px) {
+    .score-grid { grid-template-columns: 1fr; }
+    .main { padding: 0 16px; }
+    .header { padding: 18px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="brand">GASTRO-OS</div>
+  <div class="modul-label">Modul 0 &nbsp;·&nbsp; Reflexionsaufgabe</div>
+</div>
+<div class="gold-bar"></div>
+
+<div class="main">
+
+  <div class="intro">
+    <h1>Dein persönlicher Status-Check</h1>
+    <div class="gold-rule"></div>
+    <p>Bevor du mit dem System startest, bestimmen wir gemeinsam deinen Ausgangspunkt. Beantworte die folgenden Fragen ehrlich — es gibt keine falschen Antworten!</p>
+  </div>
+
+  <!-- Auswertung -->
+  <div class="score-title">📊 So wertest du dein Ergebnis aus:</div>
+
+  <div class="score-grid">
+    <div class="score-card red">
+      <div class="icon">👨‍🚒</div>
+      <div class="range">30 – 50 Punkte</div>
+      <div class="name">Feuerwehr-Modus</div>
+      <div class="desc">Du löschst aktuell nur Brände. Das GASTRO-OS ist deine Rettungsweste. Starte sofort mit Modul 1!</div>
+    </div>
+    <div class="score-card amber">
+      <div class="icon">📋</div>
+      <div class="range">55 – 75 Punkte</div>
+      <div class="name">Der solide Verwalter</div>
+      <div class="desc">Die Basis steht, aber du verschenkst Freiheit und Gewinn. Wir feintunen jetzt dein System.</div>
+    </div>
+    <div class="score-card green">
+      <div class="icon">🚀</div>
+      <div class="range">80 – 90 Punkte</div>
+      <div class="name">System-Profi</div>
+      <div class="desc">Du bist bereit für die Skalierung. Das GASTRO-OS bringt dich auf das nächste Level.</div>
+    </div>
+  </div>
+
+  <div class="punkte-hinweis">
+    <strong>💡 Punktesystem:</strong> Notiere dir beim Ausfüllen kurz deine Punkte oder rechne sie am Ende zusammen.
+    <div class="punkte-row">
+      <span class="punkte-badge">Antwort A (oben) = 10 Punkte</span>
+      <span class="punkte-badge">Antwort B (Mitte) = 20 Punkte</span>
+      <span class="punkte-badge">Antwort C (unten) = 30 Punkte</span>
+    </div>
+  </div>
+
+  <!-- Google Form -->
+  <div class="form-wrapper">
+    <div class="form-header">
+      <span class="label">📝 Modul 0 — Reflexionsaufgabe</span>
+      <span class="badge">GASTRO-OS</span>
+    </div>
+    <iframe
+      src="https://docs.google.com/forms/d/e/1FAIpQLSde73gYwouFJCPMiXVCmv-nlqYFOEZMaNeS0ZrqUZhgIGRiVQ/viewform?embedded=true"
+      frameborder="0"
+      marginheight="0"
+      marginwidth="0">
+      Wird geladen…
+    </iframe>
+  </div>
+
+</div>
+
+<div class="gold-bar"></div>
+<div class="footer">
+  <strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg
+</div>
+
+</body>
+</html>
