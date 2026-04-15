@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GASTRO-OS – Modul 1 | Lektion 4</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f0e8; color: #1a2a4a; min-height: 100vh; }
+  .header { background: #1a2a4a; padding: 22px 40px; text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,0.3); }
+  .header .brand { font-family: Georgia, serif; font-size: 22px; color: #d4af37; letter-spacing: 4px; font-weight: normal; }
+  .header .modul-label { font-size: 11px; color: #a0b0c8; letter-spacing: 3px; text-transform: uppercase; margin-top: 4px; }
+  .gold-bar { height: 3px; background: linear-gradient(90deg, #1a2a4a, #d4af37, #1a2a4a); }
+  .main { max-width: 780px; margin: 36px auto; padding: 0 24px 60px; }
+  .lektion-badge { display: inline-block; background: #1a2a4a; color: #d4af37; font-size: 11px; font-weight: 700; padding: 4px 14px; border-radius: 20px; letter-spacing: 1px; margin-bottom: 14px; }
+  h1 { font-family: Georgia, serif; font-size: 28px; color: #1a2a4a; margin-bottom: 8px; }
+  .gold-rule { width: 56px; height: 2px; background: #d4af37; margin: 12px 0 20px; }
+  .intro-box { background: #fff; border-left: 4px solid #d4af37; border-radius: 0 8px 8px 0; padding: 18px 22px; margin-bottom: 32px; font-size: 14px; color: #5060a0; line-height: 1.7; }
+  h2 { font-family: Georgia, serif; font-size: 20px; color: #1a2a4a; margin: 36px 0 14px; padding-bottom: 8px; border-bottom: 1px solid #e8dfc8; }
+  h3 { font-size: 16px; font-weight: 700; color: #1a2a4a; margin: 24px 0 10px; }
+  p { font-size: 14px; line-height: 1.8; color: #334; margin-bottom: 16px; }
+  ul li { font-size: 14px; color: #334; line-height: 1.8; margin-bottom: 6px; }
+  .highlight-box { background: #fff8e8; border: 1px solid #d4af37; border-radius: 8px; padding: 18px 22px; margin: 24px 0; }
+  .highlight-box p { margin-bottom: 0; color: #5a4000; }
+  .aufgabe-box { background: #1a2a4a; border-radius: 8px; padding: 18px 22px; margin: 24px 0; }
+  .aufgabe-box p { color: #c0d0e8; margin-bottom: 0; }
+  .aufgabe-box strong { color: #d4af37; }
+  .fallstudie-box { background: #fff; border-radius: 10px; padding: 24px; border: 1px solid #e8dfc8; margin: 20px 0; }
+  .fallstudie-box h3 { color: #1a2a4a; margin-top: 0; }
+  .kennzahlen { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
+  .kennzahl { background: #f5f0e8; border-radius: 6px; padding: 10px 14px; font-size: 13px; color: #334; }
+  .kennzahl strong { color: #1a6030; }
+  .wochen-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 20px 0; }
+  .woche-card { background: #fff; border-radius: 8px; padding: 16px; border: 1px solid #e8dfc8; }
+  .woche-card .woche { font-size: 11px; font-weight: 700; color: #d4af37; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+  .woche-card .titel { font-weight: 700; color: #1a2a4a; margin-bottom: 6px; font-size: 14px; }
+  .woche-card .text { font-size: 12px; color: #5060a0; line-height: 1.6; }
+  .nav-buttons { display: flex; justify-content: space-between; align-items: center; margin-top: 40px; padding-top: 24px; border-top: 1px solid #e8dfc8; }
+  .btn-nav { background: #1a2a4a; color: #d4af37; border: none; padding: 12px 24px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: none; letter-spacing: 0.5px; transition: background 0.2s; }
+  .btn-nav:hover { background: #2a3a5a; }
+  .btn-nav.secondary { background: transparent; border: 1px solid #d4af37; color: #d4af37; }
+  .footer { background: #1a2a4a; padding: 14px 40px; text-align: center; font-size: 11px; color: #8090a8; letter-spacing: 1px; }
+  .footer strong { color: #d4af37; }
+  @media(max-width:600px){ .kennzahlen, .wochen-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="brand">GASTRO-OS</div>
+  <div class="modul-label">Modul 1 &nbsp;·&nbsp; Lektion 4</div>
+</div>
+<div class="gold-bar"></div>
+<div class="main">
+  <div class="lektion-badge">📖 Lektion 4</div>
+  <h1>Fallstudie & 30-Tage-Schlachtplan</h1>
+  <div class="gold-rule"></div>
+  <div class="intro-box">Du hast jetzt das komplette theoretische Fundament. Jetzt wird es konkret — erst eine Geschichte aus der Praxis, dann dein persönlicher Plan für die nächsten 30 Tage.</div>
+
+  <h2>Kapitel 1 — Fallstudie: Die Transformation</h2>
+  <div class="fallstudie-box">
+    <h3>Marco — 9 Jahre, 65.000 € Umsatz, 2.800 € Lohn</h3>
+    <p>Marco betreibt seit neun Jahren ein italienisches Restaurant mit 60 Plätzen. Das Lokal ist gut besucht. Marco arbeitet zwischen 70 und 80 Stunden pro Woche — Küchenchef, Einkäufer, Personalverantwortlicher und Kassenwart in einer Person. Sein persönlicher Lohn: 2.800 Euro netto. Seit drei Jahren keinen echten Urlaub gemacht.</p>
+    <p>Als Marco beginnt Aufgaben abzugeben macht der erste Mitarbeiter zwei Fehler in der ersten Woche. Marco übernimmt wieder. Beim zweiten Versuch — diesmal mit einer schriftlichen Anleitung — funktioniert es. Der neue Einkaufsprozess deckt Einsparungen von über 800 Euro pro Monat auf.</p>
+
+    <div class="highlight-box" style="margin:16px 0 0;">
+      <p><strong>Der Moment in dem das System funktioniert:</strong><br>Acht Monate später hat Marco seinen ersten komplett freien Samstag. Der Betrieb läuft ohne ihn. Zwei Textnachrichten vom Team — das war alles. Kein Feuerwerk. Aber der erste Tag an dem sein Betrieb nicht von seiner Anwesenheit abhing.</p>
+    </div>
+
+    <div class="kennzahlen">
+      <div class="kennzahl">Wochenstunden: 78 → <strong>34</strong></div>
+      <div class="kennzahl">Monatslohn: 2.800 → <strong>5.400 € netto</strong></div>
+      <div class="kennzahl">Wareneinsatz: 34,2 → <strong>28,7 %</strong></div>
+      <div class="kennzahl">Mitarbeiterfluktuation: 3 → <strong>1 pro Jahr</strong></div>
+    </div>
+  </div>
+
+  <h2>Kapitel 2 — Dein 30-Tage-Schlachtplan</h2>
+  <div class="wochen-grid">
+    <div class="woche-card">
+      <div class="woche">Woche 1</div>
+      <div class="titel">⏱️ Inventur deiner Zeit</div>
+      <div class="text">Noch nichts ändern. Nur beobachten. Protokoll über alles was du tust — aufgeteilt in Facharbeiter, Manager, Unternehmer. Am Ende: keine Lösung, aber Daten.</div>
+    </div>
+    <div class="woche-card">
+      <div class="woche">Woche 2</div>
+      <div class="titel">🎯 Quick-Wins zur Delegation</div>
+      <div class="text">3–5 Aufgaben identifizieren die du delegieren kannst: wiederkehrend, kein Expertenwissen, 70% reicht völlig aus.</div>
+    </div>
+    <div class="woche-card">
+      <div class="woche">Woche 3</div>
+      <div class="titel">📝 Erste SOP schreiben</div>
+      <div class="text">Eine Aufgabe aus Woche 2 auswählen. Schritt für Schritt aufschreiben so konkret dass jemand der sie noch nie gemacht hat ihr folgen kann.</div>
+    </div>
+    <div class="woche-card">
+      <div class="woche">Woche 4</div>
+      <div class="titel">🏖️ Erster Chef-freier Tag</div>
+      <div class="text">Einen Tag wählen an dem du nicht im Betrieb bist. Nicht erreichbar. Das Team entscheidet selbst. Es wird nicht perfekt — aber es wird informativ.</div>
+    </div>
+  </div>
+
+  <div class="aufgabe-box">
+    <p><strong>🎯 Deine Aufgabe jetzt:</strong> Schreib auf welchen Tag du als deinen ersten Chef-freien Tag festlegst. Trag ihn in deinen Kalender ein. Dieser eine Schritt macht den Unterschied zwischen einem Plan und einer Absicht.</p>
+  </div>
+
+  <div class="highlight-box">
+    <p><strong>Dein nächster Schritt:</strong> Du hast Modul 1 durchgearbeitet. Nimm dir jetzt den Unternehmer-Score — er zeigt dir schwarz auf weiß wo du heute stehst und wo die größten Hebel für deine Entwicklung liegen. 💪</p>
+  </div>
+
+  <div class="nav-buttons">
+    <a href="modul1-lektion3.html" class="btn-nav secondary">← Lektion 3</a>
+    <a href="dashboard.html" class="btn-nav">✓ Gelesen — zurück zum Dashboard</a>
+  </div>
+</div>
+<div class="gold-bar"></div>
+<div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+</body>
+</html>
