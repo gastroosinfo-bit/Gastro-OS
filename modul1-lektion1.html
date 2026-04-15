@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GASTRO-OS – Modul 1 | Lektion 1</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f0e8; color: #1a2a4a; min-height: 100vh; }
+  .header { background: #1a2a4a; padding: 22px 40px; text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,0.3); }
+  .header .brand { font-family: Georgia, serif; font-size: 22px; color: #d4af37; letter-spacing: 4px; font-weight: normal; }
+  .header .modul-label { font-size: 11px; color: #a0b0c8; letter-spacing: 3px; text-transform: uppercase; margin-top: 4px; }
+  .gold-bar { height: 3px; background: linear-gradient(90deg, #1a2a4a, #d4af37, #1a2a4a); }
+  .main { max-width: 780px; margin: 36px auto; padding: 0 24px 60px; }
+  .lektion-badge { display: inline-block; background: #1a2a4a; color: #d4af37; font-size: 11px; font-weight: 700; padding: 4px 14px; border-radius: 20px; letter-spacing: 1px; margin-bottom: 14px; }
+  h1 { font-family: Georgia, serif; font-size: 28px; color: #1a2a4a; margin-bottom: 8px; }
+  .gold-rule { width: 56px; height: 2px; background: #d4af37; margin: 12px 0 20px; }
+  .intro-box { background: #fff; border-left: 4px solid #d4af37; border-radius: 0 8px 8px 0; padding: 18px 22px; margin-bottom: 32px; font-size: 14px; color: #5060a0; line-height: 1.7; }
+  h2 { font-family: Georgia, serif; font-size: 20px; color: #1a2a4a; margin: 36px 0 14px; padding-bottom: 8px; border-bottom: 1px solid #e8dfc8; }
+  h3 { font-size: 16px; font-weight: 700; color: #1a2a4a; margin: 24px 0 10px; }
+  p { font-size: 14px; line-height: 1.8; color: #334; margin-bottom: 16px; }
+  .highlight-box { background: #fff8e8; border: 1px solid #d4af37; border-radius: 8px; padding: 18px 22px; margin: 24px 0; }
+  .highlight-box p { margin-bottom: 0; color: #5a4000; }
+  .aufgabe-box { background: #1a2a4a; border-radius: 8px; padding: 18px 22px; margin: 24px 0; }
+  .aufgabe-box p { color: #c0d0e8; margin-bottom: 0; }
+  .aufgabe-box strong { color: #d4af37; }
+  .rollen-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 20px 0; }
+  .rolle-card { background: #fff; border-radius: 8px; padding: 16px; border: 1px solid #e8dfc8; }
+  .rolle-card .titel { font-weight: 700; color: #1a2a4a; margin-bottom: 6px; font-size: 13px; }
+  .rolle-card .wert { font-size: 11px; color: #d4af37; font-weight: 700; margin-bottom: 6px; }
+  .rolle-card .text { font-size: 12px; color: #5060a0; line-height: 1.5; }
+  .nav-buttons { display: flex; justify-content: space-between; align-items: center; margin-top: 40px; padding-top: 24px; border-top: 1px solid #e8dfc8; }
+  .btn-nav { background: #1a2a4a; color: #d4af37; border: none; padding: 12px 24px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: none; letter-spacing: 0.5px; transition: background 0.2s; }
+  .btn-nav:hover { background: #2a3a5a; }
+  .btn-nav.secondary { background: transparent; border: 1px solid #d4af37; color: #d4af37; }
+  .footer { background: #1a2a4a; padding: 14px 40px; text-align: center; font-size: 11px; color: #8090a8; letter-spacing: 1px; }
+  .footer strong { color: #d4af37; }
+  @media(max-width:600px){ .rollen-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="brand">GASTRO-OS</div>
+  <div class="modul-label">Modul 1 &nbsp;·&nbsp; Lektion 1</div>
+</div>
+<div class="gold-bar"></div>
+<div class="main">
+  <div class="lektion-badge">📖 Lektion 1</div>
+  <h1>Vom Selbstständigen zum Unternehmer</h1>
+  <div class="gold-rule"></div>
+  <div class="intro-box">Du hast das Ankervideo gesehen — jetzt gehen wir in die Tiefe. Diese Lektion ist der Startpunkt einer ehrlichen Auseinandersetzung mit dem wie du deinen Betrieb führst. Nicht als Kritik — sondern als Einladung. Die Einladung es ab heute anders zu machen.</div>
+
+  <h2>Kapitel 1 — Die Psychologie der Erschöpfung</h2>
+  <p>Die meisten Gastronomen die in dieses System einsteigen beschreiben ihren Alltag mit denselben Worten: Sie rennen. Nicht vorwärts, nicht rückwärts — sie rennen auf der Stelle. Der Betrieb läuft, der Umsatz kommt, aber am Ende des Monats bleibt entweder nichts übrig, oder das Gefühl dass sich all die Arbeit nicht wirklich lohnt. Dieses Phänomen hat einen Namen: <strong>operative Blindheit.</strong></p>
+  <p>Operative Blindheit bedeutet, du arbeitest so tief im Maschinenraum deines Betriebs dass du nicht mehr siehst in welche Richtung das Schiff fährt. Du löschst Brände. Du organisierst den nächsten Service. Du springst ein wenn ein Mitarbeiter krank ist. All das passiert während das eigentliche Steuer unbewacht bleibt.</p>
+
+  <h3>Das Macher-Paradoxon</h3>
+  <p>Einer der härtesten Erkenntnisse: Die Eigenschaft die dich bis hierher gebracht hat ist dieselbe die dich aufhalten wird. Deine Fähigkeit alles selbst in die Hand zu nehmen war in der Gründungsphase deine größte Stärke. Aber ab einem bestimmten Punkt schadet das Anpacken mehr als es nützt. Jedes Mal wenn du in eine Aufgabe eingreifst die ein Mitarbeiter übernehmen könnte verhindert es dass dein Team lernt selbstständig zu entscheiden. Du wirst unersetzlich. Und unersetzlich ist das Gegenteil von frei.</p>
+
+  <h3>Die Identitäts-Falle</h3>
+  <p>Wenn ein Betrieb nur dann gut funktioniert wenn sein Gründer anwesend ist dann besitzt der Gründer keinen Betrieb — er besitzt einen Job. Einen sehr anstrengenden, schlecht bezahlten, rund um die Uhr laufenden Job für den er zufällig auch noch das Risiko trägt.</p>
+
+  <div class="aufgabe-box">
+    <p><strong>🎯 Deine Aufgabe für Kapitel 1:</strong> Nimm dir 10 Minuten und notiere alles was dich in den letzten 7 Tagen Energie oder Nerven gekostet hat. Trenne dabei in zwei Spalten: Was war unvermeidlich? Was hätte jemand anderes übernehmen können?</p>
+  </div>
+
+  <h2>Kapitel 2 — Die Anatomie eines echten Unternehmens</h2>
+  <p>Ein echtes Unternehmen ist ein System das Wert erzeugt auch wenn der Gründer schläft, im Urlaub ist oder an einem anderen Standort arbeitet. Apple funktioniert ohne Steve Jobs. McDonald's funktioniert ohne Ray Kroc. Das Ziel: dein Betrieb funktioniert zumindest für eine Woche — ohne dass du täglich dabei sein musst.</p>
+
+  <h3>Die drei Rollen eines Gastronomen</h3>
+  <div class="rollen-grid">
+    <div class="rolle-card">
+      <div class="titel">👨‍🍳 Der Facharbeiter</div>
+      <div class="wert">15–20 € / Stunde</div>
+      <div class="text">Kochen, servieren, einkaufen. Notwendig — aber wenn der Inhaber hauptsächlich hier steckt, wird er nach seiner Zeit bezahlt, nicht nach dem Wert seines Unternehmens.</div>
+    </div>
+    <div class="rolle-card">
+      <div class="titel">📋 Der Manager</div>
+      <div class="wert">40–60 € / Stunde</div>
+      <div class="text">Dienstpläne, Wareneinsatz, Mitarbeitergespräche, Zahlen. Strategisch wichtig. Wer hier Zeit investiert baut Struktur.</div>
+    </div>
+    <div class="rolle-card">
+      <div class="titel">🚀 Der Unternehmer</div>
+      <div class="wert">500 € + / Stunde</div>
+      <div class="text">Systeme entwickeln, strategische Entscheidungen treffen. Der Unterschied zwischen Stagnation und Wachstum.</div>
+    </div>
+  </div>
+
+  <div class="highlight-box">
+    <p>Die entscheidende Frage lautet nicht welche dieser Rollen du kennst. Die Frage lautet: <strong>Wo verbringst du 80 Prozent deiner Zeit?</strong></p>
+  </div>
+
+  <div class="aufgabe-box">
+    <p><strong>🎯 Deine Aufgabe für Kapitel 2:</strong> Führe für drei Tage ein einfaches Zeitprotokoll. Ordne jede Tätigkeit einer der drei Rollen zu: Facharbeiter, Manager oder Unternehmer. Das Ergebnis zeigt dir warum sich trotz harter Arbeit nichts verändert.</p>
+  </div>
+
+  <div class="nav-buttons">
+    <a href="modul1-ankervideo.html" class="btn-nav secondary">← Zurück zum Ankervideo</a>
+    <a href="dashboard.html" class="btn-nav">✓ Gelesen — zurück zum Dashboard</a>
+  </div>
+</div>
+<div class="gold-bar"></div>
+<div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+</body>
+</html>
