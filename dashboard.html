@@ -358,7 +358,40 @@
     </div>
   </div>
 
-  <!-- MODUL 1–12 gesperrt -->
+  <!-- MODUL 1 -->
+  <div class="module-card" id="modul-card-1" style="display:none;">
+    <div class="module-header" onclick="toggleModule(1)">
+      <div class="module-left">
+        <div class="module-number">1</div>
+        <div>
+          <div class="module-title">Unternehmer-Denken & Gewinn-Fokus</div>
+          <div class="module-subtitle" id="subtitle-1">0 von 10 abgeschlossen</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span class="module-badge badge-open" id="badge-1">Offen</span>
+        <span class="module-arrow" id="arrow-1">&#9660;</span>
+      </div>
+    </div>
+    <div class="module-content" id="content-1">
+      <div class="content-item"><div class="check-box" id="chk-1-0" onclick="toggleCheck(1,0)"></div><span class="item-icon">&#128203;</span><div class="item-info"><div class="item-title" id="title-1-0">Modulubersicht &amp; Inhaltsverzeichnis</div></div><a href="modul1-uebersicht.html" target="_blank" class="item-link">Offnen &#8594;</a></div>
+      <div class="content-item"><div class="check-box" id="chk-1-1" onclick="toggleCheck(1,1)"></div><span class="item-icon">&#127909;</span><div class="item-info"><div class="item-title" id="title-1-1">Ankervideo - Starte hier</div></div><a href="modul1-ankervideo.html" target="_blank" class="item-link">Offnen &#8594;</a></div>
+      <div class="content-item"><div class="check-box" id="chk-1-2" onclick="toggleCheck(1,2)"></div><span class="item-icon">&#128214;</span><div class="item-info"><div class="item-title" id="title-1-2">Lektion 1 - Vom Selbststandigen zum Unternehmer</div></div><a href="modul1-lektion1.html" target="_blank" class="item-link">Offnen &#8594;</a></div>
+      <div class="content-item"><div class="check-box" id="chk-1-3" onclick="toggleCheck(1,3)"></div><span class="item-icon">&#128214;</span><div class="item-info"><div class="item-title" id="title-1-3">Lektion 2 - Das Prinzip der Ersetzbarkeit</div></div><a href="modul1-lektion2.html" target="_blank" class="item-link">Offnen &#8594;</a></div>
+      <div class="content-item"><div class="check-box" id="chk-1-4" onclick="toggleCheck(1,4)"></div><span class="item-icon">&#128214;</span><div class="item-info"><div class="item-title" id="title-1-4">Lektion 3 - Gewinn-Fokus &amp; die vier Saulen</div></div><a href="modul1-lektion3.html" target="_blank" class="item-link">Offnen &#8594;</a></div>
+      <div class="content-item"><div class="check-box" id="chk-1-5" onclick="toggleCheck(1,5)"></div><span class="item-icon">&#128214;</span><div class="item-info"><div class="item-title" id="title-1-5">Lektion 4 - Fallstudie &amp; 30-Tage-Schlachtplan</div></div><a href="modul1-lektion4.html" target="_blank" class="item-link">Offnen &#8594;</a></div>
+      <div class="content-item"><div class="check-box" id="chk-1-6" onclick="toggleCheck(1,6)"></div><span class="item-icon">&#127908;</span><div class="item-info"><div class="item-title" id="title-1-6">Kuchenfunk #1 - Podcast</div></div><a href="modul1-podcast.html" target="_blank" class="item-link">Offnen &#8594;</a></div>
+      <div class="content-item"><div class="check-box" id="chk-1-7" onclick="toggleCheck(1,7)"></div><span class="item-icon">&#127909;</span><div class="item-info"><div class="item-title" id="title-1-7">So nutzt du den Unternehmer-Score</div></div><a href="modul1-score-video.html" target="_blank" class="item-link">Offnen &#8594;</a></div>
+      <div class="content-item"><div class="check-box" id="chk-1-8" onclick="toggleCheck(1,8)"></div><span class="item-icon">&#128202;</span><div class="item-info"><div class="item-title" id="title-1-8">Unternehmer-Score</div></div><a href="modul1-score.html" target="_blank" class="item-link">Offnen &#8594;</a></div>
+      <div class="content-item"><div class="check-box" id="chk-1-9" onclick="toggleCheck(1,9)"></div><span class="item-icon">&#127919;</span><div class="item-info"><div class="item-title" id="title-1-9">Quiz - Teste dein Wissen</div></div><a href="modul1-quiz.html" target="_blank" class="item-link">Offnen &#8594;</a></div>
+      <div class="progress-bar-wrap">
+        <div class="progress-label"><span>Fortschritt Modul 1</span><span id="progress-text-1">0%</span></div>
+        <div class="progress-bar"><div class="progress-fill" id="progress-fill-1" style="width:0%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODUL 2-12 gesperrt -->
   <div id="locked-modules"></div>
 
 </div>
@@ -394,6 +427,7 @@
   ];
 
   const MODUL_0_ITEMS = 6;
+  const MODUL_1_ITEMS = 10;
 
   // ── INIT ──
   async function init() {
@@ -419,7 +453,41 @@
     if (toolData) progress = toolData.data;
 
     renderProgress();
+    renderProgress1();
     renderLockedModules();
+  }
+
+  // ── MODUL 1 ANZEIGEN ──
+  function showModul1() {
+    const card = document.getElementById('modul-card-1');
+    if (card) card.style.display = 'block';
+  }
+
+  // ── FORTSCHRITT MODUL 1 RENDERN ──
+  function renderProgress1() {
+    let done = 0;
+    for (let i = 0; i < MODUL_1_ITEMS; i++) {
+      const key = '1-' + i;
+      if (progress[key]) {
+        done++;
+        const chk = document.getElementById('chk-1-' + i);
+        const ttl = document.getElementById('title-1-' + i);
+        if (chk) chk.classList.add('checked');
+        if (ttl) ttl.classList.add('done');
+      }
+    }
+    const pct = Math.round((done / MODUL_1_ITEMS) * 100);
+    const fill = document.getElementById('progress-fill-1');
+    const txt = document.getElementById('progress-text-1');
+    const sub = document.getElementById('subtitle-1');
+    const badge = document.getElementById('badge-1');
+    if (fill) fill.style.width = pct + '%';
+    if (txt) txt.textContent = pct + '%';
+    if (sub) sub.textContent = done + ' von ' + MODUL_1_ITEMS + ' abgeschlossen';
+    if (badge) {
+      if (done === MODUL_1_ITEMS) { badge.textContent = '&#10003; Abgeschlossen'; badge.className = 'module-badge badge-done'; }
+      else if (done > 0) { badge.textContent = 'In Bearbeitung'; badge.className = 'module-badge badge-progress'; }
+    }
   }
 
   // ── FORTSCHRITT RENDERN ──
@@ -463,21 +531,27 @@
       updated_at: new Date().toISOString()
     }, { onConflict: 'user_id,tool_name' });
 
-    renderProgress();
+    if (modul === 0) renderProgress();
+    if (modul === 1) renderProgress1();
 
-    // Prüfen ob Modul 0 komplett → Modul 1 freischalten
+    // Prüfen ob Module komplett
     checkModuleCompletion();
   }
 
   function checkModuleCompletion() {
-    let allDone = true;
+    let m0done = true;
     for (let i = 0; i < MODUL_0_ITEMS; i++) {
-      if (!progress['0-' + i]) { allDone = false; break; }
+      if (!progress['0-' + i]) { m0done = false; break; }
     }
-    if (allDone) {
-      // Modul 1 visuell freischalten
-      renderLockedModules(1);
+    if (m0done) {
+      showModul1();
+      renderLockedModules(2);
     }
+    let m1done = true;
+    for (let i = 0; i < MODUL_1_ITEMS; i++) {
+      if (!progress['1-' + i]) { m1done = false; break; }
+    }
+    if (m0done && m1done) renderLockedModules(3);
   }
 
   // ── MODUL AUFKLAPPEN ──
@@ -494,17 +568,25 @@
   }
 
   // ── GESPERRTE MODULE RENDERN ──
-  function renderLockedModules(unlockedUpTo = 0) {
-    let allDoneM0 = true;
+  function renderLockedModules(unlockedUpTo = 1) {
+    let m0done = true;
     for (let i = 0; i < MODUL_0_ITEMS; i++) {
-      if (!progress['0-' + i]) { allDoneM0 = false; break; }
+      if (!progress['0-' + i]) { m0done = false; break; }
     }
-    if (allDoneM0) unlockedUpTo = 1;
+    if (m0done) {
+      showModul1();
+      let m1done = true;
+      for (let i = 0; i < MODUL_1_ITEMS; i++) {
+        if (!progress['1-' + i]) { m1done = false; break; }
+      }
+      if (m1done) unlockedUpTo = Math.max(unlockedUpTo, 3);
+      else unlockedUpTo = Math.max(unlockedUpTo, 2);
+    }
 
     const container = document.getElementById('locked-modules');
     container.innerHTML = '';
 
-    for (let m = 1; m <= 12; m++) {
+    for (let m = 2; m <= 12; m++) {
       const isNext = m === unlockedUpTo;
       const card = document.createElement('div');
       card.className = 'module-card' + (isNext ? '' : ' locked');
