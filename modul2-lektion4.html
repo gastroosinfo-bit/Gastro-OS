@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GASTRO-OS – Modul 2 | Lektion 4</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
+.header { background:#1a2a4a; padding:22px 40px; text-align:center; box-shadow:0 2px 12px rgba(0,0,0,.3); }
+.brand { font-family:Georgia,serif; font-size:22px; color:#d4af37; letter-spacing:4px; font-weight:normal; }
+.modul-label { font-size:11px; color:#a0b0c8; letter-spacing:3px; text-transform:uppercase; margin-top:4px; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+.main { max-width:860px; margin:36px auto; padding:0 24px 60px; }
+h1 { font-family:Georgia,serif; font-size:26px; color:#1a2a4a; margin-bottom:8px; }
+h2 { font-family:Georgia,serif; font-size:20px; color:#1a2a4a; margin:32px 0 10px; padding-top:20px; border-top:1px solid #e8dfc8; }
+h3 { font-size:15px; font-weight:700; color:#d4af37; margin:20px 0 8px; text-transform:uppercase; letter-spacing:.5px; }
+.gold-rule { width:56px; height:2px; background:#d4af37; margin:10px 0 20px; }
+p { font-size:14px; line-height:1.85; color:#334; margin-bottom:14px; }
+.aufgabe { background:#fff8e8; border-left:3px solid #d4af37; padding:14px 18px; border-radius:0 6px 6px 0; margin:20px 0; font-size:13px; color:#5a4000; line-height:1.7; }
+.fehler-box { background:#fff; border:1px solid #e8dfc8; border-radius:8px; padding:16px 20px; margin:12px 0; }
+.fehler-box strong { color:#1a2a4a; }
+.woche-box { background:#fff; border-radius:8px; padding:18px 22px; margin:12px 0; border-left:4px solid #d4af37; }
+.woche-box strong { color:#1a2a4a; font-size:15px; }
+.back-btn { display:inline-block; background:#1a2a4a; color:#d4af37; padding:11px 22px; border-radius:6px; text-decoration:none; font-size:13px; font-weight:600; margin-bottom:28px; }
+.nav-bar { display:flex; justify-content:space-between; margin-top:36px; gap:12px; }
+.nav-btn { flex:1; text-align:center; background:#1a2a4a; color:#d4af37; padding:12px 16px; border-radius:6px; text-decoration:none; font-size:13px; font-weight:600; }
+.nav-btn.secondary { background:#f0ece0; color:#1a2a4a; }
+.footer { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer strong { color:#d4af37; }
+.cta-box { background:#1a2a4a; border-radius:10px; padding:24px 28px; text-align:center; margin:28px 0; }
+.cta-box p { color:#d4af37; font-size:15px; font-weight:600; margin-bottom:16px; }
+.cta-link { display:inline-block; background:#d4af37; color:#1a2a4a; padding:13px 28px; border-radius:6px; text-decoration:none; font-weight:700; font-size:14px; }
+</style>
+</head>
+<body>
+<div class="header"><div class="brand">GASTRO-OS</div><div class="modul-label">Modul 2 &nbsp;·&nbsp; Lektion 4</div></div>
+<div class="gold-bar"></div>
+<script>
+const sb = supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3');
+(async()=>{ const {data:{session}}=await sb.auth.getSession(); if(!session) window.location.href='login.html'; })();
+</script>
+<div class="main">
+<a href="dashboard.html" class="back-btn">← Dashboard</a>
+
+<h1>📖 Lektion 4 — Upselling &amp; Fallstudie</h1>
+<div class="gold-rule"></div>
+<p><em>Jetzt kommen zwei Themen die direkt zusammenhängen: Upselling als System und eine konkrete Fallstudie die zeigt was passiert wenn alles zusammenspielt.</em></p>
+
+<h2>Kapitel 1 — Upselling ohne Aufdringlichkeit</h2>
+<p>Upselling hat in der Gastronomie einen schlechten Ruf, weil es meistens falsch gemacht wird. "Möchten Sie noch ein Dessert?" Nein. "Darf es noch ein Digestif sein?" Nein danke. Diese Fragen sind reaktiv, aufgesetzt und erzeugen Kaufdruck. Professionelles Upselling funktioniert anders — es ist proaktiv und fühlt sich wie eine Empfehlung an.</p>
+<h3>Die drei Upselling-Momente</h3>
+<p><strong>Moment 1 — Bei der Bestellung:</strong> Ein guter Service sagt: "Das Steinbutt heute ist besonders gut, das nehmen viele unserer Stammgäste." Diese Empfehlung fühlt sich authentisch an.</p>
+<p><strong>Moment 2 — Die Getränkebegleitung:</strong> "Zum Steak empfehle ich einen Glas Rotwein vom offenen Ausschank" — kein Kaufdruck, sondern ein gastfreundlicher Hinweis. Die Marge auf offene Weine ist typischerweise die beste im Sortiment.</p>
+<p><strong>Moment 3 — Nach dem Hauptgang:</strong> Nicht "Möchten Sie noch ein Dessert?" sondern "Wir haben heute ein hausgemachtes Mousse au Chocolat — soll ich es kurz beschreiben?" Diese Formulierung erzeugt Neugier statt Kaufdruck.</p>
+<h3>Was Upselling wirklich bringt</h3>
+<p>Wenn dein Team an jedem der drei Momente bei jedem zweiten Tisch erfolgreich ist und der durchschnittliche Zusatzumsatz 3 Euro pro Gast beträgt: Bei 80 Gästen am Abend sind das 120 Euro Mehreinnahmen täglich — auf einen Monat über 2.500 Euro mehr Gewinn, ohne einen einzigen Gast mehr.</p>
+<div class="aufgabe">✏️ <strong>Deine Aufgabe:</strong> Besprich mit deinem Serviceteam die drei Upselling-Momente. Welche Formulierungen klingen authentisch? Entwickle gemeinsam zwei bis drei konkrete Sätze.</div>
+
+<h2>Kapitel 2 — Fallstudie: Die Kartenoptimierung</h2>
+<p><em>Das Folgende ist ein zusammengesetztes Beispiel aus typischen Mustern. Namen und Details sind fiktiv, die Zahlen sind real.</em></p>
+<h3>Ausgangssituation</h3>
+<p>Stefanie betreibt seit sechs Jahren ein mediterranes Restaurant mit 55 Plätzen. Die Karte umfasst 38 Positionen. Monatlicher Umsatz: 52.000 Euro. Wareneinsatz: 36,8 Prozent. Stefanie fühlt dass mehr drin sein müsste, kann aber nicht benennen wo.</p>
+<h3>Die Analyse</h3>
+<p>Als Stefanie die Menu Engineering Matrix erstellt: 8 Gerichte sind Stars (64% aller Bestellungen). 6 sind Plowhorses. 4 sind Puzzles mit ausgezeichneter Marge. 20 Gerichte sind Dogs — zusammen nur 7% aller Bestellungen.</p>
+<h3>Die Maßnahmen</h3>
+<p>Stefanie streicht 14 der 20 Dogs. Die 4 Puzzles werden umbenannt, erhalten neue Beschreibungen und werden ins Golden Triangle gesetzt. Das Serviceteam erhält ein wöchentliches Briefing. Die 6 Plowhorses bekommen Preisanpassungen von 1–3 Euro.</p>
+<h3>Das Ergebnis nach drei Monaten</h3>
+<p>Monatsumsatz: 57.000 Euro (+5.000). Wareneinsatz: 29,4 Prozent. Monatlicher Gewinn: +4.800 Euro. Weniger Gerichte auf der Karte, weniger Komplexität in der Küche, ein Team das selbstbewusster empfiehlt. <em>Die Karte war schon immer das Problem. Sie haben es nur nie so klar gesehen wie mit den Zahlen dahinter.</em></p>
+<div class="aufgabe">✏️ <strong>Deine Aufgabe:</strong> Lies die Fallstudie nochmal. Wo erkennst du deinen eigenen Betrieb? Was ist dein größtes Aha-Erlebnis?</div>
+
+<div class="nav-bar">
+  <a href="modul2-lektion3.html" class="nav-btn secondary">← Lektion 3</a>
+  <a href="modul2-lektion5.html" class="nav-btn">Lektion 5 →</a>
+</div>
+
+</div>
+<div class="gold-bar"></div>
+<div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+</body>
+</html>

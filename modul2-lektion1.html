@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GASTRO-OS – Modul 2 | Lektion 1</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
+.header { background:#1a2a4a; padding:22px 40px; text-align:center; box-shadow:0 2px 12px rgba(0,0,0,.3); }
+.brand { font-family:Georgia,serif; font-size:22px; color:#d4af37; letter-spacing:4px; font-weight:normal; }
+.modul-label { font-size:11px; color:#a0b0c8; letter-spacing:3px; text-transform:uppercase; margin-top:4px; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+.main { max-width:860px; margin:36px auto; padding:0 24px 60px; }
+h1 { font-family:Georgia,serif; font-size:26px; color:#1a2a4a; margin-bottom:8px; }
+h2 { font-family:Georgia,serif; font-size:20px; color:#1a2a4a; margin:32px 0 10px; padding-top:20px; border-top:1px solid #e8dfc8; }
+h3 { font-size:15px; font-weight:700; color:#d4af37; margin:20px 0 8px; text-transform:uppercase; letter-spacing:.5px; }
+.gold-rule { width:56px; height:2px; background:#d4af37; margin:10px 0 20px; }
+p { font-size:14px; line-height:1.85; color:#334; margin-bottom:14px; }
+.aufgabe { background:#fff8e8; border-left:3px solid #d4af37; padding:14px 18px; border-radius:0 6px 6px 0; margin:20px 0; font-size:13px; color:#5a4000; line-height:1.7; }
+.back-btn { display:inline-block; background:#1a2a4a; color:#d4af37; padding:11px 22px; border-radius:6px; text-decoration:none; font-size:13px; font-weight:600; margin-bottom:28px; }
+.nav-bar { display:flex; justify-content:space-between; margin-top:36px; gap:12px; }
+.nav-btn { flex:1; text-align:center; background:#1a2a4a; color:#d4af37; padding:12px 16px; border-radius:6px; text-decoration:none; font-size:13px; font-weight:600; }
+.nav-btn.secondary { background:#f0ece0; color:#1a2a4a; }
+.footer { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer strong { color:#d4af37; }
+</style>
+</head>
+<body>
+<div class="header"><div class="brand">GASTRO-OS</div><div class="modul-label">Modul 2 &nbsp;·&nbsp; Lektion 1</div></div>
+<div class="gold-bar"></div>
+<script>
+const sb = supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3');
+(async()=>{ const {data:{session}}=await sb.auth.getSession(); if(!session) window.location.href='login.html'; })();
+</script>
+<div class="main">
+<a href="dashboard.html" class="back-btn">← Dashboard</a>
+
+<h1>📖 Lektion 1 — Die Karte als Umsatzmaschine</h1>
+<div class="gold-rule"></div>
+<p><em>Willkommen in Lektion 1. In diesem Modul dreht sich alles um deine Speisekarte. Nicht darum wie sie aussieht oder was draufsteht, sondern darum wie sie für dich arbeitet. Diese Lektion legt das Fundament für alles was folgt.</em></p>
+
+<h2>Kapitel 1 — Die Karte als Umsatzmaschine</h2>
+<p>Stell dir vor du öffnest eine Speisekarte in einem Restaurant. Du siehst dreißig Gerichte. Vorspeisen, Hauptgänge, Desserts, Sonderwünsche, Tageskarte, Kinderkarte. Du blätterst. Du liest. Du kannst dich nicht entscheiden und bestellst am Ende das was du schon kennst.</p>
+<p>Das passiert täglich in tausenden Restaurants. Und der Gastronom denkt: Mehr Auswahl bedeutet mehr Umsatz. Mehr Gerichte bedeutet mehr Gäste. Mehr Optionen bedeutet mehr Zufriedenheit. Das Gegenteil ist wahr.</p>
+<h3>Das Paradox der Wahl</h3>
+<p>Zu viele Optionen lähmen. Sie erzeugen Stress beim Gast, verlangsamen die Bestellung, erhöhen die Reuegefühle nach der Entscheidung und senken die Gesamtzufriedenheit. Das ist keine Theorie, das ist vielfach untersuchte Konsumpsychologie.</p>
+<p>Aber für dich als Unternehmer ist das Paradox der Wahl noch kostspieliger als für deinen Gast. Denn jedes Gericht auf deiner Karte bedeutet: Einkauf eines weiteren Produkts. Lagerhaltung. Schulung des Teams. Mögliche Verschwendung bei geringer Nachfrage. Komplexität in der Küche zur Stoßzeit. Und in den meisten Fällen eine Marge die du nie wirklich durchgerechnet hast.</p>
+<h3>Die Wahrheit über Vielfalt</h3>
+<p>Eine Karte mit zwanzig gut kalkulierten, effizient produzierbaren Gerichten verdient mehr als eine Karte mit vierzig halbherzig kalkulierten Gerichten. Das ist kein Dogma, das ist Mathematik. Und es ist die Grundlage dieses Moduls.</p>
+<div class="aufgabe">✏️ <strong>Deine Aufgabe:</strong> Zähle jetzt die Gerichte auf deiner aktuellen Karte. Schreibe die Zahl auf. Du wirst sie in Lektion 5 wieder brauchen.</div>
+
+<h2>Kapitel 2 — Die vier Gericht-Typen</h2>
+<p>In der Gastronomie gibt es ein bewährtes Analyse-Framework: die <strong>Menu Engineering Matrix</strong>. Sie teilt alle Gerichte deiner Karte in vier Kategorien ein, abhängig von zwei Faktoren: Popularität und Marge.</p>
+<h3>⭐ Die Stars — Beliebt und profitabel</h3>
+<p>Stars sind deine besten Gerichte. Sie werden häufig bestellt und bringen dir gleichzeitig eine überdurchschnittliche Marge. Das sind die Gerichte auf die deine gesamte Karte ausgerichtet sein sollte. Sie stehen prominent. Sie werden vom Service aktiv empfohlen. Sie bekommen das beste Foto, die beste Beschreibung, den meisten Raum auf der Karte.</p>
+<h3>🐎 Die Plowhorses — Beliebt, aber margenarm</h3>
+<p>Plowhorses (Arbeitstiere) sind Gerichte die deine Gäste lieben, die dir aber wenig einbringen. Das klassische Beispiel: das günstige Pasta-Gericht das jeder bestellt. Bei einem Plowhorse gibt es drei Möglichkeiten: Preis erhöhen, Einkaufskosten senken, oder das Gericht strategisch zurückdrängen ohne es zu streichen.</p>
+<h3>🧩 Die Puzzles — Hohe Marge, aber selten bestellt</h3>
+<p>Puzzles sind Gerichte mit exzellenter Marge die aber kaum jemand bestellt. Das ist fast immer ein Positionierungsproblem, kein Geschmacksproblem. Puzzles haben das höchste Potenzial für deinen Gewinn, wenn du lernst sie richtig zu platzieren und zu bewerben.</p>
+<h3>🐕 Die Dogs — Selten bestellt und margenarm</h3>
+<p>Dogs kosten dich Lagerplatz, Komplexität in der Küche und Aufmerksamkeit des Teams, und bringen dir nichts zurück. Sie gehören gestrichen. Ausnahmen sind erlaubt wenn ein Dog Gericht einen strategischen Zweck erfüllt — aber dann ist es eine bewusste Entscheidung, keine Gewohnheit.</p>
+<div class="aufgabe">✏️ <strong>Deine Aufgabe:</strong> Schau dir deine aktuelle Karte an. Welche Gerichte sind wahrscheinlich deine Stars? Welche könnten Dogs sein? Schreib deine Vermutungen auf. In Lektion 2 wirst du sehen ob deine Intuition stimmt.</div>
+
+<div class="nav-bar">
+  <a href="modul2-ankervideo.html" class="nav-btn secondary">← Ankervideo</a>
+  <a href="modul2-lektion2.html" class="nav-btn">Lektion 2 →</a>
+</div>
+
+</div>
+<div class="gold-bar"></div>
+<div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+</body>
+</html>

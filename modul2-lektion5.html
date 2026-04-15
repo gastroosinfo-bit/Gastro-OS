@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GASTRO-OS – Modul 2 | Lektion 5</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
+.header { background:#1a2a4a; padding:22px 40px; text-align:center; box-shadow:0 2px 12px rgba(0,0,0,.3); }
+.brand { font-family:Georgia,serif; font-size:22px; color:#d4af37; letter-spacing:4px; font-weight:normal; }
+.modul-label { font-size:11px; color:#a0b0c8; letter-spacing:3px; text-transform:uppercase; margin-top:4px; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+.main { max-width:860px; margin:36px auto; padding:0 24px 60px; }
+h1 { font-family:Georgia,serif; font-size:26px; color:#1a2a4a; margin-bottom:8px; }
+h2 { font-family:Georgia,serif; font-size:20px; color:#1a2a4a; margin:32px 0 10px; padding-top:20px; border-top:1px solid #e8dfc8; }
+h3 { font-size:15px; font-weight:700; color:#d4af37; margin:20px 0 8px; text-transform:uppercase; letter-spacing:.5px; }
+.gold-rule { width:56px; height:2px; background:#d4af37; margin:10px 0 20px; }
+p { font-size:14px; line-height:1.85; color:#334; margin-bottom:14px; }
+.aufgabe { background:#fff8e8; border-left:3px solid #d4af37; padding:14px 18px; border-radius:0 6px 6px 0; margin:20px 0; font-size:13px; color:#5a4000; line-height:1.7; }
+.fehler-box { background:#fff; border:1px solid #e8dfc8; border-radius:8px; padding:16px 20px; margin:12px 0; }
+.fehler-box strong { color:#1a2a4a; }
+.woche-box { background:#fff; border-radius:8px; padding:18px 22px; margin:12px 0; border-left:4px solid #d4af37; }
+.woche-box strong { color:#1a2a4a; font-size:15px; }
+.back-btn { display:inline-block; background:#1a2a4a; color:#d4af37; padding:11px 22px; border-radius:6px; text-decoration:none; font-size:13px; font-weight:600; margin-bottom:28px; }
+.nav-bar { display:flex; justify-content:space-between; margin-top:36px; gap:12px; }
+.nav-btn { flex:1; text-align:center; background:#1a2a4a; color:#d4af37; padding:12px 16px; border-radius:6px; text-decoration:none; font-size:13px; font-weight:600; }
+.nav-btn.secondary { background:#f0ece0; color:#1a2a4a; }
+.footer { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer strong { color:#d4af37; }
+.cta-box { background:#1a2a4a; border-radius:10px; padding:24px 28px; text-align:center; margin:28px 0; }
+.cta-box p { color:#d4af37; font-size:15px; font-weight:600; margin-bottom:16px; }
+.cta-link { display:inline-block; background:#d4af37; color:#1a2a4a; padding:13px 28px; border-radius:6px; text-decoration:none; font-weight:700; font-size:14px; }
+</style>
+</head>
+<body>
+<div class="header"><div class="brand">GASTRO-OS</div><div class="modul-label">Modul 2 &nbsp;·&nbsp; Lektion 5</div></div>
+<div class="gold-bar"></div>
+<script>
+const sb = supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3');
+(async()=>{ const {data:{session}}=await sb.auth.getSession(); if(!session) window.location.href='login.html'; })();
+</script>
+<div class="main">
+<a href="dashboard.html" class="back-btn">← Dashboard</a>
+
+<h1>📖 Lektion 5 — Fehler &amp; Aktionsplan</h1>
+<div class="gold-rule"></div>
+<p><em>Jetzt schauen wir uns die häufigsten Fehler an die Gastronomen bei der Speisekarte machen — und du bekommst deinen konkreten Plan für die nächsten 30 Tage.</em></p>
+
+<h2>Kapitel 1 — Die 6 häufigsten Fehler</h2>
+<div class="fehler-box"><strong>Fehler 1: Zu viele Gerichte aus Angst vor Ablehnung</strong><br>Mehr Gerichte bedeutet nicht mehr Umsatz — es bedeutet mehr Kosten und mehr Komplexität. Weniger Gerichte, besser kalkuliert, sind immer profitabler.</div>
+<div class="fehler-box"><strong>Fehler 2: Kalkulation einmal gemacht, nie wieder überprüft</strong><br>Einkaufspreise ändern sich. Eine Kalkulation von vor zwei Jahren ist heute möglicherweise falsch — und du merkst es nicht weil der Umsatz stabil wirkt während die Marge langsam schrumpft.</div>
+<div class="fehler-box"><strong>Fehler 3: Stars verstecken, Dogs promoten</strong><br>Das profitabelste Gericht steht auf Seite drei, unten, ohne Beschreibung. Das Dog-Gericht steht oben mit Foto weil der Inhaber es persönlich liebt. Lass die Zahlen entscheiden — nicht den Geschmack.</div>
+<div class="fehler-box"><strong>Fehler 4: Beschreibungen unterschätzen</strong><br>"Lammkeule mit Gemüse" verkauft sich schlechter als "Geschmorte Lammkeule aus der Region, sechs Stunden gegart, mit saisonalem Wurzelgemüse und hausgemachter Jus". Die Zutaten sind identisch. Der wahrgenommene Wert ist fundamental verschieden.</div>
+<div class="fehler-box"><strong>Fehler 5: Karte nie testen</strong><br>Eine Karte ist kein Denkmal. Sie ist ein lebendiges Instrument. Die besten Gastronomen testen neue Positionen als Tagesgericht und passen die Karte regelmäßig an. Zweimal im Jahr eine vollständige Überprüfung ist Minimum.</div>
+<div class="fehler-box"><strong>Fehler 6: Service nicht einbeziehen</strong><br>Dein Serviceteam sieht täglich was Gäste bestellen und was sie zurückgehen lassen. Diese Informationen sind Gold. Ein monatliches Kartengespräch mit dem Team ist eine der einfachsten und wirkungsvollsten Maßnahmen.</div>
+<div class="aufgabe">✏️ <strong>Deine Aufgabe:</strong> Welche der sechs Fehler erkennst du in deinem Betrieb? Schreib die zwei größten auf. Das sind deine ersten Ansatzpunkte.</div>
+
+<h2>Kapitel 2 — Dein 30-Tage-Aktionsplan</h2>
+<div class="woche-box"><strong>Woche 1 — Analyse</strong><br>Starte mit dem Analyse Guide um deine Gerichte einzuordnen. Nutze danach das Marge Tool für die detaillierte Kalkulation. Beide Tools findest du im Dashboard unter Modul 2.</div>
+<div class="woche-box"><strong>Woche 2 — Entscheidungen treffen</strong><br>Entscheide für jeden Dog: streichen oder strategisch behalten. Für jeden Plowhorse: Preis anpassen oder Einkauf optimieren. Für jeden Puzzle: neue Beschreibung und bessere Platzierung.</div>
+<div class="woche-box"><strong>Woche 3 — Überarbeitung</strong><br>Überarbeite die Karte physisch oder digital. Neue Beschreibungen für Stars und Puzzles. Preise auf Rundzahl prüfen. Service-Team briefen: Welche Gerichte werden empfohlen, mit welcher Formulierung.</div>
+<div class="woche-box"><strong>Woche 4 — Launch und Beobachtung</strong><br>Führe die überarbeitete Karte ein. Beobachte täglich die Bestellhäufigkeit der veränderten Positionen. Hole Feedback vom Service-Team. Berechne nach vier Wochen ob sich der Bon-Wert verändert hat.</div>
+<div class="aufgabe">✏️ <strong>Deine Aufgabe:</strong> Trag jetzt in deinen Kalender ein wann du in dieser Woche den Analyse Guide ausfüllst. Nicht irgendwann — heute einen konkreten Termin festlegen. Das ist der erste Schritt von der Theorie in die Praxis.</div>
+
+<div class="nav-bar">
+  <a href="modul2-lektion4.html" class="nav-btn secondary">← Lektion 4</a>
+  <a href="modul2-analyse-guide-anleitung.html" class="nav-btn">Analyse Guide Anleitung →</a>
+</div>
+
+</div>
+<div class="gold-bar"></div>
+<div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+</body>
+</html>

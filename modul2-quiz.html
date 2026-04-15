@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GASTRO-OS – Modul 2 | Quiz</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
+.header { background:#1a2a4a; padding:22px 40px; text-align:center; }
+.brand { font-family:Georgia,serif; font-size:22px; color:#d4af37; letter-spacing:4px; font-weight:normal; }
+.modul-label { font-size:11px; color:#a0b0c8; letter-spacing:3px; text-transform:uppercase; margin-top:4px; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+.main { max-width:780px; margin:36px auto; padding:0 24px 60px; }
+h1 { font-family:Georgia,serif; font-size:26px; color:#1a2a4a; margin-bottom:8px; }
+.gold-rule { width:56px; height:2px; background:#d4af37; margin:10px 0 16px; }
+.intro { font-size:14px; color:#5060a0; line-height:1.7; margin-bottom:28px; }
+.bereits-box { background:#e4f5e8; border:2px solid #4aaa60; border-radius:10px; padding:28px 32px; text-align:center; display:none; }
+.bereits-box .icon { font-size:48px; margin-bottom:12px; }
+.bereits-box h2 { font-family:Georgia,serif; color:#1a6030; margin-bottom:8px; }
+.bereits-box p { color:#2a7040; font-size:14px; }
+.bereits-box .back-btn { display:inline-block; margin-top:20px; background:#1a2a4a; color:#d4af37; padding:12px 24px; border-radius:6px; text-decoration:none; font-weight:600; font-size:13px; }
+.frage-card { background:#fff; border-radius:10px; padding:24px 26px; margin-bottom:16px; border:1px solid #e8dfc8; }
+.nummer { font-size:11px; font-weight:700; color:#d4af37; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; }
+.frage { font-size:15px; font-weight:600; color:#1a2a4a; margin-bottom:16px; line-height:1.5; }
+.antwort-option { display:flex; align-items:flex-start; gap:12px; padding:12px 14px; border-radius:6px; border:1.5px solid #e0dcd0; margin-bottom:8px; cursor:pointer; background:#faf8f4; }
+.antwort-option:hover { border-color:#d4af37; background:#fffdf0; }
+.antwort-option.selected { border-color:#1a2a4a; background:#f0f4fb; }
+.antwort-option.correct { border-color:#4aaa60; background:#e4f5e8; }
+.antwort-option.wrong { border-color:#d06050; background:#fde8e4; }
+.antwort-option input[type="radio"] { margin-top:3px; flex-shrink:0; }
+.antwort-option label { font-size:13px; color:#334; line-height:1.6; cursor:pointer; }
+.feedback { font-size:12px; margin-top:10px; padding:8px 12px; border-radius:6px; display:none; }
+.feedback.correct { background:#e4f5e8; color:#1a6030; }
+.feedback.wrong { background:#fde8e4; color:#8a2010; }
+.submit-btn { width:100%; padding:16px; background:#1a2a4a; color:#d4af37; border:none; border-radius:8px; font-size:15px; font-weight:700; cursor:pointer; margin-top:8px; }
+.submit-btn:disabled { opacity:.5; cursor:not-allowed; }
+.ergebnis-box { display:none; border-radius:10px; padding:28px 32px; text-align:center; margin-top:20px; }
+.ergebnis-box.bestanden { background:#e4f5e8; border:2px solid #4aaa60; }
+.ergebnis-box.nochmal { background:#fff8e8; border:2px solid #d4af37; }
+.ergebnis-box .icon { font-size:48px; margin-bottom:12px; }
+.ergebnis-box h2 { font-family:Georgia,serif; margin-bottom:8px; }
+.ergebnis-box.bestanden h2 { color:#1a6030; }
+.ergebnis-box.nochmal h2 { color:#7a5000; }
+.ergebnis-box p { font-size:14px; line-height:1.7; margin-bottom:12px; }
+.ergebnis-box.bestanden p { color:#2a7040; }
+.ergebnis-box.nochmal p { color:#5a4000; }
+.ergebnis-btn { display:inline-block; background:#1a2a4a; color:#d4af37; padding:13px 24px; border-radius:6px; text-decoration:none; font-weight:700; font-size:13px; border:none; cursor:pointer; }
+.footer { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; }
+.footer strong { color:#d4af37; }
+</style>
+</head>
+<body>
+<div class="header"><div class="brand">GASTRO-OS</div><div class="modul-label">Modul 2 &nbsp;·&nbsp; Quiz</div></div>
+<div class="gold-bar"></div>
+<div class="main">
+<h1>Quiz — Modul 2</h1>
+<div class="gold-rule"></div>
+<p class="intro">Teste dein Wissen aus Modul 2. 8 Fragen rund um Speisekarten-Optimierung, Kalkulation und die Psychologie des Verkaufens. Du brauchst mindestens 6 von 8 richtigen Antworten. Viel Erfolg! 😊</p>
+
+<div class="bereits-box" id="bereits-box">
+  <div class="icon">🏆</div>
+  <h2>Quiz bereits abgeschlossen!</h2>
+  <p>Du hast dieses Quiz bereits erfolgreich abgeschlossen.<br>Modul 3 ist für dich freigeschaltet.</p>
+  <a href="dashboard.html" class="back-btn">← Zurück zum Dashboard</a>
+</div>
+
+<div id="quiz-form">
+  <div class="frage-card">
+    <div class="nummer">Frage 1 von 8</div>
+    <div class="frage">Was ist das wichtigste Verkaufsinstrument eines Restaurants?</div>
+    <div class="antwort-option" onclick="sel(1,'A')"><input type="radio" name="q1" id="q1a"><label for="q1a">Die Werbung auf Social Media</label></div>
+    <div class="antwort-option" onclick="sel(1,'B')"><input type="radio" name="q1" id="q1b"><label for="q1b">Die Speisekarte</label></div>
+    <div class="antwort-option" onclick="sel(1,'C')"><input type="radio" name="q1" id="q1c"><label for="q1c">Das Ambiente und die Einrichtung</label></div>
+    <div class="feedback" id="fb-1"></div>
+  </div>
+  <div class="frage-card">
+    <div class="nummer">Frage 2 von 8</div>
+    <div class="frage">Wie nennt man Gerichte mit hoher Marge UND hoher Nachfrage?</div>
+    <div class="antwort-option" onclick="sel(2,'A')"><input type="radio" name="q2" id="q2a"><label for="q2a">Arbeitspferde</label></div>
+    <div class="antwort-option" onclick="sel(2,'B')"><input type="radio" name="q2" id="q2b"><label for="q2b">Rätsel</label></div>
+    <div class="antwort-option" onclick="sel(2,'C')"><input type="radio" name="q2" id="q2c"><label for="q2c">Stars</label></div>
+    <div class="feedback" id="fb-2"></div>
+  </div>
+  <div class="frage-card">
+    <div class="nummer">Frage 3 von 8</div>
+    <div class="frage">Welche Gerichte sollten von der Karte gestrichen werden?</div>
+    <div class="antwort-option" onclick="sel(3,'A')"><input type="radio" name="q3" id="q3a"><label for="q3a">Arbeitspferde — laufen gut aber geringe Marge</label></div>
+    <div class="antwort-option" onclick="sel(3,'B')"><input type="radio" name="q3" id="q3b"><label for="q3b">Rätsel — hohe Marge aber wenig bestellt</label></div>
+    <div class="antwort-option" onclick="sel(3,'C')"><input type="radio" name="q3" id="q3c"><label for="q3c">Hunde — niedrige Marge und niedrige Nachfrage</label></div>
+    <div class="feedback" id="fb-3"></div>
+  </div>
+  <div class="frage-card">
+    <div class="nummer">Frage 4 von 8</div>
+    <div class="frage">Wo wandert das Auge beim Lesen einer Speisekarte zuerst hin?</div>
+    <div class="antwort-option" onclick="sel(4,'A')"><input type="radio" name="q4" id="q4a"><label for="q4a">Oben links — der natürliche Lesebeginn</label></div>
+    <div class="antwort-option" onclick="sel(4,'B')"><input type="radio" name="q4" id="q4b"><label for="q4b">Oben rechts — die goldene Zone</label></div>
+    <div class="antwort-option" onclick="sel(4,'C')"><input type="radio" name="q4" id="q4c"><label for="q4c">In die Mitte der Karte</label></div>
+    <div class="feedback" id="fb-4"></div>
+  </div>
+  <div class="frage-card">
+    <div class="nummer">Frage 5 von 8</div>
+    <div class="frage">Wie viele Gerichte sollte eine optimale Speisekarte haben?</div>
+    <div class="antwort-option" onclick="sel(5,'A')"><input type="radio" name="q5" id="q5a"><label for="q5a">So viele wie möglich — mehr Auswahl bedeutet mehr Umsatz</label></div>
+    <div class="antwort-option" onclick="sel(5,'B')"><input type="radio" name="q5" id="q5b"><label for="q5b">Mindestens vierzig Gerichte für jeden Geschmack</label></div>
+    <div class="antwort-option" onclick="sel(5,'C')"><input type="radio" name="q5" id="q5c"><label for="q5c">Fünfzehn bis zwanzig Gerichte für klare Orientierung</label></div>
+    <div class="feedback" id="fb-5"></div>
+  </div>
+  <div class="frage-card">
+    <div class="nummer">Frage 6 von 8</div>
+    <div class="frage">Welche Beschreibung verkauft sich besser?</div>
+    <div class="antwort-option" onclick="sel(6,'A')"><input type="radio" name="q6" id="q6a"><label for="q6a">Hähnchen mit Gemüse</label></div>
+    <div class="antwort-option" onclick="sel(6,'B')"><input type="radio" name="q6" id="q6b"><label for="q6b">Saftiges Landhuhn mit saisonalem Gemüse aus der Region</label></div>
+    <div class="antwort-option" onclick="sel(6,'C')"><input type="radio" name="q6" id="q6c"><label for="q6c">Beide verkaufen sich gleich gut</label></div>
+    <div class="feedback" id="fb-6"></div>
+  </div>
+  <div class="frage-card">
+    <div class="nummer">Frage 7 von 8</div>
+    <div class="frage">Wie hoch sollte der Wareneinsatz eines Gerichts maximal sein?</div>
+    <div class="antwort-option" onclick="sel(7,'A')"><input type="radio" name="q7" id="q7a"><label for="q7a">Unter 30–32 % des Verkaufspreises</label></div>
+    <div class="antwort-option" onclick="sel(7,'B')"><input type="radio" name="q7" id="q7b"><label for="q7b">Unter 50 % des Verkaufspreises</label></div>
+    <div class="antwort-option" onclick="sel(7,'C')"><input type="radio" name="q7" id="q7c"><label for="q7c">Es gibt keinen Zielwert — das hängt vom Gericht ab</label></div>
+    <div class="feedback" id="fb-7"></div>
+  </div>
+  <div class="frage-card">
+    <div class="nummer">Frage 8 von 8</div>
+    <div class="frage">Warum sind Standardrezepte wichtig?</div>
+    <div class="antwort-option" onclick="sel(8,'A')"><input type="radio" name="q8" id="q8a"><label for="q8a">Sie machen die Küche kreativer und flexibler</label></div>
+    <div class="antwort-option" onclick="sel(8,'B')"><input type="radio" name="q8" id="q8b"><label for="q8b">Sie sichern gleichbleibende Qualität und machen den Wareneinsatz planbar</label></div>
+    <div class="antwort-option" onclick="sel(8,'C')"><input type="radio" name="q8" id="q8c"><label for="q8c">Sie sind nur für große Restaurants mit vielen Köchen nötig</label></div>
+    <div class="feedback" id="fb-8"></div>
+  </div>
+  <button class="submit-btn" id="submit-btn" onclick="submitQuiz()" disabled>Quiz auswerten →</button>
+</div>
+
+<div class="ergebnis-box bestanden" id="ergebnis-bestanden">
+  <div class="icon">🎉</div>
+  <h2>Sehr gut — bestanden!</h2>
+  <p id="ergebnis-text"></p>
+  <p><strong>Modul 3 ist jetzt für dich freigeschaltet!</strong></p>
+  <a href="dashboard.html" class="ergebnis-btn">→ Weiter zu Modul 3</a>
+</div>
+<div class="ergebnis-box nochmal" id="ergebnis-nochmal">
+  <div class="icon">💪</div>
+  <h2>Fast geschafft — noch einmal!</h2>
+  <p id="ergebnis-text-2"></p>
+  <button class="ergebnis-btn" onclick="location.reload()">Quiz wiederholen</button>
+</div>
+</div>
+<div class="gold-bar"></div>
+<div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+<script>
+const sb = supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3');
+const R = {1:'B',2:'C',3:'C',4:'C',5:'C',6:'B',7:'A',8:'B'};
+let ans = {}, user = null;
+async function init() {
+  const {data:{session}} = await sb.auth.getSession();
+  if (!session) { window.location.href='login.html'; return; }
+  user = session.user;
+  const {data} = await sb.from('user_tool_data').select('data').eq('user_id',user.id).eq('tool_name','quiz_modul2').maybeSingle();
+  if (data?.data?.bestanden) { document.getElementById('quiz-form').style.display='none'; document.getElementById('bereits-box').style.display='block'; }
+}
+function sel(f,v) {
+  ans[f]=v;
+  document.querySelectorAll(`[name="q${f}"]`).forEach(r=>r.closest('.antwort-option').classList.remove('selected'));
+  document.getElementById(`q${f}${v.toLowerCase()}`).checked=true;
+  document.getElementById(`q${f}${v.toLowerCase()}`).closest('.antwort-option').classList.add('selected');
+  if(Object.keys(ans).length===8) document.getElementById('submit-btn').disabled=false;
+}
+async function submitQuiz() {
+  document.getElementById('submit-btn').disabled=true;
+  let ok=0;
+  for(let i=1;i<=8;i++){
+    const g=ans[i],k=R[i];
+    const opt=document.getElementById(`q${i}${g.toLowerCase()}`).closest('.antwort-option');
+    const fb=document.getElementById(`fb-${i}`);
+    if(g===k){ok++;opt.classList.add('correct');fb.textContent='✓ Richtig!';fb.className='feedback correct';}
+    else{opt.classList.add('wrong');document.getElementById(`q${i}${k.toLowerCase()}`).closest('.antwort-option').classList.add('correct');fb.textContent='✗ Leider falsch. Die richtige Antwort ist markiert.';fb.className='feedback wrong';}
+    fb.style.display='block';
+  }
+  document.querySelectorAll('.antwort-option').forEach(o=>o.style.pointerEvents='none');
+  document.getElementById('submit-btn').style.display='none';
+  if(ok>=6){
+    await sb.from('user_tool_data').upsert({user_id:user.id,tool_name:'quiz_modul2',data:{bestanden:true,richtig:ok,datum:new Date().toISOString()},updated_at:new Date().toISOString()},{onConflict:'user_id,tool_name'});
+    const {data:pd}=await sb.from('user_tool_data').select('data').eq('user_id',user.id).eq('tool_name','modul_progress').maybeSingle();
+    const p=pd?pd.data:{};p['2-10']=true;
+    await sb.from('user_tool_data').upsert({user_id:user.id,tool_name:'modul_progress',data:p,updated_at:new Date().toISOString()},{onConflict:'user_id,tool_name'});
+    document.getElementById('ergebnis-text').textContent=`Du hast ${ok} von 8 Fragen richtig beantwortet. Ausgezeichnet!`;
+    document.getElementById('ergebnis-bestanden').style.display='block';
+    document.getElementById('ergebnis-bestanden').scrollIntoView({behavior:'smooth'});
+  } else {
+    document.getElementById('ergebnis-text-2').textContent=`Du hast ${ok} von 8 Fragen richtig beantwortet. Du brauchst mindestens 6 richtige Antworten. Schau dir die Lektionen nochmal an!`;
+    document.getElementById('ergebnis-nochmal').style.display='block';
+    document.getElementById('ergebnis-nochmal').scrollIntoView({behavior:'smooth'});
+  }
+}
+init();
+</script>
+</body>
+</html>
