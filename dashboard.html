@@ -488,7 +488,8 @@
 
     // Fortschritt laden
     const { data: toolData } = await sb.from('user_tool_data').select('data').eq('user_id', currentUser.id).eq('tool_name', 'modul_progress').maybeSingle();
-    if (toolData) progress = toolData.data;
+    if (toolData && toolData.data) progress = toolData.data;
+    if (!progress || typeof progress !== 'object') progress = {};
 
     // Quiz Modul 1 bestanden
     if (progress && progress['1-9']) {
@@ -505,12 +506,12 @@
     }
 
     // Quiz Modul 2
-    if (progress && progress['2-10']) {
+    if (progress && progress['2-11']) {
       quizBestanden[2] = true;
     } else {
       try {
         const { data: quiz2Data } = await sb.from('user_tool_data').select('data').eq('user_id', currentUser.id).eq('tool_name', 'quiz_modul2').maybeSingle();
-        if (quiz2Data && quiz2Data.data && quiz2Data.data.bestanden) { quizBestanden[2] = true; progress['2-10'] = true; }
+        if (quiz2Data && quiz2Data.data && quiz2Data.data.bestanden) { quizBestanden[2] = true; progress['2-11'] = true; }
       } catch(e) {}
     }
 
@@ -525,6 +526,7 @@
 
   // ── FORTSCHRITT MODUL 1 RENDERN ──
   function renderProgress1() {
+    if (!progress || typeof progress !== 'object') return;
     let done = 0;
     for (let i = 0; i < MODUL_1_ITEMS; i++) {
       const key = '1-' + i;
@@ -555,6 +557,7 @@
 
   // ── FORTSCHRITT MODUL 2 RENDERN ──
   function renderProgress2() {
+    if (!progress || typeof progress !== 'object') return;
     let done = 0;
     for (let i = 0; i < MODUL_2_ITEMS; i++) {
       const key = '2-' + i;
@@ -585,6 +588,7 @@
 
   // ── FORTSCHRITT RENDERN ──
   function renderProgress() {
+    if (!progress || typeof progress !== 'object') return;
     const items = MODUL_0_ITEMS;
     let done = 0;
 
@@ -666,6 +670,7 @@
   // ── GESPERRTE MODULE RENDERN ──
   // ── FORTSCHRITT MODUL 2 RENDERN ──
   function renderProgress2() {
+    if (!progress || typeof progress !== 'object') return;
     let done = 0;
     for (let i = 0; i < MODUL_2_ITEMS; i++) {
       const key = '2-' + i;
@@ -731,7 +736,9 @@
     window.location.href = 'login.html';
   }
 
-  init();
+  init().catch(err => {
+    console.error('Dashboard init error:', err);
+  });
 </script>
 
 </body>
