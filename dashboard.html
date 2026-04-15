@@ -702,7 +702,9 @@
     const container = document.getElementById('locked-modules');
     container.innerHTML = '';
 
-    for (let m = 3; m <= 12; m++) {
+    for (let m = 2; m <= 12; m++) {
+      // Modul 2 statische Karte übernimmt wenn Quiz 1 bestanden
+      if (m === 2 && quizBestanden[1]) continue;
       const isNext = m === unlockedUpTo;
       const card = document.createElement('div');
       card.className = 'module-card' + (isNext ? '' : ' locked');
