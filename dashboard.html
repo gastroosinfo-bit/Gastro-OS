@@ -468,12 +468,15 @@
     let done = 0;
     for (let i = 0; i < MODUL_1_ITEMS; i++) {
       const key = '1-' + i;
+      const chk = document.getElementById('chk-1-' + i);
+      const ttl = document.getElementById('title-1-' + i);
       if (progress[key]) {
         done++;
-        const chk = document.getElementById('chk-1-' + i);
-        const ttl = document.getElementById('title-1-' + i);
         if (chk) chk.classList.add('checked');
         if (ttl) ttl.classList.add('done');
+      } else {
+        if (chk) chk.classList.remove('checked');
+        if (ttl) ttl.classList.remove('done');
       }
     }
     const pct = Math.round((done / MODUL_1_ITEMS) * 100);
@@ -497,10 +500,15 @@
 
     for (let i = 0; i < items; i++) {
       const key = '0-' + i;
+      const chk = document.getElementById('chk-0-' + i);
+      const ttl = document.getElementById('title-0-' + i);
       if (progress[key]) {
         done++;
-        document.getElementById('chk-0-' + i).classList.add('checked');
-        document.getElementById('title-0-' + i).classList.add('done');
+        if (chk) chk.classList.add('checked');
+        if (ttl) ttl.classList.add('done');
+      } else {
+        if (chk) chk.classList.remove('checked');
+        if (ttl) ttl.classList.remove('done');
       }
     }
 
