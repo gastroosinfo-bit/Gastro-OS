@@ -453,11 +453,18 @@
     const { data: toolData } = await sb.from('user_tool_data').select('data').eq('user_id', currentUser.id).eq('tool_name', 'modul_progress').maybeSingle();
     if (toolData) progress = toolData.data;
 
-    // Quiz-Status laden
-    const { data: quiz1Data } = await sb.from('user_tool_data').select('data').eq('user_id', currentUser.id).eq('tool_name', 'quiz_modul1').maybeSingle();
-    if (quiz1Data && quiz1Data.data && quiz1Data.data.bestanden) {
+    // Quiz Modul 1 bestanden wenn letzter Haken gesetzt
+    if (progress && progress['1-9']) {
       quizBestanden[1] = true;
-      progress['1-9'] = true;
+    } else {
+      // Auch direkt Supabase quiz_modul1 pruefen
+      try {
+        const { data: quiz1Data } = await sb.from('user_tool_data').select('data').eq('user_id', currentUser.id).eq('tool_name', 'quiz_modul1').maybeSingle();
+        if (quiz1Data && quiz1Data.data && quiz1Data.data.bestanden) {
+          quizBestanden[1] = true;
+          progress['1-9'] = true;
+        }
+      } catch(e) {}
     }
 
     renderProgress();
@@ -493,7 +500,7 @@
     if (txt) txt.textContent = pct + '%';
     if (sub) sub.textContent = done + ' von ' + MODUL_1_ITEMS + ' abgeschlossen';
     if (badge) {
-      if (done === MODUL_1_ITEMS) { badge.textContent = '&#10003; Abgeschlossen'; badge.className = 'module-badge badge-done'; }
+      if (done === MODUL_1_ITEMS) { badge.innerHTML = '&#10003; Abgeschlossen'; badge.className = 'module-badge badge-done'; }
       else if (done > 0) { badge.textContent = 'In Bearbeitung'; badge.className = 'module-badge badge-progress'; }
     }
   }
@@ -523,7 +530,7 @@
     document.getElementById('subtitle-0').textContent = done + ' von ' + items + ' abgeschlossen';
 
     if (done === items) {
-      document.getElementById('badge-0').textContent = '✓ Abgeschlossen';
+      document.getElementById('badge-0').innerHTML = '&#10003; Abgeschlossen';
       document.getElementById('badge-0').className = 'module-badge badge-done';
     } else if (done > 0) {
       document.getElementById('badge-0').textContent = 'In Bearbeitung';
