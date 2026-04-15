@@ -704,49 +704,6 @@
 
     for (let m = 3; m <= 12; m++) {
       const isNext = m === unlockedUpTo;
-      // Modul 2: vollständiger Inhaltsblock
-      if (m === 2 && isNext) {
-        const card2 = document.createElement('div');
-        card2.className = 'module-card';
-        card2.id = 'modul-card-2';
-        card2.innerHTML = `
-          <div class="module-header" onclick="toggleModule(2)">
-            <div class="module-left">
-              <div class="module-number">2</div>
-              <div>
-                <div class="module-title">Speisekarte &amp; Angebotssystem</div>
-                <div class="module-subtitle" id="subtitle-2">0 von 11 abgeschlossen</div>
-              </div>
-            </div>
-            <div style="display:flex;align-items:center;gap:8px;">
-              <span class="module-badge badge-open" id="badge-2">Offen</span>
-              <span class="module-arrow" id="arrow-2">&#9660;</span>
-            </div>
-          </div>
-          <div class="module-content" id="content-2">
-            <div class="content-item"><div class="check-box" id="chk-2-0" onclick="toggleCheck(2,0)"></div><span class="item-icon">&#127909;</span><div class="item-info"><div class="item-title" id="title-2-0">Ankervideo &#8212; Starte hier</div></div><a href="modul2-ankervideo.html" target="_blank" class="item-link">&#214;ffnen &#8594;</a></div>
-            <div class="content-item"><div class="check-box" id="chk-2-1" onclick="toggleCheck(2,1)"></div><span class="item-icon">&#128214;</span><div class="item-info"><div class="item-title" id="title-2-1">Lektion 1 &#8212; Die Karte als Umsatzmaschine</div></div><a href="modul2-lektion1.html" target="_blank" class="item-link">&#214;ffnen &#8594;</a></div>
-            <div class="content-item"><div class="check-box" id="chk-2-2" onclick="toggleCheck(2,2)"></div><span class="item-icon">&#128214;</span><div class="item-info"><div class="item-title" id="title-2-2">Lektion 2 &#8212; Kalkulation &amp; Preispsychologie</div></div><a href="modul2-lektion2.html" target="_blank" class="item-link">&#214;ffnen &#8594;</a></div>
-            <div class="content-item"><div class="check-box" id="chk-2-3" onclick="toggleCheck(2,3)"></div><span class="item-icon">&#128214;</span><div class="item-info"><div class="item-title" id="title-2-3">Lektion 3 &#8212; Der strategische Kartenaufbau</div></div><a href="modul2-lektion3.html" target="_blank" class="item-link">&#214;ffnen &#8594;</a></div>
-            <div class="content-item"><div class="check-box" id="chk-2-4" onclick="toggleCheck(2,4)"></div><span class="item-icon">&#128214;</span><div class="item-info"><div class="item-title" id="title-2-4">Lektion 4 &#8212; Upselling &amp; Fallstudie</div></div><a href="modul2-lektion4.html" target="_blank" class="item-link">&#214;ffnen &#8594;</a></div>
-            <div class="content-item"><div class="check-box" id="chk-2-5" onclick="toggleCheck(2,5)"></div><span class="item-icon">&#128214;</span><div class="item-info"><div class="item-title" id="title-2-5">Lektion 5 &#8212; Fehler &amp; Aktionsplan</div></div><a href="modul2-lektion5.html" target="_blank" class="item-link">&#214;ffnen &#8594;</a></div>
-            <div class="content-item"><div class="check-box" id="chk-2-6" onclick="toggleCheck(2,6)"></div><span class="item-icon">&#127909;</span><div class="item-info"><div class="item-title" id="title-2-6">So nutzt du den Analyse Guide</div></div><a href="modul2-analyse-guide-anleitung.html" target="_blank" class="item-link">&#214;ffnen &#8594;</a></div>
-            <div class="content-item"><div class="check-box" id="chk-2-7" onclick="toggleCheck(2,7)"></div><span class="item-icon">&#128202;</span><div class="item-info"><div class="item-title" id="title-2-7">Analyse Guide &#8212; Welche Gerichte fliegen raus?</div></div><a href="modul2-analyse-guide.html" target="_blank" class="item-link">&#214;ffnen &#8594;</a></div>
-            <div class="content-item"><div class="check-box" id="chk-2-8" onclick="toggleCheck(2,8)"></div><span class="item-icon">&#127909;</span><div class="item-info"><div class="item-title" id="title-2-8">So nutzt du das Marge Tool</div></div><a href="modul2-marge-tool-anleitung.html" target="_blank" class="item-link">&#214;ffnen &#8594;</a></div>
-            <div class="content-item"><div class="check-box" id="chk-2-9" onclick="toggleCheck(2,9)"></div><span class="item-icon">&#128202;</span><div class="item-info"><div class="item-title" id="title-2-9">Marge Tool &#8212; Deine Kalkulation auf einen Blick</div></div><a href="modul2-marge-tool.html" target="_blank" class="item-link">&#214;ffnen &#8594;</a></div>
-            <div class="content-item"><div class="check-box" id="chk-2-10" onclick="toggleCheck(2,10)"></div><span class="item-icon">&#127919;</span><div class="item-info"><div class="item-title" id="title-2-10">Quiz &#8212; Teste dein Wissen</div></div><a href="modul2-quiz.html" target="_blank" class="item-link">&#214;ffnen &#8594;</a></div>
-            <div class="progress-bar-wrap">
-              <div class="progress-label"><span>Fortschritt Modul 2</span><span id="progress-text-2">0%</span></div>
-              <div class="progress-bar"><div class="progress-fill" id="progress-fill-2" style="width:0%"></div></div>
-            </div>
-          </div>
-        `;
-        container.appendChild(card2);
-        // Render progress for modul 2
-        setTimeout(() => renderProgress2(), 50);
-        continue;
-      }
-
       const card = document.createElement('div');
       card.className = 'module-card' + (isNext ? '' : ' locked');
       card.innerHTML = `
