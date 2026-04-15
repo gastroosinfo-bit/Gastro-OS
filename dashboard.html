@@ -359,7 +359,7 @@
   </div>
 
   <!-- MODUL 1 -->
-  <div class="module-card" id="modul-card-1" style="display:none;" data-modul="1">
+  <div class="module-card" id="modul-card-1">
     <div class="module-header" onclick="toggleModule(1)">
       <div class="module-left">
         <div class="module-number">1</div>
@@ -465,11 +465,8 @@
     renderLockedModules();
   }
 
-  // ── MODUL 1 ANZEIGEN ──
-  function showModul1() {
-    const card = document.getElementById('modul-card-1');
-    if (card) card.style.display = 'block';
-  }
+  // ── MODUL 1 ANZEIGEN (immer sichtbar) ──
+  function showModul1() { }
 
   // ── FORTSCHRITT MODUL 1 RENDERN ──
   function renderProgress1() {
@@ -558,11 +555,11 @@
     // Modul 1 freischalten wenn Reflexionsaufgabe (letzter Punkt Modul 0) gemacht
     if (progress['0-5']) {
       showModul1();
-      renderLockedModules(2);
+      renderLockedModules();
     }
     // Modul 2 freischalten wenn Quiz Modul 1 (letzter Punkt) gemacht
     if (progress['0-5'] && progress['1-9']) {
-      renderLockedModules(3);
+      renderLockedModules();
     }
   }
 
