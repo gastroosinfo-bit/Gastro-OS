@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GASTRO-OS – Login</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #1a2a4a;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .gold-bar-top { position: fixed; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #1a2a4a, #d4af37, #1a2a4a); z-index: 100; }
+  .gold-bar-bottom { position: fixed; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #1a2a4a, #d4af37, #1a2a4a); z-index: 100; }
+
+  .logo {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  .logo .brand {
+    font-family: Georgia, serif;
+    font-size: 28px;
+    color: #d4af37;
+    letter-spacing: 5px;
+    font-weight: normal;
+  }
+  .logo .tagline {
+    font-size: 11px;
+    color: #6080a8;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-top: 6px;
+  }
+
+  .card {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid rgba(212,175,55,0.3);
+    padding: 36px 40px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+  }
+
+  .card-title {
+    font-family: Georgia, serif;
+    font-size: 20px;
+    color: #1a2a4a;
+    margin-bottom: 6px;
+    text-align: center;
+  }
+  .gold-rule { width: 40px; height: 2px; background: #d4af37; margin: 8px auto 24px; }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    background: #f5f0e8;
+    border-radius: 8px;
+    padding: 4px;
+    margin-bottom: 24px;
+  }
+  .tab {
+    flex: 1;
+    padding: 9px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: #8090a8;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.2s;
+  }
+  .tab.active {
+    background: #1a2a4a;
+    color: #d4af37;
+  }
+
+  /* Form */
+  .form-group { margin-bottom: 16px; }
+  .form-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #5060a0;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .form-group input {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1.5px solid #e0dcd0;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #1a2a4a;
+    background: #faf8f4;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+  .form-group input:focus {
+    border-color: #d4af37;
+    background: #fff;
+  }
+
+  .btn {
+    width: 100%;
+    padding: 13px;
+    background: #1a2a4a;
+    color: #d4af37;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: background 0.2s;
+    margin-top: 8px;
+  }
+  .btn:hover { background: #2a3a5a; }
+  .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  .message {
+    margin-top: 16px;
+    padding: 12px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    text-align: center;
+    display: none;
+  }
+  .message.success { background: #e4f5e8; color: #1a6030; border: 1px solid #4aaa60; }
+  .message.error   { background: #fde8e4; color: #8a2010; border: 1px solid #d06050; }
+
+  .forgot-link {
+    text-align: center;
+    margin-top: 14px;
+    font-size: 12px;
+    color: #8090a8;
+  }
+  .forgot-link a {
+    color: #d4af37;
+    text-decoration: none;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  .forgot-link a:hover { text-decoration: underline; }
+
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  .footer-note {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 11px;
+    color: #4060a0;
+    letter-spacing: 0.5px;
+  }
+</style>
+</head>
+<body>
+
+<div class="gold-bar-top"></div>
+<div class="gold-bar-bottom"></div>
+
+<div class="logo">
+  <div class="brand">GASTRO-OS</div>
+  <div class="tagline">System · Strategie · Erfolg</div>
+</div>
+
+<div class="card">
+  <div class="card-title">Mitgliederbereich</div>
+  <div class="gold-rule"></div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <div class="tab active" onclick="showTab('login')">Anmelden</div>
+    <div class="tab" onclick="showTab('register')">Registrieren</div>
+  </div>
+
+  <!-- LOGIN -->
+  <div class="panel active" id="panel-login">
+    <div class="form-group">
+      <label>E-Mail-Adresse</label>
+      <input type="email" id="login-email" placeholder="deine@email.de">
+    </div>
+    <div class="form-group">
+      <label>Passwort</label>
+      <input type="password" id="login-password" placeholder="••••••••">
+    </div>
+    <button class="btn" onclick="doLogin()">Jetzt anmelden</button>
+    <div class="message" id="login-msg"></div>
+    <div class="forgot-link">
+      <a onclick="showTab('reset')">Passwort vergessen?</a>
+    </div>
+  </div>
+
+  <!-- REGISTER -->
+  <div class="panel" id="panel-register">
+    <div class="form-group">
+      <label>Vollständiger Name</label>
+      <input type="text" id="reg-name" placeholder="Max Mustermann">
+    </div>
+    <div class="form-group">
+      <label>E-Mail-Adresse</label>
+      <input type="email" id="reg-email" placeholder="deine@email.de">
+    </div>
+    <div class="form-group">
+      <label>Passwort</label>
+      <input type="password" id="reg-password" placeholder="Mindestens 6 Zeichen">
+    </div>
+    <button class="btn" onclick="doRegister()">Konto erstellen</button>
+    <div class="message" id="reg-msg"></div>
+  </div>
+
+  <!-- RESET -->
+  <div class="panel" id="panel-reset">
+    <div class="form-group">
+      <label>E-Mail-Adresse</label>
+      <input type="email" id="reset-email" placeholder="deine@email.de">
+    </div>
+    <button class="btn" onclick="doReset()">Passwort zurücksetzen</button>
+    <div class="message" id="reset-msg"></div>
+    <div class="forgot-link">
+      <a onclick="showTab('login')">← Zurück zum Login</a>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer-note">© GASTRO-OS · Alle Rechte vorbehalten</div>
+
+<script>
+  // ── SUPABASE VERBINDEN ──
+  const SUPABASE_URL = 'https://hchlganbgjeciwhwaisj.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3';
+  const { createClient } = supabase;
+  const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  // ── TABS ──
+  function showTab(tab) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('panel-' + tab).classList.add('active');
+    if (tab === 'login') document.querySelectorAll('.tab')[0].classList.add('active');
+    if (tab === 'register') document.querySelectorAll('.tab')[1].classList.add('active');
+  }
+
+  function showMsg(id, text, type) {
+    const el = document.getElementById(id);
+    el.textContent = text;
+    el.className = 'message ' + type;
+    el.style.display = 'block';
+  }
+
+  // ── LOGIN ──
+  async function doLogin() {
+    const email = document.getElementById('login-email').value.trim();
+    const password = document.getElementById('login-password').value;
+    if (!email || !password) { showMsg('login-msg', 'Bitte alle Felder ausfüllen.', 'error'); return; }
+
+    const btn = document.querySelector('#panel-login .btn');
+    btn.disabled = true; btn.textContent = 'Wird angemeldet...';
+
+    const { data, error } = await sb.auth.signInWithPassword({ email, password });
+
+    if (error) {
+      showMsg('login-msg', 'Falsche E-Mail oder Passwort. Bitte prüfen!', 'error');
+      btn.disabled = false; btn.textContent = 'Jetzt anmelden';
+      return;
+    }
+
+    // Profil prüfen
+    const { data: profile } = await sb.from('profiles').select('*').eq('id', data.user.id).single();
+
+    if (!profile || !profile.is_active || profile.subscription_status !== 'active') {
+      await sb.auth.signOut();
+      showMsg('login-msg', 'Dein Zugang ist nicht aktiv. Bitte Abo prüfen.', 'error');
+      btn.disabled = false; btn.textContent = 'Jetzt anmelden';
+      return;
+    }
+
+    showMsg('login-msg', 'Erfolgreich angemeldet! Du wirst weitergeleitet...', 'success');
+    setTimeout(() => { window.location.href = 'dashboard.html'; }, 1500);
+  }
+
+  // ── REGISTRIEREN ──
+  async function doRegister() {
+    const name = document.getElementById('reg-name').value.trim();
+    const email = document.getElementById('reg-email').value.trim();
+    const password = document.getElementById('reg-password').value;
+    if (!name || !email || !password) { showMsg('reg-msg', 'Bitte alle Felder ausfüllen.', 'error'); return; }
+    if (password.length < 6) { showMsg('reg-msg', 'Passwort muss mindestens 6 Zeichen haben.', 'error'); return; }
+
+    const btn = document.querySelector('#panel-register .btn');
+    btn.disabled = true; btn.textContent = 'Wird erstellt...';
+
+    const { error } = await sb.auth.signUp({
+      email, password,
+      options: { data: { full_name: name } }
+    });
+
+    if (error) {
+      showMsg('reg-msg', 'Fehler: ' + error.message, 'error');
+      btn.disabled = false; btn.textContent = 'Konto erstellen';
+      return;
+    }
+
+    showMsg('reg-msg', '✅ Fast geschafft! Bitte bestätige deine E-Mail-Adresse — dann kannst du dich anmelden.', 'success');
+    btn.disabled = false; btn.textContent = 'Konto erstellen';
+  }
+
+  // ── PASSWORT ZURÜCKSETZEN ──
+  async function doReset() {
+    const email = document.getElementById('reset-email').value.trim();
+    if (!email) { showMsg('reset-msg', 'Bitte E-Mail-Adresse eingeben.', 'error'); return; }
+
+    const btn = document.querySelector('#panel-reset .btn');
+    btn.disabled = true; btn.textContent = 'Wird gesendet...';
+
+    const { error } = await sb.auth.resetPasswordForEmail(email, {
+      redirectTo: 'https://project-bui7j.vercel.app/login.html'
+    });
+
+    if (error) {
+      showMsg('reset-msg', 'Fehler beim Senden. Bitte nochmal versuchen.', 'error');
+    } else {
+      showMsg('reset-msg', '✅ E-Mail gesendet! Bitte prüfe deinen Posteingang.', 'success');
+    }
+    btn.disabled = false; btn.textContent = 'Passwort zurücksetzen';
+  }
+
+  // ── BEREITS EINGELOGGT? ──
+  sb.auth.getSession().then(({ data }) => {
+    if (data.session) window.location.href = 'dashboard.html';
+  });
+</script>
+
+</body>
+</html>
