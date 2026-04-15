@@ -279,9 +279,9 @@
     }
 
     // Profil prüfen
-    const { data: profile } = await sb.from('profiles').select('*').eq('id', data.user.id).single();
+    const { data: profile } = await sb.from("profiles").select("is_active, subscription_status").eq("id", data.user.id).maybeSingle();
 
-    if (!profile || !profile.is_active || profile.subscription_status !== 'active') {
+    if (profile && (!profile.is_active || profile.subscription_status !== 'active')) {
       await sb.auth.signOut();
       showMsg('login-msg', 'Dein Zugang ist nicht aktiv. Bitte Abo prüfen.', 'error');
       btn.disabled = false; btn.textContent = 'Jetzt anmelden';
