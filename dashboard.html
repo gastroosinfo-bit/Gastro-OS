@@ -426,6 +426,40 @@
     </div>
   </div>
 
+    <!-- MODUL 3 -->
+  <div class="module-card" id="modul-card-3" style="display:none;">
+    <div class="module-header" onclick="toggleModule(3)">
+      <div class="module-left">
+        <div class="module-number">3</div>
+        <div>
+          <div class="module-title">Einkauf &amp; Wareneinsatz</div>
+          <div class="module-subtitle" id="subtitle-3">0 von 11 abgeschlossen</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span class="module-badge badge-open" id="badge-3">Offen</span>
+        <span class="module-arrow" id="arrow-3">&#9660;</span>
+      </div>
+    </div>
+    <div class="module-content" id="content-3">
+      <div class="content-item"><div class="check-box" id="chk-3-0" onclick="toggleCheck(3,0)"></div><span class="item-icon">&#128203;</span><div class="item-info"><div class="item-title" id="title-3-0">Modul00fcbersicht &amp; Inhaltsverzeichnis</div></div><a href="modul3-uebersicht.html" target="_blank" class="item-link">&#214;ffnen&#8594;</a></div>
+      <div class="content-item"><div class="check-box" id="chk-3-1" onclick="toggleCheck(3,1)"></div><span class="item-icon">&#127909;</span><div class="item-info"><div class="item-title" id="title-3-1">Ankervideo&#8212; Starte hier</div></div><a href="modul3-ankervideo.html" target="_blank" class="item-link">&#214;ffnen&#8594;</a></div>
+      <div class="content-item"><div class="check-box" id="chk-3-2" onclick="toggleCheck(3,2)"></div><span class="item-icon">&#128214;</span><div class="item-info"><div class="item-title" id="title-3-2">Lektion 1&#8212; Wareneinsatz verstehen &amp; Einkauf planen</div></div><a href="modul3-lektion1.html" target="_blank" class="item-link">&#214;ffnen&#8594;</a></div>
+      <div class="content-item"><div class="check-box" id="chk-3-3" onclick="toggleCheck(3,3)"></div><span class="item-icon">&#128214;</span><div class="item-info"><div class="item-title" id="title-3-3">Lektion 2&#8212; Verhandeln mit Lieferanten</div></div><a href="modul3-lektion2.html" target="_blank" class="item-link">&#214;ffnen&#8594;</a></div>
+      <div class="content-item"><div class="check-box" id="chk-3-4" onclick="toggleCheck(3,4)"></div><span class="item-icon">&#128214;</span><div class="item-info"><div class="item-title" id="title-3-4">Lektion 3&#8212; Qualit00e4t halten &amp; dauerhaft optimieren</div></div><a href="modul3-lektion3.html" target="_blank" class="item-link">&#214;ffnen&#8594;</a></div>
+      <div class="content-item"><div class="check-box" id="chk-3-5" onclick="toggleCheck(3,5)"></div><span class="item-icon">&#128214;</span><div class="item-info"><div class="item-title" id="title-3-5">Lektion 4&#8212; Fallbeispiel &amp; 30-Tage-Aktionsplan</div></div><a href="modul3-lektion4.html" target="_blank" class="item-link">&#214;ffnen&#8594;</a></div>
+      <div class="content-item"><div class="check-box" id="chk-3-6" onclick="toggleCheck(3,6)"></div><span class="item-icon">&#128247;</span><div class="item-info"><div class="item-title" id="title-3-6">So nutzt du den Einkaufs Check</div></div><a href="modul3-einkauf-video.html" target="_blank" class="item-link">&#214;ffnen&#8594;</a></div>
+      <div class="content-item"><div class="check-box" id="chk-3-7" onclick="toggleCheck(3,7)"></div><span class="item-icon">&#128202;</span><div class="item-info"><div class="item-title" id="title-3-7">Einkaufs Check&#8212; Dein w00f6chentlicher Einkaufsprozess</div></div><a href="modul3-einkauf.html" target="_blank" class="item-link">&#214;ffnen&#8594;</a></div>
+      <div class="content-item"><div class="check-box" id="chk-3-8" onclick="toggleCheck(3,8)"></div><span class="item-icon">&#128247;</span><div class="item-info"><div class="item-title" id="title-3-8">So nutzt du den Lieferanten Vergleich</div></div><a href="modul3-lieferanten-video.html" target="_blank" class="item-link">&#214;ffnen&#8594;</a></div>
+      <div class="content-item"><div class="check-box" id="chk-3-9" onclick="toggleCheck(3,9)"></div><span class="item-icon">&#128202;</span><div class="item-info"><div class="item-title" id="title-3-9">Lieferanten Vergleich&#8212; Alle Lieferanten auf einen Blick</div></div><a href="modul3-lieferanten.html" target="_blank" class="item-link">&#214;ffnen&#8594;</a></div>
+      <div class="content-item"><div class="check-box" id="chk-3-10" onclick="toggleCheck(3,10)"></div><span class="item-icon">&#127919;</span><div class="item-info"><div class="item-title" id="title-3-10">Quiz&#8212; Teste dein Wissen</div></div><a href="modul3-quiz.html" target="_blank" class="item-link">&#214;ffnen&#8594;</a></div>
+      <div class="progress-bar-wrap">
+        <div class="progress-label"><span>Fortschritt Modul 3</span><span id="progress-text-3">0%</span></div>
+        <div class="progress-bar"><div class="progress-fill" id="progress-fill-3" style="width:0%"></div></div>
+      </div>
+    </div>
+  </div>
+
   <!-- MODUL 3-12 gesperrt -->
   <div id="locked-modules"></div>
 
@@ -465,6 +499,7 @@
   const MODUL_0_ITEMS = 6;
   const MODUL_1_ITEMS = 10;
   const MODUL_2_ITEMS = 12;
+  const MODUL_3_ITEMS = 11;
 
   // ── INIT ──
   async function init() {
@@ -514,14 +549,26 @@
       } catch(e) {}
     }
 
+    // Quiz Modul 3
+    if (progress && progress['3-10']) {
+      quizBestanden[3] = true;
+    } else {
+      try {
+        const { data: quiz3Data } = await sb.from('user_tool_data').select('data').eq('user_id', currentUser.id).eq('tool_name', 'quiz_modul3').maybeSingle();
+        if (quiz3Data && quiz3Data.data && quiz3Data.data.bestanden) { quizBestanden[3] = true; progress['3-10'] = true; }
+      } catch(e) {}
+    }
+
     renderProgress();
     renderProgress1();
     renderProgress2();
+    renderProgress3();
     renderLockedModules();
   }
 
   function showModul1() { }
   function showModul2() { const c = document.getElementById("modul-card-2"); if(c) c.style.display="block"; }
+  function showModul3() { const c = document.getElementById("modul-card-3"); if(c) c.style.display="block"; }
 
   // ── FORTSCHRITT MODUL 1 RENDERN ──
   function renderProgress1() {
@@ -635,7 +682,7 @@
     if (modul === 0) renderProgress();
     if (modul === 1) renderProgress1();
     if (modul === 2) renderProgress2();
-    if (modul === 2) renderProgress2();
+    if (modul === 3) renderProgress3();
 
     // Prüfen ob Module komplett
     checkModuleCompletion();
@@ -698,10 +745,38 @@
     }
   }
 
+  function renderProgress3() {
+    if (!progress || typeof progress !== 'object') return;
+    let done = 0;
+    for (let i = 0; i < MODUL_3_ITEMS; i++) {
+      const key = '3-' + i;
+      const box = document.getElementById('chk-3-' + i);
+      if (progress[key]) {
+        done++;
+        if (box) { box.innerHTML = '&#10003;'; box.classList.add('checked'); }
+      } else {
+        if (box) { box.innerHTML = ''; box.classList.remove('checked'); }
+      }
+    }
+    const pct = Math.round((done / MODUL_3_ITEMS) * 100);
+    const fill = document.getElementById('progress-fill-3');
+    const txt = document.getElementById('progress-text-3');
+    const sub = document.getElementById('subtitle-3');
+    const badge = document.getElementById('badge-3');
+    if (fill) fill.style.width = pct + '%';
+    if (txt) txt.textContent = pct + '%';
+    if (sub) sub.textContent = done + ' von ' + MODUL_3_ITEMS + ' abgeschlossen';
+    if (badge) {
+      if (done === MODUL_3_ITEMS) { badge.innerHTML = '&#10003; Abgeschlossen'; badge.className = 'module-badge badge-done'; }
+      else if (done > 0) { badge.textContent = 'In Bearbeitung'; badge.className = 'module-badge badge-progress'; }
+    }
+  }
+
   function renderLockedModules() {
     let unlockedUpTo = 1;
     if (quizBestanden[1]) { unlockedUpTo = 2; showModul2(); }
-    if (quizBestanden[2]) unlockedUpTo = 3;
+    if (quizBestanden[2]) { unlockedUpTo = 3; showModul3(); }
+    if (quizBestanden[3]) unlockedUpTo = 4;
 
     const container = document.getElementById('locked-modules');
     container.innerHTML = '';
@@ -709,6 +784,8 @@
     for (let m = 2; m <= 12; m++) {
       // Modul 2 statische Karte übernimmt wenn Quiz 1 bestanden
       if (m === 2 && quizBestanden[1]) continue;
+      // Modul 3 statische Karte übernimmt wenn Quiz 2 bestanden
+      if (m === 3 && quizBestanden[2]) continue;
       const isNext = m === unlockedUpTo;
       const card = document.createElement('div');
       card.className = 'module-card' + (isNext ? '' : ' locked');
