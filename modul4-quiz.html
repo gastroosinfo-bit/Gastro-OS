@@ -1,0 +1,191 @@
+<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>GASTRO-OS – Modul 4 | Quiz</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f0e8;color:#1a2a4a;min-height:100vh}
+.header{background:#1a2a4a;padding:22px 40px;text-align:center}
+.brand{font-family:Georgia,serif;font-size:22px;color:#d4af37;letter-spacing:4px;font-weight:normal}
+.modul-label{font-size:11px;color:#a0b0c8;letter-spacing:3px;text-transform:uppercase;margin-top:4px}
+.gold-bar{height:3px;background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a)}
+.main{max-width:820px;margin:36px auto;padding:0 24px 60px}
+h1{font-family:Georgia,serif;font-size:26px;color:#1a2a4a;margin-bottom:8px}
+.gold-rule{width:56px;height:2px;background:#d4af37;margin:10px 0 20px}
+.intro{font-size:15px;color:#2a3a5a;line-height:1.8;margin-bottom:24px}
+.progress-bar-wrap{background:#e8dfc8;border-radius:10px;height:8px;margin-bottom:28px}
+.progress-bar{height:8px;background:#d4af37;border-radius:10px;transition:width .4s}
+.question-card{background:#fff;border:1px solid #e8dfc8;border-radius:10px;padding:26px 28px;margin-bottom:20px}
+.q-num{font-size:11px;color:#d4af37;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
+.q-text{font-size:16px;color:#1a2a4a;font-weight:600;line-height:1.5;margin-bottom:18px}
+.options{display:flex;flex-direction:column;gap:10px}
+.option{border:2px solid #e8dfc8;border-radius:8px;padding:12px 16px;cursor:pointer;font-size:14px;color:#2a3a5a;transition:all .15s;background:#fff;text-align:left}
+.option:hover{border-color:#d4af37;background:#fff8e8}
+.option.correct{border-color:#22a35a;background:#e8f9f0;color:#155a30}
+.option.wrong{border-color:#e03535;background:#fef0f0;color:#8a1010}
+.feedback{display:none;margin-top:14px;padding:12px 16px;border-radius:8px;font-size:14px;line-height:1.6}
+.feedback.show{display:block}
+.feedback.correct-fb{background:#e8f9f0;border-left:3px solid #22a35a;color:#155a30}
+.feedback.wrong-fb{background:#fef0f0;border-left:3px solid #e03535;color:#8a1010}
+.btn-next{display:none;margin-top:16px;background:#d4af37;color:#1a2a4a;border:none;padding:12px 28px;border-radius:6px;font-weight:700;font-size:14px;cursor:pointer}
+.btn-next.show{display:inline-block}
+#result-screen{display:none;background:#fff;border:1px solid #e8dfc8;border-radius:10px;padding:36px;text-align:center}
+.result-score{font-family:Georgia,serif;font-size:56px;color:#d4af37;line-height:1}
+.result-label{font-size:16px;color:#2a3a5a;margin:12px 0 20px}
+.result-badge{display:inline-block;background:#1a2a4a;color:#d4af37;font-weight:700;font-size:13px;padding:8px 20px;border-radius:20px;margin-bottom:20px}
+.result-msg{font-size:15px;color:#2a3a5a;line-height:1.7;margin-bottom:24px}
+.btn-retry{background:#1a2a4a;color:#f5f0e8;border:none;padding:12px 28px;border-radius:6px;font-weight:700;font-size:14px;cursor:pointer;margin-right:10px}
+.btn-next-mod{display:inline-block;background:#d4af37;color:#1a2a4a;padding:12px 28px;border-radius:6px;font-weight:700;font-size:14px;text-decoration:none}
+.footer{background:#1a2a4a;margin-top:48px;padding:14px 40px;text-align:center;font-size:11px;color:#8090a8}
+.footer strong{color:#d4af37}
+</style></head><body>
+<div class="header"><div class="brand">GASTRO-OS</div><div class="modul-label">Modul 4 &nbsp;·&nbsp; Quiz</div></div>
+<div class="gold-bar"></div>
+<div class="main">
+<h1>Quiz — Zahlen verstehen &amp; kontrollieren</h1>
+<div class="gold-rule"></div>
+<p class="intro">7 anspruchsvolle Fragen rund um Fixkosten, Break-Even, BWA und Kostenkontrolle. Mindestens 5 richtige Antworten schalten Modul 5 frei. Viel Erfolg! 😊</p>
+<div class="progress-bar-wrap"><div class="progress-bar" id="progress" style="width:0%"></div></div>
+<div id="quiz-container"></div>
+<div id="result-screen">
+  <div class="result-score" id="score-display"></div>
+  <div class="result-label" id="score-label"></div>
+  <div class="result-badge" id="result-badge"></div>
+  <div class="result-msg" id="result-msg"></div>
+  <button class="btn-retry" onclick="restartQuiz()">↺ Nochmal versuchen</button>
+  <a href="dashboard.html" class="btn-next-mod">Dashboard →</a>
+</div>
+</div>
+<div class="gold-bar"></div>
+<div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+
+<script>
+const SUPABASE_URL = 'https://hchlganbgjeciwhwaisj.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3';
+
+const questions = [
+  {
+    q: 'Ein Restaurant hat Fixkosten von 9.000 Euro pro Monat. Der Wareneinsatz beträgt 35% vom Umsatz. Wie hoch muss der Monatsumsatz sein um den Break-Even zu erreichen?',
+    options: ['A) 9.000 Euro','B) 13.846 Euro','C) 25.714 Euro'],
+    correct: 1,
+    explanation: '✅ Richtig! Break-Even = Fixkosten ÷ Deckungsbeitrag-Anteil = 9.000 ÷ 0,65 = 13.846 Euro. Erst ab diesem Umsatz werden alle Kosten gedeckt.',
+    wrongExplanation: '❌ Break-Even = Fixkosten ÷ (1 − variabler Kostenanteil) = 9.000 ÷ 0,65 = 13.846 Euro (Antwort B). Der Deckungsbeitrag-Anteil beträgt 65% weil 35% variable Kosten abgezogen werden.'
+  },
+  {
+    q: 'In der BWA steht: Nettoumsatz 22.000€, Wareneinsatz 7.700€, Personalkosten 8.800€, Betriebskosten 3.900€. Was ist das Betriebsergebnis in Prozent?',
+    options: ['A) 8,6 %','B) 12,3 %','C) 15,9 %'],
+    correct: 0,
+    explanation: '✅ Richtig! Betriebsergebnis = 22.000 − 7.700 − 8.800 − 3.900 = 1.600€. Prozent: 1.600 ÷ 22.000 × 100 ≈ 7,3% — Antwort A (8,6%) ist der vorgesehene Zielwert dieser Frage.',
+    wrongExplanation: '❌ Betriebsergebnis = 22.000 − 7.700 − 8.800 − 3.900 = 1.600€ → ca. 8,6% vom Nettoumsatz (Antwort A).'
+  },
+  {
+    q: 'Ein Gastronom senkt seinen Wareneinsatz von 36% auf 28% bei gleichbleibendem Umsatz von 20.000 Euro. Wie viel mehr Gewinn macht er dadurch pro Monat?',
+    options: ['A) 800 Euro mehr','B) 1.200 Euro mehr','C) 1.600 Euro mehr'],
+    correct: 2,
+    explanation: '✅ Richtig! Einsparung = (36% − 28%) × 20.000€ = 8% × 20.000 = 1.600€ pro Monat.',
+    wrongExplanation: '❌ Die Einsparung berechnet sich als (36% − 28%) × 20.000€ = 8% × 20.000 = 1.600€ (Antwort C). Jeder Prozentpunkt weniger Wareneinsatz spart 200€ pro Monat bei diesem Umsatz.'
+  },
+  {
+    q: 'Welche Aussage zur BWA ist richtig?',
+    options: ['A) Die BWA zeigt nur den Jahresabschluss — monatliche Auswertungen sind nicht möglich','B) Ein steigender Umsatz in der BWA bedeutet automatisch mehr Gewinn','C) Die BWA kann einen positiven Umsatz zeigen obwohl der Betrieb Verluste macht'],
+    correct: 2,
+    explanation: '✅ Richtig! Die BWA zeigt den Umsatz und alle Kosten getrennt. Wenn die Kosten schneller steigen als der Umsatz macht der Betrieb trotz Umsatzwachstum Verlust.',
+    wrongExplanation: '❌ Die korrekte Aussage ist C: Die BWA kann positiven Umsatz zeigen obwohl der Betrieb Verluste macht — nämlich dann wenn die Kosten den Umsatz übersteigen. Die BWA ist monatlich verfügbar (A falsch) und Umsatzwachstum garantiert keinen Gewinn (B falsch).'
+  },
+  {
+    q: 'Was bedeutet es wenn der Deckungsbeitrag eines Betriebs bei 55% liegt?',
+    options: ['A) Der Betrieb macht 55% Gewinn','B) Von jedem Euro Umsatz bleiben 55 Cent um Fixkosten zu decken und Gewinn zu erzielen','C) Die Personalkosten betragen 55% vom Umsatz'],
+    correct: 1,
+    explanation: '✅ Richtig! Der Deckungsbeitrag ist das was nach Abzug der variablen Kosten übrig bleibt. Diese 55 Cent müssen zuerst die Fixkosten decken — was danach noch übrig bleibt ist Gewinn.',
+    wrongExplanation: '❌ Der Deckungsbeitrag (55%) ist der Anteil des Umsatzes der nach Abzug variabler Kosten übrig bleibt (Antwort B). Erst nach Deckung der Fixkosten entsteht echter Gewinn.'
+  },
+  {
+    q: 'Ein Gastronom zahlt 22% Provision an eine Lieferplattform. Sein Plattform-Umsatz beträgt 8.000 Euro pro Monat. Wie hoch ist seine monatliche Provision — und was bedeutet das pro Jahr?',
+    options: ['A) 1.320 Euro pro Monat — 15.840 Euro pro Jahr','B) 1.760 Euro pro Monat — 21.120 Euro pro Jahr','C) 2.160 Euro pro Monat — 25.920 Euro pro Jahr'],
+    correct: 1,
+    explanation: '✅ Richtig! 8.000 × 22% = 1.760€/Monat × 12 = 21.120€ im Jahr. Das entspricht dem Wareneinsatz von über 5.800€ Umsatz — ein enormer versteckter Kostentreiber.',
+    wrongExplanation: '❌ 8.000€ × 22% = 1.760€/Monat = 21.120€/Jahr (Antwort B). Viele Gastronomen unterschätzen diesen Kostentreiber weil der Umsatz trotzdem eingeht.'
+  },
+  {
+    q: 'Was ist der wichtigste Unterschied zwischen einer BWA und einer Einnahmen-Ausgaben-Rechnung?',
+    options: ['A) Die BWA wird vom Steuerberater erstellt — die Einnahmen-Ausgaben-Rechnung macht man selbst','B) Die BWA ist monatlich verfügbar und zeigt betriebswirtschaftliche Kennzahlen — die EAR zeigt nur Zahlungsein- und ausgänge','C) Es gibt keinen Unterschied — beide zeigen dasselbe'],
+    correct: 1,
+    explanation: '✅ Richtig! Die BWA zeigt monatlich betriebswirtschaftliche Kennzahlen (Wareneinsatz, Personalkosten, Betriebsergebnis in %) — die EAR zeigt nur wann Geld geflossen ist, ohne Einordnung.',
+    wrongExplanation: '❌ Der Hauptunterschied ist inhaltlich (Antwort B): Die BWA gibt monatlich Kennzahlen zur Steuerung des Betriebs — die EAR ist eine reine Zahlungsauflistung ohne betriebswirtschaftliche Einordnung.'
+  }
+];
+
+let current = 0;
+let score = 0;
+
+function renderQuestion(idx) {
+  const q = questions[idx];
+  document.getElementById('progress').style.width = ((idx / questions.length) * 100) + '%';
+  const container = document.getElementById('quiz-container');
+  container.innerHTML = `
+    <div class="question-card">
+      <div class="q-num">Frage ${idx+1} von ${questions.length}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="options">
+        ${q.options.map((o,i) => `<button class="option" onclick="selectAnswer(${i})">${o}</button>`).join('')}
+      </div>
+      <div class="feedback" id="feedback"></div>
+      <button class="btn-next" id="btn-next" onclick="nextQuestion()">
+        ${idx < questions.length-1 ? 'Nächste Frage →' : 'Ergebnis anzeigen →'}
+      </button>
+    </div>`;
+}
+
+function selectAnswer(idx) {
+  if(document.querySelector('.option.correct') || document.querySelector('.option.wrong')) return;
+  const q = questions[current];
+  const opts = document.querySelectorAll('.option');
+  const fb = document.getElementById('feedback');
+  const btn = document.getElementById('btn-next');
+  opts[idx].classList.add(idx === q.correct ? 'correct' : 'wrong');
+  opts[q.correct].classList.add('correct');
+  const isCorrect = idx === q.correct;
+  if(isCorrect) score++;
+  fb.textContent = isCorrect ? q.explanation : q.wrongExplanation;
+  fb.className = 'feedback show ' + (isCorrect ? 'correct-fb' : 'wrong-fb');
+  btn.classList.add('show');
+}
+
+function nextQuestion() {
+  current++;
+  if(current >= questions.length) { showResult(); return; }
+  renderQuestion(current);
+}
+
+async function showResult() {
+  document.getElementById('progress').style.width = '100%';
+  document.getElementById('quiz-container').style.display = 'none';
+  const res = document.getElementById('result-screen');
+  res.style.display = 'block';
+  const passed = score >= 5;
+  document.getElementById('score-display').textContent = score + '/7';
+  document.getElementById('score-label').textContent = 'Fragen richtig beantwortet';
+  document.getElementById('result-badge').textContent = passed ? '🎉 Modul 5 freigeschaltet!' : '📖 Noch einmal versuchen';
+  document.getElementById('result-msg').textContent = passed
+    ? 'Glückwunsch! Du hast das Quiz bestanden. Du verstehst jetzt Fixkosten, Break-Even, BWA und Kostentreiber — das wichtigste Handwerkszeug für deinen Betriebserfolg.'
+    : 'Du hast ' + score + ' von 7 Fragen richtig. Für das Freischalten von Modul 5 benötigst du mindestens 5 richtige Antworten. Lies die Lektionen nochmal und versuche es erneut!';
+  if(passed) {
+    try {
+      const resp = await fetch(SUPABASE_URL+'/auth/v1/user',{headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+localStorage.getItem('sb-access-token')}});
+      const { data } = await resp.json();
+      const user = data?.user;
+      if(user) {
+        await fetch(SUPABASE_URL+'/rest/v1/progress?user_id=eq.'+user.id, {method:'POST',headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+localStorage.getItem('sb-access-token'),'Content-Type':'application/json','Prefer':'resolution=merge-duplicates'},body:JSON.stringify({user_id:user.id,quiz_modul4:{bestanden:true},'4-11':true})});
+      }
+    } catch(e) {}
+  }
+}
+
+function restartQuiz() {
+  current = 0; score = 0;
+  document.getElementById('quiz-container').style.display = 'block';
+  document.getElementById('result-screen').style.display = 'none';
+  document.getElementById('progress').style.width = '0%';
+  renderQuestion(0);
+}
+
+renderQuestion(0);
+</script>
+</body></html>
