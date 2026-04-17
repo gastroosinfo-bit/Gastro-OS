@@ -306,7 +306,41 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
     </div>
   </div>
 
-  <!-- ══ GESPERRTE MODULE (5–12) ══ -->
+  <!-- ══ MODUL 5 ══ -->
+  <div class="module-card" id="modul-card-5" style="display:none;">
+    <div class="module-header" onclick="toggleModule(5)">
+      <div class="module-left">
+        <div class="module-number">5</div>
+        <div>
+          <div class="module-title">Struktur &amp; Organisation</div>
+          <div class="module-subtitle" id="subtitle-5">0 von 11 abgeschlossen</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span class="module-badge badge-open" id="badge-5">Offen</span>
+        <span class="module-arrow" id="arrow-5">▼</span>
+      </div>
+    </div>
+    <div class="module-content" id="content-5">
+      <div class="content-item"><div class="check-box" id="chk-5-0" onclick="toggleCheck(5,0)"></div><span class="item-icon">📋</span><div class="item-info"><div class="item-title" id="title-5-0">Modulübersicht &amp; Inhaltsverzeichnis</div></div><a href="modul5-uebersicht.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-5-1" onclick="toggleCheck(5,1)"></div><span class="item-icon">🎬</span><div class="item-info"><div class="item-title" id="title-5-1">Ankervideo — Starte hier</div></div><a href="modul5-ankervideo.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-5-2" onclick="toggleCheck(5,2)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-5-2">Lektion 1 — Unternehmer vs. Selbständiger</div></div><a href="modul5-lektion1.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-5-3" onclick="toggleCheck(5,3)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-5-3">Lektion 2 — Was sind SOPs und wie du anfängst</div></div><a href="modul5-lektion2.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-5-4" onclick="toggleCheck(5,4)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-5-4">Lektion 3 — Deine Tagesstruktur als Unternehmer</div></div><a href="modul5-lektion3.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-5-5" onclick="toggleCheck(5,5)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-5-5">Lektion 4 — Fallbeispiel &amp; 30-Tage-Aktionsplan</div></div><a href="modul5-lektion4.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-5-6" onclick="toggleCheck(5,6)"></div><span class="item-icon">🎬</span><div class="item-info"><div class="item-title" id="title-5-6">Video Fallbeispiel Sandra</div></div><a href="modul5-fallbeispiel-video.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-5-7" onclick="toggleCheck(5,7)"></div><span class="item-icon">🎙️</span><div class="item-info"><div class="item-title" id="title-5-7">Küchenfunk #2 — Stoßzeiten &amp; Leerzeiten</div></div><a href="modul5-podcast.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-5-8" onclick="toggleCheck(5,8)"></div><span class="item-icon">🎬</span><div class="item-info"><div class="item-title" id="title-5-8">So nutzt du den Wochenplaner</div></div><a href="modul5-wochenplaner-video.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-5-9" onclick="toggleCheck(5,9)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-5-9">Wochenplaner — Dein Werkzeug für die nächste Woche</div></div><a href="modul5-wochenplaner.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-5-10" onclick="toggleCheck(5,10)"></div><span class="item-icon">🎯</span><div class="item-info"><div class="item-title" id="title-5-10">Quiz — Teste dein Wissen</div></div><a href="modul5-quiz.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="progress-bar-wrap">
+        <div class="progress-label"><span>Fortschritt Modul 5</span><span id="progress-text-5">0%</span></div>
+        <div class="progress-bar"><div class="progress-fill" id="progress-fill-5" style="width:0%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ GESPERRTE MODULE (6–12) ══ -->
   <div id="locked-modules"></div>
 
 </div>
@@ -324,7 +358,7 @@ const { createClient } = supabase;
 const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // ── Konstanten ────────────────────────────────────────────
-const MODULE_ITEMS = { 0:6, 1:10, 2:12, 3:11, 4:12 };
+const MODULE_ITEMS = { 0:6, 1:10, 2:12, 3:11, 4:12, 5:11 };
 
 const MODUL_TITLES = [
   'Das Gastro OS Prinzip',
@@ -347,8 +381,8 @@ const MODUL_TITLES = [
 // Modul 3 offen wenn Quiz 2 bestanden (key: 2-11)
 // Modul 4 offen wenn Quiz 3 bestanden (key: 3-10)
 // Modul 5 offen wenn Quiz 4 bestanden (key: 4-11)
-const QUIZ_KEYS = { 1:'1-9', 2:'2-11', 3:'3-10', 4:'4-11' };
-const QUIZ_TOOL_NAMES = { 1:'quiz_modul1', 2:'quiz_modul2', 3:'quiz_modul3', 4:'quiz_modul4' };
+const QUIZ_KEYS = { 1:'1-9', 2:'2-11', 3:'3-10', 4:'4-11', 5:'5-10' };
+const QUIZ_TOOL_NAMES = { 1:'quiz_modul1', 2:'quiz_modul2', 3:'quiz_modul3', 4:'quiz_modul4', 5:'quiz_modul5' };
 
 let currentUser = null;
 let progress = {};
@@ -402,9 +436,10 @@ async function init() {
   if (quizBestanden[1]) document.getElementById('modul-card-2').style.display = 'block';
   if (quizBestanden[2]) document.getElementById('modul-card-3').style.display = 'block';
   if (quizBestanden[3]) document.getElementById('modul-card-4').style.display = 'block';
+  if (quizBestanden[4]) document.getElementById('modul-card-5').style.display = 'block';
 
   // Fortschritt rendern
-  for (const m of [0,1,2,3,4]) renderProgress(m);
+  for (const m of [0,1,2,3,4,5]) renderProgress(m);
 
   // Gesperrte Module rendern
   renderLockedModules();
@@ -487,11 +522,12 @@ function renderLockedModules() {
   if (quizBestanden[2]) unlockedUpTo = 3;
   if (quizBestanden[3]) unlockedUpTo = 4;
   if (quizBestanden[4]) unlockedUpTo = 5;
+  if (quizBestanden[5]) unlockedUpTo = 6;
 
   const container = document.getElementById('locked-modules');
   container.innerHTML = '';
 
-  for (let m = 5; m <= 12; m++) {
+  for (let m = 6; m <= 12; m++) {
     const isNext  = (m === unlockedUpTo);
     const locked  = m > unlockedUpTo;
     const card    = document.createElement('div');
