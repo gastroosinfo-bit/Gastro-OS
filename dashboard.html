@@ -340,7 +340,44 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
     </div>
   </div>
 
-  <!-- ══ GESPERRTE MODULE (6–12) ══ -->
+
+  <!-- ══ MODUL 6 ══ -->
+  <div class="module-card" id="modul-card-6" style="display:none;">
+    <div class="module-header" onclick="toggleModule(6)">
+      <div class="module-left">
+        <div class="module-number">6</div>
+        <div>
+          <div class="module-title">Mitarbeiter führen statt nur reagieren</div>
+          <div class="module-subtitle" id="subtitle-6">0 von 13 abgeschlossen</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span class="module-badge badge-open" id="badge-6">Offen</span>
+        <span class="module-arrow" id="arrow-6">▼</span>
+      </div>
+    </div>
+    <div class="module-content" id="content-6">
+      <div class="content-item"><div class="check-box" id="chk-6-0" onclick="toggleCheck(6,0)"></div><span class="item-icon">📋</span><div class="item-info"><div class="item-title" id="title-6-0">Modulübersicht &amp; Inhaltsverzeichnis</div></div><a href="modul6-uebersicht.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-6-1" onclick="toggleCheck(6,1)"></div><span class="item-icon">🎬</span><div class="item-info"><div class="item-title" id="title-6-1">Ankervideo — Starte hier</div></div><a href="modul6-ankervideo.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-6-2" onclick="toggleCheck(6,2)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-6-2">Lektion 1 — Warum klare Rollen alles verändern</div></div><a href="modul6-lektion1.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-6-3" onclick="toggleCheck(6,3)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-6-3">Lektion 2 — So definierst du Rollen in deinem Betrieb</div></div><a href="modul6-lektion2.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-6-4" onclick="toggleCheck(6,4)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-6-4">Lektion 3 — Der Schichtleiter als Schlüssel</div></div><a href="modul6-lektion3.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-6-5" onclick="toggleCheck(6,5)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-6-5">Lektion 4 — Fallbeispiel &amp; 30-Tage-Aktionsplan</div></div><a href="modul6-lektion4.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-6-6" onclick="toggleCheck(6,6)"></div><span class="item-icon">🎬</span><div class="item-info"><div class="item-title" id="title-6-6">Fallbeispiel Marco — Wie er sein Team befreit hat</div></div><a href="modul6-fallbeispiel-video.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-6-7" onclick="toggleCheck(6,7)"></div><span class="item-icon">🎙️</span><div class="item-info"><div class="item-title" id="title-6-7">Küchenfunk #3 — Podcast Modul 6</div></div><a href="modul6-podcast.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-6-8" onclick="toggleCheck(6,8)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title" id="title-6-8">So nutzt du den Personalstruktur Check</div></div><a href="modul6-personalstruktur-video.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-6-9" onclick="toggleCheck(6,9)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-6-9">Personalstruktur Check — Rollen &amp; Entscheidungsrechte</div></div><a href="modul6-personalstruktur.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-6-10" onclick="toggleCheck(6,10)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title" id="title-6-10">So nutzt du das Mitarbeiter-Feedback-Gespräch</div></div><a href="modul6-feedback-video.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-6-11" onclick="toggleCheck(6,11)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-6-11">Strukturiertes Mitarbeiter-Feedback-Gespräch</div></div><a href="modul6-feedback.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-6-12" onclick="toggleCheck(6,12)"></div><span class="item-icon">🎯</span><div class="item-info"><div class="item-title" id="title-6-12">Quiz — Teste dein Wissen</div></div><a href="modul6-quiz.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="progress-bar-wrap">
+        <div class="progress-label"><span>Fortschritt Modul 6</span><span id="progress-text-6">0%</span></div>
+        <div class="progress-bar"><div class="progress-fill" id="progress-fill-6" style="width:0%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ GESPERRTE MODULE (7–12) ══ -->
   <div id="locked-modules"></div>
 
 </div>
@@ -358,7 +395,7 @@ const { createClient } = supabase;
 const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // ── Konstanten ────────────────────────────────────────────
-const MODULE_ITEMS = { 0:6, 1:10, 2:12, 3:11, 4:12, 5:11 };
+const MODULE_ITEMS = { 0:6, 1:10, 2:12, 3:11, 4:12, 5:11, 6:13 };
 
 const MODUL_TITLES = [
   'Das Gastro OS Prinzip',
@@ -381,8 +418,8 @@ const MODUL_TITLES = [
 // Modul 3 offen wenn Quiz 2 bestanden (key: 2-11)
 // Modul 4 offen wenn Quiz 3 bestanden (key: 3-10)
 // Modul 5 offen wenn Quiz 4 bestanden (key: 4-11)
-const QUIZ_KEYS = { 1:'1-9', 2:'2-11', 3:'3-10', 4:'4-11', 5:'5-10' };
-const QUIZ_TOOL_NAMES = { 1:'quiz_modul1', 2:'quiz_modul2', 3:'quiz_modul3', 4:'quiz_modul4', 5:'quiz_modul5' };
+const QUIZ_KEYS = { 1:'1-9', 2:'2-11', 3:'3-10', 4:'4-11', 5:'5-10', 6:'6-12' };
+const QUIZ_TOOL_NAMES = { 1:'quiz_modul1', 2:'quiz_modul2', 3:'quiz_modul3', 4:'quiz_modul4', 5:'quiz_modul5', 6:'quiz_modul6' };
 
 let currentUser = null;
 let progress = {};
@@ -445,8 +482,13 @@ async function init() {
   if (!quizBestanden[4]) lockCard(5, 4);
 
   // Fortschritt rendern
-  for (const m of [0,1,2,3,4,5]) renderProgress(m);
+  for (const m of [0,1,2,3,4,5,6]) renderProgress(m);
 
+  // Modul 6 — immer sichtbar, gesperrt bis Quiz 5 bestanden
+  document.getElementById('modul-card-6').style.display = 'block';
+  if (!quizBestanden[5]) lockCard(6, 5);
+
+  // Fortschritt rendern
   // Gesperrte Module rendern
   renderLockedModules();
 }
@@ -554,11 +596,12 @@ function renderLockedModules() {
   if (quizBestanden[3]) unlockedUpTo = 4;
   if (quizBestanden[4]) unlockedUpTo = 5;
   if (quizBestanden[5]) unlockedUpTo = 6;
+  if (quizBestanden[6]) unlockedUpTo = 7;
 
   const container = document.getElementById('locked-modules');
   container.innerHTML = '';
 
-  for (let m = 6; m <= 12; m++) {
+  for (let m = 7; m <= 12; m++) {
     const isNext  = (m === unlockedUpTo);
     const locked  = m > unlockedUpTo;
     const card    = document.createElement('div');
