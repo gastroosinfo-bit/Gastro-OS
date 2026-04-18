@@ -1,0 +1,200 @@
+<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>GASTRO-OS – Modul 3 | Quiz</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f0e8;color:#1a2a4a;min-height:100vh}
+.header{background:#1a2a4a;padding:22px 40px;text-align:center}
+.brand{font-family:Georgia,serif;font-size:22px;color:#d4af37;letter-spacing:4px;font-weight:normal}
+.modul-label{font-size:11px;color:#a0b0c8;letter-spacing:3px;text-transform:uppercase;margin-top:4px}
+.gold-bar{height:3px;background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a)}
+.main{max-width:820px;margin:36px auto;padding:0 24px 60px}
+h1{font-family:Georgia,serif;font-size:26px;color:#1a2a4a;margin-bottom:8px}
+.gold-rule{width:56px;height:2px;background:#d4af37;margin:10px 0 20px}
+.intro{font-size:15px;color:#2a3a5a;line-height:1.8;margin-bottom:24px}
+.progress-bar-wrap{background:#e8dfc8;border-radius:10px;height:8px;margin-bottom:28px}
+.progress-bar{height:8px;background:#d4af37;border-radius:10px;transition:width .4s}
+.question-card{background:#fff;border:1px solid #e8dfc8;border-radius:10px;padding:26px 28px;margin-bottom:20px}
+.q-num{font-size:11px;color:#d4af37;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
+.q-text{font-size:16px;color:#1a2a4a;font-weight:600;line-height:1.5;margin-bottom:18px}
+.options{display:flex;flex-direction:column;gap:10px}
+.option{border:2px solid #e8dfc8;border-radius:8px;padding:12px 16px;cursor:pointer;font-size:14px;color:#2a3a5a;transition:all .15s;background:#fff;text-align:left}
+.option:hover{border-color:#d4af37;background:#fff8e8}
+.option.selected{border-color:#1a2a4a;background:#f0f4ff}
+.option.correct{border-color:#22a35a;background:#e8f9f0;color:#155a30}
+.option.wrong{border-color:#e03535;background:#fef0f0;color:#8a1010}
+.feedback{display:none;margin-top:14px;padding:12px 16px;border-radius:8px;font-size:14px;line-height:1.6}
+.feedback.show{display:block}
+.feedback.correct-fb{background:#e8f9f0;border-left:3px solid #22a35a;color:#155a30}
+.feedback.wrong-fb{background:#fef0f0;border-left:3px solid #e03535;color:#8a1010}
+.btn-next{display:none;margin-top:16px;background:#d4af37;color:#1a2a4a;border:none;padding:12px 28px;border-radius:6px;font-weight:700;font-size:14px;cursor:pointer}
+.btn-next.show{display:inline-block}
+#result-screen{display:none;background:#fff;border:1px solid #e8dfc8;border-radius:10px;padding:36px;text-align:center}
+.result-score{font-family:Georgia,serif;font-size:56px;color:#d4af37;line-height:1}
+.result-label{font-size:16px;color:#2a3a5a;margin:12px 0 20px}
+.result-msg{font-size:15px;color:#2a3a5a;line-height:1.7;margin-bottom:24px}
+.result-badge{display:inline-block;background:#1a2a4a;color:#d4af37;font-weight:700;font-size:13px;padding:8px 20px;border-radius:20px;margin-bottom:20px}
+.btn-retry{background:#1a2a4a;color:#f5f0e8;border:none;padding:12px 28px;border-radius:6px;font-weight:700;font-size:14px;cursor:pointer;margin-right:10px}
+.btn-next-mod{display:inline-block;background:#d4af37;color:#1a2a4a;padding:12px 28px;border-radius:6px;font-weight:700;font-size:14px;text-decoration:none}
+.footer{background:#1a2a4a;margin-top:48px;padding:14px 40px;text-align:center;font-size:11px;color:#8090a8}
+.footer strong{color:#d4af37}
+</style></head><body>
+<div class="header"><div class="brand">GASTRO-OS</div><div class="modul-label">Modul 3 &nbsp;·&nbsp; Quiz</div></div>
+<div class="gold-bar"></div>
+<div class="main">
+<h1>Quiz — Einkauf &amp; Wareneinsatz</h1>
+<div class="gold-rule"></div>
+<p class="intro">8 Fragen rund um Einkaufsplanung, Lieferantenverhandlung und Wareneinsatz-Kontrolle. Mindestens 6 richtige Antworten schalten Modul 4 frei. Viel Erfolg! 😊</p>
+<div class="progress-bar-wrap"><div class="progress-bar" id="progress" style="width:0%"></div></div>
+<div id="quiz-container"></div>
+<div id="result-screen">
+  <div class="result-score" id="score-display"></div>
+  <div class="result-label" id="score-label"></div>
+  <div class="result-badge" id="result-badge"></div>
+  <div class="result-msg" id="result-msg"></div>
+  <button class="btn-retry" onclick="restartQuiz()">↺ Nochmal versuchen</button>
+  <a href="dashboard.html" class="btn-next-mod" id="next-mod-btn">Dashboard →</a>
+</div>
+</div>
+<div class="gold-bar"></div>
+<div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+
+<script>
+const SUPABASE_URL = 'https://hchlganbgjeciwhwaisj.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3';
+
+const questions = [
+  {
+    q: 'Was ist der Zielwert für den Wareneinsatz in der Gastronomie?',
+    options: ['A) Unter 40 % vom Nettoumsatz','B) Unter 30 % vom Nettoumsatz','C) Unter 20 % vom Nettoumsatz'],
+    correct: 0,
+    explanation: '✅ Richtig! Der Zielwert liegt unter 40% — idealerweise zwischen 25 und 35% des Nettoumsatzes. Wer dauerhaft über 38% liegt hat ein strukturelles Einkaufsproblem.',
+    wrongExplanation: '❌ Der Zielwert liegt unter 40% (Antwort A). Idealer Korridor: 25–35% des Nettoumsatzes. Wer über 38% liegt sollte sofort handeln.'
+  },
+  {
+    q: 'Was sind die drei Hauptgründe für einen zu hohen Wareneinsatz?',
+    options: ['A) Zu wenig Personal, schlechte Küche, falsche Öffnungszeiten','B) Zu viel eingekauft, Portionen zu groß, keine Kontrolle','C) Zu hohe Miete, schlechte Lage, falsche Zielgruppe'],
+    correct: 1,
+    explanation: '✅ Richtig! Die drei häufigsten Ursachen sind: zu viel auf Vorrat kaufen, zu große Portionen und fehlende Einkaufsstruktur.',
+    wrongExplanation: '❌ Die Hauptgründe sind: zu viel eingekauft, Portionen zu groß, keine Kontrolle (Antwort B). Diese drei lassen sich direkt im Betrieb beheben.'
+  },
+  {
+    q: 'Wie oft sollte ein Einkaufs-Check durchgeführt werden?',
+    options: ['A) Einmal im Monat reicht aus','B) Wöchentlich','C) Nur wenn Probleme auftreten'],
+    correct: 1,
+    explanation: '✅ Richtig! Wöchentlich — das verhindert dass kleine Probleme zu großen werden. 30 Minuten pro Woche genügen.',
+    wrongExplanation: '❌ Der Einkaufs Check sollte wöchentlich durchgeführt werden (Antwort B). Monatlich ist zu selten — ein Lieferant der die Preise still erhöht fällt im wöchentlichen Check sofort auf.'
+  },
+  {
+    q: 'Was ist der beste Zeitpunkt um mit Lieferanten über Preise zu verhandeln?',
+    options: ['A) Wenn die Rechnung bereits bezahlt ist','B) Nur wenn man mit dem Lieferanten unzufrieden ist','C) Regelmäßig — mindestens einmal pro Quartal'],
+    correct: 2,
+    explanation: '✅ Richtig! Regelmäßige Verhandlungen — mindestens einmal pro Quartal — sind die beste Strategie. Nie unter Druck verhandeln.',
+    wrongExplanation: '❌ Der beste Zeitpunkt ist regelmäßig, mindestens einmal pro Quartal (Antwort C). Und nie wenn du gerade dringend Ware brauchst.'
+  },
+  {
+    q: 'Was bedeutet FIFO in der Lagerverwaltung?',
+    options: ['A) First In First Out — ältere Ware wird zuerst verbraucht','B) First In First Over — neue Ware kommt zuerst in die Küche','C) FIFO ist ein Begriff aus der Buchhaltung, nicht aus der Gastronomie'],
+    correct: 0,
+    explanation: '✅ Richtig! FIFO = First In First Out. Ältere Ware wird immer zuerst verwendet — das minimiert Verderb und Verluste.',
+    wrongExplanation: '❌ FIFO steht für First In First Out (Antwort A). Die zuerst eingekaufte Ware wird auch zuerst verbraucht — das ist essenziell für die Lageroptimierung.'
+  },
+  {
+    q: 'Was sollte bei einem Lieferantenvergleich unbedingt berücksichtigt werden?',
+    options: ['A) Nur der Preis pro Einheit','B) Preis, Qualität, Lieferzuverlässigkeit und Zahlungskonditionen','C) Nur die Liefergeschwindigkeit'],
+    correct: 1,
+    explanation: '✅ Richtig! Ein vollständiger Lieferantenvergleich umfasst Preis, Qualität, Zuverlässigkeit und Zahlungskonditionen — nicht nur den Preis.',
+    wrongExplanation: '❌ Ein guter Lieferantenvergleich berücksichtigt Preis, Qualität, Zuverlässigkeit und Zahlungskonditionen (Antwort B). Nur auf den Preis zu schauen kann teuer werden.'
+  },
+  {
+    q: 'Welche Kennzahl zeigt dir ob dein Wareneinsatz unter Kontrolle ist?',
+    options: ['A) Der Gesamtumsatz des Monats','B) Die Anzahl der verkauften Gerichte','C) Wareneinsatz in Prozent vom Nettoumsatz'],
+    correct: 2,
+    explanation: '✅ Richtig! Der Wareneinsatz in Prozent vom Nettoumsatz ist die entscheidende Kennzahl. Formel: Wareneinsatz (€) ÷ Nettoumsatz (€) × 100.',
+    wrongExplanation: '❌ Die wichtigste Kennzahl ist der Wareneinsatz in Prozent vom Nettoumsatz (Antwort C). Formel: Wareneinsatz (€) ÷ Nettoumsatz (€) × 100.'
+  },
+  {
+    q: 'Was ist der Vorteil von Standardrezepten beim Wareneinsatz?',
+    options: ['A) Sie machen die Küche unflexibel und bremsen Kreativität','B) Sie sichern gleichbleibende Portionsgrößen und planbare Kosten','C) Sie sind nur für Großküchen und Betriebsrestaurants sinnvoll'],
+    correct: 1,
+    explanation: '✅ Richtig! Standardrezepte sichern gleichbleibende Portionsgrößen und machen Kosten planbar. Bei 50 Steaks/Woche und 20g Abweichung können das fast 1.500€ im Jahr sein.',
+    wrongExplanation: '❌ Standardrezepte sichern gleichbleibende Portionsgrößen und planbare Kosten (Antwort B). Sie sind in jedem Betrieb sinnvoll — unabhängig von der Größe.'
+  }
+];
+
+let current = 0;
+let score = 0;
+let answered = [];
+
+function renderQuestion(idx) {
+  const q = questions[idx];
+  const pct = ((idx) / questions.length) * 100;
+  document.getElementById('progress').style.width = pct + '%';
+  const container = document.getElementById('quiz-container');
+  container.innerHTML = `
+    <div class="question-card" id="qcard">
+      <div class="q-num">Frage ${idx+1} von ${questions.length}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="options">
+        ${q.options.map((o,i) => `<button class="option" onclick="selectAnswer(${i})">${o}</button>`).join('')}
+      </div>
+      <div class="feedback" id="feedback"></div>
+      <button class="btn-next" id="btn-next" onclick="nextQuestion()">
+        ${idx < questions.length-1 ? 'Nächste Frage →' : 'Ergebnis anzeigen →'}
+      </button>
+    </div>`;
+}
+
+function selectAnswer(idx) {
+  if(document.querySelector('.option.correct') || document.querySelector('.option.wrong')) return;
+  const q = questions[current];
+  const opts = document.querySelectorAll('.option');
+  const fb = document.getElementById('feedback');
+  const btn = document.getElementById('btn-next');
+  opts[idx].classList.add(idx === q.correct ? 'correct' : 'wrong');
+  opts[q.correct].classList.add('correct');
+  const isCorrect = idx === q.correct;
+  if(isCorrect) score++;
+  fb.textContent = isCorrect ? q.explanation : q.wrongExplanation;
+  fb.className = 'feedback show ' + (isCorrect ? 'correct-fb' : 'wrong-fb');
+  btn.classList.add('show');
+}
+
+function nextQuestion() {
+  current++;
+  if(current >= questions.length) { showResult(); return; }
+  renderQuestion(current);
+}
+
+async function showResult() {
+  document.getElementById('progress').style.width = '100%';
+  document.getElementById('quiz-container').style.display = 'none';
+  const res = document.getElementById('result-screen');
+  res.style.display = 'block';
+  const passed = score >= 6;
+  document.getElementById('score-display').textContent = score + '/8';
+  document.getElementById('score-label').textContent = 'Fragen richtig beantwortet';
+  document.getElementById('result-badge').textContent = passed ? '🎉 Modul 4 freigeschaltet!' : '📖 Noch einmal versuchen';
+  document.getElementById('result-msg').textContent = passed
+    ? 'Glückwunsch! Du hast das Quiz bestanden. Dein Einkauf-Wissen ist solide — jetzt geht es darum es in der Praxis anzuwenden.'
+    : 'Du hast ' + score + ' von 8 Fragen richtig. Für das Freischalten von Modul 4 benötigst du mindestens 6 richtige Antworten. Lies die Lektionen noch einmal und versuche es erneut!';
+  if(passed) {
+    try {
+      const { data: { user } } = await (await fetch(SUPABASE_URL+'/auth/v1/user',{headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+localStorage.getItem('sb-access-token')}})).json();
+      if(user) {
+        const uid = user.id;
+        await fetch(SUPABASE_URL+'/rest/v1/progress?user_id=eq.'+uid, {method:'POST',headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+localStorage.getItem('sb-access-token'),'Content-Type':'application/json','Prefer':'resolution=merge-duplicates'},body:JSON.stringify({user_id:uid,quiz_modul3:{bestanden:true},'3-10':true})});
+      }
+    } catch(e) {}
+  }
+}
+
+function restartQuiz() {
+  current = 0; score = 0;
+  document.getElementById('quiz-container').style.display = 'block';
+  document.getElementById('result-screen').style.display = 'none';
+  document.getElementById('progress').style.width = '0%';
+  renderQuestion(0);
+}
+
+renderQuestion(0);
+</script>
+</body></html>
