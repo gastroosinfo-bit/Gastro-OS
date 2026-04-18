@@ -435,14 +435,45 @@ async function init() {
   // Module einblenden
   if (quizBestanden[1]) document.getElementById('modul-card-2').style.display = 'block';
   if (quizBestanden[2]) document.getElementById('modul-card-3').style.display = 'block';
-  if (quizBestanden[3]) document.getElementById('modul-card-4').style.display = 'block';
-  if (quizBestanden[4]) document.getElementById('modul-card-5').style.display = 'block';
+
+  // Modul 4 — immer sichtbar, gesperrt bis Quiz 3 bestanden
+  document.getElementById('modul-card-4').style.display = 'block';
+  if (!quizBestanden[3]) lockCard(4, 3);
+
+  // Modul 5 — immer sichtbar, gesperrt bis Quiz 4 bestanden
+  document.getElementById('modul-card-5').style.display = 'block';
+  if (!quizBestanden[4]) lockCard(5, 4);
 
   // Fortschritt rendern
   for (const m of [0,1,2,3,4,5]) renderProgress(m);
 
   // Gesperrte Module rendern
   renderLockedModules();
+}
+
+// ── Modul-Karte sperren ───────────────────────────────────
+function lockCard(m, requiredQuiz) {
+  const card = document.getElementById('modul-card-' + m);
+  if (!card) return;
+  card.classList.add('locked');
+  // Header: onclick entfernen, locked-header Klasse
+  const header = card.querySelector('.module-header');
+  if (header) {
+    header.onclick = null;
+    header.classList.add('no-click');
+  }
+  // Pfeil ausblenden
+  const arrow = document.getElementById('arrow-' + m);
+  if (arrow) arrow.style.display = 'none';
+  // Badge auf gesperrt setzen
+  const badge = document.getElementById('badge-' + m);
+  if (badge) { badge.textContent = '🔒 Gesperrt'; badge.className = 'module-badge badge-locked'; }
+  // Subtitle
+  const sub = document.getElementById('subtitle-' + m);
+  if (sub) sub.textContent = 'Schließe Modul ' + (m-1) + ' ab um fortzufahren';
+  // Inhalt verstecken
+  const content = document.getElementById('content-' + m);
+  if (content) content.style.display = 'none';
 }
 
 // ── Fortschritt rendern (generisch) ──────────────────────
