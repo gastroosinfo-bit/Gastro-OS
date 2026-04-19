@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz – Modul 8</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
+.header { background:#1a2a4a; padding:16px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:20px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.btn-back { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.btn-back:hover { border-color:#d4af37; color:#d4af37; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+.main { max-width:780px; margin:40px auto; padding:0 24px 60px; text-align:center; }
+.modul-badge { display:inline-block; background:#1a2a4a; color:#d4af37; font-size:11px; font-weight:700; letter-spacing:2px; padding:4px 14px; border-radius:4px; margin-bottom:12px; }
+h1 { font-family:Georgia,serif; font-size:26px; color:#1a2a4a; margin-bottom:24px; }
+.card { background:#fff; border:1px solid #e8dfc8; border-radius:10px; padding:36px 32px; margin-bottom:24px; box-shadow:0 2px 8px rgba(0,0,0,0.04); }
+.quiz-icon { font-size:64px; margin-bottom:16px; }
+h2 { font-family:Georgia,serif; font-size:20px; color:#1a2a4a; margin-bottom:16px; }
+p { font-size:14px; line-height:1.8; color:#3a4a6a; margin-bottom:12px; }
+.gold-divider { height:2px; background:linear-gradient(90deg,transparent,#d4af37,transparent); margin:28px 0; }
+.stats-row { display:flex; justify-content:center; gap:32px; margin:20px 0; }
+.stat { text-align:center; }
+.stat .number { font-family:Georgia,serif; font-size:32px; color:#1a2a4a; font-weight:700; }
+.stat .label { font-size:12px; color:#8090a8; margin-top:4px; }
+.drive-btn { display:inline-flex; align-items:center; gap:10px; background:#d4af37; color:#1a2a4a; border:2px solid #d4af37; padding:16px 36px; border-radius:8px; font-size:16px; font-weight:700; text-decoration:none; transition:all 0.2s; margin:16px 0; }
+.drive-btn:hover { background:#c8a030; border-color:#c8a030; }
+.hint { font-size:13px; color:#8090a8; margin-top:8px; font-style:italic; }
+.footer { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer strong { color:#d4af37; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="brand">GASTRO-OS</div>
+  <a href="dashboard.html" class="btn-back">← Zurück zum Dashboard</a>
+</div>
+<div class="gold-bar"></div>
+
+<div class="main">
+  <div class="modul-badge">MODUL 8 · QUIZ</div>
+  <h1>🎯 Quiz Modul 8</h1>
+
+  <div class="card">
+    <div class="quiz-icon">🎯</div>
+    <h2>Quiz Modul 8</h2>
+    <p>Du hast Modul 8 durchgearbeitet. Jetzt ist es Zeit zu prüfen was hängen geblieben ist.</p>
+    <p>In diesem Quiz geht es um die wichtigsten Grundlagen zu Upselling, Verkaufspsychologie und Zusatzangeboten. 8 Fragen, Multiple Choice, sofortiges Feedback. Es dauert keine 5 Minuten.</p>
+    <p>Beantworte die Fragen ehrlich, ohne zurückzublättern. Nur so siehst du wo du wirklich stehst und was du vielleicht noch einmal nachlesen möchtest.</p>
+
+    <div class="stats-row">
+      <div class="stat">
+        <div class="number">8</div>
+        <div class="label">Fragen</div>
+      </div>
+      <div class="stat">
+        <div class="number">⚡</div>
+        <div class="label">Sofort-Feedback</div>
+      </div>
+      <div class="stat">
+        <div class="number">5'</div>
+        <div class="label">Minuten</div>
+      </div>
+    </div>
+
+    <div class="gold-divider"></div>
+
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSf0VzgqKCXeUAUnKwx1ooQn7Pm-ZAPLE8RB2A2kFl8qDLmXDQ/viewform?usp=publish-editor" target="_blank" class="drive-btn">
+      🎯 Hier geht es zum Quiz
+    </a>
+
+    <p class="hint">Multiple Choice · Sofortiges Feedback · Keine Zeitbegrenzung</p>
+  </div>
+
+  <div class="gold-divider"></div>
+  <p style="font-size:12px; color:#8090a8; letter-spacing:1px;">GASTRO-OS | System · Strategie · Erfolg</p>
+</div>
+
+<div class="footer">
+  <strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg
+</div>
+</body>
+</html>
