@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GASTRO-OS – Modul 7 | So nutzt du das Kosten Analyse Tool</title>
+<style>* { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f0e8; color: #1a2a4a; min-height: 100vh; }
+  .header { background: #1a2a4a; padding: 22px 40px; text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,0.3); }
+  .header .brand { font-family: Georgia, serif; font-size: 22px; color: #d4af37; letter-spacing: 4px; font-weight: normal; }
+  .header .modul-label { font-size: 11px; color: #a0b0c8; letter-spacing: 3px; text-transform: uppercase; margin-top: 4px; }
+  .gold-bar { height: 3px; background: linear-gradient(90deg, #1a2a4a, #d4af37, #1a2a4a); }
+  .main { max-width: 780px; margin: 36px auto; padding: 0 24px 60px; }
+  h1 { font-family: Georgia, serif; font-size: 26px; color: #1a2a4a; margin-bottom: 8px; }
+  .gold-rule { width: 56px; height: 2px; background: #d4af37; margin: 10px 0 16px; }
+  .intro { font-size: 14px; color: #5060a0; line-height: 1.7; margin-bottom: 28px; }
+  .step { background: #fff; border-radius: 10px; padding: 24px 28px; margin-bottom: 16px; border: 1px solid #e8dfc8; box-shadow: 0 2px 8px rgba(0,0,0,0.04); display: flex; gap: 18px; align-items: flex-start; }
+  .step .num { background: #1a2a4a; color: #d4af37; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; flex-shrink: 0; }
+  .step .content h3 { font-family: Georgia, serif; font-size: 16px; color: #1a2a4a; margin-bottom: 8px; }
+  .step .content p { font-size: 14px; color: #334; line-height: 1.7; margin-bottom: 8px; }
+  .step .content ul { list-style: none; padding: 0; margin: 8px 0; }
+  .step .content ul li { font-size: 13px; color: #334; padding: 4px 0 4px 18px; position: relative; }
+  .step .content ul li::before { content: '👉'; position: absolute; left: 0; font-size: 11px; top: 5px; }
+  .card { background: #fff; border-radius: 10px; padding: 28px 32px; margin-bottom: 20px; border: 1px solid #e8dfc8; box-shadow: 0 2px 8px rgba(0,0,0,0.04); text-align: center; }
+  .card .icon { font-size: 48px; margin-bottom: 16px; }
+  .card h2 { font-family: Georgia, serif; font-size: 20px; color: #1a2a4a; margin-bottom: 10px; }
+  .card p { font-size: 14px; color: #5060a0; line-height: 1.7; margin-bottom: 20px; }
+  .btn { display: inline-block; background: #1a2a4a; color: #d4af37; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 14px; letter-spacing: 0.5px; transition: background 0.2s; }
+  .btn:hover { background: #2a3a5a; }
+  .hint { background: #fff8e8; border-radius: 8px; padding: 14px 18px; margin-top: 16px; font-size: 13px; color: #7a5000; border: 1px solid #d4af37; }
+  .footer { background: #1a2a4a; margin-top: 48px; padding: 14px 40px; text-align: center; font-size: 11px; color: #8090a8; letter-spacing: 1px; }
+  .footer strong { color: #d4af37; }</style>
+</head>
+<body>
+<div class="header">
+  <div class="brand">GASTRO-OS</div>
+  <div class="modul-label">Modul 7 · Anleitung</div>
+</div>
+<div class="gold-bar"></div>
+<div class="main">
+  <h1>📸 So nutzt du das Kosten Analyse Tool</h1>
+  <div class="gold-rule"></div>
+  <p class="intro">Das Kosten Analyse Tool zeigt dir in unter 30 Minuten schwarz auf weiß wo dein Betrieb gerade Geld verliert und was du als erstes angehst. Es hat drei Sheets.</p>
+
+  <div class="step">
+    <div class="num">1</div>
+    <div class="content">
+      <h3>Sheet 1 — Energie Analyse</h3>
+      <p>Trag hier alle Geräte in deinem Betrieb ein. Strompreis, Gaspreis und Betriebstage trägst du einmal oben ein. Das Tool berechnet automatisch den jährlichen Verbrauch und die Kosten pro Gerät. Du siehst sofort welches Gerät am meisten kostet und wo der größte Einsparhebel liegt.</p>
+      <ul>
+        <li>Gerätename, Leistung in Watt/kW, tägliche Betriebsstunden eingeben</li>
+        <li>Automatische Berechnung: Jahresverbrauch und Jahreskosten pro Gerät</li>
+        <li>Sofort sichtbar: welches Gerät dein Budget am meisten belastet</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="num">2</div>
+    <div class="content">
+      <h3>Sheet 2 — Verschwendungs-Analyse</h3>
+      <p>Hier führst du deine tägliche Warenabgangsliste. Datum, Produkt, Menge, Ursache. Das Tool berechnet den Gesamtverlust durch Verschwendung und zeigt dir in der Ursachen-Analyse welche Verlustquellen am häufigsten vorkommen.</p>
+      <ul>
+        <li>Täglich ausfüllen: was wurde weggeworfen, wie viel, warum</li>
+        <li>Ursachen: verdorben, zu viel vorbereitet, falsche Bestellung, Gast zurückgeschickt</li>
+        <li>Nach zwei Wochen: klare Muster erkennbar und lösbar</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="num">3</div>
+    <div class="content">
+      <h3>Sheet 3 — Kosten-Sofortanalyse</h3>
+      <p>Das ist dein Überblick. Trag deine aktuellen monatlichen Ist-Kosten ein und definiere einen Zielwert. Das Tool berechnet das Einsparpotenzial pro Jahr. Darunter trägst du deinen persönlichen Sofort-Aktionsplan ein: die drei größten Hebel, sofort, kurzfristig und mittelfristig.</p>
+      <p><strong>Fang mit Sheet 3 an wenn du keine Zeit hast.</strong> Er zeigt dir in 10 Minuten wo du diese Woche anfangen sollst.</p>
+    </div>
+  </div>
+</div>
+<div class="gold-bar"></div>
+<div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+</body>
+</html>

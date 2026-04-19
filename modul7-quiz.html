@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GASTRO-OS – Modul 7 | Quiz</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f0e8; color: #1a2a4a; min-height: 100vh; }
+  .header { background: #1a2a4a; padding: 22px 40px; text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,0.3); }
+  .header .brand { font-family: Georgia, serif; font-size: 22px; color: #d4af37; letter-spacing: 4px; font-weight: normal; }
+  .header .modul-label { font-size: 11px; color: #a0b0c8; letter-spacing: 3px; text-transform: uppercase; margin-top: 4px; }
+  .gold-bar { height: 3px; background: linear-gradient(90deg, #1a2a4a, #d4af37, #1a2a4a); }
+  .main { max-width: 780px; margin: 36px auto; padding: 0 24px 60px; }
+  h1 { font-family: Georgia, serif; font-size: 26px; color: #1a2a4a; margin-bottom: 8px; }
+  .gold-rule { width: 56px; height: 2px; background: #d4af37; margin: 10px 0 16px; }
+  .intro { font-size: 14px; color: #5060a0; line-height: 1.7; margin-bottom: 28px; }
+  .bereits-box { background: #e4f5e8; border: 2px solid #4aaa60; border-radius: 10px; padding: 28px 32px; text-align: center; display: none; }
+  .bereits-box .icon { font-size: 48px; margin-bottom: 12px; }
+  .bereits-box h2 { font-family: Georgia, serif; color: #1a6030; margin-bottom: 8px; }
+  .bereits-box p { color: #2a7040; font-size: 14px; }
+  .bereits-box .back-btn { display: inline-block; margin-top: 20px; background: #1a2a4a; color: #d4af37; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 13px; }
+  .frage-card { background: #fff; border-radius: 10px; padding: 24px 26px; margin-bottom: 16px; border: 1px solid #e8dfc8; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+  .frage-card .nummer { font-size: 11px; font-weight: 700; color: #d4af37; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+  .frage-card .multi-hint { font-size: 11px; color: #8090a8; margin-bottom: 10px; font-style: italic; }
+  .frage-card .frage { font-size: 15px; font-weight: 600; color: #1a2a4a; margin-bottom: 16px; line-height: 1.5; }
+  .antwort-option { display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; border-radius: 6px; border: 1.5px solid #e0dcd0; margin-bottom: 8px; cursor: pointer; transition: all 0.15s; background: #faf8f4; }
+  .antwort-option:hover { border-color: #d4af37; background: #fffdf0; }
+  .antwort-option.selected { border-color: #1a2a4a; background: #f0f4fb; }
+  .antwort-option.correct { border-color: #4aaa60; background: #e4f5e8; }
+  .antwort-option.wrong { border-color: #d06050; background: #fde8e4; }
+  .antwort-option input { margin-top: 3px; flex-shrink: 0; }
+  .antwort-option label { font-size: 13px; color: #334; line-height: 1.6; cursor: pointer; }
+  .feedback { font-size: 12px; margin-top: 10px; padding: 8px 12px; border-radius: 6px; display: none; }
+  .feedback.correct { background: #e4f5e8; color: #1a6030; }
+  .feedback.wrong { background: #fde8e4; color: #8a2010; }
+  .submit-btn { width: 100%; padding: 16px; background: #1a2a4a; color: #d4af37; border: none; border-radius: 8px; font-size: 15px; font-weight: 700; cursor: pointer; letter-spacing: 1px; transition: background 0.2s; margin-top: 8px; }
+  .submit-btn:hover { background: #2a3a5a; }
+  .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .ergebnis-box { display: none; border-radius: 10px; padding: 28px 32px; text-align: center; margin-top: 20px; }
+  .ergebnis-box.bestanden { background: #e4f5e8; border: 2px solid #4aaa60; }
+  .ergebnis-box.nochmal { background: #fff8e8; border: 2px solid #d4af37; }
+  .ergebnis-box .icon { font-size: 48px; margin-bottom: 12px; }
+  .ergebnis-box h2 { font-family: Georgia, serif; margin-bottom: 8px; }
+  .ergebnis-box.bestanden h2 { color: #1a6030; }
+  .ergebnis-box.nochmal h2 { color: #7a5000; }
+  .ergebnis-box p { font-size: 14px; line-height: 1.7; margin-bottom: 12px; }
+  .ergebnis-box.bestanden p { color: #2a7040; }
+  .ergebnis-box.nochmal p { color: #5a4000; }
+  .ergebnis-btn { display: inline-block; background: #1a2a4a; color: #d4af37; padding: 13px 24px; border-radius: 6px; text-decoration: none; font-weight: 700; font-size: 13px; border: none; cursor: pointer; }
+  .footer { background: #1a2a4a; margin-top: 48px; padding: 14px 40px; text-align: center; font-size: 11px; color: #8090a8; letter-spacing: 1px; }
+  .footer strong { color: #d4af37; }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="brand">GASTRO-OS</div>
+  <div class="modul-label">Modul 7 · Quiz</div>
+</div>
+<div class="gold-bar"></div>
+<div class="main">
+  <h1>🎯 Quiz — Modul 7</h1>
+  <div class="gold-rule"></div>
+  <p class="intro">Teste dein Wissen aus Modul 7. 10 Fragen rund um Energiekosten, Kühlung, Verschwendung und Prozesseffizienz — manchmal sind auch mehrere Antworten richtig. Du brauchst mindestens 7 von 10 richtigen Antworten. Viel Erfolg! 😊</p>
+
+  <div class="bereits-box" id="bereits-box">
+    <div class="icon">🏆</div>
+    <h2>Quiz bereits abgeschlossen!</h2>
+    <p>Du hast dieses Quiz bereits erfolgreich abgeschlossen.<br>Modul 8 wird für dich freigeschaltet sobald es verfügbar ist.</p>
+    <a href="dashboard.html" class="back-btn">← Zurück zum Dashboard</a>
+  </div>
+
+  <div id="quiz-form">
+
+    <!-- Frage 1: Radio -->
+    <div class="frage-card">
+      <div class="nummer">Frage 1 von 10</div>
+      <div class="frage">Ein gewerblicher Kühlschrank der zehn Jahre alt ist, verbraucht im Vergleich zu einem modernen Gerät wie viel mehr Strom?</div>
+      <div class="antwort-option" onclick="selectRadio(1,'A')"><input type="radio" name="q1" id="q1a"><label for="q1a">A) 50% mehr</label></div>
+      <div class="antwort-option" onclick="selectRadio(1,'B')"><input type="radio" name="q1" id="q1b"><label for="q1b">B) Doppelt so viel</label></div>
+      <div class="antwort-option" onclick="selectRadio(1,'C')"><input type="radio" name="q1" id="q1c"><label for="q1c">C) Bis zu dreimal so viel</label></div>
+      <div class="antwort-option" onclick="selectRadio(1,'D')"><input type="radio" name="q1" id="q1d"><label for="q1d">D) Gleich viel — Alter spielt keine Rolle</label></div>
+      <div class="feedback" id="feedback-1"></div>
+    </div>
+
+    <!-- Frage 2: Checkbox -->
+    <div class="frage-card">
+      <div class="nummer">Frage 2 von 10</div>
+      <div class="multi-hint">Mehrere Antworten möglich</div>
+      <div class="frage">Welche Maßnahmen helfen den Energieverbrauch in deinem Betrieb konkret zu senken?</div>
+      <div class="antwort-option" onclick="toggleCheck(2,'A')"><input type="checkbox" id="q2a"><label for="q2a">A) Laufzeiten aller Geräte überprüfen und unnötige Standby-Zeiten eliminieren</label></div>
+      <div class="antwort-option" onclick="toggleCheck(2,'B')"><input type="checkbox" id="q2b"><label for="q2b">B) Möglichst viele Geräte gleichzeitig laufen lassen um Aufheizzeiten zu sparen</label></div>
+      <div class="antwort-option" onclick="toggleCheck(2,'C')"><input type="checkbox" id="q2c"><label for="q2c">C) Strom- und Gastarif regelmäßig vergleichen und wechseln wenn sinnvoll</label></div>
+      <div class="antwort-option" onclick="toggleCheck(2,'D')"><input type="checkbox" id="q2d"><label for="q2d">D) Ein einfaches Strommessgerät nutzen um den Verbrauch einzelner Geräte zu ermitteln</label></div>
+      <div class="feedback" id="feedback-2"></div>
+    </div>
+
+    <!-- Frage 3: Radio -->
+    <div class="frage-card">
+      <div class="nummer">Frage 3 von 10</div>
+      <div class="frage">Was passiert wenn die Dichtungen deiner Kühlgeräte nicht mehr richtig schließen?</div>
+      <div class="antwort-option" onclick="selectRadio(3,'A')"><input type="radio" name="q3" id="q3a"><label for="q3a">A) Die Lebensmittel werden schneller frisch</label></div>
+      <div class="antwort-option" onclick="selectRadio(3,'B')"><input type="radio" name="q3" id="q3b"><label for="q3b">B) Es hat keinen messbaren Einfluss auf den Betrieb</label></div>
+      <div class="antwort-option" onclick="selectRadio(3,'C')"><input type="radio" name="q3" id="q3c"><label for="q3c">C) Das Gerät schaltet sich automatisch ab</label></div>
+      <div class="antwort-option" onclick="selectRadio(3,'D')"><input type="radio" name="q3" id="q3d"><label for="q3d">D) Der Energieverbrauch steigt und Lebensmittel verderben schneller</label></div>
+      <div class="feedback" id="feedback-3"></div>
+    </div>
+
+    <!-- Frage 4: Checkbox -->
+    <div class="frage-card">
+      <div class="nummer">Frage 4 von 10</div>
+      <div class="multi-hint">Mehrere Antworten möglich</div>
+      <div class="frage">Welche Maßnahmen helfen Lebensmittelverschwendung konkret zu reduzieren?</div>
+      <div class="antwort-option" onclick="toggleCheck(4,'A')"><input type="checkbox" id="q4a"><label for="q4a">A) Eine tägliche Warenabgangsliste führen um Muster zu erkennen</label></div>
+      <div class="antwort-option" onclick="toggleCheck(4,'B')"><input type="checkbox" id="q4b"><label for="q4b">B) Die Speisekarte möglichst groß halten damit immer genug Auswahl da ist</label></div>
+      <div class="antwort-option" onclick="toggleCheck(4,'C')"><input type="checkbox" id="q4c"><label for="q4c">C) Klare Portionsstandards mit Hilfsmitteln wie Waagen einführen</label></div>
+      <div class="antwort-option" onclick="toggleCheck(4,'D')"><input type="checkbox" id="q4d"><label for="q4d">D) Resteverwertung als festen Bestandteil der Küchenkultur etablieren</label></div>
+      <div class="feedback" id="feedback-4"></div>
+    </div>
+
+    <!-- Frage 5: Radio -->
+    <div class="frage-card">
+      <div class="nummer">Frage 5 von 10</div>
+      <div class="frage">Was bedeutet echte Effizienz in der Gastronomie?</div>
+      <div class="antwort-option" onclick="selectRadio(5,'A')"><input type="radio" name="q5" id="q5a"><label for="q5a">A) Weniger Personal einsetzen und Öffnungszeiten reduzieren</label></div>
+      <div class="antwort-option" onclick="selectRadio(5,'B')"><input type="radio" name="q5" id="q5b"><label for="q5b">B) Günstigere Zutaten kaufen um den Wareneinsatz zu senken</label></div>
+      <div class="antwort-option" onclick="selectRadio(5,'C')"><input type="radio" name="q5" id="q5c"><label for="q5c">C) Den Umsatz steigern ohne die Kosten zu verändern</label></div>
+      <div class="antwort-option" onclick="selectRadio(5,'D')"><input type="radio" name="q5" id="q5d"><label for="q5d">D) Dieselbe Qualität mit weniger Verschwendung und besser organisierten Prozessen</label></div>
+      <div class="feedback" id="feedback-5"></div>
+    </div>
+
+    <!-- Frage 6: Checkbox -->
+    <div class="frage-card">
+      <div class="nummer">Frage 6 von 10</div>
+      <div class="multi-hint">Mehrere Antworten möglich</div>
+      <div class="frage">Welche Aussagen über ineffiziente Prozesse in der Gastronomie sind richtig?</div>
+      <div class="antwort-option" onclick="toggleCheck(6,'A')"><input type="checkbox" id="q6a"><label for="q6a">A) Ein schlecht organisiertes Lager kostet täglich Arbeitszeit durch unnötiges Suchen</label></div>
+      <div class="antwort-option" onclick="toggleCheck(6,'B')"><input type="checkbox" id="q6b"><label for="q6b">B) Prozessoptimierung ist nur in großen Betrieben sinnvoll</label></div>
+      <div class="antwort-option" onclick="toggleCheck(6,'C')"><input type="checkbox" id="q6c"><label for="q6c">C) Unklare Kommunikation zwischen Küche und Service verursacht Fehler und Nacharbeit</label></div>
+      <div class="antwort-option" onclick="toggleCheck(6,'D')"><input type="checkbox" id="q6d"><label for="q6d">D) Ein Dienstplan der nicht zur Auslastung passt bedeutet bezahlte Stunden ohne Output</label></div>
+      <div class="feedback" id="feedback-6"></div>
+    </div>
+
+    <!-- Frage 7: Radio -->
+    <div class="frage-card">
+      <div class="nummer">Frage 7 von 10</div>
+      <div class="frage">Welcher Wareneinsatz gilt dauerhaft als Warnsignal?</div>
+      <div class="antwort-option" onclick="selectRadio(7,'A')"><input type="radio" name="q7" id="q7a"><label for="q7a">A) Über 25%</label></div>
+      <div class="antwort-option" onclick="selectRadio(7,'B')"><input type="radio" name="q7" id="q7b"><label for="q7b">B) Über 28%</label></div>
+      <div class="antwort-option" onclick="selectRadio(7,'C')"><input type="radio" name="q7" id="q7c"><label for="q7c">C) Über 32%</label></div>
+      <div class="antwort-option" onclick="selectRadio(7,'D')"><input type="radio" name="q7" id="q7d"><label for="q7d">D) Über 38%</label></div>
+      <div class="feedback" id="feedback-7"></div>
+    </div>
+
+    <!-- Frage 8: Checkbox -->
+    <div class="frage-card">
+      <div class="nummer">Frage 8 von 10</div>
+      <div class="multi-hint">Mehrere Antworten möglich</div>
+      <div class="frage">Was gehört zu einem professionellen monatlichen Kühlcheck?</div>
+      <div class="antwort-option" onclick="toggleCheck(8,'A')"><input type="checkbox" id="q8a"><label for="q8a">A) Türdichtungen auf Beschädigungen prüfen</label></div>
+      <div class="antwort-option" onclick="toggleCheck(8,'B')"><input type="checkbox" id="q8b"><label for="q8b">B) Temperaturen dokumentieren und mit Sollwerten vergleichen</label></div>
+      <div class="antwort-option" onclick="toggleCheck(8,'C')"><input type="checkbox" id="q8c"><label for="q8c">C) Kühlräume möglichst voll beladen um die Kälte zu speichern</label></div>
+      <div class="antwort-option" onclick="toggleCheck(8,'D')"><input type="checkbox" id="q8d"><label for="q8d">D) Kondensatoren reinigen lassen</label></div>
+      <div class="feedback" id="feedback-8"></div>
+    </div>
+
+    <!-- Frage 9: Radio -->
+    <div class="frage-card">
+      <div class="nummer">Frage 9 von 10</div>
+      <div class="frage">Ein hoher Wareneinsatz über 38% ist laut Gastro-OS meistens kein Einkaufsproblem — sondern was?</div>
+      <div class="antwort-option" onclick="selectRadio(9,'A')"><input type="radio" name="q9" id="q9a"><label for="q9a">A) Ein Personalkosten-Problem</label></div>
+      <div class="antwort-option" onclick="selectRadio(9,'B')"><input type="radio" name="q9" id="q9b"><label for="q9b">B) Ein Marketingproblem</label></div>
+      <div class="antwort-option" onclick="selectRadio(9,'C')"><input type="radio" name="q9" id="q9c"><label for="q9c">C) Ein Kartenproblem — zu viele Gerichte mit zu hohem Rohstoffanteil</label></div>
+      <div class="antwort-option" onclick="selectRadio(9,'D')"><input type="radio" name="q9" id="q9d"><label for="q9d">D) Ein saisonales Problem das sich von selbst löst</label></div>
+      <div class="feedback" id="feedback-9"></div>
+    </div>
+
+    <!-- Frage 10: Checkbox -->
+    <div class="frage-card">
+      <div class="nummer">Frage 10 von 10</div>
+      <div class="multi-hint">Mehrere Antworten möglich</div>
+      <div class="frage">Welche Aussagen über Standardisierung in der Gastronomie sind korrekt?</div>
+      <div class="antwort-option" onclick="toggleCheck(10,'A')"><input type="checkbox" id="q10a"><label for="q10a">A) Standardisierung macht einen Betrieb unflexibel und schadet der Gästebeziehung</label></div>
+      <div class="antwort-option" onclick="toggleCheck(10,'B')"><input type="checkbox" id="q10b"><label for="q10b">B) Standardisierte Abläufe schaffen Verlässlichkeit, Geschwindigkeit und Qualitätskonsistenz</label></div>
+      <div class="antwort-option" onclick="toggleCheck(10,'C')"><input type="checkbox" id="q10c"><label for="q10c">C) Standardisierung betrifft die Prozesse — nicht die Kreativität beim Produkt</label></div>
+      <div class="antwort-option" onclick="toggleCheck(10,'D')"><input type="checkbox" id="q10d"><label for="q10d">D) Wer Prozesse standardisiert setzt Arbeitszeit frei die sinnvoller genutzt werden kann</label></div>
+      <div class="feedback" id="feedback-10"></div>
+    </div>
+
+    <button class="submit-btn" id="submit-btn" onclick="submitQuiz()" disabled>Quiz auswerten →</button>
+  </div>
+
+  <div class="ergebnis-box bestanden" id="ergebnis-bestanden">
+    <div class="icon">🎉</div>
+    <h2>Sehr gut — bestanden!</h2>
+    <p id="ergebnis-text"></p>
+    <p><strong>Modul 8 wird für dich freigeschaltet sobald es verfügbar ist!</strong></p>
+    <a href="dashboard.html" class="ergebnis-btn">→ Zurück zum Dashboard</a>
+  </div>
+
+  <div class="ergebnis-box nochmal" id="ergebnis-nochmal">
+    <div class="icon">💪</div>
+    <h2>Fast geschafft — noch einmal!</h2>
+    <p id="ergebnis-text-2"></p>
+    <button class="ergebnis-btn" onclick="retryQuiz()">Quiz wiederholen</button>
+  </div>
+</div>
+<div class="gold-bar"></div>
+<div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+
+<script>
+const SUPABASE_URL = 'https://hchlganbgjeciwhwaisj.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3';
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// Correct answers
+const RICHTIG_RADIO = { 1:'C', 3:'D', 5:'D', 7:'D', 9:'C' };
+const RICHTIG_CHECK = { 2:['A','C','D'], 4:['A','C','D'], 6:['A','C','D'], 8:['A','B','D'], 10:['B','C','D'] };
+const TOTAL = 10;
+const PASS_SCORE = 7;
+
+let radioAnswers = {};
+let checkAnswers = { 2:[], 4:[], 6:[], 8:[], 10:[] };
+let currentUser = null;
+
+function countAnswered() {
+  let count = 0;
+  for (const q of [1,3,5,7,9]) { if (radioAnswers[q]) count++; }
+  for (const q of [2,4,6,8,10]) { if (checkAnswers[q] && checkAnswers[q].length > 0) count++; }
+  return count;
+}
+
+function selectRadio(frage, wert) {
+  radioAnswers[frage] = wert;
+  document.querySelectorAll(`[name="q${frage}"]`).forEach(r => r.closest('.antwort-option').classList.remove('selected'));
+  const el = document.getElementById(`q${frage}${wert.toLowerCase()}`);
+  el.checked = true;
+  el.closest('.antwort-option').classList.add('selected');
+  if (countAnswered() === TOTAL) document.getElementById('submit-btn').disabled = false;
+}
+
+function toggleCheck(frage, wert) {
+  const el = document.getElementById(`q${frage}${wert.toLowerCase()}`);
+  el.checked = !el.checked;
+  const opt = el.closest('.antwort-option');
+  if (el.checked) {
+    if (!checkAnswers[frage].includes(wert)) checkAnswers[frage].push(wert);
+    opt.classList.add('selected');
+  } else {
+    checkAnswers[frage] = checkAnswers[frage].filter(v => v !== wert);
+    opt.classList.remove('selected');
+  }
+  if (countAnswered() === TOTAL) document.getElementById('submit-btn').disabled = false;
+}
+
+async function init() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) { window.location.href = 'login.html'; return; }
+  currentUser = session.user;
+  const { data } = await sb.from('user_tool_data').select('data').eq('user_id', currentUser.id).eq('tool_name', 'quiz_modul7').maybeSingle();
+  if (data && data.data && data.data.bestanden) {
+    document.getElementById('quiz-form').style.display = 'none';
+    document.getElementById('bereits-box').style.display = 'block';
+  }
+}
+
+async function submitQuiz() {
+  document.getElementById('submit-btn').disabled = true;
+  let richtig = 0;
+
+  // Evaluate radio questions
+  for (const [q, korr] of Object.entries(RICHTIG_RADIO)) {
+    const qi = parseInt(q);
+    const gew = radioAnswers[qi];
+    const el = document.getElementById(`q${qi}${gew.toLowerCase()}`);
+    const opt = el.closest('.antwort-option');
+    const fb = document.getElementById(`feedback-${qi}`);
+    if (gew === korr) {
+      richtig++;
+      opt.classList.add('correct');
+      fb.textContent = '✓ Richtig!';
+      fb.className = 'feedback correct';
+    } else {
+      opt.classList.add('wrong');
+      document.getElementById(`q${qi}${korr.toLowerCase()}`).closest('.antwort-option').classList.add('correct');
+      fb.textContent = `✗ Leider falsch. Die richtige Antwort ist ${korr}.`;
+      fb.className = 'feedback wrong';
+    }
+    fb.style.display = 'block';
+  }
+
+  // Evaluate checkbox questions
+  for (const [q, korrArr] of Object.entries(RICHTIG_CHECK)) {
+    const qi = parseInt(q);
+    const gew = checkAnswers[qi] || [];
+    const fb = document.getElementById(`feedback-${qi}`);
+    const korrSet = new Set(korrArr);
+    const gewSet = new Set(gew);
+    const isCorrect = korrSet.size === gewSet.size && [...korrSet].every(v => gewSet.has(v));
+    
+    // Mark each option
+    ['A','B','C','D'].forEach(letter => {
+      const el = document.getElementById(`q${qi}${letter.toLowerCase()}`);
+      if (!el) return;
+      const opt = el.closest('.antwort-option');
+      if (korrSet.has(letter) && gewSet.has(letter)) {
+        opt.classList.add('correct'); // correctly selected
+      } else if (!korrSet.has(letter) && gewSet.has(letter)) {
+        opt.classList.add('wrong'); // wrongly selected
+      } else if (korrSet.has(letter) && !gewSet.has(letter)) {
+        opt.classList.add('correct'); // should have been selected
+      }
+    });
+
+    if (isCorrect) {
+      richtig++;
+      fb.textContent = '✓ Richtig!';
+      fb.className = 'feedback correct';
+    } else {
+      fb.textContent = `✗ Leider nicht ganz richtig. Richtig wären: ${korrArr.join(', ')}`;
+      fb.className = 'feedback wrong';
+    }
+    fb.style.display = 'block';
+  }
+
+  document.querySelectorAll('.antwort-option').forEach(o => o.style.pointerEvents = 'none');
+  document.getElementById('submit-btn').style.display = 'none';
+
+  if (richtig >= PASS_SCORE) {
+    await sb.from('user_tool_data').upsert({
+      user_id: currentUser.id, tool_name: 'quiz_modul7',
+      data: { bestanden: true, richtig, datum: new Date().toISOString() },
+      updated_at: new Date().toISOString()
+    }, { onConflict: 'user_id,tool_name' });
+    const { data: pd } = await sb.from('user_tool_data').select('data').eq('user_id', currentUser.id).eq('tool_name', 'modul_progress').maybeSingle();
+    const progress = (pd && pd.data) ? pd.data : {};
+    progress['7-10'] = true;
+    await sb.from('user_tool_data').upsert({
+      user_id: currentUser.id, tool_name: 'modul_progress',
+      data: progress, updated_at: new Date().toISOString()
+    }, { onConflict: 'user_id,tool_name' });
+    document.getElementById('ergebnis-text').textContent = `Du hast ${richtig} von 10 Fragen richtig beantwortet. Ausgezeichnet!`;
+    document.getElementById('ergebnis-bestanden').style.display = 'block';
+    document.getElementById('ergebnis-bestanden').scrollIntoView({ behavior: 'smooth' });
+  } else {
+    document.getElementById('ergebnis-text-2').textContent = `Du hast ${richtig} von 10 Fragen richtig beantwortet. Du brauchst mindestens 7 richtige Antworten. Schau dir die Lektionen nochmal an!`;
+    document.getElementById('ergebnis-nochmal').style.display = 'block';
+    document.getElementById('ergebnis-nochmal').scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+function retryQuiz() { window.location.reload(); }
+init();
+</script>
+</body>
+</html>
