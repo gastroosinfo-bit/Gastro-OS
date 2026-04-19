@@ -377,7 +377,42 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
     </div>
   </div>
 
-  <!-- ══ GESPERRTE MODULE (7–12) ══ -->
+
+  <!-- ══ MODUL 7 ══ -->
+  <div class="module-card" id="modul-card-7" style="display:none;">
+    <div class="module-header" onclick="toggleModule(7)">
+      <div class="module-left">
+        <div class="module-number">7</div>
+        <div>
+          <div class="module-title">Kostenkontrolle &amp; Effizienz</div>
+          <div class="module-subtitle" id="subtitle-7">0 von 11 abgeschlossen</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span class="module-badge badge-open" id="badge-7">Offen</span>
+        <span class="module-arrow" id="arrow-7">▼</span>
+      </div>
+    </div>
+    <div class="module-content" id="content-7">
+      <div class="content-item"><div class="check-box" id="chk-7-0" onclick="toggleCheck(7,0)"></div><span class="item-icon">📋</span><div class="item-info"><div class="item-title" id="title-7-0">Modulübersicht &amp; Inhaltsverzeichnis</div></div><a href="modul7-uebersicht.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-7-1" onclick="toggleCheck(7,1)"></div><span class="item-icon">🎬</span><div class="item-info"><div class="item-title" id="title-7-1">Ankervideo — Starte hier</div></div><a href="modul7-ankervideo.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-7-2" onclick="toggleCheck(7,2)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-7-2">Lektion 1 — Die versteckten Kostenvernichter</div></div><a href="modul7-lektion1.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-7-3" onclick="toggleCheck(7,3)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-7-3">Lektion 2 — Energie und Kühlung im Griff</div></div><a href="modul7-lektion2.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-7-4" onclick="toggleCheck(7,4)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-7-4">Lektion 3 — Verschwendung stoppen</div></div><a href="modul7-lektion3.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-7-5" onclick="toggleCheck(7,5)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-7-5">Lektion 4 — Vom Plan zur Umsetzung</div></div><a href="modul7-lektion4.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-7-6" onclick="toggleCheck(7,6)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title" id="title-7-6">So nutzt du den Gastro Effizienz Check</div></div><a href="modul7-effizienzcheck-anleitung.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-7-7" onclick="toggleCheck(7,7)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-7-7">Gastro Effizienz Check</div></div><a href="modul7-effizienzcheck.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-7-8" onclick="toggleCheck(7,8)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title" id="title-7-8">So nutzt du das Kosten Analyse Tool</div></div><a href="modul7-kostenanalyse-anleitung.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-7-9" onclick="toggleCheck(7,9)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-7-9">Kosten Analyse Tool</div></div><a href="modul7-kostenanalyse.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-7-10" onclick="toggleCheck(7,10)"></div><span class="item-icon">🎯</span><div class="item-info"><div class="item-title" id="title-7-10">Quiz — Teste dein Wissen</div></div><a href="modul7-quiz.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="progress-bar-wrap">
+        <div class="progress-label"><span>Fortschritt Modul 7</span><span id="progress-text-7">0%</span></div>
+        <div class="progress-bar"><div class="progress-fill" id="progress-fill-7" style="width:0%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ GESPERRTE MODULE (8–12) ══ -->
   <div id="locked-modules"></div>
 
 </div>
@@ -395,7 +430,7 @@ const { createClient } = supabase;
 const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // ── Konstanten ────────────────────────────────────────────
-const MODULE_ITEMS = { 0:6, 1:10, 2:12, 3:11, 4:12, 5:11, 6:13 };
+const MODULE_ITEMS = { 0:6, 1:10, 2:12, 3:11, 4:12, 5:11, 6:13, 7:11 };
 
 const MODUL_TITLES = [
   'Das Gastro OS Prinzip',
@@ -418,8 +453,8 @@ const MODUL_TITLES = [
 // Modul 3 offen wenn Quiz 2 bestanden (key: 2-11)
 // Modul 4 offen wenn Quiz 3 bestanden (key: 3-10)
 // Modul 5 offen wenn Quiz 4 bestanden (key: 4-11)
-const QUIZ_KEYS = { 1:'1-9', 2:'2-11', 3:'3-10', 4:'4-11', 5:'5-10', 6:'6-12' };
-const QUIZ_TOOL_NAMES = { 1:'quiz_modul1', 2:'quiz_modul2', 3:'quiz_modul3', 4:'quiz_modul4', 5:'quiz_modul5', 6:'quiz_modul6' };
+const QUIZ_KEYS = { 1:'1-9', 2:'2-11', 3:'3-10', 4:'4-11', 5:'5-10', 6:'6-12', 7:'7-10' };
+const QUIZ_TOOL_NAMES = { 1:'quiz_modul1', 2:'quiz_modul2', 3:'quiz_modul3', 4:'quiz_modul4', 5:'quiz_modul5', 6:'quiz_modul6', 7:'quiz_modul7' };
 
 let currentUser = null;
 let progress = {};
@@ -482,11 +517,15 @@ async function init() {
   if (!quizBestanden[4]) lockCard(5, 4);
 
   // Fortschritt rendern
-  for (const m of [0,1,2,3,4,5,6]) renderProgress(m);
+  for (const m of [0,1,2,3,4,5,6,7]) renderProgress(m);
 
   // Modul 6 — immer sichtbar, gesperrt bis Quiz 5 bestanden
   document.getElementById('modul-card-6').style.display = 'block';
   if (!quizBestanden[5]) lockCard(6, 5);
+
+  // Modul 7 — immer sichtbar, gesperrt bis Quiz 6 bestanden
+  document.getElementById('modul-card-7').style.display = 'block';
+  if (!quizBestanden[6]) lockCard(7, 6);
 
   // Fortschritt rendern
   // Gesperrte Module rendern
@@ -597,11 +636,12 @@ function renderLockedModules() {
   if (quizBestanden[4]) unlockedUpTo = 5;
   if (quizBestanden[5]) unlockedUpTo = 6;
   if (quizBestanden[6]) unlockedUpTo = 7;
+  if (quizBestanden[7]) unlockedUpTo = 8;
 
   const container = document.getElementById('locked-modules');
   container.innerHTML = '';
 
-  for (let m = 7; m <= 12; m++) {
+  for (let m = 8; m <= 12; m++) {
     const isNext  = (m === unlockedUpTo);
     const locked  = m > unlockedUpTo;
     const card    = document.createElement('div');
