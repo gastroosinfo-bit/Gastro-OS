@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mitarbeiter Recruiting Plan – Modul 12 | GASTRO-OS</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
+.header { background:#1a2a4a; padding:16px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:20px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.btn-back { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.btn-back:hover { border-color:#d4af37; color:#d4af37; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+.main { max-width:920px; margin:36px auto; padding:0 24px 60px; }
+.page-tag { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; margin-bottom:8px; }
+.page-title { font-family:Georgia,serif; font-size:24px; color:#1a2a4a; margin-bottom:6px; }
+.page-sub { font-size:13px; color:#8090a8; margin-bottom:28px; }
+.intro-card { background:#fff; border:1px solid #e8dfc8; border-radius:12px; padding:20px 24px; margin-bottom:24px; }
+.intro-card p { font-size:13px; color:#4a5a6a; line-height:1.7; }
+.external-btn { display:inline-flex; align-items:center; gap:8px; background:#1a2a4a; color:#d4af37; padding:12px 24px; border-radius:8px; font-size:13px; font-weight:700; text-decoration:none; transition:all 0.2s; margin-bottom:28px; }
+.external-btn:hover { background:#d4af37; color:#1a2a4a; }
+.section-title { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; margin:0 0 16px; padding-bottom:8px; border-bottom:2px solid #e8dfc8; }
+.card { background:#fff; border:1px solid #e8dfc8; border-radius:12px; padding:24px 28px; margin-bottom:24px; box-shadow:0 2px 8px rgba(0,0,0,0.04); }
+.form-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.form-group { display:flex; flex-direction:column; gap:6px; }
+.form-group.full { grid-column:1/-1; }
+label { font-size:12px; font-weight:600; color:#1a2a4a; text-transform:uppercase; letter-spacing:0.5px; }
+input, select, textarea { padding:10px 14px; border:1px solid #e8dfc8; border-radius:8px; font-size:13px; color:#1a2a4a; background:#faf8f4; transition:border-color 0.2s; font-family:inherit; }
+input:focus, select:focus, textarea:focus { outline:none; border-color:#d4af37; background:#fff; }
+textarea { resize:vertical; min-height:80px; }
+.section-header { background:#1a2a4a; color:#fff; padding:10px 16px; border-radius:8px 8px 0 0; font-size:13px; font-weight:600; margin-bottom:0; }
+.anforderung-table { width:100%; border-collapse:collapse; }
+.anforderung-table th { background:#f5f0e8; padding:10px 12px; font-size:11px; font-weight:700; color:#1a2a4a; text-align:left; border:1px solid #e8dfc8; }
+.anforderung-table td { padding:8px 12px; border:1px solid #e8dfc8; font-size:13px; }
+.anforderung-table tr:nth-child(even) { background:#faf8f4; }
+.anforderung-table select { border:none; background:transparent; font-size:12px; }
+.kanäle-grid { display:grid; grid-template-columns:1fr; gap:10px; }
+.kanal-row { display:grid; grid-template-columns:2fr 1fr 1fr 1fr 1fr; gap:8px; align-items:center; padding:10px 14px; background:#faf8f4; border-radius:8px; border:1px solid #e8dfc8; }
+.kanal-name { font-size:13px; font-weight:600; color:#1a2a4a; }
+.kanal-info { font-size:11px; color:#8090a8; }
+.save-btn { background:#d4af37; color:#1a2a4a; border:none; padding:12px 28px; border-radius:8px; font-size:13px; font-weight:700; cursor:pointer; transition:all 0.2s; }
+.save-btn:hover { background:#1a2a4a; color:#d4af37; }
+.save-status { font-size:12px; color:#4aaa70; margin-left:12px; opacity:0; transition:opacity 0.3s; }
+.save-status.show { opacity:1; }
+.nav-row { display:flex; gap:12px; justify-content:space-between; margin-top:24px; }
+.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:12px 24px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none; transition:all 0.2s; display:inline-block; }
+.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
+.nav-btn.secondary { background:transparent; border:1px solid rgba(26,42,74,0.3); color:#1a2a4a; }
+.nav-btn.secondary:hover { background:#1a2a4a; color:#d4af37; }
+.footer { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer strong { color:#d4af37; }
+@media(max-width:600px){ .form-grid{grid-template-columns:1fr;} .kanal-row{grid-template-columns:1fr 1fr;} }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="brand">GASTRO-OS</div>
+  <a href="modul12-uebersicht.html" class="btn-back">← Modulübersicht</a>
+</div>
+<div class="gold-bar"></div>
+<div class="main">
+  <div class="page-tag">Modul 12 · Mitarbeiter finden &amp; halten</div>
+  <div class="page-title">📊 Mitarbeiter Recruiting Plan</div>
+  <div class="page-sub">Einmal pro offener Stelle — konsequent durcharbeiten — ehrlich befüllen</div>
+
+  <div class="intro-card">
+    <p>Trag jede neue Stelle von Anfang an vollständig ein — Stellenprofil, Anforderungen, Kanäle, Bewerber und Onboarding. Am Ende hast du für jede Einstellung eine saubere Dokumentation. Speichere für jede neue Stelle eine eigene Kopie.</p>
+  </div>
+
+  <a href="https://docs.google.com/spreadsheets/d/1cY05aWNcirRAAuDknpq_4NNswBUNQNMb/edit?gid=1101967454#gid=1101967454" target="_blank" class="external-btn">
+    📊 Mitarbeiter Recruiting Plan öffnen →
+  </a>
+
+  <!-- 01 STELLENPROFIL -->
+  <div class="card">
+    <div class="section-title">01 · Stellenprofil</div>
+    <div class="form-grid">
+      <div class="form-group"><label>Position / Stellenbezeichnung</label><input type="text" id="f-position" placeholder="z.B. Servicekraft, Koch/Köchin, Spüler/in"></div>
+      <div class="form-group"><label>Abteilung / Bereich</label><input type="text" id="f-abteilung" placeholder="z.B. Service, Küche, Bar"></div>
+      <div class="form-group"><label>Vertragsart</label><select id="f-vertrag"><option value="">Bitte wählen</option><option>Vollzeit</option><option>Teilzeit</option><option>Minijob</option><option>Ausbildung</option></select></div>
+      <div class="form-group"><label>Wochenstunden (Soll)</label><input type="text" id="f-stunden" placeholder="z.B. 40 Std."></div>
+      <div class="form-group"><label>Geplanter Starttermin</label><input type="date" id="f-start"></div>
+      <div class="form-group"><label>Gehaltsspanne (monatlich brutto)</label><input type="text" id="f-gehalt" placeholder="z.B. 2.200 € – 2.600 €"></div>
+      <div class="form-group full"><label>Arbeitszeiten / Schichten</label><input type="text" id="f-zeiten" placeholder="z.B. Mo–Fr, Abendschicht, wechselnd"></div>
+    </div>
+  </div>
+
+  <!-- 02 ANFORDERUNGSPROFIL -->
+  <div class="card">
+    <div class="section-title">02 · Anforderungsprofil</div>
+    <table class="anforderung-table">
+      <tr><th>Kategorie</th><th>Anforderung</th><th>Muss</th><th>Wunsch</th><th>Bemerkung</th></tr>
+      <tr><td>Erfahrung</td><td>Berufserfahrung in der Gastronomie</td><td><input type="checkbox" id="a1m"></td><td><input type="checkbox" id="a1w"></td><td><input type="text" style="width:100%;border:none;background:transparent;" id="a1b"></td></tr>
+      <tr><td>Erfahrung</td><td>Kenntnisse im HACCP / Lebensmittelhygiene</td><td><input type="checkbox" id="a2m"></td><td><input type="checkbox" id="a2w"></td><td><input type="text" style="width:100%;border:none;background:transparent;" id="a2b"></td></tr>
+      <tr><td>Sprache</td><td>Deutschkenntnisse mind. B2</td><td><input type="checkbox" id="a3m"></td><td><input type="checkbox" id="a3w"></td><td><input type="text" style="width:100%;border:none;background:transparent;" id="a3b"></td></tr>
+      <tr><td>Sprache</td><td>Englischkenntnisse Grundlagen</td><td><input type="checkbox" id="a4m"></td><td><input type="checkbox" id="a4w"></td><td><input type="text" style="width:100%;border:none;background:transparent;" id="a4b"></td></tr>
+      <tr><td>Persönlichkeit</td><td>Teamfähigkeit &amp; Zuverlässigkeit</td><td><input type="checkbox" id="a5m"></td><td><input type="checkbox" id="a5w"></td><td><input type="text" style="width:100%;border:none;background:transparent;" id="a5b"></td></tr>
+      <tr><td>Persönlichkeit</td><td>Belastbarkeit in Stoßzeiten</td><td><input type="checkbox" id="a6m"></td><td><input type="checkbox" id="a6w"></td><td><input type="text" style="width:100%;border:none;background:transparent;" id="a6b"></td></tr>
+      <tr><td>Flexibilität</td><td>Bereitschaft zu Wochenend- &amp; Abenddienst</td><td><input type="checkbox" id="a7m"></td><td><input type="checkbox" id="a7w"></td><td><input type="text" style="width:100%;border:none;background:transparent;" id="a7b"></td></tr>
+      <tr><td>Sonstiges</td><td><input type="text" style="width:100%;border:none;background:transparent;" id="a8k" placeholder="Eigene Anforderung..."></td><td><input type="checkbox" id="a8m"></td><td><input type="checkbox" id="a8w"></td><td><input type="text" style="width:100%;border:none;background:transparent;" id="a8b"></td></tr>
+    </table>
+  </div>
+
+  <!-- 03 RECRUITING KANÄLE -->
+  <div class="card">
+    <div class="section-title">03 · Recruiting Kanäle &amp; Status</div>
+    <div class="kanäle-grid">
+      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:8px;padding:8px 14px;background:#f5f0e8;border-radius:6px;font-size:11px;font-weight:700;color:#1a2a4a;">
+        <span>Kanal</span><span>Zielgruppe</span><span>Kosten</span><span>Schalten am</span><span>Status</span>
+      </div>
+      <div class="kanal-row"><span class="kanal-name">Indeed / StepStone</span><span class="kanal-info">Aktiv Suchende</span><span class="kanal-info">ab 0€/Mon.</span><input type="date" id="k1d" style="font-size:11px;padding:4px 8px;"><select id="k1s" style="font-size:11px;padding:4px 8px;"><option>Offen</option><option>Aktiv</option><option>Pausiert</option><option>Beendet</option></select></div>
+      <div class="kanal-row"><span class="kanal-name">Instagram / Facebook Job-Post</span><span class="kanal-info">Passiv Interessierte</span><span class="kanal-info">0€ organisch</span><input type="date" id="k2d" style="font-size:11px;padding:4px 8px;"><select id="k2s" style="font-size:11px;padding:4px 8px;"><option>Offen</option><option>Aktiv</option><option>Pausiert</option><option>Beendet</option></select></div>
+      <div class="kanal-row"><span class="kanal-name">Eigene Website – Karriereseite</span><span class="kanal-info">Direktbewerber</span><span class="kanal-info">0€</span><input type="date" id="k3d" style="font-size:11px;padding:4px 8px;"><select id="k3s" style="font-size:11px;padding:4px 8px;"><option>Offen</option><option>Aktiv</option><option>Pausiert</option><option>Beendet</option></select></div>
+      <div class="kanal-row"><span class="kanal-name">Aushang im Restaurant</span><span class="kanal-info">Stammgäste &amp; Umfeld</span><span class="kanal-info">0€</span><input type="date" id="k4d" style="font-size:11px;padding:4px 8px;"><select id="k4s" style="font-size:11px;padding:4px 8px;"><option>Offen</option><option>Aktiv</option><option>Pausiert</option><option>Beendet</option></select></div>
+      <div class="kanal-row"><span class="kanal-name">Mitarbeiterempfehlung (Prämie)</span><span class="kanal-info">Netzwerk Team</span><span class="kanal-info">Prämie intern</span><input type="date" id="k5d" style="font-size:11px;padding:4px 8px;"><select id="k5s" style="font-size:11px;padding:4px 8px;"><option>Offen</option><option>Aktiv</option><option>Pausiert</option><option>Beendet</option></select></div>
+      <div class="kanal-row"><span class="kanal-name">IHK / Arbeitsagentur</span><span class="kanal-info">Azubis &amp; Umschüler</span><span class="kanal-info">0€</span><input type="date" id="k6d" style="font-size:11px;padding:4px 8px;"><select id="k6s" style="font-size:11px;padding:4px 8px;"><option>Offen</option><option>Aktiv</option><option>Pausiert</option><option>Beendet</option></select></div>
+      <div class="kanal-row"><span class="kanal-name">Gastro-Netzwerk / Kollegen</span><span class="kanal-info">Brancheninterne</span><span class="kanal-info">0€</span><input type="date" id="k7d" style="font-size:11px;padding:4px 8px;"><select id="k7s" style="font-size:11px;padding:4px 8px;"><option>Offen</option><option>Aktiv</option><option>Pausiert</option><option>Beendet</option></select></div>
+    </div>
+  </div>
+
+  <!-- 04 NOTIZEN -->
+  <div class="card">
+    <div class="section-title">04 · Notizen &amp; nächste Schritte</div>
+    <div class="form-grid">
+      <div class="form-group full"><label>Meine Stellenanzeige (Entwurf)</label><textarea id="f-anzeige" rows="5" placeholder="Schreib hier deinen Anzeigentext — Überschrift, Einstieg, Angebot, Erwartung, nächster Schritt..."></textarea></div>
+      <div class="form-group full"><label>Nächste Schritte</label><textarea id="f-next" rows="3" placeholder="Was tue ich als nächstes? Bis wann?"></textarea></div>
+    </div>
+  </div>
+
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px;">
+    <button class="save-btn" onclick="saveData()">💾 Speichern</button>
+    <span class="save-status" id="save-status">✓ Gespeichert</span>
+  </div>
+
+  <div class="nav-row">
+    <a href="modul12-recruiting-video.html" class="nav-btn secondary">← Anleitung</a>
+    <a href="modul12-quiz.html" class="nav-btn">Zum Quiz →</a>
+  </div>
+</div>
+<div class="gold-bar"></div>
+<div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL='https://hchlganbgjeciwhwaisj.supabase.co';
+const SUPABASE_KEY='sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3';
+const{createClient}=supabase;
+const sb=createClient(SUPABASE_URL,SUPABASE_KEY);
+let currentUser=null;
+let saveTimer=null;
+
+function getData(){
+  return{
+    position:document.getElementById('f-position').value,
+    abteilung:document.getElementById('f-abteilung').value,
+    vertrag:document.getElementById('f-vertrag').value,
+    stunden:document.getElementById('f-stunden').value,
+    start:document.getElementById('f-start').value,
+    gehalt:document.getElementById('f-gehalt').value,
+    zeiten:document.getElementById('f-zeiten').value,
+    anzeige:document.getElementById('f-anzeige').value,
+    next:document.getElementById('f-next').value,
+    anf:{a1m:document.getElementById('a1m').checked,a1w:document.getElementById('a1w').checked,a1b:document.getElementById('a1b').value,
+         a2m:document.getElementById('a2m').checked,a2w:document.getElementById('a2w').checked,a2b:document.getElementById('a2b').value,
+         a3m:document.getElementById('a3m').checked,a3w:document.getElementById('a3w').checked,a3b:document.getElementById('a3b').value,
+         a4m:document.getElementById('a4m').checked,a4w:document.getElementById('a4w').checked,a4b:document.getElementById('a4b').value,
+         a5m:document.getElementById('a5m').checked,a5w:document.getElementById('a5w').checked,a5b:document.getElementById('a5b').value,
+         a6m:document.getElementById('a6m').checked,a6w:document.getElementById('a6w').checked,a6b:document.getElementById('a6b').value,
+         a7m:document.getElementById('a7m').checked,a7w:document.getElementById('a7w').checked,a7b:document.getElementById('a7b').value,
+         a8m:document.getElementById('a8m').checked,a8w:document.getElementById('a8w').checked,a8b:document.getElementById('a8b').value,a8k:document.getElementById('a8k').value},
+    kanäle:{k1d:document.getElementById('k1d').value,k1s:document.getElementById('k1s').value,
+            k2d:document.getElementById('k2d').value,k2s:document.getElementById('k2s').value,
+            k3d:document.getElementById('k3d').value,k3s:document.getElementById('k3s').value,
+            k4d:document.getElementById('k4d').value,k4s:document.getElementById('k4s').value,
+            k5d:document.getElementById('k5d').value,k5s:document.getElementById('k5s').value,
+            k6d:document.getElementById('k6d').value,k6s:document.getElementById('k6s').value,
+            k7d:document.getElementById('k7d').value,k7s:document.getElementById('k7s').value}
+  };
+}
+
+function setData(d){
+  if(!d)return;
+  const set=(id,v)=>{const el=document.getElementById(id);if(el&&v!==undefined){if(el.type==='checkbox')el.checked=v;else el.value=v;}};
+  set('f-position',d.position);set('f-abteilung',d.abteilung);set('f-vertrag',d.vertrag);set('f-stunden',d.stunden);
+  set('f-start',d.start);set('f-gehalt',d.gehalt);set('f-zeiten',d.zeiten);set('f-anzeige',d.anzeige);set('f-next',d.next);
+  if(d.anf){Object.entries(d.anf).forEach(([k,v])=>set(k,v));}
+  if(d.kanäle){Object.entries(d.kanäle).forEach(([k,v])=>set(k,v));}
+}
+
+async function saveData(){
+  if(!currentUser)return;
+  await sb.from('user_tool_data').upsert({user_id:currentUser.id,tool_name:'modul12_recruiting',data:getData(),updated_at:new Date().toISOString()},{onConflict:'user_id,tool_name'});
+  const s=document.getElementById('save-status');s.classList.add('show');setTimeout(()=>s.classList.remove('show'),2500);
+}
+
+function autoSave(){clearTimeout(saveTimer);saveTimer=setTimeout(saveData,1500);}
+document.querySelectorAll('input,select,textarea').forEach(el=>el.addEventListener('input',autoSave));
+
+async function init(){
+  const{data:{session}}=await sb.auth.getSession();
+  if(!session){window.location.href='login.html';return;}
+  currentUser=session.user;
+  const{data:td}=await sb.from('user_tool_data').select('data').eq('user_id',currentUser.id).eq('tool_name','modul12_recruiting').maybeSingle();
+  if(td&&td.data)setData(td.data);
+}
+init();
+</script>
+</body>
+</html>

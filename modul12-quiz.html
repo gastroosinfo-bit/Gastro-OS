@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz – Modul 12 | GASTRO-OS</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
+.header { background:#1a2a4a; padding:16px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:20px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.btn-back { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.btn-back:hover { border-color:#d4af37; color:#d4af37; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+.main { max-width:760px; margin:36px auto; padding:0 24px 60px; }
+.page-tag { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; margin-bottom:8px; }
+.page-title { font-family:Georgia,serif; font-size:24px; color:#1a2a4a; margin-bottom:6px; }
+.page-sub { font-size:13px; color:#8090a8; margin-bottom:28px; }
+.intro-card { background:#fff; border:1px solid #e8dfc8; border-radius:10px; padding:22px 26px; margin-bottom:28px; }
+.intro-card h2 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; margin-bottom:8px; }
+.intro-card p { font-size:13px; color:#4a5a6a; line-height:1.7; }
+.stats-row { display:flex; gap:16px; margin-top:14px; }
+.stat { text-align:center; background:#f5f0e8; border-radius:8px; padding:10px 20px; }
+.stat .number { font-family:Georgia,serif; font-size:20px; color:#1a2a4a; font-weight:700; }
+.stat .label { font-size:11px; color:#8090a8; margin-top:2px; }
+.progress-wrap { margin-bottom:24px; }
+.progress-label { display:flex; justify-content:space-between; font-size:12px; color:#8090a8; margin-bottom:6px; }
+.progress-bar { height:6px; background:#e8dfc8; border-radius:3px; overflow:hidden; }
+.progress-fill { height:100%; background:linear-gradient(90deg,#1a2a4a,#d4af37); border-radius:3px; transition:width 0.4s ease; }
+.question-card { background:#fff; border:1px solid #e8dfc8; border-radius:10px; padding:24px 26px; margin-bottom:20px; box-shadow:0 2px 8px rgba(0,0,0,0.04); display:none; }
+.question-card.active { display:block; }
+.q-num { font-size:11px; font-weight:700; color:#d4af37; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:10px; }
+.q-text { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; margin-bottom:12px; line-height:1.5; }
+.q-hint { font-size:12px; color:#8090a8; margin-bottom:14px; font-style:italic; }
+.options { display:flex; flex-direction:column; gap:10px; }
+.option { display:flex; align-items:flex-start; gap:12px; padding:12px 16px; border:2px solid #e8dfc8; border-radius:8px; cursor:pointer; transition:all 0.2s; background:#faf8f4; user-select:none; }
+.option:hover:not(.disabled) { border-color:#d4af37; background:#fff; }
+.option.selected { border-color:#1a2a4a; background:#f0f4ff; }
+.option.correct { border-color:#4aaa70; background:#e6f7ee; }
+.option.wrong { border-color:#cc5544; background:#fdecea; }
+.option.disabled { cursor:default; }
+.option-check { width:20px; height:20px; border:2px solid #d0c8b0; flex-shrink:0; margin-top:1px; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; transition:all 0.2s; }
+.option-check.round { border-radius:50%; }
+.option-check.square { border-radius:4px; }
+.option.selected .option-check { background:#1a2a4a; border-color:#1a2a4a; color:#fff; }
+.option.correct .option-check { background:#4aaa70; border-color:#4aaa70; color:#fff; }
+.option.wrong .option-check { background:#cc5544; border-color:#cc5544; color:#fff; }
+.option-text { font-size:14px; color:#2a3a4a; line-height:1.5; flex:1; }
+.feedback-box { display:none; border-radius:8px; padding:14px 18px; margin-top:16px; font-size:13px; line-height:1.7; }
+.feedback-box.show { display:block; }
+.feedback-box.correct { background:#e6f7ee; border:1px solid #4aaa70; color:#1a5030; }
+.feedback-box.wrong { background:#fdecea; border:1px solid #cc5544; color:#7a2010; }
+.btn-row { display:flex; justify-content:space-between; align-items:center; margin-top:20px; gap:12px; }
+.btn-check { background:#1a2a4a; color:#d4af37; border:none; padding:11px 28px; border-radius:8px; font-size:13px; font-weight:700; cursor:pointer; transition:all 0.2s; }
+.btn-check:hover { background:#d4af37; color:#1a2a4a; }
+.btn-check:disabled { opacity:0.4; cursor:default; }
+.btn-next { background:#d4af37; color:#1a2a4a; border:none; padding:11px 28px; border-radius:8px; font-size:13px; font-weight:700; cursor:pointer; transition:all 0.2s; display:none; }
+.btn-next:hover { background:#1a2a4a; color:#d4af37; }
+.result-card { display:none; background:#fff; border:1px solid #e8dfc8; border-radius:10px; padding:36px 32px; text-align:center; }
+.result-card.show { display:block; }
+.score-big { font-family:Georgia,serif; font-size:48px; color:#d4af37; font-weight:700; margin:16px 0 4px; }
+.gold-divider { height:2px; background:linear-gradient(90deg,transparent,#d4af37,transparent); margin:24px 0; }
+.btn-freischalten { background:#d4af37; color:#1a2a4a; border:none; padding:14px 36px; border-radius:8px; font-size:15px; font-weight:700; cursor:pointer; transition:all 0.2s; }
+.btn-freischalten:hover { background:#1a2a4a; color:#d4af37; }
+.bestanden-banner { background:#e6f7ee; border:1px solid #4aaa70; border-radius:10px; padding:20px 24px; margin-bottom:24px; text-align:center; display:none; }
+.footer { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer strong { color:#d4af37; }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="brand">GASTRO-OS</div>
+  <a href="modul12-uebersicht.html" class="btn-back">← Modulübersicht</a>
+</div>
+<div class="gold-bar"></div>
+<div class="main">
+  <div class="page-tag">Modul 12 · Mitarbeiter finden &amp; halten</div>
+  <div class="page-title">🎯 Quiz — Teste dein Wissen</div>
+  <div class="page-sub">8 Fragen · Sofortiges Feedback</div>
+
+  <div class="bestanden-banner" id="bestanden-banner">
+    <h3 style="font-family:Georgia,serif;font-size:16px;color:#1a6030;margin-bottom:6px;">🎉 Du hast dieses Quiz bereits abgeschlossen!</h3>
+    <p style="font-size:13px;color:#2a6040;margin-bottom:12px;">Modul 12 ist abgeschlossen.</p>
+    <a href="dashboard.html" style="background:#1a2a4a;color:#d4af37;padding:10px 24px;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;">Zum Dashboard →</a>
+  </div>
+
+  <div class="intro-card">
+    <h2>Quiz Modul 12: Mitarbeiter finden &amp; halten</h2>
+    <p>8 Fragen rund um Recruiting, Stellenanzeigen, Onboarding und Mitarbeiterbindung in der Gastronomie. Beantworte die Fragen ehrlich ohne zurückzublättern. Manche Fragen haben mehrere richtige Antworten. Nur so siehst du wo du wirklich stehst.</p>
+    <div class="stats-row">
+      <div class="stat"><div class="number">8</div><div class="label">Fragen</div></div>
+      <div class="stat"><div class="number">⚡</div><div class="label">Sofort-Feedback</div></div>
+      <div class="stat"><div class="number">5'</div><div class="label">Minuten</div></div>
+    </div>
+  </div>
+
+  <div class="progress-wrap" id="progress-wrap">
+    <div class="progress-label"><span id="progress-text">Frage 1 von 8</span><span id="progress-pct">0%</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+  </div>
+
+  <!-- Q1: C -->
+  <div class="question-card active" id="q0">
+    <div class="q-num">Frage 1 von 8</div>
+    <div class="q-text">Was ist laut Modul 12 der häufigste Grund warum gute Mitarbeiter einen Gastronomiebetrieb verlassen?</div>
+    <div class="q-hint">○ Eine Antwort</div>
+    <div class="options" id="opts0">
+      <div class="option" onclick="sel(0,0)"><div class="option-check round"></div><div class="option-text">A) Das Gehalt ist zu niedrig im Vergleich zur Konkurrenz</div></div>
+      <div class="option" onclick="sel(0,1)"><div class="option-check round"></div><div class="option-text">B) Die Arbeitszeiten sind grundsätzlich unvereinbar mit dem Privatleben</div></div>
+      <div class="option" onclick="sel(0,2)"><div class="option-check round"></div><div class="option-text">C) Fehlende Wertschätzung, unklare Zuständigkeiten und mangelndes Feedback</div></div>
+      <div class="option" onclick="sel(0,3)"><div class="option-check round"></div><div class="option-text">D) Die Gastronomie ist als Branche generell unattraktiv für Fachkräfte</div></div>
+    </div>
+    <div class="feedback-box" id="fb0"></div>
+    <div class="btn-row"><span></span><div style="display:flex;gap:10px;">
+      <button class="btn-check" id="check0" onclick="chk(0)" disabled>Antwort prüfen</button>
+      <button class="btn-next" id="next0" onclick="nxt(0)">Weiter →</button>
+    </div></div>
+  </div>
+
+  <!-- Q2: B,C -->
+  <div class="question-card" id="q1">
+    <div class="q-num">Frage 2 von 8</div>
+    <div class="q-text">Welche Aussagen über effektive Stellenanzeigen treffen laut Modul 12 zu?</div>
+    <div class="q-hint">☑ Mehrere Antworten möglich</div>
+    <div class="options" id="opts1">
+      <div class="option" onclick="sel(1,0)"><div class="option-check square"></div><div class="option-text">A) Eine gute Stellenanzeige listet detailliert alle Aufgaben und Anforderungen auf</div></div>
+      <div class="option" onclick="sel(1,1)"><div class="option-check square"></div><div class="option-text">B) Die Anzeige beantwortet die Frage warum jemand ausgerechnet in diesem Betrieb arbeiten sollte</div></div>
+      <div class="option" onclick="sel(1,2)"><div class="option-check square"></div><div class="option-text">C) Ehrlichkeit über Erwartungen schreckt unpassende Bewerber ab — das ist gewollt</div></div>
+      <div class="option" onclick="sel(1,3)"><div class="option-check square"></div><div class="option-text">D) Der Kanal ist wichtiger als der Inhalt der Anzeige</div></div>
+    </div>
+    <div class="feedback-box" id="fb1"></div>
+    <div class="btn-row"><span></span><div style="display:flex;gap:10px;">
+      <button class="btn-check" id="check1" onclick="chk(1)" disabled>Antwort prüfen</button>
+      <button class="btn-next" id="next1" onclick="nxt(1)">Weiter →</button>
+    </div></div>
+  </div>
+
+  <!-- Q3: B,C -->
+  <div class="question-card" id="q2">
+    <div class="q-num">Frage 3 von 8</div>
+    <div class="q-text">Ein Gastronom sagt: „Meine beste Recruiting-Quelle ist mein eigenes Team." Was steckt dahinter?</div>
+    <div class="q-hint">☑ Mehrere Antworten möglich</div>
+    <div class="options" id="opts2">
+      <div class="option" onclick="sel(2,0)"><div class="option-check square"></div><div class="option-text">A) Das Team übernimmt die Vorauswahl der Bewerber und spart Verwaltungsaufwand</div></div>
+      <div class="option" onclick="sel(2,1)"><div class="option-check square"></div><div class="option-text">B) Mitarbeiterempfehlungen bringen häufig Kandidaten die kulturell besser passen</div></div>
+      <div class="option" onclick="sel(2,2)"><div class="option-check square"></div><div class="option-text">C) Empfehlungen sind günstiger als bezahlte Stellenanzeigen</div></div>
+      <div class="option" onclick="sel(2,3)"><div class="option-check square"></div><div class="option-text">D) Das Team kennt die offenen Stellen besser als der Chef</div></div>
+    </div>
+    <div class="feedback-box" id="fb2"></div>
+    <div class="btn-row"><span></span><div style="display:flex;gap:10px;">
+      <button class="btn-check" id="check2" onclick="chk(2)" disabled>Antwort prüfen</button>
+      <button class="btn-next" id="next2" onclick="nxt(2)">Weiter →</button>
+    </div></div>
+  </div>
+
+  <!-- Q4: B,C -->
+  <div class="question-card" id="q3">
+    <div class="q-num">Frage 4 von 8</div>
+    <div class="q-text">Was beschreibt laut Modul 12 ein strukturiertes Onboarding korrekt?</div>
+    <div class="q-hint">☑ Mehrere Antworten möglich</div>
+    <div class="options" id="opts3">
+      <div class="option" onclick="sel(3,0)"><div class="option-check square"></div><div class="option-text">A) Eine ausführliche Einführungsveranstaltung am ersten Arbeitstag</div></div>
+      <div class="option" onclick="sel(3,1)"><div class="option-check square"></div><div class="option-text">B) Ein klarer Plan der die Phasen vor dem ersten Tag, erster Tag, erste Woche und erste 30 Tage abdeckt</div></div>
+      <div class="option" onclick="sel(3,2)"><div class="option-check square"></div><div class="option-text">C) Die Übergabe eines Handbuchs mit allen wichtigen Informationen zum Betrieb</div></div>
+      <div class="option" onclick="sel(3,3)"><div class="option-check square"></div><div class="option-text">D) Regelmäßige kurze Feedbackgespräche bereits in den ersten Wochen</div></div>
+    </div>
+    <div class="feedback-box" id="fb3"></div>
+    <div class="btn-row"><span></span><div style="display:flex;gap:10px;">
+      <button class="btn-check" id="check3" onclick="chk(3)" disabled>Antwort prüfen</button>
+      <button class="btn-next" id="next3" onclick="nxt(3)">Weiter →</button>
+    </div></div>
+  </div>
+
+  <!-- Q5: A,D -->
+  <div class="question-card" id="q4">
+    <div class="q-num">Frage 5 von 8</div>
+    <div class="q-text">Warum ist ein Feedbackgespräch nach zwei Wochen laut Modul 12 wichtiger als das klassische Probezeit-Gespräch am Ende?</div>
+    <div class="q-hint">☑ Mehrere Antworten möglich</div>
+    <div class="options" id="opts4">
+      <div class="option" onclick="sel(4,0)"><div class="option-check square"></div><div class="option-text">A) Weil nach zwei Wochen noch Zeit ist Probleme zu lösen bevor sie sich festigen</div></div>
+      <div class="option" onclick="sel(4,1)"><div class="option-check square"></div><div class="option-text">B) Weil das Probezeit-Gespräch rechtlich keine Konsequenzen hat</div></div>
+      <div class="option" onclick="sel(4,2)"><div class="option-check square"></div><div class="option-text">C) Weil neue Mitarbeiter in den ersten Wochen am offensten für Feedback sind</div></div>
+      <div class="option" onclick="sel(4,3)"><div class="option-check square"></div><div class="option-text">D) Weil es dem Mitarbeiter zeigt dass seine Wahrnehmung zählt und er nicht allein gelassen wird</div></div>
+    </div>
+    <div class="feedback-box" id="fb4"></div>
+    <div class="btn-row"><span></span><div style="display:flex;gap:10px;">
+      <button class="btn-check" id="check4" onclick="chk(4)" disabled>Antwort prüfen</button>
+      <button class="btn-next" id="next4" onclick="nxt(4)">Weiter →</button>
+    </div></div>
+  </div>
+
+  <!-- Q6: B,D -->
+  <div class="question-card" id="q5">
+    <div class="q-num">Frage 6 von 8</div>
+    <div class="q-text">Wann ist eine Trennung in der Probezeit laut Modul 12 die richtigere Entscheidung?</div>
+    <div class="q-hint">☑ Mehrere Antworten möglich</div>
+    <div class="options" id="opts5">
+      <div class="option" onclick="sel(5,0)"><div class="option-check square"></div><div class="option-text">A) Wenn der Mitarbeiter dreimal zu spät gekommen ist</div></div>
+      <div class="option" onclick="sel(5,1)"><div class="option-check square"></div><div class="option-text">B) Wenn nach ehrlicher Beobachtung klar ist dass Leistung, Einstellung oder Kulturpassung grundsätzlich nicht stimmen</div></div>
+      <div class="option" onclick="sel(5,2)"><div class="option-check square"></div><div class="option-text">C) Immer wenn das Onboarding nicht optimal gelaufen ist</div></div>
+      <div class="option" onclick="sel(5,3)"><div class="option-check square"></div><div class="option-text">D) Wenn die Trennung fair kommuniziert wird und dem Mitarbeiter ermöglicht weiterzukommen</div></div>
+    </div>
+    <div class="feedback-box" id="fb5"></div>
+    <div class="btn-row"><span></span><div style="display:flex;gap:10px;">
+      <button class="btn-check" id="check5" onclick="chk(5)" disabled>Antwort prüfen</button>
+      <button class="btn-next" id="next5" onclick="nxt(5)">Weiter →</button>
+    </div></div>
+  </div>
+
+  <!-- Q7: B,D -->
+  <div class="question-card" id="q6">
+    <div class="q-num">Frage 7 von 8</div>
+    <div class="q-text">Was gehört laut dem Mitarbeiter Recruiting Plan konkret in das Stellenprofil bevor die Suche beginnt?</div>
+    <div class="q-hint">☑ Mehrere Antworten möglich</div>
+    <div class="options" id="opts6">
+      <div class="option" onclick="sel(6,0)"><div class="option-check square"></div><div class="option-text">A) Die genaue Anzahl der erwarteten Bewerbungen pro Kanal</div></div>
+      <div class="option" onclick="sel(6,1)"><div class="option-check square"></div><div class="option-text">B) Position, Vertragsart, Wochenstunden, Gehaltsspanne und geplanter Starttermin</div></div>
+      <div class="option" onclick="sel(6,2)"><div class="option-check square"></div><div class="option-text">C) Eine Liste aller bisherigen Mitarbeiter in dieser Position</div></div>
+      <div class="option" onclick="sel(6,3)"><div class="option-check square"></div><div class="option-text">D) Die Unterscheidung zwischen Muss-Anforderungen und Wunsch-Anforderungen</div></div>
+    </div>
+    <div class="feedback-box" id="fb6"></div>
+    <div class="btn-row"><span></span><div style="display:flex;gap:10px;">
+      <button class="btn-check" id="check6" onclick="chk(6)" disabled>Antwort prüfen</button>
+      <button class="btn-next" id="next6" onclick="nxt(6)">Weiter →</button>
+    </div></div>
+  </div>
+
+  <!-- Q8: B,D -->
+  <div class="question-card" id="q7">
+    <div class="q-num">Frage 8 von 8</div>
+    <div class="q-text">Welche Aussage beschreibt laut Modul 12 den Unterschied zwischen Betrieben die gute Mitarbeiter halten und solchen die ständig suchen?</div>
+    <div class="q-hint">☑ Mehrere Antworten möglich</div>
+    <div class="options" id="opts7">
+      <div class="option" onclick="sel(7,0)"><div class="option-check square"></div><div class="option-text">A) Die erfolgreichen Betriebe zahlen grundsätzlich höhere Gehälter</div></div>
+      <div class="option" onclick="sel(7,1)"><div class="option-check square"></div><div class="option-text">B) Die erfolgreichen Betriebe haben ein Umfeld aus Struktur, Feedback und Entwicklungsmöglichkeiten geschaffen</div></div>
+      <div class="option" onclick="sel(7,2)"><div class="option-check square"></div><div class="option-text">C) Die erfolgreichen Betriebe haben weniger Gäste und damit weniger Stress für das Team</div></div>
+      <div class="option" onclick="sel(7,3)"><div class="option-check square"></div><div class="option-text">D) Recruiting und Mitarbeiterbindung werden als dauerhaftes System betrieben und nicht als Reaktion auf akuten Bedarf</div></div>
+    </div>
+    <div class="feedback-box" id="fb7"></div>
+    <div class="btn-row"><span></span><div style="display:flex;gap:10px;">
+      <button class="btn-check" id="check7" onclick="chk(7)" disabled>Antwort prüfen</button>
+      <button class="btn-next" id="next7" onclick="showResult()">Ergebnis anzeigen →</button>
+    </div></div>
+  </div>
+
+  <!-- ERGEBNIS -->
+  <div class="result-card" id="result-card">
+    <div style="font-size:56px;margin-bottom:16px;" id="result-icon">🎉</div>
+    <h2 style="font-family:Georgia,serif;font-size:22px;color:#1a2a4a;margin-bottom:10px;">Quiz abgeschlossen!</h2>
+    <div class="score-big" id="score-big">0/8</div>
+    <div style="font-size:13px;color:#8090a8;margin-bottom:16px;">Punkte erreicht</div>
+    <p style="font-size:14px;color:#4a5a6a;line-height:1.7;" id="result-msg"></p>
+    <div class="gold-divider"></div>
+    <button class="btn-freischalten" onclick="markBestanden()">✓ Modul 12 abschließen</button>
+  </div>
+
+</div>
+<div class="gold-bar"></div>
+<div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+
+<script>
+const SUPABASE_URL='https://hchlganbgjeciwhwaisj.supabase.co';
+const SUPABASE_KEY='sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3';
+const{createClient}=supabase;
+const sb=createClient(SUPABASE_URL,SUPABASE_KEY);
+let currentUser=null;
+
+// Q1:C, Q2:B+C, Q3:B+C, Q4:B+C, Q5:A+D, Q6:B+D, Q7:B+D, Q8:B+D
+const CORRECT=[[2],[1,2],[1,2],[1,2],[0,3],[1,3],[1,3],[1,3]];
+const SINGLE=[true,false,false,false,false,false,false,false];
+
+const FB_OK=[
+  'Genau. Menschen verlassen keine Jobs — sie verlassen Führungskräfte und Betriebe in denen sie sich nicht gesehen fühlen. Gehalt und Arbeitszeiten sind Faktoren, aber selten der eigentliche Auslöser. Wer das versteht kann gezielt gegensteuern.',
+  'Sehr gut. Eine Stellenanzeige ist kein Formular sondern ein Angebot. Sie muss klar machen was den Betrieb ausmacht und was Bewerber dort bekommen die sie woanders nicht bekommen. Und wer ehrlich kommuniziert was erwartet wird filtert unpassende Bewerber früh heraus.',
+  'Ein Mitarbeiter der jemanden empfiehlt bürgt implizit für diese Person. Das führt zu besserer Kulturpassung. Und der Kostenvorteil gegenüber bezahlten Plattformen ist erheblich — selbst wenn eine interne Prämie gezahlt wird.',
+  'Genau. Onboarding ist kein Ereignis sondern ein Prozess. Er beginnt vor dem ersten Tag und zieht sich durch die ersten dreißig Tage. Frühe Feedbackgespräche sind entscheidend um Unsicherheiten zu erkennen bevor sie zur inneren Kündigung führen.',
+  'Sehr gut. Ein frühes Gespräch hat zwei Funktionen: Es gibt dir die Chance kleine Probleme früh zu erkennen. Und es sendet ein klares Signal: Wir interessieren uns dafür wie es dir geht. Das schafft Vertrauen und Bindung.',
+  'Richtig. Eine Trennung in der Probezeit ist keine Niederlage — sie ist eine unternehmerische Entscheidung. Wer nicht passt kostet Energie, Teamdynamik und Geld. Und eine klare ehrliche Trennung ist fair — sie gibt dem Mitarbeiter die Chance eine Stelle zu finden die wirklich zu ihm passt.',
+  'Perfekt. Das Stellenprofil ist die Grundlage für alles was danach kommt. Wer vorher nicht klar definiert was er braucht und was er sich wünscht läuft Gefahr unpassende Kandidaten einzustellen oder gute Kandidaten falsch zu bewerten.',
+  'Das ist der Kern. Betriebe die gute Mitarbeiter halten zahlen nicht immer am meisten. Aber sie schaffen ein Umfeld in dem Menschen gerne arbeiten — mit Klarheit, Wertschätzung und Perspektive. Und sie warten nicht bis eine Stelle brennt.',
+];
+
+const FB_WRONG=[
+  'Richtig wäre C. Gehalt und Branchenimage sind echte Herausforderungen, aber sie sind nicht der Hauptgrund. Betriebe die Wertschätzung, Klarheit und Feedback leben halten ihre Mitarbeiter — auch bei vergleichbaren Gehältern.',
+  'Richtig wären B und C. Lange Aufgabenlisten wirken abschreckend und generisch. Und der Inhalt schlägt immer den Kanal — eine starke Anzeige auf Instagram kann eine schwache Anzeige auf StepStone bei weitem übertreffen.',
+  'Richtig wären B und C. Die Vorauswahl liegt immer beim Führungsteam. Und ob das Team die Stelle besser kennt ist nicht der Grund warum Empfehlungen funktionieren.',
+  'Richtig wären B und C. Ein Handbuch und ein Einführungstag sind einzelne Bausteine aber kein vollständiges Onboarding. Ohne strukturierten Rahmen verpuffen sie ohne Wirkung.',
+  'Richtig wären A und D. Die Offenheit für Feedback ist individuell sehr verschieden. Und das Probezeit-Gespräch hat durchaus rechtliche und praktische Relevanz — es ersetzt nur nicht den frühen Check-in.',
+  'Richtig wären B und D. Dreimal zu spät ist kein automatischer Trennungsgrund — zuerst braucht es ein Gespräch. Und ein schlechtes Onboarding ist die Verantwortung des Betriebs, nicht des Mitarbeiters.',
+  'Richtig wären B und D. Die Anzahl erwarteter Bewerbungen lässt sich nicht vorab planen. Und eine Historie bisheriger Mitarbeiter gehört nicht ins Stellenprofil.',
+  'Richtig wären B und D. Höhere Gehälter allein schaffen keine Bindung. Und weniger Gäste bedeutet weniger Umsatz — kein Betrieb löst sein Personalproblem durch weniger Geschäft.',
+];
+
+let selected=Array.from({length:8},()=>[]);
+let answered=Array(8).fill(false);
+let points=0;
+
+function sel(q,opt){
+  if(answered[q])return;
+  if(SINGLE[q]){
+    selected[q]=[opt];
+    document.querySelectorAll('#opts'+q+' .option').forEach((o,i)=>{
+      o.classList.toggle('selected',i===opt);
+      o.querySelector('.option-check').textContent=i===opt?'✓':'';
+    });
+  } else {
+    const opts=document.querySelectorAll('#opts'+q+' .option');
+    const idx=selected[q].indexOf(opt);
+    if(idx===-1){selected[q].push(opt);opts[opt].classList.add('selected');opts[opt].querySelector('.option-check').textContent='✓';}
+    else{selected[q].splice(idx,1);opts[opt].classList.remove('selected');opts[opt].querySelector('.option-check').textContent='';}
+  }
+  document.getElementById('check'+q).disabled=selected[q].length===0;
+}
+
+function arrEq(a,b){return a.length===b.length&&[...a].sort().every((v,i)=>v===[...b].sort()[i]);}
+
+function chk(q){
+  if(answered[q])return;
+  answered[q]=true;
+  const correct=CORRECT[q],userSel=selected[q],isOk=arrEq(userSel,correct);
+  if(isOk)points++;
+  document.querySelectorAll('#opts'+q+' .option').forEach((o,i)=>{
+    o.classList.remove('selected');o.querySelector('.option-check').textContent='';o.classList.add('disabled');o.onclick=null;
+    if(correct.includes(i)){o.classList.add('correct');o.querySelector('.option-check').textContent='✓';}
+    else if(userSel.includes(i)){o.classList.add('wrong');o.querySelector('.option-check').textContent='✗';}
+  });
+  const fb=document.getElementById('fb'+q);
+  fb.classList.add('show');
+  if(isOk){fb.classList.add('correct');fb.innerHTML='✅ '+FB_OK[q];}
+  else{fb.classList.add('wrong');fb.innerHTML='❌ '+FB_WRONG[q];}
+  document.getElementById('check'+q).style.display='none';
+  document.getElementById('next'+q).style.display='inline-block';
+  const done=answered.filter(Boolean).length;
+  const pct=Math.round((done/8)*100);
+  document.getElementById('progress-fill').style.width=pct+'%';
+  document.getElementById('progress-pct').textContent=pct+'%';
+}
+
+function nxt(q){
+  document.getElementById('q'+q).classList.remove('active');
+  const n=q+1;
+  if(n<8){document.getElementById('q'+n).classList.add('active');document.getElementById('progress-text').textContent='Frage '+(n+1)+' von 8';window.scrollTo({top:0,behavior:'smooth'});}
+}
+
+function showResult(){
+  document.getElementById('q7').classList.remove('active');
+  document.getElementById('progress-wrap').style.display='none';
+  const rc=document.getElementById('result-card');rc.classList.add('show');
+  document.getElementById('score-big').textContent=points+'/8';
+  let icon,msg;
+  if(points>=7){icon='🏆';msg='Ausgezeichnet! Du hast Modul 12 vollständig durchdrungen. Du weißt warum Mitarbeiter gehen, wie du die richtigen findest und wie du sie behältst.';}
+  else if(points>=5){icon='👍';msg='Gut gemacht! Du hast die wichtigsten Konzepte verstanden. Schau dir die Fragen die du falsch hattest nochmal in den Lektionen an.';}
+  else{icon='📖';msg='Kein Problem — lies Modul 12 nochmals durch, besonders Lektion 1 (Warum gute Leute gehen) und Lektion 3 (Onboarding).';}
+  document.getElementById('result-icon').textContent=icon;
+  document.getElementById('result-msg').textContent=msg;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+async function markBestanden(){
+  if(!currentUser)return;
+  await sb.from('user_tool_data').upsert({
+    user_id:currentUser.id,tool_name:'quiz_modul12',
+    data:{bestanden:true,punkte:points,datum:new Date().toISOString()},
+    updated_at:new Date().toISOString()
+  },{onConflict:'user_id,tool_name'});
+  const{data:td}=await sb.from('user_tool_data').select('data').eq('user_id',currentUser.id).eq('tool_name','modul_progress').maybeSingle();
+  const progress=(td&&td.data)?td.data:{};
+  progress['12-8']=true;
+  await sb.from('user_tool_data').upsert({
+    user_id:currentUser.id,tool_name:'modul_progress',data:progress,updated_at:new Date().toISOString()
+  },{onConflict:'user_id,tool_name'});
+  document.getElementById('result-card').innerHTML=`
+    <div style="font-size:56px;margin-bottom:16px;">🎉</div>
+    <h2 style="font-family:Georgia,serif;font-size:22px;color:#1a2a4a;margin-bottom:10px;">Modul 12 abgeschlossen!</h2>
+    <p style="font-size:14px;color:#4a5a6a;margin-bottom:24px;">Glückwunsch! Du hast alle 12 Module von GASTRO-OS erfolgreich abgeschlossen.</p>
+    <a href="dashboard.html" style="background:#d4af37;color:#1a2a4a;padding:14px 36px;border-radius:8px;font-size:15px;font-weight:700;text-decoration:none;display:inline-block;">Zum Dashboard →</a>`;
+}
+
+async function init(){
+  const{data:{session}}=await sb.auth.getSession();
+  if(!session){window.location.href='login.html';return;}
+  currentUser=session.user;
+  const{data:qd}=await sb.from('user_tool_data').select('data').eq('user_id',currentUser.id).eq('tool_name','quiz_modul12').maybeSingle();
+  if(qd&&qd.data&&qd.data.bestanden)document.getElementById('bestanden-banner').style.display='block';
+}
+init();
+</script>
+</body>
+</html>

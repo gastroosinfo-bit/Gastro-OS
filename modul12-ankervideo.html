@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ankervideo – Modul 12 | GASTRO-OS</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
+.header { background:#1a2a4a; padding:16px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:20px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.btn-back { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.btn-back:hover { border-color:#d4af37; color:#d4af37; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+.main { max-width:860px; margin:36px auto; padding:0 24px 60px; }
+.page-tag { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; margin-bottom:8px; }
+.page-title { font-family:Georgia,serif; font-size:24px; color:#1a2a4a; margin-bottom:6px; }
+.page-sub { font-size:13px; color:#8090a8; margin-bottom:28px; }
+.video-wrap { position:relative; background:#000; border-radius:12px; overflow:hidden; margin-bottom:28px; box-shadow:0 4px 20px rgba(0,0,0,0.2); }
+.video-wrap iframe { width:100%; height:480px; border:none; display:block; }
+.video-cover { position:absolute; top:0; right:0; width:120px; height:60px; background:#000; z-index:10; }
+.intro-card { background:#fff; border:1px solid #e8dfc8; border-radius:12px; padding:24px 28px; margin-bottom:24px; }
+.intro-card p { font-size:14px; color:#4a5a6a; line-height:1.85; margin-bottom:10px; }
+.intro-card p:last-child { margin-bottom:0; }
+.nav-row { display:flex; gap:12px; justify-content:space-between; margin-top:8px; }
+.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:12px 24px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none; transition:all 0.2s; display:inline-block; }
+.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
+.nav-btn.secondary { background:transparent; border:1px solid rgba(26,42,74,0.3); color:#1a2a4a; }
+.nav-btn.secondary:hover { background:#1a2a4a; color:#d4af37; }
+.footer { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer strong { color:#d4af37; }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="brand">GASTRO-OS</div>
+  <a href="modul12-uebersicht.html" class="btn-back">← Modulübersicht</a>
+</div>
+<div class="gold-bar"></div>
+<div class="main">
+  <div class="page-tag">Modul 12 · Mitarbeiter finden &amp; halten</div>
+  <div class="page-title">🎬 Ankervideo — Mitarbeiter finden &amp; halten</div>
+  <div class="page-sub">Schau dieses Video bevor du mit den Lektionen beginnst.</div>
+
+  <div class="video-wrap">
+    <iframe src="https://drive.google.com/file/d/16Xqfjg36Y2SDFXH2-3P0EQLynB-Yf57U/preview" allow="autoplay" allowfullscreen></iframe>
+    <div class="video-cover"></div>
+  </div>
+
+  <div class="intro-card">
+    <p>Mitarbeitermangel ist das Thema Nummer eins in der Gastronomie. Nicht seit gestern. Aber die meisten Gastronomen reagieren darauf immer noch falsch. Sie suchen. Sie hoffen. Sie warten. Und wenn jemand kündigt fangen sie wieder von vorne an.</p>
+    <p>Das muss nicht so sein. In diesem Modul lernst du warum gute Mitarbeiter wirklich gehen, wie du Stellenanzeigen schreibst die die richtigen Menschen ansprechen, wie du neue Mitarbeiter von Tag eins richtig einarbeitest und wie du ein Team aufbaust das bleibt.</p>
+    <p>Kein Zufall. Kein Glück. Sondern ein System das funktioniert. Schau es in Ruhe an. Dann lies weiter.</p>
+  </div>
+
+  <div class="nav-row">
+    <a href="modul12-uebersicht.html" class="nav-btn secondary">← Modulübersicht</a>
+    <a href="modul12-lektion1.html" class="nav-btn">Lektion 1 →</a>
+  </div>
+</div>
+<div class="gold-bar"></div>
+<div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+</body>
+</html>
