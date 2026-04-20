@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monats Reflexion – Modul 11 | GASTRO-OS</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
+.header { background:#1a2a4a; padding:16px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); position:sticky; top:0; z-index:100; }
+.brand { font-family:Georgia,serif; font-size:20px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.back-btn { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; cursor:pointer; text-decoration:none; transition:all 0.2s; }
+.back-btn:hover { border-color:#d4af37; color:#d4af37; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+.main { max-width:900px; margin:32px auto; padding:0 20px 60px; }
+.tool-hero { background:#1a2a4a; border-radius:10px; padding:22px 28px; margin-bottom:24px; }
+.tool-hero h1 { font-family:Georgia,serif; font-size:19px; color:#d4af37; margin-bottom:6px; }
+.tool-hero p { font-size:13px; color:#a0b0c8; line-height:1.7; }
+.section { background:#fff; border:1px solid #e8dfc8; border-radius:10px; margin-bottom:20px; overflow:hidden; }
+.section-head { background:#1a2a4a; padding:12px 20px; display:flex; align-items:center; gap:10px; }
+.section-num { background:#d4af37; color:#1a2a4a; width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; flex-shrink:0; }
+.section-head h2 { font-family:Georgia,serif; font-size:14px; color:#fff; }
+.tool-table { width:100%; border-collapse:collapse; }
+.tool-table th { background:#e8dfc8; color:#1a2a4a; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.8px; padding:10px 12px; text-align:left; }
+.tool-table td { padding:9px 12px; border-bottom:1px solid #f0ece4; font-size:13px; vertical-align:middle; }
+.tool-table tr:last-child td { border-bottom:none; }
+.tool-table tr:hover td { background:#faf8f4; }
+.label-col { font-weight:600; color:#1a2a4a; min-width:200px; }
+.desc-col { color:#8090a8; font-size:12px; font-style:italic; }
+.tool-input { width:100%; border:1px solid #d0c8b0; border-radius:5px; padding:7px 10px; font-size:13px; color:#1a2a4a; background:#faf8f4; font-family:inherit; transition:border 0.2s; }
+.tool-input:focus { outline:none; border-color:#d4af37; background:#fff; }
+.tool-textarea { width:100%; border:1px solid #d0c8b0; border-radius:5px; padding:7px 10px; font-size:13px; color:#1a2a4a; background:#faf8f4; resize:vertical; min-height:60px; font-family:inherit; transition:border 0.2s; }
+.tool-textarea:focus { outline:none; border-color:#d4af37; background:#fff; }
+.rating-select { width:100%; border:1px solid #d0c8b0; border-radius:5px; padding:6px 8px; font-size:13px; color:#1a2a4a; background:#faf8f4; cursor:pointer; }
+.rating-select:focus { outline:none; border-color:#d4af37; }
+.grid2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; padding:16px 20px; }
+.field-group label { display:block; font-size:11px; font-weight:700; color:#1a2a4a; text-transform:uppercase; letter-spacing:1px; margin-bottom:5px; }
+.save-row { padding:14px 20px; border-top:1px solid #e8dfc8; display:flex; align-items:center; gap:12px; justify-content:flex-end; }
+.save-btn { background:#1a2a4a; color:#d4af37; border:none; padding:10px 24px; border-radius:7px; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; }
+.save-btn:hover { background:#d4af37; color:#1a2a4a; }
+.save-status { font-size:12px; color:#4aaa70; display:none; }
+.nav-row { display:flex; gap:12px; justify-content:space-between; margin-top:28px; }
+.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:12px 24px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none; transition:all 0.2s; }
+.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
+.nav-btn.secondary { background:transparent; border:1px solid rgba(26,42,74,0.3); color:#1a2a4a; }
+.nav-btn.secondary:hover { background:#1a2a4a; color:#d4af37; }
+.footer { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer strong { color:#d4af37; }
+</style>
+</head>
+<body>
+<div class="header"><div class="brand">GASTRO-OS</div><a href="modul11-uebersicht.html" class="back-btn">← Modulübersicht</a></div>
+<div class="gold-bar"></div>
+<div class="main">
+  <div class="tool-hero">
+    <h1>GASTRO-OS | Monats-Reflexion</h1>
+    <p>Modul 11: Unternehmer-Freiheit &amp; Lebensqualität — Einmal im Monat, 15 Minuten, ehrlich.<br>
+    Diese Reflexion ist kein Test — sie ist ein Spiegel. Füll sie einmal im Monat ehrlich aus. Nach 3 Monaten siehst du bereits klare Muster. Nach 12 Monaten siehst du wie weit du wirklich gekommen bist.</p>
+  </div>
+
+  <!-- ① ALLGEMEIN -->
+  <div class="section">
+    <div class="section-head"><div class="section-num">①</div><h2>ALLGEMEIN</h2></div>
+    <div class="grid2">
+      <div class="field-group"><label>Monat / Jahr</label><input class="tool-input" id="r_monat" placeholder="z.B. März 2025" oninput="autosave()"></div>
+      <div class="field-group"><label>Datum der Reflexion</label><input class="tool-input" id="r_datum" placeholder="TT.MM.JJJJ" oninput="autosave()"></div>
+    </div>
+  </div>
+
+  <!-- ② ZAHLEN -->
+  <div class="section">
+    <div class="section-head"><div class="section-num">②</div><h2>ZAHLEN DES MONATS</h2></div>
+    <table class="tool-table">
+      <thead><tr><th style="width:24%">Kennzahl</th><th style="width:18%">Ziel</th><th style="width:18%">Ist-Wert</th><th style="width:18%">Vormonat</th><th style="width:12%">Veränderung</th><th style="width:10%">Bewertung</th></tr></thead>
+      <tbody>
+        <tr><td class="label-col">Umsatz (€)</td><td><input class="tool-input" id="z_umsatz_ziel" oninput="autosave()"></td><td><input class="tool-input" id="z_umsatz_ist" oninput="autosave()"></td><td><input class="tool-input" id="z_umsatz_vor" oninput="autosave()"></td><td><input class="tool-input" id="z_umsatz_ver" oninput="autosave()"></td><td><input class="tool-input" id="z_umsatz_bew" oninput="autosave()"></td></tr>
+        <tr><td class="label-col">Gewinn (€)</td><td><input class="tool-input" id="z_gewinn_ziel" oninput="autosave()"></td><td><input class="tool-input" id="z_gewinn_ist" oninput="autosave()"></td><td><input class="tool-input" id="z_gewinn_vor" oninput="autosave()"></td><td><input class="tool-input" id="z_gewinn_ver" oninput="autosave()"></td><td><input class="tool-input" id="z_gewinn_bew" oninput="autosave()"></td></tr>
+        <tr><td class="label-col">Wareneinsatz (%)</td><td><input class="tool-input" id="z_waren_ziel" oninput="autosave()"></td><td><input class="tool-input" id="z_waren_ist" oninput="autosave()"></td><td><input class="tool-input" id="z_waren_vor" oninput="autosave()"></td><td><input class="tool-input" id="z_waren_ver" oninput="autosave()"></td><td><input class="tool-input" id="z_waren_bew" oninput="autosave()"></td></tr>
+        <tr><td class="label-col">Personalkosten (%)</td><td><input class="tool-input" id="z_personal_ziel" oninput="autosave()"></td><td><input class="tool-input" id="z_personal_ist" oninput="autosave()"></td><td><input class="tool-input" id="z_personal_vor" oninput="autosave()"></td><td><input class="tool-input" id="z_personal_ver" oninput="autosave()"></td><td><input class="tool-input" id="z_personal_bew" oninput="autosave()"></td></tr>
+        <tr><td class="label-col">Durchschnittsbon (€)</td><td><input class="tool-input" id="z_bon_ziel" oninput="autosave()"></td><td><input class="tool-input" id="z_bon_ist" oninput="autosave()"></td><td><input class="tool-input" id="z_bon_vor" oninput="autosave()"></td><td><input class="tool-input" id="z_bon_ver" oninput="autosave()"></td><td><input class="tool-input" id="z_bon_bew" oninput="autosave()"></td></tr>
+        <tr><td class="label-col">Anzahl Gäste</td><td><input class="tool-input" id="z_gaeste_ziel" oninput="autosave()"></td><td><input class="tool-input" id="z_gaeste_ist" oninput="autosave()"></td><td><input class="tool-input" id="z_gaeste_vor" oninput="autosave()"></td><td><input class="tool-input" id="z_gaeste_ver" oninput="autosave()"></td><td><input class="tool-input" id="z_gaeste_bew" oninput="autosave()"></td></tr>
+        <tr><td class="label-col">Google Bewertungen (Anzahl)</td><td><input class="tool-input" id="z_google_ziel" oninput="autosave()"></td><td><input class="tool-input" id="z_google_ist" oninput="autosave()"></td><td><input class="tool-input" id="z_google_vor" oninput="autosave()"></td><td><input class="tool-input" id="z_google_ver" oninput="autosave()"></td><td><input class="tool-input" id="z_google_bew" oninput="autosave()"></td></tr>
+        <tr><td class="label-col">Durchschnittliche Sternebewertung</td><td><input class="tool-input" id="z_sterne_ziel" oninput="autosave()"></td><td><input class="tool-input" id="z_sterne_ist" oninput="autosave()"></td><td><input class="tool-input" id="z_sterne_vor" oninput="autosave()"></td><td><input class="tool-input" id="z_sterne_ver" oninput="autosave()"></td><td><input class="tool-input" id="z_sterne_bew" oninput="autosave()"></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ③ TEAM -->
+  <div class="section">
+    <div class="section-head"><div class="section-num">③</div><h2>TEAM &amp; BETRIEB</h2></div>
+    <table class="tool-table">
+      <tbody>
+        <tr><td class="label-col">Wie war die Stimmung im Team diesen Monat?</td><td class="desc-col">1 = sehr schlecht | 5 = sehr gut</td><td><select class="rating-select" id="t_stimmung" onchange="autosave()"><option value="">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></td></tr>
+        <tr><td class="label-col">Gab es Konflikte oder offene Themen im Team?</td><td class="desc-col">Kurze Beschreibung</td><td><textarea class="tool-textarea" id="t_konflikte" oninput="autosave()"></textarea></td></tr>
+        <tr><td class="label-col">Welcher Prozess hat besonders gut funktioniert?</td><td class="desc-col"></td><td><textarea class="tool-textarea" id="t_prozess_gut" oninput="autosave()"></textarea></td></tr>
+        <tr><td class="label-col">Welcher Prozess hat Probleme gemacht?</td><td class="desc-col"></td><td><textarea class="tool-textarea" id="t_prozess_schlecht" oninput="autosave()"></textarea></td></tr>
+        <tr><td class="label-col">Hat der Betrieb auch ohne mich funktioniert?</td><td class="desc-col">Ja / Teilweise / Nein — Was fehlte?</td><td><textarea class="tool-textarea" id="t_ohne_mich" oninput="autosave()"></textarea></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ④ ENERGIE -->
+  <div class="section">
+    <div class="section-head"><div class="section-num">④</div><h2>PERSÖNLICHE ENERGIE &amp; LEBENSQUALITÄT</h2></div>
+    <table class="tool-table">
+      <tbody>
+        <tr><td class="label-col">Wie viele Stunden habe ich diese Woche gearbeitet?</td><td class="desc-col">Durchschnitt pro Woche</td><td><input class="tool-input" id="e_stunden" oninput="autosave()"></td></tr>
+        <tr><td class="label-col">Wie war meine persönliche Energie?</td><td class="desc-col">1 = erschöpft | 5 = voller Energie</td><td><select class="rating-select" id="e_energie" onchange="autosave()"><option value="">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></td></tr>
+        <tr><td class="label-col">Hatte ich echte freie Zeit?</td><td class="desc-col">Ja / Nein — Wie viel?</td><td><input class="tool-input" id="e_freizeit" oninput="autosave()"></td></tr>
+        <tr><td class="label-col">War ich präsent für Familie / Freunde?</td><td class="desc-col">1 = kaum | 5 = sehr präsent</td><td><select class="rating-select" id="e_praesent" onchange="autosave()"><option value="">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></td></tr>
+        <tr><td class="label-col">Was hat mir diesen Monat Energie gegeben?</td><td class="desc-col"></td><td><textarea class="tool-textarea" id="e_energie_plus" oninput="autosave()"></textarea></td></tr>
+        <tr><td class="label-col">Was hat mir Energie genommen?</td><td class="desc-col"></td><td><textarea class="tool-textarea" id="e_energie_minus" oninput="autosave()"></textarea></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ⑤ LEARNINGS -->
+  <div class="section">
+    <div class="section-head"><div class="section-num">⑤</div><h2>LEARNINGS &amp; NÄCHSTER SCHRITT</h2></div>
+    <table class="tool-table">
+      <tbody>
+        <tr><td class="label-col">Was lief diesen Monat besonders gut?</td><td><textarea class="tool-textarea" id="l_gut" oninput="autosave()"></textarea></td></tr>
+        <tr><td class="label-col">Was würde ich heute anders machen?</td><td><textarea class="tool-textarea" id="l_anders" oninput="autosave()"></textarea></td></tr>
+        <tr><td class="label-col">Was ist meine wichtigste Erkenntnis des Monats?</td><td><textarea class="tool-textarea" id="l_erkenntnis" oninput="autosave()"></textarea></td></tr>
+        <tr><td class="label-col">Mein #1 Fokus im nächsten Monat</td><td><input class="tool-input" id="l_fokus" placeholder="Eine konkrete Maßnahme" oninput="autosave()"></td></tr>
+        <tr><td class="label-col">Mein persönliches Ziel nächsten Monat</td><td><input class="tool-input" id="l_ziel" placeholder="Für dich — nicht für den Betrieb" oninput="autosave()"></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ⑥ VERGLEICH -->
+  <div class="section">
+    <div class="section-head"><div class="section-num">⑥</div><h2>VERGLEICH ZU MONAT 1 (Kursstart)</h2></div>
+    <table class="tool-table">
+      <thead><tr><th style="width:30%">Bereich</th><th style="width:23%">Monat 1 (Kursstart)</th><th style="width:23%">Heute</th><th style="width:24%">Veränderung</th></tr></thead>
+      <tbody>
+        <tr><td class="label-col">Wochenstunden Arbeit</td><td><input class="tool-input" id="v_stunden_start" oninput="autosave()"></td><td><input class="tool-input" id="v_stunden_heute" oninput="autosave()"></td><td><input class="tool-input" id="v_stunden_ver" oninput="autosave()"></td></tr>
+        <tr><td class="label-col">Persönliche Energie (1-5)</td><td><input class="tool-input" id="v_energie_start" oninput="autosave()"></td><td><input class="tool-input" id="v_energie_heute" oninput="autosave()"></td><td><input class="tool-input" id="v_energie_ver" oninput="autosave()"></td></tr>
+        <tr><td class="label-col">Betrieb läuft ohne mich (1-5)</td><td><input class="tool-input" id="v_betrieb_start" oninput="autosave()"></td><td><input class="tool-input" id="v_betrieb_heute" oninput="autosave()"></td><td><input class="tool-input" id="v_betrieb_ver" oninput="autosave()"></td></tr>
+        <tr><td class="label-col">Gewinn (€)</td><td><input class="tool-input" id="v_gewinn_start" oninput="autosave()"></td><td><input class="tool-input" id="v_gewinn_heute" oninput="autosave()"></td><td><input class="tool-input" id="v_gewinn_ver" oninput="autosave()"></td></tr>
+        <tr><td class="label-col">Wareneinsatz (%)</td><td><input class="tool-input" id="v_waren_start" oninput="autosave()"></td><td><input class="tool-input" id="v_waren_heute" oninput="autosave()"></td><td><input class="tool-input" id="v_waren_ver" oninput="autosave()"></td></tr>
+        <tr><td class="label-col">Lebensqualität (1-5)</td><td><input class="tool-input" id="v_lq_start" oninput="autosave()"></td><td><input class="tool-input" id="v_lq_heute" oninput="autosave()"></td><td><input class="tool-input" id="v_lq_ver" oninput="autosave()"></td></tr>
+      </tbody>
+    </table>
+    <div class="save-row">
+      <span class="save-status" id="save-status">✓ Gespeichert</span>
+      <button class="save-btn" onclick="saveData()">💾 Speichern</button>
+    </div>
+  </div>
+
+  <div class="nav-row">
+    <a href="modul11-reflexion-video.html" class="nav-btn secondary">← Anleitung</a>
+    <a href="modul11-sterne-video.html" class="nav-btn">So nutzt du das Sterne Level System →</a>
+  </div>
+</div>
+<div class="gold-bar"></div>
+<div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg &nbsp;|&nbsp; Modul 11: Unternehmer-Freiheit &amp; Lebensqualität</div>
+
+<script>
+const SUPABASE_URL='https://hchlganbgjeciwhwaisj.supabase.co';
+const SUPABASE_KEY='sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3';
+const{createClient}=supabase;
+const sb=createClient(SUPABASE_URL,SUPABASE_KEY);
+let currentUser=null,saveTimer=null;
+
+const FIELDS=['r_monat','r_datum','z_umsatz_ziel','z_umsatz_ist','z_umsatz_vor','z_umsatz_ver','z_umsatz_bew','z_gewinn_ziel','z_gewinn_ist','z_gewinn_vor','z_gewinn_ver','z_gewinn_bew','z_waren_ziel','z_waren_ist','z_waren_vor','z_waren_ver','z_waren_bew','z_personal_ziel','z_personal_ist','z_personal_vor','z_personal_ver','z_personal_bew','z_bon_ziel','z_bon_ist','z_bon_vor','z_bon_ver','z_bon_bew','z_gaeste_ziel','z_gaeste_ist','z_gaeste_vor','z_gaeste_ver','z_gaeste_bew','z_google_ziel','z_google_ist','z_google_vor','z_google_ver','z_google_bew','z_sterne_ziel','z_sterne_ist','z_sterne_vor','z_sterne_ver','z_sterne_bew','t_stimmung','t_konflikte','t_prozess_gut','t_prozess_schlecht','t_ohne_mich','e_stunden','e_energie','e_freizeit','e_praesent','e_energie_plus','e_energie_minus','l_gut','l_anders','l_erkenntnis','l_fokus','l_ziel','v_stunden_start','v_stunden_heute','v_stunden_ver','v_energie_start','v_energie_heute','v_energie_ver','v_betrieb_start','v_betrieb_heute','v_betrieb_ver','v_gewinn_start','v_gewinn_heute','v_gewinn_ver','v_waren_start','v_waren_heute','v_waren_ver','v_lq_start','v_lq_heute','v_lq_ver'];
+
+function collectData(){const d={};FIELDS.forEach(f=>{const el=document.getElementById(f);if(el)d[f]=el.value;});return d;}
+function fillData(d){if(!d)return;FIELDS.forEach(f=>{const el=document.getElementById(f);if(el&&d[f]!==undefined)el.value=d[f];});}
+
+async function saveData(){
+  if(!currentUser)return;
+  await sb.from('user_tool_data').upsert({user_id:currentUser.id,tool_name:'modul11_reflexion',data:collectData(),updated_at:new Date().toISOString()},{onConflict:'user_id,tool_name'});
+  const el=document.getElementById('save-status');
+  if(el){el.style.display='inline';setTimeout(()=>{el.style.display='none';},2000);}
+}
+function autosave(){clearTimeout(saveTimer);saveTimer=setTimeout(saveData,1500);}
+
+async function init(){
+  const{data:{session}}=await sb.auth.getSession();
+  if(!session){window.location.href='login.html';return;}
+  currentUser=session.user;
+  const{data:td}=await sb.from('user_tool_data').select('data').eq('user_id',currentUser.id).eq('tool_name','modul11_reflexion').maybeSingle();
+  if(td&&td.data)fillData(td.data);
+}
+init();
+</script>
+</body>
+</html>
