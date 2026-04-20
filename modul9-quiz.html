@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quiz – Modul 9</title>
+<title>Quiz – Modul 9 | GASTRO-OS</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
@@ -12,247 +13,432 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 .btn-back { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
 .btn-back:hover { border-color:#d4af37; color:#d4af37; }
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
-.main { max-width:780px; margin:40px auto; padding:0 24px 60px; }
-.modul-badge { display:inline-block; background:#1a2a4a; color:#d4af37; font-size:11px; font-weight:700; letter-spacing:2px; padding:4px 14px; border-radius:4px; margin-bottom:12px; }
-h1 { font-family:Georgia,serif; font-size:26px; color:#1a2a4a; margin-bottom:24px; }
-.intro-card { background:#fff; border:1px solid #e8dfc8; border-radius:10px; padding:28px 32px; margin-bottom:28px; box-shadow:0 2px 8px rgba(0,0,0,0.04); }
-.intro-card p { font-size:14px; line-height:1.8; color:#3a4a6a; margin-bottom:10px; }
-.stats-row { display:flex; justify-content:center; gap:40px; margin:20px 0 0; }
-.stat { text-align:center; }
-.stat .num { font-family:Georgia,serif; font-size:30px; color:#1a2a4a; font-weight:700; }
-.stat .lbl { font-size:11px; color:#8090a8; margin-top:4px; }
-.quiz-q { background:#fff; border:1px solid #e8dfc8; border-radius:10px; padding:24px 28px; margin-bottom:16px; box-shadow:0 2px 6px rgba(0,0,0,0.04); }
-.quiz-q-num { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; margin-bottom:10px; }
-.quiz-q-text { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; margin-bottom:18px; line-height:1.5; }
-.quiz-opt { display:flex; align-items:flex-start; gap:12px; padding:10px 14px; border:2px solid #e8dfc8; border-radius:8px; cursor:pointer; margin-bottom:8px; transition:all 0.2s; font-size:14px; color:#3a4a6a; }
-.quiz-opt:hover { border-color:#d4af37; background:#faf6ec; }
-.quiz-opt.selected { border-color:#1a2a4a; background:#f0f4ff; }
-.quiz-opt.correct { border-color:#1a6030; background:#e8fce8; color:#1a3020; }
-.quiz-opt.wrong { border-color:#a01020; background:#fce8e8; color:#501020; }
-.quiz-radio { width:18px; height:18px; border:2px solid #d0c8b0; border-radius:50%; flex-shrink:0; margin-top:1px; transition:all 0.2s; }
-.quiz-opt.selected .quiz-radio { background:#1a2a4a; border-color:#1a2a4a; }
-.quiz-opt.correct .quiz-radio { background:#1a6030; border-color:#1a6030; }
-.quiz-opt.wrong .quiz-radio { background:#a01020; border-color:#a01020; }
-.feedback { font-size:13px; margin-top:12px; padding:10px 14px; border-radius:6px; display:none; line-height:1.6; }
-.feedback.correct { background:#e8fce8; color:#1a3020; border-left:4px solid #1a6030; }
-.feedback.wrong { background:#fce8e8; color:#501020; border-left:4px solid #a01020; }
-.gold-divider { height:2px; background:linear-gradient(90deg,transparent,#d4af37,transparent); margin:32px 0; }
-.btn-submit { background:#d4af37; color:#1a2a4a; border:none; padding:14px 40px; border-radius:8px; font-size:16px; font-weight:700; cursor:pointer; display:block; margin:28px auto 0; transition:all 0.2s; }
-.btn-submit:hover { background:#c8a030; }
-.result-card { background:#fff; border:1px solid #e8dfc8; border-radius:10px; padding:36px 32px; text-align:center; display:none; box-shadow:0 2px 8px rgba(0,0,0,0.04); }
-.result-icon { font-size:56px; margin-bottom:16px; }
-.result-title { font-family:Georgia,serif; font-size:22px; color:#1a2a4a; margin-bottom:12px; }
-.result-score { font-size:40px; font-weight:700; color:#d4af37; margin:8px 0; }
-.result-text { font-size:14px; color:#3a4a6a; line-height:1.7; margin-top:12px; }
-.btn-retry { background:#1a2a4a; color:#d4af37; border:none; padding:12px 32px; border-radius:8px; font-size:14px; font-weight:700; cursor:pointer; margin-top:20px; transition:all 0.2s; }
-.btn-retry:hover { background:#2a3a5a; }
-.footer { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.main { max-width:760px; margin:36px auto; padding:0 24px 60px; }
+.page-tag { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; margin-bottom:8px; }
+.page-title { font-family:Georgia,serif; font-size:24px; color:#1a2a4a; margin-bottom:6px; }
+.page-sub { font-size:13px; color:#8090a8; margin-bottom:28px; }
+.intro-card { background:#fff; border:1px solid #e8dfc8; border-radius:10px; padding:22px 26px; margin-bottom:28px; }
+.intro-card h2 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; margin-bottom:8px; }
+.intro-card p { font-size:13px; color:#4a5a6a; line-height:1.7; }
+.stats-row { display:flex; gap:16px; margin-top:14px; }
+.stat { text-align:center; background:#f5f0e8; border-radius:8px; padding:10px 20px; }
+.stat .number { font-family:Georgia,serif; font-size:20px; color:#1a2a4a; font-weight:700; }
+.stat .label { font-size:11px; color:#8090a8; margin-top:2px; }
+.progress-wrap { margin-bottom:24px; }
+.progress-label { display:flex; justify-content:space-between; font-size:12px; color:#8090a8; margin-bottom:6px; }
+.progress-bar { height:6px; background:#e8dfc8; border-radius:3px; overflow:hidden; }
+.progress-fill { height:100%; background:linear-gradient(90deg,#1a2a4a,#d4af37); border-radius:3px; transition:width 0.4s ease; }
+.question-card { background:#fff; border:1px solid #e8dfc8; border-radius:10px; padding:24px 26px; margin-bottom:20px; box-shadow:0 2px 8px rgba(0,0,0,0.04); display:none; }
+.question-card.active { display:block; }
+.q-num { font-size:11px; font-weight:700; color:#d4af37; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:10px; }
+.q-text { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; margin-bottom:20px; line-height:1.5; }
+.q-hint { font-size:12px; color:#8090a8; margin-bottom:14px; font-style:italic; }
+.options { display:flex; flex-direction:column; gap:10px; }
+.option { display:flex; align-items:flex-start; gap:12px; padding:12px 16px; border:2px solid #e8dfc8; border-radius:8px; cursor:pointer; transition:all 0.2s; background:#faf8f4; user-select:none; }
+.option:hover:not(.disabled) { border-color:#d4af37; background:#fff; }
+.option.selected { border-color:#1a2a4a; background:#f0f4ff; }
+.option.correct { border-color:#4aaa70; background:#e6f7ee; }
+.option.wrong { border-color:#cc5544; background:#fdecea; }
+.option.disabled { cursor:default; }
+.option-check { width:20px; height:20px; border:2px solid #d0c8b0; flex-shrink:0; margin-top:1px; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; transition:all 0.2s; }
+/* rund = eine Antwort, eckig = mehrere */
+.option-check.round { border-radius:50%; }
+.option-check.square { border-radius:4px; }
+.option.selected .option-check { background:#1a2a4a; border-color:#1a2a4a; color:#fff; }
+.option.correct .option-check { background:#4aaa70; border-color:#4aaa70; color:#fff; }
+.option.wrong .option-check { background:#cc5544; border-color:#cc5544; color:#fff; }
+.option-text { font-size:14px; color:#2a3a4a; line-height:1.5; flex:1; }
+.feedback-box { display:none; border-radius:8px; padding:14px 18px; margin-top:16px; font-size:13px; line-height:1.7; }
+.feedback-box.show { display:block; }
+.feedback-box.correct { background:#e6f7ee; border:1px solid #4aaa70; color:#1a5030; }
+.feedback-box.wrong { background:#fdecea; border:1px solid #cc5544; color:#7a2010; }
+.btn-row { display:flex; justify-content:space-between; align-items:center; margin-top:20px; gap:12px; }
+.btn-check { background:#1a2a4a; color:#d4af37; border:none; padding:11px 28px; border-radius:8px; font-size:13px; font-weight:700; cursor:pointer; transition:all 0.2s; }
+.btn-check:hover { background:#d4af37; color:#1a2a4a; }
+.btn-check:disabled { opacity:0.4; cursor:default; }
+.btn-next { background:#d4af37; color:#1a2a4a; border:none; padding:11px 28px; border-radius:8px; font-size:13px; font-weight:700; cursor:pointer; transition:all 0.2s; display:none; }
+.btn-next:hover { background:#1a2a4a; color:#d4af37; }
+.result-card { display:none; background:#fff; border:1px solid #e8dfc8; border-radius:10px; padding:36px 32px; text-align:center; }
+.result-card.show { display:block; }
+.score-big { font-family:Georgia,serif; font-size:48px; color:#d4af37; font-weight:700; margin:16px 0 4px; }
+.gold-divider { height:2px; background:linear-gradient(90deg,transparent,#d4af37,transparent); margin:24px 0; }
+.btn-freischalten { background:#d4af37; color:#1a2a4a; border:none; padding:14px 36px; border-radius:8px; font-size:15px; font-weight:700; cursor:pointer; transition:all 0.2s; }
+.btn-freischalten:hover { background:#1a2a4a; color:#d4af37; }
+.bestanden-banner { background:#e6f7ee; border:1px solid #4aaa70; border-radius:10px; padding:20px 24px; margin-bottom:24px; text-align:center; display:none; }
+.footer { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer strong { color:#d4af37; }
 </style>
 </head>
 <body>
 <div class="header">
   <div class="brand">GASTRO-OS</div>
-  <a href="dashboard.html" class="btn-back">← Zurück zum Dashboard</a>
+  <a href="dashboard.html" class="btn-back">← Dashboard</a>
 </div>
 <div class="gold-bar"></div>
 <div class="main">
-  <div class="modul-badge">MODUL 9 · QUIZ</div>
-  <h1>🎯 Quiz — Modul 9</h1>
+  <div class="page-tag">Modul 9 · Marketing &amp; Sichtbarkeit</div>
+  <div class="page-title">🎯 Quiz — Teste dein Wissen</div>
+  <div class="page-sub">8 Fragen · Sofortiges Feedback · Modul 10 wird nach Abschluss freigeschaltet</div>
+
+  <div class="bestanden-banner" id="bestanden-banner">
+    <h3 style="font-family:Georgia,serif;font-size:16px;color:#1a6030;margin-bottom:6px;">🎉 Du hast dieses Quiz bereits abgeschlossen!</h3>
+    <p style="font-size:13px;color:#2a6040;margin-bottom:12px;">Modul 10 ist bereits freigeschaltet.</p>
+    <a href="dashboard.html" style="background:#1a2a4a;color:#d4af37;padding:10px 24px;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;">Zum Dashboard →</a>
+  </div>
 
   <div class="intro-card">
-    <p>Du hast Modul 9 durchgearbeitet. Jetzt ist es Zeit zu prüfen was hängen geblieben ist.</p>
-    <p>In diesem Quiz geht es um die wichtigsten Grundlagen zu Marketing und lokaler Sichtbarkeit. 8 Fragen, Multiple Choice, sofortiges Feedback. Es dauert keine 5 Minuten.</p>
-    <p>Beantworte die Fragen ehrlich, ohne zurückzublättern. Nur so siehst du wo du wirklich stehst.</p>
+    <h2>Quiz Modul 9: Marketing &amp; Sichtbarkeit</h2>
+    <p>Teste dein Wissen aus Modul 9. 8 Fragen rund um Google, Instagram, Bewertungen und Social Media — diesmal sind manchmal auch mehrere Antworten richtig. Lies jede Frage sorgfältig. Viel Erfolg! 😊</p>
     <div class="stats-row">
-      <div class="stat"><div class="num">8</div><div class="lbl">Fragen</div></div>
-      <div class="stat"><div class="num">⚡</div><div class="lbl">Sofort-Feedback</div></div>
-      <div class="stat"><div class="num">5'</div><div class="lbl">Minuten</div></div>
+      <div class="stat"><div class="number">8</div><div class="label">Fragen</div></div>
+      <div class="stat"><div class="number">⚡</div><div class="label">Sofort-Feedback</div></div>
+      <div class="stat"><div class="number">5'</div><div class="label">Minuten</div></div>
     </div>
   </div>
 
-  <div id="quiz-container">
+  <div class="progress-wrap" id="progress-wrap">
+    <div class="progress-label"><span id="progress-text">Frage 1 von 8</span><span id="progress-pct">0%</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+  </div>
 
-    <!-- FRAGE 1 -->
-    <div class="quiz-q" id="q0">
-      <div class="quiz-q-num">FRAGE 1 VON 8</div>
-      <div class="quiz-q-text">Welcher Kanal ist für Gastronomen laut Modul 9 der wichtigste?</div>
-      <div class="quiz-opt" onclick="selectOpt(this,0,0)"><div class="quiz-radio"></div>Instagram</div>
-      <div class="quiz-opt" onclick="selectOpt(this,0,1)"><div class="quiz-radio"></div>TikTok</div>
-      <div class="quiz-opt" onclick="selectOpt(this,0,2)" data-correct="true"><div class="quiz-radio"></div>Google</div>
-      <div class="quiz-opt" onclick="selectOpt(this,0,3)"><div class="quiz-radio"></div>Facebook</div>
-      <div class="feedback wrong" id="fb0-wrong">❌ Falsch. Google ist der wichtigste Kanal, weil er aktive Kaufabsichten bedient — Menschen die gerade aktiv nach einem Restaurant suchen, nicht passiv scrollen.</div>
-      <div class="feedback correct" id="fb0-correct">✅ Richtig! Google bedient aktive Kaufabsichten. Wer dort sucht, will wirklich essen gehen — das ist wertvoller als passives Interesse auf Instagram.</div>
+  <!-- Q1 — mehrere Antworten: B,C,D -->
+  <div class="question-card active" id="q0">
+    <div class="q-num">Frage 1 von 8</div>
+    <div class="q-text">Ein Gast sucht auf Google nach „Restaurant Italian München". Welche drei Faktoren beeinflussen ob dein Betrieb in den Ergebnissen erscheint?</div>
+    <div class="q-hint">☑ Mehrere Antworten möglich</div>
+    <div class="options" id="opts0">
+      <div class="option" onclick="sel(0,0)"><div class="option-check square"></div><div class="option-text">A) Wie viele Instagram-Follower du hast</div></div>
+      <div class="option" onclick="sel(0,1)"><div class="option-check square"></div><div class="option-text">B) Die Vollständigkeit deines Google Unternehmensprofils</div></div>
+      <div class="option" onclick="sel(0,2)"><div class="option-check square"></div><div class="option-text">C) Die Anzahl und Qualität deiner Google-Bewertungen</div></div>
+      <div class="option" onclick="sel(0,3)"><div class="option-check square"></div><div class="option-text">D) Die Relevanz deiner Kategorie und deines Standorts auf Google</div></div>
     </div>
-
-    <!-- FRAGE 2 -->
-    <div class="quiz-q" id="q1">
-      <div class="quiz-q-num">FRAGE 2 VON 8</div>
-      <div class="quiz-q-text">Warum ist Google für Gastronomen wertvoller als Instagram?</div>
-      <div class="quiz-opt" onclick="selectOpt(this,1,0)"><div class="quiz-radio"></div>Google ist kostenlos</div>
-      <div class="quiz-opt" onclick="selectOpt(this,1,1)" data-correct="true"><div class="quiz-radio"></div>Google bedient aktive Kaufabsichten</div>
-      <div class="quiz-opt" onclick="selectOpt(this,1,2)"><div class="quiz-radio"></div>Google hat mehr Nutzer</div>
-      <div class="quiz-opt" onclick="selectOpt(this,1,3)"><div class="quiz-radio"></div>Google ist einfacher zu bedienen</div>
-      <div class="feedback wrong" id="fb1-wrong">❌ Falsch. Der entscheidende Unterschied liegt in der Kaufabsicht: Wer bei Google sucht, will jetzt essen gehen — Instagram dagegen bedient passives Interesse.</div>
-      <div class="feedback correct" id="fb1-correct">✅ Genau! Jemand der "Restaurant in der Nähe" googelt hat eine konkrete Absicht. Diese aktive Kaufabsicht macht Google zum wichtigsten Kanal für neue Gäste.</div>
+    <div class="feedback-box" id="fb0"></div>
+    <div class="btn-row">
+      <span></span>
+      <div style="display:flex;gap:10px;">
+        <button class="btn-check" id="check0" onclick="chk(0)" disabled>Antwort prüfen</button>
+        <button class="btn-next" id="next0" onclick="nxt(0)">Weiter →</button>
+      </div>
     </div>
+  </div>
 
-    <!-- FRAGE 3 -->
-    <div class="quiz-q" id="q2">
-      <div class="quiz-q-num">FRAGE 3 VON 8</div>
-      <div class="quiz-q-text">Was sind die drei Kernelemente eines starken Google Unternehmensprofils?</div>
-      <div class="quiz-opt" onclick="selectOpt(this,2,0)"><div class="quiz-radio"></div>Follower, Likes, Shares</div>
-      <div class="quiz-opt" onclick="selectOpt(this,2,1)" data-correct="true"><div class="quiz-radio"></div>Vollständige Infos, Fotos, Bewertungen</div>
-      <div class="quiz-opt" onclick="selectOpt(this,2,2)"><div class="quiz-radio"></div>Werbeanzeigen, Reichweite, Klicks</div>
-      <div class="quiz-opt" onclick="selectOpt(this,2,3)"><div class="quiz-radio"></div>Öffnungszeiten, Preise, Speisekarte</div>
-      <div class="feedback wrong" id="fb2-wrong">❌ Falsch. Die drei Kernelemente sind: vollständige und aktuelle Informationen (Adresse, Öffnungszeiten etc.), gute Fotos und positive Bewertungen.</div>
-      <div class="feedback correct" id="fb2-correct">✅ Richtig! Vollständige Infos sorgen dafür dass Gäste finden was sie suchen, Fotos erzeugen den ersten Eindruck und Bewertungen sind das wichtigste Vertrauenssignal.</div>
+  <!-- Q2 — eine Antwort: C -->
+  <div class="question-card" id="q1">
+    <div class="q-num">Frage 2 von 8</div>
+    <div class="q-text">Du hast 4,2 Sterne auf Google mit 38 Bewertungen. Ein Konkurrent hat 4,6 Sterne mit 12 Bewertungen. Was ist die richtige Strategie?</div>
+    <div class="q-hint">○ Eine Antwort</div>
+    <div class="options" id="opts1">
+      <div class="option" onclick="sel(1,0)"><div class="option-check round"></div><div class="option-text">A) Den Konkurrenten melden damit seine Bewertungen geprüft werden</div></div>
+      <div class="option" onclick="sel(1,1)"><div class="option-check round"></div><div class="option-text">B) Deinen Preis senken um mehr Gäste anzuziehen</div></div>
+      <div class="option" onclick="sel(1,2)"><div class="option-check round"></div><div class="option-text">C) Aktiv neue Bewertungen sammeln – Quantität und Qualität zusammen schlagen wenige Top-Bewertungen</div></div>
+      <div class="option" onclick="sel(1,3)"><div class="option-check round"></div><div class="option-text">D) Nichts tun – 4,2 Sterne sind gut genug</div></div>
     </div>
-
-    <!-- FRAGE 4 -->
-    <div class="quiz-q" id="q3">
-      <div class="quiz-q-num">FRAGE 4 VON 8</div>
-      <div class="quiz-q-text">Warum haben die meisten Gastronomiebetriebe zu wenige Bewertungen?</div>
-      <div class="quiz-opt" onclick="selectOpt(this,3,0)"><div class="quiz-radio"></div>Weil die Gäste grundsätzlich unzufrieden sind</div>
-      <div class="quiz-opt" onclick="selectOpt(this,3,1)"><div class="quiz-radio"></div>Weil Bewertungen verboten sind</div>
-      <div class="quiz-opt" onclick="selectOpt(this,3,2)" data-correct="true"><div class="quiz-radio"></div>Weil negative Erfahrungen häufiger aktiv geteilt werden als positive</div>
-      <div class="quiz-opt" onclick="selectOpt(this,3,3)"><div class="quiz-radio"></div>Weil Gäste keine Smartphones haben</div>
-      <div class="feedback wrong" id="fb3-wrong">❌ Falsch. Die fundamentale Asymmetrie bei Bewertungen ist: Negative Erfahrungen werden häufiger aktiv geteilt als positive. Zufriedene Gäste denken meist nicht daran, eine Bewertung zu hinterlassen.</div>
-      <div class="feedback correct" id="fb3-correct">✅ Genau! Das ist die fundamentale Asymmetrie. Aktives Bitten um Bewertungen korrigiert diese Schieflage und bringt das Bild deines Betriebs näher an die Realität.</div>
+    <div class="feedback-box" id="fb1"></div>
+    <div class="btn-row">
+      <span></span>
+      <div style="display:flex;gap:10px;">
+        <button class="btn-check" id="check1" onclick="chk(1)" disabled>Antwort prüfen</button>
+        <button class="btn-next" id="next1" onclick="nxt(1)">Weiter →</button>
+      </div>
     </div>
+  </div>
 
-    <!-- FRAGE 5 -->
-    <div class="quiz-q" id="q4">
-      <div class="quiz-q-num">FRAGE 5 VON 8</div>
-      <div class="quiz-q-text">Was sind die drei bewährten Wege um aktiv mehr Google Bewertungen zu bekommen?</div>
-      <div class="quiz-opt" onclick="selectOpt(this,4,0)"><div class="quiz-radio"></div>Werbeanzeigen schalten, Rabatte geben, Stammgäste belohnen</div>
-      <div class="quiz-opt" onclick="selectOpt(this,4,1)" data-correct="true"><div class="quiz-radio"></div>Persönlich bitten, QR-Code am Tisch, Nachfassen per Reservierungssystem</div>
-      <div class="quiz-opt" onclick="selectOpt(this,4,2)"><div class="quiz-radio"></div>Fake-Bewertungen kaufen, Mitbewerber melden, Preise senken</div>
-      <div class="quiz-opt" onclick="selectOpt(this,4,3)"><div class="quiz-radio"></div>Social Media posten, Newsletter versenden, Flyer verteilen</div>
-      <div class="feedback wrong" id="fb4-wrong">❌ Falsch. Die drei bewährten Wege sind: direkt und persönlich bitten am Ende eines gelungenen Abends, ein QR-Code der direkt zur Bewertungsseite führt, und automatisches Nachfassen per Reservierungssystem.</div>
-      <div class="feedback correct" id="fb4-correct">✅ Perfekt! Alle drei Wege funktionieren und fühlen sich natürlicher an als die meisten Gastronomen befürchten. Der direkte persönliche Weg hat dabei oft die höchste Wirkung.</div>
+  <!-- Q3 — eine Antwort: B -->
+  <div class="question-card" id="q2">
+    <div class="q-num">Frage 3 von 8</div>
+    <div class="q-text">Was ist der Hauptunterschied zwischen dem 15 Minuten Marketingplan und dem Marketing Aktionsplan in Gastro-OS?</div>
+    <div class="q-hint">○ Eine Antwort</div>
+    <div class="options" id="opts2">
+      <div class="option" onclick="sel(2,0)"><div class="option-check round"></div><div class="option-text">A) Es gibt keinen Unterschied – beide Tools machen dasselbe</div></div>
+      <div class="option" onclick="sel(2,1)"><div class="option-check round"></div><div class="option-text">B) Der 15 Minuten Marketingplan ist für die tägliche Wochenplanung – der Marketing Aktionsplan für saisonale Jahresplanung</div></div>
+      <div class="option" onclick="sel(2,2)"><div class="option-check round"></div><div class="option-text">C) Der Marketing Aktionsplan ist nur für große Betriebe mit Marketingbudget</div></div>
+      <div class="option" onclick="sel(2,3)"><div class="option-check round"></div><div class="option-text">D) Der 15 Minuten Marketingplan ersetzt den Marketing Aktionsplan komplett</div></div>
     </div>
-
-    <!-- FRAGE 6 -->
-    <div class="quiz-q" id="q5">
-      <div class="quiz-q-num">FRAGE 6 VON 8</div>
-      <div class="quiz-q-text">Welche drei Fragen beantwortet der 15 Minuten Marketingplan?</div>
-      <div class="quiz-opt" onclick="selectOpt(this,5,0)"><div class="quiz-radio"></div>Wie viel Budget, wie viele Follower, wie viele Posts</div>
-      <div class="quiz-opt" onclick="selectOpt(this,5,1)" data-correct="true"><div class="quiz-radio"></div>Was postest du, wann postest du, was ist dein Schwerpunkt</div>
-      <div class="quiz-opt" onclick="selectOpt(this,5,2)"><div class="quiz-radio"></div>Welche Kamera, welche Filter, welche Hashtags</div>
-      <div class="quiz-opt" onclick="selectOpt(this,5,3)"><div class="quiz-radio"></div>Wie viele Gäste, wie viel Umsatz, wie viel Gewinn</div>
-      <div class="feedback wrong" id="fb5-wrong">❌ Falsch. Der 15 Minuten Plan beantwortet drei klare Fragen: Was postest du diese Woche, wann postest du es (konkrete Tage und Uhrzeiten) und was ist dein Marketing Schwerpunkt diese Woche.</div>
-      <div class="feedback correct" id="fb5-correct">✅ Genau! Diese drei Fragen in 15 Minuten beantworten zu können ist der Schlüssel. Was keinen festen Termin hat, passiert nicht — das ist die Kernidee des Plans.</div>
+    <div class="feedback-box" id="fb2"></div>
+    <div class="btn-row">
+      <span></span>
+      <div style="display:flex;gap:10px;">
+        <button class="btn-check" id="check2" onclick="chk(2)" disabled>Antwort prüfen</button>
+        <button class="btn-next" id="next2" onclick="nxt(2)">Weiter →</button>
+      </div>
     </div>
+  </div>
 
-    <!-- FRAGE 7 -->
-    <div class="quiz-q" id="q6">
-      <div class="quiz-q-num">FRAGE 7 VON 8</div>
-      <div class="quiz-q-text">Welche der vier Marketing Routinen aus Modul 9 ist NICHT Teil des Systems?</div>
-      <div class="quiz-opt" onclick="selectOpt(this,6,0)"><div class="quiz-radio"></div>Wöchentlicher 15 Minuten Marketingplan</div>
-      <div class="quiz-opt" onclick="selectOpt(this,6,1)"><div class="quiz-radio"></div>Wöchentlicher Bewertungs Check</div>
-      <div class="quiz-opt" onclick="selectOpt(this,6,2)"><div class="quiz-radio"></div>Monatlicher Google Profil Check</div>
-      <div class="quiz-opt" onclick="selectOpt(this,6,3)" data-correct="true"><div class="quiz-radio"></div>Tägliches Posting auf allen Plattformen</div>
-      <div class="feedback wrong" id="fb6-wrong">❌ Falsch. Die vier Routinen sind: wöchentlicher 15 Min Plan, wöchentlicher Bewertungs Check, monatlicher Google Profil Check und quartalsweise Marketing Reflexion. Tägliches Posting ist ausdrücklich NICHT Teil des Systems.</div>
-      <div class="feedback correct" id="fb6-correct">✅ Richtig! Tägliches Posting ist nicht Teil der vier Routinen — und das ist beabsichtigt. Das System ist bewusst schlank gehalten: weniger als 30 Minuten pro Woche für dauerhafte lokale Sichtbarkeit.</div>
+  <!-- Q4 — eine Antwort: C -->
+  <div class="question-card" id="q3">
+    <div class="q-num">Frage 4 von 8</div>
+    <div class="q-text">Welche Aussage über Hashtags auf Instagram ist korrekt?</div>
+    <div class="q-hint">○ Eine Antwort</div>
+    <div class="options" id="opts3">
+      <div class="option" onclick="sel(3,0)"><div class="option-check round"></div><div class="option-text">A) Je mehr Hashtags desto besser – 30 ist das Maximum und sollte immer ausgeschöpft werden</div></div>
+      <div class="option" onclick="sel(3,1)"><div class="option-check round"></div><div class="option-text">B) Hashtags sind komplett irrelevant für die Reichweite</div></div>
+      <div class="option" onclick="sel(3,2)"><div class="option-check round"></div><div class="option-text">C) Drei bis fünf gezielte lokale und thematische Hashtags sind wirksamer als dreißig wahllose</div></div>
+      <div class="option" onclick="sel(3,3)"><div class="option-check round"></div><div class="option-text">D) Hashtags funktionieren nur wenn man über 1000 Follower hat</div></div>
     </div>
-
-    <!-- FRAGE 8 -->
-    <div class="quiz-q" id="q7">
-      <div class="quiz-q-num">FRAGE 8 VON 8</div>
-      <div class="quiz-q-text">Warum ist der Quartalsplan die ideale Zeiteinheit für Marketing in der Gastronomie?</div>
-      <div class="quiz-opt" onclick="selectOpt(this,7,0)"><div class="quiz-radio"></div>Weil Gastronomen nur quartalsweise Zeit haben</div>
-      <div class="quiz-opt" onclick="selectOpt(this,7,1)"><div class="quiz-radio"></div>Weil Quartale steuerlich relevant sind</div>
-      <div class="quiz-opt" onclick="selectOpt(this,7,2)" data-correct="true"><div class="quiz-radio"></div>Weil er lang genug ist um echte Ergebnisse zu sehen und kurz genug um flexibel zu bleiben</div>
-      <div class="quiz-opt" onclick="selectOpt(this,7,3)"><div class="quiz-radio"></div>Weil Google nur quartalsweise Daten auswertet</div>
-      <div class="feedback wrong" id="fb7-wrong">❌ Falsch. Der Quartalsplan ist ideal weil er die perfekte Balance findet: lang genug um echte Ergebnisse zu messen (Bewertungen, Reichweite, Gästezahlen) und kurz genug um bei Veränderungen flexibel reagieren zu können.</div>
-      <div class="feedback correct" id="fb7-correct">✅ Genau diese Balance macht den Quartalsplan so wertvoll! Ein Jahresplan ist zu starr, ein Wochenplan zu kurzfristig. Drei Monate Fokus — und dann auswerten und anpassen.</div>
+    <div class="feedback-box" id="fb3"></div>
+    <div class="btn-row">
+      <span></span>
+      <div style="display:flex;gap:10px;">
+        <button class="btn-check" id="check3" onclick="chk(3)" disabled>Antwort prüfen</button>
+        <button class="btn-next" id="next3" onclick="nxt(3)">Weiter →</button>
+      </div>
     </div>
+  </div>
 
-    <div class="gold-divider"></div>
-    <button class="btn-submit" onclick="submitQuiz()">Quiz auswerten →</button>
+  <!-- Q5 — mehrere Antworten: B,C -->
+  <div class="question-card" id="q4">
+    <div class="q-num">Frage 5 von 8</div>
+    <div class="q-text">Ein Gast hinterlässt eine 2-Sterne-Bewertung mit dem Kommentar: „Essen war okay aber der Service war unfreundlich und wir haben 40 Minuten gewartet." Was ist die richtige Reaktion?</div>
+    <div class="q-hint">☑ Mehrere Antworten möglich</div>
+    <div class="options" id="opts4">
+      <div class="option" onclick="sel(4,0)"><div class="option-check square"></div><div class="option-text">A) Die Bewertung ignorieren – eine Antwort zieht nur mehr Aufmerksamkeit auf das Problem</div></div>
+      <div class="option" onclick="sel(4,1)"><div class="option-check square"></div><div class="option-text">B) Öffentlich antworten, den Gast ernst nehmen und Verbesserungsbereitschaft zeigen</div></div>
+      <div class="option" onclick="sel(4,2)"><div class="option-check square"></div><div class="option-text">C) Den Gast direkt einladen um die Erfahrung zu korrigieren</div></div>
+      <div class="option" onclick="sel(4,3)"><div class="option-check square"></div><div class="option-text">D) Erklären warum der Service an dem Abend so war und wer schuld daran ist</div></div>
+    </div>
+    <div class="feedback-box" id="fb4"></div>
+    <div class="btn-row">
+      <span></span>
+      <div style="display:flex;gap:10px;">
+        <button class="btn-check" id="check4" onclick="chk(4)" disabled>Antwort prüfen</button>
+        <button class="btn-next" id="next4" onclick="nxt(4)">Weiter →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q6 — eine Antwort: B -->
+  <div class="question-card" id="q5">
+    <div class="q-num">Frage 6 von 8</div>
+    <div class="q-text">Was bedeutet „Reichweite vs. Bindung" im Social Media Marketing für Gastronomen?</div>
+    <div class="q-hint">○ Eine Antwort</div>
+    <div class="options" id="opts5">
+      <div class="option" onclick="sel(5,0)"><div class="option-check round"></div><div class="option-text">A) Reichweite und Bindung sind dasselbe</div></div>
+      <div class="option" onclick="sel(5,1)"><div class="option-check round"></div><div class="option-text">B) Google maximiert die Reichweite – Instagram maximiert die Bindung</div></div>
+      <div class="option" onclick="sel(5,2)"><div class="option-check round"></div><div class="option-text">C) Reichweite ist wichtiger als Bindung weil neue Gäste mehr wert sind als Stammgäste</div></div>
+      <div class="option" onclick="sel(5,3)"><div class="option-check round"></div><div class="option-text">D) Bindung entsteht nur durch bezahlte Werbung</div></div>
+    </div>
+    <div class="feedback-box" id="fb5"></div>
+    <div class="btn-row">
+      <span></span>
+      <div style="display:flex;gap:10px;">
+        <button class="btn-check" id="check5" onclick="chk(5)" disabled>Antwort prüfen</button>
+        <button class="btn-next" id="next5" onclick="nxt(5)">Weiter →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q7 — mehrere Antworten: A,B,D -->
+  <div class="question-card" id="q6">
+    <div class="q-num">Frage 7 von 8</div>
+    <div class="q-text">Du willst deine Google-Bewertungen aktiv steigern. Welche Maßnahmen sind sinnvoll und regelkonform?</div>
+    <div class="q-hint">☑ Mehrere Antworten möglich</div>
+    <div class="options" id="opts6">
+      <div class="option" onclick="sel(6,0)"><div class="option-check square"></div><div class="option-text">A) Einen QR-Code zur Bewertungsseite auf den Tisch stellen</div></div>
+      <div class="option" onclick="sel(6,1)"><div class="option-check square"></div><div class="option-text">B) Das Team schulen Gäste am Ende eines positiven Besuchs aktiv anzusprechen</div></div>
+      <div class="option" onclick="sel(6,2)"><div class="option-check square"></div><div class="option-text">C) Für jede Bewertung einen Gratisdrink anbieten</div></div>
+      <div class="option" onclick="sel(6,3)"><div class="option-check square"></div><div class="option-text">D) In der E-Mail Bestätigung nach einer Reservierung auf Google-Bewertungen hinweisen</div></div>
+    </div>
+    <div class="feedback-box" id="fb6"></div>
+    <div class="btn-row">
+      <span></span>
+      <div style="display:flex;gap:10px;">
+        <button class="btn-check" id="check6" onclick="chk(6)" disabled>Antwort prüfen</button>
+        <button class="btn-next" id="next6" onclick="nxt(6)">Weiter →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q8 — eine Antwort: C -->
+  <div class="question-card" id="q7">
+    <div class="q-num">Frage 8 von 8</div>
+    <div class="q-text">Welche Kennzahl zeigt dir ob dein Social Media Marketing wirklich funktioniert?</div>
+    <div class="q-hint">○ Eine Antwort</div>
+    <div class="options" id="opts7">
+      <div class="option" onclick="sel(7,0)"><div class="option-check round"></div><div class="option-text">A) Die Anzahl deiner Follower</div></div>
+      <div class="option" onclick="sel(7,1)"><div class="option-check round"></div><div class="option-text">B) Wie viele Likes deine Posts bekommen</div></div>
+      <div class="option" onclick="sel(7,2)"><div class="option-check round"></div><div class="option-text">C) Ob mehr Gäste kommen, mehr reservieren oder mehr Bewertungen hinterlassen nach einer Aktion</div></div>
+      <div class="option" onclick="sel(7,3)"><div class="option-check round"></div><div class="option-text">D) Wie oft du pro Woche postest</div></div>
+    </div>
+    <div class="feedback-box" id="fb7"></div>
+    <div class="btn-row">
+      <span></span>
+      <div style="display:flex;gap:10px;">
+        <button class="btn-check" id="check7" onclick="chk(7)" disabled>Antwort prüfen</button>
+        <button class="btn-next" id="next7" onclick="showResult()">Ergebnis anzeigen →</button>
+      </div>
+    </div>
   </div>
 
   <!-- ERGEBNIS -->
   <div class="result-card" id="result-card">
-    <div class="result-icon" id="result-icon">🏆</div>
-    <div class="result-title" id="result-title">Ausgezeichnet!</div>
-    <div class="result-score" id="result-score">8 / 8</div>
-    <div class="result-text" id="result-text"></div>
-    <button class="btn-retry" onclick="retryQuiz()">🔄 Nochmal versuchen</button>
+    <div style="font-size:56px;margin-bottom:16px;" id="result-icon">🎉</div>
+    <h2 style="font-family:Georgia,serif;font-size:22px;color:#1a2a4a;margin-bottom:10px;" id="result-title">Quiz abgeschlossen!</h2>
+    <div class="score-big" id="score-big">0/8</div>
+    <div style="font-size:13px;color:#8090a8;margin-bottom:16px;">Punkte erreicht</div>
+    <p style="font-size:14px;color:#4a5a6a;line-height:1.7;" id="result-msg"></p>
+    <div class="gold-divider"></div>
+    <button class="btn-freischalten" onclick="markBestanden()">✓ Modul 10 freischalten</button>
   </div>
 
-  <div class="gold-divider"></div>
-  <p style="text-align:center; font-size:12px; color:#8090a8; letter-spacing:1px;">GASTRO-OS | System · Strategie · Erfolg</p>
 </div>
+<div class="gold-bar"></div>
 <div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
 
 <script>
-const answers = new Array(8).fill(null);
-const correctIdx = [2, 1, 1, 2, 1, 1, 3, 2];
+const SUPABASE_URL = 'https://hchlganbgjeciwhwaisj.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3';
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+let currentUser = null;
 
-function selectOpt(el, qIdx, optIdx) {
-  const container = document.getElementById('q' + qIdx);
-  container.querySelectorAll('.quiz-opt').forEach(o => o.classList.remove('selected'));
-  el.classList.add('selected');
-  answers[qIdx] = optIdx;
-}
+// Richtige Antworten (0-basiert)
+const CORRECT = [
+  [1,2,3],  // Q1: B,C,D
+  [2],      // Q2: C
+  [1],      // Q3: B
+  [2],      // Q4: C
+  [1,2],    // Q5: B,C
+  [1],      // Q6: B
+  [0,1,3],  // Q7: A,B,D
+  [2],      // Q8: C
+];
 
-function submitQuiz() {
-  let richtig = 0;
-  for (let i = 0; i < 8; i++) {
-    const container = document.getElementById('q' + i);
-    const opts = container.querySelectorAll('.quiz-opt');
-    const fbWrong = document.getElementById('fb' + i + '-wrong');
-    const fbCorrect = document.getElementById('fb' + i + '-correct');
-    if (answers[i] === null) { alert('Bitte beantworte alle Fragen!'); return; }
-    opts.forEach((o, idx) => {
-      o.style.pointerEvents = 'none';
-      if (idx === correctIdx[i]) o.classList.add('correct');
-      else if (idx === answers[i] && answers[i] !== correctIdx[i]) o.classList.add('wrong');
+const FB_OK = [
+  'Sehr gut – B, C und D sind richtig. Google bewertet Vollständigkeit, Relevanz und Reputation. Instagram-Follower haben keinen direkten Einfluss auf dein Google-Ranking.',
+  'Genau! 38 Bewertungen mit 4,2 Sternen sind eine solide Basis. Mit aktiver Strategie kannst du sowohl die Anzahl als auch den Schnitt verbessern – und wirst langfristig glaubwürdiger als ein Konkurrent mit nur 12 Bewertungen.',
+  'Perfekt! Beide Tools ergänzen sich. Der 15 Minuten Marketingplan strukturiert deine Woche. Der Marketing Aktionsplan gibt dir den Überblick über das gesamte Jahr – Saisonales, Aktionen, besondere Anlässe.',
+  'Richtig! Gezielt eingesetzte Hashtags wie der Name deiner Stadt, deine Küche oder dein Konzept bringen dir die richtige Zielgruppe. Masse ohne Relevanz bringt nichts.',
+  'Sehr gut – B und C sind richtig. Eine professionelle öffentliche Antwort zeigt anderen Gästen dass du Kritik ernst nimmst. Eine direkte Einladung zeigt echten Willen zur Verbesserung.',
+  'Genau! Google holt neue Gäste rein die aktiv suchen. Instagram zeigt bestehenden und potenziellen Gästen wer du bist, was dich ausmacht und warum sie wiederkommen sollen. Beide Ziele brauchen unterschiedliche Strategien.',
+  'Sehr gut – A, B und D sind richtig. Alle drei Maßnahmen sind regelkonform und wirksam. Sie treffen Gäste im richtigen Moment ohne Druck oder Gegenleistung.',
+  'Genau! Follower und Likes sind Eitelkeitskennzahlen. Was wirklich zählt ist ob dein Marketing zu echten Ergebnissen führt – mehr Gäste, mehr Reservierungen, mehr Bewertungen.',
+];
+
+const FB_WRONG = [
+  'Richtig wären B, C und D. Instagram-Follower beeinflussen Google nicht. Was zählt ist dein Profil, deine Bewertungen und deine Kategorisierung auf Google selbst.',
+  'Richtig wäre C. Quantität und Qualität zusammen sind entscheidend. Ein Profil mit vielen echten Bewertungen wirkt glaubwürdiger und rankt besser als eines mit wenigen – egal wie hoch der Schnitt ist.',
+  'Richtig wäre B. Die beiden Tools arbeiten auf unterschiedlichen Ebenen. Wöchentliche Umsetzung und jährliche Planung zusammen ergeben ein vollständiges Marketingsystem.',
+  'Richtig wäre C. Zu viele Hashtags wirken unprofessionell und werden von Instagram zunehmend schlechter bewertet. Qualität schlägt Quantität – auch bei Hashtags.',
+  'Richtig wären B und C. Rechtfertigungen und Schuldzuweisungen schaden deinem Image mehr als die ursprüngliche Bewertung. Professionelle Gelassenheit ist die stärkste Antwort.',
+  'Richtig wäre B. Reichweite und Bindung sind zwei verschiedene Ziele – und Google und Instagram erfüllen sie auf unterschiedliche Weise. Wer beides versteht nutzt beide Plattformen richtig.',
+  'Richtig wären A, B und D. Bewertungen gegen Gegenleistungen anzubieten verstößt gegen die Google-Richtlinien und kann zur Löschung des Profils führen.',
+  'Richtig wäre C. Viele Follower und Likes bedeuten nichts wenn niemand kommt. Der einzige Maßstab der zählt ist ob dein Marketing messbare Ergebnisse für deinen Betrieb bringt.',
+];
+
+// Einzelauswahl-Fragen (nur eine Antwort erlaubt)
+const SINGLE = [false, true, true, true, false, true, false, true];
+
+let selected = Array.from({length:8}, () => []);
+let answered = Array(8).fill(false);
+let points = 0;
+
+function sel(q, opt) {
+  if (answered[q]) return;
+  if (SINGLE[q]) {
+    // Nur eine Auswahl
+    selected[q] = [opt];
+    document.querySelectorAll('#opts'+q+' .option').forEach((o,i) => {
+      o.classList.toggle('selected', i===opt);
+      o.querySelector('.option-check').textContent = i===opt ? '✓' : '';
     });
-    if (answers[i] === correctIdx[i]) {
-      richtig++;
-      if (fbCorrect) { fbCorrect.style.display = 'block'; }
-    } else {
-      if (fbWrong) { fbWrong.style.display = 'block'; }
-    }
-  }
-  document.querySelector('.btn-submit').style.display = 'none';
-  const rc = document.getElementById('result-card');
-  rc.style.display = 'block';
-  document.getElementById('result-score').textContent = richtig + ' / 8';
-  let icon, title, text;
-  if (richtig >= 7) {
-    icon = '🏆'; title = 'Ausgezeichnet!';
-    text = 'Du hast Modul 9 vollständig durchdrungen. Google First, Bewertungen als Vertrauenssignal, Social Media ohne Stress — du weißt wie lokale Sichtbarkeit wirklich funktioniert. Starte jetzt deinen ersten 15 Minuten Marketingplan.';
-  } else if (richtig >= 5) {
-    icon = '👍'; title = 'Gut gemacht!';
-    text = 'Du hast die wichtigsten Konzepte verstanden. Schau dir die Fragen die du falsch hattest nochmal in den Lektionen an — besonders das Thema Bewertungsmanagement und die vier Marketing Routinen.';
   } else {
-    icon = '📖'; title = 'Noch einmal nachlesen';
-    text = 'Kein Problem — lies Modul 9 nochmals durch, besonders Lektion 2 (Bewertungen) und Lektion 4 (Marketing als System). Dann schaffst du den Quiz mit Leichtigkeit.';
-  }
-  document.getElementById('result-icon').textContent = icon;
-  document.getElementById('result-title').textContent = title;
-  document.getElementById('result-text').textContent = text;
-  rc.scrollIntoView({ behavior:'smooth' });
-
-  // Supabase speichern
-  try {
-    const sb = window.supabase?.createClient('https://hchlganbgjeciwhwaisj.supabase.co','sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3');
-    if (sb) {
-      sb.auth.getUser().then(({ data }) => {
-        if (data?.user) {
-          sb.from('user_tool_data').upsert({ user_id: data.user.id, tool_name: 'quiz_modul9', data: { bestanden: richtig >= 5, score: richtig }, updated_at: new Date().toISOString() }, { onConflict: 'user_id,tool_name' });
-        }
-      });
+    // Mehrfachauswahl
+    const opts = document.querySelectorAll('#opts'+q+' .option');
+    const idx = selected[q].indexOf(opt);
+    if (idx === -1) {
+      selected[q].push(opt);
+      opts[opt].classList.add('selected');
+      opts[opt].querySelector('.option-check').textContent = '✓';
+    } else {
+      selected[q].splice(idx, 1);
+      opts[opt].classList.remove('selected');
+      opts[opt].querySelector('.option-check').textContent = '';
     }
-  } catch(e) {}
+  }
+  document.getElementById('check'+q).disabled = selected[q].length === 0;
 }
 
-function retryQuiz() { window.location.reload(); }
+function arrEq(a,b) { return a.length===b.length && [...a].sort().every((v,i)=>v===[...b].sort()[i]); }
+
+function chk(q) {
+  if (answered[q]) return;
+  answered[q] = true;
+  const correct = CORRECT[q];
+  const userSel = selected[q];
+  const isOk = arrEq(userSel, correct);
+  if (isOk) points++;
+  const opts = document.querySelectorAll('#opts'+q+' .option');
+  opts.forEach((o,i) => {
+    o.classList.remove('selected'); o.querySelector('.option-check').textContent=''; o.classList.add('disabled'); o.onclick=null;
+    if (correct.includes(i)) { o.classList.add('correct'); o.querySelector('.option-check').textContent='✓'; }
+    else if (userSel.includes(i)) { o.classList.add('wrong'); o.querySelector('.option-check').textContent='✗'; }
+  });
+  const fb = document.getElementById('fb'+q);
+  fb.classList.add('show');
+  if (isOk) { fb.classList.add('correct'); fb.innerHTML='✅ '+FB_OK[q]; }
+  else { fb.classList.add('wrong'); fb.innerHTML='❌ '+FB_WRONG[q]; }
+  document.getElementById('check'+q).style.display='none';
+  document.getElementById('next'+q).style.display='inline-block';
+  const done = answered.filter(Boolean).length;
+  const pct = Math.round((done/8)*100);
+  document.getElementById('progress-fill').style.width=pct+'%';
+  document.getElementById('progress-pct').textContent=pct+'%';
+}
+
+function nxt(q) {
+  document.getElementById('q'+q).classList.remove('active');
+  const n = q+1;
+  if (n < 8) {
+    document.getElementById('q'+n).classList.add('active');
+    document.getElementById('progress-text').textContent='Frage '+(n+1)+' von 8';
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+}
+
+function showResult() {
+  document.getElementById('q7').classList.remove('active');
+  document.getElementById('progress-wrap').style.display='none';
+  const rc = document.getElementById('result-card');
+  rc.classList.add('show');
+  document.getElementById('score-big').textContent=points+'/8';
+  let icon, msg;
+  if (points>=7) { icon='🏆'; msg='Ausgezeichnet! Du hast Modul 9 vollständig durchdrungen. Google First, Bewertungen als Vertrauenssignal, Social Media ohne Stress — du weißt wie lokale Sichtbarkeit wirklich funktioniert.'; }
+  else if (points>=5) { icon='👍'; msg='Gut gemacht! Du hast die wichtigsten Konzepte verstanden. Schau dir die Fragen die du falsch hattest nochmal in den Lektionen an — besonders Bewertungsmanagement und die vier Marketing Routinen.'; }
+  else { icon='📖'; msg='Kein Problem — lies Modul 9 nochmals durch, besonders Lektion 2 (Bewertungen) und Lektion 4 (Marketing als System). Dann schaffst du den Quiz mit Leichtigkeit.'; }
+  document.getElementById('result-icon').textContent=icon;
+  document.getElementById('result-msg').textContent=msg;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+async function markBestanden() {
+  if (!currentUser) return;
+  await sb.from('user_tool_data').upsert({
+    user_id: currentUser.id, tool_name:'quiz_modul9',
+    data:{bestanden:true, punkte:points, datum:new Date().toISOString()},
+    updated_at:new Date().toISOString()
+  },{onConflict:'user_id,tool_name'});
+  const {data:td} = await sb.from('user_tool_data').select('data').eq('user_id',currentUser.id).eq('tool_name','modul_progress').maybeSingle();
+  const progress = (td&&td.data)?td.data:{};
+  progress['9-11']=true;
+  await sb.from('user_tool_data').upsert({
+    user_id:currentUser.id, tool_name:'modul_progress', data:progress, updated_at:new Date().toISOString()
+  },{onConflict:'user_id,tool_name'});
+  document.getElementById('result-card').innerHTML=`
+    <div style="font-size:56px;margin-bottom:16px;">🎉</div>
+    <h2 style="font-family:Georgia,serif;font-size:22px;color:#1a2a4a;margin-bottom:10px;">Modul 10 freigeschaltet!</h2>
+    <p style="font-size:14px;color:#4a5a6a;margin-bottom:24px;">Glückwunsch! Du hast Modul 9 erfolgreich abgeschlossen. Modul 10 ist jetzt verfügbar.</p>
+    <a href="dashboard.html" style="background:#d4af37;color:#1a2a4a;padding:14px 36px;border-radius:8px;font-size:15px;font-weight:700;text-decoration:none;display:inline-block;">Zum Dashboard → Modul 10</a>
+  `;
+}
+
+async function init() {
+  const {data:{session}} = await sb.auth.getSession();
+  if (!session) { window.location.href='login.html'; return; }
+  currentUser = session.user;
+  const {data:qd} = await sb.from('user_tool_data').select('data').eq('user_id',currentUser.id).eq('tool_name','quiz_modul9').maybeSingle();
+  if (qd&&qd.data&&qd.data.bestanden) document.getElementById('bestanden-banner').style.display='block';
+}
+init();
 </script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </body>
 </html>
