@@ -3,53 +3,79 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GASTRO-OS – Modul 0 | Lektion 3</title>
+<title>Lektion 3 — Wo stehst du heute | GASTRO-OS</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f0e8; color: #1a2a4a; min-height: 100vh; }
-  .header { background: #1a2a4a; padding: 22px 40px; text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,0.3); }
-  .header .brand { font-family: Georgia, serif; font-size: 22px; color: #d4af37; letter-spacing: 4px; font-weight: normal; }
-  .header .modul-label { font-size: 11px; color: #a0b0c8; letter-spacing: 3px; text-transform: uppercase; margin-top: 4px; }
-  .gold-bar { height: 3px; background: linear-gradient(90deg, #1a2a4a, #d4af37, #1a2a4a); }
-  .main { max-width: 780px; margin: 36px auto; padding: 0 24px 60px; }
-  .lektion-badge { display: inline-block; background: #1a2a4a; color: #d4af37; font-size: 11px; font-weight: 700; padding: 4px 14px; border-radius: 20px; letter-spacing: 1px; margin-bottom: 14px; }
-  h1 { font-family: Georgia, serif; font-size: 28px; color: #1a2a4a; margin-bottom: 8px; }
-  .gold-rule { width: 56px; height: 2px; background: #d4af37; margin: 12px 0 20px; }
-  .intro-box { background: #fff; border-left: 4px solid #d4af37; border-radius: 0 8px 8px 0; padding: 18px 22px; margin-bottom: 32px; font-size: 14px; color: #5060a0; line-height: 1.7; }
-  h2 { font-family: Georgia, serif; font-size: 20px; color: #1a2a4a; margin: 36px 0 14px; padding-bottom: 8px; border-bottom: 1px solid #e8dfc8; }
-  p { font-size: 14px; line-height: 1.8; color: #334; margin-bottom: 16px; }
-  .highlight-box { background: #fff8e8; border: 1px solid #d4af37; border-radius: 8px; padding: 18px 22px; margin: 24px 0; }
-  .highlight-box p { margin-bottom: 0; color: #5a4000; }
-  .fragen-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 24px 0; }
-  .frage-card { background: #fff; border-radius: 8px; padding: 18px 18px; border: 1px solid #e8dfc8; }
-  .frage-card .nummer { font-size: 11px; font-weight: 700; color: #d4af37; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
-  .frage-card .titel { font-weight: 700; color: #1a2a4a; margin-bottom: 8px; font-size: 14px; }
-  .frage-card .text { font-size: 13px; color: #5060a0; line-height: 1.6; }
-  .abschluss-box { background: #1a2a4a; border-radius: 10px; padding: 24px 28px; margin: 32px 0; color: #fff; }
-  .abschluss-box h2 { color: #d4af37; border-bottom: 1px solid rgba(212,175,55,0.3); font-size: 18px; }
-  .abschluss-box p { color: #c0d0e8; }
-  .nav-buttons { display: flex; justify-content: space-between; align-items: center; margin-top: 40px; padding-top: 24px; border-top: 1px solid #e8dfc8; }
-  .btn-nav { background: #1a2a4a; color: #d4af37; border: none; padding: 12px 24px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: none; letter-spacing: 0.5px; transition: background 0.2s; }
-  .btn-nav:hover { background: #2a3a5a; }
-  .btn-nav.secondary { background: transparent; border: 1px solid #d4af37; color: #d4af37; }
-  .footer { background: #1a2a4a; padding: 14px 40px; text-align: center; font-size: 11px; color: #8090a8; letter-spacing: 1px; }
-  .footer strong { color: #d4af37; }
-  @media(max-width:600px){ .fragen-grid { grid-template-columns: 1fr; } }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
+
+.header {
+  background:#1a2a4a; padding:14px 40px;
+  display:flex; align-items:center; justify-content:space-between;
+  box-shadow:0 2px 12px rgba(0,0,0,0.3);
+}
+.brand { font-family:Georgia,serif; font-size:18px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.back-btn {
+  background:transparent; border:1px solid rgba(212,175,55,0.4);
+  color:#a0b0c8; padding:7px 16px; border-radius:6px;
+  font-size:12px; cursor:pointer; transition:all 0.2s;
+  text-decoration:none; display:inline-block;
+}
+.back-btn:hover { border-color:#d4af37; color:#d4af37; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+
+.content-wrap { max-width:720px; margin:40px auto; padding:0 24px 60px; }
+
+.lektion-welcome {
+  font-size:11px; color:#d4af37; letter-spacing:2px;
+  text-transform:uppercase; font-weight:600; margin-bottom:8px;
+}
+h1 {
+  font-family:Georgia,serif; font-size:28px; color:#1a2a4a;
+  font-weight:normal; margin-bottom:10px; line-height:1.3;
+}
+.lektion-intro {
+  background:#fff; border-left:4px solid #d4af37;
+  padding:16px 20px; border-radius:0 8px 8px 0;
+  font-size:14px; color:#3a4a6a; margin:20px 0 32px;
+  line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05);
+}
+h2 {
+  font-family:Georgia,serif; font-size:19px; color:#1a2a4a;
+  font-weight:normal; margin:36px 0 14px; padding-bottom:8px;
+  border-bottom:1px solid #e8dfc8;
+}
+p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
+p strong { color:#1a2a4a; }
+
+.lektion-footer {
+  margin-top:48px; padding-top:20px;
+  border-top:2px solid #e8dfc8;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.lektion-footer-brand { font-size:11px; color:#8090a8; letter-spacing:1px; }
+.lektion-footer-brand strong { color:#d4af37; }
+
+.footer-main {
+  background:#1a2a4a; margin-top:60px; padding:14px 40px;
+  text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px;
+}
+.footer-main strong { color:#d4af37; }
 </style>
 </head>
 <body>
+
 <div class="header">
   <div class="brand">GASTRO-OS</div>
-  <div class="modul-label">Modul 0 &nbsp;·&nbsp; Lektion 3</div>
+  <a href="dashboard.html" class="back-btn">← Zurück zum Dashboard</a>
 </div>
 <div class="gold-bar"></div>
 
-<div class="main">
-  <div class="lektion-badge">📖 Lektion 3</div>
-  <h1>Wo stehst du heute?</h1>
-  <div class="gold-rule"></div>
+<div class="content-wrap">
 
-  <div class="intro-box">
+  <div class="lektion-welcome">Modul 0 · Lektion 3</div>
+  <h1>Wo stehst du heute?</h1>
+
+  <div class="lektion-intro">
     Du hast jetzt verstanden warum Umsatz alleine nicht reicht — und was das Gastro-OS Prinzip bedeutet. Bevor wir in die einzelnen Module einsteigen kommt jetzt der vielleicht unbequemste aber wichtigste Schritt: eine ehrliche Bestandsaufnahme. Nicht für uns — für dich.
   </div>
 
@@ -58,54 +84,42 @@
   <p>Das ist manchmal unbequem. Aber es ist notwendig. Denn wer seinen Ausgangspunkt nicht kennt, kann seinen Fortschritt nicht messen. Und wer seinen Fortschritt nicht misst, verliert schnell die Motivation.</p>
 
   <h2>Die vier ehrlichen Fragen</h2>
-  <div class="fragen-grid">
-    <div class="frage-card">
-      <div class="nummer">Frage 1</div>
-      <div class="titel">⏰ Deine Zeit</div>
-      <div class="text">Wie viele Stunden arbeitest du durchschnittlich pro Woche — wirklich? Inklusive aller Abende, Wochenenden, Telefonate wenn du eigentlich frei hast. Die meisten Gastronomen kommen auf 60–80 Stunden.</div>
-    </div>
-    <div class="frage-card">
-      <div class="nummer">Frage 2</div>
-      <div class="titel">📊 Deine Zahlen</div>
-      <div class="text">Kannst du deinen aktuellen Wareneinsatz in Prozent benennen — ohne nachzuschauen? Weißt du welche drei Gerichte die höchste Marge haben — und welche drei die niedrigste?</div>
-    </div>
-    <div class="frage-card">
-      <div class="nummer">Frage 3</div>
-      <div class="titel">🕊️ Deine Freiheit</div>
-      <div class="text">Wann warst du das letzte Mal wirklich im Urlaub — nicht erreichbar, nicht eingeloggt, nicht gedanklich im Betrieb? Für viele Gastronomen liegt die Antwort Jahre zurück.</div>
-    </div>
-    <div class="frage-card">
-      <div class="nummer">Frage 4</div>
-      <div class="titel">🏢 Dein Betrieb ohne dich</div>
-      <div class="text">Was würde passieren wenn du morgen für zwei Wochen ausfällst? Würde alles weiterlaufen — oder würde das Chaos ausbrechen? Diese Antwort zeigt dir wo du heute wirklich stehst.</div>
-    </div>
-  </div>
+  <p>Stell dir diese Fragen — und beantworte sie so ehrlich wie möglich:</p>
+  <p><strong>Frage 1 — Deine Zeit:</strong> Wie viele Stunden arbeitest du durchschnittlich pro Woche — wirklich? Nicht die offizielle Version, sondern die echte Zahl inklusive aller Abende, aller Wochenenden, aller Telefonate die du noch schnell beantwortest wenn du eigentlich frei hast.</p>
+  <p>Die meisten Gastronomen kommen bei ehrlicher Zählung auf 60 bis 80 Stunden pro Woche. Manche mehr. Selten weniger. Was ist deine Zahl?</p>
+  <p><strong>Frage 2 — Deine Zahlen:</strong> Kannst du deinen aktuellen Wareneinsatz in Prozent benennen — ohne nachzuschauen? Weißt du welche drei Gerichte auf deiner Karte die höchste Marge haben — und welche drei die niedrigste?</p>
+  <p>Wenn die Antwort Nein ist: Das ist keine Schwäche. Das ist Information. Und genau hier setzt Gastro-OS an.</p>
+  <p><strong>Frage 3 — Deine Freiheit:</strong> Wann warst du das letzte Mal wirklich im Urlaub — also nicht erreichbar, nicht eingeloggt, nicht gedanklich im Betrieb? Und wie lange war das?</p>
+  <p>Für viele Gastronomen liegt die ehrliche Antwort Jahre zurück. Manche haben noch nie einen echten Urlaub gemacht seit sie ihren Betrieb eröffnet haben. Das ist kein Zufall — das ist ein Systemfehler.</p>
+  <p><strong>Frage 4 — Dein Betrieb ohne dich:</strong> Was würde in deinem Betrieb passieren wenn du morgen für zwei Wochen ausfällst?</p>
+  <p>Würde alles weiterlaufen? Würden die richtigen Entscheidungen getroffen? Oder würde ohne dich das Chaos ausbrechen?</p>
+  <p>Die Antwort auf diese Frage zeigt dir klarer als jede Analyse wo du heute wirklich stehst.</p>
 
-  <div class="highlight-box">
-    <p>Schreib deine Antworten auf — am besten jetzt, bevor du weiterliest. Nicht weil wir sie sehen — sondern weil das Aufschreiben eine Klarheit erzeugt die Gedanken alleine selten liefern.<br><br>
-    In zwölf Monaten wirst du dieselben Fragen nochmal beantworten. Und du wirst sehen wie weit du gekommen bist.</p>
-  </div>
+  <h2>Was diese Fragen dir zeigen</h2>
+  <p>Diese Fragen haben keine richtigen oder falschen Antworten. Sie haben nur ehrliche oder unehrliche. Und die ehrlichen Antworten zeigen dir genau wo die Arbeit beginnt.</p>
+  <p>Schreib deine Antworten auf — am besten jetzt, bevor du weiterliest. Nicht weil wir sie sehen — sondern weil das Aufschreiben eine Klarheit erzeugt die Gedanken alleine selten liefern.</p>
+  <p>In zwölf Monaten wirst du dieselben Fragen nochmal beantworten. Und du wirst sehen wie weit du gekommen bist.</p>
 
   <h2>Dein Ausgangspunkt ist kein Urteil</h2>
   <p>Viele Gastronomen fühlen sich unwohl wenn sie diese Fragen ehrlich beantworten. Das Gefühl dass man schon längst weiter sein sollte. Dass andere das besser hinbekommen. Dass man irgendwo versagt hat.</p>
-  <p><strong>Das stimmt nicht.</strong></p>
+  <p>Das stimmt nicht.</p>
   <p>Dein Ausgangspunkt ist kein Urteil über dich als Gastronom oder als Person. Er ist einfach der Punkt von dem aus du startest. Und jeder Weg — egal wie weit er geht — beginnt mit einem ersten ehrlichen Schritt.</p>
   <p>Du hast diesen Schritt bereits gemacht indem du hier bist.</p>
 
-  <div class="abschluss-box">
-    <h2>Was als nächstes kommt</h2>
-    <p>In den nächsten zwölf Modulen bekommst du die Werkzeuge um genau das zu verändern was du gerade ehrlich analysiert hast. Schritt für Schritt. Konkret. Umsetzbar.</p>
-    <p>Kein Modul ist Theorie um der Theorie willen. Jedes Modul hat einen direkten Bezug zu deinem Betriebsalltag — und eine klare Aufgabe die du direkt umsetzen kannst.</p>
-    <p style="color:#d4af37;font-weight:600;margin-bottom:0;">Starte jetzt mit der Reflexionsaufgabe — und dann geht es los mit Modul 1. 😊</p>
+  <h2>Was als nächstes kommt</h2>
+  <p>In den nächsten zwölf Modulen bekommst du die Werkzeuge um genau das zu verändern was du gerade ehrlich analysiert hast. Schritt für Schritt. Konkret. Umsetzbar.</p>
+  <p>Kein Modul ist Theorie um der Theorie willen. Jedes Modul hat einen direkten Bezug zu deinem Betriebsalltag — und eine klare Aufgabe die du direkt umsetzen kannst.</p>
+  <p>Starte jetzt mit der Reflexionsaufgabe — und dann geht es los mit Modul 1. 😊</p>
+
+  <div class="lektion-footer">
+    <div class="lektion-footer-brand"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
   </div>
 
-  <div class="nav-buttons">
-    <a href="modul0-lektion2.html" class="btn-nav secondary">← Lektion 2</a>
-    <a href="dashboard.html" class="btn-nav">✓ Gelesen — zurück zum Dashboard</a>
-  </div>
 </div>
 
-<div class="gold-bar"></div>
-<div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+<div class="footer-main">
+  <strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg
+</div>
+
 </body>
 </html>

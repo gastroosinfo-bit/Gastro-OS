@@ -3,111 +3,120 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GASTRO-OS – Modul 0 | Lektion 1</title>
+<title>Lektion 1 — Warum Umsatz dich nicht rettet | GASTRO-OS</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f0e8; color: #1a2a4a; min-height: 100vh; }
-  .header { background: #1a2a4a; padding: 22px 40px; text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,0.3); }
-  .header .brand { font-family: Georgia, serif; font-size: 22px; color: #d4af37; letter-spacing: 4px; font-weight: normal; }
-  .header .modul-label { font-size: 11px; color: #a0b0c8; letter-spacing: 3px; text-transform: uppercase; margin-top: 4px; }
-  .gold-bar { height: 3px; background: linear-gradient(90deg, #1a2a4a, #d4af37, #1a2a4a); }
-  .main { max-width: 780px; margin: 36px auto; padding: 0 24px 60px; }
-  .lektion-badge { display: inline-block; background: #1a2a4a; color: #d4af37; font-size: 11px; font-weight: 700; padding: 4px 14px; border-radius: 20px; letter-spacing: 1px; margin-bottom: 14px; }
-  h1 { font-family: Georgia, serif; font-size: 28px; color: #1a2a4a; margin-bottom: 8px; }
-  .gold-rule { width: 56px; height: 2px; background: #d4af37; margin: 12px 0 20px; }
-  .intro-box { background: #fff; border-left: 4px solid #d4af37; border-radius: 0 8px 8px 0; padding: 18px 22px; margin-bottom: 32px; font-size: 14px; color: #5060a0; line-height: 1.7; }
-  h2 { font-family: Georgia, serif; font-size: 20px; color: #1a2a4a; margin: 36px 0 14px; padding-bottom: 8px; border-bottom: 1px solid #e8dfc8; }
-  h3 { font-size: 16px; font-weight: 700; color: #1a2a4a; margin: 24px 0 10px; }
-  p { font-size: 14px; line-height: 1.8; color: #334; margin-bottom: 16px; }
-  .highlight-box { background: #fff8e8; border: 1px solid #d4af37; border-radius: 8px; padding: 18px 22px; margin: 24px 0; }
-  .highlight-box p { margin-bottom: 0; color: #5a4000; font-weight: 500; }
-  .example-box { background: #f0f4fb; border-radius: 8px; padding: 20px 24px; margin: 24px 0; }
-  .example-box h3 { color: #1a4a8a; margin-top: 0; }
-  .example-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 12px; }
-  .example-card { background: #fff; border-radius: 6px; padding: 14px 16px; border: 1px solid #d0d8f0; }
-  .example-card .name { font-weight: 700; color: #1a2a4a; margin-bottom: 6px; font-size: 13px; }
-  .example-card .stat { font-size: 12px; color: #5060a0; margin-bottom: 3px; }
-  .example-card.winner { border-color: #4aaa60; background: #f0fbf4; }
-  .example-card.winner .name { color: #1a6030; }
-  .nav-buttons { display: flex; justify-content: space-between; align-items: center; margin-top: 40px; padding-top: 24px; border-top: 1px solid #e8dfc8; }
-  .btn-nav { background: #1a2a4a; color: #d4af37; border: none; padding: 12px 24px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: none; letter-spacing: 0.5px; transition: background 0.2s; }
-  .btn-nav:hover { background: #2a3a5a; }
-  .btn-nav.secondary { background: transparent; border: 1px solid #d4af37; color: #d4af37; }
-  .footer { background: #1a2a4a; margin-top: 0; padding: 14px 40px; text-align: center; font-size: 11px; color: #8090a8; letter-spacing: 1px; }
-  .footer strong { color: #d4af37; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
+
+.header {
+  background:#1a2a4a; padding:14px 40px;
+  display:flex; align-items:center; justify-content:space-between;
+  box-shadow:0 2px 12px rgba(0,0,0,0.3);
+}
+.brand { font-family:Georgia,serif; font-size:18px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.back-btn {
+  background:transparent; border:1px solid rgba(212,175,55,0.4);
+  color:#a0b0c8; padding:7px 16px; border-radius:6px;
+  font-size:12px; cursor:pointer; transition:all 0.2s;
+  text-decoration:none; display:inline-block;
+}
+.back-btn:hover { border-color:#d4af37; color:#d4af37; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+
+.content-wrap { max-width:720px; margin:40px auto; padding:0 24px 60px; }
+
+.lektion-welcome {
+  font-size:11px; color:#d4af37; letter-spacing:2px;
+  text-transform:uppercase; font-weight:600; margin-bottom:8px;
+}
+h1 {
+  font-family:Georgia,serif; font-size:28px; color:#1a2a4a;
+  font-weight:normal; margin-bottom:10px; line-height:1.3;
+}
+.lektion-intro {
+  background:#fff; border-left:4px solid #d4af37;
+  padding:16px 20px; border-radius:0 8px 8px 0;
+  font-size:14px; color:#3a4a6a; margin:20px 0 32px;
+  line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05);
+}
+h2 {
+  font-family:Georgia,serif; font-size:19px; color:#1a2a4a;
+  font-weight:normal; margin:36px 0 14px; padding-bottom:8px;
+  border-bottom:1px solid #e8dfc8;
+}
+p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
+
+.lektion-footer {
+  margin-top:48px; padding-top:20px;
+  border-top:2px solid #e8dfc8;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.lektion-footer-brand { font-size:11px; color:#8090a8; letter-spacing:1px; }
+.lektion-footer-brand strong { color:#d4af37; }
+
+.footer-main {
+  background:#1a2a4a; margin-top:60px; padding:14px 40px;
+  text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px;
+}
+.footer-main strong { color:#d4af37; }
 </style>
 </head>
 <body>
+
 <div class="header">
   <div class="brand">GASTRO-OS</div>
-  <div class="modul-label">Modul 0 &nbsp;·&nbsp; Lektion 1</div>
+  <a href="dashboard.html" class="back-btn">← Zurück zum Dashboard</a>
 </div>
 <div class="gold-bar"></div>
 
-<div class="main">
-  <div class="lektion-badge">📖 Lektion 1</div>
-  <h1>Warum Umsatz dich nicht rettet</h1>
-  <div class="gold-rule"></div>
+<div class="content-wrap">
 
-  <div class="intro-box">
+  <div class="lektion-welcome">Modul 0 · Lektion 1</div>
+  <h1>Warum Umsatz dich nicht rettet</h1>
+
+  <div class="lektion-intro">
     Diese Lektion ist der wichtigste Gedankenshift des gesamten Kurses. Nicht die komplizierteste — aber die wichtigste. Denn was du hier lernst verändert wie du deinen Betrieb von Grund auf siehst. Nimm dir Zeit. Lies es in Ruhe durch. Und sei ehrlich mit dir selbst.
   </div>
 
   <h2>Die größte Lüge der Gastronomie</h2>
   <p>Es gibt eine Überzeugung die sich tief in die Gastronomen-Kultur eingebrannt hat. Sie wird selten laut ausgesprochen — aber sie steckt hinter fast jeder Entscheidung, hinter fast jeder Strategie, hinter fast jedem Gespräch über den Betrieb.</p>
-  <p>Die Überzeugung lautet: <strong>Wenn der Umsatz stimmt, stimmt alles.</strong></p>
+  <p>Die Überzeugung lautet: Wenn der Umsatz stimmt, stimmt alles.</p>
   <p>Mehr Gäste, mehr Umsatz, mehr Sicherheit. Das ist die Logik. Und sie klingt so selbstverständlich dass kaum jemand sie hinterfragt.</p>
   <p>Aber sie ist falsch. Oder genauer gesagt: Sie ist unvollständig. Und diese Unvollständigkeit kostet Gastronomen jedes Jahr Tausende von Euro — manchmal ihre Existenz.</p>
   <p>Denn Umsatz ohne Struktur ist wie Wasser in einem Sieb. Es kommt rein — und fließt direkt wieder raus. Durch unkontrollierten Wareneinsatz. Durch ineffiziente Personalplanung. Durch Energiekosten die niemand im Blick hat. Durch Verschwendung die sich so tief in den Alltag eingeschlichen hat dass sie niemand mehr als Verschwendung wahrnimmt.</p>
   <p>Es gibt Restaurants in Deutschland die machen 800.000 Euro Umsatz im Jahr — und am Ende bleibt weniger übrig als bei einem Betrieb mit 400.000 Euro Umsatz der seine Kosten im Griff hat. Mehr Umsatz, mehr Arbeit, mehr Stress — und weniger Gewinn.</p>
-
-  <div class="highlight-box">
-    <p>Das ist keine Ausnahme. Das ist ein Muster. Und dieses Muster hat einen Namen: <strong>Umsatzfalle.</strong></p>
-  </div>
+  <p>Das ist keine Ausnahme. Das ist ein Muster. Und dieses Muster hat einen Namen: Umsatzfalle.</p>
 
   <h2>Ein konkretes Beispiel aus der Praxis</h2>
-  <div class="example-box">
-    <h3>Zwei Gastronomen — ein entscheidender Unterschied</h3>
-    <div class="example-row">
-      <div class="example-card">
-        <div class="name">Marco</div>
-        <div class="stat">💰 650.000 € Umsatz</div>
-        <div class="stat">⏰ 6 Tage / Woche</div>
-        <div class="stat">📦 Wareneinsatz: 38%</div>
-        <div class="stat">👥 Personalkosten: 42%</div>
-        <div class="stat" style="margin-top:8px;color:#c03020;font-weight:600;">Ergebnis: Kaum Gewinn</div>
-      </div>
-      <div class="example-card winner">
-        <div class="name">Thomas ✓</div>
-        <div class="stat">💰 380.000 € Umsatz</div>
-        <div class="stat">⏰ 5 Tage / Woche</div>
-        <div class="stat">📦 Wareneinsatz: 28%</div>
-        <div class="stat">👥 Personalkosten: 33%</div>
-        <div class="stat" style="margin-top:8px;color:#1a6030;font-weight:600;">Ergebnis: Mehr Gewinn als Marco</div>
-      </div>
-    </div>
-    <p style="margin-top:14px;font-size:13px;color:#1a4a8a;">Mit fast 300.000 € weniger Umsatz verdient Thomas am Ende mehr. Das ist das Ergebnis von Struktur gegen Chaos.</p>
-  </div>
+  <p>Stell dir zwei Gastronomen vor. Beide führen ein Restaurant in einer deutschen Mittelstadt.</p>
+  <p>Marco macht 650.000 Euro Umsatz im Jahr. Er arbeitet sechs Tage die Woche, kennt seine Zahlen kaum, und wundert sich warum am Ende des Monats nie etwas übrig bleibt. Sein Wareneinsatz liegt bei 38%, seine Personalkosten bei 42%. Er lebt vom Umsatz — nicht vom Gewinn.</p>
+  <p>Thomas macht 380.000 Euro Umsatz. Er arbeitet fünf Tage die Woche, kennt seinen Wareneinsatz auf den Prozentpunkt genau, und hat jeden Monat einen klaren Überblick über seine Zahlen. Sein Wareneinsatz liegt bei 28%, seine Personalkosten bei 33%.</p>
+  <p>Am Ende des Jahres verdient Thomas mehr als Marco. Mit fast 300.000 Euro weniger Umsatz.</p>
+  <p>Das ist keine Ausnahme. Das ist das Ergebnis von Struktur gegen Chaos. Von Gewinn-Denken gegen Umsatz-Denken.</p>
 
   <h2>Was wirklich zählt — Gewinn, nicht Umsatz</h2>
   <p>Wenn wir bei Gastro-OS über Erfolg sprechen, sprechen wir nicht über Umsatz. Wir sprechen über Gewinn. Über echten Gewinn — nach allen Kosten, nach deinem eigenen Unternehmerlohn, nach Rücklagen für Investitionen und unerwartete Ausgaben.</p>
+  <p>Das klingt selbstverständlich. Aber in der Praxis denken erschreckend viele Gastronomen primär in Umsatzkategorien. Sie wissen was sie eingenommen haben — aber nicht was wirklich übrig geblieben ist. Und was übrig bleibt, wissen sie oft nur einmal im Jahr wenn der Steuerberater die Zahlen vorlegt.</p>
+  <p>Zu diesem Zeitpunkt ist es für Kurskorrekturen oft zu spät.</p>
   <p>Ein Gastronom der sein Business wirklich versteht, kennt seine wichtigsten Kennzahlen regelmäßig. Nicht täglich — aber monatlich mindestens. Wareneinsatz, Personalkosten, Deckungsbeitrag, Liquidität. Diese Zahlen sind keine Buchhaltungsübung. Sie sind das Steuerungsinstrument seines Betriebs. Wer sie nicht kennt, fährt blind.</p>
   <p>Der erste Schritt aus der Umsatzfalle ist deshalb nicht mehr Umsatz zu machen — sondern den bestehenden Umsatz besser zu verstehen. Zu wissen was er wirklich einbringt. Und zu wissen wo er verloren geht.</p>
 
-  <h3>Was das für dich bedeutet</h3>
-  <div class="highlight-box">
-    <p>Bevor du zur nächsten Lektion gehst — stell dir diese eine Frage:<br><br>
-    <strong>Weißt du was in deinem Betrieb nach allen Kosten wirklich übrig bleibt — jeden Monat, auf den Euro genau?</strong><br><br>
-    Wenn die Antwort Nein ist: Das ist dein Startpunkt. Nicht als Vorwurf — sondern als Information.</p>
+  <h2>Was das für dich bedeutet</h2>
+  <p>Bevor du zur nächsten Lektion gehst — stell dir diese eine Frage:</p>
+  <p>Weißt du was in deinem Betrieb nach allen Kosten wirklich übrig bleibt — jeden Monat, auf den Euro genau?</p>
+  <p>Wenn die Antwort Nein ist: Das ist dein Startpunkt. Nicht als Vorwurf — sondern als Information. Denn wer seinen Ausgangspunkt kennt, kann sich verbessern. Wer ihn nicht kennt, dreht sich im Kreis.</p>
+  <p>In den nächsten Lektionen zeigen wir dir Schritt für Schritt wie du diesen Überblick bekommst — und was du damit machst.</p>
+  <p>Weiter zu Lektion 2. 😊</p>
+
+  <div class="lektion-footer">
+    <div class="lektion-footer-brand"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
   </div>
 
-  <div class="nav-buttons">
-    <a href="modul0-ankervideo.html" class="btn-nav secondary">← Zurück zum Ankervideo</a>
-    <a href="dashboard.html" class="btn-nav">✓ Gelesen — zurück zum Dashboard</a>
-  </div>
 </div>
 
-<div class="gold-bar"></div>
-<div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+<div class="footer-main">
+  <strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg
+</div>
+
 </body>
 </html>
