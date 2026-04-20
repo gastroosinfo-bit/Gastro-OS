@@ -548,6 +548,38 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
     </div>
   </div>
 
+  <!-- MODUL 12 -->
+  <div class="module-card" id="modul-card-12" style="display:none;">
+    <div class="module-header" onclick="toggleModule(12)">
+      <div class="module-header-left">
+        <div class="module-number">12</div>
+        <div>
+          <div class="module-title">👥 Mitarbeiter finden &amp; halten</div>
+          <div class="module-subtitle" id="subtitle-12">0 von 9 abgeschlossen</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span class="module-badge badge-open" id="badge-12">Offen</span>
+        <span class="module-arrow" id="arrow-12">▼</span>
+      </div>
+    </div>
+    <div class="module-content" id="content-12">
+      <div class="content-item"><div class="check-box" id="chk-12-0" onclick="toggleCheck(12,0)"></div><span class="item-icon">📋</span><div class="item-info"><div class="item-title" id="title-12-0">Modulübersicht &amp; Inhaltsverzeichnis</div></div><a href="modul12-uebersicht.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-12-1" onclick="toggleCheck(12,1)"></div><span class="item-icon">🎬</span><div class="item-info"><div class="item-title" id="title-12-1">Ankervideo — Mitarbeiter finden &amp; halten</div></div><a href="modul12-ankervideo.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-12-2" onclick="toggleCheck(12,2)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-12-2">Lektion 1 — Warum gute Leute gehen</div></div><a href="modul12-lektion1.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-12-3" onclick="toggleCheck(12,3)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-12-3">Lektion 2 — Die richtige Stellenanzeige</div></div><a href="modul12-lektion2.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-12-4" onclick="toggleCheck(12,4)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-12-4">Lektion 3 — Onboarding mit System</div></div><a href="modul12-lektion3.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-12-5" onclick="toggleCheck(12,5)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-12-5">Lektion 4 — Vom Plan zur Umsetzung</div></div><a href="modul12-lektion4.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-12-6" onclick="toggleCheck(12,6)"></div><span class="item-icon">🎙️</span><div class="item-info"><div class="item-title" id="title-12-6">Podcast Küchenfunk #6 — Modul 12</div></div><a href="modul12-podcast.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-12-7" onclick="toggleCheck(12,7)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title" id="title-12-7">So nutzt du den Mitarbeiter Recruiting Plan</div></div><a href="modul12-recruiting-video.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-12-8" onclick="toggleCheck(12,8)"></div><span class="item-icon">🎯</span><div class="item-info"><div class="item-title" id="title-12-8">Quiz — Teste dein Wissen</div></div><a href="modul12-quiz.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="progress-bar-wrap">
+        <div class="progress-label"><span>Fortschritt Modul 12</span><span id="progress-text-12">0%</span></div>
+        <div class="progress-bar"><div class="progress-fill" id="progress-fill-12" style="width:0%"></div></div>
+      </div>
+    </div>
+  </div>
+
   <div id="locked-modules"></div>
 
 </div>
@@ -565,7 +597,7 @@ const { createClient } = supabase;
 const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // ── Konstanten ────────────────────────────────────────────
-const MODULE_ITEMS = { 0:6, 1:10, 2:12, 3:11, 4:12, 5:11, 6:13, 7:11, 8:11, 9:12, 10:10, 11:11 };
+const MODULE_ITEMS = { 0:6, 1:10, 2:12, 3:11, 4:12, 5:11, 6:13, 7:11, 8:11, 9:12, 10:10, 11:11, 12:9 };
 
 const MODUL_TITLES = [
   'Das Gastro OS Prinzip',
@@ -588,8 +620,8 @@ const MODUL_TITLES = [
 // Modul 3 offen wenn Quiz 2 bestanden (key: 2-11)
 // Modul 4 offen wenn Quiz 3 bestanden (key: 3-10)
 // Modul 5 offen wenn Quiz 4 bestanden (key: 4-11)
-const QUIZ_KEYS = { 1:'1-9', 2:'2-11', 3:'3-10', 4:'4-11', 5:'5-10', 6:'6-12', 7:'7-10', 8:'8-10', 9:'9-11', 10:'10-9', 11:'11-10' };
-const QUIZ_TOOL_NAMES = { 1:'quiz_modul1', 2:'quiz_modul2', 3:'quiz_modul3', 4:'quiz_modul4', 5:'quiz_modul5', 6:'quiz_modul6', 7:'quiz_modul7', 8:'quiz_modul8', 9:'quiz_modul9', 10:'quiz_modul10', 11:'quiz_modul11' };
+const QUIZ_KEYS = { 1:'1-9', 2:'2-11', 3:'3-10', 4:'4-11', 5:'5-10', 6:'6-12', 7:'7-10', 8:'8-10', 9:'9-11', 10:'10-9', 11:'11-10', 12:'12-8' };
+const QUIZ_TOOL_NAMES = { 1:'quiz_modul1', 2:'quiz_modul2', 3:'quiz_modul3', 4:'quiz_modul4', 5:'quiz_modul5', 6:'quiz_modul6', 7:'quiz_modul7', 8:'quiz_modul8', 9:'quiz_modul9', 10:'quiz_modul10', 11:'quiz_modul11', 12:'quiz_modul12' };
 
 let currentUser = null;
 let progress = {};
@@ -652,7 +684,7 @@ async function init() {
   if (!quizBestanden[4]) lockCard(5, 4);
 
   // Fortschritt rendern
-  for (const m of [0,1,2,3,4,5,6,7,8,9,10,11]) renderProgress(m);
+  for (const m of [0,1,2,3,4,5,6,7,8,9,10,11,12]) renderProgress(m);
 
   // Modul 6 — immer sichtbar, gesperrt bis Quiz 5 bestanden
   document.getElementById('modul-card-6').style.display = 'block';
@@ -673,7 +705,10 @@ async function init() {
   // Modul 10 — immer sichtbar, gesperrt bis Quiz 9 bestanden
   document.getElementById('modul-card-10').style.display = 'block';
   document.getElementById('modul-card-11').style.display = 'block';
-  if (!quizBestanden[9]) lockCard(10, 9);
+  document.getElementById('modul-card-12').style.display = 'block';
+  if (!quizBestanden[9])  lockCard(10, 9);
+  if (!quizBestanden[10]) lockCard(11, 10);
+  if (!quizBestanden[11]) lockCard(12, 11);
 
   // Fortschritt rendern
   // Gesperrte Module rendern
@@ -789,11 +824,12 @@ function renderLockedModules() {
   if (quizBestanden[9]) unlockedUpTo = 10;
   if (quizBestanden[10]) unlockedUpTo = 11;
   if (quizBestanden[11]) unlockedUpTo = 12;
+  if (quizBestanden[12]) unlockedUpTo = 13;
 
   const container = document.getElementById('locked-modules');
   container.innerHTML = '';
 
-  for (let m = 12; m <= 12; m++) {
+  for (let m = 13; m <= 13; m++) {
     const isNext  = (m === unlockedUpTo);
     const locked  = m > unlockedUpTo;
     const card    = document.createElement('div');
