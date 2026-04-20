@@ -147,7 +147,7 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
         <div class="module-number">0</div>
         <div>
           <div class="module-title">Willkommen &amp; Systemüberblick</div>
-          <div class="module-subtitle" id="subtitle-0">0 von 6 abgeschlossen</div>
+          <div class="module-subtitle" id="subtitle-0">0 von 7 abgeschlossen</div>
         </div>
       </div>
       <div style="display:flex;align-items:center;gap:8px;">
@@ -156,12 +156,13 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
       </div>
     </div>
     <div class="module-content" id="content-0">
-      <div class="content-item"><div class="check-box" id="chk-0-0" onclick="toggleCheck(0,0)"></div><span class="item-icon">🎬</span><div class="item-info"><div class="item-title" id="title-0-0">Ankervideo — Starte hier</div></div><a href="modul0-ankervideo.html" target="_blank" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-0-1" onclick="toggleCheck(0,1)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-0-1">Lektion 1 — Warum Umsatz dich nicht rettet</div></div><a href="modul0-lektion1.html" target="_blank" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-0-2" onclick="toggleCheck(0,2)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-0-2">Lektion 2 — Das Gastro OS Prinzip</div></div><a href="modul0-lektion2.html" target="_blank" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-0-3" onclick="toggleCheck(0,3)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-0-3">Lektion 3 — Wo stehst du heute</div></div><a href="modul0-lektion3.html" target="_blank" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-0-4" onclick="toggleCheck(0,4)"></div><span class="item-icon">📋</span><div class="item-info"><div class="item-title" id="title-0-4">Mindmap — Das Gastro OS Prinzip</div></div><a href="modul0-mindmap.html" target="_blank" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-0-5" onclick="toggleCheck(0,5)"></div><span class="item-icon">✅</span><div class="item-info"><div class="item-title" id="title-0-5">Reflexionsaufgabe — Dein erster ehrlicher Blick</div></div><a href="modul0-reflexion.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-0-0" onclick="toggleCheck(0,0)"></div><span class="item-icon">📋</span><div class="item-info"><div class="item-title" id="title-0-0">Modulübersicht</div></div><a href="modul0-uebersicht.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-0-1" onclick="toggleCheck(0,1)"></div><span class="item-icon">🎬</span><div class="item-info"><div class="item-title" id="title-0-1">Ankervideo — Starte hier</div></div><a href="modul0-ankervideo.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-0-2" onclick="toggleCheck(0,2)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-0-2">Lektion 1 — Warum Umsatz dich nicht rettet</div></div><a href="modul0-lektion1.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-0-3" onclick="toggleCheck(0,3)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-0-3">Lektion 2 — Das Gastro OS Prinzip</div></div><a href="modul0-lektion2.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-0-4" onclick="toggleCheck(0,4)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-0-4">Lektion 3 — Wo stehst du heute</div></div><a href="modul0-lektion3.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-0-5" onclick="toggleCheck(0,5)"></div><span class="item-icon">📋</span><div class="item-info"><div class="item-title" id="title-0-5">Mindmap — Das Gastro OS Prinzip</div></div><a href="modul0-mindmap.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-0-6" onclick="toggleCheck(0,6)"></div><span class="item-icon">✅</span><div class="item-info"><div class="item-title" id="title-0-6">Reflexionsaufgabe — Dein erster ehrlicher Blick</div></div><a href="modul0-reflexion.html" target="_blank" class="item-link">Öffnen →</a></div>
       <div class="progress-bar-wrap">
         <div class="progress-label"><span>Fortschritt Modul 0</span><span id="progress-text-0">0%</span></div>
         <div class="progress-bar"><div class="progress-fill" id="progress-fill-0" style="width:0%"></div></div>
@@ -597,7 +598,7 @@ const { createClient } = supabase;
 const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // ── Konstanten ────────────────────────────────────────────
-const MODULE_ITEMS = { 0:6, 1:10, 2:12, 3:11, 4:12, 5:11, 6:13, 7:11, 8:11, 9:12, 10:10, 11:11, 12:9 };
+const MODULE_ITEMS = { 0:7, 1:10, 2:12, 3:11, 4:12, 5:11, 6:13, 7:11, 8:11, 9:12, 10:10, 11:11, 12:9 };
 
 const MODUL_TITLES = [
   'Das Gastro OS Prinzip',
