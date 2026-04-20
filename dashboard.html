@@ -446,7 +446,41 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
     </div>
   </div>
 
-  <!-- ══ GESPERRTE MODULE (8–12) ══ -->
+  <div class="module-card" id="modul-card-9" style="display:none;">
+    <div class="module-header" onclick="toggleModule(9)">
+      <div class="module-left">
+        <div class="module-number">9</div>
+        <div>
+          <div class="module-title">Marketing &amp; Sichtbarkeit</div>
+          <div class="module-subtitle" id="subtitle-9">0 von 12 abgeschlossen</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span class="module-badge badge-open" id="badge-9">Offen</span>
+        <span class="module-arrow" id="arrow-9">▼</span>
+      </div>
+    </div>
+    <div class="module-content" id="content-9">
+      <div class="content-item"><div class="check-box" id="chk-9-0" onclick="toggleCheck(9,0)"></div><span class="item-icon">📋</span><div class="item-info"><div class="item-title" id="title-9-0">Modulübersicht</div></div><a href="modul9-uebersicht.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-9-1" onclick="toggleCheck(9,1)"></div><span class="item-icon">🎬</span><div class="item-info"><div class="item-title" id="title-9-1">Ankervideo — Starte hier</div></div><a href="modul9-ankervideo.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-9-2" onclick="toggleCheck(9,2)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-9-2">Lektion 1 — Google vs. Instagram</div></div><a href="modul9-lektion1.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-9-3" onclick="toggleCheck(9,3)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-9-3">Lektion 2 — Bewertungen gezielt steigern</div></div><a href="modul9-lektion2.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-9-4" onclick="toggleCheck(9,4)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-9-4">Lektion 3 — Social Media ohne Stress</div></div><a href="modul9-lektion3.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-9-5" onclick="toggleCheck(9,5)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-9-5">Lektion 4 — Umsetzung und Aktionsplan</div></div><a href="modul9-lektion4.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-9-6" onclick="toggleCheck(9,6)"></div><span class="item-icon">🛒</span><div class="item-info"><div class="item-title" id="title-9-6">Social Media Starter Kit</div></div><a href="modul9-startkit.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-9-7" onclick="toggleCheck(9,7)"></div><span class="item-icon">🎬</span><div class="item-info"><div class="item-title" id="title-9-7">So nutzt du den 15 Min Marketingplan</div></div><a href="modul9-marketingplan-anleitung.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-9-8" onclick="toggleCheck(9,8)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-9-8">15 Minuten Marketingplan</div></div><a href="modul9-marketingplan.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-9-9" onclick="toggleCheck(9,9)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title" id="title-9-9">So nutzt du den Marketing Aktionsplan</div></div><a href="modul9-aktionsplan-anleitung.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-9-10" onclick="toggleCheck(9,10)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-9-10">Marketing Aktionsplan</div></div><a href="modul9-aktionsplan.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-9-11" onclick="toggleCheck(9,11)"></div><span class="item-icon">🎯</span><div class="item-info"><div class="item-title" id="title-9-11">Quiz — Teste dein Wissen</div></div><a href="modul9-quiz.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="progress-bar-wrap">
+        <div class="progress-label"><span>Fortschritt Modul 9</span><span id="progress-text-9">0%</span></div>
+        <div class="progress-bar"><div class="progress-fill" id="progress-fill-9" style="width:0%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ GESPERRTE MODULE (10–12) ══ -->
   <div id="locked-modules"></div>
 
 </div>
@@ -464,7 +498,7 @@ const { createClient } = supabase;
 const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // ── Konstanten ────────────────────────────────────────────
-const MODULE_ITEMS = { 0:6, 1:10, 2:12, 3:11, 4:12, 5:11, 6:13, 7:11, 8:11 };
+const MODULE_ITEMS = { 0:6, 1:10, 2:12, 3:11, 4:12, 5:11, 6:13, 7:11, 8:11, 9:12 };
 
 const MODUL_TITLES = [
   'Das Gastro OS Prinzip',
@@ -487,8 +521,8 @@ const MODUL_TITLES = [
 // Modul 3 offen wenn Quiz 2 bestanden (key: 2-11)
 // Modul 4 offen wenn Quiz 3 bestanden (key: 3-10)
 // Modul 5 offen wenn Quiz 4 bestanden (key: 4-11)
-const QUIZ_KEYS = { 1:'1-9', 2:'2-11', 3:'3-10', 4:'4-11', 5:'5-10', 6:'6-12', 7:'7-10', 8:'8-10' };
-const QUIZ_TOOL_NAMES = { 1:'quiz_modul1', 2:'quiz_modul2', 3:'quiz_modul3', 4:'quiz_modul4', 5:'quiz_modul5', 6:'quiz_modul6', 7:'quiz_modul7', 8:'quiz_modul8' };
+const QUIZ_KEYS = { 1:'1-9', 2:'2-11', 3:'3-10', 4:'4-11', 5:'5-10', 6:'6-12', 7:'7-10', 8:'8-10', 9:'9-11' };
+const QUIZ_TOOL_NAMES = { 1:'quiz_modul1', 2:'quiz_modul2', 3:'quiz_modul3', 4:'quiz_modul4', 5:'quiz_modul5', 6:'quiz_modul6', 7:'quiz_modul7', 8:'quiz_modul8', 9:'quiz_modul9' };
 
 let currentUser = null;
 let progress = {};
@@ -551,7 +585,7 @@ async function init() {
   if (!quizBestanden[4]) lockCard(5, 4);
 
   // Fortschritt rendern
-  for (const m of [0,1,2,3,4,5,6,7,8]) renderProgress(m);
+  for (const m of [0,1,2,3,4,5,6,7,8,9]) renderProgress(m);
 
   // Modul 6 — immer sichtbar, gesperrt bis Quiz 5 bestanden
   document.getElementById('modul-card-6').style.display = 'block';
@@ -564,6 +598,10 @@ async function init() {
   // Modul 8 — immer sichtbar, gesperrt bis Quiz 7 bestanden
   document.getElementById('modul-card-8').style.display = 'block';
   if (!quizBestanden[7]) lockCard(8, 7);
+
+  // Modul 9 — immer sichtbar, gesperrt bis Quiz 8 bestanden
+  document.getElementById('modul-card-9').style.display = 'block';
+  if (!quizBestanden[8]) lockCard(9, 8);
 
   // Fortschritt rendern
   // Gesperrte Module rendern
@@ -676,11 +714,12 @@ function renderLockedModules() {
   if (quizBestanden[6]) unlockedUpTo = 7;
   if (quizBestanden[7]) unlockedUpTo = 8;
   if (quizBestanden[8]) unlockedUpTo = 9;
+  if (quizBestanden[9]) unlockedUpTo = 10;
 
   const container = document.getElementById('locked-modules');
   container.innerHTML = '';
 
-  for (let m = 9; m <= 12; m++) {
+  for (let m = 10; m <= 12; m++) {
     const isNext  = (m === unlockedUpTo);
     const locked  = m > unlockedUpTo;
     const card    = document.createElement('div');
