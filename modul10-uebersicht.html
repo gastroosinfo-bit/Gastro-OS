@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modul 10 – Wachstum & Skalierung | GASTRO-OS</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
+.header { background:#1a2a4a; padding:16px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:20px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.back-btn { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; cursor:pointer; text-decoration:none; transition:all 0.2s; }
+.back-btn:hover { border-color:#d4af37; color:#d4af37; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+.main { max-width:860px; margin:36px auto; padding:0 24px 60px; }
+
+.module-hero { background:#1a2a4a; border-radius:12px; padding:36px 40px; margin-bottom:32px; border:1px solid rgba(212,175,55,0.25); position:relative; overflow:hidden; }
+.module-hero::before { content:''; position:absolute; top:-60px; right:-60px; width:200px; height:200px; background:radial-gradient(circle, rgba(212,175,55,0.12) 0%, transparent 70%); border-radius:50%; }
+.module-tag { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; margin-bottom:10px; }
+.module-hero h1 { font-family:Georgia,serif; font-size:26px; color:#fff; margin-bottom:16px; line-height:1.3; }
+.module-hero p { font-size:14px; color:#c0cce0; line-height:1.8; margin-bottom:10px; }
+
+.section-title { font-family:Georgia,serif; font-size:17px; color:#1a2a4a; margin-bottom:18px; padding-bottom:10px; border-bottom:2px solid #e8dfc8; display:flex; align-items:center; gap:10px; }
+.section-title::before { content:''; width:4px; height:20px; background:#d4af37; border-radius:2px; flex-shrink:0; }
+
+.content-grid { display:flex; flex-direction:column; gap:10px; margin-bottom:32px; }
+.content-item { background:#fff; border:1px solid #e8dfc8; border-radius:8px; padding:16px 20px; display:flex; align-items:center; gap:16px; transition:all 0.2s; text-decoration:none; color:inherit; }
+.content-item:hover { border-color:#d4af37; box-shadow:0 2px 12px rgba(212,175,55,0.15); transform:translateX(3px); }
+.item-icon { font-size:20px; flex-shrink:0; width:36px; text-align:center; }
+.item-info { flex:1; }
+.item-title { font-size:14px; font-weight:600; color:#1a2a4a; margin-bottom:3px; }
+.item-desc { font-size:12px; color:#8090a8; }
+.item-arrow { color:#d4af37; font-size:16px; flex-shrink:0; }
+
+.info-box { background:#fff; border:1px solid #e8dfc8; border-radius:8px; padding:20px 24px; margin-bottom:32px; border-left:4px solid #d4af37; }
+.info-box h3 { font-size:13px; font-weight:700; color:#1a2a4a; margin-bottom:12px; text-transform:uppercase; letter-spacing:1px; }
+.info-box ol { padding-left:20px; }
+.info-box ol li { font-size:13px; color:#4a5a6a; line-height:1.8; }
+
+.footer { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer strong { color:#d4af37; }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="brand">GASTRO-OS</div>
+  <a href="dashboard.html" class="back-btn">← Dashboard</a>
+</div>
+<div class="gold-bar"></div>
+
+<div class="main">
+  <div class="module-hero">
+    <div class="module-tag">Modul 10</div>
+    <h1>Wachstum &amp; Skalierung</h1>
+    <p>Du hast in den letzten Modulen ein starkes Fundament aufgebaut. Dein Team ist strukturiert, deine Kosten sind unter Kontrolle, dein Marketing läuft und dein Umsatz wächst. Du hast einen Betrieb der funktioniert. Der auch ohne dich läuft. Der Gewinne macht.</p>
+    <p>Jetzt stellt sich eine Frage die viele erfolgreiche Gastronomen irgendwann beschäftigt. Was kommt als nächstes? Ein zweiter Standort? Eine Erweiterung des bestehenden Betriebs? Ein neues Konzept? Franchise? Catering?</p>
+    <p>Wachstum ist verlockend. Aber Wachstum ohne stabiles Fundament ist gefährlich. Die meisten gescheiterten Expansionen in der Gastronomie scheitern nicht weil die Idee schlecht war. Sie scheitern weil das Fundament nicht bereit war. Weil die Prozesse die am ersten Standort funktionieren nicht übertragbar waren. Weil das Team nicht stark genug war um zwei Betriebe zu tragen. Weil die Zahlen nicht stimmten.</p>
+    <p>Modul 10 zeigt dir wie Wachstum in der Gastronomie wirklich funktioniert. Was die Voraussetzungen für eine erfolgreiche Expansion sind. Wann der richtige Zeitpunkt ist. Und wie du mit dem Standort Analyse Tool fundierte Entscheidungen triffst statt auf Bauchgefühl zu setzen.</p>
+    <p>Und damit du die gefährlichsten Fallen kennst bevor du in sie tappst, findest du in diesem Modul auch den Fehler Report Gastronomie mit den fünf Fehlern die Gastronomen am häufigsten bei Expansionen ruinieren.</p>
+  </div>
+
+  <div class="section-title">Was dich in diesem Modul erwartet</div>
+  <div class="content-grid">
+    <a href="modul10-ankervideo.html" class="content-item">
+      <div class="item-icon">🎬</div>
+      <div class="item-info">
+        <div class="item-title">Ankervideo — Starte hier</div>
+        <div class="item-desc">Schau das Video bevor du weiterliest</div>
+      </div>
+      <div class="item-arrow">→</div>
+    </a>
+    <a href="modul10-lektion1.html" class="content-item">
+      <div class="item-icon">📖</div>
+      <div class="item-info">
+        <div class="item-title">Lektion 1 — Ist dein Fundament stabil genug</div>
+        <div class="item-desc">Warum Expansionen scheitern &amp; die sechs Fundament-Fragen</div>
+      </div>
+      <div class="item-arrow">→</div>
+    </a>
+    <a href="modul10-lektion2.html" class="content-item">
+      <div class="item-icon">📖</div>
+      <div class="item-info">
+        <div class="item-title">Lektion 2 — Wann ist Wachstum sinnvoll</div>
+        <div class="item-desc">Die sieben Signale für Wachstumsbereitschaft &amp; Wachstumsformen</div>
+      </div>
+      <div class="item-arrow">→</div>
+    </a>
+    <a href="modul10-lektion3.html" class="content-item">
+      <div class="item-icon">📖</div>
+      <div class="item-info">
+        <div class="item-title">Lektion 3 — Expansion mit System</div>
+        <div class="item-desc">Standort finden, Team aufbauen, Qualität sichern</div>
+      </div>
+      <div class="item-arrow">→</div>
+    </a>
+    <a href="modul10-lektion4.html" class="content-item">
+      <div class="item-icon">📖</div>
+      <div class="item-info">
+        <div class="item-title">Lektion 4 — Vom Plan zur Umsetzung</div>
+        <div class="item-desc">Die sechs Phasen &amp; die finale Entscheidung</div>
+      </div>
+      <div class="item-arrow">→</div>
+    </a>
+    <a href="modul10-fehlerreport.html" class="content-item">
+      <div class="item-icon">⚠️</div>
+      <div class="item-info">
+        <div class="item-title">Fehler Report Gastronomie</div>
+        <div class="item-desc">Die 5 Fehler die Gastronomen beim Wachstum am häufigsten ruinieren</div>
+      </div>
+      <div class="item-arrow">→</div>
+    </a>
+    <a href="modul10-tool-video.html" class="content-item">
+      <div class="item-icon">📸</div>
+      <div class="item-info">
+        <div class="item-title">So nutzt du das Standort Analyse Tool</div>
+        <div class="item-desc">Schritt-für-Schritt Erklärung vor dem Ausfüllen</div>
+      </div>
+      <div class="item-arrow">→</div>
+    </a>
+    <a href="modul10-tool.html" class="content-item">
+      <div class="item-icon">📊</div>
+      <div class="item-info">
+        <div class="item-title">Standort Analyse Tool</div>
+        <div class="item-desc">Bewertungsmatrix + Finanzcheck Expansion</div>
+      </div>
+      <div class="item-arrow">→</div>
+    </a>
+    <a href="modul10-quiz.html" class="content-item">
+      <div class="item-icon">🎯</div>
+      <div class="item-info">
+        <div class="item-title">Quiz — Teste dein Wissen</div>
+        <div class="item-desc">Schließe das Quiz ab um Modul 11 freizuschalten</div>
+      </div>
+      <div class="item-arrow">→</div>
+    </a>
+  </div>
+
+  <div class="info-box">
+    <h3>So gehst du vor</h3>
+    <ol>
+      <li>Arbeite die Lektionen der Reihe nach durch.</li>
+      <li>Füll das Standort Analyse Tool erst aus nachdem du alle vier Lektionen gelesen hast.</li>
+      <li>Es zeigt dir dann auf Basis deiner eigenen Zahlen ob und wann Wachstum für deinen Betrieb Sinn macht.</li>
+    </ol>
+  </div>
+</div>
+
+<div class="gold-bar"></div>
+<div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+</body>
+</html>
