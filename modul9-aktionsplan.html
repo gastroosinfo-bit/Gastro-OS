@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marketing Aktionsplan – Modul 9</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
+.header { background:#1a2a4a; padding:16px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:20px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.btn-back { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.btn-back:hover { border-color:#d4af37; color:#d4af37; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+.main { max-width:960px; margin:32px auto; padding:0 20px 60px; }
+.modul-badge { display:inline-block; background:#1a2a4a; color:#d4af37; font-size:11px; font-weight:700; letter-spacing:2px; padding:4px 14px; border-radius:4px; margin-bottom:12px; }
+h1 { font-family:Georgia,serif; font-size:26px; color:#1a2a4a; margin-bottom:6px; }
+.subtitle { font-size:13px; color:#8090a8; margin-bottom:24px; }
+/* QUARTAL ÜBERSICHT */
+.quartal-card { background:#1a2a4a; border-radius:10px; padding:24px 28px; margin-bottom:24px; }
+.quartal-card h2 { color:#d4af37; font-family:Georgia,serif; font-size:16px; margin-bottom:16px; letter-spacing:1px; }
+.quartal-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+@media(max-width:600px) { .quartal-grid { grid-template-columns:1fr; } }
+.q-label { font-size:11px; color:#a0b0c8; letter-spacing:0.5px; margin-bottom:5px; }
+.q-input { width:100%; background:rgba(255,255,255,0.08); border:1px solid rgba(212,175,55,0.3); border-radius:6px; padding:9px 12px; font-size:13px; color:#f5f0e8; font-family:'Segoe UI',Arial,sans-serif; }
+.q-input:focus { outline:none; border-color:#d4af37; background:rgba(255,255,255,0.12); }
+.q-input::placeholder { color:#6a7a8a; }
+/* MONAT KARTEN */
+.monat-card { background:#fff; border:1px solid #e8dfc8; border-radius:10px; margin-bottom:20px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.04); }
+.monat-header { background:#1a2a4a; padding:14px 20px; display:flex; align-items:center; justify-content:space-between; }
+.monat-title { font-family:Georgia,serif; font-size:15px; color:#d4af37; }
+.monat-input { background:rgba(255,255,255,0.1); border:1px solid rgba(212,175,55,0.3); border-radius:4px; padding:4px 10px; font-size:13px; color:#f5f0e8; width:160px; font-family:'Segoe UI',Arial,sans-serif; }
+.monat-input:focus { outline:none; border-color:#d4af37; }
+table { width:100%; border-collapse:collapse; }
+th { background:#f5f0e8; padding:10px 14px; font-size:11px; font-weight:700; color:#5a6a7a; text-align:left; letter-spacing:0.5px; border-bottom:2px solid #e8dfc8; }
+td { padding:10px 14px; border-bottom:1px solid #f0ece4; vertical-align:top; }
+tr:last-child td { border-bottom:none; }
+.bereich-tag { display:inline-block; font-size:11px; font-weight:700; padding:3px 10px; border-radius:12px; letter-spacing:0.3px; }
+.tag-google { background:#e8f0fb; color:#1a4a8a; }
+.tag-insta { background:#fce8f0; color:#8a1a4a; }
+.tag-bew { background:#e8fce8; color:#1a5a1a; }
+.tag-stamm { background:#faf0e8; color:#8a5a1a; }
+.tag-event { background:#f0e8fa; color:#5a1a8a; }
+.massnahme { font-size:13px; color:#1a2a4a; font-weight:600; margin-bottom:4px; }
+.kpi { font-size:12px; color:#8090a8; }
+.woche-cell { display:flex; flex-direction:column; gap:6px; }
+.woche-input { border:1px solid #e0d8c8; border-radius:4px; padding:5px 8px; font-size:12px; color:#3a4a6a; background:#fafaf8; width:100%; min-width:80px; font-family:'Segoe UI',Arial,sans-serif; }
+.woche-input:focus { outline:none; border-color:#d4af37; }
+.status-check { width:20px; height:20px; accent-color:#d4af37; cursor:pointer; }
+/* BUTTONS */
+.btn-row { display:flex; gap:12px; flex-wrap:wrap; margin-top:24px; }
+.btn-save { background:#d4af37; color:#1a2a4a; border:none; padding:12px 28px; border-radius:8px; font-size:14px; font-weight:700; cursor:pointer; transition:all 0.2s; }
+.btn-save:hover { background:#c8a030; }
+.btn-print { background:transparent; color:#1a2a4a; border:2px solid #1a2a4a; padding:12px 28px; border-radius:8px; font-size:14px; font-weight:700; cursor:pointer; transition:all 0.2s; }
+.btn-print:hover { background:#1a2a4a; color:#f5f0e8; }
+.btn-clear { background:transparent; color:#8090a8; border:1px solid #d0c8b0; padding:12px 20px; border-radius:8px; font-size:13px; cursor:pointer; transition:all 0.2s; }
+.save-msg { color:#1a6030; font-size:13px; display:none; align-items:center; gap:6px; }
+.gold-divider { height:2px; background:linear-gradient(90deg,#d4af37,transparent); margin:28px 0; }
+.footer { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer strong { color:#d4af37; }
+@media print {
+  .header,.btn-back,.btn-row,.footer { display:none !important; }
+  body { background:#fff; }
+  .main { margin:0; padding:8px; }
+}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="brand">GASTRO-OS</div>
+  <a href="dashboard.html" class="btn-back">← Zurück zum Dashboard</a>
+</div>
+<div class="gold-bar"></div>
+<div class="main">
+  <div class="modul-badge">MODUL 9 · TOOL</div>
+  <h1>📊 Marketing Aktionsplan — Quartal</h1>
+  <p class="subtitle">Modul 9: Marketing & Sichtbarkeit – Proaktives Marketing für die nächsten 3 Monate</p>
+
+  <!-- QUARTAL ÜBERSICHT -->
+  <div class="quartal-card">
+    <h2>① QUARTAL-ÜBERSICHT</h2>
+    <div class="quartal-grid">
+      <div>
+        <div class="q-label">QUARTAL / ZEITRAUM</div>
+        <input class="q-input" id="q-zeitraum" placeholder="z.B. Q2 2025 / April – Juni">
+      </div>
+      <div>
+        <div class="q-label">ÜBERGEORDNETES ZIEL</div>
+        <input class="q-input" id="q-ziel" placeholder="z.B. Google Bewertungen von 4.2 auf 4.6 steigern">
+      </div>
+      <div>
+        <div class="q-label">HAUPTKANAL FOKUS</div>
+        <input class="q-input" id="q-kanal" placeholder="z.B. Google Business + Instagram">
+      </div>
+      <div>
+        <div class="q-label">BUDGET MARKETING (€)</div>
+        <input class="q-input" id="q-budget" placeholder="z.B. Gesamtbudget für dieses Quartal">
+      </div>
+    </div>
+  </div>
+
+  <!-- MONAT 1 -->
+  <div class="monat-card">
+    <div class="monat-header">
+      <span class="monat-title">② MONAT 1:</span>
+      <input class="monat-input" id="m1-name" placeholder="Monatsname eingeben">
+    </div>
+    <table>
+      <tr><th>Bereich</th><th>Maßnahme</th><th>Ziel / KPI</th><th>Woche 1</th><th>Woche 2</th><th>Woche 3</th><th>Woche 4</th><th>Status</th></tr>
+      <tr>
+        <td><span class="bereich-tag tag-google">Google Business</span></td>
+        <td><div class="massnahme">Profil aktualisieren & Fotos</div><div class="kpi">Vollständiges Profil</div></td>
+        <td><input class="woche-input" placeholder="KPI..."></td>
+        <td><input class="woche-input" placeholder="Notiz W1"></td>
+        <td><input class="woche-input" placeholder="Notiz W2"></td>
+        <td><input class="woche-input" placeholder="Notiz W3"></td>
+        <td><input class="woche-input" placeholder="Notiz W4"></td>
+        <td style="text-align:center;"><input type="checkbox" class="status-check"></td>
+      </tr>
+      <tr>
+        <td><span class="bereich-tag tag-google">Google Business</span></td>
+        <td><div class="massnahme">Alle Bewertungen beantworten</div><div class="kpi">0 unbeantwortete Bewertungen</div></td>
+        <td><input class="woche-input" placeholder="KPI..."></td>
+        <td><input class="woche-input" placeholder="Notiz W1"></td>
+        <td><input class="woche-input" placeholder="Notiz W2"></td>
+        <td><input class="woche-input" placeholder="Notiz W3"></td>
+        <td><input class="woche-input" placeholder="Notiz W4"></td>
+        <td style="text-align:center;"><input type="checkbox" class="status-check"></td>
+      </tr>
+      <tr>
+        <td><span class="bereich-tag tag-google">Google Business</span></td>
+        <td><div class="massnahme">Wöchentlichen Beitrag posten</div><div class="kpi">4 Beiträge im Monat</div></td>
+        <td><input class="woche-input" placeholder="KPI..."></td>
+        <td><input class="woche-input" placeholder="Notiz W1"></td>
+        <td><input class="woche-input" placeholder="Notiz W2"></td>
+        <td><input class="woche-input" placeholder="Notiz W3"></td>
+        <td><input class="woche-input" placeholder="Notiz W4"></td>
+        <td style="text-align:center;"><input type="checkbox" class="status-check"></td>
+      </tr>
+      <tr>
+        <td><span class="bereich-tag tag-insta">Instagram</span></td>
+        <td><div class="massnahme">3x pro Woche posten</div><div class="kpi">12 Posts im Monat</div></td>
+        <td><input class="woche-input" placeholder="KPI..."></td>
+        <td><input class="woche-input" placeholder="Notiz W1"></td>
+        <td><input class="woche-input" placeholder="Notiz W2"></td>
+        <td><input class="woche-input" placeholder="Notiz W3"></td>
+        <td><input class="woche-input" placeholder="Notiz W4"></td>
+        <td style="text-align:center;"><input type="checkbox" class="status-check"></td>
+      </tr>
+      <tr>
+        <td><span class="bereich-tag tag-insta">Instagram</span></td>
+        <td><div class="massnahme">Stories täglich</div><div class="kpi">Tagesreichweite steigern</div></td>
+        <td><input class="woche-input" placeholder="KPI..."></td>
+        <td><input class="woche-input" placeholder="Notiz W1"></td>
+        <td><input class="woche-input" placeholder="Notiz W2"></td>
+        <td><input class="woche-input" placeholder="Notiz W3"></td>
+        <td><input class="woche-input" placeholder="Notiz W4"></td>
+        <td style="text-align:center;"><input type="checkbox" class="status-check"></td>
+      </tr>
+      <tr>
+        <td><span class="bereich-tag tag-bew">Bewertungen</span></td>
+        <td><div class="massnahme">Aktiv nach Bewertungen fragen</div><div class="kpi">+5 neue Bewertungen</div></td>
+        <td><input class="woche-input" placeholder="KPI..."></td>
+        <td><input class="woche-input" placeholder="Notiz W1"></td>
+        <td><input class="woche-input" placeholder="Notiz W2"></td>
+        <td><input class="woche-input" placeholder="Notiz W3"></td>
+        <td><input class="woche-input" placeholder="Notiz W4"></td>
+        <td style="text-align:center;"><input type="checkbox" class="status-check"></td>
+      </tr>
+      <tr>
+        <td><span class="bereich-tag tag-stamm">Stammgäste</span></td>
+        <td><div class="massnahme">Newsletter / WhatsApp versenden</div><div class="kpi">Öffnungsrate > 30%</div></td>
+        <td><input class="woche-input" placeholder="KPI..."></td>
+        <td><input class="woche-input" placeholder="Notiz W1"></td>
+        <td><input class="woche-input" placeholder="Notiz W2"></td>
+        <td><input class="woche-input" placeholder="Notiz W3"></td>
+        <td><input class="woche-input" placeholder="Notiz W4"></td>
+        <td style="text-align:center;"><input type="checkbox" class="status-check"></td>
+      </tr>
+      <tr>
+        <td><span class="bereich-tag tag-event">Event / Aktion</span></td>
+        <td><div class="massnahme">Saisonales Angebot kommunizieren</div><div class="kpi">Reservierungsanstieg</div></td>
+        <td><input class="woche-input" placeholder="KPI..."></td>
+        <td><input class="woche-input" placeholder="Notiz W1"></td>
+        <td><input class="woche-input" placeholder="Notiz W2"></td>
+        <td><input class="woche-input" placeholder="Notiz W3"></td>
+        <td><input class="woche-input" placeholder="Notiz W4"></td>
+        <td style="text-align:center;"><input type="checkbox" class="status-check"></td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- MONAT 2 -->
+  <div class="monat-card">
+    <div class="monat-header">
+      <span class="monat-title">③ MONAT 2:</span>
+      <input class="monat-input" id="m2-name" placeholder="Monatsname eingeben">
+    </div>
+    <table>
+      <tr><th>Bereich</th><th>Maßnahme</th><th>Ziel / KPI</th><th>Woche 1</th><th>Woche 2</th><th>Woche 3</th><th>Woche 4</th><th>Status</th></tr>
+      <tr>
+        <td><span class="bereich-tag tag-google">Google Business</span></td>
+        <td><div class="massnahme">Profil aktualisieren & Fotos</div><div class="kpi">Vollständiges Profil</div></td>
+        <td><input class="woche-input" placeholder="KPI..."></td>
+        <td><input class="woche-input" placeholder="Notiz W1"></td>
+        <td><input class="woche-input" placeholder="Notiz W2"></td>
+        <td><input class="woche-input" placeholder="Notiz W3"></td>
+        <td><input class="woche-input" placeholder="Notiz W4"></td>
+        <td style="text-align:center;"><input type="checkbox" class="status-check"></td>
+      </tr>
+      <tr>
+        <td><span class="bereich-tag tag-google">Google Business</span></td>
+        <td><div class="massnahme">Alle Bewertungen beantworten</div><div class="kpi">0 unbeantwortete Bewertungen</div></td>
+        <td><input class="woche-input" placeholder="KPI..."></td>
+        <td><input class="woche-input" placeholder="Notiz W1"></td>
+        <td><input class="woche-input" placeholder="Notiz W2"></td>
+        <td><input class="woche-input" placeholder="Notiz W3"></td>
+        <td><input class="woche-input" placeholder="Notiz W4"></td>
+        <td style="text-align:center;"><input type="checkbox" class="status-check"></td>
+      </tr>
+      <tr>
+        <td><span class="bereich-tag tag-google">Google Business</span></td>
+        <td><div class="massnahme">Wöchentlichen Beitrag posten</div><div class="kpi">4 Beiträge im Monat</div></td>
+        <td><input class="woche-input" placeholder="KPI..."></td>
+        <td><input class="woche-input" placeholder="Notiz W1"></td>
+        <td><input class="woche-input" placeholder="Notiz W2"></td>
+        <td><input class="woche-input" placeholder="Notiz W3"></td>
+        <td><input class="woche-input" placeholder="Notiz W4"></td>
+        <td style="text-align:center;"><input type="checkbox" class="status-check"></td>
+      </tr>
+      <tr>
+        <td><span class="bereich-tag tag-insta">Instagram</span></td>
+        <td><div class="massnahme">3x pro Woche posten</div><div class="kpi">12 Posts im Monat</div></td>
+        <td><input class="woche-input" placeholder="KPI..."></td>
+        <td><input class="woche-input" placeholder="Notiz W1"></td>
+        <td><input class="woche-input" placeholder="Notiz W2"></td>
+        <td><input class="woche-input" placeholder="Notiz W3"></td>
+        <td><input class="woche-input" placeholder="Notiz W4"></td>
+        <td style="text-align:center;"><input type="checkbox" class="status-check"></td>
+      </tr>
+      <tr>
+        <td><span class="bereich-tag tag-insta">Instagram</span></td>
+        <td><div class="massnahme">Stories täglich</div><div class="kpi">Tagesreichweite steigern</div></td>
+        <td><input class="woche-input" placeholder="KPI..."></td>
+        <td><input class="woche-input" placeholder="Notiz W1"></td>
+        <td><input class="woche-input" placeholder="Notiz W2"></td>
+        <td><input class="woche-input" placeholder="Notiz W3"></td>
+        <td><input class="woche-input" placeholder="Notiz W4"></td>
+        <td style="text-align:center;"><input type="checkbox" class="status-check"></td>
+      </tr>
+      <tr>
+        <td><span class="bereich-tag tag-bew">Bewertungen</span></td>
+        <td><div class="massnahme">Aktiv nach Bewertungen fragen</div><div class="kpi">+5 neue Bewertungen</div></td>
+        <td><input class="woche-input" placeholder="KPI..."></td>
+        <td><input class="woche-input" placeholder="Notiz W1"></td>
+        <td><input class="woche-input" placeholder="Notiz W2"></td>
+        <td><input class="woche-input" placeholder="Notiz W3"></td>
+        <td><input class="woche-input" placeholder="Notiz W4"></td>
+        <td style="text-align:center;"><input type="checkbox" class="status-check"></td>
+      </tr>
+      <tr>
+        <td><span class="bereich-tag tag-stamm">Stammgäste</span></td>
+        <td><div class="massnahme">Newsletter / WhatsApp versenden</div><div class="kpi">Öffnungsrate > 30%</div></td>
+        <td><input class="woche-input" placeholder="KPI..."></td>
+        <td><input class="woche-input" placeholder="Notiz W1"></td>
+        <td><input class="woche-input" placeholder="Notiz W2"></td>
+        <td><input class="woche-input" placeholder="Notiz W3"></td>
+        <td><input class="woche-input" placeholder="Notiz W4"></td>
+        <td style="text-align:center;"><input type="checkbox" class="status-check"></td>
+      </tr>
+      <tr>
+        <td><span class="bereich-tag tag-event">Event / Aktion</span></td>
+        <td><div class="massnahme">Saisonales Angebot kommunizieren</div><div class="kpi">Reservierungsanstieg</div></td>
+        <td><input class="woche-input" placeholder="KPI..."></td>
+        <td><input class="woche-input" placeholder="Notiz W1"></td>
+        <td><input class="woche-input" placeholder="Notiz W2"></td>
+        <td><input class="woche-input" placeholder="Notiz W3"></td>
+        <td><input class="woche-input" placeholder="Notiz W4"></td>
+        <td style="text-align:center;"><input type="checkbox" class="status-check"></td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- MONAT 3 -->
+  <div class="monat-card">
+    <div class="monat-header">
+      <span class="monat-title">④ MONAT 3:</span>
+      <input class="monat-input" id="m3-name" placeholder="Monatsname eingeben">
+    </div>
+    <table>
+      <tr><th>Bereich</th><th>Maßnahme</th><th>Ziel / KPI</th><th>Woche 1</th><th>Woche 2</th><th>Woche 3</th><th>Woche 4</th><th>Status</th></tr>
+      <tr>
+        <td><span class="bereich-tag tag-google">Google Business</span></td>
+        <td><div class="massnahme">Profil aktualisieren & Fotos</div><div class="kpi">Vollständiges Profil</div></td>
+        <td><input class="woche-input" placeholder="KPI..."></td>
+        <td><input class="woche-input" placeholder="Notiz W1"></td>
+        <td><input class="woche-input" placeholder="Notiz W2"></td>
+        <td><input class="woche-input" placeholder="Notiz W3"></td>
+        <td><input class="woche-input" placeholder="Notiz W4"></td>
+        <td style="text-align:center;"><input type="checkbox" class="status-check"></td>
+      </tr>
+      <tr>
+        <td><span class="bereich-tag tag-google">Google Business</span></td>
+        <td><div class="massnahme">Alle Bewertungen beantworten</div><div class="kpi">0 unbeantwortete Bewertungen</div></td>
+        <td><input class="woche-input" placeholder="KPI..."></td>
+        <td><input class="woche-input" placeholder="Notiz W1"></td>
+        <td><input class="woche-input" placeholder="Notiz W2"></td>
+        <td><input class="woche-input" placeholder="Notiz W3"></td>
+        <td><input class="woche-input" placeholder="Notiz W4"></td>
+        <td style="text-align:center;"><input type="checkbox" class="status-check"></td>
+      </tr>
+      <tr>
+        <td><span class="bereich-tag tag-google">Google Business</span></td>
+        <td><div class="massnahme">Wöchentlichen Beitrag posten</div><div class="kpi">4 Beiträge im Monat</div></td>
+        <td><input class="woche-input" placeholder="KPI..."></td>
+        <td><input class="woche-input" placeholder="Notiz W1"></td>
+        <td><input class="woche-input" placeholder="Notiz W2"></td>
+        <td><input class="woche-input" placeholder="Notiz W3"></td>
+        <td><input class="woche-input" placeholder="Notiz W4"></td>
+        <td style="text-align:center;"><input type="checkbox" class="status-check"></td>
+      </tr>
+      <tr>
+        <td><span class="bereich-tag tag-insta">Instagram</span></td>
+        <td><div class="massnahme">3x pro Woche posten</div><div class="kpi">12 Posts im Monat</div></td>
+        <td><input class="woche-input" placeholder="KPI..."></td>
+        <td><input class="woche-input" placeholder="Notiz W1"></td>
+        <td><input class="woche-input" placeholder="Notiz W2"></td>
+        <td><input class="woche-input" placeholder="Notiz W3"></td>
+        <td><input class="woche-input" placeholder="Notiz W4"></td>
+        <td style="text-align:center;"><input type="checkbox" class="status-check"></td>
+      </tr>
+      <tr>
+        <td><span class="bereich-tag tag-insta">Instagram</span></td>
+        <td><div class="massnahme">Stories täglich</div><div class="kpi">Tagesreichweite steigern</div></td>
+        <td><input class="woche-input" placeholder="KPI..."></td>
+        <td><input class="woche-input" placeholder="Notiz W1"></td>
+        <td><input class="woche-input" placeholder="Notiz W2"></td>
+        <td><input class="woche-input" placeholder="Notiz W3"></td>
+        <td><input class="woche-input" placeholder="Notiz W4"></td>
+        <td style="text-align:center;"><input type="checkbox" class="status-check"></td>
+      </tr>
+      <tr>
+        <td><span class="bereich-tag tag-bew">Bewertungen</span></td>
+        <td><div class="massnahme">Aktiv nach Bewertungen fragen</div><div class="kpi">+5 neue Bewertungen</div></td>
+        <td><input class="woche-input" placeholder="KPI..."></td>
+        <td><input class="woche-input" placeholder="Notiz W1"></td>
+        <td><input class="woche-input" placeholder="Notiz W2"></td>
+        <td><input class="woche-input" placeholder="Notiz W3"></td>
+        <td><input class="woche-input" placeholder="Notiz W4"></td>
+        <td style="text-align:center;"><input type="checkbox" class="status-check"></td>
+      </tr>
+      <tr>
+        <td><span class="bereich-tag tag-stamm">Stammgäste</span></td>
+        <td><div class="massnahme">Newsletter / WhatsApp versenden</div><div class="kpi">Öffnungsrate > 30%</div></td>
+        <td><input class="woche-input" placeholder="KPI..."></td>
+        <td><input class="woche-input" placeholder="Notiz W1"></td>
+        <td><input class="woche-input" placeholder="Notiz W2"></td>
+        <td><input class="woche-input" placeholder="Notiz W3"></td>
+        <td><input class="woche-input" placeholder="Notiz W4"></td>
+        <td style="text-align:center;"><input type="checkbox" class="status-check"></td>
+      </tr>
+      <tr>
+        <td><span class="bereich-tag tag-event">Event / Aktion</span></td>
+        <td><div class="massnahme">Saisonales Angebot kommunizieren</div><div class="kpi">Reservierungsanstieg</div></td>
+        <td><input class="woche-input" placeholder="KPI..."></td>
+        <td><input class="woche-input" placeholder="Notiz W1"></td>
+        <td><input class="woche-input" placeholder="Notiz W2"></td>
+        <td><input class="woche-input" placeholder="Notiz W3"></td>
+        <td><input class="woche-input" placeholder="Notiz W4"></td>
+        <td style="text-align:center;"><input type="checkbox" class="status-check"></td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn-save" onclick="saveData()">💾 Speichern</button>
+    <button class="btn-print" onclick="window.print()">🖨️ Drucken / PDF</button>
+    <button class="btn-clear" onclick="clearData()">Neu starten</button>
+    <span class="save-msg" id="saveMsg">✓ Gespeichert!</span>
+  </div>
+
+  <div class="gold-divider"></div>
+  <p style="text-align:center; font-size:12px; color:#8090a8; letter-spacing:1px;">GASTRO-OS | System · Strategie · Erfolg</p>
+</div>
+<div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+
+<script>
+function saveData() {
+  const data = {
+    zeitraum: document.getElementById('q-zeitraum').value,
+    ziel: document.getElementById('q-ziel').value,
+    kanal: document.getElementById('q-kanal').value,
+    budget: document.getElementById('q-budget').value,
+    m1: document.getElementById('m1-name').value,
+    m2: document.getElementById('m2-name').value,
+    m3: document.getElementById('m3-name').value,
+    inputs: Array.from(document.querySelectorAll('input[type=text], input[type=number]')).map(el => ({ id: el.id||'', val: el.value })),
+    checks: Array.from(document.querySelectorAll('input[type=checkbox]')).map(el => el.checked)
+  };
+  try { localStorage.setItem('gastros_aktionsplan', JSON.stringify(data)); } catch(e) {}
+  const msg = document.getElementById('saveMsg');
+  msg.style.display = 'flex';
+  setTimeout(() => msg.style.display = 'none', 2500);
+}
+
+function loadData() {
+  try {
+    const raw = localStorage.getItem('gastros_aktionsplan');
+    if (!raw) return;
+    const d = JSON.parse(raw);
+    if (d.zeitraum) document.getElementById('q-zeitraum').value = d.zeitraum;
+    if (d.ziel) document.getElementById('q-ziel').value = d.ziel;
+    if (d.kanal) document.getElementById('q-kanal').value = d.kanal;
+    if (d.budget) document.getElementById('q-budget').value = d.budget;
+    if (d.m1) document.getElementById('m1-name').value = d.m1;
+    if (d.m2) document.getElementById('m2-name').value = d.m2;
+    if (d.m3) document.getElementById('m3-name').value = d.m3;
+    const allChecks = document.querySelectorAll('input[type=checkbox]');
+    if (d.checks) d.checks.forEach((v,i) => { if(allChecks[i]) allChecks[i].checked = v; });
+  } catch(e) {}
+}
+
+function clearData() {
+  if (!confirm('Alle Eingaben löschen?')) return;
+  try { localStorage.removeItem('gastros_aktionsplan'); } catch(e) {}
+  document.querySelectorAll('input[type=text], input[type=number]').forEach(el => el.value = '');
+  document.querySelectorAll('input[type=checkbox]').forEach(el => el.checked = false);
+}
+
+loadData();
+</script>
+</body>
+</html>
