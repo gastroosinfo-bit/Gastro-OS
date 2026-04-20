@@ -514,6 +514,37 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
     </div>
   </div>
 
+  <!-- MODUL 11 -->
+  <div class="module-card" id="modul-card-11" style="display:none;">
+    <div class="module-header" onclick="toggleModule(11)">
+      <div class="module-header-left">
+        <div class="module-number">11</div>
+        <div>
+          <div class="module-title">😌 Freiheit &amp; Lebensqualität</div>
+          <div class="module-subtitle" id="subtitle-11">0 von 11 abgeschlossen</div>
+        </div>
+      </div>
+      <div class="module-arrow" id="arrow-11">▼</div>
+    </div>
+    <div class="module-content" id="content-11" style="display:none;">
+      <div class="content-item"><div class="check-box" id="chk-11-0" onclick="toggleCheck(11,0)"></div><span class="item-icon">📋</span><div class="item-info"><div class="item-title" id="title-11-0">Modulübersicht &amp; Inhaltsverzeichnis</div></div><a href="modul11-uebersicht.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-11-1" onclick="toggleCheck(11,1)"></div><span class="item-icon">🎬</span><div class="item-info"><div class="item-title" id="title-11-1">Ankervideo — Vom Dauerstress zur stabilen Routine</div></div><a href="modul11-ankervideo.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-11-2" onclick="toggleCheck(11,2)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-11-2">Lektion 1 — Raus aus dem Dauerstress</div></div><a href="modul11-lektion1.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-11-3" onclick="toggleCheck(11,3)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-11-3">Lektion 2 — Zeit für Familie und Freizeit</div></div><a href="modul11-lektion2.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-11-4" onclick="toggleCheck(11,4)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-11-4">Lektion 3 — Dein Unternehmer-Rhythmus</div></div><a href="modul11-lektion3.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-11-5" onclick="toggleCheck(11,5)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-11-5">Lektion 4 — Vom Plan zur Umsetzung</div></div><a href="modul11-lektion4.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-11-6" onclick="toggleCheck(11,6)"></div><span class="item-icon">🎙️</span><div class="item-info"><div class="item-title" id="title-11-6">Podcast Küchenfunk #5 — Modul 11</div></div><a href="modul11-podcast.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-11-7" onclick="toggleCheck(11,7)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title" id="title-11-7">So nutzt du die Monats-Reflexion</div></div><a href="modul11-reflexion-video.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-11-8" onclick="toggleCheck(11,8)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-11-8">Monats-Reflexion</div></div><a href="modul11-reflexion.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-11-9" onclick="toggleCheck(11,9)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title" id="title-11-9">So nutzt du das Sterne-Level-System</div></div><a href="modul11-sterne-video.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-11-10" onclick="toggleCheck(11,10)"></div><span class="item-icon">🎯</span><div class="item-info"><div class="item-title" id="title-11-10">Quiz — Teste dein Wissen</div></div><a href="modul11-quiz.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="progress-bar-wrap">
+        <div class="progress-label"><span>Fortschritt Modul 11</span><span id="progress-text-11">0%</span></div>
+        <div class="progress-bar"><div class="progress-fill" id="progress-fill-11" style="width:0%"></div></div>
+      </div>
+    </div>
+  </div>
+
   <div id="locked-modules"></div>
 
 </div>
@@ -531,7 +562,7 @@ const { createClient } = supabase;
 const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // ── Konstanten ────────────────────────────────────────────
-const MODULE_ITEMS = { 0:6, 1:10, 2:12, 3:11, 4:12, 5:11, 6:13, 7:11, 8:11, 9:12, 10:10 };
+const MODULE_ITEMS = { 0:6, 1:10, 2:12, 3:11, 4:12, 5:11, 6:13, 7:11, 8:11, 9:12, 10:10, 11:11 };
 
 const MODUL_TITLES = [
   'Das Gastro OS Prinzip',
@@ -554,8 +585,8 @@ const MODUL_TITLES = [
 // Modul 3 offen wenn Quiz 2 bestanden (key: 2-11)
 // Modul 4 offen wenn Quiz 3 bestanden (key: 3-10)
 // Modul 5 offen wenn Quiz 4 bestanden (key: 4-11)
-const QUIZ_KEYS = { 1:'1-9', 2:'2-11', 3:'3-10', 4:'4-11', 5:'5-10', 6:'6-12', 7:'7-10', 8:'8-10', 9:'9-11', 10:'10-9' };
-const QUIZ_TOOL_NAMES = { 1:'quiz_modul1', 2:'quiz_modul2', 3:'quiz_modul3', 4:'quiz_modul4', 5:'quiz_modul5', 6:'quiz_modul6', 7:'quiz_modul7', 8:'quiz_modul8', 9:'quiz_modul9', 10:'quiz_modul10' };
+const QUIZ_KEYS = { 1:'1-9', 2:'2-11', 3:'3-10', 4:'4-11', 5:'5-10', 6:'6-12', 7:'7-10', 8:'8-10', 9:'9-11', 10:'10-9', 11:'11-10' };
+const QUIZ_TOOL_NAMES = { 1:'quiz_modul1', 2:'quiz_modul2', 3:'quiz_modul3', 4:'quiz_modul4', 5:'quiz_modul5', 6:'quiz_modul6', 7:'quiz_modul7', 8:'quiz_modul8', 9:'quiz_modul9', 10:'quiz_modul10', 11:'quiz_modul11' };
 
 let currentUser = null;
 let progress = {};
@@ -618,7 +649,7 @@ async function init() {
   if (!quizBestanden[4]) lockCard(5, 4);
 
   // Fortschritt rendern
-  for (const m of [0,1,2,3,4,5,6,7,8,9,10]) renderProgress(m);
+  for (const m of [0,1,2,3,4,5,6,7,8,9,10,11]) renderProgress(m);
 
   // Modul 6 — immer sichtbar, gesperrt bis Quiz 5 bestanden
   document.getElementById('modul-card-6').style.display = 'block';
@@ -638,6 +669,7 @@ async function init() {
 
   // Modul 10 — immer sichtbar, gesperrt bis Quiz 9 bestanden
   document.getElementById('modul-card-10').style.display = 'block';
+  document.getElementById('modul-card-11').style.display = 'block';
   if (!quizBestanden[9]) lockCard(10, 9);
 
   // Fortschritt rendern
@@ -753,11 +785,12 @@ function renderLockedModules() {
   if (quizBestanden[8]) unlockedUpTo = 9;
   if (quizBestanden[9]) unlockedUpTo = 10;
   if (quizBestanden[10]) unlockedUpTo = 11;
+  if (quizBestanden[11]) unlockedUpTo = 12;
 
   const container = document.getElementById('locked-modules');
   container.innerHTML = '';
 
-  for (let m = 11; m <= 12; m++) {
+  for (let m = 12; m <= 12; m++) {
     const isNext  = (m === unlockedUpTo);
     const locked  = m > unlockedUpTo;
     const card    = document.createElement('div');
