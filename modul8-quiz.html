@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quiz – Modul 8</title>
+<title>Quiz – Modul 8 | GASTRO-OS</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
@@ -12,22 +13,45 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 .btn-back { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
 .btn-back:hover { border-color:#d4af37; color:#d4af37; }
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
-.main { max-width:780px; margin:40px auto; padding:0 24px 60px; text-align:center; }
-.modul-badge { display:inline-block; background:#1a2a4a; color:#d4af37; font-size:11px; font-weight:700; letter-spacing:2px; padding:4px 14px; border-radius:4px; margin-bottom:12px; }
-h1 { font-family:Georgia,serif; font-size:26px; color:#1a2a4a; margin-bottom:24px; }
-.card { background:#fff; border:1px solid #e8dfc8; border-radius:10px; padding:36px 32px; margin-bottom:24px; box-shadow:0 2px 8px rgba(0,0,0,0.04); }
-.quiz-icon { font-size:64px; margin-bottom:16px; }
-h2 { font-family:Georgia,serif; font-size:20px; color:#1a2a4a; margin-bottom:16px; }
-p { font-size:14px; line-height:1.8; color:#3a4a6a; margin-bottom:12px; }
-.gold-divider { height:2px; background:linear-gradient(90deg,transparent,#d4af37,transparent); margin:28px 0; }
-.stats-row { display:flex; justify-content:center; gap:32px; margin:20px 0; }
-.stat { text-align:center; }
-.stat .number { font-family:Georgia,serif; font-size:32px; color:#1a2a4a; font-weight:700; }
-.stat .label { font-size:12px; color:#8090a8; margin-top:4px; }
-.drive-btn { display:inline-flex; align-items:center; gap:10px; background:#d4af37; color:#1a2a4a; border:2px solid #d4af37; padding:16px 36px; border-radius:8px; font-size:16px; font-weight:700; text-decoration:none; transition:all 0.2s; margin:16px 0; }
-.drive-btn:hover { background:#c8a030; border-color:#c8a030; }
-.hint { font-size:13px; color:#8090a8; margin-top:8px; font-style:italic; }
-.footer { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.main { max-width:860px; margin:36px auto; padding:0 24px 60px; }
+
+.page-tag { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; margin-bottom:8px; }
+.page-title { font-family:Georgia,serif; font-size:24px; color:#1a2a4a; margin-bottom:6px; }
+.page-sub { font-size:13px; color:#8090a8; margin-bottom:28px; }
+
+.quiz-info { background:#fff; border:1px solid #e8dfc8; border-radius:10px; padding:20px 24px; margin-bottom:24px; display:flex; gap:20px; align-items:flex-start; }
+.quiz-icon { font-size:32px; flex-shrink:0; }
+.quiz-info h3 { font-family:Georgia,serif; font-size:15px; color:#1a2a4a; margin-bottom:8px; }
+.quiz-info p { font-size:13px; color:#4a5a6a; line-height:1.7; margin-bottom:0; }
+
+.stats-row { display:flex; gap:24px; margin-top:12px; }
+.stat { text-align:center; background:#f5f0e8; border-radius:8px; padding:10px 18px; }
+.stat .number { font-family:Georgia,serif; font-size:22px; color:#1a2a4a; font-weight:700; }
+.stat .label { font-size:11px; color:#8090a8; margin-top:2px; }
+
+.quiz-wrap {
+  background:#fff; border:1px solid #e8dfc8; border-radius:10px;
+  overflow:hidden; margin-bottom:24px;
+  box-shadow:0 2px 10px rgba(0,0,0,0.05);
+  min-height:600px;
+}
+.quiz-wrap iframe {
+  width:100%; height:700px; border:none; display:block;
+}
+
+.bestanden-box { display:none; background:#e6f7ee; border:1px solid #4aaa70; border-radius:10px; padding:24px; text-align:center; margin-bottom:24px; }
+.bestanden-box h3 { font-family:Georgia,serif; font-size:18px; color:#1a6030; margin-bottom:8px; }
+.bestanden-box p { font-size:13px; color:#2a6040; }
+.btn-bestanden { background:#1a2a4a; color:#d4af37; border:none; padding:12px 28px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; margin-top:14px; transition:all 0.2s; text-decoration:none; display:inline-block; }
+.btn-bestanden:hover { background:#d4af37; color:#1a2a4a; }
+
+.nav-row { display:flex; gap:12px; justify-content:space-between; margin-top:16px; }
+.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:12px 24px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none; transition:all 0.2s; }
+.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
+.nav-btn.secondary { background:transparent; border:1px solid rgba(26,42,74,0.3); color:#1a2a4a; }
+.nav-btn.secondary:hover { background:#1a2a4a; color:#d4af37; }
+
+.footer { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer strong { color:#d4af37; }
 </style>
 </head>
@@ -40,46 +64,96 @@ p { font-size:14px; line-height:1.8; color:#3a4a6a; margin-bottom:12px; }
 <div class="gold-bar"></div>
 
 <div class="main">
-  <div class="modul-badge">MODUL 8 · QUIZ</div>
-  <h1>🎯 Quiz Modul 8</h1>
+  <div class="page-tag">Modul 8 · Umsatz smart steigern</div>
+  <div class="page-title">🎯 Quiz — Teste dein Wissen</div>
+  <div class="page-sub">Beantworte alle Fragen um Modul 9 freizuschalten.</div>
 
-  <div class="card">
+  <div class="quiz-info">
     <div class="quiz-icon">🎯</div>
-    <h2>Quiz Modul 8</h2>
-    <p>Du hast Modul 8 durchgearbeitet. Jetzt ist es Zeit zu prüfen was hängen geblieben ist.</p>
-    <p>In diesem Quiz geht es um die wichtigsten Grundlagen zu Upselling, Verkaufspsychologie und Zusatzangeboten. 8 Fragen, Multiple Choice, sofortiges Feedback. Es dauert keine 5 Minuten.</p>
-    <p>Beantworte die Fragen ehrlich, ohne zurückzublättern. Nur so siehst du wo du wirklich stehst und was du vielleicht noch einmal nachlesen möchtest.</p>
-
-    <div class="stats-row">
-      <div class="stat">
-        <div class="number">8</div>
-        <div class="label">Fragen</div>
-      </div>
-      <div class="stat">
-        <div class="number">⚡</div>
-        <div class="label">Sofort-Feedback</div>
-      </div>
-      <div class="stat">
-        <div class="number">5'</div>
-        <div class="label">Minuten</div>
+    <div>
+      <h3>So funktioniert das Quiz</h3>
+      <p>Beantworte alle Fragen im Quiz unten. Wenn du fertig bist, klicke auf den Button „Quiz abgeschlossen" um Modul 9 freizuschalten. Das Quiz testet dein Verständnis der Inhalte aus Modul 8 — Upselling, Verkaufspsychologie und Zusatzangebote.</p>
+      <div class="stats-row">
+        <div class="stat"><div class="number">8</div><div class="label">Fragen</div></div>
+        <div class="stat"><div class="number">⚡</div><div class="label">Sofort-Feedback</div></div>
+        <div class="stat"><div class="number">5'</div><div class="label">Minuten</div></div>
       </div>
     </div>
-
-    <div class="gold-divider"></div>
-
-    <a href="https://docs.google.com/forms/d/e/1FAIpQLSf0VzgqKCXeUAUnKwx1ooQn7Pm-ZAPLE8RB2A2kFl8qDLmXDQ/viewform?usp=publish-editor" target="_blank" class="drive-btn">
-      🎯 Hier geht es zum Quiz
-    </a>
-
-    <p class="hint">Multiple Choice · Sofortiges Feedback · Keine Zeitbegrenzung</p>
   </div>
 
-  <div class="gold-divider"></div>
-  <p style="font-size:12px; color:#8090a8; letter-spacing:1px;">GASTRO-OS | System · Strategie · Erfolg</p>
+  <div class="quiz-wrap">
+    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSf0VzgqKCXeUAUnKwx1ooQn7Pm-ZAPLE8RB2A2kFl8qDLmXDQ/viewform?embedded=true" loading="lazy">Wird geladen…</iframe>
+  </div>
+
+  <div class="bestanden-box" id="bestanden-box">
+    <h3>🎉 Modul 8 abgeschlossen!</h3>
+    <p>Glückwunsch! Du hast Modul 8 erfolgreich abgeschlossen. Modul 9 ist jetzt freigeschaltet.</p>
+    <a href="dashboard.html" class="btn-bestanden">Zum Dashboard → Modul 9</a>
+  </div>
+
+  <div style="text-align:center; margin-bottom:20px;">
+    <button onclick="markBestanden()" style="background:#d4af37; color:#1a2a4a; border:none; padding:13px 32px; border-radius:8px; font-size:14px; font-weight:700; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.background='#1a2a4a';this.style.color='#d4af37'" onmouseout="this.style.background='#d4af37';this.style.color='#1a2a4a'">
+      ✓ Quiz abgeschlossen — Modul 9 freischalten
+    </button>
+  </div>
+
+  <div class="nav-row">
+    <a href="dashboard.html" class="nav-btn secondary">← Dashboard</a>
+    <a href="dashboard.html" class="nav-btn">Zum Dashboard →</a>
+  </div>
 </div>
 
-<div class="footer">
-  <strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg
-</div>
+<div class="gold-bar"></div>
+<div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+
+<script>
+const SUPABASE_URL = 'https://hchlganbgjeciwhwaisj.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3';
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+let currentUser = null;
+
+async function init() {
+  const { data:{ session } } = await sb.auth.getSession();
+  if (!session) { window.location.href = 'login.html'; return; }
+  currentUser = session.user;
+  // Prüfen ob bereits bestanden
+  const { data: qd } = await sb.from('user_tool_data')
+    .select('data').eq('user_id', currentUser.id)
+    .eq('tool_name', 'quiz_modul8').maybeSingle();
+  if (qd && qd.data && qd.data.bestanden) {
+    document.getElementById('bestanden-box').style.display = 'block';
+  }
+}
+
+async function markBestanden() {
+  if (!currentUser) return;
+  // Quiz als bestanden speichern
+  await sb.from('user_tool_data').upsert({
+    user_id: currentUser.id,
+    tool_name: 'quiz_modul8',
+    data: { bestanden: true, datum: new Date().toISOString() },
+    updated_at: new Date().toISOString()
+  }, { onConflict: 'user_id,tool_name' });
+  // Progress-Key 8-10 setzen (Quiz-Item in Modul 8)
+  const { data: td } = await sb.from('user_tool_data')
+    .select('data').eq('user_id', currentUser.id)
+    .eq('tool_name', 'modul_progress').maybeSingle();
+  const progress = (td && td.data) ? td.data : {};
+  progress['8-10'] = true;
+  await sb.from('user_tool_data').upsert({
+    user_id: currentUser.id,
+    tool_name: 'modul_progress',
+    data: progress,
+    updated_at: new Date().toISOString()
+  }, { onConflict: 'user_id,tool_name' });
+  document.getElementById('bestanden-box').style.display = 'block';
+  const btn = document.querySelector('button[onclick="markBestanden()"]');
+  btn.textContent = '✓ Gespeichert!';
+  btn.disabled = true;
+}
+
+init();
+</script>
 </body>
 </html>
