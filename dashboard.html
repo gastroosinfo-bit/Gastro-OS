@@ -488,7 +488,7 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
         <div class="module-number">10</div>
         <div>
           <div class="module-title">Wachstum &amp; Skalierung</div>
-          <div class="module-subtitle" id="subtitle-10">0 von 9 abgeschlossen</div>
+          <div class="module-subtitle" id="subtitle-10">0 von 10 abgeschlossen</div>
         </div>
       </div>
       <div style="display:flex;align-items:center;gap:8px;">
@@ -505,7 +505,8 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
       <div class="content-item"><div class="check-box" id="chk-10-5" onclick="toggleCheck(10,5)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-10-5">Lektion 4 — Vom Plan zur Umsetzung</div></div><a href="modul10-lektion4.html" target="_blank" class="item-link">Öffnen →</a></div>
       <div class="content-item"><div class="check-box" id="chk-10-6" onclick="toggleCheck(10,6)"></div><span class="item-icon">⚠️</span><div class="item-info"><div class="item-title" id="title-10-6">Fehler Report Gastronomie</div></div><a href="modul10-fehlerreport.html" target="_blank" class="item-link">Öffnen →</a></div>
       <div class="content-item"><div class="check-box" id="chk-10-7" onclick="toggleCheck(10,7)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title" id="title-10-7">So nutzt du das Standort Analyse Tool</div></div><a href="modul10-tool-video.html" target="_blank" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-10-8" onclick="toggleCheck(10,8)"></div><span class="item-icon">🎯</span><div class="item-info"><div class="item-title" id="title-10-8">Quiz — Teste dein Wissen</div></div><a href="modul10-quiz.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-10-8" onclick="toggleCheck(10,8)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-10-8">Standort Analyse Tool</div></div><a href="modul10-tool.html" target="_blank" class="item-link">Öffnen →</a></div>
+      <div class="content-item"><div class="check-box" id="chk-10-9" onclick="toggleCheck(10,9)"></div><span class="item-icon">🎯</span><div class="item-info"><div class="item-title" id="title-10-9">Quiz — Teste dein Wissen</div></div><a href="modul10-quiz.html" target="_blank" class="item-link">Öffnen →</a></div>
       <div class="progress-bar-wrap">
         <div class="progress-label"><span>Fortschritt Modul 10</span><span id="progress-text-10">0%</span></div>
         <div class="progress-bar"><div class="progress-fill" id="progress-fill-10" style="width:0%"></div></div>
@@ -530,7 +531,7 @@ const { createClient } = supabase;
 const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // ── Konstanten ────────────────────────────────────────────
-const MODULE_ITEMS = { 0:6, 1:10, 2:12, 3:11, 4:12, 5:11, 6:13, 7:11, 8:11, 9:12, 10:9 };
+const MODULE_ITEMS = { 0:6, 1:10, 2:12, 3:11, 4:12, 5:11, 6:13, 7:11, 8:11, 9:12, 10:10 };
 
 const MODUL_TITLES = [
   'Das Gastro OS Prinzip',
@@ -553,7 +554,7 @@ const MODUL_TITLES = [
 // Modul 3 offen wenn Quiz 2 bestanden (key: 2-11)
 // Modul 4 offen wenn Quiz 3 bestanden (key: 3-10)
 // Modul 5 offen wenn Quiz 4 bestanden (key: 4-11)
-const QUIZ_KEYS = { 1:'1-9', 2:'2-11', 3:'3-10', 4:'4-11', 5:'5-10', 6:'6-12', 7:'7-10', 8:'8-10', 9:'9-11', 10:'10-8' };
+const QUIZ_KEYS = { 1:'1-9', 2:'2-11', 3:'3-10', 4:'4-11', 5:'5-10', 6:'6-12', 7:'7-10', 8:'8-10', 9:'9-11', 10:'10-9' };
 const QUIZ_TOOL_NAMES = { 1:'quiz_modul1', 2:'quiz_modul2', 3:'quiz_modul3', 4:'quiz_modul4', 5:'quiz_modul5', 6:'quiz_modul6', 7:'quiz_modul7', 8:'quiz_modul8', 9:'quiz_modul9', 10:'quiz_modul10' };
 
 let currentUser = null;
