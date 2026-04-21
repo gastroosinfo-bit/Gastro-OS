@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lieferanten-Vergleich — Alle Lieferanten auf einen Blick | GASTRO-OS</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
+.header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:18px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.back-btn { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.back-btn:hover { border-color:#d4af37; color:#d4af37; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+.wrap { max-width:1060px; margin:0 auto; padding:24px 24px 60px; }
+.tool-lbl { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:4px; }
+.tool-title { font-family:Georgia,serif; font-size:22px; color:#1a2a4a; font-weight:normal; margin-bottom:4px; }
+.hint-bar { font-size:12px; color:#8090a8; margin-bottom:20px; }
+.hint-bar span { color:#3a7ad4; }
+.tabs { display:flex; gap:2px; flex-wrap:wrap; }
+.tab-btn { background:#e8dfc8; border:none; padding:10px 18px; font-size:13px; font-weight:600; color:#5a6a80; cursor:pointer; border-radius:6px 6px 0 0; transition:all 0.2s; }
+.tab-btn.active { background:#fff; color:#1a2a4a; border-bottom:2px solid #d4af37; }
+.tab-btn:hover:not(.active) { background:#d4af37; color:#1a2a4a; }
+.tab-content { display:none; background:#fff; border-radius:0 8px 8px 8px; border:1px solid #e8dfc8; padding:20px; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+.tab-content.active { display:block; }
+
+/* Tables */
+.tbl-wrap { overflow-x:auto; }
+table { width:100%; border-collapse:collapse; font-size:13px; }
+thead tr { background:#1a2a4a; }
+thead th { color:#d4af37; padding:10px 8px; text-align:left; font-weight:600; font-size:11px; letter-spacing:0.5px; white-space:nowrap; }
+tbody tr:nth-child(even) { background:#faf8f4; }
+tbody tr:hover { background:#fdf9ee; }
+td { padding:7px 8px; border-bottom:1px solid #f0ece4; vertical-align:middle; }
+td.nr { color:#8090a8; font-size:11px; width:30px; text-align:center; }
+input.ti { border:1px solid #e0d8c8; border-radius:4px; padding:5px 7px; font-size:13px; color:#1a4a8a; background:#eaf2ff; width:100%; }
+input.ti:focus { outline:none; border-color:#3a7ad4; background:#fff; }
+input.ni { border:1px solid #e0d8c8; border-radius:4px; padding:5px 7px; font-size:13px; color:#1a4a8a; background:#eaf2ff; width:70px; text-align:center; }
+input.ni:focus { outline:none; border-color:#3a7ad4; }
+input.mi { border:1px solid #e0d8c8; border-radius:4px; padding:5px 7px; font-size:13px; color:#1a4a8a; background:#eaf2ff; width:90px; text-align:right; }
+input.mi:focus { outline:none; border-color:#3a7ad4; }
+td.score-cell { font-weight:700; font-size:14px; text-align:center; }
+td.calc { font-weight:600; font-size:13px; }
+.best-row { background:#1a2a4a !important; }
+.best-row td { color:#a0b0c8; font-weight:600; padding:10px 8px; }
+.best-row td.gold { color:#d4af37; }
+.sum-row { background:#fdf9ee !important; font-weight:700; }
+.sum-row td { padding:10px 8px; }
+.min-highlight { background:#e4f5e8 !important; color:#1a6030; font-weight:700; }
+.save-row { display:flex; align-items:center; gap:14px; margin-top:18px; }
+.btn-save { background:#1a2a4a; color:#d4af37; border:none; padding:10px 24px; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; }
+.btn-save:hover { background:#d4af37; color:#1a2a4a; }
+.save-msg { font-size:12px; color:#4aaa60; display:none; }
+.footer-note { margin-top:16px; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-note strong { color:#d4af37; }
+/* Verhandlungs-Tracker sum */
+.vt-sum { background:#1a2a4a; color:#d4af37; font-weight:700; }
+.vt-sum td { padding:10px 8px; color:#d4af37; }
+/* Anleitung */
+.anl-block { margin-bottom:20px; border:1px solid #e8dfc8; border-radius:8px; overflow:hidden; }
+.anl-block-header { background:#1a2a4a; padding:12px 16px; font-family:Georgia,serif; font-size:14px; color:#d4af37; font-weight:normal; }
+.anl-block-body { padding:14px 16px; font-size:14px; color:#2a3a54; line-height:1.75; }
+/* Star rating visual */
+.star-hint { font-size:11px; color:#8090a8; }
+</style>
+</head>
+<body>
+<div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html" class="back-btn">← Zurück zum Dashboard</a></div>
+<div class="gold-bar"></div>
+
+<div class="wrap">
+  <div class="tool-lbl">Modul 3 · Tool</div>
+  <div class="tool-title">GASTRO-OS | LIEFERANTEN-VERGLEICH</div>
+  <div class="hint-bar"><span>Blaue Felder = Eingabe</span> &nbsp;|&nbsp; Schwarze Felder = automatische Berechnung</div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('lv')">📋 Lieferanten-Vergleich</button>
+    <button class="tab-btn" onclick="switchTab('pp')">💶 Produkt-Preisvergleich</button>
+    <button class="tab-btn" onclick="switchTab('vt')">🤝 Verhandlungs-Tracker</button>
+    <button class="tab-btn" onclick="switchTab('anl')">📖 Anleitung</button>
+  </div>
+
+  <!-- TAB 1: LIEFERANTEN-VERGLEICH -->
+  <div class="tab-content active" id="tab-lv">
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Nr.</th>
+            <th style="min-width:140px;">Lieferant</th>
+            <th>Kategorie</th>
+            <th style="width:100px;">Preisniveau<br><span style="font-weight:normal;font-size:10px;">(1=günstig / 5=teuer)</span></th>
+            <th style="width:80px;">Qualität<br><span style="font-weight:normal;font-size:10px;">(1–5)</span></th>
+            <th style="width:90px;">Zuverlässigkeit<br><span style="font-weight:normal;font-size:10px;">(1–5)</span></th>
+            <th style="width:110px;">Mindestbestellung (€)</th>
+            <th style="width:90px;">Zahlungsziel (Tage)</th>
+            <th style="width:110px;">Letzter Kontakt</th>
+            <th style="width:80px;">Score (0–100)</th>
+          </tr>
+        </thead>
+        <tbody id="lv-body"></tbody>
+        <tfoot id="lv-foot"></tfoot>
+      </table>
+    </div>
+    <div class="star-hint" style="margin-top:8px;">Preisniveau: 1=sehr günstig / 5=sehr teuer &nbsp;|&nbsp; Qualität &amp; Zuverlässigkeit: 1=schlecht / 5=sehr gut &nbsp;|&nbsp; Score 0–100 automatisch</div>
+    <div class="save-row">
+      <button class="btn-save" onclick="saveData()">💾 Speichern</button>
+      <span class="save-msg" id="sm1">✓ Gespeichert</span>
+    </div>
+    <div class="footer-note"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg &nbsp;|&nbsp; Modul 3: Einkauf &amp; Wareneinsatz</div>
+  </div>
+
+  <!-- TAB 2: PRODUKT-PREISVERGLEICH -->
+  <div class="tab-content" id="tab-pp">
+    <div style="display:flex;gap:16px;margin-bottom:12px;flex-wrap:wrap;">
+      <div style="font-size:13px;color:#2a3a54;font-weight:600;display:flex;align-items:center;gap:8px;">Lieferantennamen →</div>
+      <input class="ti" id="ln1" type="text" placeholder="Lieferant 1" style="max-width:160px;" oninput="updatePPHeaders()">
+      <input class="ti" id="ln2" type="text" placeholder="Lieferant 2" style="max-width:160px;" oninput="updatePPHeaders()">
+      <input class="ti" id="ln3" type="text" placeholder="Lieferant 3" style="max-width:160px;" oninput="updatePPHeaders()">
+      <input class="ti" id="ln4" type="text" placeholder="Lieferant 4" style="max-width:160px;" oninput="updatePPHeaders()">
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Nr.</th>
+            <th style="min-width:140px;">Produkt / Artikel</th>
+            <th>Einheit</th>
+            <th id="ph1">Preis L1 (€)</th>
+            <th id="ph2">Preis L2 (€)</th>
+            <th id="ph3">Preis L3 (€)</th>
+            <th id="ph4">Preis L4 (€)</th>
+            <th style="background:#1a6030 !important;">Günstigster Preis (€)</th>
+          </tr>
+        </thead>
+        <tbody id="pp-body"></tbody>
+        <tfoot id="pp-foot"></tfoot>
+      </table>
+    </div>
+    <div class="save-row">
+      <button class="btn-save" onclick="saveData()">💾 Speichern</button>
+      <span class="save-msg" id="sm2">✓ Gespeichert</span>
+    </div>
+    <div class="footer-note"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg &nbsp;|&nbsp; Modul 3: Einkauf &amp; Wareneinsatz</div>
+  </div>
+
+  <!-- TAB 3: VERHANDLUNGS-TRACKER -->
+  <div class="tab-content" id="tab-vt">
+    <div style="font-size:13px;color:#5a6a80;margin-bottom:12px;">Dokumentiere jedes Gespräch — Ersparnis wird automatisch berechnet</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Nr.</th>
+            <th style="min-width:120px;">Lieferant</th>
+            <th>Datum</th>
+            <th style="min-width:140px;">Produkt / Position</th>
+            <th>Preis vorher (€)</th>
+            <th>Preis nachher (€)</th>
+            <th>Ersparnis / Monat</th>
+            <th style="min-width:140px;">Notizen / Nächster Schritt</th>
+            <th>Fällig am</th>
+          </tr>
+        </thead>
+        <tbody id="vt-body"></tbody>
+        <tfoot id="vt-foot"></tfoot>
+      </table>
+    </div>
+    <div class="save-row">
+      <button class="btn-save" onclick="saveData()">💾 Speichern</button>
+      <span class="save-msg" id="sm3">✓ Gespeichert</span>
+    </div>
+    <div class="footer-note"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg &nbsp;|&nbsp; Modul 3: Einkauf &amp; Wareneinsatz</div>
+  </div>
+
+  <!-- TAB 4: ANLEITUNG -->
+  <div class="tab-content" id="tab-anl">
+    <div style="font-family:Georgia,serif;font-size:16px;color:#1a2a4a;margin-bottom:16px;font-weight:normal;padding-bottom:10px;border-bottom:1px solid #e8dfc8;">GASTRO-OS | ANLEITUNG</div>
+    <div class="anl-block">
+      <div class="anl-block-header">TAB 1 — Lieferanten-Vergleich</div>
+      <div class="anl-block-body">Alle Lieferanten eintragen und 1-5 bewerten. Preisniveau: 1=sehr günstig, 5=sehr teuer. Qualität und Zuverlässigkeit: 1=schlecht, 5=sehr gut. Score 0–100 wird automatisch berechnet. Lieferant mit dem höchsten Score = Empfehlung.</div>
+    </div>
+    <div class="anl-block">
+      <div class="anl-block-header">TAB 2 — Produkt-Preisvergleich</div>
+      <div class="anl-block-body">Konkrete Produkte eintragen und Preise der Lieferanten direkt vergleichen. Der günstigste Preis wird automatisch angezeigt. Gesamtkosten pro Lieferant werden unten summiert.</div>
+    </div>
+    <div class="anl-block">
+      <div class="anl-block-header">TAB 3 — Verhandlungs-Tracker</div>
+      <div class="anl-block-body">Jedes Verhandlungsgespräch dokumentieren. Preis vorher und nachher eintragen — monatliche Ersparnis und Jahresbetrag werden automatisch berechnet. Diese Zahlen sind dein Argument für das nächste Gespräch.</div>
+    </div>
+    <div class="footer-note" style="margin-top:20px;"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg &nbsp;|&nbsp; Modul 3: Einkauf &amp; Wareneinsatz</div>
+  </div>
+</div>
+
+<div style="background:#1a2a4a;margin-top:48px;padding:14px 40px;text-align:center;font-size:11px;color:#8090a8;letter-spacing:1px;"><strong style="color:#d4af37;">GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+
+<script>
+const SUPABASE_URL='https://hchlganbgjeciwhwaisj.supabase.co';
+const SUPABASE_KEY='sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3';
+const {createClient}=supabase;
+const sb=createClient(SUPABASE_URL,SUPABASE_KEY);
+const fmt=(v,d=2)=>parseFloat(v||0).toFixed(d).replace('.',',');
+
+// ── BUILD TABLES ──────────────────────────────────────────
+function buildLV(){
+  const tbody=document.getElementById('lv-body');
+  for(let i=1;i<=15;i++){
+    const tr=document.createElement('tr');
+    tr.innerHTML=`
+      <td class="nr">${i}</td>
+      <td><input class="ti" id="lv-name-${i}" type="text" placeholder="Lieferantname..."></td>
+      <td><input class="ti" id="lv-kat-${i}" type="text" placeholder="Fleisch, Gemüse..." style="max-width:120px;"></td>
+      <td><input class="ni" id="lv-pn-${i}" type="number" min="1" max="5" step="1" placeholder="1–5" oninput="calcScore(${i})"></td>
+      <td><input class="ni" id="lv-qu-${i}" type="number" min="1" max="5" step="1" placeholder="1–5" oninput="calcScore(${i})"></td>
+      <td><input class="ni" id="lv-zv-${i}" type="number" min="1" max="5" step="1" placeholder="1–5" oninput="calcScore(${i})"></td>
+      <td><input class="mi" id="lv-mb-${i}" type="number" min="0" step="0.01" placeholder="0,00"></td>
+      <td><input class="ni" id="lv-zt-${i}" type="number" min="0" step="1" placeholder="Tage"></td>
+      <td><input class="ti" id="lv-lk-${i}" type="text" placeholder="TT.MM.JJJJ" style="max-width:110px;"></td>
+      <td class="score-cell" id="lv-sc-${i}">—</td>`;
+    tbody.appendChild(tr);
+  }
+}
+
+function calcScore(i){
+  const pn=parseFloat(document.getElementById('lv-pn-'+i)?.value)||0;
+  const qu=parseFloat(document.getElementById('lv-qu-'+i)?.value)||0;
+  const zv=parseFloat(document.getElementById('lv-zv-'+i)?.value)||0;
+  const el=document.getElementById('lv-sc-'+i);
+  if(!pn){ el.textContent='—'; el.style.color=''; updateBest(); return; }
+  const score=Math.round(((6-pn)+qu+zv)/3*20);
+  el.textContent=score;
+  el.style.color=score>=70?'#1a6030':score>=50?'#856404':'#a03030';
+  updateBest();
+}
+
+function updateBest(){
+  let maxScore=0;
+  for(let i=1;i<=15;i++){
+    const s=parseFloat(document.getElementById('lv-sc-'+i)?.textContent)||0;
+    if(s>maxScore) maxScore=s;
+  }
+  const foot=document.getElementById('lv-foot');
+  if(maxScore>0){
+    foot.innerHTML=`<tr class="best-row"><td colspan="6">BESTER SCORE DIESER LISTE:</td><td class="gold" colspan="2">${maxScore}</td><td colspan="2">Lieferant mit diesem Score = Empfehlung</td></tr>`;
+  }
+}
+
+function buildPP(){
+  const tbody=document.getElementById('pp-body');
+  for(let i=1;i<=20;i++){
+    const tr=document.createElement('tr');
+    tr.innerHTML=`
+      <td class="nr">${i}</td>
+      <td><input class="ti" id="pp-prod-${i}" type="text" placeholder="Produktname..."></td>
+      <td><input class="ti" id="pp-ein-${i}" type="text" placeholder="kg, Stk..." style="max-width:60px;"></td>
+      <td><input class="mi" id="pp-l1-${i}" type="number" min="0" step="0.01" placeholder="0,00" oninput="calcMin(${i})"></td>
+      <td><input class="mi" id="pp-l2-${i}" type="number" min="0" step="0.01" placeholder="0,00" oninput="calcMin(${i})"></td>
+      <td><input class="mi" id="pp-l3-${i}" type="number" min="0" step="0.01" placeholder="0,00" oninput="calcMin(${i})"></td>
+      <td><input class="mi" id="pp-l4-${i}" type="number" min="0" step="0.01" placeholder="0,00" oninput="calcMin(${i})"></td>
+      <td class="calc" id="pp-min-${i}" style="color:#1a6030;">—</td>`;
+    tbody.appendChild(tr);
+  }
+  updatePPSum();
+}
+
+function calcMin(i){
+  const vals=[1,2,3,4].map(l=>{ const v=parseFloat(document.getElementById('pp-l'+l+'-'+i)?.value); return isNaN(v)?null:v; });
+  const valid=vals.filter(v=>v!==null);
+  const el=document.getElementById('pp-min-'+i);
+  if(!valid.length){ el.textContent='—'; updatePPSum(); return; }
+  const min=Math.min(...valid);
+  el.textContent=fmt(min)+' €';
+  // Highlight min column
+  [1,2,3,4].forEach((l,idx)=>{
+    const td=document.getElementById('pp-l'+l+'-'+i)?.closest('td');
+    if(td){ td.classList.toggle('min-highlight', vals[idx]===min && vals[idx]!==null); }
+  });
+  updatePPSum();
+}
+
+function updatePPSum(){
+  const sums=[0,0,0,0,0];
+  for(let i=1;i<=20;i++){
+    [1,2,3,4].forEach((l,idx)=>{ sums[idx]+=(parseFloat(document.getElementById('pp-l'+l+'-'+i)?.value)||0); });
+    sums[4]+=(parseFloat(document.getElementById('pp-min-'+i)?.textContent?.replace(',','.'))||0);
+  }
+  const foot=document.getElementById('pp-foot');
+  foot.innerHTML=`<tr class="sum-row"><td colspan="3">SUMME Einkaufskosten:</td>
+    <td>${sums[0]>0?fmt(sums[0])+' €':'—'}</td>
+    <td>${sums[1]>0?fmt(sums[1])+' €':'—'}</td>
+    <td>${sums[2]>0?fmt(sums[2])+' €':'—'}</td>
+    <td>${sums[3]>0?fmt(sums[3])+' €':'—'}</td>
+    <td style="color:#1a6030;font-weight:700;">${sums[4]>0?fmt(sums[4])+' €':'—'}</td></tr>`;
+}
+
+function updatePPHeaders(){
+  [1,2,3,4].forEach(l=>{
+    const name=document.getElementById('ln'+l)?.value||'L'+l;
+    document.getElementById('ph'+l).textContent='Preis '+name+' (€)';
+  });
+}
+
+function buildVT(){
+  const tbody=document.getElementById('vt-body');
+  for(let i=1;i<=20;i++){
+    const tr=document.createElement('tr');
+    tr.innerHTML=`
+      <td class="nr">${i}</td>
+      <td><input class="ti" id="vt-lief-${i}" type="text" placeholder="Lieferant..."></td>
+      <td><input class="ti" id="vt-dat-${i}" type="text" placeholder="TT.MM." style="max-width:80px;"></td>
+      <td><input class="ti" id="vt-prod-${i}" type="text" placeholder="Produkt / Position..."></td>
+      <td><input class="mi" id="vt-pv-${i}" type="number" min="0" step="0.01" placeholder="0,00" oninput="calcErsparnis(${i})"></td>
+      <td><input class="mi" id="vt-pn-${i}" type="number" min="0" step="0.01" placeholder="0,00" oninput="calcErsparnis(${i})"></td>
+      <td class="calc" id="vt-ers-${i}" style="color:#1a6030;">—</td>
+      <td><input class="ti" id="vt-not-${i}" type="text" placeholder="Notizen..."></td>
+      <td><input class="ti" id="vt-fal-${i}" type="text" placeholder="TT.MM." style="max-width:80px;"></td>`;
+    tbody.appendChild(tr);
+  }
+  updateVTSum();
+}
+
+function calcErsparnis(i){
+  const pv=parseFloat(document.getElementById('vt-pv-'+i)?.value)||0;
+  const pn=parseFloat(document.getElementById('vt-pn-'+i)?.value)||0;
+  const el=document.getElementById('vt-ers-'+i);
+  if(!pv||!pn){ el.textContent='—'; updateVTSum(); return; }
+  const ers=pv-pn;
+  el.textContent=(ers>=0?'+':'')+fmt(ers)+' €';
+  el.style.color=ers>0?'#1a6030':ers<0?'#a03030':'#5a6a80';
+  updateVTSum();
+}
+
+function updateVTSum(){
+  let total=0;
+  for(let i=1;i<=20;i++){
+    const t=document.getElementById('vt-ers-'+i)?.textContent?.replace(',','.')?.replace('+','');
+    if(t&&t!=='—') total+=parseFloat(t)||0;
+  }
+  const foot=document.getElementById('vt-foot');
+  if(total!==0){
+    foot.innerHTML=`<tr class="vt-sum"><td colspan="6">GESAMT monatliche Ersparnis:</td><td>${fmt(total)} €</td><td>Jahresbetrag: ${fmt(total*12)} €</td><td></td></tr>`;
+  }
+}
+
+function switchTab(t){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+  const map={lv:0,pp:1,vt:2,anl:3};
+  document.querySelectorAll('.tab-btn')[map[t]].classList.add('active');
+  document.getElementById('tab-'+t).classList.add('active');
+}
+
+// ── SAVE / LOAD ───────────────────────────────────────────
+function getAll(){
+  const lv={};
+  for(let i=1;i<=15;i++){
+    lv[i]={name:document.getElementById('lv-name-'+i)?.value||'',kat:document.getElementById('lv-kat-'+i)?.value||'',pn:document.getElementById('lv-pn-'+i)?.value||'',qu:document.getElementById('lv-qu-'+i)?.value||'',zv:document.getElementById('lv-zv-'+i)?.value||'',mb:document.getElementById('lv-mb-'+i)?.value||'',zt:document.getElementById('lv-zt-'+i)?.value||'',lk:document.getElementById('lv-lk-'+i)?.value||''};
+  }
+  const pp={names:{ln1:document.getElementById('ln1')?.value||'',ln2:document.getElementById('ln2')?.value||'',ln3:document.getElementById('ln3')?.value||'',ln4:document.getElementById('ln4')?.value||''},rows:{}};
+  for(let i=1;i<=20;i++){
+    pp.rows[i]={prod:document.getElementById('pp-prod-'+i)?.value||'',ein:document.getElementById('pp-ein-'+i)?.value||'',l1:document.getElementById('pp-l1-'+i)?.value||'',l2:document.getElementById('pp-l2-'+i)?.value||'',l3:document.getElementById('pp-l3-'+i)?.value||'',l4:document.getElementById('pp-l4-'+i)?.value||''};
+  }
+  const vt={};
+  for(let i=1;i<=20;i++){
+    vt[i]={lief:document.getElementById('vt-lief-'+i)?.value||'',dat:document.getElementById('vt-dat-'+i)?.value||'',prod:document.getElementById('vt-prod-'+i)?.value||'',pv:document.getElementById('vt-pv-'+i)?.value||'',pn:document.getElementById('vt-pn-'+i)?.value||'',not:document.getElementById('vt-not-'+i)?.value||'',fal:document.getElementById('vt-fal-'+i)?.value||''};
+  }
+  return {lv,pp,vt};
+}
+
+function setAll(d){
+  if(d.lv){ for(let i=1;i<=15;i++){ const r=d.lv[i]; if(!r) continue; ['name','kat','pn','qu','zv','mb','zt','lk'].forEach(k=>{ const el=document.getElementById('lv-'+k+'-'+i); if(el&&r[k]) el.value=r[k]; }); calcScore(i); } }
+  if(d.pp){
+    const n=d.pp.names||{};
+    ['ln1','ln2','ln3','ln4'].forEach(k=>{ const el=document.getElementById(k); if(el&&n[k]) el.value=n[k]; });
+    updatePPHeaders();
+    for(let i=1;i<=20;i++){ const r=(d.pp.rows||{})[i]; if(!r) continue; ['prod','ein','l1','l2','l3','l4'].forEach(k=>{ const el=document.getElementById('pp-'+k+'-'+i); if(el&&r[k]) el.value=r[k]; }); calcMin(i); }
+  }
+  if(d.vt){ for(let i=1;i<=20;i++){ const r=d.vt[i]; if(!r) continue; ['lief','dat','prod','pv','pn','not','fal'].forEach(k=>{ const el=document.getElementById('vt-'+k+'-'+i); if(el&&r[k]) el.value=r[k]; }); calcErsparnis(i); } }
+}
+
+async function saveData(){
+  try{
+    const {data:{session}}=await sb.auth.getSession();
+    if(session){
+      await sb.from('user_tool_data').upsert({user_id:session.user.id,tool_name:'lieferanten_vergleich_modul3',data:{...getAll(),saved:new Date().toISOString()},updated_at:new Date().toISOString()},{onConflict:'user_id,tool_name'});
+    }
+  }catch(e){}
+  ['sm1','sm2','sm3'].forEach(id=>{ const el=document.getElementById(id); if(el){ el.style.display='inline'; setTimeout(()=>el.style.display='none',2500); } });
+}
+
+async function loadData(){
+  try{
+    const {data:{session}}=await sb.auth.getSession();
+    if(!session) return;
+    const {data}=await sb.from('user_tool_data').select('data').eq('user_id',session.user.id).eq('tool_name','lieferanten_vergleich_modul3').maybeSingle();
+    if(data?.data) setAll(data.data);
+  }catch(e){}
+}
+
+buildLV(); buildPP(); buildVT();
+loadData();
+</script>
+</body>
+</html>
