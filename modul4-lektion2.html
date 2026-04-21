@@ -1,56 +1,121 @@
-<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>GASTRO-OS – Modul 4 | Lektion 2</title><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:"Segoe UI",Arial,sans-serif;background:#f5f0e8;color:#1a2a4a;min-height:100vh}.header{background:#1a2a4a;padding:22px 40px;text-align:center}.brand{font-family:Georgia,serif;font-size:22px;color:#d4af37;letter-spacing:4px;font-weight:normal}.modul-label{font-size:11px;color:#a0b0c8;letter-spacing:3px;text-transform:uppercase;margin-top:4px}.gold-bar{height:3px;background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a)}.main{max-width:820px;margin:36px auto;padding:0 24px 60px}h1{font-family:Georgia,serif;font-size:26px;color:#1a2a4a;margin-bottom:8px}h2{font-family:Georgia,serif;font-size:18px;color:#1a2a4a;margin:24px 0 10px}h3{font-size:15px;color:#1a2a4a;margin:18px 0 8px}.gold-rule{width:56px;height:2px;background:#d4af37;margin:10px 0 20px}p{font-size:15px;color:#2a3a5a;line-height:1.8;margin-bottom:14px}.highlight{background:#fff8e8;border-left:3px solid #d4af37;padding:14px 18px;margin:20px 0;font-size:14px;color:#5a4000;line-height:1.7}.aufgabe{background:#1a2a4a;color:#f5f0e8;border-radius:8px;padding:18px 22px;margin:24px 0;font-size:14px;line-height:1.7}.aufgabe strong{color:#d4af37}.nav-buttons{display:flex;gap:12px;margin-top:32px;flex-wrap:wrap}.btn{display:inline-block;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:600;font-size:14px;transition:opacity .15s}.btn-primary{background:#d4af37;color:#1a2a4a}.btn-secondary{background:#1a2a4a;color:#f5f0e8}.btn:hover{opacity:.85}.footer{background:#1a2a4a;margin-top:48px;padding:14px 40px;text-align:center;font-size:11px;color:#8090a8}.footer strong{color:#d4af37}.divider{border:none;border-top:1px solid #e8dfc8;margin:28px 0}.kosten-box{background:#fff;border:1px solid #e8dfc8;border-radius:8px;padding:16px 20px;margin:16px 0;font-size:14px;line-height:1.8}.screenshot{width:100%;border-radius:8px;border:1px solid #e8dfc8;margin-top:14px;display:block}.step{background:#fff;border:1px solid #e8dfc8;border-radius:10px;padding:22px 26px;margin:20px 0}.step-num{display:inline-block;background:#d4af37;color:#1a2a4a;font-weight:700;font-size:13px;padding:3px 12px;border-radius:12px;margin-bottom:12px}.step h3{font-size:15px;color:#1a2a4a;margin-bottom:10px}.cta-box{background:#1a2a4a;border-radius:10px;padding:22px 28px;margin:28px 0;text-align:center}.cta-box p{color:#a0b0c8;font-size:14px;margin-bottom:14px}.cta-link{display:inline-block;background:#d4af37;color:#1a2a4a;font-weight:700;font-size:15px;padding:13px 32px;border-radius:6px;text-decoration:none}
-.bwa-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
-.bwa-table th{background:#1a2a4a;color:#d4af37;padding:10px 14px;text-align:left}
-.bwa-table td{padding:10px 14px;border-bottom:1px solid #e8dfc8}
-.bwa-table tr:nth-child(odd) td{background:#fff}
-.bwa-table tr:nth-child(even) td{background:#f9f5ee}
-.status-ok{color:#22a35a;font-weight:700}
-.status-warn{color:#e08800;font-weight:700}
-</style></head><body>
-<div class="header"><div class="brand">GASTRO-OS</div><div class="modul-label">Modul 4 &nbsp;·&nbsp; Lektion 2</div></div>
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lektion 2 – Modul 4 | GASTRO-OS</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
+.header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:20px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.btn-back { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.btn-back:hover { border-color:#d4af37; color:#d4af37; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+.main { max-width:860px; margin:36px auto; padding:0 24px 60px; }
+.page-tag { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; margin-bottom:8px; }
+.page-title { font-family:Georgia,serif; font-size:26px; color:#1a2a4a; margin-bottom:6px; }
+.page-sub { font-size:13px; color:#8090a8; margin-bottom:28px; }
+.welcome-card { background:#1a2a4a; border-radius:12px; padding:24px 28px; margin-bottom:28px; }
+.welcome-card p { font-size:14px; color:#c0cce0; line-height:1.85; }
+.chapter { background:#fff; border:1px solid #e8dfc8; border-radius:12px; padding:28px 32px; margin-bottom:24px; box-shadow:0 2px 8px rgba(0,0,0,0.04); }
+.chapter h2 { font-family:Georgia,serif; font-size:18px; color:#1a2a4a; margin-bottom:18px; padding-bottom:12px; border-bottom:2px solid #e8dfc8; }
+.chapter h3 { font-family:Georgia,serif; font-size:15px; color:#d4af37; margin:20px 0 10px; }
+.chapter p { font-size:14px; color:#4a5a6a; line-height:1.85; margin-bottom:14px; }
+.chapter p:last-child { margin-bottom:0; }
+.bwa-table { width:100%; border-collapse:collapse; margin:14px 0; }
+.bwa-table th { background:#1a2a4a; color:#d4af37; padding:10px 14px; font-size:12px; font-weight:700; text-align:left; }
+.bwa-table td { padding:10px 14px; border-bottom:1px solid #e8dfc8; font-size:13px; }
+.bwa-table tr:nth-child(even) td { background:#faf8f4; }
+.bwa-table td.ziel { color:#4aaa70; font-weight:700; }
+.bwa-table td.warn { color:#d4a800; font-weight:700; }
+.highlight { background:#fff8e8; border-left:4px solid #d4af37; border-radius:0 8px 8px 0; padding:14px 18px; margin:16px 0; font-size:14px; color:#5a4000; line-height:1.7; }
+.task-box { background:#f5f0e8; border-left:4px solid #d4af37; border-radius:0 8px 8px 0; padding:16px 20px; margin-top:20px; }
+.task-box strong { font-size:13px; color:#1a2a4a; display:block; margin-bottom:6px; }
+.task-box p { font-size:13px; color:#4a5a6a; margin-bottom:0; }
+.hint-box { background:#e8f0fb; border:1px solid #5a8ad0; border-radius:8px; padding:14px 18px; margin-top:16px; font-size:13px; color:#1a3a6a; line-height:1.7; }
+.nav-row { display:flex; gap:12px; justify-content:space-between; margin-top:24px; }
+.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:12px 24px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none; transition:all 0.2s; display:inline-block; }
+.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
+.nav-btn.secondary { background:transparent; border:1px solid rgba(26,42,74,0.3); color:#1a2a4a; }
+.nav-btn.secondary:hover { background:#1a2a4a; color:#d4af37; }
+.footer { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer strong { color:#d4af37; }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="brand">GASTRO-OS</div>
+  <a href="modul4-uebersicht.html" class="btn-back">← Modulübersicht</a>
+</div>
 <div class="gold-bar"></div>
 <div class="main">
-<h1>Lektion 2 — Die BWA richtig lesen</h1>
-<div class="gold-rule"></div>
-<p>Die BWA ist das wichtigste Dokument das dein Steuerberater jeden Monat erstellt. In dieser Lektion lernst du es wirklich zu lesen und zu verstehen.</p>
+  <div class="page-tag">Modul 4 · Zahlen verstehen &amp; kontrollieren</div>
+  <div class="page-title">📖 Lektion 2 — Die BWA richtig lesen</div>
+  <div class="page-sub">Dein monatlicher Finanzspiegel — endlich verstehen</div>
 
-<hr class="divider">
-<h2>Kapitel 1 — Was ist die BWA und warum ist sie so wichtig?</h2>
-<p>Die Betriebswirtschaftliche Auswertung, kurz BWA, ist dein monatlicher Finanzspiegel. Umsatz, Kosten, Ergebnis — alles auf einen Blick.</p>
-<p>Die meisten Gastronomen machen einen teuren Fehler: Sie schauen nur auf die letzte Zeile. Das ist so als würdest du beim Autofahren nur auf den Tacho schauen — du weißt wie schnell du fährst, aber nicht ob der Tank leer wird oder ob die Bremsen versagen.</p>
+  <div class="welcome-card">
+    <p>In Lektion 1 hast du den Unterschied zwischen Fixkosten und variablen Kosten verstanden und gelernt wie du deinen Break-Even berechnest. Jetzt gehen wir einen Schritt weiter. Die BWA ist das wichtigste Dokument das dein Steuerberater jeden Monat erstellt. In dieser Lektion lernst du es wirklich zu lesen und zu verstehen.</p>
+  </div>
 
-<h3>Die 5 wichtigsten Zeilen in deiner BWA</h3>
-<table class="bwa-table">
-<tr><th>Zeile</th><th>Was es bedeutet</th><th>Zielwert</th></tr>
-<tr><td><strong>1. Nettoumsatz</strong></td><td>Dein echter Umsatz ohne MwSt. — Referenzwert für alle anderen %</td><td>= 100 %</td></tr>
-<tr><td><strong>2. Wareneinsatz</strong></td><td>Lebensmittel + Getränkeeinkauf</td><td><span class="status-ok">< 30 %</span></td></tr>
-<tr><td><strong>3. Personalkosten</strong></td><td>Löhne, Gehälter, Lohnnebenkosten</td><td><span class="status-ok">< 35 %</span></td></tr>
-<tr><td><strong>4. Betriebskosten</strong></td><td>Miete, Strom, Versicherungen, Sonstiges</td><td><span class="status-ok">< 20 %</span></td></tr>
-<tr><td><strong>5. Betriebsergebnis</strong></td><td>Was wirklich übrig bleibt</td><td><span class="status-ok">> 10 %</span></td></tr>
-</table>
+  <div class="chapter">
+    <h2>Kapitel 1 — Was ist die BWA und warum ist sie so wichtig?</h2>
+    <p>Die Betriebswirtschaftliche Auswertung, kurz BWA, ist dein monatlicher Finanzspiegel. Sie zeigt dir auf einer oder zwei Seiten wie dein Betrieb wirtschaftlich dasteht. Umsatz, Kosten, Ergebnis — alles auf einen Blick.</p>
+    <p>Die meisten Gastronomen machen einen teuren Fehler: Sie schauen nur auf die letzte Zeile, den Gewinn oder Verlust. Alles andere überfliegen sie. Das ist so als würdest du beim Autofahren nur auf den Tacho schauen und alle anderen Instrumente ignorieren. Du weißt wie schnell du fährst aber nicht ob der Motor überhitzt, ob der Tank leer wird oder ob die Bremsen versagen.</p>
+    <p>Die BWA richtig zu lesen bedeutet nicht stundenlang Zahlen zu wälzen. Es bedeutet fünf Schlüsselzeilen zu kennen und zu verstehen was sie dir sagen.</p>
 
-<div class="highlight">💡 Wenn Wareneinsatz + Personal + Betriebskosten zusammen über 85% liegen bleibt weniger als 15% für Steuern, Rücklagen und deinen eigenen Lohn. Das ist zu wenig.</div>
+    <h3>Die 5 wichtigsten Zeilen in deiner BWA</h3>
+    <table class="bwa-table">
+      <tr><th>Zeile</th><th>Was sie zeigt</th><th>Zielwert</th></tr>
+      <tr><td><strong>1 · Nettoumsatz</strong></td><td>Dein echter Umsatz ohne MwSt. Alle anderen Prozentwerte beziehen sich auf diese Zahl. Sie ist dein Referenzwert.</td><td class="ziel">Referenz</td></tr>
+      <tr><td><strong>2 · Wareneinsatz</strong></td><td>Was du für Lebensmittel und Getränke ausgegeben hast.</td><td class="ziel">&lt; 30%</td></tr>
+      <tr><td><strong>3 · Personalkosten</strong></td><td>Löhne, Gehälter und alle Lohnnebenkosten. Oft der größte Kostenblock.</td><td class="ziel">&lt; 35%</td></tr>
+      <tr><td><strong>4 · Betriebskosten</strong></td><td>Miete, Strom, Versicherungen und alles zum laufenden Betrieb.</td><td class="ziel">&lt; 20%</td></tr>
+      <tr><td><strong>5 · Betriebsergebnis</strong></td><td>Was wirklich übrig bleibt nach allen Kosten.</td><td class="ziel">&gt; 10% · unter 5% = Warnsignal</td></tr>
+    </table>
 
-<div class="aufgabe"><strong>🎯 Deine Aufgabe für Kapitel 1:</strong><br>Hol dir deine BWA der letzten drei Monate. Markiere die fünf Schlüsselzeilen. Berechne jeden Wert als % des Nettoumsatzes. Siehst du einen Trend?<br><br>👉 Den <strong>Screenshot Guide BWA</strong> findest du im Tab 📸 Screenshot Guide BWA</div>
+    <h3>Was diese Zahlen zusammen bedeuten</h3>
+    <p>Wenn du Wareneinsatz, Personalkosten und Betriebskosten addierst solltest du unter 85% des Nettoumsatzes kommen. Was übrig bleibt ist dein Betriebsergebnis. Wenn du über 85% liegst bleibt weniger als 15% für Steuern, Rücklagen und deinen eigenen Lohn. Das ist zu wenig.</p>
 
-<hr class="divider">
-<h2>Kapitel 2 — Die BWA als Steuerungsinstrument</h2>
-<h3>Was du monatlich prüfen solltest</h3>
-<p><strong>Wareneinsatz gestiegen?</strong> Einkauf und Portionen prüfen. Saisonale Einflüsse?</p>
-<p><strong>Personalkosten im Verhältnis gestiegen?</strong> Dienstplan analysieren. Überstunden? Schichten optimal besetzt?</p>
-<p><strong>Ungewöhnliche Kostenpositionen?</strong> Reparatur, Nachzahlung, neue Ausgabe die sich schleichend eingeschlichen hat?</p>
-<p><strong>Betriebsergebnis trend?</strong> Ein schlechter Monat ist normal. Drei hintereinander sind ein Muster.</p>
+    <div class="hint-box">👉 Den Screenshot-Guide mit echten Beispiel-BWAs und farbigen Markierungen findest du im Tab 📸 Screenshot Guide BWA</div>
 
-<h3>Die BWA im Vergleich zum Vorjahr</h3>
-<p>Noch wertvoller als der Vergleich zum Vormonat ist der Vergleich zum selben Monat im Vorjahr. Bitte deinen Steuerberater die BWA immer mit dem Vorjahresvergleich zu schicken — die meisten Buchhaltungsprogramme können das automatisch ausgeben.</p>
+    <div class="task-box">
+      <strong>🎯 Aufgabe Kapitel 1</strong>
+      <p>Hol dir deine BWA der letzten drei Monate. Markiere die fünf Schlüsselzeilen. Berechne jeden Wert als Prozentsatz des Nettoumsatzes. Schreib die Zahlen nebeneinander. Siehst du einen Trend? Steigt der Wareneinsatz? Sinkt das Betriebsergebnis?</p>
+    </div>
+  </div>
 
-<div class="aufgabe"><strong>🎯 Deine Aufgabe für Kapitel 2:</strong><br>Vergleiche deine BWA des letzten Monats mit demselben Monat im Vorjahr. Schreib drei konkrete Beobachtungen auf — das sind deine Gesprächspunkte beim nächsten Termin mit deinem Steuerberater.</div>
+  <div class="chapter">
+    <h2>Kapitel 2 — Die BWA als Steuerungsinstrument</h2>
+    <p>Eine BWA die du einmal im Monat kurz anschaust ist gut. Eine BWA die du wirklich verstehst und aktiv zur Steuerung deines Betriebs nutzt ist Gold wert.</p>
 
-<div class="nav-buttons">
-<a href="modul4-lektion1.html" class="btn btn-secondary">← Lektion 1</a>
-<a href="modul4-lektion3.html" class="btn btn-primary">Lektion 3 →</a>
-</div>
+    <h3>Was du monatlich prüfen solltest</h3>
+    <p>Ist der Wareneinsatz-Prozentsatz gestiegen? Wenn ja: Einkauf und Portionen prüfen. Hat sich etwas im Angebot geändert? Gibt es saisonale Einflüsse?</p>
+    <p>Sind die Personalkosten im Verhältnis zum Umsatz gestiegen? Schau dir den Dienstplan an. Gab es mehr Überstunden als geplant? Wurden Schichten nicht optimal besetzt?</p>
+    <p>Gibt es ungewöhnliche Kostenpositionen die letzten Monat nicht da waren? Eine unerwartete Reparatur, eine Nachzahlung, eine neue Ausgabe die sich schleichend eingeschlichen hat?</p>
+    <p>Wie entwickelt sich das Betriebsergebnis im Vergleich zu den Vormonaten? Ein einmaliger schlechter Monat ist normal. Drei schlechte Monate hintereinander sind ein Muster das du verstehen musst.</p>
+    <p>Liegt dein Break-Even im grünen Bereich oder hast du ihn diesen Monat nicht erreicht?</p>
+
+    <h3>Die BWA im Vergleich zum Vorjahr</h3>
+    <p>Noch wertvoller als der Vergleich zum Vormonat ist der Vergleich zum selben Monat im Vorjahr. Die Gastronomie hat starke saisonale Schwankungen. Ein schwacher Januar ist normal. Aber wenn dein Januar dieses Jahr schwächer ist als letztes Jahr und du keinen Grund dafür siehst ist das ein Signal das Handlungsbedarf anzeigt.</p>
+    <p>Bitte deinen Steuerberater die BWA immer mit dem Vorjahresvergleich zu schicken. Die meisten Buchhaltungsprogramme können das automatisch ausgeben.</p>
+
+    <h3>Was tun wenn die Zahlen schlecht sind?</h3>
+    <p>Viele Gastronomen schieben die BWA beiseite wenn die Zahlen nicht gut sind. Das ist menschlich aber kontraproduktiv. Schlechte Zahlen sind keine Bedrohung — sie sind Information. Und Information ist der erste Schritt zur Verbesserung.</p>
+    <p>Wenn dein Wareneinsatz zu hoch ist weißt du wo du ansetzen musst. Wenn deine Personalkosten zu hoch sind kannst du den Dienstplan analysieren. Wenn das Betriebsergebnis negativ ist kannst du die Kostentreiber suchen. Jede Abweichung hat eine Ursache. Und jede Ursache hat eine Lösung.</p>
+
+    <div class="task-box">
+      <strong>🎯 Aufgabe Kapitel 2</strong>
+      <p>Vergleiche deine BWA des letzten Monats mit demselben Monat im Vorjahr. Was hat sich verändert? Was ist besser geworden? Was ist schlechter? Schreib drei konkrete Beobachtungen auf. Das sind deine Gesprächspunkte beim nächsten Termin mit deinem Steuerberater.</p>
+    </div>
+  </div>
+
+  <div class="nav-row">
+    <a href="modul4-lektion1.html" class="nav-btn secondary">← Lektion 1</a>
+    <a href="modul4-lektion3.html" class="nav-btn">Lektion 3 →</a>
+  </div>
 </div>
 <div class="gold-bar"></div>
 <div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
-</body></html>
+</body>
+</html>

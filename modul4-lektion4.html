@@ -1,65 +1,162 @@
-<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>GASTRO-OS – Modul 4 | Lektion 4</title><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:"Segoe UI",Arial,sans-serif;background:#f5f0e8;color:#1a2a4a;min-height:100vh}.header{background:#1a2a4a;padding:22px 40px;text-align:center}.brand{font-family:Georgia,serif;font-size:22px;color:#d4af37;letter-spacing:4px;font-weight:normal}.modul-label{font-size:11px;color:#a0b0c8;letter-spacing:3px;text-transform:uppercase;margin-top:4px}.gold-bar{height:3px;background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a)}.main{max-width:820px;margin:36px auto;padding:0 24px 60px}h1{font-family:Georgia,serif;font-size:26px;color:#1a2a4a;margin-bottom:8px}h2{font-family:Georgia,serif;font-size:18px;color:#1a2a4a;margin:24px 0 10px}h3{font-size:15px;color:#1a2a4a;margin:18px 0 8px}.gold-rule{width:56px;height:2px;background:#d4af37;margin:10px 0 20px}p{font-size:15px;color:#2a3a5a;line-height:1.8;margin-bottom:14px}.highlight{background:#fff8e8;border-left:3px solid #d4af37;padding:14px 18px;margin:20px 0;font-size:14px;color:#5a4000;line-height:1.7}.aufgabe{background:#1a2a4a;color:#f5f0e8;border-radius:8px;padding:18px 22px;margin:24px 0;font-size:14px;line-height:1.7}.aufgabe strong{color:#d4af37}.nav-buttons{display:flex;gap:12px;margin-top:32px;flex-wrap:wrap}.btn{display:inline-block;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:600;font-size:14px;transition:opacity .15s}.btn-primary{background:#d4af37;color:#1a2a4a}.btn-secondary{background:#1a2a4a;color:#f5f0e8}.btn:hover{opacity:.85}.footer{background:#1a2a4a;margin-top:48px;padding:14px 40px;text-align:center;font-size:11px;color:#8090a8}.footer strong{color:#d4af37}.divider{border:none;border-top:1px solid #e8dfc8;margin:28px 0}.kosten-box{background:#fff;border:1px solid #e8dfc8;border-radius:8px;padding:16px 20px;margin:16px 0;font-size:14px;line-height:1.8}.screenshot{width:100%;border-radius:8px;border:1px solid #e8dfc8;margin-top:14px;display:block}.step{background:#fff;border:1px solid #e8dfc8;border-radius:10px;padding:22px 26px;margin:20px 0}.step-num{display:inline-block;background:#d4af37;color:#1a2a4a;font-weight:700;font-size:13px;padding:3px 12px;border-radius:12px;margin-bottom:12px}.step h3{font-size:15px;color:#1a2a4a;margin-bottom:10px}.cta-box{background:#1a2a4a;border-radius:10px;padding:22px 28px;margin:28px 0;text-align:center}.cta-box p{color:#a0b0c8;font-size:14px;margin-bottom:14px}.cta-link{display:inline-block;background:#d4af37;color:#1a2a4a;font-weight:700;font-size:15px;padding:13px 32px;border-radius:6px;text-decoration:none}
-.ergebnis{background:linear-gradient(135deg,#1a2a4a,#2a3a5a);border-radius:10px;padding:22px 26px;margin:20px 0;color:#f5f0e8}
-.ergebnis h3{color:#d4af37;margin-bottom:14px}
-.ergebnis-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.1);font-size:14px}
-.ergebnis-row:last-child{border-bottom:none;font-weight:700}
-.ergebnis-row span:last-child{color:#d4af37;font-weight:700}
-.timeline{background:#fff;border:1px solid #e8dfc8;border-radius:8px;overflow:hidden;margin:16px 0}
-.tl-row{display:flex;align-items:flex-start;padding:14px 20px;border-bottom:1px solid #f0e8d8;font-size:14px}
-.tl-row:last-child{border-bottom:none}
-.tl-week{font-weight:700;color:#d4af37;min-width:80px;flex-shrink:0}
-</style></head><body>
-<div class="header"><div class="brand">GASTRO-OS</div><div class="modul-label">Modul 4 &nbsp;·&nbsp; Lektion 4</div></div>
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lektion 4 – Modul 4 | GASTRO-OS</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
+.header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:20px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.btn-back { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.btn-back:hover { border-color:#d4af37; color:#d4af37; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+.main { max-width:860px; margin:36px auto; padding:0 24px 60px; }
+.page-tag { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; margin-bottom:8px; }
+.page-title { font-family:Georgia,serif; font-size:26px; color:#1a2a4a; margin-bottom:6px; }
+.page-sub { font-size:13px; color:#8090a8; margin-bottom:28px; }
+.welcome-card { background:#1a2a4a; border-radius:12px; padding:24px 28px; margin-bottom:28px; }
+.welcome-card p { font-size:14px; color:#c0cce0; line-height:1.85; }
+.chapter { background:#fff; border:1px solid #e8dfc8; border-radius:12px; padding:28px 32px; margin-bottom:24px; box-shadow:0 2px 8px rgba(0,0,0,0.04); }
+.chapter h2 { font-family:Georgia,serif; font-size:18px; color:#1a2a4a; margin-bottom:18px; padding-bottom:12px; border-bottom:2px solid #e8dfc8; }
+.chapter h3 { font-family:Georgia,serif; font-size:15px; color:#d4af37; margin:20px 0 10px; }
+.chapter p { font-size:14px; color:#4a5a6a; line-height:1.85; margin-bottom:14px; }
+.chapter p:last-child { margin-bottom:0; }
+.fallbeispiel { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:20px 24px; margin:16px 0; }
+.fallbeispiel h4 { font-family:Georgia,serif; font-size:14px; color:#1a2a4a; margin-bottom:10px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
+.fallbeispiel p { font-size:13px; color:#4a5a6a; line-height:1.8; margin-bottom:10px; }
+.fallbeispiel p:last-child { margin-bottom:0; }
+.ergebnis-box { background:#e4f5e8; border:1px solid #4aaa60; border-radius:8px; padding:16px 20px; margin:16px 0; }
+.ergebnis-box h4 { font-size:13px; font-weight:700; color:#1a6030; margin-bottom:10px; }
+.ergebnis-box p { font-size:13px; color:#1a5028; line-height:1.7; margin-bottom:6px; }
+.wochen-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:14px 0; }
+.woche-card { border:1px solid #e8dfc8; border-radius:8px; padding:16px 18px; background:#faf8f4; }
+.woche-card h4 { font-family:Georgia,serif; font-size:13px; color:#d4af37; margin-bottom:8px; }
+.woche-card p { font-size:13px; color:#4a5a6a; line-height:1.7; margin-bottom:4px; }
+.woche-card .result { font-size:12px; color:#4aaa70; font-weight:600; margin-top:8px; }
+.highlight { background:#fff8e8; border-left:4px solid #d4af37; border-radius:0 8px 8px 0; padding:14px 18px; margin:16px 0; font-size:14px; color:#5a4000; line-height:1.7; }
+.task-box { background:#f5f0e8; border-left:4px solid #d4af37; border-radius:0 8px 8px 0; padding:16px 20px; margin-top:20px; }
+.task-box strong { font-size:13px; color:#1a2a4a; display:block; margin-bottom:6px; }
+.task-box p { font-size:13px; color:#4a5a6a; margin-bottom:0; }
+.hint-box { background:#e8f0fb; border:1px solid #5a8ad0; border-radius:8px; padding:14px 18px; margin-top:16px; font-size:13px; color:#1a3a6a; line-height:1.7; }
+.abschluss { background:#1a2a4a; border-radius:12px; padding:24px 28px; margin-top:24px; text-align:center; }
+.abschluss h3 { font-family:Georgia,serif; font-size:18px; color:#d4af37; margin-bottom:10px; }
+.abschluss p { font-size:14px; color:#c0cce0; line-height:1.7; margin-bottom:0; }
+.nav-row { display:flex; gap:12px; justify-content:space-between; margin-top:24px; }
+.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:12px 24px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none; transition:all 0.2s; display:inline-block; }
+.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
+.nav-btn.secondary { background:transparent; border:1px solid rgba(26,42,74,0.3); color:#1a2a4a; }
+.nav-btn.secondary:hover { background:#1a2a4a; color:#d4af37; }
+.footer { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer strong { color:#d4af37; }
+@media(max-width:600px){ .wochen-grid { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="brand">GASTRO-OS</div>
+  <a href="modul4-uebersicht.html" class="btn-back">← Modulübersicht</a>
+</div>
 <div class="gold-bar"></div>
 <div class="main">
-<h1>Lektion 4 — Fallbeispiel &amp; 30-Tage-Aktionsplan</h1>
-<div class="gold-rule"></div>
-<p>In Lektion 3 hast du die fünf größten Kostentreiber kennengelernt. Jetzt wird es konkret — erst eine Geschichte aus der Praxis, dann dein persönlicher Plan für die nächsten 30 Tage.</p>
+  <div class="page-tag">Modul 4 · Zahlen verstehen &amp; kontrollieren</div>
+  <div class="page-title">📖 Lektion 4 — Fallbeispiel &amp; Aktionsplan</div>
+  <div class="page-sub">Vom Wissen zur Umsetzung — dein konkreter 30-Tage-Plan</div>
 
-<hr class="divider">
-<h2>Kapitel 1 — Fallbeispiel: Mario erkennt wo 1.800 Euro im Monat verschwinden</h2>
-<div class="highlight">ℹ️ Das Folgende ist ein zusammengesetztes Beispiel aus typischen Mustern die wir in Gastronomiebetrieben regelmäßig beobachten. Namen und Details sind fiktiv, aber die Zahlen sind real.</div>
+  <div class="welcome-card">
+    <p>In Lektion 3 hast du die fünf größten Kostentreiber kennengelernt und verstanden wie du sie mit einem regelmäßigen Kontroll-Rhythmus im Griff behältst. Jetzt wird es konkret. Erst eine Geschichte aus der Praxis die zeigt was passiert wenn jemand seine Zahlen endlich wirklich versteht. Dann dein persönlicher Plan für die nächsten 30 Tage.</p>
+  </div>
 
-<h3>Ausgangssituation</h3>
-<p>Mario betreibt ein italienisches Restaurant mit 5.000€ Monatsumsatz. Er zahlt sich selbst wenig und weiß nicht warum am Ende nichts übrig bleibt. Der Betrieb läuft, die Gäste kommen — aber das Konto wächst nicht. Auf Anraten seines Steuerberaters schaut er sich seine BWA der letzten drei Monate wirklich an.</p>
+  <div class="chapter">
+    <h2>Kapitel 1 — Fallbeispiel: Mario erkennt wo 1.800 Euro im Monat verschwinden</h2>
+    <p>Das Folgende ist ein zusammengesetztes Beispiel aus typischen Mustern die wir in Gastronomiebetrieben regelmäßig beobachten. Namen und Details sind fiktiv, aber die Zahlen sind real.</p>
 
-<h3>Was Mario findet</h3>
-<p><strong>Wareneinsatz 38%</strong> statt Ziel 30% → 400€ zu viel pro Monat, unbemerkt seit Jahren.</p>
-<p><strong>Lieferplattform 22% Provision</strong> auf 2.700€ Umsatz → 594€ Provision jeden Monat. Er hatte das nie konkret ausgerechnet.</p>
-<p><strong>Energiekosten +18%</strong> zum Vorjahr → Ein alter Kühlschrank der seit Jahren zu viel Strom frisst. Niemand hatte die Jahresabrechnung je mit dem Vorjahr verglichen.</p>
+    <div class="fallbeispiel">
+      <h4>Ausgangssituation</h4>
+      <p>Mario betreibt ein italienisches Restaurant mit 60.000 Euro Jahresumsatz, also rund 5.000 Euro pro Monat. Er zahlt sich selbst wenig und weiß nicht warum am Ende nichts übrig bleibt. Der Betrieb läuft, die Gäste kommen, die Bewertungen sind gut. Aber das Konto wächst nicht.</p>
+      <p>Auf Anraten seines Steuerberaters schaut er sich seine BWA der letzten drei Monate wirklich an. Nicht nur die letzte Zeile. Alle fünf Schlüsselzeilen.</p>
+    </div>
 
-<h3>Was Mario ändert</h3>
-<p>Er erhöht die Plattformpreise um 18% und baut eine eigene WhatsApp-Gruppe für Stammkunden auf. Er standardisiert seine fünf meistverkauften Gerichte mit klaren Portionsgrößen. Der alte Kühlschrank wird ersetzt — Investition 1.400€, Amortisation unter einem Jahr.</p>
+    <div class="fallbeispiel">
+      <h4>Was Mario findet</h4>
+      <p>Sein Wareneinsatz liegt bei 38 Prozent. Das Ziel liegt unter 30 Prozent. Die Differenz von 8 Prozentpunkten bedeutet bei 5.000 Euro Monatsumsatz rund 400 Euro zu viel pro Monat. Monat für Monat. Ohne dass es jemand bemerkt hat.</p>
+      <p>Dazu kommen Liefergebühren einer Plattform mit 22 Prozent Provision. Mario macht über diese Plattform monatlich etwa 2.700 Euro Umsatz. Das sind 594 Euro Provision jeden Monat die direkt an die Plattform fließen. Er hatte das nie so konkret ausgerechnet.</p>
+      <p>Zusammen sind das fast 1.000 Euro pro Monat die still und leise verschwinden.</p>
+      <p>Bei weiterer Analyse entdeckt er noch einen dritten Kostentreiber: Seine Energiekosten sind im Vergleich zum Vorjahr um 18 Prozent gestiegen. Ein alter Kühlschrank der seit Jahren mehr Strom verbraucht als er sollte — und niemand hat es bemerkt weil die Jahresabrechnung nie mit dem Vorjahr verglichen wurde.</p>
+    </div>
 
-<div class="ergebnis">
-<h3>📊 Ergebnis nach 3 Monaten</h3>
-<div class="ergebnis-row"><span>Wareneinsatz</span><span>38% → 31%</span></div>
-<div class="ergebnis-row"><span>Direktbestellungen</span><span>35% der Plattform-Bestellungen</span></div>
-<div class="ergebnis-row"><span>Energiekosten</span><span>−22% zum Vorjahr</span></div>
-<div class="ergebnis-row"><span>Monatlicher Zusatzgewinn</span><span>ca. 1.800€</span></div>
-<div class="ergebnis-row"><span>Umsatzveränderung</span><span>Keine</span></div>
-</div>
+    <div class="fallbeispiel">
+      <h4>Was Mario ändert</h4>
+      <p>Mario kündigt die Plattform nicht sofort. Stattdessen erhöht er die Preise dort um 18 Prozent um die Provision teilweise zu kompensieren. Gleichzeitig baut er eine eigene WhatsApp-Gruppe für Stammkunden auf mit direkter Bestellmöglichkeit — ohne Provision.</p>
+      <p>Er standardisiert seine fünf meistverkauften Gerichte mit klaren Portionsgrößen. Jeder Koch weiß jetzt genau wie viel von was auf den Teller kommt. Der wöchentliche Einkaufs-Check aus Modul 3 wird zur festen Routine.</p>
+      <p>Der alte Kühlschrank wird durch ein effizientes Modell ersetzt. Die Investition liegt bei 1.400 Euro. Bei den eingesparten Energiekosten rechnet sie sich in unter einem Jahr.</p>
+    </div>
 
-<div class="aufgabe"><strong>🎯 Deine Aufgabe für Kapitel 1:</strong><br>Lies das Fallbeispiel nochmal und markiere die Stelle die dich am meisten anspricht. Erkennst du einen dieser Kostentreiber in deinem Betrieb? Das ist dein Startpunkt.</div>
+    <div class="ergebnis-box">
+      <h4>🎉 Das Ergebnis nach 3 Monaten</h4>
+      <p>✅ Wareneinsatz sinkt von 38 auf 31 Prozent.</p>
+      <p>✅ Direktbestellungen steigen auf 35 Prozent der früheren Plattform-Bestellungen.</p>
+      <p>✅ Energiekosten sinken um 22 Prozent im Vergleich zum Vorjahr.</p>
+      <p><strong>Mario hat 1.800 Euro mehr pro Monat</strong> — ohne einen Cent mehr Umsatz, ohne neue Marketingmaßnahmen, ohne einen neuen Mitarbeiter. Nur durch das Verstehen und Kontrollieren seiner eigenen Zahlen.</p>
+    </div>
 
-<hr class="divider">
-<h2>Kapitel 2 — Dein 30-Tage-Aktionsplan</h2>
-<div class="timeline">
-<div class="tl-row"><span class="tl-week">Woche 1</span><span><strong>BWA anfordern &amp; analysieren</strong> — BWA der letzten 3 Monate anfordern. Fünf Schlüsselwerte als % berechnen. Trend erkennen.</span></div>
-<div class="tl-row"><span class="tl-week">Woche 2</span><span><strong>Break Even berechnen</strong> — Gewinn Rechner nutzen. Wie weit ist dein Umsatz vom Break Even entfernt? Was passiert bei 20% Umsatzrückgang?</span></div>
-<div class="tl-row"><span class="tl-week">Woche 3</span><span><strong>Kostentreiber identifizieren</strong> — Kostentreiber Checkliste ausfüllen. Zwei größte Kostentreiber benennen. Konkrete Maßnahme mit Datum festlegen.</span></div>
-<div class="tl-row"><span class="tl-week">Woche 4</span><span><strong>Kontroll-Rhythmus einrichten</strong> — Kalender-Erinnerungen einrichten. Erste Maßnahme umsetzen. Neuen Wareneinsatz berechnen und vergleichen.</span></div>
-</div>
+    <div class="highlight">
+      Das Geld war die ganze Zeit da. Es ist nur an den falschen Stellen versickert. Zahlen zu kennen verändert nichts. Zahlen zu verstehen und darauf zu reagieren verändert alles.
+    </div>
 
-<div class="aufgabe"><strong>🎯 Deine Aufgabe für Kapitel 2:</strong><br>Trag jetzt alle vier Wochen-Aufgaben als konkrete Termine in deinen Kalender ein. Und ruf heute noch deinen Steuerberater an um die BWA der letzten drei Monate anzufordern.</div>
+    <div class="task-box">
+      <strong>🎯 Aufgabe Kapitel 1</strong>
+      <p>Lies das Fallbeispiel nochmal und markiere die Stelle die dich am meisten anspricht. Erkennst du einen dieser Kostentreiber in deinem eigenen Betrieb? Schreib ihn auf. Das ist dein Startpunkt.</p>
+    </div>
+  </div>
 
-<div class="highlight">🏁 <strong>Dein nächster Schritt:</strong> Du hast Modul 4 durchgearbeitet. Du weißt jetzt wie du Fixkosten und variable Kosten unterscheidest, deinen Break Even berechnest, eine BWA liest und die fünf größten Kostentreiber findest. Jetzt ist es Zeit das Wissen in deinen Betrieb zu bringen. Nicht nächste Woche. Heute.</div>
+  <div class="chapter">
+    <h2>Kapitel 2 — Dein 30-Tage-Aktionsplan</h2>
+    <p>Wissen ohne Umsetzung ist Unterhaltung. Dieser Plan gibt dir für jeden der nächsten vier Wochen einen konkreten Fokus. Ein Schritt pro Woche. Nicht mehr.</p>
 
-<div class="nav-buttons">
-<a href="modul4-lektion3.html" class="btn btn-secondary">← Lektion 3</a>
-<a href="modul4-bwa-guide.html" class="btn btn-primary">Screenshot Guide BWA →</a>
-</div>
+    <div class="wochen-grid">
+      <div class="woche-card">
+        <h4>📋 Woche 1 — BWA anfordern und analysieren</h4>
+        <p>Fordere die BWA der letzten drei Monate von deinem Steuerberater an. Berechne für jeden Monat die fünf Schlüsselwerte in Prozent. Schreib sie nebeneinander. Siehst du einen Trend?</p>
+        <div class="result">→ Du weißt wo dein Betrieb heute steht</div>
+      </div>
+      <div class="woche-card">
+        <h4>📊 Woche 2 — Break-Even berechnen</h4>
+        <p>Berechne deinen Break-Even-Punkt. Wie weit ist dein tatsächlicher Monatsumsatz vom Break-Even entfernt? Was würde passieren wenn dein Umsatz einen Monat lang 20 Prozent unter dem aktuellen Wert liegt?</p>
+        <div class="result">→ Du kennst deine finanzielle Untergrenze</div>
+      </div>
+      <div class="woche-card">
+        <h4>🔍 Woche 3 — Kostentreiber identifizieren</h4>
+        <p>Fülle die Kostentreiber-Checkliste aus. Identifiziere die zwei größten Kostentreiber in deinem Betrieb. Lege für jeden eine konkrete Maßnahme fest — mit einem klaren Datum bis wann du sie umsetzt.</p>
+        <div class="result">→ Du weißt wo die größten Hebel liegen</div>
+      </div>
+      <div class="woche-card">
+        <h4>🔄 Woche 4 — Kontroll-Rhythmus einrichten</h4>
+        <p>Richte deinen monatlichen Kontroll-Rhythmus ein. Kalender-Erinnerungen für den wöchentlichen Check, die monatliche BWA-Auswertung und den quartalsweisen Lieferanten-Check. Setze die erste Maßnahme aus Woche 3 um.</p>
+        <div class="result">→ Du hast ein System das dauerhaft läuft</div>
+      </div>
+    </div>
+
+    <div class="hint-box">👉 Den Gewinn-Rechner findest du im Tab 📊 Gewinn-Rechner<br>👉 Die Kostentreiber-Checkliste findest du im Tab 📊 Kostentreiber-Checkliste</div>
+
+    <div class="task-box">
+      <strong>🎯 Aufgabe Kapitel 2</strong>
+      <p>Trag alle vier Wochen-Aufgaben jetzt in deinen Kalender ein. Konkrete Termine, konkrete Uhrzeiten. Und ruf heute noch deinen Steuerberater an um die BWA der letzten drei Monate anzufordern. Das ist der erste Schritt.</p>
+    </div>
+  </div>
+
+  <div class="abschluss">
+    <h3>Dein nächster Schritt</h3>
+    <p>Du hast Modul 4 durchgearbeitet. Du weißt jetzt wie du Fixkosten von variablen Kosten unterscheidest, wie du deinen Break-Even berechnest, wie du eine BWA liest und wo die fünf größten Kostentreiber in deinem Betrieb lauern.<br><br>Jetzt ist es Zeit das Wissen in deinen Betrieb zu bringen. Nicht nächste Woche. <strong style="color:#d4af37;">Heute.</strong></p>
+  </div>
+
+  <div class="nav-row">
+    <a href="modul4-lektion3.html" class="nav-btn secondary">← Lektion 3</a>
+    <a href="modul4-gewinn-anleitung.html" class="nav-btn">Gewinn-Rechner Anleitung →</a>
+  </div>
 </div>
 <div class="gold-bar"></div>
 <div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
-</body></html>
+</body>
+</html>
