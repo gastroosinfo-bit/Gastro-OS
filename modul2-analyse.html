@@ -94,6 +94,7 @@ td.db { color:#1a6030; }
 
 /* Entscheidungsbaum */
 .ebaum-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+@media print { .header,.back-btn,.gold-bar { display:none!important; } body{background:#fff;} .section,.tool-card{box-shadow:none;} }
 @media(max-width:640px){ .ebaum-grid { grid-template-columns:1fr; } }
 .ebaum-card { border-radius:8px; border:1px solid #e8dfc8; padding:18px; background:#faf8f4; }
 .ebaum-title { font-family:Georgia,serif; font-size:15px; color:#1a2a4a; margin-bottom:6px; }
@@ -179,6 +180,8 @@ td.db { color:#1a6030; }
 
     <div class="save-row">
       <button class="btn-save" onclick="saveData()">💾 Speichern</button>
+      <button class="btn-save" style="background:#4a6a3a;" onclick="window.print()">🖨️ Drucken / PDF</button>
+      <button class="btn-save" style="background:transparent;border:1px solid #cc5544;color:#cc5544;" onclick="resetData()">🔄 Neu starten</button>
       <span class="save-msg" id="save-msg">✓ Gespeichert</span>
     </div>
   </div>
@@ -230,6 +233,8 @@ td.db { color:#1a6030; }
 
     <div class="save-row" style="margin-top:20px;">
       <button class="btn-save" onclick="saveData()">💾 Speichern</button>
+      <button class="btn-save" style="background:#4a6a3a;" onclick="window.print()">🖨️ Drucken / PDF</button>
+      <button class="btn-save" style="background:transparent;border:1px solid #cc5544;color:#cc5544;" onclick="resetData()">🔄 Neu starten</button>
       <span class="save-msg" id="save-msg2">✓ Gespeichert</span>
     </div>
 
@@ -459,6 +464,22 @@ async function loadData() {
       if(d.massnahmen.dog)    document.getElementById('mass-dog').value=d.massnahmen.dog;
     }
   } catch(e){}
+}
+
+
+async function resetData(){
+  if(!confirm('Alle Eingaben zurücksetzen?'))return;
+  ROWS.forEach(r=>{
+    ['g-','vp-','we-','bm-'].forEach(p=>{const el=document.getElementById(p+r.nr);if(el)el.value='';});
+    recalcRow(r.nr);
+  });
+  ['mass-star','mass-plowh','mass-puzzle','mass-dog'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('threshold-pct').value='32';
+  document.getElementById('threshold-qty').value='20';
+  const{data:{session}}=await sb.auth.getSession();
+  if(session){
+    await sb.from('user_tool_data').upsert({user_id:session.user.id,tool_name:'analyse_guide_modul2',data:{rows:{},massnahmen:{},settings:{},updated:new Date().toISOString()},updated_at:new Date().toISOString()},{onConflict:'user_id,tool_name'});
+  }
 }
 
 buildTable();

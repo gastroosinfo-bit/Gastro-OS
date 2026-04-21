@@ -63,6 +63,7 @@ td.calc { font-weight:600; font-size:13px; }
 .anl-block-body { padding:14px 16px; font-size:14px; color:#2a3a54; line-height:1.75; }
 /* Star rating visual */
 .star-hint { font-size:11px; color:#8090a8; }
+@media print{.header,.back-btn,.gold-bar{display:none!important;}body{background:#fff;}}
 </style>
 </head>
 <body>
@@ -106,6 +107,8 @@ td.calc { font-weight:600; font-size:13px; }
     <div class="star-hint" style="margin-top:8px;">Preisniveau: 1=sehr günstig / 5=sehr teuer &nbsp;|&nbsp; Qualität &amp; Zuverlässigkeit: 1=schlecht / 5=sehr gut &nbsp;|&nbsp; Score 0–100 automatisch</div>
     <div class="save-row">
       <button class="btn-save" onclick="saveData()">💾 Speichern</button>
+      <button class="btn-save" style="background:#4a6a3a;" onclick="window.print()">🖨️ Drucken / PDF</button>
+      <button class="btn-save" style="background:transparent;border:1px solid #cc5544;color:#cc5544;" onclick="resetData()">🔄 Neu starten</button>
       <span class="save-msg" id="sm1">✓ Gespeichert</span>
     </div>
     <div class="footer-note"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg &nbsp;|&nbsp; Modul 3: Einkauf &amp; Wareneinsatz</div>
@@ -140,6 +143,8 @@ td.calc { font-weight:600; font-size:13px; }
     </div>
     <div class="save-row">
       <button class="btn-save" onclick="saveData()">💾 Speichern</button>
+      <button class="btn-save" style="background:#4a6a3a;" onclick="window.print()">🖨️ Drucken / PDF</button>
+      <button class="btn-save" style="background:transparent;border:1px solid #cc5544;color:#cc5544;" onclick="resetData()">🔄 Neu starten</button>
       <span class="save-msg" id="sm2">✓ Gespeichert</span>
     </div>
     <div class="footer-note"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg &nbsp;|&nbsp; Modul 3: Einkauf &amp; Wareneinsatz</div>
@@ -169,6 +174,8 @@ td.calc { font-weight:600; font-size:13px; }
     </div>
     <div class="save-row">
       <button class="btn-save" onclick="saveData()">💾 Speichern</button>
+      <button class="btn-save" style="background:#4a6a3a;" onclick="window.print()">🖨️ Drucken / PDF</button>
+      <button class="btn-save" style="background:transparent;border:1px solid #cc5544;color:#cc5544;" onclick="resetData()">🔄 Neu starten</button>
       <span class="save-msg" id="sm3">✓ Gespeichert</span>
     </div>
     <div class="footer-note"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg &nbsp;|&nbsp; Modul 3: Einkauf &amp; Wareneinsatz</div>
@@ -399,6 +406,16 @@ async function loadData(){
 }
 
 buildLV(); buildPP(); buildVT();
+
+async function resetData(){
+  if(!confirm('Alle Eingaben zurücksetzen?'))return;
+  document.querySelectorAll('input[type=text],input[type=number],textarea,select').forEach(el=>{el.value='';});
+  const{data:{session}}=await sb.auth.getSession();
+  if(session){
+    await sb.from('user_tool_data').upsert({user_id:session.user.id,tool_name:'lieferanten_vergleich_modul3',data:{},updated_at:new Date().toISOString()},{onConflict:'user_id,tool_name'});
+  }
+  location.reload();
+}
 loadData();
 </script>
 </body>

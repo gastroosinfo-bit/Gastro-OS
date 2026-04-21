@@ -75,6 +75,7 @@ td.calc { font-weight:600; font-size:13px; }
 
 .footer-brand { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-brand strong { color:#d4af37; }
+@media print{.header,.back-btn,.gold-bar{display:none!important;}body{background:#fff;}}
 </style>
 </head>
 <body>
@@ -122,6 +123,8 @@ td.calc { font-weight:600; font-size:13px; }
     <div id="marge-status" class="status-bar"></div>
     <div class="save-row">
       <button class="btn-save" onclick="saveData()">💾 Speichern</button>
+      <button class="btn-save" style="background:#4a6a3a;" onclick="window.print()">🖨️ Drucken / PDF</button>
+      <button class="btn-save" style="background:transparent;border:1px solid #cc5544;color:#cc5544;" onclick="resetData()">🔄 Neu starten</button>
       <span class="save-msg" id="save-msg1">✓ Gespeichert</span>
     </div>
     <div style="margin-top:16px;font-size:11px;color:#8090a8;letter-spacing:1px;">
@@ -157,6 +160,8 @@ td.calc { font-weight:600; font-size:13px; }
 
     <div class="save-row">
       <button class="btn-save" onclick="saveData()">💾 Speichern</button>
+      <button class="btn-save" style="background:#4a6a3a;" onclick="window.print()">🖨️ Drucken / PDF</button>
+      <button class="btn-save" style="background:transparent;border:1px solid #cc5544;color:#cc5544;" onclick="resetData()">🔄 Neu starten</button>
       <span class="save-msg" id="save-msg2">✓ Gespeichert</span>
     </div>
     <div style="margin-top:16px;font-size:11px;color:#8090a8;letter-spacing:1px;">
@@ -371,6 +376,16 @@ async function loadData(){
 }
 
 buildTable();
+
+async function resetData(){
+  if(!confirm('Alle Eingaben zurücksetzen?'))return;
+  document.querySelectorAll('input[type=text],input[type=number],textarea').forEach(el=>{el.value='';});
+  const{data:{session}}=await sb.auth.getSession();
+  if(session){
+    await sb.from('user_tool_data').upsert({user_id:session.user.id,tool_name:'marge_tool_modul2',data:{rows:{},top5:'',updated:new Date().toISOString()},updated_at:new Date().toISOString()},{onConflict:'user_id,tool_name'});
+  }
+  location.reload();
+}
 loadData();
 </script>
 </body>

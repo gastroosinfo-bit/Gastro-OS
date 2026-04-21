@@ -108,6 +108,7 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
   .gesamt-row { grid-template-columns:1fr 1fr; }
   .mass-row { grid-template-columns:1fr; }
 }
+@media print{.header,.back-btn,.gold-bar{display:none!important;}body{background:#fff;}}
 </style>
 </head>
 <body>
@@ -356,6 +357,8 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 
     <div class="save-row">
       <button class="btn-save" onclick="saveData()">💾 Speichern</button>
+      <button class="btn-save" style="background:#4a6a3a;" onclick="window.print()">🖨️ Drucken / PDF</button>
+      <button class="btn-save" style="background:transparent;border:1px solid #cc5544;color:#cc5544;" onclick="resetData()">🔄 Neu starten</button>
       <span class="save-msg" id="save-msg">✓ Gespeichert</span>
     </div>
     <div style="margin-top:16px;font-size:11px;color:#8090a8;letter-spacing:1px;">
@@ -533,6 +536,16 @@ async function loadData(){
   }catch(e){}
 }
 
+
+async function resetData(){
+  if(!confirm('Alle Eingaben zurücksetzen?'))return;
+  document.querySelectorAll('input[type=text],input[type=number],textarea').forEach(el=>{el.value='';});
+  const{data:{session}}=await sb.auth.getSession();
+  if(session){
+    await sb.from('user_tool_data').upsert({user_id:session.user.id,tool_name:'einkaufs_check_modul3',data:{},updated_at:new Date().toISOString()},{onConflict:'user_id,tool_name'});
+  }
+  location.reload();
+}
 loadData();
 </script>
 </body>

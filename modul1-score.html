@@ -3,48 +3,347 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GASTRO-OS – Modul 1 | Unternehmer-Score</title>
+<title>Unternehmer-Score – Modul 1 | GASTRO-OS</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f0e8; color: #1a2a4a; min-height: 100vh; }
-  .header { background: #1a2a4a; padding: 22px 40px; text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,0.3); }
-  .header .brand { font-family: Georgia, serif; font-size: 22px; color: #d4af37; letter-spacing: 4px; font-weight: normal; }
-  .header .modul-label { font-size: 11px; color: #a0b0c8; letter-spacing: 3px; text-transform: uppercase; margin-top: 4px; }
-  .gold-bar { height: 3px; background: linear-gradient(90deg, #1a2a4a, #d4af37, #1a2a4a); }
-  .main { max-width: 860px; margin: 36px auto; padding: 0 24px 60px; }
-  h1 { font-family: Georgia, serif; font-size: 24px; color: #1a2a4a; margin-bottom: 8px; }
-  .gold-rule { width: 56px; height: 2px; background: #d4af37; margin: 10px 0 16px; }
-  p { font-size: 14px; line-height: 1.8; color: #334; margin-bottom: 16px; }
-  .tool-card { background: #fff; border-radius: 12px; padding: 28px 32px; border: 2px solid #d4af37; box-shadow: 0 4px 20px rgba(26,42,74,0.08); }
-  .tool-card .icon { font-size: 40px; margin-bottom: 12px; }
-  .tool-card h2 { font-family: Georgia, serif; font-size: 20px; color: #1a2a4a; margin-bottom: 12px; }
-  .tool-card p { color: #5060a0; margin-bottom: 20px; }
-  .tool-btn { display: inline-block; background: #1a2a4a; color: #d4af37; font-weight: 700; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-size: 14px; letter-spacing: 0.5px; transition: background 0.2s; }
-  .tool-btn:hover { background: #2a3a5a; }
-  .hinweis { margin-top: 20px; background: #f5f0e8; border-radius: 8px; padding: 14px 18px; font-size: 12px; color: #8090a8; border: 1px solid #e8dfc8; }
-  .footer { background: #1a2a4a; margin-top: 48px; padding: 14px 40px; text-align: center; font-size: 11px; color: #8090a8; letter-spacing: 1px; }
-  .footer strong { color: #d4af37; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
+.header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:18px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.btn-back { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.btn-back:hover { border-color:#d4af37; color:#d4af37; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+.wrap { max-width:860px; margin:0 auto; padding:28px 24px 60px; }
+.tool-label { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:4px; }
+.tool-title { font-family:Georgia,serif; font-size:22px; color:#1a2a4a; margin-bottom:4px; }
+.tool-sub { font-size:13px; color:#5a6a80; margin-bottom:24px; }
+.action-row { display:flex; gap:10px; margin-bottom:24px; flex-wrap:wrap; align-items:center; }
+.btn-save { background:#1a2a4a; color:#d4af37; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; }
+.btn-save:hover { background:#d4af37; color:#1a2a4a; }
+.btn-print { background:#4a6a3a; color:#fff; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; }
+.btn-print:hover { background:#3a5a2a; }
+.btn-reset { background:transparent; border:1px solid #cc5544; color:#cc5544; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; }
+.btn-reset:hover { background:#cc5544; color:#fff; }
+.save-msg { font-size:12px; color:#4aaa60; display:none; }
+.section { background:#fff; border:1px solid #e8dfc8; border-radius:10px; padding:22px 26px; margin-bottom:20px; box-shadow:0 2px 6px rgba(0,0,0,0.04); }
+.section-head { background:#1a2a4a; color:#d4af37; font-size:13px; font-weight:700; letter-spacing:1px; padding:10px 14px; border-radius:6px; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center; }
+.section-head span { color:#a0b0c8; font-size:11px; font-weight:400; }
+.meta-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
+.field-group { display:flex; flex-direction:column; gap:5px; }
+.field-group label { font-size:11px; font-weight:700; color:#8090a8; text-transform:uppercase; letter-spacing:0.5px; }
+.field-group input { border:1px solid #e0d8c8; border-radius:6px; padding:8px 12px; font-size:13px; color:#1a2a4a; background:#eaf2ff; font-family:inherit; }
+.field-group input:focus { outline:none; border-color:#d4af37; background:#fff; }
+.q-block { margin-bottom:20px; padding-bottom:20px; border-bottom:1px solid #f0e8d4; }
+.q-block:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+.q-title { font-family:Georgia,serif; font-size:14px; color:#1a2a4a; margin-bottom:8px; font-weight:600; }
+.q-hint { font-size:12px; color:#8090a8; margin-bottom:10px; font-style:italic; }
+.radio-group { display:flex; flex-direction:column; gap:8px; }
+.radio-opt { display:flex; align-items:center; gap:10px; padding:10px 14px; border:2px solid #e8dfc8; border-radius:8px; cursor:pointer; transition:all 0.15s; background:#faf8f4; }
+.radio-opt:hover { border-color:#d4af37; background:#fff; }
+.radio-opt.selected { border-color:#1a2a4a; background:#f0f4ff; }
+.radio-opt input[type=radio] { accent-color:#1a2a4a; width:16px; height:16px; flex-shrink:0; cursor:pointer; }
+.radio-opt label { font-size:13px; color:#2a3a4a; cursor:pointer; flex:1; line-height:1.4; }
+.pts-badge { font-size:11px; font-weight:700; color:#d4af37; background:#1a2a4a; padding:2px 8px; border-radius:10px; white-space:nowrap; }
+.diag-table { width:100%; border-collapse:collapse; }
+.diag-table th { background:#f5f0e8; padding:8px 12px; font-size:11px; font-weight:700; color:#1a2a4a; text-align:left; border:1px solid #e8dfc8; }
+.diag-table td { padding:8px 12px; border:1px solid #e8dfc8; font-size:13px; }
+.diag-table tr:nth-child(even) td { background:#faf8f4; }
+.diag-input { width:70px; border:1px solid #d0c8b0; border-radius:4px; padding:5px 8px; font-size:13px; text-align:center; background:#eaf2ff; color:#1a2a4a; }
+.diag-input:focus { outline:none; border-color:#d4af37; background:#fff; }
+.target { font-size:11px; color:#d4af37; font-weight:700; }
+.score-box { background:#1a2a4a; border-radius:10px; padding:24px 28px; color:#fff; text-align:center; margin-bottom:20px; }
+.score-num { font-family:Georgia,serif; font-size:52px; color:#d4af37; font-weight:700; line-height:1; }
+.score-label-sm { font-size:13px; color:#a0b0c8; margin-top:4px; }
+.score-type { font-family:Georgia,serif; font-size:20px; color:#fff; margin-top:12px; }
+.score-next { font-size:13px; color:#c0cce0; margin-top:6px; line-height:1.5; }
+.profile-table { width:100%; border-collapse:collapse; font-size:13px; }
+.profile-table th { background:#1a2a4a; color:#d4af37; padding:8px 12px; text-align:left; }
+.profile-table td { padding:8px 12px; border-bottom:1px solid #e8dfc8; }
+.profile-table tr:nth-child(even) td { background:#faf8f4; }
+.profile-table tr.active-row td { background:#fff8e0; font-weight:700; border-left:3px solid #d4af37; }
+.verlauf-table { width:100%; border-collapse:collapse; font-size:12px; }
+.verlauf-table th { background:#1a2a4a; color:#d4af37; padding:8px 10px; text-align:left; font-size:11px; }
+.verlauf-table td { padding:7px 10px; border-bottom:1px solid #e8dfc8; }
+.verlauf-table tr:nth-child(even) td { background:#faf8f4; }
+.verlauf-date { border:1px solid #e0d8c8; border-radius:4px; padding:4px 6px; font-size:11px; background:#eaf2ff; }
+@media print { .header,.action-row,.gold-bar { display:none!important; } body { background:#fff; } .section { box-shadow:none; border:1px solid #ccc; break-inside:avoid; } }
+@media(max-width:600px) { .meta-grid { grid-template-columns:1fr; } }
+.footer-brand { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-brand strong { color:#d4af37; }
 </style>
 </head>
 <body>
 <div class="header">
   <div class="brand">GASTRO-OS</div>
-  <div class="modul-label">Modul 1 &nbsp;·&nbsp; Unternehmer-Score</div>
+  <a href="modul1-uebersicht.html" class="btn-back">← Modulübersicht</a>
 </div>
 <div class="gold-bar"></div>
-<div class="main">
-  <h1>Unternehmer-Score</h1>
-  <div class="gold-rule"></div>
-  <p>Du hast das Erklärvideo gesehen und weißt jetzt wie das Tool funktioniert. Jetzt bist du dran.</p>
-  <div class="tool-card">
-    <div class="icon">📊</div>
-    <h2>Finde heraus wo du heute wirklich stehst</h2>
-    <p>Öffne den Unternehmer-Score und trage deine Zahlen ein. Es dauert keine 10 Minuten. Das Ergebnis zeigt dir schwarz auf weiß wo dein Betrieb heute steht und wo die größten Hebel für deine Entwicklung liegen.<br><br>Das Tool hat mehrere Sheets. Arbeite sie der Reihe nach durch. Jedes Sheet beleuchtet einen anderen Bereich deines Betriebs.</p>
-    <a href="https://docs.google.com/spreadsheets/d/1NKb_LyX9L8zCUulnZyZtUn3DysiId0Mn/edit" target="_blank" class="tool-btn">📊 Unternehmer-Score öffnen</a>
-    <div class="hinweis">💡 Das Tool öffnet in Google Sheets. Mach eine Kopie für dich: Datei → Kopie erstellen. So bleiben deine Daten nur bei dir.</div>
+<div class="wrap">
+  <div class="tool-label">Modul 1 · Tool</div>
+  <div class="tool-title">GASTRO-OS | Unternehmer-Score</div>
+  <div class="tool-sub">Modul 1 — Status Quo &amp; System-Check | Finde heraus wo du heute wirklich stehst</div>
+
+  <div class="action-row">
+    <button class="btn-save" onclick="saveData()">💾 Speichern</button>
+    <button class="btn-print" onclick="window.print()">🖨️ Drucken / PDF</button>
+    <button class="btn-reset" onclick="resetData()">🔄 Neu starten</button>
+    <span class="save-msg" id="save-msg">✓ Gespeichert</span>
+  </div>
+
+  <div class="section">
+    <div class="section-head">📋 Deine Angaben</div>
+    <div class="meta-grid">
+      <div class="field-group"><label>Name / Betrieb</label><input type="text" id="meta-name" placeholder="z.B. Pizzeria Roma" oninput="autoSave()"></div>
+      <div class="field-group"><label>Standort</label><input type="text" id="meta-standort" placeholder="z.B. München" oninput="autoSave()"></div>
+      <div class="field-group"><label>Datum</label><input type="date" id="meta-datum" oninput="autoSave()"></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">Teil 1 &amp; 2 — Zeit &amp; Abwesenheit <span>max. 20 Punkte</span></div>
+    <div class="q-block">
+      <div class="q-title">Frage 2 — Strategische Zeit (% deiner Zeit)</div>
+      <div class="q-hint">Wie viel deiner Arbeitszeit verbringst du strategisch — also AM Betrieb statt IM Betrieb?</div>
+      <div class="radio-group" id="rg-q2">
+        <div class="radio-opt" onclick="selectOpt('q2',0)"><input type="radio" name="q2" value="10"><label>Strategisch über 30% meiner Zeit</label><span class="pts-badge">10 Pkt.</span></div>
+        <div class="radio-opt" onclick="selectOpt('q2',1)"><input type="radio" name="q2" value="5"><label>Strategisch 10%–30% meiner Zeit</label><span class="pts-badge">5 Pkt.</span></div>
+        <div class="radio-opt" onclick="selectOpt('q2',2)"><input type="radio" name="q2" value="0"><label>Strategisch unter 10% (Hamsterrad-Modus)</label><span class="pts-badge">0 Pkt.</span></div>
+      </div>
+    </div>
+    <div class="q-block">
+      <div class="q-title">Frage 4 — 48-Stunden-Check</div>
+      <div class="q-hint">Was passiert in deinem Betrieb wenn du 48 Stunden komplett weg bist?</div>
+      <div class="radio-group" id="rg-q4">
+        <div class="radio-opt" onclick="selectOpt('q4',0)"><input type="radio" name="q4" value="10"><label>Alles läuft perfekt weiter</label><span class="pts-badge">10 Pkt.</span></div>
+        <div class="radio-opt" onclick="selectOpt('q4',1)"><input type="radio" name="q4" value="5"><label>Kleinere Probleme, Betrieb läuft</label><span class="pts-badge">5 Pkt.</span></div>
+        <div class="radio-opt" onclick="selectOpt('q4',2)"><input type="radio" name="q4" value="0"><label>Das Chaos bricht aus</label><span class="pts-badge">0 Pkt.</span></div>
+        <div class="radio-opt" onclick="selectOpt('q4',3)"><input type="radio" name="q4" value="0"><label>Betrieb müsste schließen</label><span class="pts-badge">0 Pkt.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">Teil 3 — Finanzen &amp; Wissen <span>max. 20 Punkte</span></div>
+    <div class="q-block">
+      <div class="q-title">Frage 5 — Dokumentation (% schriftlich fixiert)</div>
+      <div class="q-hint">Wie viel deiner Abläufe, Rezepte und Prozesse sind schriftlich festgehalten?</div>
+      <div class="radio-group" id="rg-q5">
+        <div class="radio-opt" onclick="selectOpt('q5',0)"><input type="radio" name="q5" value="10"><label>Über 70% schriftlich fixiert</label><span class="pts-badge">10 Pkt.</span></div>
+        <div class="radio-opt" onclick="selectOpt('q5',1)"><input type="radio" name="q5" value="5"><label>30%–70% schriftlich fixiert</label><span class="pts-badge">5 Pkt.</span></div>
+        <div class="radio-opt" onclick="selectOpt('q5',2)"><input type="radio" name="q5" value="0"><label>Unter 30% — fast alles im Kopf</label><span class="pts-badge">0 Pkt.</span></div>
+      </div>
+    </div>
+    <div class="q-block">
+      <div class="q-title">Frage 6 — Break-Even (kennst du die Zahl?)</div>
+      <div class="q-hint">Weißt du deinen täglichen Break-Even auf den Euro genau?</div>
+      <div class="radio-group" id="rg-q6">
+        <div class="radio-opt" onclick="selectOpt('q6',0)"><input type="radio" name="q6" value="10"><label>Ja — ich kenne die Zahl auf den Euro genau</label><span class="pts-badge">10 Pkt.</span></div>
+        <div class="radio-opt" onclick="selectOpt('q6',1)"><input type="radio" name="q6" value="0"><label>Nein — ich schätze nur / weiß es nicht</label><span class="pts-badge">0 Pkt.</span></div>
+      </div>
+      <div style="margin-top:12px;display:flex;align-items:center;gap:10px;">
+        <label style="font-size:12px;color:#8090a8;font-weight:600;">Mein täglicher Break-Even:</label>
+        <input type="text" id="breakeven-val" placeholder="z.B. 850 €" oninput="autoSave()" style="border:1px solid #e0d8c8;border-radius:6px;padding:7px 12px;font-size:13px;background:#eaf2ff;color:#1a2a4a;width:140px;">
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">Teil 4 — System-Diagnose <span>max. 20 Punkte · Ø × 2</span></div>
+    <p style="font-size:13px;color:#5a6a80;margin-bottom:14px;">Bewerte jeden Bereich von 1 (schlecht) bis 10 (perfekt):</p>
+    <table class="diag-table">
+      <tr><th style="width:65%;">Bereich</th><th>Score (1–10)</th><th>Ziel</th></tr>
+      <tr><td>1. Mitarbeiter-Autonomie — Können sie Probleme ohne dich lösen?</td><td><input class="diag-input" id="d1" type="number" min="1" max="10" placeholder="—" oninput="calcScore();autoSave()"></td><td class="target">8+</td></tr>
+      <tr><td>2. Marketing-Konstanz — Kommen planbar neue Gäste ohne dein Zutun?</td><td><input class="diag-input" id="d2" type="number" min="1" max="10" placeholder="—" oninput="calcScore();autoSave()"></td><td class="target">7+</td></tr>
+      <tr><td>3. Sauberkeit &amp; Standards — Immer gleich, egal ob du da bist?</td><td><input class="diag-input" id="d3" type="number" min="1" max="10" placeholder="—" oninput="calcScore();autoSave()"></td><td class="target">9+</td></tr>
+      <tr><td>4. Einkauf &amp; Lager — Perfekt dokumentiert und optimiert?</td><td><input class="diag-input" id="d4" type="number" min="1" max="10" placeholder="—" oninput="calcScore();autoSave()"></td><td class="target">7+</td></tr>
+      <tr><td>5. Persönliche Freiheit — Zeit für Familie und eigene Visionen?</td><td><input class="diag-input" id="d5" type="number" min="1" max="10" placeholder="—" oninput="calcScore();autoSave()"></td><td class="target">8+</td></tr>
+      <tr><td style="font-weight:700;">Durchschnitt der 5 Scores:</td><td id="diag-avg" style="font-weight:700;">—</td><td class="target">∅</td></tr>
+      <tr style="background:#1a2a4a;"><td style="color:#a0b0c8;font-weight:700;padding:9px 12px;">Punkte Teil 4 (Ø × 2):</td><td id="diag-pts" style="color:#d4af37;font-weight:700;padding:9px 12px;">—</td><td></td></tr>
+    </table>
+  </div>
+
+  <div class="score-box">
+    <div class="score-label-sm">GESAMT-SCORE — Dein Unternehmer-Score</div>
+    <div class="score-num" id="total-score">0</div>
+    <div class="score-label-sm">von 50 möglichen Punkten</div>
+    <div class="score-type" id="score-type">—</div>
+    <div class="score-next" id="score-next">Beantworte die Fragen um dein Ergebnis zu sehen.</div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">📊 Ergebnis-Profil</div>
+    <table class="profile-table">
+      <tr><th>Punkte</th><th>Dein Status</th><th>Deine nächste Aufgabe</th></tr>
+      <tr id="pr-0"><td>0–15</td><td>👨‍🚒 Der Sklave des Betriebs</td><td>Sofortige Notbremse. Delegiere noch heute eine Aufgabe.</td></tr>
+      <tr id="pr-1"><td>16–30</td><td>🔧 Der überlastete Allrounder</td><td>Schreibe deine erste SOP. Du bist der Flaschenhals.</td></tr>
+      <tr id="pr-2"><td>31–45</td><td>📈 Der angehende Stratege</td><td>Optimiere Margen und baue Delegation systematisch aus.</td></tr>
+      <tr id="pr-3"><td>46–50</td><td>🚀 Der Gastro-OS Profi</td><td>Bereit für Skalierung oder zweiten Standort.</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-head">📅 Monatlicher Verlauf <span>Trage deinen Score monatlich ein</span></div>
+    <table class="verlauf-table">
+      <tr><th>Datum</th><th>Score</th><th>Zeit (F2)</th><th>Abwesenheit (F4)</th><th>Doku (F5)</th><th>Break-Even (F6)</th><th>System (T4)</th></tr>
+      <tr><td><input type="date" id="v1-d" class="verlauf-date" oninput="autoSave()"></td><td id="v1-s">—</td><td id="v1-q2">—</td><td id="v1-q4">—</td><td id="v1-q5">—</td><td id="v1-q6">—</td><td id="v1-t4">—</td></tr>
+      <tr><td><input type="date" id="v2-d" class="verlauf-date" oninput="autoSave()"></td><td id="v2-s">—</td><td id="v2-q2">—</td><td id="v2-q4">—</td><td id="v2-q5">—</td><td id="v2-q6">—</td><td id="v2-t4">—</td></tr>
+      <tr><td><input type="date" id="v3-d" class="verlauf-date" oninput="autoSave()"></td><td id="v3-s">—</td><td id="v3-q2">—</td><td id="v3-q4">—</td><td id="v3-q5">—</td><td id="v3-q6">—</td><td id="v3-t4">—</td></tr>
+      <tr><td><input type="date" id="v4-d" class="verlauf-date" oninput="autoSave()"></td><td id="v4-s">—</td><td id="v4-q2">—</td><td id="v4-q4">—</td><td id="v4-q5">—</td><td id="v4-q6">—</td><td id="v4-t4">—</td></tr>
+      <tr><td><input type="date" id="v5-d" class="verlauf-date" oninput="autoSave()"></td><td id="v5-s">—</td><td id="v5-q2">—</td><td id="v5-q4">—</td><td id="v5-q5">—</td><td id="v5-q6">—</td><td id="v5-t4">—</td></tr>
+    </table>
+    <div style="margin-top:10px;">
+      <button onclick="addVerlauf()" style="background:#1a2a4a;color:#d4af37;border:none;padding:8px 18px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;">+ Aktuellen Score eintragen</button>
+    </div>
+  </div>
+
+  <div class="action-row">
+    <button class="btn-save" onclick="saveData()">💾 Speichern</button>
+    <button class="btn-print" onclick="window.print()">🖨️ Drucken / PDF</button>
+    <button class="btn-reset" onclick="resetData()">🔄 Neu starten</button>
+    <span class="save-msg" id="save-msg2">✓ Gespeichert</span>
   </div>
 </div>
 <div class="gold-bar"></div>
-<div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+<div class="footer-brand"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+
+<script>
+const SUPABASE_URL='https://hchlganbgjeciwhwaisj.supabase.co';
+const SUPABASE_KEY='sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3';
+const{createClient}=supabase;
+const sb=createClient(SUPABASE_URL,SUPABASE_KEY);
+let currentUser=null, saveTimer=null;
+
+const PROFILES=[
+  {min:0,max:15,id:'pr-0',label:'👨‍🚒 Der Sklave des Betriebs',next:'Sofortige Notbremse. Delegiere noch heute eine Aufgabe.'},
+  {min:16,max:30,id:'pr-1',label:'🔧 Der überlastete Allrounder',next:'Schreibe deine erste SOP diese Woche.'},
+  {min:31,max:45,id:'pr-2',label:'📈 Der angehende Stratege',next:'Optimiere Margen und baue Delegation systematisch aus.'},
+  {min:46,max:50,id:'pr-3',label:'🚀 Der Gastro-OS Profi',next:'Bereit für Skalierung oder zweiten Standort.'},
+];
+
+function selectOpt(q,idx){
+  document.querySelectorAll('#rg-'+q+' .radio-opt').forEach((o,i)=>{
+    o.classList.toggle('selected',i===idx);
+    o.querySelector('input').checked=(i===idx);
+  });
+  calcScore(); autoSave();
+}
+
+function getVal(q){
+  const s=document.querySelector('#rg-'+q+' .radio-opt.selected input');
+  return s?parseFloat(s.value):null;
+}
+function getIdx(q){
+  return [...document.querySelectorAll('#rg-'+q+' .radio-opt')].findIndex(o=>o.classList.contains('selected'));
+}
+
+function calcScore(){
+  const q2=getVal('q2'),q4=getVal('q4'),q5=getVal('q5'),q6=getVal('q6');
+  const ds=[1,2,3,4,5].map(i=>parseFloat(document.getElementById('d'+i)?.value)||null);
+  const valid=ds.filter(v=>v!==null);
+  let t4pts=0,avg=null;
+  if(valid.length===5){
+    avg=valid.reduce((a,b)=>a+b,0)/5;
+    t4pts=Math.round(avg*2);
+    document.getElementById('diag-avg').textContent=avg.toFixed(1);
+    document.getElementById('diag-pts').textContent=t4pts+' Punkte';
+  }
+  const total=(q2||0)+(q4||0)+(q5||0)+(q6||0)+t4pts;
+  document.getElementById('total-score').textContent=total;
+  const p=PROFILES.find(p=>total>=p.min&&total<=p.max)||PROFILES[PROFILES.length-1];
+  document.getElementById('score-type').textContent=p.label;
+  document.getElementById('score-next').textContent=p.next;
+  PROFILES.forEach(pr=>{const r=document.getElementById(pr.id);if(r)r.classList.toggle('active-row',pr.id===p.id);});
+  return{total,q2,q4,q5,q6,t4pts};
+}
+
+function addVerlauf(){
+  const{total,q2,q4,q5,q6,t4pts}=calcScore();
+  const today=new Date().toISOString().split('T')[0];
+  for(let i=1;i<=5;i++){
+    if(document.getElementById('v'+i+'-s').textContent==='—'){
+      document.getElementById('v'+i+'-d').value=today;
+      document.getElementById('v'+i+'-s').textContent=total;
+      document.getElementById('v'+i+'-q2').textContent=q2!==null?q2:'—';
+      document.getElementById('v'+i+'-q4').textContent=q4!==null?q4:'—';
+      document.getElementById('v'+i+'-q5').textContent=q5!==null?q5:'—';
+      document.getElementById('v'+i+'-q6').textContent=q6!==null?q6:'—';
+      document.getElementById('v'+i+'-t4').textContent=t4pts||'—';
+      autoSave(); return;
+    }
+  }
+  alert('Alle Verlauf-Slots belegt.');
+}
+
+function getData(){
+  const verlauf=[];
+  for(let i=1;i<=5;i++) verlauf.push({
+    d:document.getElementById('v'+i+'-d').value,
+    s:document.getElementById('v'+i+'-s').textContent,
+    q2:document.getElementById('v'+i+'-q2').textContent,
+    q4:document.getElementById('v'+i+'-q4').textContent,
+    q5:document.getElementById('v'+i+'-q5').textContent,
+    q6:document.getElementById('v'+i+'-q6').textContent,
+    t4:document.getElementById('v'+i+'-t4').textContent,
+  });
+  return{
+    name:document.getElementById('meta-name').value,
+    standort:document.getElementById('meta-standort').value,
+    datum:document.getElementById('meta-datum').value,
+    breakeven:document.getElementById('breakeven-val').value,
+    q2idx:getIdx('q2'),q4idx:getIdx('q4'),q5idx:getIdx('q5'),q6idx:getIdx('q6'),
+    d1:document.getElementById('d1').value,d2:document.getElementById('d2').value,
+    d3:document.getElementById('d3').value,d4:document.getElementById('d4').value,d5:document.getElementById('d5').value,
+    verlauf
+  };
+}
+
+function setData(d){
+  if(!d)return;
+  if(d.name) document.getElementById('meta-name').value=d.name;
+  if(d.standort) document.getElementById('meta-standort').value=d.standort;
+  if(d.datum) document.getElementById('meta-datum').value=d.datum;
+  if(d.breakeven) document.getElementById('breakeven-val').value=d.breakeven;
+  ['q2','q4','q5','q6'].forEach(q=>{if(d[q+'idx']>=0)selectOpt(q,d[q+'idx']);});
+  ['d1','d2','d3','d4','d5'].forEach(k=>{if(d[k])document.getElementById(k).value=d[k];});
+  if(d.verlauf) d.verlauf.forEach((v,i)=>{
+    const n=i+1;
+    if(v.d) document.getElementById('v'+n+'-d').value=v.d;
+    ['s','q2','q4','q5','q6','t4'].forEach(f=>{if(v[f]&&v[f]!=='—')document.getElementById('v'+n+'-'+f).textContent=v[f];});
+  });
+  calcScore();
+}
+
+async function saveData(){
+  if(!currentUser)return;
+  await sb.from('user_tool_data').upsert({user_id:currentUser.id,tool_name:'unternehmer_score_modul1',data:getData(),updated_at:new Date().toISOString()},{onConflict:'user_id,tool_name'});
+  ['save-msg','save-msg2'].forEach(id=>{const el=document.getElementById(id);if(el){el.style.display='inline';setTimeout(()=>el.style.display='none',2500);}});
+}
+
+function autoSave(){clearTimeout(saveTimer);saveTimer=setTimeout(saveData,1500);}
+
+function resetData(){
+  if(!confirm('Alle Eingaben zurücksetzen?'))return;
+  document.getElementById('meta-name').value='';
+  document.getElementById('meta-standort').value='';
+  document.getElementById('meta-datum').value='';
+  document.getElementById('breakeven-val').value='';
+  ['q2','q4','q5','q6'].forEach(q=>{document.querySelectorAll('#rg-'+q+' .radio-opt').forEach(o=>{o.classList.remove('selected');o.querySelector('input').checked=false;});});
+  ['d1','d2','d3','d4','d5'].forEach(id=>document.getElementById(id).value='');
+  for(let i=1;i<=5;i++){document.getElementById('v'+i+'-d').value='';['s','q2','q4','q5','q6','t4'].forEach(f=>document.getElementById('v'+i+'-'+f).textContent='—');}
+  document.getElementById('diag-avg').textContent='—';
+  document.getElementById('diag-pts').textContent='—';
+  calcScore(); saveData();
+}
+
+async function init(){
+  const{data:{session}}=await sb.auth.getSession();
+  if(!session){window.location.href='login.html';return;}
+  currentUser=session.user;
+  const{data:td}=await sb.from('user_tool_data').select('data').eq('user_id',currentUser.id).eq('tool_name','unternehmer_score_modul1').maybeSingle();
+  if(td&&td.data)setData(td.data);
+  else{document.getElementById('meta-datum').value=new Date().toISOString().split('T')[0];}
+}
+init();
+</script>
 </body>
 </html>
