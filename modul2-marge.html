@@ -3,44 +3,375 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GASTRO-OS – Modul 2 | Marge Tool</title>
+<title>Marge Tool — Deine Kalkulation auf einen Blick | GASTRO-OS</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f0e8; color: #1a2a4a; min-height: 100vh; }
-  .header { background: #1a2a4a; padding: 22px 40px; text-align: center; }
-  .brand { font-family: Georgia, serif; font-size: 22px; color: #d4af37; letter-spacing: 4px; font-weight: normal; }
-  .modul-label { font-size: 11px; color: #a0b0c8; letter-spacing: 3px; text-transform: uppercase; margin-top: 4px; }
-  .gold-bar { height: 3px; background: linear-gradient(90deg, #1a2a4a, #d4af37, #1a2a4a); }
-  .main { max-width: 820px; margin: 36px auto; padding: 0 24px 60px; text-align: center; }
-  h1 { font-family: Georgia, serif; font-size: 26px; color: #1a2a4a; margin-bottom: 8px; }
-  .gold-rule { width: 56px; height: 2px; background: #d4af37; margin: 10px auto 20px; }
-  p { font-size: 14px; line-height: 1.85; color: #2a3a5a; margin-bottom: 14px; }
-  .tool-btn { display: inline-block; background: #d4af37; color: #1a2a4a; padding: 16px 32px; border-radius: 8px; text-decoration: none; font-size: 15px; font-weight: 700; margin: 20px 0; }
-  .nav-btn { display: inline-block; background: #1a2a4a; color: #d4af37; padding: 12px 22px; border-radius: 6px; text-decoration: none; font-size: 13px; font-weight: 700; margin-top: 10px; }
-  .back-link { display: block; text-align: center; margin-top: 14px; font-size: 12px; color: #8090a8; text-decoration: none; }
-  .footer { background: #1a2a4a; margin-top: 48px; padding: 14px 40px; text-align: center; font-size: 11px; color: #8090a8; }
-  .footer strong { color: #d4af37; }
-  .icon { font-size: 56px; margin-bottom: 16px; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
+.header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:18px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.back-btn { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.back-btn:hover { border-color:#d4af37; color:#d4af37; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+.wrap { max-width:1100px; margin:0 auto; padding:24px 24px 60px; }
+.tool-label { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:4px; }
+.tool-title { font-family:Georgia,serif; font-size:22px; color:#1a2a4a; font-weight:normal; margin-bottom:4px; }
+.legend { display:flex; flex-wrap:wrap; gap:10px; margin:14px 0 20px; }
+.legend-item { display:flex; align-items:center; gap:6px; font-size:12px; color:#2a3a54; background:#fff; border:1px solid #e8dfc8; border-radius:20px; padding:4px 12px; }
+.tabs { display:flex; gap:2px; }
+.tab-btn { background:#e8dfc8; border:none; padding:10px 20px; font-size:13px; font-weight:600; color:#5a6a80; cursor:pointer; border-radius:6px 6px 0 0; transition:all 0.2s; }
+.tab-btn.active { background:#fff; color:#1a2a4a; border-bottom:2px solid #d4af37; }
+.tab-btn:hover:not(.active) { background:#d4af37; color:#1a2a4a; }
+.tab-content { display:none; background:#fff; border-radius:0 8px 8px 8px; border:1px solid #e8dfc8; padding:20px; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+.tab-content.active { display:block; }
+.tbl-wrap { overflow-x:auto; }
+table { width:100%; border-collapse:collapse; font-size:13px; }
+thead tr { background:#1a2a4a; }
+thead th { color:#d4af37; padding:10px 8px; text-align:left; font-weight:600; font-size:11px; letter-spacing:0.5px; white-space:nowrap; }
+tbody tr:nth-child(even) { background:#faf8f4; }
+tbody tr:hover { background:#fdf9ee; }
+td { padding:6px 8px; border-bottom:1px solid #f0ece4; vertical-align:middle; }
+td.nr { color:#8090a8; font-size:11px; width:32px; text-align:center; }
+input.gericht-input { width:100%; border:1px solid #e0d8c8; border-radius:4px; padding:5px 7px; font-size:13px; color:#1a4a8a; background:#eaf2ff; font-weight:500; }
+input.gericht-input:focus { outline:none; border-color:#3a7ad4; background:#fff; }
+input.num-input { width:80px; border:1px solid #e0d8c8; border-radius:4px; padding:5px 7px; font-size:13px; color:#1a4a8a; background:#eaf2ff; text-align:right; font-weight:500; }
+input.num-input:focus { outline:none; border-color:#3a7ad4; background:#fff; }
+td.calc { font-weight:600; font-size:13px; }
+.badge { display:inline-block; padding:3px 9px; border-radius:12px; font-size:11px; font-weight:700; white-space:nowrap; }
+.badge-star   { background:#fff8e0; color:#b07000; border:1px solid #d4af37; }
+.badge-plowh  { background:#e8f0fb; color:#1a4a8a; border:1px solid #5a8ad0; }
+.badge-puzzle { background:#e8f5e8; color:#1a6030; border:1px solid #4aaa60; }
+.badge-dog    { background:#fdf0f0; color:#a03030; border:1px solid #d06060; }
+.badge-dash   { background:#f5f5f5; color:#8090a8; border:1px solid #d0c8b0; }
+.summary-row { background:#1a2a4a !important; }
+.summary-row td { color:#a0b0c8; font-weight:600; padding:10px 8px; }
+.summary-row td.gold { color:#d4af37; }
+.status-bar { margin-top:12px; padding:12px 16px; border-radius:8px; font-size:13px; font-weight:600; display:none; }
+.status-ok   { background:#e4f5e8; color:#1a6030; border:1px solid #4aaa60; }
+.status-warn { background:#fff3cd; color:#856404; border:1px solid #d4a800; }
+.save-row { display:flex; align-items:center; gap:14px; margin-top:18px; }
+.btn-save { background:#1a2a4a; color:#d4af37; border:none; padding:10px 24px; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; }
+.btn-save:hover { background:#d4af37; color:#1a2a4a; }
+.save-msg { font-size:12px; color:#4aaa60; display:none; }
+
+/* Auswertung */
+.ausw-section { margin-bottom:24px; }
+.ausw-title { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; margin-bottom:12px; font-weight:normal; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
+.ausw-table { width:100%; border-collapse:collapse; font-size:13px; }
+.ausw-table th { background:#1a2a4a; color:#d4af37; padding:10px 12px; text-align:left; font-size:11px; font-weight:600; letter-spacing:0.5px; }
+.ausw-table td { padding:10px 12px; border-bottom:1px solid #f0ece4; }
+.ausw-table tr:nth-child(even) { background:#faf8f4; }
+.ausw-table tr.total-row { background:#fdf9ee; font-weight:700; }
+.massnahme-cell { font-size:12px; color:#5a6a80; font-style:italic; }
+.top5-input { width:100%; border:1px solid #e0d8c8; border-radius:4px; padding:5px 7px; font-size:12px; color:#1a4a8a; background:#eaf2ff; }
+.top5-input:focus { outline:none; border-color:#3a7ad4; }
+
+/* Anleitung */
+.anl-step { display:flex; gap:16px; padding:16px 0; border-bottom:1px solid #f0ece4; }
+.anl-step:last-of-type { border-bottom:none; }
+.anl-num { background:#1a2a4a; color:#d4af37; width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; flex-shrink:0; }
+.anl-body h3 { font-family:Georgia,serif; font-size:15px; color:#1a2a4a; font-weight:normal; margin-bottom:6px; }
+.anl-body p { font-size:14px; color:#2a3a54; line-height:1.7; margin:0; }
+
+.footer-brand { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-brand strong { color:#d4af37; }
 </style>
 </head>
 <body>
-<div class="header">
-  <div class="brand">GASTRO-OS</div>
-  <div class="modul-label">Modul 2 &nbsp;·&nbsp; Marge Tool</div>
-</div>
+<div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html" class="back-btn">← Zurück zum Dashboard</a></div>
 <div class="gold-bar"></div>
-<div class="main">
-  <div class="icon">📊</div>
-  <h1>Marge Tool</h1>
-  <div class="gold-rule"></div>
-  <p>Nutze das Marge Tool für die detaillierte Kalkulation deiner Gerichte. Es zeigt dir den genauen <strong>Deckungsbeitrag, den Wareneinsatz in Prozent und den Gewinn pro Monat</strong> pro Gericht. So siehst du auf einen Blick welche Gerichte dir wirklich Geld bringen.</p>
-  <p>Schau dir vorher die Anleitung an damit du weißt was wo eingetragen wird.</p>
-  <a href="https://docs.google.com/spreadsheets/d/1kvNxazMHbME6nG9SXpMx07oYb3XskeRo/edit?usp=sharing" target="_blank" class="tool-btn">▶ Marge Tool öffnen</a>
-  <br>
-  <a href="modul2-quiz.html" target="_blank" class="nav-btn">Weiter zum Quiz →</a>
-  <a href="modul2-uebersicht.html" class="back-link">← Zurück zur Übersicht</a>
+
+<div class="wrap">
+  <div class="tool-label">Modul 2 · Tool</div>
+  <div class="tool-title">GASTRO-OS | MARGE-TOOL — Speisekarten-Kalkulation</div>
+
+  <div class="legend">
+    <div class="legend-item">⭐ STAR = Beliebt &amp; profitabel</div>
+    <div class="legend-item">🐴 PLOWHORSE = Beliebt, aber margenarm</div>
+    <div class="legend-item">🧩 PUZZLE = Hohe Marge, selten bestellt</div>
+    <div class="legend-item">🐕 DOG = Streichen</div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('marge')">📊 Marge-Tool</button>
+    <button class="tab-btn" onclick="switchTab('ausw')">📈 Auswertung</button>
+    <button class="tab-btn" onclick="switchTab('anl')">📖 Anleitung</button>
+  </div>
+
+  <!-- TAB 1: MARGE-TOOL -->
+  <div class="tab-content active" id="tab-marge">
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Nr.</th>
+            <th style="min-width:160px;">Gericht / Position</th>
+            <th>Wareneinsatz (€)</th>
+            <th>Verkaufspreis (€)</th>
+            <th>Deckungsbeitrag (€)</th>
+            <th>Wareneinsatz %</th>
+            <th>Menge / Monat</th>
+            <th>Gewinn / Monat (€)</th>
+            <th>Kategorie (automatisch)</th>
+          </tr>
+        </thead>
+        <tbody id="marge-body"></tbody>
+        <tfoot id="marge-foot"></tfoot>
+      </table>
+    </div>
+    <div id="marge-status" class="status-bar"></div>
+    <div class="save-row">
+      <button class="btn-save" onclick="saveData()">💾 Speichern</button>
+      <span class="save-msg" id="save-msg1">✓ Gespeichert</span>
+    </div>
+    <div style="margin-top:16px;font-size:11px;color:#8090a8;letter-spacing:1px;">
+      <strong style="color:#d4af37;">GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg &nbsp;|&nbsp; Modul 2: Speisekarte &amp; Angebotssystem
+    </div>
+  </div>
+
+  <!-- TAB 2: AUSWERTUNG -->
+  <div class="tab-content" id="tab-ausw">
+    <div class="ausw-section">
+      <div class="ausw-title">GASTRO-OS | AUSWERTUNG — Deine Karte auf einen Blick</div>
+      <table class="ausw-table">
+        <thead>
+          <tr><th>Kategorie</th><th>Anzahl</th><th>Ø Deckungsbeitrag (€)</th><th>Gewinn gesamt / Monat (€)</th><th>Deine Maßnahme</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>⭐ STAR</td><td id="a-star-cnt">—</td><td id="a-star-db">—</td><td id="a-star-gew">—</td><td class="massnahme-cell">Prominent platzieren &amp; aktiv empfehlen</td></tr>
+          <tr><td>🐴 PLOWHORSE</td><td id="a-plowh-cnt">—</td><td id="a-plowh-db">—</td><td id="a-plowh-gew">—</td><td class="massnahme-cell">Preis erhöhen oder Einkauf optimieren</td></tr>
+          <tr><td>🧩 PUZZLE</td><td id="a-puzzle-cnt">—</td><td id="a-puzzle-db">—</td><td id="a-puzzle-gew">—</td><td class="massnahme-cell">Neue Beschreibung + Service-Empfehlung</td></tr>
+          <tr><td>🐕 DOG</td><td id="a-dog-cnt">—</td><td id="a-dog-db">—</td><td id="a-dog-gew">—</td><td class="massnahme-cell">Streichen oder strategisch begründen</td></tr>
+          <tr class="total-row"><td>GESAMT</td><td id="a-ges-cnt">—</td><td>Ø Wareneinsatz:</td><td id="a-ges-wp">—</td><td id="a-ges-sum">—</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="ausw-section">
+      <div class="ausw-title">DEINE TOP 5 — Höchster Monatsgewinn</div>
+      <table class="ausw-table">
+        <thead><tr><th>#</th><th>Gericht</th><th>Deckungsbeitrag (€)</th><th>Menge / Monat</th><th>Gewinn / Monat (€)</th></tr></thead>
+        <tbody id="top5-body"></tbody>
+      </table>
+    </div>
+
+    <div class="save-row">
+      <button class="btn-save" onclick="saveData()">💾 Speichern</button>
+      <span class="save-msg" id="save-msg2">✓ Gespeichert</span>
+    </div>
+    <div style="margin-top:16px;font-size:11px;color:#8090a8;letter-spacing:1px;">
+      <strong style="color:#d4af37;">GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg &nbsp;|&nbsp; Modul 2: Speisekarte &amp; Angebotssystem
+    </div>
+  </div>
+
+  <!-- TAB 3: ANLEITUNG -->
+  <div class="tab-content" id="tab-anl">
+    <div style="font-family:Georgia,serif;font-size:16px;color:#1a2a4a;margin-bottom:16px;font-weight:normal;padding-bottom:10px;border-bottom:1px solid #e8dfc8;">
+      GASTRO-OS | ANLEITUNG — Marge-Tool in 7 Schritten
+    </div>
+    <div class="anl-step">
+      <div class="anl-num">1</div>
+      <div class="anl-body"><h3>Tab öffnen</h3><p>Starte im Tab 'Marge-Tool'. Alles was du brauchst ist dort, einfach von oben nach unten ausfüllen.</p></div>
+    </div>
+    <div class="anl-step">
+      <div class="anl-num">2</div>
+      <div class="anl-body"><h3>Gericht eintragen</h3><p>Trage den Namen deines Gerichts in die Spalte Gericht / Position ein (blauer Text = Eingabe). Starte mit deinen 10 meistverkauften Gerichten.</p></div>
+    </div>
+    <div class="anl-step">
+      <div class="anl-num">3</div>
+      <div class="anl-body"><h3>Wareneinsatz eingeben</h3><p>Wareneinsatz (€): Rohstoffkosten pro Portion in Euro (Fleisch, Gemüse, Sauce, Beilage). Kein Personal, keine Miete, nur Lebensmittel.</p></div>
+    </div>
+    <div class="anl-step">
+      <div class="anl-num">4</div>
+      <div class="anl-body"><h3>Verkaufspreis eingeben</h3><p>Verkaufspreis (€): Netto-Verkaufspreis (ohne MwSt.). Deckungsbeitrag und Wareneinsatz-Quote berechnen sich sofort automatisch.</p></div>
+    </div>
+    <div class="anl-step">
+      <div class="anl-num">5</div>
+      <div class="anl-body"><h3>Menge eintragen</h3><p>Menge / Monat: Wie oft wird dieses Gericht pro Monat bestellt? Schau ins Kassensystem oder schätze. Die Kategorie erscheint automatisch.</p></div>
+    </div>
+    <div class="anl-step">
+      <div class="anl-num">6</div>
+      <div class="anl-body"><h3>Auswertung lesen</h3><p>Wechsle in den Tab 'Auswertung', dort siehst du deine Stars, Dogs, den Ø Wareneinsatz und deine Top 5 nach Monatsgewinn.</p></div>
+    </div>
+    <div class="anl-step">
+      <div class="anl-num">7</div>
+      <div class="anl-body"><h3>Quartalsweise wiederholen</h3><p>Mindestens 2x pro Jahr aktualisieren, Einkaufspreise ändern sich und deine Kategorien verschieben sich mit ihnen.</p></div>
+    </div>
+    <div style="margin-top:24px;font-size:11px;color:#8090a8;letter-spacing:1px;padding-top:16px;border-top:1px solid #e8dfc8;">
+      <strong style="color:#d4af37;">GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg &nbsp;|&nbsp; Modul 2: Speisekarte &amp; Angebotssystem
+    </div>
+  </div>
 </div>
-<div class="gold-bar"></div>
-<div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+
+<div class="footer-brand"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+
+<script>
+const SUPABASE_URL = 'https://hchlganbgjeciwhwaisj.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3';
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+const NUM_ROWS = 50;
+
+function buildTable() {
+  const tbody = document.getElementById('marge-body');
+  for(let i=1;i<=NUM_ROWS;i++){
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="nr">${i}</td>
+      <td><input class="gericht-input" id="mg-${i}" type="text" placeholder="Gerichtsname..." oninput="recalcRow(${i})"></td>
+      <td><input class="num-input" id="we-${i}" type="number" min="0" step="0.01" placeholder="0,00" oninput="recalcRow(${i})"></td>
+      <td><input class="num-input" id="vp-${i}" type="number" min="0" step="0.01" placeholder="0,00" oninput="recalcRow(${i})"></td>
+      <td class="calc" id="db-${i}" style="color:#1a6030;">—</td>
+      <td class="calc" id="wp-${i}">—</td>
+      <td><input class="num-input" id="bm-${i}" type="number" min="0" step="1" placeholder="0" oninput="recalcRow(${i})"></td>
+      <td class="calc" id="gm-${i}" style="color:#1a4a8a;">—</td>
+      <td id="kat-${i}"><span class="badge badge-dash">—</span></td>`;
+    tbody.appendChild(tr);
+  }
+  // Build top5 rows
+  const t5 = document.getElementById('top5-body');
+  for(let i=1;i<=5;i++){
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${i}</td><td><input class="top5-input" id="t5g-${i}" type="text" placeholder="Gericht..."></td><td><input class="top5-input" id="t5d-${i}" type="number" style="width:80px;" placeholder="0,00"></td><td><input class="top5-input" id="t5m-${i}" type="number" style="width:80px;" placeholder="0"></td><td id="t5gew-${i}">—</td>`;
+    t5.appendChild(tr);
+    document.getElementById('t5d-'+i).addEventListener('input',()=>calcTop5Row(i));
+    document.getElementById('t5m-'+i).addEventListener('input',()=>calcTop5Row(i));
+  }
+}
+
+function calcTop5Row(i){
+  const d=parseFloat(document.getElementById('t5d-'+i)?.value)||0;
+  const m=parseFloat(document.getElementById('t5m-'+i)?.value)||0;
+  document.getElementById('t5gew-'+i).textContent = (d&&m) ? (d*m).toFixed(2).replace('.',',')+'€' : '—';
+}
+
+function recalcRow(i){
+  const we=parseFloat(document.getElementById('we-'+i)?.value)||0;
+  const vp=parseFloat(document.getElementById('vp-'+i)?.value)||0;
+  const bm=parseFloat(document.getElementById('bm-'+i)?.value)||0;
+
+  const dbEl=document.getElementById('db-'+i);
+  const wpEl=document.getElementById('wp-'+i);
+  const gmEl=document.getElementById('gm-'+i);
+  const katEl=document.getElementById('kat-'+i);
+
+  if(!we||!vp){ dbEl.textContent='—'; wpEl.textContent='—'; gmEl.textContent='—'; katEl.innerHTML='<span class="badge badge-dash">—</span>'; updateAusw(); return; }
+  const db=vp-we, wp=we/vp;
+  dbEl.textContent=db.toFixed(2).replace('.',',')+'€';
+  wpEl.textContent=(wp*100).toFixed(1).replace('.',',')+' %';
+  wpEl.style.color=wp<=0.38?'#1a6030':'#a03030';
+  gmEl.textContent = bm ? (db*bm).toFixed(2).replace('.',',')+'€' : '—';
+
+  if(!bm){ katEl.innerHTML='<span class="badge badge-dash">—</span>'; }
+  else if(bm>=20&&wp<=0.38){ katEl.innerHTML='<span class="badge badge-star">⭐ STAR</span>'; }
+  else if(bm>=20&&wp>0.38){ katEl.innerHTML='<span class="badge badge-plowh">🐴 PLOWHORSE</span>'; }
+  else if(bm<20&&wp<=0.38){ katEl.innerHTML='<span class="badge badge-puzzle">🧩 PUZZLE</span>'; }
+  else { katEl.innerHTML='<span class="badge badge-dog">🐕 DOG</span>'; }
+  updateAusw();
+}
+
+function updateAusw(){
+  const cats={star:{cnt:0,dbSum:0,gewSum:0},plowh:{cnt:0,dbSum:0,gewSum:0},puzzle:{cnt:0,dbSum:0,gewSum:0},dog:{cnt:0,dbSum:0,gewSum:0}};
+  let wpSum=0,wpCnt=0,total=0;
+  for(let i=1;i<=NUM_ROWS;i++){
+    const we=parseFloat(document.getElementById('we-'+i)?.value)||0;
+    const vp=parseFloat(document.getElementById('vp-'+i)?.value)||0;
+    const bm=parseFloat(document.getElementById('bm-'+i)?.value)||0;
+    if(!we||!vp) continue;
+    total++;
+    const db=vp-we, wp=we/vp, gm=bm?db*bm:0;
+    wpSum+=wp; wpCnt++;
+    const txt=document.getElementById('kat-'+i)?.textContent||'';
+    if(txt.includes('STAR')){ cats.star.cnt++;cats.star.dbSum+=db;cats.star.gewSum+=gm; }
+    else if(txt.includes('PLOWHORSE')){ cats.plowh.cnt++;cats.plowh.dbSum+=db;cats.plowh.gewSum+=gm; }
+    else if(txt.includes('PUZZLE')){ cats.puzzle.cnt++;cats.puzzle.dbSum+=db;cats.puzzle.gewSum+=gm; }
+    else if(txt.includes('DOG')){ cats.dog.cnt++;cats.dog.dbSum+=db;cats.dog.gewSum+=gm; }
+  }
+  const fmt=(v,d=2)=>v.toFixed(d).replace('.',',');
+  for(const[k,c] of Object.entries(cats)){
+    document.getElementById('a-'+k+'-cnt').textContent=c.cnt||'—';
+    document.getElementById('a-'+k+'-db').textContent=c.cnt?(fmt(c.dbSum/c.cnt)+' €'):'—';
+    document.getElementById('a-'+k+'-gew').textContent=c.cnt?(fmt(c.gewSum)+' €'):'—';
+  }
+  const totalGew=Object.values(cats).reduce((s,c)=>s+c.gewSum,0);
+  document.getElementById('a-ges-cnt').textContent=total||'—';
+  document.getElementById('a-ges-wp').textContent=wpCnt?(fmt(wpSum/wpCnt*100,1)+' %'):'—';
+  document.getElementById('a-ges-sum').textContent=total?(cats.star.cnt+' Stars | '+cats.dog.cnt+' Dogs'):'—';
+
+  // status bar
+  if(wpCnt){
+    const avgWp=wpSum/wpCnt;
+    const sb2=document.getElementById('marge-status');
+    sb2.style.display='block';
+    if(avgWp<=0.38){sb2.className='status-bar status-ok';sb2.textContent='✅ Ø Wareneinsatz im grünen Bereich (unter 38%) — weiter so!';}
+    else{sb2.className='status-bar status-warn';sb2.textContent='⚠️ Ø Wareneinsatz über 38% — Karte überprüfen!';}
+  }
+  // Summary row in marge table
+  const foot=document.getElementById('marge-foot');
+  if(wpCnt){
+    const avgWp=wpSum/wpCnt;
+    foot.innerHTML=`<tr class="summary-row"><td colspan="2">GESAMT / DURCHSCHNITT</td><td></td><td></td><td></td><td class="gold">${fmt(avgWp*100,1)} %</td><td></td><td class="gold">${fmt(Object.values(cats).reduce((s,c)=>s+c.gewSum,0))} €</td><td class="gold">${cats.star.cnt} Stars | ${cats.dog.cnt} Dogs</td></tr>`;
+  }
+}
+
+function switchTab(tab){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+  const map={marge:0,ausw:1,anl:2};
+  document.querySelectorAll('.tab-btn')[map[tab]].classList.add('active');
+  document.getElementById('tab-'+tab).classList.add('active');
+  if(tab==='ausw') updateAusw();
+}
+
+async function saveData(){
+  const rows={};
+  for(let i=1;i<=NUM_ROWS;i++){
+    rows[i]={gericht:document.getElementById('mg-'+i)?.value||'',we:document.getElementById('we-'+i)?.value||'',vp:document.getElementById('vp-'+i)?.value||'',bm:document.getElementById('bm-'+i)?.value||''};
+  }
+  const top5={};
+  for(let i=1;i<=5;i++){
+    top5[i]={gericht:document.getElementById('t5g-'+i)?.value||'',db:document.getElementById('t5d-'+i)?.value||'',menge:document.getElementById('t5m-'+i)?.value||''};
+  }
+  try{
+    const {data:{session}}=await sb.auth.getSession();
+    if(session){
+      await sb.from('user_tool_data').upsert({user_id:session.user.id,tool_name:'marge_tool_modul2',data:{rows,top5,updated:new Date().toISOString()},updated_at:new Date().toISOString()},{onConflict:'user_id,tool_name'});
+    }
+  }catch(e){}
+  ['save-msg1','save-msg2'].forEach(id=>{const el=document.getElementById(id);if(el){el.style.display='inline';setTimeout(()=>el.style.display='none',2500);}});
+}
+
+async function loadData(){
+  try{
+    const {data:{session}}=await sb.auth.getSession();
+    if(!session) return;
+    const {data}=await sb.from('user_tool_data').select('data').eq('user_id',session.user.id).eq('tool_name','marge_tool_modul2').maybeSingle();
+    if(!data?.data) return;
+    const d=data.data;
+    if(d.rows){
+      for(let i=1;i<=NUM_ROWS;i++){
+        const r=d.rows[i]; if(!r) continue;
+        if(r.gericht) document.getElementById('mg-'+i).value=r.gericht;
+        if(r.we) document.getElementById('we-'+i).value=r.we;
+        if(r.vp) document.getElementById('vp-'+i).value=r.vp;
+        if(r.bm) document.getElementById('bm-'+i).value=r.bm;
+        recalcRow(i);
+      }
+    }
+    if(d.top5){
+      for(let i=1;i<=5;i++){
+        const r=d.top5[i]; if(!r) continue;
+        if(r.gericht) document.getElementById('t5g-'+i).value=r.gericht;
+        if(r.db) document.getElementById('t5d-'+i).value=r.db;
+        if(r.menge) document.getElementById('t5m-'+i).value=r.menge;
+        calcTop5Row(i);
+      }
+    }
+  }catch(e){}
+}
+
+buildTable();
+loadData();
+</script>
 </body>
 </html>

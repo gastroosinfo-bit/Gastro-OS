@@ -3,79 +3,75 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GASTRO-OS – Modul 2 | Lektion 3</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<title>Lektion 3 — Der strategische Kartenaufbau | GASTRO-OS</title>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
-.header { background:#1a2a4a; padding:22px 40px; text-align:center; box-shadow:0 2px 12px rgba(0,0,0,.3); }
-.brand { font-family:Georgia,serif; font-size:22px; color:#d4af37; letter-spacing:4px; font-weight:normal; }
-.modul-label { font-size:11px; color:#a0b0c8; letter-spacing:3px; text-transform:uppercase; margin-top:4px; }
+.header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:18px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.back-btn { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.back-btn:hover { border-color:#d4af37; color:#d4af37; }
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
-.main { max-width:860px; margin:36px auto; padding:0 24px 60px; }
-h1 { font-family:Georgia,serif; font-size:26px; color:#1a2a4a; margin-bottom:8px; }
-h2 { font-family:Georgia,serif; font-size:20px; color:#1a2a4a; margin:32px 0 10px; padding-top:20px; border-top:1px solid #e8dfc8; }
-h3 { font-size:15px; font-weight:700; color:#d4af37; margin:20px 0 8px; text-transform:uppercase; letter-spacing:.5px; }
-.gold-rule { width:56px; height:2px; background:#d4af37; margin:10px 0 20px; }
-p { font-size:14px; line-height:1.85; color:#334; margin-bottom:14px; }
-.aufgabe { background:#fff8e8; border-left:3px solid #d4af37; padding:14px 18px; border-radius:0 6px 6px 0; margin:20px 0; font-size:13px; color:#5a4000; line-height:1.7; }
-.fehler-box { background:#fff; border:1px solid #e8dfc8; border-radius:8px; padding:16px 20px; margin:12px 0; }
-.fehler-box strong { color:#1a2a4a; }
-.woche-box { background:#fff; border-radius:8px; padding:18px 22px; margin:12px 0; border-left:4px solid #d4af37; }
-.woche-box strong { color:#1a2a4a; font-size:15px; }
-.back-btn { display:inline-block; background:#1a2a4a; color:#d4af37; padding:11px 22px; border-radius:6px; text-decoration:none; font-size:13px; font-weight:600; margin-bottom:28px; }
-.nav-bar { display:flex; justify-content:space-between; margin-top:36px; gap:12px; }
-.nav-btn { flex:1; text-align:center; background:#1a2a4a; color:#d4af37; padding:12px 16px; border-radius:6px; text-decoration:none; font-size:13px; font-weight:600; }
-.nav-btn.secondary { background:#f0ece0; color:#1a2a4a; }
-.footer { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
-.footer strong { color:#d4af37; }
-.cta-box { background:#1a2a4a; border-radius:10px; padding:24px 28px; text-align:center; margin:28px 0; }
-.cta-box p { color:#d4af37; font-size:15px; font-weight:600; margin-bottom:16px; }
-.cta-link { display:inline-block; background:#d4af37; color:#1a2a4a; padding:13px 28px; border-radius:6px; text-decoration:none; font-weight:700; font-size:14px; }
+.wrap { max-width:720px; margin:40px auto; padding:0 24px 60px; }
+.lbl { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:8px; }
+h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:10px; line-height:1.3; }
+.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:20px 0 32px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:normal; margin:36px 0 14px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
+h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:24px 0 10px; }
+p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
+.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin-top:24px; }
+.aufgabe-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
+.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; }
+.footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-lbl strong { color:#d4af37; }
+.footer-main { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-main strong { color:#d4af37; }
 </style>
 </head>
 <body>
-<div class="header"><div class="brand">GASTRO-OS</div><div class="modul-label">Modul 2 &nbsp;·&nbsp; Lektion 3</div></div>
+<div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html" class="back-btn">← Zurück zum Dashboard</a></div>
 <div class="gold-bar"></div>
-<script>
-const sb = supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3');
-(async()=>{ const {data:{session}}=await sb.auth.getSession(); if(!session) window.location.href='login.html'; })();
-</script>
-<div class="main">
-<a href="dashboard.html" class="back-btn">← Dashboard</a>
+<div class="wrap">
+  <div class="lbl">Modul 2 · Lektion 3</div>
+  <h1>Der strategische Kartenaufbau</h1>
+  <div class="intro">In Lektion 2 hast du gelernt wie du die Zahlen hinter deinen Gerichten verstehst und wie Preispsychologie funktioniert. Jetzt wird es konkret. In dieser Lektion baust du deine Karte strategisch neu auf und lernst wie dein gesamtes Angebotssystem zusammenspielt.</div>
 
-<h1>📖 Lektion 3 — Der strategische Kartenaufbau</h1>
-<div class="gold-rule"></div>
-<p><em>In Lektion 2 hast du gelernt wie du Zahlen verstehst und wie Preispsychologie funktioniert. Jetzt wird es konkret — du baust deine Karte strategisch neu auf.</em></p>
+  <h2>Kapitel 1 — Der strategische Kartenaufbau Schritt für Schritt</h2>
+  <p>Du weißt wie die Psychologie funktioniert. Du verstehst die vier Gericht-Typen. Du kennst deine Kennzahlen. Jetzt bauen wir deine Karte neu, oder optimieren sie so dass sie für dich arbeitet.</p>
 
-<h2>Kapitel 1 — Schritt für Schritt</h2>
-<h3>Schritt 1: Bestandsaufnahme mit dem Analyse Guide</h3>
-<p>Trage für jedes Gericht drei Zahlen ein: durchschnittliche Bestellmenge pro Monat, Wareneinsatz in Euro pro Portion, Verkaufspreis. Sobald du diese Zahlen hast erkennst du sofort welche Gerichte Stars, Plowhorses, Puzzles und Dogs sind. In den meisten Betrieben ist das Ergebnis überraschend.</p>
-<h3>Schritt 2: Bereinigung</h3>
-<p>Streich alle Dogs die keinen strategischen Zweck erfüllen. Das ist der schwierigste Schritt — nicht technisch, sondern emotional. Die Faustregel: Wenn ein Gericht weniger als fünf Prozent deiner Bestellungen ausmacht und eine Wareneinsatz-Quote über 38 Prozent hat, steht es auf der Streichliste.</p>
-<h3>Schritt 3: Positionierung der Stars und Puzzles</h3>
-<p>Platziere deine Stars im Golden Triangle. Gib ihnen die beste Beschreibung, das beste Foto, und den stärksten Empfehlungsauftrag für dein Team. Deine Puzzles wandern in gut sichtbare Positionen mit überarbeiteter, emotionalerer Beschreibung.</p>
-<h3>Schritt 4: Preisgestaltung überprüfen</h3>
-<p>Gehe durch jeden Preis auf deiner Karte und stelle drei Fragen: Ist dieser Preis rund formuliert? Passt er zur Preiswahrnehmung des Ankergerichts? Deckt er den Wareneinsatz so ab dass eine Quote unter 32 Prozent entsteht?</p>
-<div class="aufgabe">✏️ <strong>Deine Aufgabe:</strong> Geh die vier Schritte durch und wende sie auf deine aktuelle Karte an. Fang mit Schritt 1 an und lade dafür den Analyse Guide herunter.</div>
+  <h3>Schritt 1 — Bestandsaufnahme mit dem Analyse Guide</h3>
+  <p>Nimm den Analyse Guide und trage für jedes Gericht drei Zahlen ein: durchschnittliche Bestellmenge pro Monat, Wareneinsatz in Euro pro Portion, Verkaufspreis. Sobald du diese Zahlen hast erkennst du sofort welche Gerichte Stars, Plowhorses, Puzzles und Dogs sind. In den meisten Betrieben ist das Ergebnis überraschend. Gerichte von denen der Inhaber überzeugt war dass sie laufen entpuppen sich als Dogs. Stille Gerichte die niemand beachtet hat sind plötzlich die profitabelsten Positionen auf der Karte.</p>
 
-<h2>Kapitel 2 — Das Angebotssystem</h2>
-<p>Die Speisekarte ist der Kern deines Angebotssystems, aber nicht das einzige Element. Ein vollständiges System umfasst: die mündliche Empfehlung des Services, Tischaufsteller, saisonale Specials, Signature Dishes und die strategische Nutzung von Upselling-Momenten.</p>
-<h3>Der empfehlende Service als Umsatzhebel</h3>
-<p>Dein Serviceteam ist der wichtigste Kanal zwischen deiner Karte und deinem Gast. Es braucht drei Dinge: Erstens muss dein Team wissen welche Gerichte Stars und Puzzles sind. Zweitens brauchen sie authentische Formulierungen. Drittens brauchen sie die Erlaubnis und Erwartung aktiv zu empfehlen.</p>
-<h3>Saisonale Specials strategisch einsetzen</h3>
-<p>Saisonale Gerichte sind eine der wirksamsten Möglichkeiten Puzzles kurzfristig in Stars zu verwandeln. Spargel im Mai, Wild im Oktober, Weihnachtsmenü im Dezember. Wichtig: Berechne immer die Marge des Specials — ein saisonales Gericht mit schlechter Marge füllt deine Küche mit Arbeit ohne Belohnung.</p>
-<h3>Das Signature Dish</h3>
-<p>Jeder erfolgreiche Betrieb hat mindestens ein Gericht das unverwechselbar ist — das Gäste speziell wegen ihm besuchen und weiterempfehlen. Dieses Gericht muss zwingend ein Star sein.</p>
-<div class="aufgabe">✏️ <strong>Deine Aufgabe:</strong> Hast du ein Signature Dish? Wenn ja, ist es wirklich ein Star? Wenn nein, welches Gericht auf deiner Karte hätte das Potenzial dazu?</div>
+  <h3>Schritt 2 — Bereinigung</h3>
+  <p>Streich alle Dogs die keinen strategischen Zweck erfüllen. Das ist der schwierigste Schritt, nicht technisch, sondern emotional. Gerichte haben Geschichte. Stammgäste lieben bestimmte Positionen. Der Inhaber hat Herzblut in ein Rezept gesteckt. Das ist verständlich. Aber ein Gericht das niemand bestellt und das keine Marge bringt kostet dich täglich Geld und Aufmerksamkeit.</p>
+  <p>Die Faustregel: Wenn ein Gericht weniger als fünf Prozent deiner Bestellungen ausmacht und eine Wareneinsatz-Quote über 38 Prozent hat steht es auf der Streichliste. Ausnahmen sind erlaubt, aber sie müssen begründet sein.</p>
 
-<div class="nav-bar">
-  <a href="modul2-lektion2.html" class="nav-btn secondary">← Lektion 2</a>
-  <a href="modul2-lektion4.html" class="nav-btn">Lektion 4 →</a>
+  <h3>Schritt 3 — Positionierung der Stars und Puzzles</h3>
+  <p>Platziere deine Stars im Golden Triangle. Gib ihnen die beste Beschreibung, das beste Foto wenn du mit Bildern arbeitest, und den stärksten Empfehlungsauftrag für dein Team. Deine Puzzles wandern in gut sichtbare Positionen, aber sie bekommen eine überarbeitete, emotionalere Beschreibung und werden aktiv vom Service empfohlen.</p>
+  <p>Plowhorses bekommen entweder eine Preisanpassung oder eine Kostenkontrolle im Einkauf. Wenn beides nicht möglich ist bleiben sie, aber sie werden nicht aktiv beworben. Du lässt sie bestellen wer sie bestellen möchte, ohne deine Serviceressourcen dafür einzusetzen.</p>
+
+  <h3>Schritt 4 — Preisgestaltung überprüfen</h3>
+  <p>Gehe durch jeden Preis auf deiner Karte und stelle drei Fragen: Ist dieser Preis rund formuliert? Passt er zur Preiswahrnehmung des Ankergerichts? Und deckt er den Wareneinsatz so ab dass eine Quote unter 32 Prozent entsteht? Wenn eine dieser Fragen mit Nein beantwortet wird ist Anpassungsbedarf vorhanden. Nicht jeder Preis muss sofort geändert werden, aber du hast jetzt die Grundlage für bewusste Entscheidungen statt Bauchgefühl.</p>
+  <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 1</div><p>Geh die vier Schritte durch und wende sie auf deine aktuelle Karte an. Fang mit Schritt 1 an und lade dafür den Analyse Guide herunter. Die Arbeit die du dort investierst ist die Grundlage für alle weiteren Schritte.</p></div>
+
+  <h2>Kapitel 2 — Das Angebotssystem</h2>
+  <p>Die Speisekarte ist der Kern deines Angebotssystems, aber nicht das einzige Element. Ein vollständiges Angebotssystem denkt weiter. Es umfasst die mündliche Empfehlung des Services, den Einsatz von Tischaufstellern und Tafelkreide, saisonale Specials, Signature Dishes und die strategische Nutzung von Upselling-Momenten.</p>
+
+  <h3>Der empfehlende Service als Umsatzhebel</h3>
+  <p>Dein Serviceteam ist der wichtigste Kanal zwischen deiner Karte und deinem Gast. Ein gut geschulter Mitarbeiter der abends drei Mal das Tages-Puzzle empfiehlt, ein Gericht mit 75 Prozent Deckungsbeitrag, erzeugt mehr Gewinn als jede Karten-Neugestaltung. Aber das passiert nicht von selbst.</p>
+  <p>Es braucht drei Dinge. Erstens muss dein Team wissen welche Gerichte Stars und Puzzles sind. Zweitens brauchen sie eine authentische Formulierung für Empfehlungen, keine aufgesetzte Verkäufersprache, sondern echte Begeisterung. Drittens brauchen sie die Erlaubnis und Erwartung aktiv zu empfehlen. Wenn das im Service-Briefing nicht vorkommt passiert es nicht.</p>
+
+  <h3>Saisonale Specials strategisch einsetzen</h3>
+  <p>Saisonale Gerichte sind eine der wirksamsten Möglichkeiten Puzzles kurzfristig in Stars zu verwandeln. Ein Spargel-Special im Mai, ein Wild-Gericht im Oktober, ein Weihnachtsmenü im Dezember. Diese Positionen haben eine natürliche Nachfrage und eine Geschichte die der Gast kennt. Wenn du sie mit einer guten Marge und einer starken Beschreibung kombinierst entstehen regelmäßig deine profitabelsten Wochen des Jahres.</p>
+  <p>Der Fehler den viele Gastronomen dabei machen: Sie berechnen die Marge des Specials nicht sorgfältig weil es ja nur für drei Wochen auf der Karte steht. Das ist riskant. Ein saisonales Gericht mit schlechter Marge füllt deine Küche mit Arbeit ohne die entsprechende Belohnung.</p>
+
+  <h3>Das Signature Dish</h3>
+  <p>Jeder erfolgreiche Betrieb hat mindestens ein Gericht das unverwechselbar ist. Ein Gericht das Gäste speziell wegen ihm besuchen. Das sie anderen empfehlen. Das in Bewertungen erwähnt wird. Dieses Gericht ist dein Signature Dish und es muss zwingend ein Star sein. Hohe Popularität, hohe Marge, und eine Geschichte die man erzählen kann.</p>
+  <p>Wenn du dieses Gericht noch nicht hast ist es eine der wichtigsten Aufgaben dieses Moduls es zu entwickeln. Es muss nicht neu erfunden werden. Manchmal ist es ein bestehendes Gericht das nur noch die richtige Verpackung braucht: einen besseren Namen, eine stärkere Beschreibung, ein Foto das Gäste in der Google-Suche zum Besuchen animiert.</p>
+  <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 2</div><p>Hast du ein Signature Dish? Wenn ja, ist es wirklich ein Star? Wenn nein, welches Gericht auf deiner aktuellen Karte hätte das Potenzial dazu? Schreib es auf und überleg was es noch braucht um diesen Status zu erreichen.</p></div>
+
+  <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
 </div>
-
-</div>
-<div class="gold-bar"></div>
-<div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+<div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
 </body>
 </html>

@@ -3,72 +3,74 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GASTRO-OS – Modul 2 | Lektion 2</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<title>Lektion 2 — Kalkulation & Preispsychologie | GASTRO-OS</title>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
-.header { background:#1a2a4a; padding:22px 40px; text-align:center; box-shadow:0 2px 12px rgba(0,0,0,.3); }
-.brand { font-family:Georgia,serif; font-size:22px; color:#d4af37; letter-spacing:4px; font-weight:normal; }
-.modul-label { font-size:11px; color:#a0b0c8; letter-spacing:3px; text-transform:uppercase; margin-top:4px; }
+.header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:18px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.back-btn { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.back-btn:hover { border-color:#d4af37; color:#d4af37; }
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
-.main { max-width:860px; margin:36px auto; padding:0 24px 60px; }
-h1 { font-family:Georgia,serif; font-size:26px; color:#1a2a4a; margin-bottom:8px; }
-h2 { font-family:Georgia,serif; font-size:20px; color:#1a2a4a; margin:32px 0 10px; padding-top:20px; border-top:1px solid #e8dfc8; }
-h3 { font-size:15px; font-weight:700; color:#d4af37; margin:20px 0 8px; text-transform:uppercase; letter-spacing:.5px; }
-.gold-rule { width:56px; height:2px; background:#d4af37; margin:10px 0 20px; }
-p { font-size:14px; line-height:1.85; color:#334; margin-bottom:14px; }
-.aufgabe { background:#fff8e8; border-left:3px solid #d4af37; padding:14px 18px; border-radius:0 6px 6px 0; margin:20px 0; font-size:13px; color:#5a4000; line-height:1.7; }
-.back-btn { display:inline-block; background:#1a2a4a; color:#d4af37; padding:11px 22px; border-radius:6px; text-decoration:none; font-size:13px; font-weight:600; margin-bottom:28px; }
-.nav-bar { display:flex; justify-content:space-between; margin-top:36px; gap:12px; }
-.nav-btn { flex:1; text-align:center; background:#1a2a4a; color:#d4af37; padding:12px 16px; border-radius:6px; text-decoration:none; font-size:13px; font-weight:600; }
-.nav-btn.secondary { background:#f0ece0; color:#1a2a4a; }
-.footer { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
-.footer strong { color:#d4af37; }
+.wrap { max-width:720px; margin:40px auto; padding:0 24px 60px; }
+.lbl { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:8px; }
+h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:10px; line-height:1.3; }
+.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:20px 0 32px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:normal; margin:36px 0 14px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
+h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:24px 0 10px; }
+p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
+.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin-top:24px; }
+.aufgabe-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
+.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; }
+.footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-lbl strong { color:#d4af37; }
+.footer-main { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-main strong { color:#d4af37; }
 </style>
 </head>
 <body>
-<div class="header"><div class="brand">GASTRO-OS</div><div class="modul-label">Modul 2 &nbsp;·&nbsp; Lektion 2</div></div>
+<div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html" class="back-btn">← Zurück zum Dashboard</a></div>
 <div class="gold-bar"></div>
-<script>
-const sb = supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3');
-(async()=>{ const {data:{session}}=await sb.auth.getSession(); if(!session) window.location.href='login.html'; })();
-</script>
-<div class="main">
-<a href="dashboard.html" class="back-btn">← Dashboard</a>
+<div class="wrap">
+  <div class="lbl">Modul 2 · Lektion 2</div>
+  <h1>Kalkulation &amp; Preispsychologie</h1>
+  <div class="intro">In Lektion 1 haben wir die vier Gericht-Typen kennengelernt und verstanden warum weniger Gerichte auf der Karte mehr Gewinn bedeuten. Jetzt gehen wir tiefer. In dieser Lektion lernst du wie du die Zahlen hinter deinen Gerichten verstehst und wie deine Gäste wirklich Entscheidungen treffen.</div>
 
-<h1>📖 Lektion 2 — Kalkulation &amp; Preispsychologie</h1>
-<div class="gold-rule"></div>
-<p><em>In Lektion 1 haben wir die vier Gericht-Typen kennengelernt. Jetzt lernst du wie du die Zahlen hinter deinen Gerichten verstehst und wie deine Gäste wirklich Entscheidungen treffen.</em></p>
+  <h2>Kapitel 1 — Kalkulation</h2>
+  <p>Weißt du wie viel Gewinn dir dein meistbestelltes Gericht pro Portion einbringt? Nicht der Verkaufspreis, der Deckungsbeitrag. Also das was nach Abzug der direkten Warenkosten tatsächlich bei dir bleibt, bevor Personalkosten, Miete und Betriebskosten abgehen.</p>
+  <p>Die meisten Gastronomen können diese Frage nicht beantworten. Nicht weil sie die Zahlen nicht haben, sondern weil niemand sie je in einem System zusammengebracht hat das sich in fünfzehn Minuten ausfüllen lässt.</p>
 
-<h2>Kapitel 1 — Kalkulation</h2>
-<p>Weißt du wie viel Gewinn dir dein meistbestelltes Gericht pro Portion einbringt? Nicht der Verkaufspreis, der <strong>Deckungsbeitrag</strong>. Also das was nach Abzug der direkten Warenkosten tatsächlich bei dir bleibt, bevor Personalkosten, Miete und Betriebskosten abgehen.</p>
-<h3>Die drei Kennzahlen jedes Gerichts</h3>
-<p>Für jedes Gericht auf deiner Karte brauchst du drei Zahlen: den <strong>Wareneinsatz</strong> in Euro pro Portion, den <strong>Verkaufspreis</strong> und den daraus resultierenden <strong>Deckungsbeitrag</strong>.</p>
-<p>Ein Beispiel: Du verkaufst ein Rumpsteak für 28 Euro. Wareneinsatz: 11,20 Euro. Deckungsbeitrag: 16,80 Euro (= 40%). Gleichzeitig verkaufst du eine Pasta für 14 Euro. Wareneinsatz: 2,80 Euro. Deckungsbeitrag: 11,20 Euro (= 20%). Das Steak klingt profitabler — aber wenn die Pasta dreimal so häufig bestellt wird, welches Gericht ist dann wirklich profitabler für deinen Betrieb?</p>
-<h3>Der Wareneinsatz als Steuerungsgröße</h3>
-<p>Ein gesunder Wareneinsatz liegt je nach Konzept zwischen <strong>25 und 32 Prozent</strong> des Netto-Verkaufspreises. Alles dauerhaft über 38 Prozent ist ein Warnsignal. Wenn dein durchschnittlicher Wareneinsatz über dieser Grenze liegt, ist das kein Einkaufsproblem — es ist ein <strong>Kartenproblem</strong>.</p>
-<div class="aufgabe">✏️ <strong>Deine Aufgabe:</strong> Nimm dein meistbestelltes Gericht. Berechne den Wareneinsatz pro Portion und dann den Deckungsbeitrag. Ist das Ergebnis was du erwartet hast?</div>
+  <h3>Die drei Kennzahlen jedes Gerichts</h3>
+  <p>Für jedes Gericht auf deiner Karte brauchst du drei Zahlen: den Wareneinsatz in Euro pro Portion, den Verkaufspreis und den daraus resultierenden Deckungsbeitrag. Der Deckungsbeitrag ist die einzige Zahl die wirklich zählt. Nicht der Umsatz den ein Gericht bringt, sondern was nach den Warenkosten übrig bleibt.</p>
+  <p>Ein Beispiel aus der Praxis: Du verkaufst ein Rumpsteak für 28 Euro. Der Wareneinsatz beträgt 11,20 Euro. Dein Deckungsbeitrag ist 16,80 Euro, das entspricht einer Wareneinsatz-Quote von 40 Prozent. Gleichzeitig verkaufst du eine Pasta für 14 Euro. Wareneinsatz: 2,80 Euro. Deckungsbeitrag: 11,20 Euro. Wareneinsatz-Quote: 20 Prozent. Das Steak klingt profitabler. Aber wenn deine Küche in einer Stunde dreimal so viele Pastas wie Steaks produzieren kann und die Pasta doppelt so häufig bestellt wird, welches Gericht ist dann wirklich profitabler für deinen Betrieb?</p>
+  <p>Diese Frage ist keine Provokation. Es ist die Frage die du für jedes Gericht auf deiner Karte beantworten solltest, und die die meisten nie stellen.</p>
 
-<h2>Kapitel 2 — Preispsychologie</h2>
-<p>Ein Gast öffnet deine Karte und glaubt er trifft eine rationale Entscheidung. In Wirklichkeit trifft er in den ersten dreißig Sekunden eine emotionale Entscheidung. Das kannst du gezielt nutzen.</p>
-<h3>Das Anker-Prinzip</h3>
-<p>Das erste Gericht das ein Gast wahrnimmt setzt den psychologischen Anker. Wenn das erste Gericht 38 Euro kostet, wirken alle anderen Preise günstiger. Professionelle Karten setzen den Anker bewusst — mit einem Premiumgericht ganz oben das die Preiswahrnehmung nach oben verschiebt.</p>
-<h3>Das Golden Triangle</h3>
-<p>Eye-Tracking-Studien zeigen dass der Blick eines Gastes bei einer klassischen Speisekarte immer denselben Weg nimmt: zuerst in die <strong>Mitte der Karte</strong>, dann in die <strong>obere rechte Ecke</strong>, dann in die <strong>obere linke Ecke</strong>. Dieses Dreieck ist dein wertvollster Platz — hier platzierst du ausschließlich deine Stars.</p>
-<h3>Sprache verkauft</h3>
-<p>Aus "Pasta mit Tomatensoße" wird "Hausgemachte Pappardelle in langsam eingekochter Pomodoro-Soße nach Nonna-Art". Aus "Rindersteak" wird "Dry-Aged Rumpsteak vom regionalen Weideochsen, 200g, mit Kräuterbutter und Pommes frites". Der Rohstoff ist identisch — der wahrgenommene Wert ist ein anderer.</p>
-<h3>Runde Preise vs. gebrochene Preise</h3>
-<p>Runde Preise (18 Euro statt 17,90 Euro) funktionieren in der Gastronomie besser. Sie vermitteln Qualität und Selbstbewusstsein. Gebrochene Preise wie 9,99 Euro wirken in einem Restaurant eher billig als günstig.</p>
-<div class="aufgabe">✏️ <strong>Deine Aufgabe:</strong> Schau dir drei Gerichte auf deiner aktuellen Karte an. Schreib für jedes eine emotionalere, konkretere Beschreibung. Du wirst den Unterschied sofort spüren.</div>
+  <h3>Der Wareneinsatz als Steuerungsgröße</h3>
+  <p>Ein gesunder Wareneinsatz in der Gastronomie liegt je nach Konzept zwischen 25 und 32 Prozent des Netto-Verkaufspreises. Ein Fine-Dining-Restaurant kann tiefer gehen, weil der Gast für Erlebnis und Ambiente zahlt, nicht nur für das Produkt. Ein einfaches Bistro wird näher an der 35-Prozent-Marke liegen. Alles dauerhaft über 38 Prozent ist ein Warnsignal.</p>
+  <p>Wenn dein durchschnittlicher Wareneinsatz über dieser Grenze liegt dann ist das kein Einkaufsproblem, es ist ein Kartenproblem. Du hast zu viele Gerichte mit zu hohem Rohstoffanteil und zu wenig Gerichte die deine Marge stabilisieren.</p>
+  <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 1</div><p>Nimm dein meistbestelltes Gericht. Berechne den Wareneinsatz pro Portion so genau wie möglich. Dann berechne den Deckungsbeitrag. Ist das Ergebnis was du erwartet hast?</p></div>
 
-<div class="nav-bar">
-  <a href="modul2-lektion1.html" class="nav-btn secondary">← Lektion 1</a>
-  <a href="modul2-lektion3.html" class="nav-btn">Lektion 3 →</a>
+  <h2>Kapitel 2 — Preispsychologie</h2>
+  <p>Ein Gast öffnet deine Karte und glaubt er trifft eine rationale Entscheidung. In Wirklichkeit trifft er in den ersten dreißig Sekunden eine emotionale Entscheidung und sucht danach nach rationalen Gründen um sie zu rechtfertigen. Das ist menschliche Psychologie. Und du kannst sie verstehen und gezielt nutzen.</p>
+
+  <h3>Das Anker-Prinzip</h3>
+  <p>Das erste Gericht das ein Gast bewusst wahrnimmt setzt den psychologischen Anker für seine gesamte Bestellung. Wenn das erste Gericht auf deiner Karte ein Hauptgang für 38 Euro ist wirken alle anderen Preise günstiger. Wenn es ein Gericht für 12 Euro ist empfindet der Gast 24 Euro plötzlich als teuer.</p>
+  <p>Professionelle Karten setzen den Anker bewusst, mit einem Premiumgericht ganz oben oder außen das die Preiswahrnehmung der gesamten Karte nach oben verschiebt. Dieses Gericht muss nicht häufig bestellt werden. Seine Aufgabe ist psychologisch, nicht umsatzseitig.</p>
+
+  <h3>Das Golden Triangle</h3>
+  <p>Eye-Tracking-Studien haben gezeigt dass der Blick eines Gastes bei einer klassischen Speisekarte immer denselben Weg nimmt: zuerst in die Mitte der Karte, dann in die obere rechte Ecke, dann in die obere linke Ecke. Dieses Dreieck ist dein wertvollster Platz. Hier platzierst du ausschließlich deine Stars, die Gerichte mit hoher Beliebtheit und hoher Marge.</p>
+  <p>Die meisten Gastronomen platzieren ihre Gerichte nach Kategorie, nach Reihenfolge der Gänge, nach alphabetischer Logik und verschenken damit täglich Umsatz.</p>
+
+  <h3>Sprache verkauft</h3>
+  <p>Der Name und die Beschreibung eines Gerichts haben einen messbaren Einfluss auf die Bestellhäufigkeit und die Zahlungsbereitschaft der Gäste. In einer Studie der Cornell University wurden identische Gerichte mit unterschiedlichen Beschreibungen angeboten. Das Gericht mit der detaillierten, emotionalen Beschreibung wurde häufiger bestellt und die Gäste bewerteten es im Nachhinein als besser schmeckend.</p>
+  <p>Aus "Pasta mit Tomatensoße" wird "Hausgemachte Pappardelle in langsam eingekochter Pomodoro-Soße nach Nonna-Art". Aus "Rindersteak" wird "Dry-Aged-Rumpsteak vom regionalen Weideochsen, 200g, mit Kräuterbutter und Pommes frites". Der Rohstoff ist identisch. Der wahrgenommene Wert ist ein anderer.</p>
+
+  <h3>Runde Preise vs. gebrochene Preise</h3>
+  <p>Studien zeigen dass runde Preise, 18 Euro statt 17,90 Euro, in der Gastronomie besser funktionieren als im Einzelhandel. Runde Preise vermitteln Qualität und Selbstbewusstsein. Gebrochene Preise wie 9,99 Euro wirken in einem Restaurant eher billig als günstig. Überprüfe deine aktuelle Preisliste auf dieses Detail, es ist eine der einfachsten Optimierungen die du sofort umsetzen kannst.</p>
+  <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 2</div><p>Schau dir drei Gerichte auf deiner aktuellen Karte an. Wie heißen sie? Wie klingen die Beschreibungen? Schreib für jedes eine emotionalere, konkretere Version. Du wirst den Unterschied sofort spüren.</p></div>
+
+  <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
 </div>
-
-</div>
-<div class="gold-bar"></div>
-<div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+<div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
 </body>
 </html>

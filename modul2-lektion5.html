@@ -3,74 +3,79 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GASTRO-OS – Modul 2 | Lektion 5</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<title>Lektion 5 — Fehler & Aktionsplan | GASTRO-OS</title>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
-.header { background:#1a2a4a; padding:22px 40px; text-align:center; box-shadow:0 2px 12px rgba(0,0,0,.3); }
-.brand { font-family:Georgia,serif; font-size:22px; color:#d4af37; letter-spacing:4px; font-weight:normal; }
-.modul-label { font-size:11px; color:#a0b0c8; letter-spacing:3px; text-transform:uppercase; margin-top:4px; }
+.header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:18px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.back-btn { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.back-btn:hover { border-color:#d4af37; color:#d4af37; }
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
-.main { max-width:860px; margin:36px auto; padding:0 24px 60px; }
-h1 { font-family:Georgia,serif; font-size:26px; color:#1a2a4a; margin-bottom:8px; }
-h2 { font-family:Georgia,serif; font-size:20px; color:#1a2a4a; margin:32px 0 10px; padding-top:20px; border-top:1px solid #e8dfc8; }
-h3 { font-size:15px; font-weight:700; color:#d4af37; margin:20px 0 8px; text-transform:uppercase; letter-spacing:.5px; }
-.gold-rule { width:56px; height:2px; background:#d4af37; margin:10px 0 20px; }
-p { font-size:14px; line-height:1.85; color:#334; margin-bottom:14px; }
-.aufgabe { background:#fff8e8; border-left:3px solid #d4af37; padding:14px 18px; border-radius:0 6px 6px 0; margin:20px 0; font-size:13px; color:#5a4000; line-height:1.7; }
-.fehler-box { background:#fff; border:1px solid #e8dfc8; border-radius:8px; padding:16px 20px; margin:12px 0; }
-.fehler-box strong { color:#1a2a4a; }
-.woche-box { background:#fff; border-radius:8px; padding:18px 22px; margin:12px 0; border-left:4px solid #d4af37; }
-.woche-box strong { color:#1a2a4a; font-size:15px; }
-.back-btn { display:inline-block; background:#1a2a4a; color:#d4af37; padding:11px 22px; border-radius:6px; text-decoration:none; font-size:13px; font-weight:600; margin-bottom:28px; }
-.nav-bar { display:flex; justify-content:space-between; margin-top:36px; gap:12px; }
-.nav-btn { flex:1; text-align:center; background:#1a2a4a; color:#d4af37; padding:12px 16px; border-radius:6px; text-decoration:none; font-size:13px; font-weight:600; }
-.nav-btn.secondary { background:#f0ece0; color:#1a2a4a; }
-.footer { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
-.footer strong { color:#d4af37; }
-.cta-box { background:#1a2a4a; border-radius:10px; padding:24px 28px; text-align:center; margin:28px 0; }
-.cta-box p { color:#d4af37; font-size:15px; font-weight:600; margin-bottom:16px; }
-.cta-link { display:inline-block; background:#d4af37; color:#1a2a4a; padding:13px 28px; border-radius:6px; text-decoration:none; font-weight:700; font-size:14px; }
+.wrap { max-width:720px; margin:40px auto; padding:0 24px 60px; }
+.lbl { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:8px; }
+h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:10px; line-height:1.3; }
+.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:20px 0 32px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:normal; margin:36px 0 14px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
+h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:24px 0 10px; }
+p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
+.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin-top:24px; }
+.aufgabe-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
+.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; }
+.footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-lbl strong { color:#d4af37; }
+.footer-main { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-main strong { color:#d4af37; }
 </style>
 </head>
 <body>
-<div class="header"><div class="brand">GASTRO-OS</div><div class="modul-label">Modul 2 &nbsp;·&nbsp; Lektion 5</div></div>
+<div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html" class="back-btn">← Zurück zum Dashboard</a></div>
 <div class="gold-bar"></div>
-<script>
-const sb = supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3');
-(async()=>{ const {data:{session}}=await sb.auth.getSession(); if(!session) window.location.href='login.html'; })();
-</script>
-<div class="main">
-<a href="dashboard.html" class="back-btn">← Dashboard</a>
+<div class="wrap">
+  <div class="lbl">Modul 2 · Lektion 5</div>
+  <h1>Fehler &amp; Aktionsplan</h1>
+  <div class="intro">In Lektion 4 hast du gesehen wie Upselling als System funktioniert und was passiert wenn alle Maßnahmen zusammenspielen. Jetzt schauen wir uns die häufigsten Fehler an die Gastronomen bei der Speisekarte machen, und du bekommst deinen konkreten Plan für die nächsten 30 Tage.</div>
 
-<h1>📖 Lektion 5 — Fehler &amp; Aktionsplan</h1>
-<div class="gold-rule"></div>
-<p><em>Jetzt schauen wir uns die häufigsten Fehler an die Gastronomen bei der Speisekarte machen — und du bekommst deinen konkreten Plan für die nächsten 30 Tage.</em></p>
+  <h2>Kapitel 1 — Häufige Fehler und wie du sie vermeidest</h2>
+  <p>Nach dem was du in diesem Modul gelernt hast wirst du Fehler auf Speisekarten mit anderen Augen sehen. Hier sind die sechs häufigsten und was du stattdessen tun solltest.</p>
 
-<h2>Kapitel 1 — Die 6 häufigsten Fehler</h2>
-<div class="fehler-box"><strong>Fehler 1: Zu viele Gerichte aus Angst vor Ablehnung</strong><br>Mehr Gerichte bedeutet nicht mehr Umsatz — es bedeutet mehr Kosten und mehr Komplexität. Weniger Gerichte, besser kalkuliert, sind immer profitabler.</div>
-<div class="fehler-box"><strong>Fehler 2: Kalkulation einmal gemacht, nie wieder überprüft</strong><br>Einkaufspreise ändern sich. Eine Kalkulation von vor zwei Jahren ist heute möglicherweise falsch — und du merkst es nicht weil der Umsatz stabil wirkt während die Marge langsam schrumpft.</div>
-<div class="fehler-box"><strong>Fehler 3: Stars verstecken, Dogs promoten</strong><br>Das profitabelste Gericht steht auf Seite drei, unten, ohne Beschreibung. Das Dog-Gericht steht oben mit Foto weil der Inhaber es persönlich liebt. Lass die Zahlen entscheiden — nicht den Geschmack.</div>
-<div class="fehler-box"><strong>Fehler 4: Beschreibungen unterschätzen</strong><br>"Lammkeule mit Gemüse" verkauft sich schlechter als "Geschmorte Lammkeule aus der Region, sechs Stunden gegart, mit saisonalem Wurzelgemüse und hausgemachter Jus". Die Zutaten sind identisch. Der wahrgenommene Wert ist fundamental verschieden.</div>
-<div class="fehler-box"><strong>Fehler 5: Karte nie testen</strong><br>Eine Karte ist kein Denkmal. Sie ist ein lebendiges Instrument. Die besten Gastronomen testen neue Positionen als Tagesgericht und passen die Karte regelmäßig an. Zweimal im Jahr eine vollständige Überprüfung ist Minimum.</div>
-<div class="fehler-box"><strong>Fehler 6: Service nicht einbeziehen</strong><br>Dein Serviceteam sieht täglich was Gäste bestellen und was sie zurückgehen lassen. Diese Informationen sind Gold. Ein monatliches Kartengespräch mit dem Team ist eine der einfachsten und wirkungsvollsten Maßnahmen.</div>
-<div class="aufgabe">✏️ <strong>Deine Aufgabe:</strong> Welche der sechs Fehler erkennst du in deinem Betrieb? Schreib die zwei größten auf. Das sind deine ersten Ansatzpunkte.</div>
+  <h3>Fehler 1 — Zu viele Gerichte aus Angst vor Ablehnung</h3>
+  <p>Viele Gastronomen fügen Gerichte hinzu weil sie glauben damit mehr Gäste anzusprechen. In Wirklichkeit sprechen sie damit niemanden mehr an, sie erzeugen nur mehr Kosten und mehr Komplexität. Weniger Gerichte, besser kalkuliert und besser platziert, sind immer profitabler.</p>
 
-<h2>Kapitel 2 — Dein 30-Tage-Aktionsplan</h2>
-<div class="woche-box"><strong>Woche 1 — Analyse</strong><br>Starte mit dem Analyse Guide um deine Gerichte einzuordnen. Nutze danach das Marge Tool für die detaillierte Kalkulation. Beide Tools findest du im Dashboard unter Modul 2.</div>
-<div class="woche-box"><strong>Woche 2 — Entscheidungen treffen</strong><br>Entscheide für jeden Dog: streichen oder strategisch behalten. Für jeden Plowhorse: Preis anpassen oder Einkauf optimieren. Für jeden Puzzle: neue Beschreibung und bessere Platzierung.</div>
-<div class="woche-box"><strong>Woche 3 — Überarbeitung</strong><br>Überarbeite die Karte physisch oder digital. Neue Beschreibungen für Stars und Puzzles. Preise auf Rundzahl prüfen. Service-Team briefen: Welche Gerichte werden empfohlen, mit welcher Formulierung.</div>
-<div class="woche-box"><strong>Woche 4 — Launch und Beobachtung</strong><br>Führe die überarbeitete Karte ein. Beobachte täglich die Bestellhäufigkeit der veränderten Positionen. Hole Feedback vom Service-Team. Berechne nach vier Wochen ob sich der Bon-Wert verändert hat.</div>
-<div class="aufgabe">✏️ <strong>Deine Aufgabe:</strong> Trag jetzt in deinen Kalender ein wann du in dieser Woche den Analyse Guide ausfüllst. Nicht irgendwann — heute einen konkreten Termin festlegen. Das ist der erste Schritt von der Theorie in die Praxis.</div>
+  <h3>Fehler 2 — Kalkulation einmal gemacht, nie wieder überprüft</h3>
+  <p>Einkaufspreise ändern sich. Saisonal. Durch Lieferantenwechsel. Durch Preissteigerungen im Markt. Eine Kalkulation die du vor zwei Jahren erstellt hast ist heute möglicherweise falsch, und du merkst es nicht weil der Umsatz stabil wirkt während die Marge langsam schrumpft.</p>
 
-<div class="nav-bar">
-  <a href="modul2-lektion4.html" class="nav-btn secondary">← Lektion 4</a>
-  <a href="modul2-analyse-guide-anleitung.html" class="nav-btn">Analyse Guide Anleitung →</a>
+  <h3>Fehler 3 — Stars verstecken, Dogs promoten</h3>
+  <p>Es ist erschreckend häufig: Das profitabelste Gericht steht auf Seite drei, unten, ohne Beschreibung. Das Dog-Gericht steht oben mit dem einzigen Foto auf der Karte weil der Inhaber es persönlich liebt. Lass die Zahlen entscheiden, nicht den Geschmack.</p>
+
+  <h3>Fehler 4 — Beschreibungen unterschätzen</h3>
+  <p>"Lammkeule mit Gemüse" verkauft sich schlechter als "Geschmorte Lammkeule aus der Region, sechs Stunden gegart, mit saisonalem Wurzelgemüse und hausgemachter Jus". Die Zutaten sind identisch. Der wahrgenommene Wert ist fundamental verschieden.</p>
+
+  <h3>Fehler 5 — Karte nie testen</h3>
+  <p>Eine Karte ist kein Denkmal. Sie ist ein lebendiges Instrument. Die besten Gastronomen testen neue Positionen als Tagesgericht, beobachten die Bestellhäufigkeit, hören dem Team zu und passen die Karte regelmäßig an. Zweimal im Jahr eine vollständige Überprüfung mit der Menu Engineering Matrix ist Minimum.</p>
+
+  <h3>Fehler 6 — Service nicht einbeziehen</h3>
+  <p>Dein Serviceteam sieht täglich was Gäste bestellen, worüber sie reden, was sie zurückgehen lassen. Diese Informationen sind Gold und sie werden in den meisten Betrieben nie systematisch gesammelt. Ein monatliches Kartengespräch mit dem Service-Team in dem Feedback direkt einfließt ist eine der einfachsten und wirkungsvollsten Maßnahmen.</p>
+  <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 1</div><p>Geh die sechs Fehler durch und sei ehrlich. Welche davon erkennst du in deinem eigenen Betrieb? Schreib die zwei größten auf. Das sind deine ersten Ansatzpunkte.</p></div>
+
+  <h2>Kapitel 2 — Dein 30-Tage-Aktionsplan</h2>
+  <p>Wissen ohne Umsetzung ist Unterhaltung. Dieser Plan gibt dir für jeden der nächsten vier Wochen einen konkreten Fokus.</p>
+
+  <h3>Woche 1 — Analyse</h3>
+  <p>Starte mit dem Analyse Guide um deine Gerichte einzuordnen. Nutze danach das Marge Tool für die detaillierte Kalkulation. Beide Tools findest du in den entsprechenden Tabs im Dashboard.</p>
+
+  <h3>Woche 2 — Entscheidungen treffen</h3>
+  <p>Entscheide für jeden Dog: streichen oder strategisch behalten mit Begründung. Entscheide für jeden Plowhorse: Preis anpassen oder Einkauf optimieren. Entscheide für jeden Puzzle: neue Beschreibung schreiben und Platzierung auf der Karte festlegen. Involviere dein Team in diesen Prozess, sie haben Einblicke die du nicht hast.</p>
+
+  <h3>Woche 3 — Überarbeitung</h3>
+  <p>Überarbeite die Karte physisch oder digital. Neue Beschreibungen für Stars und Puzzles. Überprüfung aller Preise auf Rundzahl-Optimierung. Platzierung der Stars im Golden Triangle. Bereite das Service-Team vor: Welche Gerichte werden empfohlen, mit welcher Formulierung, in welchem Moment des Serviceablaufs.</p>
+
+  <h3>Woche 4 — Launch und Beobachtung</h3>
+  <p>Führe die überarbeitete Karte ein. Beobachte in den ersten zwei Wochen täglich die Bestellhäufigkeit der veränderten Positionen. Hole aktiv Feedback vom Service-Team ein. Halte nach ob die Puzzles häufiger bestellt werden. Und berechne nach vier Wochen ob sich der durchschnittliche Bon-Wert verändert hat.</p>
+  <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 2</div><p>Trag jetzt in deinen Kalender ein wann du in dieser Woche den Analyse Guide ausfüllst. Nicht irgendwann, heute einen konkreten Termin festlegen. Das ist der erste Schritt von der Theorie in die Praxis.</p></div>
+
+  <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
 </div>
-
-</div>
-<div class="gold-bar"></div>
-<div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+<div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
 </body>
 </html>
