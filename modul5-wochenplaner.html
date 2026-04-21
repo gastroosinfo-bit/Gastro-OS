@@ -1,20 +1,322 @@
-<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>GASTRO-OS – Modul 5 | Wochenplaner</title><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:"Segoe UI",Arial,sans-serif;background:#f5f0e8;color:#1a2a4a;min-height:100vh}.header{background:#1a2a4a;padding:22px 40px;text-align:center}.brand{font-family:Georgia,serif;font-size:22px;color:#d4af37;letter-spacing:4px;font-weight:normal}.modul-label{font-size:11px;color:#a0b0c8;letter-spacing:3px;text-transform:uppercase;margin-top:4px}.gold-bar{height:3px;background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a)}.main{max-width:820px;margin:36px auto;padding:0 24px 60px}h1{font-family:Georgia,serif;font-size:26px;color:#1a2a4a;margin-bottom:8px}h2{font-family:Georgia,serif;font-size:18px;color:#1a2a4a;margin:24px 0 10px}.gold-rule{width:56px;height:2px;background:#d4af37;margin:10px 0 20px}p{font-size:15px;color:#2a3a5a;line-height:1.8;margin-bottom:14px}.highlight{background:#fff8e8;border-left:3px solid #d4af37;padding:14px 18px;margin:20px 0;font-size:14px;color:#5a4000;line-height:1.7}.nav-buttons{display:flex;gap:12px;margin-top:32px;flex-wrap:wrap}.btn{display:inline-block;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:600;font-size:14px;transition:opacity .15s}.btn-primary{background:#d4af37;color:#1a2a4a}.btn-secondary{background:#1a2a4a;color:#f5f0e8}.btn:hover{opacity:.85}.divider{border:none;border-top:1px solid #e8dfc8;margin:28px 0}.footer{background:#1a2a4a;margin-top:48px;padding:14px 40px;text-align:center;font-size:11px;color:#8090a8}.footer strong{color:#d4af37}.video-wrap{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:10px;margin:24px 0;background:#000}.video-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:24px 0}.stat-box{background:#fff;border:1px solid #e8dfc8;border-radius:8px;padding:16px;text-align:center}.stat-num{font-family:Georgia,serif;font-size:28px;color:#d4af37;font-weight:bold}.stat-label{font-size:12px;color:#8090a8;margin-top:4px}</style></head><body>
-<div class="header"><div class="brand">GASTRO-OS</div><div class="modul-label">Modul 5 &nbsp;·&nbsp; Wochenplaner</div></div>
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wochenplaner – Modul 5 | GASTRO-OS</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
+.header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:18px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.btn-back { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; text-decoration:none; display:inline-block; }
+.btn-back:hover { border-color:#d4af37; color:#d4af37; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+.wrap { max-width:1100px; margin:0 auto; padding:24px 20px 60px; }
+.tool-label { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:4px; }
+.tool-title { font-family:Georgia,serif; font-size:22px; color:#1a2a4a; margin-bottom:4px; }
+.tool-sub { font-size:13px; color:#5a6a80; margin-bottom:20px; }
+.action-row { display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap; align-items:center; }
+.btn-save { background:#1a2a4a; color:#d4af37; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; }
+.btn-save:hover { background:#d4af37; color:#1a2a4a; }
+.btn-print { background:#4a6a3a; color:#fff; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; }
+.btn-print:hover { background:#3a5a2a; }
+.btn-reset { background:transparent; border:1px solid #cc5544; color:#cc5544; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; }
+.btn-reset:hover { background:#cc5544; color:#fff; }
+.save-msg { font-size:12px; color:#4aaa60; display:none; }
+.meta-bar { background:#fff; border:1px solid #e8dfc8; border-radius:10px; padding:14px 20px; margin-bottom:16px; display:flex; gap:20px; flex-wrap:wrap; align-items:center; }
+.meta-field { display:flex; align-items:center; gap:8px; }
+.meta-field label { font-size:12px; font-weight:700; color:#8090a8; text-transform:uppercase; white-space:nowrap; }
+.meta-field input { border:1px solid #e0d8c8; border-radius:6px; padding:7px 10px; font-size:13px; background:#eaf2ff; color:#1a2a4a; font-family:inherit; }
+.meta-field input:focus { outline:none; border-color:#d4af37; background:#fff; }
+.legend { display:flex; gap:12px; margin-bottom:14px; flex-wrap:wrap; }
+.legend-item { display:flex; align-items:center; gap:6px; font-size:12px; font-weight:600; color:#1a2a4a; }
+.legend-dot { width:12px; height:12px; border-radius:2px; flex-shrink:0; }
+.planner-wrap { overflow-x:auto; margin-bottom:20px; }
+.planner { width:100%; border-collapse:collapse; min-width:800px; }
+.planner th { padding:9px 8px; font-size:12px; font-weight:700; text-align:center; border:1px solid #d0c8b0; }
+.planner th.day-head { background:#1a2a4a; color:#d4af37; }
+.planner th.time-head { background:#1a2a4a; color:#a0b0c8; width:90px; font-size:11px; }
+.planner td { border:1px solid #d0c8b0; padding:0; vertical-align:top; }
+.planner td.zone-label { background:#1a2a4a; color:#fff; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; padding:6px; text-align:center; writing-mode:vertical-rl; width:22px; }
+.planner td.zone-label.z1 { color:#4aaa60; }
+.planner td.zone-label.z2 { color:#d4af37; }
+.planner td.zone-label.z3 { color:#7ab0e8; }
+.planner td.zone-label.zf { color:#a0b0c8; }
+.planner td.time-cell { background:#f5f0e8; font-size:11px; color:#8090a8; padding:5px 6px; text-align:center; vertical-align:middle; white-space:nowrap; width:72px; }
+.planner td.entry-cell { background:#fff; }
+.planner td.z1-bg { background:#f0fbf2; }
+.planner td.z2-bg { background:#fffbf0; }
+.planner td.z3-bg { background:#f0f6ff; }
+.planner td.zf-bg { background:#faf8f4; }
+.planner textarea { width:100%; min-height:44px; border:none; background:transparent; resize:none; font-size:12px; color:#1a2a4a; padding:5px 6px; font-family:inherit; line-height:1.5; }
+.planner textarea:focus { outline:none; background:rgba(212,175,55,0.06); }
+.highlights { background:#fff; border:1px solid #e8dfc8; border-radius:10px; padding:18px 20px; margin-bottom:16px; overflow-x:auto; }
+.highlights h3 { font-family:Georgia,serif; font-size:14px; color:#1a2a4a; margin-bottom:14px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
+.hl-table { width:100%; border-collapse:collapse; min-width:700px; }
+.hl-table th { background:#1a2a4a; color:#d4af37; font-size:11px; padding:8px 10px; text-align:center; }
+.hl-table th:first-child { text-align:left; width:120px; }
+.hl-table td { border:1px solid #e8dfc8; padding:0; }
+.hl-table td.row-label { background:#f5f0e8; font-size:11px; font-weight:700; color:#1a2a4a; padding:6px 10px; text-transform:uppercase; white-space:nowrap; }
+.hl-table textarea { width:100%; min-height:36px; border:none; background:transparent; resize:none; font-size:12px; color:#1a2a4a; padding:5px 8px; font-family:inherit; }
+.hl-table textarea:focus { outline:none; background:#fffbf0; }
+.auswertung { background:#1a2a4a; border-radius:10px; padding:20px 24px; margin-bottom:16px; }
+.auswertung h3 { font-family:Georgia,serif; font-size:14px; color:#d4af37; margin-bottom:14px; }
+.aw-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.aw-field { display:flex; flex-direction:column; gap:5px; }
+.aw-field label { font-size:11px; font-weight:700; color:#a0b0c8; text-transform:uppercase; }
+.aw-field input, .aw-field textarea { border:1px solid rgba(212,175,55,0.3); border-radius:6px; padding:8px 10px; font-size:13px; color:#fff; background:rgba(255,255,255,0.08); font-family:inherit; }
+.aw-field input:focus, .aw-field textarea:focus { outline:none; border-color:#d4af37; }
+.aw-field textarea { resize:vertical; min-height:40px; }
+.aw-field.full { grid-column:1/-1; }
+.sop-section { background:#fff; border:1px solid #e8dfc8; border-radius:10px; padding:18px 20px; margin-bottom:16px; }
+.sop-section h3 { font-family:Georgia,serif; font-size:14px; color:#1a2a4a; margin-bottom:4px; }
+.sop-sub { font-size:12px; color:#8090a8; margin-bottom:14px; }
+.sop-meta { display:flex; gap:14px; flex-wrap:wrap; margin-bottom:12px; }
+.sop-meta-field { display:flex; flex-direction:column; gap:4px; flex:1; min-width:120px; }
+.sop-meta-field label { font-size:11px; font-weight:700; color:#8090a8; text-transform:uppercase; }
+.sop-meta-field input { border:1px solid #e0d8c8; border-radius:6px; padding:6px 10px; font-size:13px; background:#eaf2ff; color:#1a2a4a; }
+.sop-table { width:100%; border-collapse:collapse; margin-bottom:12px; }
+.sop-table th { background:#f5f0e8; padding:7px 10px; font-size:11px; font-weight:700; color:#1a2a4a; text-align:left; border:1px solid #e8dfc8; }
+.sop-table td { border:1px solid #e8dfc8; padding:0; }
+.sop-table td.step-num { background:#1a2a4a; color:#d4af37; font-weight:700; font-size:12px; text-align:center; width:36px; padding:6px; }
+.sop-table textarea { width:100%; min-height:32px; border:none; background:transparent; resize:none; font-size:12px; color:#1a2a4a; padding:5px 8px; font-family:inherit; }
+.sop-table textarea:focus { outline:none; background:#fffbf0; }
+.sop-rules label { font-size:11px; font-weight:700; color:#d4af37; text-transform:uppercase; display:block; margin-bottom:6px; }
+.sop-rule-item { display:flex; gap:8px; align-items:center; margin-bottom:4px; }
+.sop-rule-item span { color:#d4af37; font-weight:700; font-size:13px; }
+.sop-rule-item input { flex:1; border:1px solid #e0d8c8; border-radius:4px; padding:5px 8px; font-size:12px; background:#eaf2ff; color:#1a2a4a; }
+.tabs { display:flex; gap:2px; margin-bottom:0; }
+.tab-btn { background:#e8dfc8; border:none; padding:9px 18px; font-size:12px; font-weight:600; color:#5a6a80; cursor:pointer; border-radius:6px 6px 0 0; }
+.tab-btn.active { background:#fff; color:#1a2a4a; border-bottom:2px solid #d4af37; }
+.tab-btn:hover:not(.active) { background:#d4af37; color:#1a2a4a; }
+.tab-content { display:none; }
+.tab-content.active { display:block; }
+.nav-row { display:flex; gap:12px; justify-content:space-between; margin-top:20px; }
+.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:11px 22px; border-radius:8px; font-size:13px; font-weight:600; text-decoration:none; transition:all 0.2s; display:inline-block; }
+.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
+.nav-btn.secondary { background:transparent; border:1px solid rgba(26,42,74,0.3); color:#1a2a4a; }
+.nav-btn.secondary:hover { background:#1a2a4a; color:#d4af37; }
+@media print { .header,.action-row,.tabs,.nav-row,.gold-bar{display:none!important;} body{background:#fff;} }
+@media(max-width:600px){ .aw-grid{grid-template-columns:1fr;} }
+.footer-brand { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; }
+.footer-brand strong { color:#d4af37; }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="brand">GASTRO-OS</div>
+  <a href="modul5-uebersicht.html" class="btn-back">← Modulübersicht</a>
+</div>
 <div class="gold-bar"></div>
-<div class="main">
-<h1>📊 Wochenplaner</h1>
-<div class="gold-rule"></div>
-<p>Das ist dein Werkzeug für die nächste Woche. Nicht zum Anschauen — zum Ausfüllen.</p>
-<p>Öffne den Planer, trag dein Wochenziel ein und blockiere als erstes deine Zone 1-Morgende. Alles andere baut darauf auf. Wer Zone 1 nicht blockiert, hat keine Unternehmer-Zeit. Wer keine Unternehmer-Zeit hat, arbeitet für immer nur im Betrieb statt an ihm.</p>
-<p>Und am Ende der Woche nimmst du dir fünf Minuten für die Wochen-Auswertung: Was hat funktioniert. Was nicht. Was machst du nächste Woche anders. Diese fünf Minuten sind mehr wert als stundenlange Planung ohne Rückblick.</p>
-<div class="highlight">💡 Füll ihn jetzt aus. Diese Woche. Nicht irgendwann.</div>
-<div class="nav-buttons">
-<a href="https://docs.google.com/spreadsheets/d/1nNT8zXhxuma1BOn1MG6DgmJVFkju6tK9/edit" target="_blank" class="btn btn-primary">▶ Wochenplaner öffnen</a>
-<a href="modul5-wochenplaner-video.html" class="btn btn-secondary">← Video-Anleitung</a>
+<div class="wrap">
+  <div class="tool-label">Modul 5 · Tool</div>
+  <div class="tool-title">GASTRO-OS | Wöchentlicher Unternehmer-Planer</div>
+  <div class="tool-sub">Plane deine Woche als Unternehmer — nicht als Mitarbeiter</div>
+  <div class="action-row">
+    <button class="btn-save" onclick="saveData()">💾 Speichern</button>
+    <button class="btn-print" onclick="window.print()">🖨️ Drucken / PDF</button>
+    <button class="btn-reset" onclick="resetData()">🔄 Neu starten</button>
+    <span class="save-msg" id="save-msg">✓ Gespeichert</span>
+  </div>
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('planer')">📅 Wochenplaner</button>
+    <button class="tab-btn" onclick="switchTab('sop')">📝 SOP-Vorlage</button>
+  </div>
+  <div class="tab-content active" id="tab-planer">
+    <div class="meta-bar">
+      <div class="meta-field"><label>KW:</label><input type="text" id="kw" style="width:70px" placeholder="z.B. 22" oninput="autoSave()"></div>
+      <div class="meta-field"><label>Woche vom:</label><input type="date" id="woche-von" oninput="autoSave()"></div>
+      <div class="meta-field" style="flex:1"><label>Wochenziel:</label><input type="text" id="wochenziel" style="width:100%;min-width:200px" placeholder="Was ist dein wichtigstes Ziel diese Woche?" oninput="autoSave()"></div>
+    </div>
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#4aaa60"></div>Zone 1 — Unternehmer-Zeit</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#d4af37"></div>Zone 2 — Führungs-Zeit</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#5a8ad0"></div>Zone 3 — Betriebs-Zeit</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#a0b0c8"></div>Frei / Sonstiges</div>
+    </div>
+    <div class="planner-wrap">
+      <table class="planner">
+        <thead><tr>
+          <th class="time-head" colspan="2">Zeit / Zone</th>
+          <th class="day-head">Montag</th><th class="day-head">Dienstag</th><th class="day-head">Mittwoch</th>
+          <th class="day-head">Donnerstag</th><th class="day-head">Freitag</th><th class="day-head">Samstag</th><th class="day-head">Sonntag</th>
+        </tr></thead>
+        <tbody id="planner-body"></tbody>
+      </table>
+    </div>
+    <div class="highlights">
+      <h3>Tages-Highlights — Was ist heute das Wichtigste?</h3>
+      <table class="hl-table">
+        <thead><tr><th></th><th>Montag</th><th>Dienstag</th><th>Mittwoch</th><th>Donnerstag</th><th>Freitag</th><th>Samstag</th><th>Sonntag</th></tr></thead>
+        <tbody id="hl-body"></tbody>
+      </table>
+    </div>
+    <div class="auswertung">
+      <h3>📊 Wochen-Auswertung — Am Ende der Woche ausfüllen</h3>
+      <div class="aw-grid">
+        <div class="aw-field"><label>Zone 1 eingehalten?</label><input type="text" id="aw-zone1" placeholder="Ja / Nein / Teilweise" oninput="autoSave()"></div>
+        <div class="aw-field"><label>Größter Erfolg</label><textarea id="aw-erfolg" rows="2" placeholder="Was lief besonders gut?" oninput="autoSave()"></textarea></div>
+        <div class="aw-field"><label>Größte Herausforderung</label><textarea id="aw-heraus" rows="2" placeholder="Was war schwierig?" oninput="autoSave()"></textarea></div>
+        <div class="aw-field"><label>Was ich nächste Woche anders mache</label><textarea id="aw-anders" rows="2" placeholder="Konkret..." oninput="autoSave()"></textarea></div>
+        <div class="aw-field full"><label>Mein #1 Fokus nächste Woche</label><input type="text" id="aw-fokus" placeholder="Eine Sache die den größten Unterschied macht..." oninput="autoSave()"></div>
+      </div>
+    </div>
+    <div style="font-size:11px;color:#8090a8;padding:8px 4px;">💡 Tipp: Plane Zone 1 immer zuerst — alles andere passt sich an.</div>
+  </div>
+  <div class="tab-content" id="tab-sop">
+    <div class="sop-section">
+      <h3>📝 SOP-Vorlage — Standard Operating Procedure</h3>
+      <div class="sop-sub">Eine Seite pro Prozess. Einfach. Klar. Wiederholbar.</div>
+      <div class="sop-meta">
+        <div class="sop-meta-field" style="flex:2"><label>SOP-Titel</label><input type="text" id="sop-titel" placeholder="z.B. Tagesöffnung, Einarbeitung..." oninput="autoSave()"></div>
+        <div class="sop-meta-field"><label>Zuständig</label><input type="text" id="sop-zust" placeholder="z.B. Schichtleiter" oninput="autoSave()"></div>
+        <div class="sop-meta-field"><label>Version / Datum</label><input type="date" id="sop-datum" oninput="autoSave()"></div>
+      </div>
+      <div class="sop-meta" style="margin-bottom:14px">
+        <div class="sop-meta-field" style="flex:1"><label>Ziel dieser SOP</label><input type="text" id="sop-ziel" placeholder="Was soll durch diese SOP erreicht werden?" oninput="autoSave()"></div>
+      </div>
+      <table class="sop-table">
+        <thead><tr><th style="width:36px">#</th><th>Was genau tun?</th><th style="width:200px">Wer / Womit / Bis wann?</th></tr></thead>
+        <tbody id="sop-body"></tbody>
+      </table>
+      <div class="sop-rules">
+        <label>Wichtige Regeln / Was nicht vergessen werden darf:</label>
+        <div id="sop-rules-list"></div>
+      </div>
+      <div style="margin-top:12px;font-size:11px;color:#8090a8">💡 Maximal 10 Schritte. Einfache Sprache. Wenn ein neuer Mitarbeiter alleine danach arbeiten kann — ist die SOP fertig.</div>
+      <div class="action-row" style="margin-top:14px">
+        <button class="btn-save" onclick="saveData()">💾 Speichern</button>
+        <button class="btn-print" onclick="window.print()">🖨️ Drucken / PDF</button>
+        <span class="save-msg" id="save-msg2">✓ Gespeichert</span>
+      </div>
+    </div>
+  </div>
+  <div class="nav-row">
+    <a href="modul5-wochenplaner-video.html" class="nav-btn secondary">← Anleitung</a>
+    <a href="modul5-quiz.html" class="nav-btn">Zum Quiz →</a>
+  </div>
 </div>
-<br>
-<div class="nav-buttons">
-<a href="modul5-quiz.html" class="btn btn-primary">Weiter zum Quiz →</a>
-</div>
-</div>
-<div class="gold-bar"></div><div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div></body></html>
+<div class="gold-bar"></div>
+<div class="footer-brand"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+<script>
+const SUPABASE_URL='https://hchlganbgjeciwhwaisj.supabase.co';
+const SUPABASE_KEY='sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3';
+const{createClient}=supabase;
+const sb=createClient(SUPABASE_URL,SUPABASE_KEY);
+let currentUser=null,saveTimer=null;
+const DAYS=['Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag','Sonntag'];
+const SLOTS=[
+  {zone:'z1',label:'ZONE 1',times:['06:00–08:00','08:00–10:00']},
+  {zone:'z2',label:'ZONE 2',times:['10:00–12:00','12:00–14:00','14:00–16:00']},
+  {zone:'z3',label:'ZONE 3',times:['16:00–18:00','18:00–21:00','21:00–23:00']},
+  {zone:'zf',label:'FREI',times:['Sonstiges']},
+];
+const HL_ROWS=[{id:'p1',label:'Prio #1'},{id:'nv',label:'Nicht vergessen'},{id:'del',label:'Delegiert an'}];
+
+function buildPlanner(){
+  const tbody=document.getElementById('planner-body');
+  tbody.innerHTML='';
+  SLOTS.forEach(slot=>{
+    slot.times.forEach((time,ti)=>{
+      const tr=document.createElement('tr');
+      let h='';
+      if(ti===0) h+=`<td class="zone-label ${slot.zone}" rowspan="${slot.times.length}">${slot.label}</td>`;
+      h+=`<td class="time-cell">${time}</td>`;
+      DAYS.forEach((_,di)=>{
+        h+=`<td class="${slot.zone}-bg"><textarea id="c-${slot.zone}-${ti}-${di}" oninput="autoSave()"></textarea></td>`;
+      });
+      tr.innerHTML=h; tbody.appendChild(tr);
+    });
+  });
+}
+
+function buildHL(){
+  const tbody=document.getElementById('hl-body');
+  tbody.innerHTML='';
+  HL_ROWS.forEach(row=>{
+    let h=`<tr><td class="row-label">${row.label}</td>`;
+    DAYS.forEach((_,di)=>{ h+=`<td><textarea id="hl-${row.id}-${di}" oninput="autoSave()"></textarea></td>`; });
+    h+='</tr>'; tbody.innerHTML+=h;
+  });
+}
+
+function buildSOP(){
+  const tbody=document.getElementById('sop-body');
+  for(let i=1;i<=10;i++){
+    tbody.innerHTML+=`<tr><td class="step-num">${i}</td><td><textarea id="sop-s${i}-what" oninput="autoSave()"></textarea></td><td><textarea id="sop-s${i}-who" oninput="autoSave()"></textarea></td></tr>`;
+  }
+  const rules=document.getElementById('sop-rules-list');
+  for(let i=1;i<=4;i++){
+    rules.innerHTML+=`<div class="sop-rule-item"><span>→</span><input type="text" id="sop-r${i}" oninput="autoSave()"></div>`;
+  }
+}
+
+function switchTab(tab){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+  const idx=tab==='planer'?0:1;
+  document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+  document.getElementById('tab-'+tab).classList.add('active');
+}
+
+function getData(){
+  const cells={};
+  SLOTS.forEach(s=>s.times.forEach((_,ti)=>DAYS.forEach((__,di)=>{const el=document.getElementById(`c-${s.zone}-${ti}-${di}`);if(el&&el.value)cells[`c-${s.zone}-${ti}-${di}`]=el.value;})));
+  const hl={};
+  HL_ROWS.forEach(r=>DAYS.forEach((_,di)=>{const el=document.getElementById(`hl-${r.id}-${di}`);if(el&&el.value)hl[`${r.id}-${di}`]=el.value;}));
+  const sop={};
+  for(let i=1;i<=10;i++){['what','who'].forEach(f=>{const el=document.getElementById(`sop-s${i}-${f}`);if(el)sop[`s${i}-${f}`]=el.value;});}
+  for(let i=1;i<=4;i++){const el=document.getElementById(`sop-r${i}`);if(el)sop[`r${i}`]=el.value;}
+  return{
+    kw:document.getElementById('kw').value,
+    wocheVon:document.getElementById('woche-von').value,
+    wochenziel:document.getElementById('wochenziel').value,
+    cells,hl,
+    aw:{zone1:document.getElementById('aw-zone1').value,erfolg:document.getElementById('aw-erfolg').value,heraus:document.getElementById('aw-heraus').value,anders:document.getElementById('aw-anders').value,fokus:document.getElementById('aw-fokus').value},
+    sop:{titel:document.getElementById('sop-titel').value,zust:document.getElementById('sop-zust').value,datum:document.getElementById('sop-datum').value,ziel:document.getElementById('sop-ziel').value,...sop}
+  };
+}
+
+function setData(d){
+  if(!d)return;
+  if(d.kw)document.getElementById('kw').value=d.kw;
+  if(d.wocheVon)document.getElementById('woche-von').value=d.wocheVon;
+  if(d.wochenziel)document.getElementById('wochenziel').value=d.wochenziel;
+  if(d.cells)Object.entries(d.cells).forEach(([k,v])=>{const el=document.getElementById(k);if(el)el.value=v;});
+  if(d.hl)Object.entries(d.hl).forEach(([k,v])=>{const[r,di]=k.split('-');const el=document.getElementById(`hl-${r}-${di}`);if(el)el.value=v;});
+  if(d.aw){['zone1','erfolg','heraus','anders','fokus'].forEach(f=>{const el=document.getElementById('aw-'+f);if(el&&d.aw[f])el.value=d.aw[f];});}
+  if(d.sop){
+    ['titel','zust','datum','ziel'].forEach(f=>{const el=document.getElementById('sop-'+f);if(el&&d.sop[f])el.value=d.sop[f];});
+    for(let i=1;i<=10;i++){['what','who'].forEach(f=>{const el=document.getElementById(`sop-s${i}-${f}`);if(el&&d.sop[`s${i}-${f}`])el.value=d.sop[`s${i}-${f}`];});}
+    for(let i=1;i<=4;i++){const el=document.getElementById(`sop-r${i}`);if(el&&d.sop[`r${i}`])el.value=d.sop[`r${i}`];}
+  }
+}
+
+async function saveData(){
+  if(!currentUser)return;
+  await sb.from('user_tool_data').upsert({user_id:currentUser.id,tool_name:'wochenplaner_modul5',data:getData(),updated_at:new Date().toISOString()},{onConflict:'user_id,tool_name'});
+  ['save-msg','save-msg2'].forEach(id=>{const el=document.getElementById(id);if(el){el.style.display='inline';setTimeout(()=>el.style.display='none',2500);}});
+}
+
+function autoSave(){clearTimeout(saveTimer);saveTimer=setTimeout(saveData,1500);}
+
+function resetData(){
+  if(!confirm('Alle Eingaben zurücksetzen?'))return;
+  document.querySelectorAll('input[type=text],input[type=date],textarea').forEach(el=>el.value='');
+  saveData();
+}
+
+async function init(){
+  const{data:{session}}=await sb.auth.getSession();
+  if(!session){window.location.href='login.html';return;}
+  currentUser=session.user;
+  buildPlanner(); buildHL(); buildSOP();
+  const{data:td}=await sb.from('user_tool_data').select('data').eq('user_id',currentUser.id).eq('tool_name','wochenplaner_modul5').maybeSingle();
+  if(td&&td.data)setData(td.data);
+}
+init();
+</script>
+</body>
+</html>
