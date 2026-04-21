@@ -3,49 +3,114 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GASTRO-OS – Modul 1 | Küchenfunk Podcast</title>
+<title>Küchenfunk #1 — Podcast | GASTRO-OS</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f0e8; color: #1a2a4a; min-height: 100vh; }
-  .header { background: #1a2a4a; padding: 22px 40px; text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,0.3); }
-  .header .brand { font-family: Georgia, serif; font-size: 22px; color: #d4af37; letter-spacing: 4px; font-weight: normal; }
-  .header .modul-label { font-size: 11px; color: #a0b0c8; letter-spacing: 3px; text-transform: uppercase; margin-top: 4px; }
-  .gold-bar { height: 3px; background: linear-gradient(90deg, #1a2a4a, #d4af37, #1a2a4a); }
-  .main { max-width: 860px; margin: 36px auto; padding: 0 24px 60px; }
-  h1 { font-family: Georgia, serif; font-size: 24px; color: #1a2a4a; margin-bottom: 8px; }
-  .gold-rule { width: 56px; height: 2px; background: #d4af37; margin: 10px 0 16px; }
-  p { font-size: 14px; line-height: 1.8; color: #334; margin-bottom: 16px; }
-  .podcast-card { background: #1a2a4a; border-radius: 12px; padding: 28px 32px; border: 2px solid #d4af37; }
-  .podcast-icon { font-size: 40px; margin-bottom: 12px; }
-  .podcast-card h2 { font-family: Georgia, serif; font-size: 20px; color: #d4af37; margin-bottom: 8px; }
-  .podcast-card p { color: #c0d0e8; margin-bottom: 20px; }
-  .podcast-btn { display: inline-block; background: #d4af37; color: #1a2a4a; font-weight: 700; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-size: 14px; letter-spacing: 0.5px; transition: background 0.2s; }
-  .podcast-btn:hover { background: #c49a2a; }
-  .hinweis { margin-top: 20px; background: rgba(255,255,255,0.08); border-radius: 8px; padding: 14px 18px; font-size: 12px; color: #8090a8; }
-  .footer { background: #1a2a4a; margin-top: 48px; padding: 14px 40px; text-align: center; font-size: 11px; color: #8090a8; letter-spacing: 1px; }
-  .footer strong { color: #d4af37; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
+.header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:18px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.back-btn { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; cursor:pointer; transition:all 0.2s; text-decoration:none; display:inline-block; }
+.back-btn:hover { border-color:#d4af37; color:#d4af37; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+
+.content-wrap { max-width:720px; margin:40px auto; padding:0 24px 60px; }
+
+.podcast-label { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:8px; }
+h1 { font-family:Georgia,serif; font-size:26px; color:#1a2a4a; font-weight:normal; margin-bottom:6px; line-height:1.3; }
+.podcast-meta { font-size:13px; color:#8090a8; margin-bottom:28px; }
+
+/* Player-Karte */
+.player-card {
+  background:#fff; border-radius:12px; border:1px solid #e8dfc8;
+  overflow:hidden; box-shadow:0 2px 12px rgba(0,0,0,0.06);
+}
+.player-header {
+  background:#1a2a4a; padding:20px 24px;
+  display:flex; align-items:center; gap:16px;
+}
+.podcast-icon {
+  width:52px; height:52px; border-radius:10px;
+  background:linear-gradient(135deg,#d4af37,#b8942a);
+  display:flex; align-items:center; justify-content:center;
+  font-size:24px; flex-shrink:0;
+}
+.player-info h2 { font-family:Georgia,serif; font-size:16px; color:#fff; font-weight:normal; margin-bottom:4px; }
+.player-info p { font-size:12px; color:#a0b0c8; }
+
+/* iframe Player — Google Drive Audio */
+.audio-wrap {
+  position:relative;
+  padding:0;
+  background:#faf8f4;
+}
+.audio-wrap iframe {
+  width:100%;
+  height:80px;
+  border:none;
+  display:block;
+}
+
+.player-footer {
+  padding:16px 24px 20px;
+  border-top:1px solid #f0ece4;
+}
+.player-footer p { font-size:13px; color:#6070888; line-height:1.6; color:#5a6a80; }
+
+/* Hinweis */
+.tip-box {
+  background:#e8f0fb; border:1px solid #5a8ad0; border-radius:8px;
+  padding:14px 18px; margin-top:24px;
+  display:flex; gap:12px; align-items:flex-start;
+}
+.tip-box .tip-icon { font-size:16px; flex-shrink:0; margin-top:1px; }
+.tip-box p { font-size:13px; color:#1a4a8a; line-height:1.6; margin:0; }
+
+.footer-brand { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-brand strong { color:#d4af37; }
 </style>
 </head>
 <body>
 <div class="header">
   <div class="brand">GASTRO-OS</div>
-  <div class="modul-label">Modul 1 &nbsp;·&nbsp; Küchenfunk Podcast</div>
+  <a href="dashboard.html" class="back-btn">← Zurück zum Dashboard</a>
 </div>
 <div class="gold-bar"></div>
-<div class="main">
-  <h1>Küchenfunk #1 — Modul 1</h1>
-  <div class="gold-rule"></div>
-  <p>Der Küchenfunk ist dein Audio-Begleiter zu Modul 1. Perfekt für unterwegs — im Auto, auf dem Weg zum Großmarkt, oder in der ruhigen Stunde vor dem Service. Keine Notizen nötig. Einfach zuhören und wirken lassen.</p>
 
-  <div class="podcast-card">
-    <div class="podcast-icon">🎙️</div>
-    <h2>Raus aus der Schürze — rein in den Unternehmer-Modus</h2>
-    <p>In dieser Episode geht es um den wichtigsten Shift den du als Gastronom machen kannst. Was das konkret bedeutet, warum es so schwer ist, und wie du heute damit anfängst.</p>
-    <a href="https://drive.google.com/file/d/1iCX6aRPlGWiIJuifOQb81qVjJWyFRvcA/view" target="_blank" class="podcast-btn">▶ Jetzt anhören</a>
-    <div class="hinweis">Das Audio öffnet in Google Drive. Einfach auf Play klicken — kein Download nötig.</div>
+<div class="content-wrap">
+
+  <div class="podcast-label">Modul 1 · Küchenfunk Podcast</div>
+  <h1>Küchenfunk #1</h1>
+  <div class="podcast-meta">Modul 1 — Unternehmer-Denken &amp; Gewinn-Fokus</div>
+
+  <div class="player-card">
+    <div class="player-header">
+      <div class="podcast-icon">🎙️</div>
+      <div class="player-info">
+        <h2>Küchenfunk #1 — Podcast</h2>
+        <p>Unternehmer-Denken &amp; Gewinn-Fokus</p>
+      </div>
+    </div>
+    <div class="audio-wrap">
+      <iframe
+        src="https://drive.google.com/file/d/1iCX6aRPlGWiIJuifOQb81qVjJWyFRvcA/preview"
+        allow="autoplay"
+        title="Küchenfunk #1 Podcast">
+      </iframe>
+    </div>
+    <div class="player-footer">
+      <p>Hör dir die Episode direkt hier an — kein Download, kein externes Tool nötig. Drücke auf Play und starte direkt.</p>
+    </div>
   </div>
+
+  <div class="tip-box">
+    <div class="tip-icon">💡</div>
+    <p>Tipp: Du kannst den Podcast auch im Hintergrund hören während du andere Aufgaben erledigst. Klicke einfach auf Play und minimiere das Fenster.</p>
+  </div>
+
 </div>
-<div class="gold-bar"></div>
-<div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+
+<div class="footer-brand">
+  <strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg
+</div>
 </body>
 </html>

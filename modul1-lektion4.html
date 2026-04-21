@@ -3,115 +3,116 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GASTRO-OS – Modul 1 | Lektion 4</title>
+<title>Lektion 4 — Fallstudie &amp; 30-Tage-Schlachtplan | GASTRO-OS</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f0e8; color: #1a2a4a; min-height: 100vh; }
-  .header { background: #1a2a4a; padding: 22px 40px; text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,0.3); }
-  .header .brand { font-family: Georgia, serif; font-size: 22px; color: #d4af37; letter-spacing: 4px; font-weight: normal; }
-  .header .modul-label { font-size: 11px; color: #a0b0c8; letter-spacing: 3px; text-transform: uppercase; margin-top: 4px; }
-  .gold-bar { height: 3px; background: linear-gradient(90deg, #1a2a4a, #d4af37, #1a2a4a); }
-  .main { max-width: 780px; margin: 36px auto; padding: 0 24px 60px; }
-  .lektion-badge { display: inline-block; background: #1a2a4a; color: #d4af37; font-size: 11px; font-weight: 700; padding: 4px 14px; border-radius: 20px; letter-spacing: 1px; margin-bottom: 14px; }
-  h1 { font-family: Georgia, serif; font-size: 28px; color: #1a2a4a; margin-bottom: 8px; }
-  .gold-rule { width: 56px; height: 2px; background: #d4af37; margin: 12px 0 20px; }
-  .intro-box { background: #fff; border-left: 4px solid #d4af37; border-radius: 0 8px 8px 0; padding: 18px 22px; margin-bottom: 32px; font-size: 14px; color: #5060a0; line-height: 1.7; }
-  h2 { font-family: Georgia, serif; font-size: 20px; color: #1a2a4a; margin: 36px 0 14px; padding-bottom: 8px; border-bottom: 1px solid #e8dfc8; }
-  h3 { font-size: 16px; font-weight: 700; color: #1a2a4a; margin: 24px 0 10px; }
-  p { font-size: 14px; line-height: 1.8; color: #334; margin-bottom: 16px; }
-  ul li { font-size: 14px; color: #334; line-height: 1.8; margin-bottom: 6px; }
-  .highlight-box { background: #fff8e8; border: 1px solid #d4af37; border-radius: 8px; padding: 18px 22px; margin: 24px 0; }
-  .highlight-box p { margin-bottom: 0; color: #5a4000; }
-  .aufgabe-box { background: #1a2a4a; border-radius: 8px; padding: 18px 22px; margin: 24px 0; }
-  .aufgabe-box p { color: #c0d0e8; margin-bottom: 0; }
-  .aufgabe-box strong { color: #d4af37; }
-  .fallstudie-box { background: #fff; border-radius: 10px; padding: 24px; border: 1px solid #e8dfc8; margin: 20px 0; }
-  .fallstudie-box h3 { color: #1a2a4a; margin-top: 0; }
-  .kennzahlen { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
-  .kennzahl { background: #f5f0e8; border-radius: 6px; padding: 10px 14px; font-size: 13px; color: #334; }
-  .kennzahl strong { color: #1a6030; }
-  .wochen-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 20px 0; }
-  .woche-card { background: #fff; border-radius: 8px; padding: 16px; border: 1px solid #e8dfc8; }
-  .woche-card .woche { font-size: 11px; font-weight: 700; color: #d4af37; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
-  .woche-card .titel { font-weight: 700; color: #1a2a4a; margin-bottom: 6px; font-size: 14px; }
-  .woche-card .text { font-size: 12px; color: #5060a0; line-height: 1.6; }
-  .nav-buttons { display: flex; justify-content: space-between; align-items: center; margin-top: 40px; padding-top: 24px; border-top: 1px solid #e8dfc8; }
-  .btn-nav { background: #1a2a4a; color: #d4af37; border: none; padding: 12px 24px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: none; letter-spacing: 0.5px; transition: background 0.2s; }
-  .btn-nav:hover { background: #2a3a5a; }
-  .btn-nav.secondary { background: transparent; border: 1px solid #d4af37; color: #d4af37; }
-  .footer { background: #1a2a4a; padding: 14px 40px; text-align: center; font-size: 11px; color: #8090a8; letter-spacing: 1px; }
-  .footer strong { color: #d4af37; }
-  @media(max-width:600px){ .kennzahlen, .wochen-grid { grid-template-columns: 1fr; } }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
+.header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:18px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.back-btn { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; cursor:pointer; transition:all 0.2s; text-decoration:none; display:inline-block; }
+.back-btn:hover { border-color:#d4af37; color:#d4af37; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+.content-wrap { max-width:720px; margin:40px auto; padding:0 24px 60px; }
+.lektion-welcome { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:8px; }
+h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:10px; line-height:1.3; }
+.lektion-intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:20px 0 32px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:normal; margin:36px 0 14px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
+h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:24px 0 10px; }
+p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
+.kennzahlen { background:#1a2a4a; border-radius:8px; padding:20px 24px; margin:20px 0; }
+.kennzahlen p { color:#a0b0c8; font-size:14px; margin-bottom:6px; }
+.kennzahlen p:last-child { margin-bottom:0; }
+.kennzahlen span { color:#d4af37; font-weight:600; }
+.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin-top:24px; }
+.aufgabe-label { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
+.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; }
+.next-step { background:#fff; border:2px solid #d4af37; border-radius:8px; padding:20px 24px; margin-top:36px; }
+.next-step-label { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
+.next-step p { font-size:14px; color:#3a4a6a; margin-bottom:0; }
+.lektion-footer { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; }
+.lektion-footer-brand { font-size:11px; color:#8090a8; letter-spacing:1px; }
+.lektion-footer-brand strong { color:#d4af37; }
+.footer-main { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-main strong { color:#d4af37; }
 </style>
 </head>
 <body>
 <div class="header">
   <div class="brand">GASTRO-OS</div>
-  <div class="modul-label">Modul 1 &nbsp;·&nbsp; Lektion 4</div>
+  <a href="dashboard.html" class="back-btn">← Zurück zum Dashboard</a>
 </div>
 <div class="gold-bar"></div>
-<div class="main">
-  <div class="lektion-badge">📖 Lektion 4</div>
-  <h1>Fallstudie & 30-Tage-Schlachtplan</h1>
-  <div class="gold-rule"></div>
-  <div class="intro-box">Du hast jetzt das komplette theoretische Fundament. Jetzt wird es konkret — erst eine Geschichte aus der Praxis, dann dein persönlicher Plan für die nächsten 30 Tage.</div>
+<div class="content-wrap">
+
+  <div class="lektion-welcome">Modul 1 · Lektion 4</div>
+  <h1>Fallstudie &amp; 30-Tage-Schlachtplan</h1>
+  <div class="lektion-intro">
+    Du hast jetzt das komplette theoretische Fundament aus Modul 1. Du weißt wie operative Blindheit entsteht, was Ersetzbarkeit bedeutet, warum Gewinn wichtiger ist als Umsatz, und auf welchen vier Säulen ein funktionierendes Gastro-System steht. Jetzt wird es konkret. Erst eine Geschichte aus der Praxis — dann dein persönlicher Plan für die nächsten 30 Tage.
+  </div>
 
   <h2>Kapitel 1 — Fallstudie: Die Transformation</h2>
-  <div class="fallstudie-box">
-    <h3>Marco — 9 Jahre, 65.000 € Umsatz, 2.800 € Lohn</h3>
-    <p>Marco betreibt seit neun Jahren ein italienisches Restaurant mit 60 Plätzen. Das Lokal ist gut besucht. Marco arbeitet zwischen 70 und 80 Stunden pro Woche — Küchenchef, Einkäufer, Personalverantwortlicher und Kassenwart in einer Person. Sein persönlicher Lohn: 2.800 Euro netto. Seit drei Jahren keinen echten Urlaub gemacht.</p>
-    <p>Als Marco beginnt Aufgaben abzugeben macht der erste Mitarbeiter zwei Fehler in der ersten Woche. Marco übernimmt wieder. Beim zweiten Versuch — diesmal mit einer schriftlichen Anleitung — funktioniert es. Der neue Einkaufsprozess deckt Einsparungen von über 800 Euro pro Monat auf.</p>
+  <p>Das Folgende ist ein zusammengesetztes Beispiel aus typischen Mustern die wir in der Gastronomie immer wieder beobachten. Es repräsentiert keine einzelne Person — aber es beschreibt eine Realität die viele kennen werden.</p>
 
-    <div class="highlight-box" style="margin:16px 0 0;">
-      <p><strong>Der Moment in dem das System funktioniert:</strong><br>Acht Monate später hat Marco seinen ersten komplett freien Samstag. Der Betrieb läuft ohne ihn. Zwei Textnachrichten vom Team — das war alles. Kein Feuerwerk. Aber der erste Tag an dem sein Betrieb nicht von seiner Anwesenheit abhing.</p>
-    </div>
+  <h3>Ausgangssituation:</h3>
+  <p>Marco betreibt seit neun Jahren ein italienisches Restaurant mit 60 Plätzen in einer mittelgroßen Stadt. Das Lokal ist gut besucht, hat gute Bewertungen und einen treuen Stammkundenstamm. Marco arbeitet zwischen 70 und 80 Stunden pro Woche. Er ist Küchenchef, Einkäufer, Personalverantwortlicher und Kassenwart in einer Person.</p>
+  <p>Der Monatsumsatz liegt stabil bei etwa 65.000 Euro. Sein persönlicher Lohn: 2.800 Euro netto. Den Rest frisst der Betrieb. Marco hat seit drei Jahren keinen echten Urlaub gemacht. Seine Ehe steht unter Druck. Er denkt gelegentlich daran zu verkaufen — obwohl er nicht weiß wer kaufen würde, und obwohl er eigentlich nicht aufhören will.</p>
 
-    <div class="kennzahlen">
-      <div class="kennzahl">Wochenstunden: 78 → <strong>34</strong></div>
-      <div class="kennzahl">Monatslohn: 2.800 → <strong>5.400 € netto</strong></div>
-      <div class="kennzahl">Wareneinsatz: 34,2 → <strong>28,7 %</strong></div>
-      <div class="kennzahl">Mitarbeiterfluktuation: 3 → <strong>1 pro Jahr</strong></div>
-    </div>
+  <h3>Die ersten Hürden:</h3>
+  <p>Als Marco beginnt Aufgaben abzugeben passiert das Erwartbare: Der erste Mitarbeiter dem er die Kassenabrechnung überträgt macht zwei Fehler in der ersten Woche. Marco übernimmt wieder. Beim zweiten Versuch — diesmal mit einer schriftlichen Anleitung — funktioniert es. Nach vier Wochen erledigt der Mitarbeiter die Abrechnung fehlerfrei.</p>
+  <p>Der Einkauf ist schwieriger. Marco hat jahrelange Lieferantenbeziehungen gepflegt die implizit auf Vertrauen und Intuition basieren. Als er den Einkauf dokumentiert und übergibt stellt sich heraus dass mehrere Konditionen seit Jahren nicht angepasst wurden. Der neue Einkaufsprozess deckt innerhalb von zwei Monaten Einsparungen von über 800 Euro pro Monat auf.</p>
+
+  <h3>Der Moment in dem das System funktioniert:</h3>
+  <p>Acht Monate nach dem Start hat Marco seinen ersten komplett freien Samstag. Der Betrieb läuft ohne ihn. Er erhält an diesem Tag zwei Textnachrichten vom Team — eine mit einer Frage zur Weinbestellung die er in drei Sätzen beantwortet, eine mit dem Hinweis dass der Abend gut gelaufen ist.</p>
+  <p>Das ist kein dramatischer Moment. Kein Feuerwerk. Aber es ist der erste Tag an dem sein Betrieb nicht von seiner Anwesenheit abhing. Dieser Tag ist der Beweis dass das System funktioniert.</p>
+
+  <h3>Die Kennzahlen nach zwölf Monaten:</h3>
+  <div class="kennzahlen">
+    <p>Wochenstunden Marco: <span>von 78 auf 34</span></p>
+    <p>Persönliches Monatseinkommen: <span>von 2.800 auf 5.400 Euro netto</span></p>
+    <p>Wareneinsatz: <span>von 34,2 auf 28,7 Prozent</span></p>
+    <p>Mitarbeiterfluktuation: <span>von drei Abgängen pro Jahr auf einen</span></p>
+    <p>Gästebewertungen: <span>stabil geblieben — nicht schlechter geworden obwohl Marco weniger präsent ist</span></p>
+  </div>
+  <p>Dieser letzte Punkt ist für viele Gastronomen die größte Überraschung.</p>
+
+  <div class="aufgabe">
+    <div class="aufgabe-label">Deine Aufgabe für Kapitel 1</div>
+    <p>Lies die Fallstudie noch einmal — und markiere die Stellen die dich am meisten ansprechen. Wo erkennst du dich selbst? Was macht dir am meisten Hoffnung?</p>
   </div>
 
   <h2>Kapitel 2 — Dein 30-Tage-Schlachtplan</h2>
-  <div class="wochen-grid">
-    <div class="woche-card">
-      <div class="woche">Woche 1</div>
-      <div class="titel">⏱️ Inventur deiner Zeit</div>
-      <div class="text">Noch nichts ändern. Nur beobachten. Protokoll über alles was du tust — aufgeteilt in Facharbeiter, Manager, Unternehmer. Am Ende: keine Lösung, aber Daten.</div>
-    </div>
-    <div class="woche-card">
-      <div class="woche">Woche 2</div>
-      <div class="titel">🎯 Quick-Wins zur Delegation</div>
-      <div class="text">3–5 Aufgaben identifizieren die du delegieren kannst: wiederkehrend, kein Expertenwissen, 70% reicht völlig aus.</div>
-    </div>
-    <div class="woche-card">
-      <div class="woche">Woche 3</div>
-      <div class="titel">📝 Erste SOP schreiben</div>
-      <div class="text">Eine Aufgabe aus Woche 2 auswählen. Schritt für Schritt aufschreiben so konkret dass jemand der sie noch nie gemacht hat ihr folgen kann.</div>
-    </div>
-    <div class="woche-card">
-      <div class="woche">Woche 4</div>
-      <div class="titel">🏖️ Erster Chef-freier Tag</div>
-      <div class="text">Einen Tag wählen an dem du nicht im Betrieb bist. Nicht erreichbar. Das Team entscheidet selbst. Es wird nicht perfekt — aber es wird informativ.</div>
-    </div>
+  <p>Wissen ohne Umsetzung ist Unterhaltung. Dieser Plan ist der Übergang von der Theorie in die Praxis. Ein Schritt pro Woche. Nicht mehr.</p>
+
+  <h3>Woche 1 — Die Inventur deiner Zeit:</h3>
+  <p>In der ersten Woche veränderst du noch nichts in deinem Betrieb. Du beobachtest nur. Führe ein einfaches Protokoll über alles was du tust — aufgeteilt in die drei Rollen: Facharbeiter, Manager, Unternehmer.</p>
+  <p>Notiere welche Aufgaben wiederkehrend sind, welche dich unverhältnismäßig viel Zeit kosten, und welche du eigentlich nicht selbst machen müsstest. Am Ende dieser Woche hast du keine Lösung — aber du hast Daten. Und Daten sind die Grundlage jeder guten Entscheidung.</p>
+
+  <h3>Woche 2 — Die Quick-Wins zur Delegation:</h3>
+  <p>In der zweiten Woche identifizierst du drei bis fünf Aufgaben die du in den nächsten 30 Tagen delegieren kannst. Nicht die großen komplizierten Aufgaben — sondern die bei denen die Übertragung am einfachsten ist.</p>
+  <p>Kriterium für einen Quick-Win: Die Aufgabe ist wiederkehrend. Sie braucht kein Expertenwissen. Und wenn sie zu 70 Prozent so gut erledigt wird wie von dir macht das keinen echten Unterschied für den Betrieb.</p>
+
+  <h3>Woche 3 — Die erste schriftliche SOP:</h3>
+  <p>In der dritten Woche schreibst du deine erste Standard Operating Procedure. Wähle die Aufgabe die du in Woche 2 zur Delegation vorbereitet hast. Schreibe in einfacher Sprache auf wie diese Aufgabe korrekt ausgeführt wird — Schritt für Schritt so konkret dass jemand der sie noch nie gemacht hat ihr folgen kann.</p>
+  <p>Deine erste SOP muss nicht perfekt sein. Sie muss existieren.</p>
+
+  <h3>Woche 4 — Der erste Chef-freie Tag:</h3>
+  <p>In der vierten Woche wählst du einen Tag an dem du nicht im Betrieb bist. Nicht erreichbar bist. Dein Team weiß dass du nicht da bist — und dass es nicht anrufen soll außer im echten Notfall. Alles andere soll selbst entschieden werden.</p>
+  <p>Dieser Tag wird nicht perfekt verlaufen. Irgendetwas wird anders laufen als sonst. Das ist kein Problem — es ist Information. Was ist schiefgelaufen? Was hat das Team selbst gelöst? Was braucht noch eine SOP?</p>
+
+  <div class="aufgabe">
+    <div class="aufgabe-label">Deine Aufgabe für Kapitel 2</div>
+    <p>Schreib jetzt auf welchen Tag du als deinen ersten Chef-freien Tag festlegst. Trag ihn in deinen Kalender ein. Dieser eine Schritt macht den Unterschied zwischen einem Plan und einer Absicht.</p>
   </div>
 
-  <div class="aufgabe-box">
-    <p><strong>🎯 Deine Aufgabe jetzt:</strong> Schreib auf welchen Tag du als deinen ersten Chef-freien Tag festlegst. Trag ihn in deinen Kalender ein. Dieser eine Schritt macht den Unterschied zwischen einem Plan und einer Absicht.</p>
+  <div class="next-step">
+    <div class="next-step-label">Dein nächster Schritt</div>
+    <p>Du hast Modul 1 durchgearbeitet. Nimm dir jetzt den Unternehmer-Score — er zeigt dir schwarz auf weiß wo du heute stehst und wo die größten Hebel für deine Entwicklung liegen.</p>
   </div>
 
-  <div class="highlight-box">
-    <p><strong>Dein nächster Schritt:</strong> Du hast Modul 1 durchgearbeitet. Nimm dir jetzt den Unternehmer-Score — er zeigt dir schwarz auf weiß wo du heute stehst und wo die größten Hebel für deine Entwicklung liegen. 💪</p>
-  </div>
-
-  <div class="nav-buttons">
-    <a href="modul1-lektion3.html" class="btn-nav secondary">← Lektion 3</a>
-    <a href="dashboard.html" class="btn-nav">✓ Gelesen — zurück zum Dashboard</a>
+  <div class="lektion-footer">
+    <div class="lektion-footer-brand"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
   </div>
 </div>
-<div class="gold-bar"></div>
-<div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+<div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
 </body>
 </html>
