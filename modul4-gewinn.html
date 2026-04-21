@@ -1,20 +1,391 @@
-<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>GASTRO-OS – Modul 4 | Gewinn Rechner</title><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:"Segoe UI",Arial,sans-serif;background:#f5f0e8;color:#1a2a4a;min-height:100vh}.header{background:#1a2a4a;padding:22px 40px;text-align:center}.brand{font-family:Georgia,serif;font-size:22px;color:#d4af37;letter-spacing:4px;font-weight:normal}.modul-label{font-size:11px;color:#a0b0c8;letter-spacing:3px;text-transform:uppercase;margin-top:4px}.gold-bar{height:3px;background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a)}.main{max-width:820px;margin:36px auto;padding:0 24px 60px}h1{font-family:Georgia,serif;font-size:26px;color:#1a2a4a;margin-bottom:8px}h2{font-family:Georgia,serif;font-size:18px;color:#1a2a4a;margin:24px 0 10px}h3{font-size:15px;color:#1a2a4a;margin:18px 0 8px}.gold-rule{width:56px;height:2px;background:#d4af37;margin:10px 0 20px}p{font-size:15px;color:#2a3a5a;line-height:1.8;margin-bottom:14px}.highlight{background:#fff8e8;border-left:3px solid #d4af37;padding:14px 18px;margin:20px 0;font-size:14px;color:#5a4000;line-height:1.7}.aufgabe{background:#1a2a4a;color:#f5f0e8;border-radius:8px;padding:18px 22px;margin:24px 0;font-size:14px;line-height:1.7}.aufgabe strong{color:#d4af37}.nav-buttons{display:flex;gap:12px;margin-top:32px;flex-wrap:wrap}.btn{display:inline-block;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:600;font-size:14px;transition:opacity .15s}.btn-primary{background:#d4af37;color:#1a2a4a}.btn-secondary{background:#1a2a4a;color:#f5f0e8}.btn:hover{opacity:.85}.footer{background:#1a2a4a;margin-top:48px;padding:14px 40px;text-align:center;font-size:11px;color:#8090a8}.footer strong{color:#d4af37}.divider{border:none;border-top:1px solid #e8dfc8;margin:28px 0}.kosten-box{background:#fff;border:1px solid #e8dfc8;border-radius:8px;padding:16px 20px;margin:16px 0;font-size:14px;line-height:1.8}.screenshot{width:100%;border-radius:8px;border:1px solid #e8dfc8;margin-top:14px;display:block}.step{background:#fff;border:1px solid #e8dfc8;border-radius:10px;padding:22px 26px;margin:20px 0}.step-num{display:inline-block;background:#d4af37;color:#1a2a4a;font-weight:700;font-size:13px;padding:3px 12px;border-radius:12px;margin-bottom:12px}.step h3{font-size:15px;color:#1a2a4a;margin-bottom:10px}.cta-box{background:#1a2a4a;border-radius:10px;padding:22px 28px;margin:28px 0;text-align:center}.cta-box p{color:#a0b0c8;font-size:14px;margin-bottom:14px}.cta-link{display:inline-block;background:#d4af37;color:#1a2a4a;font-weight:700;font-size:15px;padding:13px 32px;border-radius:6px;text-decoration:none}</style></head><body>
-<div class="header"><div class="brand">GASTRO-OS</div><div class="modul-label">Modul 4 &nbsp;·&nbsp; Gewinn Rechner</div></div>
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gewinn-Rechner – Modul 4 | GASTRO-OS</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
+.header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:18px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.btn-back { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.btn-back:hover { border-color:#d4af37; color:#d4af37; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+.wrap { max-width:820px; margin:0 auto; padding:28px 24px 60px; }
+.tool-label { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:4px; }
+.tool-title { font-family:Georgia,serif; font-size:22px; color:#1a2a4a; margin-bottom:4px; }
+.tool-sub { font-size:13px; color:#5a6a80; margin-bottom:24px; }
+.action-row { display:flex; gap:10px; margin-bottom:24px; flex-wrap:wrap; align-items:center; }
+.btn-save { background:#1a2a4a; color:#d4af37; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; }
+.btn-save:hover { background:#d4af37; color:#1a2a4a; }
+.btn-print { background:#4a6a3a; color:#fff; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; }
+.btn-print:hover { background:#3a5a2a; }
+.btn-reset { background:transparent; border:1px solid #cc5544; color:#cc5544; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; }
+.btn-reset:hover { background:#cc5544; color:#fff; }
+.save-msg { font-size:12px; color:#4aaa60; display:none; }
+.section { background:#fff; border:1px solid #e8dfc8; border-radius:10px; padding:22px 26px; margin-bottom:20px; box-shadow:0 2px 6px rgba(0,0,0,0.04); }
+.section-head { background:#1a2a4a; color:#d4af37; font-size:13px; font-weight:700; letter-spacing:1px; padding:10px 14px; border-radius:6px; margin-bottom:18px; }
+
+/* Input fields */
+.input-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.field-group { display:flex; flex-direction:column; gap:6px; }
+.field-group label { font-size:12px; font-weight:700; color:#8090a8; text-transform:uppercase; letter-spacing:0.5px; }
+.field-group input { border:2px solid #3a7ad4; border-radius:6px; padding:10px 14px; font-size:15px; color:#1a2a4a; background:#eaf2ff; font-family:inherit; font-weight:600; }
+.field-group input:focus { outline:none; border-color:#d4af37; background:#fff; }
+.field-hint { font-size:11px; color:#8090a8; margin-top:2px; }
+
+/* Results */
+.results-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:20px; }
+.result-card { border-radius:8px; padding:16px 18px; }
+.result-card.primary { background:#1a2a4a; color:#fff; }
+.result-card.success { background:#e4f5e8; border:1px solid #4aaa60; }
+.result-card.warning { background:#fff3cd; border:1px solid #d4a800; }
+.result-card.danger { background:#fde8e4; border:1px solid #d06050; }
+.result-card.neutral { background:#f5f0e8; border:1px solid #e8dfc8; }
+.result-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px; opacity:0.8; }
+.result-value { font-family:Georgia,serif; font-size:26px; font-weight:700; }
+.result-card.primary .result-value { color:#d4af37; }
+.result-card.success .result-value { color:#1a6030; }
+.result-card.warning .result-value { color:#856404; }
+.result-card.danger .result-value { color:#a03020; }
+.result-sub { font-size:12px; margin-top:4px; opacity:0.75; }
+
+/* Score */
+.score-box { background:#1a2a4a; border-radius:10px; padding:22px 28px; text-align:center; margin-bottom:20px; }
+.score-num { font-family:Georgia,serif; font-size:52px; color:#d4af37; font-weight:700; line-height:1; }
+.score-label-txt { font-size:13px; color:#a0b0c8; margin:6px 0; }
+.score-analyse { font-size:14px; color:#fff; margin-top:10px; font-weight:600; }
+.score-bar-wrap { background:rgba(255,255,255,0.1); border-radius:4px; height:8px; margin:12px 0 0; overflow:hidden; }
+.score-bar-fill { height:100%; border-radius:4px; background:linear-gradient(90deg,#cc5544,#d4a800,#4aaa60); transition:width 0.5s ease; }
+
+/* Warnung */
+.warn-box { border-radius:8px; padding:14px 18px; font-size:13px; line-height:1.7; margin-bottom:16px; display:none; }
+.warn-box.show { display:block; }
+.warn-box.red { background:#fde8e4; border:1px solid #d06050; color:#7a2010; }
+.warn-box.amber { background:#fff3cd; border:1px solid #d4a800; color:#856404; }
+.warn-box.green { background:#e4f5e8; border:1px solid #4aaa60; color:#1a6030; }
+
+/* Break-Even Visualisierung */
+.be-visual { margin-top:14px; }
+.be-bar-wrap { background:#e8dfc8; border-radius:4px; height:24px; overflow:hidden; position:relative; }
+.be-bar-fill { height:100%; border-radius:4px; transition:width 0.5s ease; display:flex; align-items:center; padding-left:8px; font-size:11px; font-weight:700; color:#fff; }
+.be-labels { display:flex; justify-content:space-between; font-size:11px; color:#8090a8; margin-top:4px; }
+
+/* Szenarien */
+.szenario-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; }
+.sz-card { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:14px 16px; text-align:center; }
+.sz-card h4 { font-size:12px; color:#8090a8; margin-bottom:6px; font-weight:600; }
+.sz-val { font-family:Georgia,serif; font-size:18px; font-weight:700; color:#1a2a4a; }
+.sz-sub { font-size:11px; color:#8090a8; margin-top:2px; }
+
+.nav-row { display:flex; gap:12px; justify-content:space-between; margin-top:24px; }
+.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:12px 24px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none; transition:all 0.2s; display:inline-block; }
+.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
+.nav-btn.secondary { background:transparent; border:1px solid rgba(26,42,74,0.3); color:#1a2a4a; }
+.nav-btn.secondary:hover { background:#1a2a4a; color:#d4af37; }
+
+@media print { .header,.action-row,.nav-row,.gold-bar { display:none!important; } body { background:#fff; } .section { box-shadow:none; break-inside:avoid; } }
+@media(max-width:600px) { .input-grid,.results-grid,.szenario-grid { grid-template-columns:1fr; } }
+.footer-brand { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-brand strong { color:#d4af37; }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="brand">GASTRO-OS</div>
+  <a href="modul4-uebersicht.html" class="btn-back">← Modulübersicht</a>
+</div>
 <div class="gold-bar"></div>
-<div class="main">
-<h1>📊 Gewinn Rechner</h1>
-<div class="gold-rule"></div>
-<p>Der Gewinn Rechner berechnet automatisch deinen Gewinn, deine Gewinnmarge, deinen Break Even Umsatz und deinen persönlichen Unternehmer Score. Trage deine vier Zahlen ein und sieh sofort wie gesund dein Betrieb aufgestellt ist.</p>
-<p>Schau dir vorher den Tab <strong>📸 So nutzt du den Gewinn Rechner</strong> an damit du weißt was wo eingetragen wird.</p>
-<div class="cta-box">
-<p>Klicke hier um den Gewinn Rechner in Google Sheets zu öffnen:</p>
-<a class="cta-link" href="https://docs.google.com/spreadsheets/d/1Eb-ZTfh0bVhMoJcLL0DX6JcGPr-13Z1y/edit" target="_blank">▶ Gewinn Rechner öffnen →</a>
-</div>
-<div class="nav-buttons">
-<a href="modul4-gewinn-anleitung.html" class="btn btn-secondary">← Anleitung</a>
-<a href="modul4-kostentreiber-video.html" class="btn btn-primary">Kostentreiber Checkliste →</a>
-</div>
+<div class="wrap">
+  <div class="tool-label">Modul 4 · Tool</div>
+  <div class="tool-title">GASTRO-OS | Gewinn-Rechner</div>
+  <div class="tool-sub">Modul 4 — Zahlen verstehen &amp; kontrollieren | Gewinn, Break-Even &amp; Unternehmer-Score</div>
+
+  <div class="action-row">
+    <button class="btn-save" onclick="saveData()">💾 Speichern</button>
+    <button class="btn-print" onclick="window.print()">🖨️ Drucken / PDF</button>
+    <button class="btn-reset" onclick="resetData()">🔄 Neu starten</button>
+    <span class="save-msg" id="save-msg">✓ Gespeichert</span>
+  </div>
+
+  <!-- EINGABEN -->
+  <div class="section">
+    <div class="section-head">① EINGABEN — Trage deine vier Zahlen ein</div>
+    <div class="input-grid">
+      <div class="field-group">
+        <label>Monatsumsatz (€ netto)</label>
+        <input type="number" id="umsatz" min="0" step="100" placeholder="z.B. 40000" oninput="calc()">
+        <span class="field-hint">Nettoumsatz ohne MwSt.</span>
+      </div>
+      <div class="field-group">
+        <label>Wareneinsatz (€)</label>
+        <input type="number" id="waren" min="0" step="100" placeholder="z.B. 12000" oninput="calc()">
+        <span class="field-hint">Lebensmittel + Getränke</span>
+      </div>
+      <div class="field-group">
+        <label>Fixkosten pro Monat (€)</label>
+        <input type="number" id="fixkosten" min="0" step="100" placeholder="z.B. 8500" oninput="calc()">
+        <span class="field-hint">Miete, Versicherungen, Leasing …</span>
+      </div>
+      <div class="field-group">
+        <label>Personalkosten (€)</label>
+        <input type="number" id="personal" min="0" step="100" placeholder="z.B. 14000" oninput="calc()">
+        <span class="field-hint">Löhne inkl. Lohnnebenkosten</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ERGEBNISSE -->
+  <div class="section">
+    <div class="section-head">② BERECHNUNG — Dein Ergebnis</div>
+    <div class="results-grid">
+      <div class="result-card primary">
+        <div class="result-label">Gewinn / Verlust</div>
+        <div class="result-value" id="r-gewinn">—</div>
+        <div class="result-sub" id="r-gewinn-sub">Bitte Zahlen eingeben</div>
+      </div>
+      <div class="result-card neutral" id="r-marge-card">
+        <div class="result-label">Gewinnmarge</div>
+        <div class="result-value" id="r-marge">—</div>
+        <div class="result-sub">Ziel: über 10%</div>
+      </div>
+      <div class="result-card neutral" id="r-waren-card">
+        <div class="result-label">Wareneinsatz %</div>
+        <div class="result-value" id="r-waren-pct">—</div>
+        <div class="result-sub">Ziel: unter 30%</div>
+      </div>
+      <div class="result-card neutral" id="r-personal-card">
+        <div class="result-label">Personalkosten %</div>
+        <div class="result-value" id="r-personal-pct">—</div>
+        <div class="result-sub">Ziel: unter 35%</div>
+      </div>
+      <div class="result-card neutral" id="r-gesamtkosten-card">
+        <div class="result-label">Gesamtkosten</div>
+        <div class="result-value" id="r-gesamtkosten">—</div>
+        <div class="result-sub" id="r-gesamtkosten-sub">Waren + Fix + Personal</div>
+      </div>
+      <div class="result-card neutral" id="r-be-card">
+        <div class="result-label">Break-Even Umsatz</div>
+        <div class="result-value" id="r-breakeven">—</div>
+        <div class="result-sub" id="r-be-sub">Mindest-Umsatz für ±0</div>
+      </div>
+    </div>
+
+    <div class="warn-box" id="warn-box"></div>
+
+    <!-- Break-Even Visualisierung -->
+    <div class="be-visual" id="be-visual" style="display:none;">
+      <div style="font-size:12px;font-weight:700;color:#1a2a4a;margin-bottom:6px;">Break-Even Fortschritt</div>
+      <div class="be-bar-wrap">
+        <div class="be-bar-fill" id="be-bar" style="width:0%;background:#4aaa60;">0%</div>
+      </div>
+      <div class="be-labels">
+        <span>0 €</span>
+        <span id="be-label-mid"></span>
+        <span id="be-label-umsatz"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- UNTERNEHMER SCORE -->
+  <div class="score-box">
+    <div class="score-label-txt">UNTERNEHMER-SCORE</div>
+    <div class="score-num" id="score-num">0</div>
+    <div class="score-label-txt">von 100 Punkten</div>
+    <div class="score-bar-wrap"><div class="score-bar-fill" id="score-bar" style="width:0%"></div></div>
+    <div class="score-analyse" id="score-analyse">🔴 KRITISCH — sofort handeln</div>
+  </div>
+
+  <!-- SZENARIEN -->
+  <div class="section">
+    <div class="section-head">③ SZENARIEN — Was-wäre-wenn</div>
+    <p style="font-size:13px;color:#5a6a80;margin-bottom:14px;">Basierend auf deinen aktuellen Eingaben:</p>
+    <div class="szenario-grid">
+      <div class="sz-card">
+        <h4>+1 € pro Gericht (80 Gäste × 25 Tage)</h4>
+        <div class="sz-val" id="sz-preis">—</div>
+        <div class="sz-sub">Mehr Umsatz/Monat</div>
+      </div>
+      <div class="sz-card">
+        <h4>Wareneinsatz −5% vom Umsatz</h4>
+        <div class="sz-val" id="sz-waren">—</div>
+        <div class="sz-sub">Mehr Gewinn/Monat</div>
+      </div>
+      <div class="sz-card">
+        <h4>Umsatz −20% (schlechter Monat)</h4>
+        <div class="sz-val" id="sz-umsatz-minus">—</div>
+        <div class="sz-sub">Gewinn/Verlust</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="action-row" style="margin-top:0;">
+    <button class="btn-save" onclick="saveData()">💾 Speichern</button>
+    <button class="btn-print" onclick="window.print()">🖨️ Drucken / PDF</button>
+    <button class="btn-reset" onclick="resetData()">🔄 Neu starten</button>
+    <span class="save-msg" id="save-msg2">✓ Gespeichert</span>
+  </div>
+
+  <div class="nav-row">
+    <a href="modul4-gewinn-anleitung.html" class="nav-btn secondary">← Anleitung</a>
+    <a href="modul4-kostentreiber-video.html" class="nav-btn">Kostentreiber Checkliste →</a>
+  </div>
 </div>
 <div class="gold-bar"></div>
-<div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
-</body></html>
+<div class="footer-brand"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+
+<script>
+const SUPABASE_URL='https://hchlganbgjeciwhwaisj.supabase.co';
+const SUPABASE_KEY='sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3';
+const{createClient}=supabase;
+const sb=createClient(SUPABASE_URL,SUPABASE_KEY);
+let currentUser=null, saveTimer=null;
+
+function fmt(n){return n.toLocaleString('de-DE',{minimumFractionDigits:0,maximumFractionDigits:0})+' €';}
+function pct(n){return n.toFixed(1).replace('.',',')+' %';}
+
+function setCard(id,cls){
+  const el=document.getElementById(id);
+  el.className='result-card '+cls;
+}
+
+function calc(){
+  const u=parseFloat(document.getElementById('umsatz').value)||0;
+  const w=parseFloat(document.getElementById('waren').value)||0;
+  const f=parseFloat(document.getElementById('fixkosten').value)||0;
+  const p=parseFloat(document.getElementById('personal').value)||0;
+  if(!u){return;}
+
+  const gesamtkosten=w+f+p;
+  const gewinn=u-gesamtkosten;
+  const marge=u>0?gewinn/u*100:0;
+  const warenPct=u>0?w/u*100:0;
+  const personalPct=u>0?p/u*100:0;
+  const varPct=u>0?(w+p)/u:0;
+  const deckung=1-varPct;
+  const breakeven=deckung>0?f/deckung:0;
+
+  // Gewinn
+  document.getElementById('r-gewinn').textContent=fmt(gewinn);
+  document.getElementById('r-gewinn-sub').textContent=gewinn>=0?'✅ Gewinn':'❌ Verlust';
+  setCard('r-gewinn-card', gewinn>=0?'result-card success':'result-card danger');
+  // Fallback — parent element
+  const gewinnEl=document.getElementById('r-gewinn').closest('.result-card');
+  if(gewinnEl) gewinnEl.className='result-card '+(gewinn>=0?'success':'danger');
+
+  document.getElementById('r-marge').textContent=pct(marge);
+  setCard('r-marge-card', marge>=10?'success':marge>=5?'warning':'danger');
+
+  document.getElementById('r-waren-pct').textContent=pct(warenPct);
+  setCard('r-waren-card', warenPct<=30?'success':warenPct<=35?'warning':'danger');
+
+  document.getElementById('r-personal-pct').textContent=pct(personalPct);
+  setCard('r-personal-card', personalPct<=35?'success':personalPct<=40?'warning':'danger');
+
+  document.getElementById('r-gesamtkosten').textContent=fmt(gesamtkosten);
+  const gesKostenPct=u>0?gesamtkosten/u*100:0;
+  document.getElementById('r-gesamtkosten-sub').textContent=pct(gesKostenPct)+' vom Umsatz';
+  setCard('r-gesamtkosten-card', gesKostenPct<=85?'success':gesKostenPct<=90?'warning':'danger');
+
+  document.getElementById('r-breakeven').textContent=fmt(breakeven);
+  document.getElementById('r-be-sub').textContent=u>=breakeven?'✅ Über Break-Even':'❌ Unter Break-Even';
+  setCard('r-be-card', u>=breakeven?'success':'danger');
+
+  // Warnung
+  const wb=document.getElementById('warn-box');
+  let warnings=[];
+  if(warenPct>35) warnings.push('⚠️ Wareneinsatz über 35% — prüfe Portionen und Einkauf.');
+  if(personalPct>40) warnings.push('⚠️ Personalkosten über 40% — Dienstplan analysieren.');
+  if(marge<5&&marge>=0) warnings.push('⚠️ Gewinnmarge unter 5% — kritischer Bereich.');
+  if(gewinn<0) warnings.push('🚨 Verlust! Sofortmaßnahmen erforderlich.');
+  if(warnings.length){wb.className='warn-box show red';wb.innerHTML=warnings.join('<br>');}
+  else if(marge>=10){wb.className='warn-box show green';wb.innerHTML='✅ Alle Werte im grünen Bereich. Weiter so!';}
+  else{wb.style.display='none';}
+
+  // Break-Even Bar
+  document.getElementById('be-visual').style.display='block';
+  const bePct=Math.min(100,breakeven>0?u/breakeven*100:100);
+  const beBar=document.getElementById('be-bar');
+  beBar.style.width=bePct+'%';
+  beBar.textContent=Math.round(bePct)+'%';
+  beBar.style.background=u>=breakeven?'#4aaa60':'#cc5544';
+  document.getElementById('be-label-mid').textContent='Break-Even: '+fmt(breakeven);
+  document.getElementById('be-label-umsatz').textContent='Umsatz: '+fmt(u);
+
+  // Score
+  let score=0;
+  if(warenPct<=30)score+=25;else if(warenPct<=35)score+=15;else if(warenPct<=40)score+=5;
+  if(personalPct<=35)score+=25;else if(personalPct<=40)score+=15;else if(personalPct<=45)score+=5;
+  if(marge>=10)score+=25;else if(marge>=5)score+=15;else if(marge>=0)score+=5;
+  if(u>=breakeven)score+=25;else if(u>=breakeven*0.9)score+=15;else if(u>=breakeven*0.75)score+=5;
+  document.getElementById('score-num').textContent=score;
+  document.getElementById('score-bar').style.width=score+'%';
+  let analyse,analyseColor;
+  if(score>=75){analyse='🟢 STARK — dein Betrieb ist gut aufgestellt';analyseColor='#4aaa60';}
+  else if(score>=50){analyse='🟡 SOLIDE — Optimierungspotenzial vorhanden';analyseColor='#d4a800';}
+  else if(score>=25){analyse='🟠 VERBESSERUNGSBEDARF — konkrete Maßnahmen nötig';analyseColor='#d07000';}
+  else{analyse='🔴 KRITISCH — sofort handeln';analyseColor='#cc5544';}
+  const sa=document.getElementById('score-analyse');
+  sa.textContent=analyse; sa.style.color=analyseColor;
+
+  // Szenarien
+  document.getElementById('sz-preis').textContent=fmt(80*25);
+  document.getElementById('sz-waren').textContent=fmt(u*0.05);
+  const gewinnMinus=u*0.8-gesamtkosten+(w-(u*0.8*(w/u)));
+  const gewinnMinusReal=(u*0.8)-(w*(0.8))-(f)-(p*(0.8));
+  document.getElementById('sz-umsatz-minus').textContent=fmt(gewinnMinusReal);
+
+  autoSave();
+}
+
+function getData(){
+  return{
+    umsatz:document.getElementById('umsatz').value,
+    waren:document.getElementById('waren').value,
+    fixkosten:document.getElementById('fixkosten').value,
+    personal:document.getElementById('personal').value,
+  };
+}
+
+function setData(d){
+  if(!d)return;
+  if(d.umsatz) document.getElementById('umsatz').value=d.umsatz;
+  if(d.waren) document.getElementById('waren').value=d.waren;
+  if(d.fixkosten) document.getElementById('fixkosten').value=d.fixkosten;
+  if(d.personal) document.getElementById('personal').value=d.personal;
+  calc();
+}
+
+async function saveData(){
+  if(!currentUser)return;
+  await sb.from('user_tool_data').upsert({user_id:currentUser.id,tool_name:'gewinn_rechner_modul4',data:getData(),updated_at:new Date().toISOString()},{onConflict:'user_id,tool_name'});
+  ['save-msg','save-msg2'].forEach(id=>{const el=document.getElementById(id);if(el){el.style.display='inline';setTimeout(()=>el.style.display='none',2500);}});
+}
+
+function autoSave(){clearTimeout(saveTimer);saveTimer=setTimeout(saveData,1500);}
+
+function resetData(){
+  if(!confirm('Alle Eingaben zurücksetzen?'))return;
+  ['umsatz','waren','fixkosten','personal'].forEach(id=>document.getElementById(id).value='');
+  ['r-gewinn','r-marge','r-waren-pct','r-personal-pct','r-gesamtkosten','r-breakeven'].forEach(id=>document.getElementById(id).textContent='—');
+  document.getElementById('score-num').textContent='0';
+  document.getElementById('score-bar').style.width='0%';
+  document.getElementById('warn-box').className='warn-box';
+  document.getElementById('be-visual').style.display='none';
+  ['sz-preis','sz-waren','sz-umsatz-minus'].forEach(id=>document.getElementById(id).textContent='—');
+  saveData();
+}
+
+async function init(){
+  const{data:{session}}=await sb.auth.getSession();
+  if(!session){window.location.href='login.html';return;}
+  currentUser=session.user;
+  const{data:td}=await sb.from('user_tool_data').select('data').eq('user_id',currentUser.id).eq('tool_name','gewinn_rechner_modul4').maybeSingle();
+  if(td&&td.data)setData(td.data);
+}
+init();
+</script>
+</body>
+</html>

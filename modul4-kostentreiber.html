@@ -1,20 +1,353 @@
-<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>GASTRO-OS – Modul 4 | Kostentreiber Checkliste</title><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:"Segoe UI",Arial,sans-serif;background:#f5f0e8;color:#1a2a4a;min-height:100vh}.header{background:#1a2a4a;padding:22px 40px;text-align:center}.brand{font-family:Georgia,serif;font-size:22px;color:#d4af37;letter-spacing:4px;font-weight:normal}.modul-label{font-size:11px;color:#a0b0c8;letter-spacing:3px;text-transform:uppercase;margin-top:4px}.gold-bar{height:3px;background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a)}.main{max-width:820px;margin:36px auto;padding:0 24px 60px}h1{font-family:Georgia,serif;font-size:26px;color:#1a2a4a;margin-bottom:8px}h2{font-family:Georgia,serif;font-size:18px;color:#1a2a4a;margin:24px 0 10px}h3{font-size:15px;color:#1a2a4a;margin:18px 0 8px}.gold-rule{width:56px;height:2px;background:#d4af37;margin:10px 0 20px}p{font-size:15px;color:#2a3a5a;line-height:1.8;margin-bottom:14px}.highlight{background:#fff8e8;border-left:3px solid #d4af37;padding:14px 18px;margin:20px 0;font-size:14px;color:#5a4000;line-height:1.7}.aufgabe{background:#1a2a4a;color:#f5f0e8;border-radius:8px;padding:18px 22px;margin:24px 0;font-size:14px;line-height:1.7}.aufgabe strong{color:#d4af37}.nav-buttons{display:flex;gap:12px;margin-top:32px;flex-wrap:wrap}.btn{display:inline-block;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:600;font-size:14px;transition:opacity .15s}.btn-primary{background:#d4af37;color:#1a2a4a}.btn-secondary{background:#1a2a4a;color:#f5f0e8}.btn:hover{opacity:.85}.footer{background:#1a2a4a;margin-top:48px;padding:14px 40px;text-align:center;font-size:11px;color:#8090a8}.footer strong{color:#d4af37}.divider{border:none;border-top:1px solid #e8dfc8;margin:28px 0}.kosten-box{background:#fff;border:1px solid #e8dfc8;border-radius:8px;padding:16px 20px;margin:16px 0;font-size:14px;line-height:1.8}.screenshot{width:100%;border-radius:8px;border:1px solid #e8dfc8;margin-top:14px;display:block}.step{background:#fff;border:1px solid #e8dfc8;border-radius:10px;padding:22px 26px;margin:20px 0}.step-num{display:inline-block;background:#d4af37;color:#1a2a4a;font-weight:700;font-size:13px;padding:3px 12px;border-radius:12px;margin-bottom:12px}.step h3{font-size:15px;color:#1a2a4a;margin-bottom:10px}.cta-box{background:#1a2a4a;border-radius:10px;padding:22px 28px;margin:28px 0;text-align:center}.cta-box p{color:#a0b0c8;font-size:14px;margin-bottom:14px}.cta-link{display:inline-block;background:#d4af37;color:#1a2a4a;font-weight:700;font-size:15px;padding:13px 32px;border-radius:6px;text-decoration:none}</style></head><body>
-<div class="header"><div class="brand">GASTRO-OS</div><div class="modul-label">Modul 4 &nbsp;·&nbsp; Kostentreiber Checkliste</div></div>
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kostentreiber-Check – Modul 4 | GASTRO-OS</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
+.header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:18px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.btn-back { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.btn-back:hover { border-color:#d4af37; color:#d4af37; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+.wrap { max-width:900px; margin:0 auto; padding:28px 24px 60px; }
+.tool-label { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:4px; }
+.tool-title { font-family:Georgia,serif; font-size:22px; color:#1a2a4a; margin-bottom:4px; }
+.tool-sub { font-size:13px; color:#5a6a80; margin-bottom:24px; }
+.action-row { display:flex; gap:10px; margin-bottom:24px; flex-wrap:wrap; align-items:center; }
+.btn-save { background:#1a2a4a; color:#d4af37; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; }
+.btn-save:hover { background:#d4af37; color:#1a2a4a; }
+.btn-print { background:#4a6a3a; color:#fff; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; }
+.btn-print:hover { background:#3a5a2a; }
+.btn-reset { background:transparent; border:1px solid #cc5544; color:#cc5544; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; }
+.btn-reset:hover { background:#cc5544; color:#fff; }
+.save-msg { font-size:12px; color:#4aaa60; display:none; }
+
+/* Meta */
+.meta-section { background:#fff; border:1px solid #e8dfc8; border-radius:10px; padding:16px 20px; margin-bottom:20px; display:flex; gap:16px; flex-wrap:wrap; }
+.meta-field { display:flex; flex-direction:column; gap:4px; flex:1; min-width:140px; }
+.meta-field label { font-size:11px; font-weight:700; color:#8090a8; text-transform:uppercase; }
+.meta-field input { border:1px solid #e0d8c8; border-radius:6px; padding:7px 10px; font-size:13px; background:#eaf2ff; color:#1a2a4a; }
+.meta-field input:focus { outline:none; border-color:#d4af37; background:#fff; }
+
+/* Kostentreiber Block */
+.kt-block { background:#fff; border:1px solid #e8dfc8; border-radius:10px; padding:20px 24px; margin-bottom:18px; box-shadow:0 2px 6px rgba(0,0,0,0.04); }
+.kt-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; padding-bottom:12px; border-bottom:1px solid #e8dfc8; }
+.kt-title { font-family:Georgia,serif; font-size:15px; color:#1a2a4a; }
+.kt-badge { font-size:12px; font-weight:700; padding:3px 10px; border-radius:12px; }
+.badge-green { background:#e4f5e8; color:#1a6030; border:1px solid #4aaa60; }
+.badge-amber { background:#fff3cd; color:#856404; border:1px solid #d4a800; }
+.badge-red { background:#fde8e4; color:#a03020; border:1px solid #d06050; }
+.badge-grey { background:#f5f0e8; color:#8090a8; border:1px solid #d0c8b0; }
+.kt-problem { font-size:12px; color:#8090a8; margin-bottom:14px; background:#faf8f4; padding:8px 12px; border-radius:6px; border-left:3px solid #d4af37; }
+.kt-problem strong { color:#5a4000; }
+.kt-inputs { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:14px; }
+.kt-field { display:flex; flex-direction:column; gap:4px; }
+.kt-field label { font-size:11px; font-weight:700; color:#8090a8; text-transform:uppercase; }
+.kt-field input { border:2px solid #3a7ad4; border-radius:6px; padding:8px 10px; font-size:13px; background:#eaf2ff; color:#1a2a4a; font-weight:600; }
+.kt-field input:focus { outline:none; border-color:#d4af37; background:#fff; }
+.kt-field .calc-field { background:#f5f0e8; border:1px solid #e0d8c8; color:#1a2a4a; font-weight:700; cursor:default; }
+.kt-result-row { display:flex; gap:12px; align-items:center; margin-bottom:12px; flex-wrap:wrap; }
+.kt-pct-box { background:#1a2a4a; border-radius:6px; padding:8px 16px; text-align:center; }
+.kt-pct-val { font-family:Georgia,serif; font-size:20px; color:#d4af37; font-weight:700; }
+.kt-pct-lbl { font-size:10px; color:#a0b0c8; }
+.kt-ziel { font-size:12px; color:#8090a8; }
+.kt-massnahme { display:grid; grid-template-columns:1fr auto; gap:10px; align-items:start; margin-top:10px; }
+.kt-massnahme textarea { border:1px solid #e0d8c8; border-radius:6px; padding:7px 10px; font-size:12px; color:#1a2a4a; background:#eaf2ff; resize:vertical; min-height:40px; font-family:inherit; flex:1; }
+.kt-massnahme textarea:focus { outline:none; border-color:#d4af37; background:#fff; }
+.kt-biswann { display:flex; flex-direction:column; gap:4px; }
+.kt-biswann label { font-size:10px; color:#8090a8; font-weight:700; text-transform:uppercase; }
+.kt-biswann input { border:1px solid #e0d8c8; border-radius:6px; padding:6px 8px; font-size:12px; background:#eaf2ff; color:#1a2a4a; width:130px; }
+
+/* Gesamtauswertung */
+.gesamt { background:#1a2a4a; border-radius:10px; padding:22px 26px; margin-bottom:20px; }
+.gesamt h2 { font-family:Georgia,serif; font-size:16px; color:#d4af37; margin-bottom:16px; }
+.gesamt-table { width:100%; border-collapse:collapse; }
+.gesamt-table th { color:#a0b0c8; font-size:11px; font-weight:700; text-transform:uppercase; padding:6px 10px; text-align:left; border-bottom:1px solid rgba(255,255,255,0.1); }
+.gesamt-table td { padding:8px 10px; font-size:13px; color:#c0cce0; border-bottom:1px solid rgba(255,255,255,0.06); }
+.gesamt-table td.name { color:#fff; font-weight:600; }
+.gesamt-table td.pct { font-family:Georgia,serif; font-size:15px; font-weight:700; }
+.gesamt-table td.ziel { color:#8090a8; }
+.gesamt-hebel { margin-top:16px; }
+.gesamt-hebel label { font-size:11px; color:#a0b0c8; font-weight:700; text-transform:uppercase; display:block; margin-bottom:6px; }
+.gesamt-hebel textarea { width:100%; border:1px solid rgba(212,175,55,0.3); border-radius:6px; padding:8px 12px; font-size:13px; color:#fff; background:rgba(255,255,255,0.08); resize:vertical; min-height:40px; font-family:inherit; }
+.gesamt-hebel textarea:focus { outline:none; border-color:#d4af37; background:rgba(255,255,255,0.12); }
+
+.nav-row { display:flex; gap:12px; justify-content:space-between; margin-top:24px; }
+.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:12px 24px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none; transition:all 0.2s; display:inline-block; }
+.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
+.nav-btn.secondary { background:transparent; border:1px solid rgba(26,42,74,0.3); color:#1a2a4a; }
+.nav-btn.secondary:hover { background:#1a2a4a; color:#d4af37; }
+
+@media print { .header,.action-row,.nav-row,.gold-bar { display:none!important; } body { background:#fff; } .kt-block,.gesamt { box-shadow:none; break-inside:avoid; } .gesamt { background:#1a2a4a!important; -webkit-print-color-adjust:exact; } }
+@media(max-width:600px) { .kt-inputs { grid-template-columns:1fr; } .kt-massnahme { grid-template-columns:1fr; } }
+.footer-brand { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-brand strong { color:#d4af37; }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="brand">GASTRO-OS</div>
+  <a href="modul4-uebersicht.html" class="btn-back">← Modulübersicht</a>
+</div>
 <div class="gold-bar"></div>
-<div class="main">
-<h1>📊 Kostentreiber Checkliste</h1>
-<div class="gold-rule"></div>
-<p>Die Kostentreiber Checkliste führt dich durch die fünf größten Kostenbereiche deines Betriebs. Trage deine aktuellen Werte ein und sieh sofort wo du im grünen Bereich bist und wo du handeln musst.</p>
-<p>Schau dir vorher den Tab <strong>🎬 So nutzt du die Kostentreiber Checkliste</strong> an damit du weißt was wo eingetragen wird.</p>
-<div class="cta-box">
-<p>Klicke hier um die Kostentreiber Checkliste in Google Sheets zu öffnen:</p>
-<a class="cta-link" href="https://docs.google.com/spreadsheets/d/1sctYFp8BZN16CkAy6ZlARNPu60tvTrC6/edit" target="_blank">▶ Kostentreiber Checkliste öffnen →</a>
-</div>
-<div class="nav-buttons">
-<a href="modul4-kostentreiber-video.html" class="btn btn-secondary">← Anleitung</a>
-<a href="modul4-quiz.html" class="btn btn-primary">Zum Quiz →</a>
-</div>
+<div class="wrap">
+  <div class="tool-label">Modul 4 · Tool</div>
+  <div class="tool-title">GASTRO-OS | Kostentreiber-Check</div>
+  <div class="tool-sub">Modul 4 — Zahlen verstehen &amp; kontrollieren | Die 5 größten Kostenbereiche im Check</div>
+
+  <div class="action-row">
+    <button class="btn-save" onclick="saveData()">💾 Speichern</button>
+    <button class="btn-print" onclick="window.print()">🖨️ Drucken / PDF</button>
+    <button class="btn-reset" onclick="resetData()">🔄 Neu starten</button>
+    <span class="save-msg" id="save-msg">✓ Gespeichert</span>
+  </div>
+
+  <div class="meta-section">
+    <div class="meta-field"><label>Betrieb</label><input type="text" id="meta-betrieb" placeholder="z.B. Pizzeria Roma" oninput="autoSave()"></div>
+    <div class="meta-field"><label>Monat</label><input type="text" id="meta-monat" placeholder="z.B. Mai 2025" oninput="autoSave()"></div>
+    <div class="meta-field"><label>Datum</label><input type="date" id="meta-datum" oninput="autoSave()"></div>
+  </div>
+
+  <!-- KT 01: Wareneinsatz -->
+  <div class="kt-block">
+    <div class="kt-head">
+      <div class="kt-title">01 &nbsp;·&nbsp; Wareneinsatz &amp; Lebensmittelverschwendung</div>
+      <span class="kt-badge badge-grey" id="badge-0">Bitte eintragen</span>
+    </div>
+    <div class="kt-problem"><strong>Problem:</strong> Zu hoher Einkauf, Verderb, fehlerhafte Portionen. &nbsp;|&nbsp; <strong>Hebel:</strong> Einkaufs-Check (Modul 3). Rezepturen standardisieren.</div>
+    <div class="kt-inputs">
+      <div class="kt-field"><label>Umsatz diesen Monat (€)</label><input type="number" id="u0" min="0" step="100" placeholder="0" oninput="calcKT(0)"></div>
+      <div class="kt-field"><label>Wareneinsatz (€)</label><input type="number" id="k0" min="0" step="100" placeholder="0" oninput="calcKT(0)"></div>
+      <div class="kt-field"><label>% vom Umsatz</label><input class="calc-field" type="text" id="p0" readonly placeholder="—"></div>
+    </div>
+    <div class="kt-result-row">
+      <div class="kt-pct-box"><div class="kt-pct-val" id="pv0">—</div><div class="kt-pct-lbl">Ist-Wert</div></div>
+      <div class="kt-ziel">Zielwert: <strong>&lt; 30%</strong></div>
+    </div>
+    <div class="kt-massnahme">
+      <textarea id="m0" placeholder="Meine Sofortmaßnahme: Was werde ich konkret tun?" oninput="autoSave()"></textarea>
+      <div class="kt-biswann"><label>Bis wann</label><input type="date" id="bw0" oninput="autoSave()"></div>
+    </div>
+  </div>
+
+  <!-- KT 02: Personalkosten -->
+  <div class="kt-block">
+    <div class="kt-head">
+      <div class="kt-title">02 &nbsp;·&nbsp; Personalkosten &amp; Dienstplan</div>
+      <span class="kt-badge badge-grey" id="badge-1">Bitte eintragen</span>
+    </div>
+    <div class="kt-problem"><strong>Problem:</strong> Zu viele Mitarbeiter in schwachen Zeiten, Überstunden. &nbsp;|&nbsp; <strong>Hebel:</strong> Dienstplan nach Auslastung. Umsatz pro Stunde analysieren.</div>
+    <div class="kt-inputs">
+      <div class="kt-field"><label>Umsatz diesen Monat (€)</label><input type="number" id="u1" min="0" step="100" placeholder="0" oninput="calcKT(1)"></div>
+      <div class="kt-field"><label>Personalkosten (€)</label><input type="number" id="k1" min="0" step="100" placeholder="0" oninput="calcKT(1)"></div>
+      <div class="kt-field"><label>% vom Umsatz</label><input class="calc-field" type="text" id="p1" readonly placeholder="—"></div>
+    </div>
+    <div class="kt-result-row">
+      <div class="kt-pct-box"><div class="kt-pct-val" id="pv1">—</div><div class="kt-pct-lbl">Ist-Wert</div></div>
+      <div class="kt-ziel">Zielwert: <strong>&lt; 35%</strong></div>
+    </div>
+    <div class="kt-massnahme">
+      <textarea id="m1" placeholder="Meine Sofortmaßnahme: Was werde ich konkret tun?" oninput="autoSave()"></textarea>
+      <div class="kt-biswann"><label>Bis wann</label><input type="date" id="bw1" oninput="autoSave()"></div>
+    </div>
+  </div>
+
+  <!-- KT 03: Energiekosten -->
+  <div class="kt-block">
+    <div class="kt-head">
+      <div class="kt-title">03 &nbsp;·&nbsp; Energiekosten — Strom, Gas, Wasser</div>
+      <span class="kt-badge badge-grey" id="badge-2">Bitte eintragen</span>
+    </div>
+    <div class="kt-problem"><strong>Problem:</strong> Geräte laufen unnötig, keine Kontrolle der Verbräuche. &nbsp;|&nbsp; <strong>Hebel:</strong> Vergleich mit Vorjahr. Standby-Geräte identifizieren.</div>
+    <div class="kt-inputs">
+      <div class="kt-field"><label>Umsatz diesen Monat (€)</label><input type="number" id="u2" min="0" step="100" placeholder="0" oninput="calcKT(2)"></div>
+      <div class="kt-field"><label>Energiekosten (€)</label><input type="number" id="k2" min="0" step="100" placeholder="0" oninput="calcKT(2)"></div>
+      <div class="kt-field"><label>% vom Umsatz</label><input class="calc-field" type="text" id="p2" readonly placeholder="—"></div>
+    </div>
+    <div class="kt-result-row">
+      <div class="kt-pct-box"><div class="kt-pct-val" id="pv2">—</div><div class="kt-pct-lbl">Ist-Wert</div></div>
+      <div class="kt-ziel">Zielwert: <strong>&lt; 5%</strong></div>
+    </div>
+    <div class="kt-massnahme">
+      <textarea id="m2" placeholder="Meine Sofortmaßnahme: Was werde ich konkret tun?" oninput="autoSave()"></textarea>
+      <div class="kt-biswann"><label>Bis wann</label><input type="date" id="bw2" oninput="autoSave()"></div>
+    </div>
+  </div>
+
+  <!-- KT 04: Liefergebühren -->
+  <div class="kt-block">
+    <div class="kt-head">
+      <div class="kt-title">04 &nbsp;·&nbsp; Liefergebühren &amp; externe Provisionen</div>
+      <span class="kt-badge badge-grey" id="badge-3">Bitte eintragen</span>
+    </div>
+    <div class="kt-problem"><strong>Problem:</strong> Plattformen nehmen 15–30%. Oft unsichtbar in der BWA. &nbsp;|&nbsp; <strong>Hebel:</strong> Plattform-Anteil berechnen. Direktbestellungen fördern.</div>
+    <div class="kt-inputs">
+      <div class="kt-field"><label>Umsatz diesen Monat (€)</label><input type="number" id="u3" min="0" step="100" placeholder="0" oninput="calcKT(3)"></div>
+      <div class="kt-field"><label>Provisionen (€)</label><input type="number" id="k3" min="0" step="100" placeholder="0" oninput="calcKT(3)"></div>
+      <div class="kt-field"><label>% vom Umsatz</label><input class="calc-field" type="text" id="p3" readonly placeholder="—"></div>
+    </div>
+    <div class="kt-result-row">
+      <div class="kt-pct-box"><div class="kt-pct-val" id="pv3">—</div><div class="kt-pct-lbl">Ist-Wert</div></div>
+      <div class="kt-ziel">Zielwert: <strong>&lt; 10%</strong></div>
+    </div>
+    <div class="kt-massnahme">
+      <textarea id="m3" placeholder="Meine Sofortmaßnahme: Was werde ich konkret tun?" oninput="autoSave()"></textarea>
+      <div class="kt-biswann"><label>Bis wann</label><input type="date" id="bw3" oninput="autoSave()"></div>
+    </div>
+  </div>
+
+  <!-- KT 05: Miete -->
+  <div class="kt-block">
+    <div class="kt-head">
+      <div class="kt-title">05 &nbsp;·&nbsp; Miet- und Nebenkosten</div>
+      <span class="kt-badge badge-grey" id="badge-4">Bitte eintragen</span>
+    </div>
+    <div class="kt-problem"><strong>Problem:</strong> Langfristige Verträge, ungeprüfte Nebenkostenabrechnungen. &nbsp;|&nbsp; <strong>Hebel:</strong> Mietvertrag prüfen. Nebenkosten kontrollieren. Verhandeln.</div>
+    <div class="kt-inputs">
+      <div class="kt-field"><label>Umsatz diesen Monat (€)</label><input type="number" id="u4" min="0" step="100" placeholder="0" oninput="calcKT(4)"></div>
+      <div class="kt-field"><label>Miete &amp; Nebenkosten (€)</label><input type="number" id="k4" min="0" step="100" placeholder="0" oninput="calcKT(4)"></div>
+      <div class="kt-field"><label>% vom Umsatz</label><input class="calc-field" type="text" id="p4" readonly placeholder="—"></div>
+    </div>
+    <div class="kt-result-row">
+      <div class="kt-pct-box"><div class="kt-pct-val" id="pv4">—</div><div class="kt-pct-lbl">Ist-Wert</div></div>
+      <div class="kt-ziel">Zielwert: <strong>&lt; 15%</strong></div>
+    </div>
+    <div class="kt-massnahme">
+      <textarea id="m4" placeholder="Meine Sofortmaßnahme: Was werde ich konkret tun?" oninput="autoSave()"></textarea>
+      <div class="kt-biswann"><label>Bis wann</label><input type="date" id="bw4" oninput="autoSave()"></div>
+    </div>
+  </div>
+
+  <!-- GESAMTAUSWERTUNG -->
+  <div class="gesamt">
+    <h2>📊 Gesamtauswertung — Wo liegt dein größter Hebel?</h2>
+    <table class="gesamt-table">
+      <tr><th>Kostentreiber</th><th>Ist %</th><th>Ziel %</th><th>Status</th></tr>
+      <tr><td class="name">01 Wareneinsatz</td><td class="pct" id="g0">—</td><td class="ziel">&lt; 30%</td><td id="gs0">—</td></tr>
+      <tr><td class="name">02 Personalkosten</td><td class="pct" id="g1">—</td><td class="ziel">&lt; 35%</td><td id="gs1">—</td></tr>
+      <tr><td class="name">03 Energiekosten</td><td class="pct" id="g2">—</td><td class="ziel">&lt; 5%</td><td id="gs2">—</td></tr>
+      <tr><td class="name">04 Provisionen</td><td class="pct" id="g3">—</td><td class="ziel">&lt; 10%</td><td id="gs3">—</td></tr>
+      <tr><td class="name">05 Miete &amp; NK</td><td class="pct" id="g4">—</td><td class="ziel">&lt; 15%</td><td id="gs4">—</td></tr>
+    </table>
+    <div class="gesamt-hebel">
+      <label>Mein #1 Hebel diesen Monat:</label>
+      <textarea id="hebel" placeholder="Welcher Kostentreiber hat die größte Abweichung? Was ist deine konkrete Maßnahme?" oninput="autoSave()"></textarea>
+    </div>
+  </div>
+
+  <div class="action-row" style="margin-top:0;">
+    <button class="btn-save" onclick="saveData()">💾 Speichern</button>
+    <button class="btn-print" onclick="window.print()">🖨️ Drucken / PDF</button>
+    <button class="btn-reset" onclick="resetData()">🔄 Neu starten</button>
+    <span class="save-msg" id="save-msg2">✓ Gespeichert</span>
+  </div>
+
+  <div class="nav-row">
+    <a href="modul4-kostentreiber-video.html" class="nav-btn secondary">← Anleitung</a>
+    <a href="modul4-quiz.html" class="nav-btn">Zum Quiz →</a>
+  </div>
 </div>
 <div class="gold-bar"></div>
-<div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
-</body></html>
+<div class="footer-brand"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+
+<script>
+const SUPABASE_URL='https://hchlganbgjeciwhwaisj.supabase.co';
+const SUPABASE_KEY='sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3';
+const{createClient}=supabase;
+const sb=createClient(SUPABASE_URL,SUPABASE_KEY);
+let currentUser=null, saveTimer=null;
+
+const ZIELE=[0.30,0.35,0.05,0.10,0.15];
+const LABELS=['Wareneinsatz','Personalkosten','Energiekosten','Provisionen','Miete & NK'];
+
+function pct(n){return n.toFixed(1).replace('.',',')+' %';}
+
+function calcKT(i){
+  const u=parseFloat(document.getElementById('u'+i).value)||0;
+  const k=parseFloat(document.getElementById('k'+i).value)||0;
+  const pEl=document.getElementById('p'+i);
+  const pvEl=document.getElementById('pv'+i);
+  const badge=document.getElementById('badge-'+i);
+  const gEl=document.getElementById('g'+i);
+  const gsEl=document.getElementById('gs'+i);
+
+  if(!u||!k){
+    pEl.value='—'; pvEl.textContent='—';
+    badge.className='kt-badge badge-grey'; badge.textContent='Bitte eintragen';
+    gEl.textContent='—'; gsEl.textContent='—';
+    return;
+  }
+  const ratio=k/u;
+  const ratioStr=pct(ratio*100);
+  pEl.value=ratioStr; pvEl.textContent=ratioStr;
+  gEl.textContent=ratioStr;
+
+  const ziel=ZIELE[i];
+  let cls,status,gs;
+  if(ratio<=ziel){cls='badge-green';status='✅ Im Ziel';gs='✅ OK';}
+  else if(ratio<=ziel*1.2){cls='badge-amber';status='⚠️ Beobachten';gs='⚠️ Knapp';}
+  else{cls='badge-red';status='❌ Handeln!';gs='❌ Zu hoch';}
+  badge.className='kt-badge '+cls; badge.textContent=status;
+  gsEl.textContent=gs;
+  autoSave();
+}
+
+function getData(){
+  const d={meta:{betrieb:document.getElementById('meta-betrieb').value,monat:document.getElementById('meta-monat').value,datum:document.getElementById('meta-datum').value},hebel:document.getElementById('hebel').value,kt:[]};
+  for(let i=0;i<5;i++) d.kt.push({u:document.getElementById('u'+i).value,k:document.getElementById('k'+i).value,m:document.getElementById('m'+i).value,bw:document.getElementById('bw'+i).value});
+  return d;
+}
+
+function setData(d){
+  if(!d)return;
+  if(d.meta){
+    if(d.meta.betrieb) document.getElementById('meta-betrieb').value=d.meta.betrieb;
+    if(d.meta.monat) document.getElementById('meta-monat').value=d.meta.monat;
+    if(d.meta.datum) document.getElementById('meta-datum').value=d.meta.datum;
+  }
+  if(d.hebel) document.getElementById('hebel').value=d.hebel;
+  if(d.kt) d.kt.forEach((kt,i)=>{
+    if(kt.u) document.getElementById('u'+i).value=kt.u;
+    if(kt.k) document.getElementById('k'+i).value=kt.k;
+    if(kt.m) document.getElementById('m'+i).value=kt.m;
+    if(kt.bw) document.getElementById('bw'+i).value=kt.bw;
+    calcKT(i);
+  });
+}
+
+async function saveData(){
+  if(!currentUser)return;
+  await sb.from('user_tool_data').upsert({user_id:currentUser.id,tool_name:'kostentreiber_check_modul4',data:getData(),updated_at:new Date().toISOString()},{onConflict:'user_id,tool_name'});
+  ['save-msg','save-msg2'].forEach(id=>{const el=document.getElementById(id);if(el){el.style.display='inline';setTimeout(()=>el.style.display='none',2500);}});
+}
+
+function autoSave(){clearTimeout(saveTimer);saveTimer=setTimeout(saveData,1500);}
+
+function resetData(){
+  if(!confirm('Alle Eingaben zurücksetzen?'))return;
+  document.getElementById('meta-betrieb').value='';
+  document.getElementById('meta-monat').value='';
+  document.getElementById('meta-datum').value='';
+  document.getElementById('hebel').value='';
+  for(let i=0;i<5;i++){
+    ['u','k','m','bw'].forEach(f=>document.getElementById(f+i).value='');
+    calcKT(i);
+  }
+  saveData();
+}
+
+async function init(){
+  const{data:{session}}=await sb.auth.getSession();
+  if(!session){window.location.href='login.html';return;}
+  currentUser=session.user;
+  const{data:td}=await sb.from('user_tool_data').select('data').eq('user_id',currentUser.id).eq('tool_name','kostentreiber_check_modul4').maybeSingle();
+  if(td&&td.data)setData(td.data);
+}
+init();
+</script>
+</body>
+</html>
