@@ -3,49 +3,500 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GASTRO-OS – Modul 6 | Mitarbeiter Feedback</title>
+<title>GASTRO-OS – Strukturiertes Mitarbeiter-Feedback-Gespräch</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f0e8; color: #1a2a4a; min-height: 100vh; }
-  .header { background: #1a2a4a; padding: 22px 40px; text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,0.3); }
-  .header .brand { font-family: Georgia, serif; font-size: 22px; color: #d4af37; letter-spacing: 4px; font-weight: normal; }
-  .header .modul-label { font-size: 11px; color: #a0b0c8; letter-spacing: 3px; text-transform: uppercase; margin-top: 4px; }
-  .gold-bar { height: 3px; background: linear-gradient(90deg, #1a2a4a, #d4af37, #1a2a4a); }
-  .main { max-width: 780px; margin: 36px auto; padding: 0 24px 60px; }
-  h1 { font-family: Georgia, serif; font-size: 26px; color: #1a2a4a; margin-bottom: 8px; }
-  .gold-rule { width: 56px; height: 2px; background: #d4af37; margin: 10px 0 16px; }
-  .intro { font-size: 14px; color: #5060a0; line-height: 1.7; margin-bottom: 24px; }
-  .card { background: #fff; border-radius: 10px; padding: 28px 32px; margin-bottom: 20px; border: 1px solid #e8dfc8; box-shadow: 0 2px 8px rgba(0,0,0,0.04); text-align: center; }
-  .card .icon { font-size: 48px; margin-bottom: 16px; }
-  .card h2 { font-family: Georgia, serif; font-size: 20px; color: #1a2a4a; margin-bottom: 10px; }
-  .card p { font-size: 14px; color: #5060a0; line-height: 1.7; margin-bottom: 20px; }
-  .btn { display: inline-block; background: #1a2a4a; color: #d4af37; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 14px; letter-spacing: 0.5px; transition: background 0.2s; }
-  .btn:hover { background: #2a3a5a; }
-  .hint { background: #fff8e8; border-radius: 8px; padding: 14px 18px; margin-top: 16px; font-size: 13px; color: #7a5000; border: 1px solid #d4af37; }
-  .footer { background: #1a2a4a; margin-top: 48px; padding: 14px 40px; text-align: center; font-size: 11px; color: #8090a8; letter-spacing: 1px; }
-  .footer strong { color: #d4af37; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
+
+/* ── SITE HEADER ── */
+.site-header {
+  background:#1a2a4a; padding:14px 40px;
+  display:flex; align-items:center; justify-content:space-between;
+  box-shadow:0 2px 12px rgba(0,0,0,0.3);
+}
+.brand { font-family:Georgia,serif; font-size:18px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.back-btn {
+  background:transparent; border:1px solid rgba(212,175,55,0.4);
+  color:#a0b0c8; padding:7px 16px; border-radius:6px;
+  font-size:12px; text-decoration:none; display:inline-block; transition:all 0.2s;
+}
+.back-btn:hover { border-color:#d4af37; color:#d4af37; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+
+/* ── TOOLBAR ── */
+.toolbar {
+  max-width:860px; margin:20px auto 0; padding:0 24px;
+  display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+}
+.tool-title-wrap { flex:1; }
+.tool-title-wrap h2 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; }
+.tool-title-wrap p { font-size:12px; color:#8090a8; margin-top:2px; }
+.btn-toolbar {
+  border:none; padding:9px 18px; border-radius:6px;
+  font-size:12px; font-weight:700; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; gap:6px;
+}
+.btn-save  { background:#1a2a4a; color:#d4af37; }
+.btn-save:hover  { background:#d4af37; color:#1a2a4a; }
+.btn-print { background:#fff; color:#1a2a4a; border:1px solid #e8dfc8; }
+.btn-print:hover { border-color:#1a2a4a; }
+.btn-reset { background:#fff; color:#a03030; border:1px solid #d06060; }
+.btn-reset:hover { background:#fdf0f0; }
+.save-msg { font-size:12px; color:#4aaa60; display:none; margin-left:6px; }
+
+/* ── FORM WRAPPER ── */
+.form-wrap { max-width:860px; margin:16px auto 48px; padding:0 24px; }
+
+/* ── FORM CARD ── */
+.form-card {
+  background:#fff; border-radius:10px; overflow:hidden;
+  border:1px solid #d0c8b0; box-shadow:0 4px 16px rgba(0,0,0,0.08);
+}
+
+/* FORM HEADER */
+.form-header {
+  background:#1a2a4a; padding:18px 24px;
+}
+.form-header-top {
+  font-size:10px; color:#d4af37; letter-spacing:2px;
+  text-transform:uppercase; margin-bottom:6px;
+}
+.form-header h1 {
+  font-family:Georgia,serif; font-size:22px; color:#fff;
+  font-weight:normal; margin-bottom:4px;
+}
+.form-header-sub { font-size:11px; color:#a0b0c8; letter-spacing:1px; }
+
+/* SKALA */
+.skala-row {
+  background:#fdf9ee; border-bottom:1px solid #e8dfc8;
+  padding:10px 24px; font-size:11px; color:#5a6a80;
+}
+.skala-row span { color:#1a2a4a; font-weight:600; }
+
+/* META FIELDS */
+.meta-grid {
+  display:grid; grid-template-columns:1fr 1fr;
+  border-bottom:1px solid #e8dfc8;
+}
+.meta-field {
+  padding:10px 20px; border-right:1px solid #e8dfc8;
+  display:flex; align-items:center; gap:10px;
+}
+.meta-field:nth-child(even) { border-right:none; }
+.meta-label {
+  font-size:12px; color:#1a2a4a; font-weight:600;
+  white-space:nowrap; min-width:110px;
+}
+.meta-input {
+  flex:1; border:1px solid #e0d8c8; border-radius:4px;
+  padding:6px 10px; font-size:13px; color:#1a4a8a;
+  background:#eaf2ff; font-family:inherit;
+}
+.meta-input:focus { outline:none; border-color:#3a7ad4; background:#fff; }
+
+/* SECTION HEADERS */
+.section-header {
+  background:#1a2a4a; padding:10px 24px;
+  font-size:13px; font-weight:700; color:#d4af37;
+  letter-spacing:1px; text-transform:uppercase;
+}
+
+/* ITEM ROWS */
+.item-row {
+  display:flex; align-items:stretch;
+  border-bottom:1px solid #f0ece4;
+  min-height:72px;
+}
+.item-num {
+  background:#faf8f4; border-right:1px solid #e8dfc8;
+  width:40px; display:flex; align-items:center;
+  justify-content:center; font-weight:700; font-size:14px;
+  color:#1a2a4a; flex-shrink:0;
+}
+.item-ta {
+  flex:1; border:none; resize:none; padding:12px 16px;
+  font-size:13px; color:#1a2a4a; font-family:inherit;
+  line-height:1.6; background:#fff; min-height:72px;
+}
+.item-ta:focus { outline:none; background:#fffdf8; }
+.item-ta::placeholder { color:#c0c8d8; }
+
+/* RATING ROWS */
+.rating-row {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:10px 20px; background:#f5f2ea; border-bottom:1px solid #e8dfc8;
+}
+.rating-label { font-size:12px; color:#5a6a80; }
+.rating-label strong { color:#1a2a4a; }
+.rating-btns { display:flex; gap:6px; }
+.r-btn {
+  width:34px; height:34px; border-radius:6px;
+  border:2px solid #d0c8b0; background:#fff;
+  font-size:13px; font-weight:700; cursor:pointer;
+  transition:all 0.18s; color:#1a2a4a; display:flex;
+  align-items:center; justify-content:center;
+}
+.r-btn:hover { border-color:#d4af37; background:#fdf9ee; }
+.r-btn.selected { background:#1a2a4a; border-color:#1a2a4a; color:#d4af37; }
+
+/* BIS WANN / VERANTWORTLICH */
+.bw-row {
+  display:grid; grid-template-columns:1fr 1fr;
+  border-bottom:1px solid #f0ece4;
+}
+.bw-field {
+  padding:10px 20px; border-right:1px solid #f0ece4;
+  display:flex; align-items:center; gap:10px;
+}
+.bw-field:last-child { border-right:none; }
+.bw-label { font-size:12px; color:#1a2a4a; font-weight:600; white-space:nowrap; min-width:80px; }
+.bw-input {
+  flex:1; border:1px solid #e0d8c8; border-radius:4px;
+  padding:6px 10px; font-size:13px; color:#1a4a8a;
+  background:#eaf2ff; font-family:inherit;
+}
+.bw-input:focus { outline:none; border-color:#3a7ad4; background:#fff; }
+
+/* UNTERSCHRIFT */
+.unt-row {
+  display:grid; grid-template-columns:1fr 1fr;
+  border-bottom:1px solid #e8dfc8;
+  border-top:1px solid #e8dfc8;
+  background:#faf8f4;
+}
+.unt-field {
+  padding:12px 20px; border-right:1px solid #e8dfc8;
+}
+.unt-field:last-child { border-right:none; }
+.unt-label { font-size:11px; color:#8090a8; margin-bottom:4px; }
+.unt-input {
+  width:100%; border:none; border-bottom:1px solid #d0c8b0;
+  background:transparent; padding:4px 0; font-size:13px;
+  color:#1a2a4a; font-family:inherit;
+}
+.unt-input:focus { outline:none; border-bottom-color:#d4af37; }
+
+/* NÄCHSTES GESPRÄCH */
+.naechstes-row {
+  display:flex; align-items:center;
+  border-bottom:1px solid #e8dfc8;
+}
+.naechstes-left {
+  background:#d4af37; padding:12px 20px;
+  display:flex; align-items:center; gap:10px;
+  min-width:220px; border-right:1px solid #b89830;
+}
+.naechstes-lbl { font-size:12px; font-weight:700; color:#1a2a4a; white-space:nowrap; }
+.naechstes-input {
+  flex:1; border:none; background:transparent;
+  padding:0 8px; font-size:13px; color:#1a2a4a;
+  font-family:inherit; font-weight:600; min-width:100px;
+}
+.naechstes-input:focus { outline:none; }
+.tipp-right {
+  flex:1; background:#e8f5e8; padding:12px 16px;
+  font-size:12px; color:#1a6030; line-height:1.5;
+}
+.tipp-right strong { color:#1a6030; }
+
+/* FORM FOOTER */
+.form-footer-bar {
+  background:#faf8f4; padding:10px 24px;
+  font-size:10px; color:#a0b0c8; letter-spacing:1px;
+  text-align:center;
+}
+.form-footer-bar strong { color:#d4af37; }
+
+/* ── GLOBAL FOOTER ── */
+.site-footer {
+  background:#1a2a4a; padding:14px 40px;
+  text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px;
+}
+.site-footer strong { color:#d4af37; }
+
+/* ── PRINT ── */
+@media print {
+  .site-header, .toolbar, .gold-bar, .site-footer { display:none !important; }
+  .form-wrap { margin:0; padding:0; }
+  body { background:#fff; }
+  .form-card { border:1px solid #999; box-shadow:none; border-radius:0; }
+  .item-ta { border:1px solid #ddd; }
+  .meta-input, .bw-input, .unt-input, .naechstes-input { border:1px solid #ddd !important; background:#fff !important; color:#000 !important; }
+}
+@media(max-width:600px){
+  .meta-grid { grid-template-columns:1fr; }
+  .bw-row { grid-template-columns:1fr; }
+  .unt-row { grid-template-columns:1fr; }
+  .naechstes-left { min-width:160px; }
+  .toolbar { gap:8px; }
+  .site-header { padding:14px 16px; }
+  .form-wrap { padding:0 8px; }
+}
 </style>
 </head>
 <body>
-<div class="header">
-  <div class="brand">GASTRO-OS</div>
-  <div class="modul-label">Modul 6 &nbsp;·&nbsp; Mitarbeiter Feedback</div>
-</div>
-<div class="gold-bar"></div>
-<div class="main">
-  <h1>📊 Strukturiertes Mitarbeiter-Feedback-Gespräch</h1>
-  <div class="gold-rule"></div>
-  <p class="intro">Das strukturierte Mitarbeiter-Feedback-Gespräch hilft dir Feedbackgespräche mit deinem Team klar und professionell zu führen. Einschätzung, Ziele und nächste Schritte auf einen Blick. So gehst du vorbereitet in jedes Gespräch — und dein Mitarbeiter weiß danach genau wo er steht.</p>
 
-  <div class="card">
-    <div class="icon">📋</div>
-    <h2>Feedback-Vorlage öffnen</h2>
-    <p>Schau dir vorher den Tab 📸 <strong>So nutzt du das Strukturierte Mitarbeiter-Feedback-Gespräch</strong> an damit du weißt was wo eingetragen wird.</p>
-    <a href="https://drive.google.com/file/d/1-W3G5kKHed1CFNXjzrwNNYLEIFojAAXX/view?usp=sharing" target="_blank" class="btn">→ Zum Feedback-Gespräch</a>
-    <div class="hint">💡 Die Vorlage öffnet sich in Google Drive. Lade sie herunter oder nutze sie direkt online. Führe das Gespräch mindestens einmal pro Quartal — mit dem Schichtleiter wöchentlich für 10 Minuten.</div>
-  </div>
+<div class="site-header">
+  <div class="brand">GASTRO-OS</div>
+  <a href="dashboard.html" class="back-btn">← Zurück zum Dashboard</a>
 </div>
 <div class="gold-bar"></div>
-<div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+
+<div class="toolbar">
+  <div class="tool-title-wrap">
+    <h2>Strukturiertes Mitarbeiter-Feedback-Gespräch</h2>
+    <p>Modul 6 · Mitarbeiter führen statt nur reagieren</p>
+  </div>
+  <button class="btn-toolbar btn-save" onclick="saveData()">💾 Speichern</button>
+  <button class="btn-toolbar btn-print" onclick="window.print()">🖨️ Drucken</button>
+  <button class="btn-toolbar btn-reset" onclick="resetForm()">🔄 Neu starten</button>
+  <span class="save-msg" id="save-msg">✓ Gespeichert</span>
+</div>
+
+<div class="form-wrap">
+  <div class="form-card">
+
+    <!-- FORM HEADER -->
+    <div class="form-header">
+      <div class="form-header-top">GASTRO-OS &nbsp;|&nbsp; MODUL 6</div>
+      <h1>Strukturiertes Mitarbeiter-Feedback-Gespräch</h1>
+      <div class="form-header-sub">15 Minuten &nbsp;|&nbsp; monatlich &nbsp;|&nbsp; konkret und verbindlich</div>
+    </div>
+
+    <!-- SKALA -->
+    <div class="skala-row">
+      <span>Bewertungsskala:</span>&nbsp;
+      1 = Verbesserungsbedarf &nbsp;&nbsp;
+      2 = Noch nicht ausreichend &nbsp;&nbsp;
+      3 = In Ordnung &nbsp;&nbsp;
+      4 = Gut &nbsp;&nbsp;
+      5 = Sehr gut
+    </div>
+
+    <!-- META -->
+    <div class="meta-grid">
+      <div class="meta-field">
+        <div class="meta-label">Mitarbeiter:</div>
+        <input class="meta-input" id="mitarbeiter" type="text" placeholder="Name...">
+      </div>
+      <div class="meta-field">
+        <div class="meta-label">Datum:</div>
+        <input class="meta-input" id="datum" type="text" placeholder="TT.MM.JJJJ">
+      </div>
+      <div class="meta-field">
+        <div class="meta-label">Rolle / Position:</div>
+        <input class="meta-input" id="rolle" type="text" placeholder="z.B. Service, Küche...">
+      </div>
+      <div class="meta-field" style="border-right:none;">
+        <div class="meta-label">Gesprächsführer:</div>
+        <input class="meta-input" id="gespraechsfuehrer" type="text" placeholder="Name...">
+      </div>
+    </div>
+
+    <!-- TEIL 1 -->
+    <div class="section-header">TEIL 1 — WAS LÄUFT GUT</div>
+    <div class="item-row">
+      <div class="item-num">1</div>
+      <textarea class="item-ta" id="t1-1" rows="3" placeholder="Was läuft besonders gut? Konkrete Beispiele aus dem Alltag..."></textarea>
+    </div>
+    <div class="item-row" style="border-bottom:none;">
+      <div class="item-num">2</div>
+      <textarea class="item-ta" id="t1-2" rows="3" placeholder="Weitere Stärken und positive Beobachtungen..."></textarea>
+    </div>
+    <div class="rating-row">
+      <div class="rating-label">
+        <strong>Gesamtbewertung Teil 1:</strong> &nbsp; 1 = schwach &nbsp;→&nbsp; 5 = sehr gut
+      </div>
+      <div class="rating-btns" id="r1">
+        <button class="r-btn" onclick="setRating('r1',1)">1</button>
+        <button class="r-btn" onclick="setRating('r1',2)">2</button>
+        <button class="r-btn" onclick="setRating('r1',3)">3</button>
+        <button class="r-btn" onclick="setRating('r1',4)">4</button>
+        <button class="r-btn" onclick="setRating('r1',5)">5</button>
+      </div>
+    </div>
+
+    <!-- TEIL 2 -->
+    <div class="section-header">TEIL 2 — WAS WIRD BESSER</div>
+    <div class="item-row">
+      <div class="item-num">3</div>
+      <textarea class="item-ta" id="t2-1" rows="3" placeholder="Was soll sich verbessern? Klares Feedback, konkrete Beobachtung..."></textarea>
+    </div>
+    <div class="item-row" style="border-bottom:none;">
+      <div class="item-num">4</div>
+      <textarea class="item-ta" id="t2-2" rows="3" placeholder="Weitere Entwicklungspunkte — was genau, bis wann..."></textarea>
+    </div>
+    <div class="rating-row">
+      <div class="rating-label">
+        <strong>Gesamtbewertung Teil 2:</strong> &nbsp; 1 = dringend &nbsp;→&nbsp; 5 = kaum Bedarf
+      </div>
+      <div class="rating-btns" id="r2">
+        <button class="r-btn" onclick="setRating('r2',1)">1</button>
+        <button class="r-btn" onclick="setRating('r2',2)">2</button>
+        <button class="r-btn" onclick="setRating('r2',3)">3</button>
+        <button class="r-btn" onclick="setRating('r2',4)">4</button>
+        <button class="r-btn" onclick="setRating('r2',5)">5</button>
+      </div>
+    </div>
+
+    <!-- TEIL 3 -->
+    <div class="section-header">TEIL 3 — VEREINBARTE MASSNAHME</div>
+    <div class="item-row">
+      <div class="item-num">5</div>
+      <textarea class="item-ta" id="t3-1" rows="3" placeholder="Konkrete Maßnahme — was genau wird getan?"></textarea>
+    </div>
+    <div class="bw-row">
+      <div class="bw-field">
+        <div class="bw-label">Bis wann:</div>
+        <input class="bw-input" id="bis-wann" type="text" placeholder="TT.MM.JJJJ">
+      </div>
+      <div class="bw-field">
+        <div class="bw-label">Verantwortlich:</div>
+        <input class="bw-input" id="verantwortlich" type="text" placeholder="Name / Funktion...">
+      </div>
+    </div>
+    <div class="item-row" style="border-bottom:none;">
+      <div class="item-num">6</div>
+      <textarea class="item-ta" id="t3-2" rows="3" placeholder="Anmerkungen des Mitarbeiters — Rückmeldung, Wünsche, offene Punkte..."></textarea>
+    </div>
+
+    <!-- UNTERSCHRIFTEN -->
+    <div class="unt-row">
+      <div class="unt-field">
+        <div class="unt-label">Unterschrift Mitarbeiter:</div>
+        <input class="unt-input" id="unt-ma" type="text" placeholder="________________________">
+      </div>
+      <div class="unt-field">
+        <div class="unt-label">Unterschrift Gesprächsführer:</div>
+        <input class="unt-input" id="unt-gf" type="text" placeholder="________________________">
+      </div>
+    </div>
+
+    <!-- NÄCHSTES GESPRÄCH -->
+    <div class="naechstes-row">
+      <div class="naechstes-left">
+        <div class="naechstes-lbl">Nächstes Gespräch:</div>
+        <input class="naechstes-input" id="naechstes" type="text" placeholder="TT.MM.JJJJ">
+      </div>
+      <div class="tipp-right">
+        💡 <strong>Tipp:</strong> Monatlich führen — auch wenn alles gut läuft!
+      </div>
+    </div>
+
+    <!-- FORM FOOTER -->
+    <div class="form-footer-bar">
+      <strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg &nbsp;|&nbsp; Modul 6 — Strukturiertes Mitarbeiter-Feedback-Gespräch
+    </div>
+
+  </div><!-- /form-card -->
+</div><!-- /form-wrap -->
+
+<div class="gold-bar"></div>
+<div class="site-footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+
+<script>
+const SUPABASE_URL = 'https://hchlganbgjeciwhwaisj.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3';
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// Rating selection
+const ratings = { r1: 0, r2: 0 };
+
+function setRating(groupId, val) {
+  ratings[groupId] = val;
+  const btns = document.getElementById(groupId).querySelectorAll('.r-btn');
+  btns.forEach((b, i) => b.classList.toggle('selected', i + 1 === val));
+}
+
+function restoreRating(groupId, val) {
+  if (!val) return;
+  ratings[groupId] = val;
+  const btns = document.getElementById(groupId).querySelectorAll('.r-btn');
+  btns.forEach((b, i) => b.classList.toggle('selected', i + 1 === val));
+}
+
+// Get all form data
+function getData() {
+  return {
+    mitarbeiter:       document.getElementById('mitarbeiter').value,
+    datum:             document.getElementById('datum').value,
+    rolle:             document.getElementById('rolle').value,
+    gespraechsfuehrer: document.getElementById('gespraechsfuehrer').value,
+    t1_1:              document.getElementById('t1-1').value,
+    t1_2:              document.getElementById('t1-2').value,
+    rating1:           ratings.r1,
+    t2_1:              document.getElementById('t2-1').value,
+    t2_2:              document.getElementById('t2-2').value,
+    rating2:           ratings.r2,
+    t3_1:              document.getElementById('t3-1').value,
+    bis_wann:          document.getElementById('bis-wann').value,
+    verantwortlich:    document.getElementById('verantwortlich').value,
+    t3_2:              document.getElementById('t3-2').value,
+    unt_ma:            document.getElementById('unt-ma').value,
+    unt_gf:            document.getElementById('unt-gf').value,
+    naechstes:         document.getElementById('naechstes').value,
+    saved:             new Date().toISOString()
+  };
+}
+
+// Restore form data
+function setData(d) {
+  const map = {
+    mitarbeiter: 'mitarbeiter', datum: 'datum', rolle: 'rolle',
+    gespraechsfuehrer: 'gespraechsfuehrer',
+    t1_1: 't1-1', t1_2: 't1-2',
+    t2_1: 't2-1', t2_2: 't2-2',
+    t3_1: 't3-1', bis_wann: 'bis-wann',
+    verantwortlich: 'verantwortlich', t3_2: 't3-2',
+    unt_ma: 'unt-ma', unt_gf: 'unt-gf', naechstes: 'naechstes'
+  };
+  Object.entries(map).forEach(([k, id]) => {
+    if (d[k] !== undefined) document.getElementById(id).value = d[k];
+  });
+  restoreRating('r1', d.rating1);
+  restoreRating('r2', d.rating2);
+}
+
+async function saveData() {
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    if (session) {
+      await sb.from('user_tool_data').upsert({
+        user_id: session.user.id,
+        tool_name: 'feedback_gespraech_modul6',
+        data: getData(),
+        updated_at: new Date().toISOString()
+      }, { onConflict: 'user_id,tool_name' });
+    }
+  } catch(e) {}
+  const msg = document.getElementById('save-msg');
+  msg.style.display = 'inline';
+  setTimeout(() => msg.style.display = 'none', 2500);
+}
+
+function resetForm() {
+  if (!confirm('Formular zurücksetzen? Alle eingetragenen Daten werden gelöscht.')) return;
+  document.querySelectorAll('input, textarea').forEach(el => el.value = '');
+  ['r1','r2'].forEach(g => {
+    ratings[g] = 0;
+    document.getElementById(g).querySelectorAll('.r-btn').forEach(b => b.classList.remove('selected'));
+  });
+}
+
+async function loadData() {
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    if (!session) return;
+    const { data } = await sb.from('user_tool_data')
+      .select('data').eq('user_id', session.user.id)
+      .eq('tool_name', 'feedback_gespraech_modul6').maybeSingle();
+    if (data?.data) setData(data.data);
+  } catch(e) {}
+}
+
+loadData();
+</script>
 </body>
 </html>
