@@ -1,37 +1,158 @@
-<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>GASTRO-OS – Modul 5 | Lektion 3</title><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:"Segoe UI",Arial,sans-serif;background:#f5f0e8;color:#1a2a4a;min-height:100vh}.header{background:#1a2a4a;padding:22px 40px;text-align:center}.brand{font-family:Georgia,serif;font-size:22px;color:#d4af37;letter-spacing:4px;font-weight:normal}.modul-label{font-size:11px;color:#a0b0c8;letter-spacing:3px;text-transform:uppercase;margin-top:4px}.gold-bar{height:3px;background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a)}.main{max-width:820px;margin:36px auto;padding:0 24px 60px}h1{font-family:Georgia,serif;font-size:26px;color:#1a2a4a;margin-bottom:8px}h2{font-family:Georgia,serif;font-size:18px;color:#1a2a4a;margin:24px 0 10px}h3{font-size:15px;color:#1a2a4a;margin:18px 0 8px}.gold-rule{width:56px;height:2px;background:#d4af37;margin:10px 0 20px}p{font-size:15px;color:#2a3a5a;line-height:1.8;margin-bottom:14px}.highlight{background:#fff8e8;border-left:3px solid #d4af37;padding:14px 18px;margin:20px 0;font-size:14px;color:#5a4000;line-height:1.7}.aufgabe{background:#1a2a4a;color:#f5f0e8;border-radius:8px;padding:18px 22px;margin:24px 0;font-size:14px;line-height:1.7}.aufgabe strong{color:#d4af37}.nav-buttons{display:flex;gap:12px;margin-top:32px;flex-wrap:wrap}.btn{display:inline-block;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:600;font-size:14px;transition:opacity .15s}.btn-primary{background:#d4af37;color:#1a2a4a}.btn-secondary{background:#1a2a4a;color:#f5f0e8}.btn:hover{opacity:.85}.divider{border:none;border-top:1px solid #e8dfc8;margin:28px 0}.footer{background:#1a2a4a;margin-top:48px;padding:14px 40px;text-align:center;font-size:11px;color:#8090a8}.footer strong{color:#d4af37}</style></head><body>
-<div class="header"><div class="brand">GASTRO-OS</div><div class="modul-label">Modul 5 &nbsp;·&nbsp; Lektion 3</div></div>
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lektion 3 – Modul 5 | GASTRO-OS</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
+.header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:20px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.btn-back { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.btn-back:hover { border-color:#d4af37; color:#d4af37; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+.main { max-width:860px; margin:36px auto; padding:0 24px 60px; }
+.page-tag { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; margin-bottom:8px; }
+.page-title { font-family:Georgia,serif; font-size:26px; color:#1a2a4a; margin-bottom:6px; }
+.page-sub { font-size:13px; color:#8090a8; margin-bottom:28px; }
+.welcome-card { background:#1a2a4a; border-radius:12px; padding:24px 28px; margin-bottom:28px; }
+.welcome-card p { font-size:14px; color:#c0cce0; line-height:1.85; }
+.chapter { background:#fff; border:1px solid #e8dfc8; border-radius:12px; padding:28px 32px; margin-bottom:24px; box-shadow:0 2px 8px rgba(0,0,0,0.04); }
+.chapter h2 { font-family:Georgia,serif; font-size:18px; color:#1a2a4a; margin-bottom:18px; padding-bottom:12px; border-bottom:2px solid #e8dfc8; }
+.chapter h3 { font-family:Georgia,serif; font-size:15px; color:#d4af37; margin:20px 0 10px; }
+.chapter p { font-size:14px; color:#4a5a6a; line-height:1.85; margin-bottom:14px; }
+.chapter p:last-child { margin-bottom:0; }
+.zone-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; margin:16px 0; }
+.zone-card { border-radius:8px; padding:16px 18px; }
+.zone-card.z1 { background:#e4f5e8; border:1px solid #4aaa60; }
+.zone-card.z2 { background:#fff8e0; border:1px solid #d4af37; }
+.zone-card.z3 { background:#e8f0fb; border:1px solid #5a8ad0; }
+.zone-card h4 { font-size:13px; font-weight:700; margin-bottom:8px; }
+.zone-card.z1 h4 { color:#1a6030; }
+.zone-card.z2 h4 { color:#7a5a00; }
+.zone-card.z3 h4 { color:#1a3a6a; }
+.zone-card p { font-size:12px; line-height:1.65; margin-bottom:0; }
+.zone-card.z1 p { color:#1a5028; }
+.zone-card.z2 p { color:#5a4000; }
+.zone-card.z3 p { color:#1a3060; }
+.leerzeit-list { display:flex; flex-direction:column; gap:10px; margin:14px 0; }
+.leerzeit-item { display:flex; gap:12px; align-items:flex-start; padding:12px 16px; background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; }
+.leerzeit-icon { font-size:18px; flex-shrink:0; }
+.leerzeit-text h4 { font-size:13px; font-weight:700; color:#1a2a4a; margin-bottom:3px; }
+.leerzeit-text p { font-size:13px; color:#4a5a6a; margin-bottom:0; line-height:1.6; }
+.highlight { background:#fff8e8; border-left:4px solid #d4af37; border-radius:0 8px 8px 0; padding:14px 18px; margin:16px 0; font-size:14px; color:#5a4000; line-height:1.7; }
+.task-box { background:#f5f0e8; border-left:4px solid #d4af37; border-radius:0 8px 8px 0; padding:16px 20px; margin-top:20px; }
+.task-box strong { font-size:13px; color:#1a2a4a; display:block; margin-bottom:6px; }
+.task-box p { font-size:13px; color:#4a5a6a; margin-bottom:0; }
+.hint-box { background:#e8f0fb; border:1px solid #5a8ad0; border-radius:8px; padding:14px 18px; margin-top:16px; font-size:13px; color:#1a3a6a; line-height:1.7; }
+.nav-row { display:flex; gap:12px; justify-content:space-between; margin-top:24px; }
+.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:12px 24px; border-radius:8px; font-size:13px; font-weight:600; text-decoration:none; transition:all 0.2s; display:inline-block; }
+.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
+.nav-btn.secondary { background:transparent; border:1px solid rgba(26,42,74,0.3); color:#1a2a4a; }
+.nav-btn.secondary:hover { background:#1a2a4a; color:#d4af37; }
+.footer { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer strong { color:#d4af37; }
+@media(max-width:600px){ .zone-grid { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="brand">GASTRO-OS</div>
+  <a href="modul5-uebersicht.html" class="btn-back">← Modulübersicht</a>
+</div>
 <div class="gold-bar"></div>
 <div class="main">
-<h1>Lektion 3 — Deine Tagesstruktur als Unternehmer</h1>
-<div class="gold-rule"></div>
-<p>In Lektion 2 hast du gelernt was SOPs sind und wie du deine ersten drei schreibst. Aber ein System aus SOPs allein reicht nicht. Du kannst die besten Prozesse der Welt haben und trotzdem jeden Tag im Chaos versinken, wenn du keine Struktur hast <em>wann</em> du was tust.</p>
+  <div class="page-tag">Modul 5 · Struktur &amp; Organisation</div>
+  <div class="page-title">📖 Lektion 3 — Deine Tagesstruktur als Unternehmer</div>
+  <div class="page-sub">Wann du was tust — und warum das den Unterschied macht</div>
 
-<hr class="divider">
-<h2>Kapitel 1 — Warum Struktur bei dir beginnt</h2>
-<h3>Der Unternehmer-Tag existiert nicht von allein</h3>
-<p>Die meisten Gastronomen haben keinen Unternehmer-Tag. Sie haben einen Mitarbeiter-Tag, nur mit mehr Verantwortung. Sie löschen Brände, springen ein, beantworten Fragen — und haben am Abend nichts an der Struktur ihres Betriebs geändert.</p>
-<p>Wer seinen Tag nicht strukturiert, wird von seinem Tag strukturiert. Die wichtigsten Aufgaben werden immer als erstes verschoben — nicht die dringenden, sondern die wichtigen.</p>
-<h3>Der GASTRO-OS Rhythmus — drei Zonen</h3>
-<p><strong>Zone 1 — Unternehmer-Zeit:</strong> 2–3 Mal pro Woche, morgens, bevor der Betrieb läuft. Zahlen checken, SOPs schreiben, Strategie planen. Diese Zeit ist unantastbar — sie wird nicht verschoben, auch wenn es stressig wird.</p>
-<p><strong>Zone 2 — Führungs-Zeit:</strong> Täglich, je nach Schicht. Team-Briefing, Mitarbeiter-Feedback, Qualitätskontrolle. Ein gutes Team-Briefing dauert zehn Minuten. Was zählt ist die Regelmäßigkeit.</p>
-<p><strong>Zone 3 — Betriebs-Zeit:</strong> Dann und nur dann wenn du wirklich gebraucht wirst. Engpass-Abdeckung, wichtige Gäste, Unvorhergesehenes. Wenn Zone 3 deine ganze Woche frisst, fehlen Prozesse.</p>
-<div class="aufgabe"><strong>🎯 Deine Aufgabe:</strong><br>Schreib auf wie deine aktuelle Woche aussieht. Wie viele Stunden verbringst du in Zone 1? Zone 2? Zone 3? Sei ehrlich — diese Aufteilung zeigt dir klarer als alles andere wo du heute stehst.</div>
+  <div class="welcome-card">
+    <p>In Lektion 2 haben wir uns angeschaut was SOPs sind und wie du deine ersten drei schreibst. Aber ein System aus SOPs allein reicht nicht. Du kannst die besten Prozesse der Welt haben und trotzdem jeden Tag im Chaos versinken wenn du keine Struktur hast wann du was tust. Genau darum geht es in Lektion 3. Nicht nur was du tust, sondern wann du es tust.</p>
+  </div>
 
-<hr class="divider">
-<h2>Kapitel 2 — Stoßzeiten und Leerzeiten gewinnbringend nutzen</h2>
-<h3>Der größte ungenutzte Hebel</h3>
-<p>Es gibt einen Bereich der fast überall verschwendet wird — nicht die Stoßzeit, sondern die <strong>Leerzeit</strong>. Die Stunden zwischen den Diensten. Die ruhigen Dienstagnachmittage. Diese Zeit wird mit Kaffeepausen und halbherziger Vorbereitung gefüllt.</p>
-<p><strong>Leerzeit ist Unternehmer-Zeit in Betriebskleidung.</strong> In der Leerzeit schreibst du SOPs, schulst Mitarbeiter, planst den Einkauf, wertest deine Zahlen aus und entwickelst neue Gerichte.</p>
-<h3>Stoßzeiten richtig managen</h3>
-<p>Das Mise en Place muss zu 100% fertig sein bevor der Service beginnt. Klare Stationseinteilung — jeder weiß genau was er tut. Reservierungen und Allergien sind gecheckt bevor der erste Gast kommt. Kommunikations-Signale im Team reduzieren Chaos und Fehler.</p>
-<h3>Zone 1 in den Alltag einbauen</h3>
-<p>Such dir zwei Morgende pro Woche aus — zum Beispiel Dienstag und Donnerstag. Blockiere von 8 bis 10 Uhr deine Unternehmer-Zeit. Kein Telefon. Keine spontanen Probleme. Halte diese Zeit fünf Wochen durch. Nach fünf Wochen wirst du den Unterschied spüren.</p>
-<div class="aufgabe"><strong>🎯 Deine Aufgabe:</strong><br>Öffne jetzt den Wochenplaner und füll ihn für die nächste Woche aus. Blockiere deine zwei Unternehmer-Morgende. Schreib konkret auf was du in dieser Zeit tun wirst. Und schreib auf welche Leerzeiten existieren und wie du sie ab jetzt nutzt.</div>
-<p>👉 Den <strong>Wochenplaner</strong> findest du im Tab <strong>📊 Wochenplaner</strong></p>
+  <div class="chapter">
+    <h2>Kapitel 1 — Warum Struktur bei dir beginnt</h2>
 
-<div class="nav-buttons">
-<a href="modul5-lektion2.html" class="btn btn-secondary">← Lektion 2</a>
-<a href="modul5-lektion4.html" class="btn btn-primary">Lektion 4 →</a>
+    <h3>Der Unternehmer-Tag existiert nicht von allein</h3>
+    <p>Die meisten Gastronomen haben keinen Unternehmer-Tag. Sie haben einen Mitarbeiter-Tag — nur mit mehr Verantwortung. Sie sind überall gleichzeitig, löschen Brände, springen ein, beantworten Fragen und reagieren den ganzen Tag auf das was passiert. Am Abend sind sie erschöpft. Und sie haben nichts an der Struktur ihres Betriebs geändert.</p>
+    <p>Das ist kein Charakterproblem. Das ist ein Planungsproblem. Wer seinen Tag nicht strukturiert wird von seinem Tag strukturiert. Und in der Gastronomie bedeutet das: der Tag gehört dem Betrieb. Nicht dir.</p>
+
+    <h3>Der GASTRO-OS-Rhythmus — drei Zonen</h3>
+    <div class="zone-grid">
+      <div class="zone-card z1">
+        <h4>🟢 Zone 1 — Unternehmer-Zeit</h4>
+        <p>2–3× pro Woche, morgens. Zahlen checken, SOPs schreiben, Strategie planen, Einkauf organisieren. Diese Zeit ist unantastbar. Sie wird nicht verschoben. Sie ist das Wichtigste was du in deiner Woche tust.</p>
+      </div>
+      <div class="zone-card z2">
+        <h4>🟡 Zone 2 — Führungs-Zeit</h4>
+        <p>Täglich, je nach Betrieb. Team-Briefing, Mitarbeiter-Feedback, Qualitätskontrolle. Ein gutes Team-Briefing dauert 10 Minuten. Was zählt ist die Regelmäßigkeit, nicht die Länge.</p>
+      </div>
+      <div class="zone-card z3">
+        <h4>🔵 Zone 3 — Betriebs-Zeit</h4>
+        <p>Nur wenn du wirklich gebraucht wirst. Engpass-Abdeckung, wichtige Gäste, Unvorhergesehenes. Diese Zone ist nicht planbar. Aber sie sollte nicht deine ganze Woche fressen. Wenn sie das tut — fehlen Prozesse.</p>
+      </div>
+    </div>
+
+    <h3>Warum Zone 1 immer als erstes geopfert wird</h3>
+    <p>Es gibt eine universelle Wahrheit in der Gastronomie. Die wichtigsten Aufgaben werden als erstes verschoben. Was brennt bekommt die Aufmerksamkeit. Der Lieferant der nicht kommt. Der Mitarbeiter der krank ist. Der Gast der sich beschwert. Das sind die Dinge die deinen Tag füllen — nicht weil sie wichtiger wären, sondern weil sie laut sind.</p>
+
+    <div class="task-box">
+      <strong>🎯 Aufgabe Kapitel 1</strong>
+      <p>Schreib auf wie deine aktuelle Woche aussieht. Wie viele Stunden verbringst du in Zone 1 (Unternehmer)? Wie viele in Zone 2 (Führungskraft)? Und wie viele in Zone 3 (Feuerwehr)? Sei ehrlich. Diese Aufteilung zeigt dir klarer als alles andere wo du heute stehst.</p>
+    </div>
+  </div>
+
+  <div class="chapter">
+    <h2>Kapitel 2 — Stoßzeiten und Leerzeiten beide gewinnbringend nutzen</h2>
+
+    <h3>Der größte ungenutzte Hebel in deinem Betrieb</h3>
+    <p>Es gibt einen Bereich in der Gastronomie der fast überall verschwendet wird. Nicht die Stoßzeit. Die Stoßzeit ist voll. Es ist die Leerzeit. Die Stunden zwischen den Diensten. Die ruhigen Dienstagnachmittage. Die langsamen Stunden vor dem Abendservice. Diese Zeit wird in den meisten Betrieben mit Kaffeepausen und halbherziger Vorbereitung gefüllt. Das ist einer der teuersten Fehler den du als Gastronom machen kannst. Leerzeit ist Unternehmer-Zeit.</p>
+
+    <h3>Stoßzeiten richtig managen</h3>
+    <p>Stoßzeit richtig zu managen bedeutet nicht schneller zu arbeiten. Es bedeutet besser vorbereitet zu sein. Das Mise en Place muss zu 100% fertig sein bevor der Service beginnt. Nicht zu 80%. Jede Lücke kostet im Service doppelt so viel Zeit wie sie vorher gekostet hätte. Klare Stationseinteilung, Vorbestellungen gecheckt, Kommunikationssignale im Team — Ruhe im Service kommt durch Vorbereitung, nicht durch Zufall.</p>
+
+    <h3>Leerzeit produktiv nutzen</h3>
+    <div class="leerzeit-list">
+      <div class="leerzeit-item">
+        <div class="leerzeit-icon">📝</div>
+        <div class="leerzeit-text"><h4>SOPs schreiben</h4><p>Nicht zu Hause am Abend wenn du erschöpft bist. Am ruhigen Dienstagnachmittag. 30 Minuten Leerzeit reichen für eine vollständige SOP.</p></div>
+      </div>
+      <div class="leerzeit-item">
+        <div class="leerzeit-icon">👥</div>
+        <div class="leerzeit-text"><h4>Mitarbeiter schulen</h4><p>Nicht mit langen Vorträgen. Mit kurzen gezielten Gesprächen. Zeig einem Mitarbeiter wie er eine Aufgabe besser erledigt. Das dauert fünf Minuten. Es wirkt Wochen.</p></div>
+      </div>
+      <div class="leerzeit-item">
+        <div class="leerzeit-icon">🛒</div>
+        <div class="leerzeit-text"><h4>Einkauf planen und Lager kontrollieren</h4><p>Mit einer Checkliste. Was ist zur Neige gegangen. Was wird nächste Woche gebraucht. Wer das regelmäßig macht hat weniger Überraschungen und bessere Wareneinsatz-Zahlen.</p></div>
+      </div>
+      <div class="leerzeit-item">
+        <div class="leerzeit-icon">📊</div>
+        <div class="leerzeit-text"><h4>Zahlen auswerten</h4><p>BWA, Wareneinsatz, Personalkosten. Wöchentlich, kurz, gezielt. Was hat diese Woche funktioniert. Was nicht. Wo muss ich nächste Woche gegensteuern.</p></div>
+      </div>
+    </div>
+
+    <h3>Wie du Zone 1 in deinen Alltag einbaust</h3>
+    <p>Such dir zwei Morgende in deiner Woche aus. Zum Beispiel Dienstag und Donnerstag. Blockiere von 8 bis 10 Uhr deine Unternehmer-Zeit. Kein Telefon. Keine Fragen beantworten. Zwei Stunden in denen du als Unternehmer arbeitest.</p>
+
+    <div class="highlight">
+      Halte diese Zeit fünf Wochen durch. Nach fünf Wochen wirst du den Unterschied spüren. Die Qualität deiner Entscheidungen steigt. Die Anzahl der Brände sinkt. Und du gewinnst das Gefühl dass du deinen Betrieb führst — statt er dich.
+    </div>
+
+    <div class="hint-box">👉 Den Wochenplaner findest du im Tab 📊 Wochenplaner</div>
+
+    <div class="task-box">
+      <strong>🎯 Aufgabe Kapitel 2</strong>
+      <p>Öffne jetzt den Wochenplaner und füll ihn für die nächste Woche aus. Blockiere deine zwei Unternehmer-Morgende. Schreib konkret auf was du in dieser Zeit tun wirst. Und schreib auf welche Leerzeiten in deiner Woche existieren und wie du sie ab jetzt nutzen wirst.</p>
+    </div>
+  </div>
+
+  <div class="nav-row">
+    <a href="modul5-lektion2.html" class="nav-btn secondary">← Lektion 2</a>
+    <a href="modul5-lektion4.html" class="nav-btn">Lektion 4 →</a>
+  </div>
 </div>
-</div>
-<div class="gold-bar"></div><div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div></body></html>
+<div class="gold-bar"></div>
+<div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+</body>
+</html>
