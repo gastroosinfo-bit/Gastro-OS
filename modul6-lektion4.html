@@ -3,120 +3,153 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GASTRO-OS – Modul 6 | Lektion 4</title>
+<title>Lektion 4 – Modul 6 | GASTRO-OS</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f0e8; color: #1a2a4a; min-height: 100vh; }
-  .header { background: #1a2a4a; padding: 22px 40px; text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,0.3); }
-  .header .brand { font-family: Georgia, serif; font-size: 22px; color: #d4af37; letter-spacing: 4px; font-weight: normal; }
-  .header .modul-label { font-size: 11px; color: #a0b0c8; letter-spacing: 3px; text-transform: uppercase; margin-top: 4px; }
-  .gold-bar { height: 3px; background: linear-gradient(90deg, #1a2a4a, #d4af37, #1a2a4a); }
-  .main { max-width: 780px; margin: 36px auto; padding: 0 24px 60px; }
-  .cream-box { background: #fff; border-radius: 12px; padding: 36px 40px; border: 3px solid #9A7D3A; margin-bottom: 28px; }
-  .cream-box h1 { font-family: Georgia, serif; font-size: 26px; color: #1a2a4a; margin-bottom: 8px; }
-  .gold-rule { width: 56px; height: 2px; background: #d4af37; margin: 10px 0 20px; }
-  .intro { font-size: 14px; color: #5060a0; line-height: 1.7; }
-  .chapter { background: #fff; border-radius: 10px; padding: 28px 32px; margin-bottom: 20px; border: 1px solid #e8dfc8; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
-  .chapter h2 { font-family: Georgia, serif; font-size: 19px; color: #1a2a4a; margin-bottom: 6px; padding-bottom: 8px; border-bottom: 2px solid #d4af37; }
-  .chapter h3 { font-size: 14px; font-weight: 700; color: #1a2a4a; margin: 18px 0 8px; text-transform: uppercase; letter-spacing: 0.5px; }
-  .chapter p { font-size: 14px; color: #334; line-height: 1.8; margin-bottom: 12px; }
-  .stats-box { background: #1a2a4a; border-radius: 10px; padding: 20px 24px; margin: 16px 0; }
-  .stats-box .stat { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 13px; }
-  .stats-box .stat:last-child { border-bottom: none; }
-  .stats-box .stat .k { color: #a0b0c8; }
-  .stats-box .stat .v { color: #d4af37; font-weight: 700; }
-  .aktionsplan { display: flex; flex-direction: column; gap: 12px; margin: 16px 0; }
-  .woche { background: #faf8f4; border-radius: 8px; padding: 16px 20px; border: 1px solid #e8dfc8; display: flex; gap: 14px; }
-  .woche .wnum { background: #d4af37; color: #1a2a4a; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; flex-shrink: 0; }
-  .woche .winfo .wtitle { font-size: 14px; font-weight: 700; color: #1a2a4a; margin-bottom: 4px; }
-  .woche .winfo p { font-size: 13px; color: #334; line-height: 1.6; margin: 0; }
-  .aufgabe { background: #f0f4fb; border-radius: 8px; padding: 16px 20px; margin-top: 20px; border-left: 4px solid #1a2a4a; }
-  .aufgabe .label { font-size: 11px; font-weight: 700; color: #d4af37; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
-  .aufgabe p { font-size: 13px; color: #1a2a4a; line-height: 1.7; margin: 0; }
-  .finale { background: #1a2a4a; border-radius: 12px; padding: 28px 32px; text-align: center; margin-top: 12px; }
-  .finale p { color: #c0cce0; font-size: 14px; line-height: 1.8; }
-  .footer { background: #1a2a4a; margin-top: 48px; padding: 14px 40px; text-align: center; font-size: 11px; color: #8090a8; letter-spacing: 1px; }
-  .footer strong { color: #d4af37; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
+.header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:20px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.btn-back { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; text-decoration:none; display:inline-block; }
+.btn-back:hover { border-color:#d4af37; color:#d4af37; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+.main { max-width:860px; margin:36px auto; padding:0 24px 60px; }
+.page-tag { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; margin-bottom:8px; }
+.page-title { font-family:Georgia,serif; font-size:26px; color:#1a2a4a; margin-bottom:6px; }
+.page-sub { font-size:13px; color:#8090a8; margin-bottom:28px; }
+.welcome-card { background:#1a2a4a; border-radius:12px; padding:24px 28px; margin-bottom:28px; }
+.welcome-card p { font-size:14px; color:#c0cce0; line-height:1.85; }
+.chapter { background:#fff; border:1px solid #e8dfc8; border-radius:12px; padding:28px 32px; margin-bottom:24px; box-shadow:0 2px 8px rgba(0,0,0,0.04); }
+.chapter h2 { font-family:Georgia,serif; font-size:18px; color:#1a2a4a; margin-bottom:18px; padding-bottom:12px; border-bottom:2px solid #e8dfc8; }
+.chapter h3 { font-family:Georgia,serif; font-size:15px; color:#d4af37; margin:20px 0 10px; }
+.chapter p { font-size:14px; color:#4a5a6a; line-height:1.85; margin-bottom:14px; }
+.chapter p:last-child { margin-bottom:0; }
+.fallbeispiel { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:20px 24px; margin:14px 0; }
+.fallbeispiel h4 { font-family:Georgia,serif; font-size:14px; color:#1a2a4a; margin-bottom:10px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
+.fallbeispiel p { font-size:13px; color:#4a5a6a; line-height:1.8; margin-bottom:10px; }
+.fallbeispiel p:last-child { margin-bottom:0; }
+.ergebnis-box { background:#e4f5e8; border:1px solid #4aaa60; border-radius:8px; padding:16px 20px; margin:14px 0; }
+.ergebnis-box h4 { font-size:13px; font-weight:700; color:#1a6030; margin-bottom:8px; }
+.ergebnis-box p { font-size:13px; color:#1a5028; line-height:1.7; margin-bottom:4px; }
+.wochen-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:14px 0; }
+.woche-card { border:1px solid #e8dfc8; border-radius:8px; padding:16px 18px; background:#faf8f4; }
+.woche-card h4 { font-family:Georgia,serif; font-size:13px; color:#d4af37; margin-bottom:8px; }
+.woche-card p { font-size:13px; color:#4a5a6a; line-height:1.7; margin-bottom:4px; }
+.woche-card .result { font-size:12px; color:#4aaa70; font-weight:600; margin-top:8px; padding-top:8px; border-top:1px solid #e8dfc8; }
+.highlight { background:#fff8e8; border-left:4px solid #d4af37; border-radius:0 8px 8px 0; padding:14px 18px; margin:16px 0; font-size:14px; color:#5a4000; line-height:1.7; }
+.task-box { background:#f5f0e8; border-left:4px solid #d4af37; border-radius:0 8px 8px 0; padding:16px 20px; margin-top:20px; }
+.task-box strong { font-size:13px; color:#1a2a4a; display:block; margin-bottom:6px; }
+.task-box p { font-size:13px; color:#4a5a6a; margin-bottom:0; }
+.abschluss { background:#1a2a4a; border-radius:12px; padding:24px 28px; margin-top:24px; text-align:center; }
+.abschluss h3 { font-family:Georgia,serif; font-size:18px; color:#d4af37; margin-bottom:10px; }
+.abschluss p { font-size:14px; color:#c0cce0; line-height:1.7; }
+.nav-row { display:flex; gap:12px; justify-content:space-between; margin-top:24px; }
+.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:12px 24px; border-radius:8px; font-size:13px; font-weight:600; text-decoration:none; transition:all 0.2s; display:inline-block; }
+.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
+.nav-btn.secondary { background:transparent; border:1px solid rgba(26,42,74,0.3); color:#1a2a4a; }
+.nav-btn.secondary:hover { background:#1a2a4a; color:#d4af37; }
+.footer { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer strong { color:#d4af37; }
+@media(max-width:600px){ .wochen-grid{grid-template-columns:1fr;} }
 </style>
 </head>
 <body>
 <div class="header">
   <div class="brand">GASTRO-OS</div>
-  <div class="modul-label">Modul 6 &nbsp;·&nbsp; Lektion 4</div>
+  <a href="modul6-uebersicht.html" class="btn-back">← Modulübersicht</a>
 </div>
 <div class="gold-bar"></div>
 <div class="main">
-  <div class="cream-box">
-    <h1>📖 Lektion 4 — Vom Plan zur Umsetzung</h1>
-    <div class="gold-rule"></div>
-    <p class="intro">Jetzt kommen zwei Dinge zusammen: Ein Fallbeispiel das zeigt wie all das in einem echten Betrieb aussieht — und dein persönlicher 30-Tage-Aktionsplan der dir Woche für Woche zeigt was als nächstes zu tun ist.</p>
+  <div class="page-tag">Modul 6 · Mitarbeiter führen statt nur reagieren</div>
+  <div class="page-title">📖 Lektion 4 — Vom Plan zur Umsetzung</div>
+  <div class="page-sub">Fallbeispiel Marco + dein 30-Tage-Aktionsplan</div>
+
+  <div class="welcome-card">
+    <p>In Lektion 3 haben wir uns angeschaut warum der Schichtleiter die wichtigste Rolle in deinem Betrieb ist, was ihn ausmacht und wie du ihn Schritt für Schritt aufbaust. In Lektion 4 kommen zwei Dinge zusammen: ein Fallbeispiel das zeigt wie all das in einem echten Betrieb aussieht — und dein persönlicher 30-Tage-Aktionsplan.</p>
   </div>
 
   <div class="chapter">
     <h2>Kapitel 1 — Wie Marco sein Team befreit hat</h2>
-    <p>Marco führt ein Restaurant mit neun Mitarbeitern in einer Kleinstadt. Von außen ein erfolgreicher Betrieb. Von innen: Marco ist seit sieben Jahren jeden Tag da. Nicht weil er will. Weil er das Gefühl hat er muss. Seine Mitarbeiter stellen ihm täglich zehn bis zwanzig Fragen. Was machen wir wenn der Lieferant nicht kommt. Darf ich dem Gast einen Tisch tauschen. Wer macht heute die Kasse.</p>
-    <p>Der Wendepunkt kam durch ein Gespräch mit einem befreundeten Gastronomen der entspannt war und Zeit hatte. Die Antwort war simpel: „Jeder in meinem Betrieb weiß genau was er tut, was er entscheiden darf und an wen er sich wendet wenn ich nicht da bin." Marco erkannte: Das Problem war nicht sein Team. Das Problem war die fehlende Struktur.</p>
 
-    <h3>Die Lösung — drei Schritte in vier Wochen</h3>
-    <div class="stats-box">
-      <div class="stat"><span class="k">Woche 1</span><span class="v">Vollständige Aufgabenliste — 47 Punkte</span></div>
-      <div class="stat"><span class="k">23 davon erledigte er selbst</span><span class="v">Delegationspotenzial erkannt</span></div>
-      <div class="stat"><span class="k">Woche 2</span><span class="v">Rollenbeschreibungen für alle, je 5 Min. besprochen</span></div>
-      <div class="stat"><span class="k">Woche 3</span><span class="v">Sous Chef Thomas → offizieller Schichtleiter</span></div>
-      <div class="stat"><span class="k">Woche 4</span><span class="v">Monatliche Feedback-Gespräche eingeführt</span></div>
+    <div class="fallbeispiel">
+      <h4>Der Ausgangspunkt</h4>
+      <p>Marco führt ein Restaurant mit neun Mitarbeitern. Das Restaurant ist bekannt, gut besucht und hat eine treue Stammkundschaft. Von außen sieht es nach einem erfolgreichen Betrieb aus. Von innen sieht es anders aus. Marco ist seit sieben Jahren jeden Tag im Betrieb. Nicht weil er es will. Weil er das Gefühl hat er muss. Jeder seiner Mitarbeiter stellt ihm täglich zwischen zehn und zwanzig Fragen. Was machen wir wenn der Lieferant nicht kommt. Darf ich dem Gast einen Tisch tauschen. Wer macht heute die Kasse. Marco beantwortet diese Fragen. Jeden Tag. Dieselben Fragen, andere Tage.</p>
     </div>
 
-    <p>Das Ergebnis nach sechs Wochen: Die Fragen halbierten sich. Thomas traf täglich eigenständige Entscheidungen. Und zum ersten Mal seit Jahren verließ Marco seinen Betrieb pünktlich. Das ist kein Zufall. Das ist Struktur.</p>
+    <div class="fallbeispiel">
+      <h4>Die Erkenntnis</h4>
+      <p>Der Wendepunkt kam durch ein Gespräch mit einem befreundeten Gastronomen der entspannt war, Zeit hatte und Pläne für das nächste Quartal machte. Marco fragte ihn wie das möglich ist. Die Antwort war so einfach dass es ihn überraschte: Jeder in meinem Betrieb weiß genau was er tut, was er entscheiden darf und an wen er sich wendet wenn ich nicht da bin. Marco fuhr nach Hause und fragte sich zum ersten Mal ob das in seinem Betrieb auch so war. Die Antwort war nein.</p>
+    </div>
 
-    <div class="aufgabe">
-      <div class="label">🎯 Deine Aufgabe</div>
-      <p>Schreib auf welche Situation aus Marcos Geschichte dich am meisten an deinen eigenen Betrieb erinnert. Welcher Moment hätte auch bei dir passieren können? Und was wäre dein eigener Wendepunkt? Drei Sätze. Nicht mehr.</p>
+    <div class="fallbeispiel">
+      <h4>Die Lösung — drei Dinge in vier Wochen</h4>
+      <p><strong>Woche 1:</strong> Marco schrieb eine vollständige Aufgabenliste. Die Liste hatte am Ende 47 Punkte. 23 davon erledigte er regelmäßig selbst, obwohl theoretisch jemand anderes dafür zuständig sein könnte.</p>
+      <p><strong>Woche 2:</strong> Er schrieb für jede Rolle eine Rollenbeschreibung. Eine Seite pro Rolle. Er besprach jede Rollenbeschreibung kurz mit dem betreffenden Mitarbeiter. Fünf Minuten pro Person.</p>
+      <p><strong>Woche 3:</strong> Er ernannte seinen Sous Chef Thomas zum Schichtleiter. Thomas war seit vier Jahren im Betrieb und hatte diese Rolle inoffiziell bereits halb inne. Marco schrieb für Thomas eine detaillierte Rollenbeschreibung und führte wöchentliche Zehn-Minuten-Gespräche mit ihm ein.</p>
+      <p><strong>Woche 4:</strong> Er führte monatliche Feedback-Gespräche für alle Mitarbeiter ein. Fünfzehn Minuten pro Person. Strukturiert. Mit einer klaren Vorlage die er einmal erstellt hatte und seitdem immer wieder nutzt.</p>
+    </div>
+
+    <div class="ergebnis-box">
+      <h4>🎉 Das Ergebnis nach sechs Wochen</h4>
+      <p>✅ Die Anzahl der täglichen Fragen an Marco hatte sich halbiert.</p>
+      <p>✅ Thomas traf täglich Entscheidungen die vorher bei Marco gelandet wären.</p>
+      <p>✅ Zum ersten Mal seit Jahren verließ Marco seinen Betrieb pünktlich — mehrmals pro Woche.</p>
+      <p><strong>Das ist kein Zufall. Das ist Struktur. Und Struktur ist erlernbar.</strong></p>
+    </div>
+
+    <div class="task-box">
+      <strong>🎯 Aufgabe Kapitel 1</strong>
+      <p>Lies Marcos Geschichte noch einmal und schreib auf welche Situation dich am meisten an deinen eigenen Betrieb erinnert. Welcher Moment hätte auch bei dir passieren können. Und was wäre dein eigener Wendepunkt. Drei Sätze. Diese zeigen dir was du als erstes ändern musst.</p>
     </div>
   </div>
 
   <div class="chapter">
     <h2>Kapitel 2 — Dein 30-Tage-Aktionsplan</h2>
-    <p>Pro Woche ein einziger klarer Fokus. Nicht fünf Dinge gleichzeitig. Einen. Am Ende jeder Woche weißt du ob du ihn umgesetzt hast oder nicht.</p>
 
-    <div class="aktionsplan">
-      <div class="woche">
-        <div class="wnum">1</div>
-        <div class="winfo">
-          <div class="wtitle">Klarheit schaffen</div>
-          <p>Vollständige Aufgabenliste schreiben. Nach Bereichen sortieren. Markieren was an dir hängt obwohl jemand anderes es übernehmen könnte. Drei Fragen beantworten: Welche Rolle hat keine klare Beschreibung? Was landet täglich bei mir das nicht bei mir landen müsste? Wer ist mein Schichtleiter-Kandidat?</p>
-        </div>
+    <div class="wochen-grid">
+      <div class="woche-card">
+        <h4>📋 Woche 1 — Klarheit schaffen</h4>
+        <p>Schreib deine vollständige Aufgabenliste. Alle Aufgaben sortiert nach Bereichen, mit markierten Aufgaben die bei dir landen obwohl sie jemand anderes übernehmen könnte.</p>
+        <p>Beantworte drei Fragen: Welche Rolle hat keine klare Beschreibung? Welche Aufgabe landet täglich bei mir die nicht sollte? Wer ist am nächsten dran die Schichtleiter-Rolle zu übernehmen?</p>
+        <div class="result">→ Dein Kompass für die nächsten drei Wochen</div>
       </div>
-      <div class="woche">
-        <div class="wnum">2</div>
-        <div class="winfo">
-          <div class="wtitle">Erste Rollenbeschreibungen</div>
-          <p>Zwei Rollenbeschreibungen schreiben: Schichtleiter und die unklarste Rolle im Betrieb. Eine Seite pro Rolle. Maximal 30 Minuten. Mit den betreffenden Mitarbeitern in je fünf Minuten besprechen.</p>
-        </div>
+      <div class="woche-card">
+        <h4>✍️ Woche 2 — Erste Rollenbeschreibungen</h4>
+        <p>Schreib deine ersten zwei Rollenbeschreibungen: Schichtleiter und die Rolle die am häufigsten unklar ist. Eine Seite pro Rolle. Maximal 30 Minuten. Fertig ist besser als perfekt.</p>
+        <p>Besprich beide mit den betreffenden Mitarbeitern. Fünf Minuten pro Gespräch.</p>
+        <div class="result">→ Erste Rollen klar definiert und kommuniziert</div>
       </div>
-      <div class="woche">
-        <div class="wnum">3</div>
-        <div class="winfo">
-          <div class="wtitle">Schichtleiter stärken</div>
-          <p>Erste echte Führungsaufgabe: Das Team-Briefing vor dem nächsten Service. Danach kurz besprechen was gut lief. Außerdem: Erstes strukturiertes Feedback-Gespräch mit einem Mitarbeiter — 15 Minuten, was läuft gut, was wird besser, was passiert bis zum nächsten Gespräch.</p>
-        </div>
+      <div class="woche-card">
+        <h4>🏋️ Woche 3 — Schichtleiter stärken</h4>
+        <p>Gib deinem Schichtleiter seine erste echte Führungsaufgabe: das Team-Briefing vor dem nächsten Service. Fünf Minuten — aber seine fünf Minuten. Beobachte, greife nicht ein, sprich danach kurz darüber.</p>
+        <p>Führe außerdem dein erstes strukturiertes Feedback-Gespräch mit einem Mitarbeiter.</p>
+        <div class="result">→ Schichtleiter hat erste Führungserfahrung</div>
       </div>
-      <div class="woche">
-        <div class="wnum">4</div>
-        <div class="winfo">
-          <div class="wtitle">Delegation</div>
-          <p>Eine Aufgabe komplett an den Schichtleiter delegieren die bisher bei dir lag. Nicht eine kleine. Eine die Entscheidungen erfordert. Nicht eingreifen. Danach besprechen. Außerdem zwei weitere Rollenbeschreibungen schreiben.</p>
-        </div>
+      <div class="woche-card">
+        <h4>🤝 Woche 4 — Delegation</h4>
+        <p>Delegiere eine Aufgabe komplett an deinen Schichtleiter die bisher bei dir lag. Nicht eine kleine Aufgabe — eine die Entscheidungen erfordert. Du informierst ihn, greifst nicht ein, beobachtest das Ergebnis.</p>
+        <p>Schreib zwei weitere Rollenbeschreibungen.</p>
+        <div class="result">→ Erste echte Delegation abgeschlossen</div>
       </div>
     </div>
 
-    <div class="aufgabe">
-      <div class="label">🎯 Deine Aufgabe</div>
-      <p>Trag alle vier Wochen-Aufgaben jetzt in deinen Kalender ein. Konkrete Termine, konkrete Uhrzeiten. Woche 1: Was analysierst du genau? Woche 2: Welche zwei Rollenbeschreibungen? Woche 3: Welche Führungsaufgabe und welcher Mitarbeiter für das erste Feedback? Woche 4: Was delegierst du?</p>
+    <div class="highlight">
+      Nach 30 Tagen wirst du etwas bemerken das schwer zu beschreiben ist bis man es selbst erlebt. Den ersten Tag an dem du deinen Betrieb verlässt und weißt dass jemand kompetentes die Entscheidungen trifft. Das ist nicht das Ende. Es ist der Anfang.
     </div>
 
-    <div class="finale">
-      <p>Modul 6 ist nicht das Modul in dem du dein Team perfekt aufstellst. Es ist das Modul in dem du anfängst dein Team wirklich zu führen statt nur zu reagieren. Und dieser Unterschied ist größer als alles andere was du in deinem Betrieb verändern kannst.<br><br><strong style="color:#d4af37">Jetzt. Nicht nächste Woche.</strong></p>
+    <div class="task-box">
+      <strong>🎯 Aufgabe Kapitel 2</strong>
+      <p>Schreib deinen persönlichen 30-Tage-Plan auf. Konkret. Woche 1: was analysierst du genau und wer ist dein Schichtleiter-Kandidat. Woche 2: welche zwei Rollenbeschreibungen schreibst du. Woche 3: welche Führungsaufgabe gibst du dem Schichtleiter. Woche 4: welche Aufgabe delegierst du an wen.</p>
     </div>
+  </div>
+
+  <div class="abschluss">
+    <h3>Modul 6 abgeschlossen</h3>
+    <p>Du weißt jetzt warum klare Rollen alles verändern, wie du Rollen definierst und zuweist, wie du einen Schichtleiter aufbaust und stärkst. Jetzt ist es Zeit das Wissen in deinen Betrieb zu bringen. <strong style="color:#d4af37;">Heute.</strong></p>
+  </div>
+
+  <div class="nav-row">
+    <a href="modul6-lektion3.html" class="nav-btn secondary">← Lektion 3</a>
+    <a href="modul6-personalstruktur-video.html" class="nav-btn">Personalstruktur-Check →</a>
   </div>
 </div>
 <div class="gold-bar"></div>

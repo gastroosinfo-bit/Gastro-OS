@@ -3,85 +3,136 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GASTRO-OS – Modul 6 | Lektion 3</title>
+<title>Lektion 3 – Modul 6 | GASTRO-OS</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f0e8; color: #1a2a4a; min-height: 100vh; }
-  .header { background: #1a2a4a; padding: 22px 40px; text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,0.3); }
-  .header .brand { font-family: Georgia, serif; font-size: 22px; color: #d4af37; letter-spacing: 4px; font-weight: normal; }
-  .header .modul-label { font-size: 11px; color: #a0b0c8; letter-spacing: 3px; text-transform: uppercase; margin-top: 4px; }
-  .gold-bar { height: 3px; background: linear-gradient(90deg, #1a2a4a, #d4af37, #1a2a4a); }
-  .main { max-width: 780px; margin: 36px auto; padding: 0 24px 60px; }
-  .cream-box { background: #fff; border-radius: 12px; padding: 36px 40px; border: 3px solid #9A7D3A; margin-bottom: 28px; }
-  .cream-box h1 { font-family: Georgia, serif; font-size: 26px; color: #1a2a4a; margin-bottom: 8px; }
-  .gold-rule { width: 56px; height: 2px; background: #d4af37; margin: 10px 0 20px; }
-  .intro { font-size: 14px; color: #5060a0; line-height: 1.7; }
-  .chapter { background: #fff; border-radius: 10px; padding: 28px 32px; margin-bottom: 20px; border: 1px solid #e8dfc8; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
-  .chapter h2 { font-family: Georgia, serif; font-size: 19px; color: #1a2a4a; margin-bottom: 6px; padding-bottom: 8px; border-bottom: 2px solid #d4af37; }
-  .chapter h3 { font-size: 14px; font-weight: 700; color: #1a2a4a; margin: 18px 0 8px; text-transform: uppercase; letter-spacing: 0.5px; }
-  .chapter p { font-size: 14px; color: #334; line-height: 1.8; margin-bottom: 12px; }
-  .eigenschaft { background: #faf8f4; border-radius: 8px; padding: 16px 20px; margin: 12px 0; border: 1px solid #e8dfc8; display: flex; gap: 14px; align-items: flex-start; }
-  .eigenschaft .num { background: #d4af37; color: #1a2a4a; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; flex-shrink: 0; }
-  .eigenschaft p { font-size: 13px; color: #334; line-height: 1.6; margin: 0; }
-  .aufgabe { background: #f0f4fb; border-radius: 8px; padding: 16px 20px; margin-top: 20px; border-left: 4px solid #1a2a4a; }
-  .aufgabe .label { font-size: 11px; font-weight: 700; color: #d4af37; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
-  .aufgabe p { font-size: 13px; color: #1a2a4a; line-height: 1.7; margin: 0; }
-  .tool-hint { background: #fff8e8; border-radius: 8px; padding: 14px 18px; margin-top: 12px; font-size: 13px; color: #7a5000; border: 1px solid #d4af37; }
-  .footer { background: #1a2a4a; margin-top: 48px; padding: 14px 40px; text-align: center; font-size: 11px; color: #8090a8; letter-spacing: 1px; }
-  .footer strong { color: #d4af37; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
+.header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:20px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.btn-back { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; text-decoration:none; display:inline-block; }
+.btn-back:hover { border-color:#d4af37; color:#d4af37; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+.main { max-width:860px; margin:36px auto; padding:0 24px 60px; }
+.page-tag { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; margin-bottom:8px; }
+.page-title { font-family:Georgia,serif; font-size:26px; color:#1a2a4a; margin-bottom:6px; }
+.page-sub { font-size:13px; color:#8090a8; margin-bottom:28px; }
+.welcome-card { background:#1a2a4a; border-radius:12px; padding:24px 28px; margin-bottom:28px; }
+.welcome-card p { font-size:14px; color:#c0cce0; line-height:1.85; }
+.chapter { background:#fff; border:1px solid #e8dfc8; border-radius:12px; padding:28px 32px; margin-bottom:24px; box-shadow:0 2px 8px rgba(0,0,0,0.04); }
+.chapter h2 { font-family:Georgia,serif; font-size:18px; color:#1a2a4a; margin-bottom:18px; padding-bottom:12px; border-bottom:2px solid #e8dfc8; }
+.chapter h3 { font-family:Georgia,serif; font-size:15px; color:#d4af37; margin:20px 0 10px; }
+.chapter p { font-size:14px; color:#4a5a6a; line-height:1.85; margin-bottom:14px; }
+.chapter p:last-child { margin-bottom:0; }
+.three-props { display:flex; flex-direction:column; gap:12px; margin:14px 0; }
+.prop-item { display:flex; gap:14px; align-items:flex-start; background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:14px 16px; }
+.prop-num { background:#d4af37; color:#1a2a4a; font-weight:700; font-size:13px; min-width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.prop-content h4 { font-size:13px; font-weight:700; color:#1a2a4a; margin-bottom:4px; }
+.prop-content p { font-size:13px; color:#4a5a6a; margin-bottom:0; line-height:1.6; }
+.highlight { background:#fff8e8; border-left:4px solid #d4af37; border-radius:0 8px 8px 0; padding:14px 18px; margin:16px 0; font-size:14px; color:#5a4000; line-height:1.7; }
+.task-box { background:#f5f0e8; border-left:4px solid #d4af37; border-radius:0 8px 8px 0; padding:16px 20px; margin-top:20px; }
+.task-box strong { font-size:13px; color:#1a2a4a; display:block; margin-bottom:6px; }
+.task-box p { font-size:13px; color:#4a5a6a; margin-bottom:0; }
+.hint-box { background:#e8f0fb; border:1px solid #5a8ad0; border-radius:8px; padding:14px 18px; margin-top:16px; font-size:13px; color:#1a3a6a; line-height:1.7; }
+.nav-row { display:flex; gap:12px; justify-content:space-between; margin-top:24px; }
+.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:12px 24px; border-radius:8px; font-size:13px; font-weight:600; text-decoration:none; transition:all 0.2s; display:inline-block; }
+.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
+.nav-btn.secondary { background:transparent; border:1px solid rgba(26,42,74,0.3); color:#1a2a4a; }
+.nav-btn.secondary:hover { background:#1a2a4a; color:#d4af37; }
+.footer { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer strong { color:#d4af37; }
 </style>
 </head>
 <body>
 <div class="header">
   <div class="brand">GASTRO-OS</div>
-  <div class="modul-label">Modul 6 &nbsp;·&nbsp; Lektion 3</div>
+  <a href="modul6-uebersicht.html" class="btn-back">← Modulübersicht</a>
 </div>
 <div class="gold-bar"></div>
 <div class="main">
-  <div class="cream-box">
-    <h1>📖 Lektion 3 — Der Schichtleiter als Schlüssel</h1>
-    <div class="gold-rule"></div>
-    <p class="intro">Rollen allein reichen nicht wenn niemand im Team die Verantwortung übernimmt wenn du nicht da bist. Genau hier kommt der Schichtleiter ins Spiel. Er ist die Person die zwischen dir und dem Team steht, Entscheidungen trifft wenn du nicht da bist, und dafür sorgt dass dein System auch dann läuft wenn du es nicht persönlich überwachst.</p>
+  <div class="page-tag">Modul 6 · Mitarbeiter führen statt nur reagieren</div>
+  <div class="page-title">📖 Lektion 3 — Der Schichtleiter als Schlüssel</div>
+  <div class="page-sub">Die wichtigste Rolle in deinem Betrieb aufbauen und stärken</div>
+
+  <div class="welcome-card">
+    <p>In Lektion 2 haben wir deine Rollenstruktur aufgebaut. Du hast eine vollständige Aufgabenliste erstellt, jede Aufgabe einer Rolle zugewiesen und deine erste Rollenbeschreibung geschrieben. Rollen allein reichen aber nicht wenn niemand im Team die Verantwortung übernimmt wenn du nicht da bist. Genau hier kommt der Schichtleiter ins Spiel — dein verlängerter Arm im Betrieb.</p>
   </div>
 
   <div class="chapter">
     <h2>Kapitel 1 — Warum du einen Schichtleiter brauchst</h2>
-    <p>Stell dir vor du hast alle Rollenbeschreibungen geschrieben. Und dann bist du einen Tag nicht da. Ein Gast eskaliert auf eine Weise die über das übliche Reklamationsgespräch hinausgeht. Ein Mitarbeiter fällt kurzfristig aus. Der Lieferant liefert falsche Ware. In diesen Momenten braucht das Team einen Ansprechpartner. Jemanden der entscheidet. Jemanden der nicht du bist.</p>
-    <p>Ohne Schichtleiter gibt es zwei Optionen: Das Team trifft keine Entscheidung und wartet. Oder verschiedene Mitarbeiter treffen verschiedene Entscheidungen. Beides kostet dich am Ende mehr Zeit als wenn du eine klare Führungsperson im Team hättest.</p>
+
+    <h3>Die Lücke die ohne Schichtleiter entsteht</h3>
+    <p>Stell dir vor du hast alle Rollenbeschreibungen geschrieben. Dein Team weiß wer wofür zuständig ist. Und dann bist du einen Tag nicht da. Was passiert wenn eine Situation auftaucht die nicht in der Rollenbeschreibung steht? Ein Gast eskaliert. Ein Mitarbeiter fällt kurzfristig aus. Der Lieferant liefert falsche Ware.</p>
+    <p>In diesen Momenten braucht das Team einen Ansprechpartner. Jemanden der entscheidet. Jemanden der Ruhe ausstrahlt wenn es hektisch wird. Jemanden der nicht du bist. Ohne Schichtleiter gibt es in solchen Momenten nur zwei Optionen: das Team trifft keine Entscheidung und wartet auf dich, oder verschiedene Mitarbeiter treffen verschiedene Entscheidungen. Beides kostet dich mehr Zeit als wenn du eine klare Führungsperson im Team hättest.</p>
+
+    <h3>Ab wann du einen Schichtleiter brauchst</h3>
+    <p>Die ehrliche Antwort lautet: sobald du merkst dass Entscheidungen in deiner Abwesenheit entweder gar nicht getroffen werden oder chaotisch getroffen werden. Das kann in einem kleinen Betrieb mit drei Mitarbeitern der Fall sein. Wenn du die Frage stellst ob du einen Schichtleiter brauchst, ist die Antwort fast immer ja.</p>
 
     <h3>Nicht unbedingt eine neue Stelle</h3>
-    <p>In vielen Betrieben gibt es bereits einen Mitarbeiter der inoffiziell diese Rolle übernimmt. Der etwas mehr Verantwortung trägt. Der das Team zusammenhält wenn es stressig wird. Was fehlt ist die formale Anerkennung, die klaren Kompetenzen und das regelmäßige Feedback. Den Schichtleiter zu machen bedeutet oft nur jemandem offiziell zu geben was er inoffiziell bereits tut.</p>
+    <p>In vielen Betrieben gibt es bereits einen Mitarbeiter der inoffiziell diese Rolle übernimmt. Der etwas mehr Verantwortung trägt als die anderen. Dieser Mitarbeiter existiert in fast jedem Team — manchmal ist er sich seiner eigenen Rolle gar nicht bewusst. Was fehlt ist die formale Anerkennung, die klaren Kompetenzen und das Feedback. Den Schichtleiter zu machen bedeutet oft nur jemandem offiziell zu geben was er inoffiziell bereits tut.</p>
 
     <h3>Was einen guten Schichtleiter ausmacht</h3>
-    <div class="eigenschaft"><div class="num">1</div><p><strong>Kennt alle Abläufe besser als jeder andere im Team.</strong> Er weiß was zu tun ist wenn das Mise en Place nicht fertig ist, was passiert wenn jemand ausfällt und wie die Kasse korrekt abgerechnet wird.</p></div>
-    <div class="eigenschaft"><div class="num">2</div><p><strong>Trifft klare Entscheidungen ohne ständig rückzufragen.</strong> Ein Schichtleiter der bei jeder Entscheidung anruft ist kein Schichtleiter. Ein guter Schichtleiter entscheidet. Er informiert dich danach wenn nötig.</p></div>
-    <div class="eigenschaft"><div class="num">3</div><p><strong>Gibt dem Team Sicherheit auch in stressigen Momenten.</strong> Nicht durch Lautstärke, sondern durch Ruhe, klare Ansagen und das Gefühl dass alles unter Kontrolle ist.</p></div>
+    <div class="three-props">
+      <div class="prop-item">
+        <div class="prop-num">1</div>
+        <div class="prop-content">
+          <h4>Er kennt alle Abläufe besser als jeder andere im Team</h4>
+          <p>Nicht weil er schon am längsten dabei ist. Sondern weil er wirklich verstanden hat wie der Betrieb funktioniert.</p>
+        </div>
+      </div>
+      <div class="prop-item">
+        <div class="prop-num">2</div>
+        <div class="prop-content">
+          <h4>Er trifft klare Entscheidungen ohne ständig rückzufragen</h4>
+          <p>Das ist die wichtigste Eigenschaft. Ein Schichtleiter der bei jeder Entscheidung anruft ist kein Schichtleiter — er ist ein Mitarbeiter mit einem anderen Titel.</p>
+        </div>
+      </div>
+      <div class="prop-item">
+        <div class="prop-num">3</div>
+        <div class="prop-content">
+          <h4>Er gibt dem Team Sicherheit auch in stressigen Momenten</h4>
+          <p>Nicht durch Lautstärke. Sondern durch Ruhe, klare Ansagen und das Gefühl: er weiß was er tut und alles ist unter Kontrolle.</p>
+        </div>
+      </div>
+    </div>
 
-    <div class="aufgabe">
-      <div class="label">🎯 Deine Aufgabe</div>
-      <p>Schreib auf wer in deinem Team am nächsten an der Schichtleiter-Rolle ist. Welche der drei Eigenschaften bringt diese Person bereits mit? Welche muss noch entwickelt werden? Das ist dein Ausgangspunkt für Kapitel 2.</p>
+    <div class="task-box">
+      <strong>🎯 Aufgabe Kapitel 1</strong>
+      <p>Schreib jetzt auf wer in deinem Team aktuell am nächsten an der Rolle des Schichtleiters ist. Nicht wer du gerne hättest — wer es faktisch bereits inoffiziell ist. Und schreib auf welche der drei Eigenschaften diese Person bereits mitbringt und welche noch entwickelt werden muss.</p>
     </div>
   </div>
 
   <div class="chapter">
     <h2>Kapitel 2 — Den Schichtleiter aufbauen und stärken</h2>
+
     <h3>Einen Schichtleiter macht man nicht durch einen Titel</h3>
-    <p>Der häufigste Fehler: Der Chef sagt „Du bist jetzt Schichtleiter" und erwartet dass sich alles verändert. Das funktioniert nicht. Einen Schichtleiter macht man durch klare Kompetenzen, regelmäßiges Feedback und die Möglichkeit echte Entscheidungen zu treffen und dabei zu wachsen.</p>
+    <p>Der häufigste Fehler: Der Chef sagt einem Mitarbeiter „du bist jetzt Schichtleiter" und erwartet dass sich ab diesem Moment alles verändert. Das funktioniert nicht. Einen Schichtleiter macht man durch klare Kompetenzen, regelmäßiges Feedback und die Möglichkeit echte Entscheidungen zu treffen und dabei zu wachsen. Das ist ein Prozess — kein Moment.</p>
 
     <h3>Die Rollenbeschreibung des Schichtleiters</h3>
-    <p>Die Aufgaben gehen über operative Tätigkeiten hinaus. Er koordiniert das Team, ist erste Anlaufstelle bei Problemen, prüft ob Abläufe korrekt durchgeführt werden, gibt ein Briefing vor dem Service und übergibt die Schicht strukturiert. Seine Entscheidungskompetenzen sind breiter als die jedes anderen: Er darf Personalentscheidungen für die laufende Schicht treffen, Reklamationen bis zu einem bestimmten Betrag selbst lösen, Lieferungen annehmen oder ablehnen wenn die Qualität nicht stimmt.</p>
+    <p>Die Rollenbeschreibung des Schichtleiters ist die wichtigste Rollenbeschreibung die du in deinem Betrieb schreibst. Die Aufgaben gehen über die normalen operativen Tätigkeiten hinaus: er koordiniert das Team, ist erste Anlaufstelle bei Problemen, prüft ob alle Abläufe korrekt durchgeführt werden, gibt dem Team ein kurzes Briefing vor dem Service und übergibt die Schicht strukturiert an den nächsten Verantwortlichen.</p>
+    <p>Die Entscheidungskompetenzen sind breiter als bei jedem anderen Mitarbeiter: Personalentscheidungen für die laufende Schicht, Reklamationen bis zu einem bestimmten Betrag, Lieferungen annehmen oder ablehnen wenn die Qualität nicht stimmt.</p>
 
-    <h3>Wie du ihn entwickelst</h3>
-    <p>Gib ihm diese Woche eine Aufgabe die über seine bisherige Rolle hinausgeht. Zum Beispiel das Team-Briefing vor dem nächsten Service. Fünf Minuten. Aber seine fünf Minuten. Beobachte wie er das macht. Sprich danach kurz darüber. Steigere die Verantwortung schrittweise — jede Woche eine Situation mehr in der er entscheidet statt du.</p>
+    <h3>Wie du den Schichtleiter entwickelst</h3>
+    <p>Gib ihm diese Woche eine Aufgabe die über seine bisherige Rolle hinausgeht. Zum Beispiel das Team-Briefing vor dem nächsten Service — er erklärt dem Team was heute besonders zu beachten ist, welche Reservierungen vorliegen und wer welche Station hat. Fünf Minuten. Aber seine fünf Minuten. Beobachte wie er das macht. Sprich danach mit ihm darüber. Dieses kurze Gespräch nach der Aufgabe ist wichtiger als die Aufgabe selbst.</p>
+    <p>Steigere die Verantwortung schrittweise. Jede Woche eine Situation mehr in der er entscheidet statt du. Nach vier Wochen hast du einen Schichtleiter der wirklich funktioniert — nicht weil er perfekt ist, sondern weil er Erfahrung gesammelt hat und weiß dass er dein Vertrauen hat.</p>
 
-    <h3>Das regelmäßige Gespräch</h3>
-    <p>Zehn Minuten pro Woche mit deinem Schichtleiter. Was hat gut funktioniert? Was war die schwierigste Entscheidung diese Woche? Was braucht er von dir? Dieses Gespräch entwickelt ihn weiter — und hält dich informiert ohne dass du täglich selbst im Betrieb stehen musst.</p>
+    <h3>Das regelmäßige Feedback-Gespräch mit dem Schichtleiter</h3>
+    <p>Plane einmal pro Woche ein kurzes Gespräch — zehn Minuten reichen. Was hat diese Woche gut funktioniert? Was war die schwierigste Entscheidung die er treffen musste? Was braucht er von dir? Dieses wöchentliche Gespräch entwickelt den Schichtleiter kontinuierlich weiter und hält dich informiert über was in deinem Betrieb passiert — ohne dass du selbst dabei sein musst.</p>
 
-    <div class="aufgabe">
-      <div class="label">🎯 Deine Aufgabe</div>
-      <p>Schreib die Rollenbeschreibung für deinen Schichtleiter. Eine Seite. Aufgaben, Entscheidungskompetenzen, Verantwortlichkeit. Plane das erste kurze Gespräch mit ihm diese Woche. Gib ihm eine erste konkrete Führungsaufgabe. Beobachte was passiert.</p>
+    <div class="highlight">
+      Das erste Mal den Betrieb zu verlassen und zu wissen dass jemand kompetentes die Entscheidungen trifft ist für viele Gastronomen ein Gefühl das sie lange vergessen hatten. Die Freiheit nicht erreichbar sein zu müssen. Das ist kein Luxus. Das ist das Ziel.
     </div>
-    <div class="tool-hint">📊 Das <strong>Strukturierte Mitarbeiter-Feedback-Gespräch</strong> findest du im Tab <strong>📊 Mitarbeiter Feedback</strong></div>
+
+    <div class="hint-box">👉 Das Strukturierte Mitarbeiter-Feedback-Gespräch findest du im Tab 📊 Strukturiertes Mitarbeiter-Feedback-Gespräch</div>
+
+    <div class="task-box">
+      <strong>🎯 Aufgabe Kapitel 2</strong>
+      <p>Schreib jetzt die Rollenbeschreibung für deinen Schichtleiter. Eine Seite. Aufgaben, Entscheidungskompetenzen, Verantwortlichkeit. Und plane das erste kurze Gespräch mit ihm diese Woche — nicht um Erwartungen zu wälzen, sondern um ihm eine erste konkrete Aufgabe zu geben die über seine bisherige Rolle hinausgeht.</p>
+    </div>
+  </div>
+
+  <div class="nav-row">
+    <a href="modul6-lektion2.html" class="nav-btn secondary">← Lektion 2</a>
+    <a href="modul6-lektion4.html" class="nav-btn">Lektion 4 →</a>
   </div>
 </div>
 <div class="gold-bar"></div>

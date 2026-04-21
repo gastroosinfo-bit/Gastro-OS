@@ -3,49 +3,270 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GASTRO-OS – Modul 6 | Personalstruktur Check</title>
+<title>Personalstruktur-Check – Modul 6 | GASTRO-OS</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f0e8; color: #1a2a4a; min-height: 100vh; }
-  .header { background: #1a2a4a; padding: 22px 40px; text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,0.3); }
-  .header .brand { font-family: Georgia, serif; font-size: 22px; color: #d4af37; letter-spacing: 4px; font-weight: normal; }
-  .header .modul-label { font-size: 11px; color: #a0b0c8; letter-spacing: 3px; text-transform: uppercase; margin-top: 4px; }
-  .gold-bar { height: 3px; background: linear-gradient(90deg, #1a2a4a, #d4af37, #1a2a4a); }
-  .main { max-width: 780px; margin: 36px auto; padding: 0 24px 60px; }
-  h1 { font-family: Georgia, serif; font-size: 26px; color: #1a2a4a; margin-bottom: 8px; }
-  .gold-rule { width: 56px; height: 2px; background: #d4af37; margin: 10px 0 16px; }
-  .intro { font-size: 14px; color: #5060a0; line-height: 1.7; margin-bottom: 24px; }
-  .card { background: #fff; border-radius: 10px; padding: 28px 32px; margin-bottom: 20px; border: 1px solid #e8dfc8; box-shadow: 0 2px 8px rgba(0,0,0,0.04); text-align: center; }
-  .card .icon { font-size: 48px; margin-bottom: 16px; }
-  .card h2 { font-family: Georgia, serif; font-size: 20px; color: #1a2a4a; margin-bottom: 10px; }
-  .card p { font-size: 14px; color: #5060a0; line-height: 1.7; margin-bottom: 20px; }
-  .btn { display: inline-block; background: #1a2a4a; color: #d4af37; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 14px; letter-spacing: 0.5px; transition: background 0.2s; }
-  .btn:hover { background: #2a3a5a; }
-  .hint { background: #fff8e8; border-radius: 8px; padding: 14px 18px; margin-top: 16px; font-size: 13px; color: #7a5000; border: 1px solid #d4af37; }
-  .footer { background: #1a2a4a; margin-top: 48px; padding: 14px 40px; text-align: center; font-size: 11px; color: #8090a8; letter-spacing: 1px; }
-  .footer strong { color: #d4af37; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
+.header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:18px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.btn-back { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; text-decoration:none; display:inline-block; }
+.btn-back:hover { border-color:#d4af37; color:#d4af37; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+.wrap { max-width:1000px; margin:0 auto; padding:24px 20px 60px; }
+.tool-label { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:4px; }
+.tool-title { font-family:Georgia,serif; font-size:22px; color:#1a2a4a; margin-bottom:4px; }
+.tool-sub { font-size:13px; color:#5a6a80; margin-bottom:20px; }
+.action-row { display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap; align-items:center; }
+.btn-save { background:#1a2a4a; color:#d4af37; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; }
+.btn-save:hover { background:#d4af37; color:#1a2a4a; }
+.btn-print { background:#4a6a3a; color:#fff; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; }
+.btn-print:hover { background:#3a5a2a; }
+.btn-reset { background:transparent; border:1px solid #cc5544; color:#cc5544; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; }
+.btn-reset:hover { background:#cc5544; color:#fff; }
+.save-msg { font-size:12px; color:#4aaa60; display:none; }
+.tabs { display:flex; gap:2px; margin-bottom:0; }
+.tab-btn { background:#e8dfc8; border:none; padding:9px 18px; font-size:12px; font-weight:600; color:#5a6a80; cursor:pointer; border-radius:6px 6px 0 0; }
+.tab-btn.active { background:#fff; color:#1a2a4a; border-bottom:2px solid #d4af37; }
+.tab-btn:hover:not(.active) { background:#d4af37; color:#1a2a4a; }
+.tab-content { display:none; }
+.tab-content.active { display:block; }
+/* Personalstruktur */
+.ps-section { background:#fff; border:1px solid #e8dfc8; border-radius:0 10px 10px 10px; padding:20px 24px; }
+.ps-section h3 { font-family:Georgia,serif; font-size:15px; color:#1a2a4a; margin-bottom:6px; }
+.ps-sub { font-size:12px; color:#8090a8; margin-bottom:16px; }
+.ps-table-wrap { overflow-x:auto; }
+.ps-table { width:100%; border-collapse:collapse; min-width:700px; }
+.ps-table th { background:#1a2a4a; color:#d4af37; padding:10px 12px; font-size:11px; font-weight:700; text-align:left; }
+.ps-table td { border:1px solid #e8dfc8; padding:0; vertical-align:top; }
+.ps-table tr:nth-child(even) td { background:#faf8f4; }
+.ps-table textarea { width:100%; min-height:44px; border:none; background:transparent; resize:none; font-size:12px; color:#1a2a4a; padding:6px 8px; font-family:inherit; line-height:1.5; }
+.ps-table textarea:focus { outline:none; background:#fffbf0; }
+.ps-table td.row-num { background:#1a2a4a; color:#d4af37; font-weight:700; font-size:12px; text-align:center; padding:8px; width:32px; }
+.tip-box { background:#fff8e0; border:1px solid #d4af37; border-radius:8px; padding:14px 18px; margin-top:16px; font-size:13px; color:#5a4000; line-height:1.7; }
+/* Rollenmatrix */
+.rm-section { background:#fff; border:1px solid #e8dfc8; border-radius:0 10px 10px 10px; padding:20px 24px; }
+.rm-legend { display:flex; gap:16px; margin-bottom:14px; flex-wrap:wrap; }
+.rm-legend span { font-size:13px; }
+.rm-table-wrap { overflow-x:auto; }
+.rm-table { width:100%; border-collapse:collapse; min-width:600px; }
+.rm-table th { background:#1a2a4a; color:#d4af37; padding:10px 12px; font-size:11px; font-weight:700; text-align:center; }
+.rm-table th:first-child { text-align:left; width:220px; }
+.rm-table td { border:1px solid #e8dfc8; padding:6px 8px; text-align:center; font-size:13px; }
+.rm-table td:first-child { text-align:left; font-size:13px; font-weight:600; color:#1a2a4a; padding:6px 10px; }
+.rm-table tr:nth-child(even) td { background:#faf8f4; }
+.rm-table select { border:none; background:transparent; font-size:14px; cursor:pointer; text-align:center; width:100%; }
+.rm-table select:focus { outline:none; }
+.rm-table input { border:none; background:transparent; font-size:12px; color:#1a2a4a; width:100%; padding:2px 4px; font-family:inherit; }
+.rm-table input:focus { outline:none; background:#fffbf0; }
+.nav-row { display:flex; gap:12px; justify-content:space-between; margin-top:20px; }
+.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:11px 22px; border-radius:8px; font-size:13px; font-weight:600; text-decoration:none; transition:all 0.2s; display:inline-block; }
+.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
+.nav-btn.secondary { background:transparent; border:1px solid rgba(26,42,74,0.3); color:#1a2a4a; }
+.nav-btn.secondary:hover { background:#1a2a4a; color:#d4af37; }
+@media print { .header,.action-row,.tabs,.nav-row,.gold-bar{display:none!important;} body{background:#fff;} }
+.footer-brand { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; }
+.footer-brand strong { color:#d4af37; }
 </style>
 </head>
 <body>
 <div class="header">
   <div class="brand">GASTRO-OS</div>
-  <div class="modul-label">Modul 6 &nbsp;·&nbsp; Personalstruktur Check</div>
+  <a href="modul6-uebersicht.html" class="btn-back">← Modulübersicht</a>
 </div>
 <div class="gold-bar"></div>
-<div class="main">
-  <h1>📊 Personalstruktur Check</h1>
-  <div class="gold-rule"></div>
-  <p class="intro">Der Personalstruktur Check hilft dir Klarheit in dein Team zu bringen. Rollen, Aufgaben und Entscheidungsrechte auf einen Blick. So weißt du genau wer was darf — und wann jemand zu dir kommen soll.</p>
+<div class="wrap">
+  <div class="tool-label">Modul 6 · Tool</div>
+  <div class="tool-title">GASTRO-OS | Personalstruktur-Check</div>
+  <div class="tool-sub">Modul 6 — Mitarbeiter führen statt nur reagieren | Rollen, Aufgaben und Entscheidungsrechte</div>
+  <div class="action-row">
+    <button class="btn-save" onclick="saveData()">💾 Speichern</button>
+    <button class="btn-print" onclick="window.print()">🖨️ Drucken / PDF</button>
+    <button class="btn-reset" onclick="resetData()">🔄 Neu starten</button>
+    <span class="save-msg" id="save-msg">✓ Gespeichert</span>
+  </div>
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('ps')">📊 Personalstruktur Check</button>
+    <button class="tab-btn" onclick="switchTab('rm')">📋 Rollenmatrix</button>
+  </div>
 
-  <div class="card">
-    <div class="icon">📊</div>
-    <h2>Personalstruktur Check öffnen</h2>
-    <p>Schau dir vorher den Tab 📸 <strong>So nutzt du den Personalstruktur Check</strong> an damit du weißt was wo eingetragen wird.</p>
-    <a href="https://docs.google.com/spreadsheets/d/1aH-D2WfPqSykr9y_cowfSVzMRya0TIjC/edit?usp=sharing" target="_blank" class="btn">→ Zum Personalstruktur Check</a>
-    <div class="hint">💡 Das Tool öffnet sich in Google Sheets. Trage alle Mitarbeiter ein und fülle die Rollenmatrix aus. Besprich danach die Matrix mit deinem Team in maximal 15 Minuten.</div>
+  <!-- TAB 1: PERSONALSTRUKTUR -->
+  <div class="tab-content active" id="tab-ps">
+    <div class="ps-section">
+      <h3>📊 Personalstruktur Check</h3>
+      <div class="ps-sub">Trage hier alle Mitarbeiter ein und definiere ihre Rolle, Aufgaben und Entscheidungsrechte.</div>
+      <div class="ps-table-wrap">
+        <table class="ps-table">
+          <thead>
+            <tr>
+              <th style="width:32px">#</th>
+              <th>Name / Position</th>
+              <th>Rolle im Betrieb</th>
+              <th>Hauptaufgaben</th>
+              <th>Entscheidungsrecht</th>
+              <th>Wann zu mir?</th>
+            </tr>
+          </thead>
+          <tbody id="ps-body"></tbody>
+        </table>
+      </div>
+      <div class="tip-box">💡 <strong>Tipp:</strong> Hast du noch keinen Schichtleiter? Das ist deine wichtigste Aufgabe in den nächsten 30 Tagen. Ein Schichtleiter trägt Verantwortung vor Ort — damit du nicht immer selbst da sein musst.</div>
+    </div>
+  </div>
+
+  <!-- TAB 2: ROLLENMATRIX -->
+  <div class="tab-content" id="tab-rm">
+    <div class="rm-section">
+      <h3>📋 Rollenmatrix — Wer darf was entscheiden?</h3>
+      <div class="rm-legend">
+        <span>✅ = darf selbst entscheiden</span>
+        <span>❌ = muss fragen</span>
+        <span>🔶 = situationsabhängig</span>
+      </div>
+      <div class="rm-table-wrap">
+        <table class="rm-table">
+          <thead>
+            <tr>
+              <th>Aufgabe / Entscheidung</th>
+              <th>Inhaber</th>
+              <th>Schichtleiter</th>
+              <th>Servicemitarbeiter</th>
+              <th>Küchenmitarbeiter</th>
+            </tr>
+          </thead>
+          <tbody id="rm-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="action-row" style="margin-top:16px">
+    <button class="btn-save" onclick="saveData()">💾 Speichern</button>
+    <button class="btn-print" onclick="window.print()">🖨️ Drucken / PDF</button>
+    <button class="btn-reset" onclick="resetData()">🔄 Neu starten</button>
+    <span class="save-msg" id="save-msg2">✓ Gespeichert</span>
+  </div>
+  <div class="nav-row">
+    <a href="modul6-personalstruktur-video.html" class="nav-btn secondary">← Anleitung</a>
+    <a href="modul6-feedback-video.html" class="nav-btn">Feedback-Gespräch →</a>
   </div>
 </div>
 <div class="gold-bar"></div>
-<div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+<div class="footer-brand"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+
+<script>
+const SUPABASE_URL='https://hchlganbgjeciwhwaisj.supabase.co';
+const SUPABASE_KEY='sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3';
+const{createClient}=supabase;
+const sb=createClient(SUPABASE_URL,SUPABASE_KEY);
+let currentUser=null, saveTimer=null;
+
+const PS_ROWS=12;
+const RM_DEFAULT=[
+  {task:'Dienstplan erstellen',   inh:'✅',sl:'🔶',sm:'❌',km:'❌'},
+  {task:'Einkäufe bis 50 €',     inh:'✅',sl:'✅',sm:'❌',km:'❌'},
+  {task:'Einkäufe über 50 €',    inh:'✅',sl:'❌',sm:'❌',km:'❌'},
+  {task:'Tagesangebote empfehlen',inh:'✅',sl:'✅',sm:'✅',km:'❌'},
+  {task:'Reklamationen bearbeiten',inh:'✅',sl:'✅',sm:'🔶',km:'❌'},
+  {task:'Rezepte anpassen (Allergien)',inh:'✅',sl:'🔶',sm:'❌',km:'✅'},
+  {task:'Personal einarbeiten',   inh:'✅',sl:'✅',sm:'❌',km:'❌'},
+  {task:'Lieferant kontaktieren', inh:'✅',sl:'🔶',sm:'❌',km:'❌'},
+  {task:'Hygiene-Check durchführen',inh:'✅',sl:'✅',sm:'❌',km:'✅'},
+  {task:'Neue SOP erstellen',     inh:'✅',sl:'❌',sm:'❌',km:'❌'},
+  {task:'',inh:'✅',sl:'❌',sm:'❌',km:'❌'},
+  {task:'',inh:'✅',sl:'❌',sm:'❌',km:'❌'},
+];
+const OPTS=['✅','❌','🔶'];
+
+function buildPS(){
+  const tbody=document.getElementById('ps-body');
+  tbody.innerHTML='';
+  for(let i=0;i<PS_ROWS;i++){
+    tbody.innerHTML+=`<tr>
+      <td class="row-num">${i+1}</td>
+      <td><textarea id="ps-name-${i}" placeholder="${i===0?'z.B. Max Müller – Schichtleiter':''}" oninput="autoSave()"></textarea></td>
+      <td><textarea id="ps-rolle-${i}" placeholder="${i===0?'Schichtleiter':i===1?'Servicemitarbeiter':i===2?'Küchenmitarbeiter':''}" oninput="autoSave()"></textarea></td>
+      <td><textarea id="ps-aufg-${i}" placeholder="${i===0?'Tagesablauf koordinieren, Team einweisen':''}" oninput="autoSave()"></textarea></td>
+      <td><textarea id="ps-ent-${i}" placeholder="${i===0?'Dienstplan anpassen, kleine Einkäufe bis 50€':''}" oninput="autoSave()"></textarea></td>
+      <td><textarea id="ps-wann-${i}" placeholder="${i===0?'Bei Konflikten, Beschwerden über 50€':''}" oninput="autoSave()"></textarea></td>
+    </tr>`;
+  }
+}
+
+function buildRM(){
+  const tbody=document.getElementById('rm-body');
+  tbody.innerHTML='';
+  RM_DEFAULT.forEach((row,i)=>{
+    let tds='';
+    ['inh','sl','sm','km'].forEach(col=>{
+      tds+=`<td><select id="rm-${i}-${col}" onchange="autoSave()">${OPTS.map(o=>`<option value="${o}"${o===row[col]?' selected':''}>${o}</option>`).join('')}</select></td>`;
+    });
+    tbody.innerHTML+=`<tr><td><input type="text" id="rm-task-${i}" value="${row.task}" placeholder="Aufgabe / Entscheidung..." oninput="autoSave()"></td>${tds}</tr>`;
+  });
+}
+
+function switchTab(tab){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+  const idx=tab==='ps'?0:1;
+  document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+  document.getElementById('tab-'+tab).classList.add('active');
+}
+
+function getData(){
+  const ps=[];
+  for(let i=0;i<PS_ROWS;i++) ps.push({
+    name:document.getElementById(`ps-name-${i}`)?.value||'',
+    rolle:document.getElementById(`ps-rolle-${i}`)?.value||'',
+    aufg:document.getElementById(`ps-aufg-${i}`)?.value||'',
+    ent:document.getElementById(`ps-ent-${i}`)?.value||'',
+    wann:document.getElementById(`ps-wann-${i}`)?.value||'',
+  });
+  const rm=[];
+  for(let i=0;i<RM_DEFAULT.length;i++) rm.push({
+    task:document.getElementById(`rm-task-${i}`)?.value||'',
+    inh:document.getElementById(`rm-${i}-inh`)?.value||'✅',
+    sl:document.getElementById(`rm-${i}-sl`)?.value||'❌',
+    sm:document.getElementById(`rm-${i}-sm`)?.value||'❌',
+    km:document.getElementById(`rm-${i}-km`)?.value||'❌',
+  });
+  return{ps,rm};
+}
+
+function setData(d){
+  if(!d)return;
+  if(d.ps) d.ps.forEach((row,i)=>{
+    ['name','rolle','aufg','ent','wann'].forEach(f=>{const el=document.getElementById(`ps-${f}-${i}`);if(el&&row[f])el.value=row[f];});
+  });
+  if(d.rm) d.rm.forEach((row,i)=>{
+    const t=document.getElementById(`rm-task-${i}`);if(t&&row.task)t.value=row.task;
+    ['inh','sl','sm','km'].forEach(f=>{const el=document.getElementById(`rm-${i}-${f}`);if(el&&row[f])el.value=row[f];});
+  });
+}
+
+async function saveData(){
+  if(!currentUser)return;
+  await sb.from('user_tool_data').upsert({user_id:currentUser.id,tool_name:'personalstruktur_check_modul6',data:getData(),updated_at:new Date().toISOString()},{onConflict:'user_id,tool_name'});
+  ['save-msg','save-msg2'].forEach(id=>{const el=document.getElementById(id);if(el){el.style.display='inline';setTimeout(()=>el.style.display='none',2500);}});
+}
+
+function autoSave(){clearTimeout(saveTimer);saveTimer=setTimeout(saveData,1500);}
+
+function resetData(){
+  if(!confirm('Alle Eingaben zurücksetzen?'))return;
+  document.querySelectorAll('textarea,input[type=text]').forEach(el=>el.value='');
+  buildRM(); saveData();
+}
+
+async function init(){
+  const{data:{session}}=await sb.auth.getSession();
+  if(!session){window.location.href='login.html';return;}
+  currentUser=session.user;
+  buildPS(); buildRM();
+  const{data:td}=await sb.from('user_tool_data').select('data').eq('user_id',currentUser.id).eq('tool_name','personalstruktur_check_modul6').maybeSingle();
+  if(td&&td.data)setData(td.data);
+}
+init();
+</script>
 </body>
 </html>
