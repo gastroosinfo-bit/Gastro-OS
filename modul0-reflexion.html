@@ -3,260 +3,450 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GASTRO-OS – Modul 0 | Reflexionsaufgabe</title>
+<title>Reflexionsaufgabe — Modul 0 | GASTRO-OS</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
 
-  body {
-    font-family: 'Segoe UI', Arial, sans-serif;
-    background: #f5f0e8;
-    color: #1a2a4a;
-    min-height: 100vh;
-  }
+.header {
+  background:#1a2a4a; padding:14px 40px;
+  display:flex; align-items:center; justify-content:space-between;
+  box-shadow:0 2px 12px rgba(0,0,0,0.3);
+}
+.brand { font-family:Georgia,serif; font-size:18px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.back-btn {
+  background:transparent; border:1px solid rgba(212,175,55,0.4);
+  color:#a0b0c8; padding:7px 16px; border-radius:6px;
+  font-size:12px; cursor:pointer; transition:all 0.2s;
+  text-decoration:none; display:inline-block;
+}
+.back-btn:hover { border-color:#d4af37; color:#d4af37; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
 
-  .header {
-    background: #1a2a4a;
-    padding: 22px 40px;
-    text-align: center;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.3);
-  }
-  .header .brand {
-    font-family: Georgia, serif;
-    font-size: 22px;
-    color: #d4af37;
-    letter-spacing: 4px;
-    font-weight: normal;
-  }
-  .header .modul-label {
-    font-size: 11px;
-    color: #a0b0c8;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    margin-top: 4px;
-  }
-  .gold-bar { height: 3px; background: linear-gradient(90deg, #1a2a4a, #d4af37, #1a2a4a); }
+.wrap { max-width:680px; margin:40px auto; padding:0 24px 60px; }
 
-  .main {
-    max-width: 860px;
-    margin: 36px auto;
-    padding: 0 24px;
-  }
+/* Intro-Box */
+.intro-card {
+  background:#fff; border-radius:10px; border:1px solid #e8dfc8;
+  padding:28px 30px; margin-bottom:32px;
+  box-shadow:0 2px 8px rgba(0,0,0,0.05);
+}
+.intro-label {
+  font-size:11px; color:#d4af37; letter-spacing:2px;
+  text-transform:uppercase; font-weight:600; margin-bottom:8px;
+}
+.intro-card h1 {
+  font-family:Georgia,serif; font-size:22px; color:#1a2a4a;
+  font-weight:normal; margin-bottom:14px;
+}
+.intro-card p { font-size:14px; line-height:1.75; color:#3a4a6a; margin-bottom:12px; }
+.intro-card p:last-child { margin-bottom:0; }
 
-  .intro { margin-bottom: 24px; }
-  .intro h1 {
-    font-family: Georgia, serif;
-    font-size: 24px;
-    color: #1a2a4a;
-    margin-bottom: 8px;
-  }
-  .gold-rule { width: 56px; height: 2px; background: #d4af37; margin: 10px 0 12px; }
-  .intro p {
-    font-size: 14px;
-    color: #5060a0;
-    line-height: 1.7;
-    max-width: 640px;
-  }
+.score-guide {
+  background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px;
+  padding:14px 18px; margin-top:16px;
+}
+.score-guide p { font-size:13px; color:#3a4a6a; margin-bottom:6px; }
+.score-guide p:last-child { margin-bottom:0; }
+.score-guide strong { color:#1a2a4a; }
 
-  /* Score Cards */
-  .score-title {
-    font-family: Georgia, serif;
-    font-size: 16px;
-    color: #1a2a4a;
-    margin-bottom: 12px;
-  }
-  .score-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    margin-bottom: 28px;
-  }
-  .score-card {
-    border-radius: 8px;
-    padding: 16px;
-    text-align: center;
-  }
-  .score-card.red   { background: #fde8e4; border: 1.5px solid #d06050; }
-  .score-card.amber { background: #fff3d0; border: 1.5px solid #d4af37; }
-  .score-card.green { background: #e4f5e8; border: 1.5px solid #4aaa60; }
-  .score-card .icon { font-size: 24px; margin-bottom: 6px; }
-  .score-card .range {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    margin-bottom: 5px;
-  }
-  .score-card.red   .range { color: #a03020; }
-  .score-card.amber .range { color: #8a6000; }
-  .score-card.green .range { color: #1a6030; }
-  .score-card .name {
-    font-size: 12px;
-    font-weight: 700;
-    margin-bottom: 6px;
-    line-height: 1.3;
-  }
-  .score-card.red   .name { color: #c03020; }
-  .score-card.amber .name { color: #9a7000; }
-  .score-card.green .name { color: #2a8040; }
-  .score-card .desc {
-    font-size: 11px;
-    color: #666;
-    line-height: 1.5;
-  }
+/* Fragen */
+.question-card {
+  background:#fff; border-radius:10px; border:1px solid #e8dfc8;
+  padding:24px 26px; margin-bottom:16px;
+  box-shadow:0 2px 8px rgba(0,0,0,0.05);
+  transition:border-color 0.2s;
+}
+.question-card.answered { border-color:#d4af37; }
 
-  /* Punkte Hinweis */
-  .punkte-hinweis {
-    background: #fff;
-    border: 1px solid #e8dfc8;
-    border-left: 4px solid #d4af37;
-    border-radius: 0 8px 8px 0;
-    padding: 14px 18px;
-    margin-bottom: 24px;
-    font-size: 13px;
-    color: #5060a0;
-    line-height: 1.7;
-  }
-  .punkte-hinweis strong { color: #1a2a4a; }
-  .punkte-row {
-    display: flex;
-    gap: 20px;
-    margin-top: 8px;
-    flex-wrap: wrap;
-  }
-  .punkte-badge {
-    background: #f5f0e8;
-    border: 1px solid #d4af37;
-    border-radius: 20px;
-    padding: 4px 14px;
-    font-size: 12px;
-    font-weight: 600;
-    color: #7a5a00;
-  }
+.q-number {
+  font-size:11px; color:#d4af37; font-weight:700;
+  letter-spacing:1px; text-transform:uppercase; margin-bottom:8px;
+}
+.q-title {
+  font-family:Georgia,serif; font-size:16px; color:#1a2a4a;
+  font-weight:normal; margin-bottom:16px; line-height:1.4;
+}
+.q-subtitle { font-size:13px; color:#6070888; margin-bottom:16px; font-style:italic; }
 
-  /* Form wrapper */
-  .form-wrapper {
-    background: #fff;
-    border: 2px solid #d4af37;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 24px rgba(26,42,74,0.12);
-  }
-  .form-header {
-    background: #1a2a4a;
-    padding: 12px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .form-header .label {
-    font-size: 12px;
-    color: #a0b0c8;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
-  .form-header .badge {
-    background: rgba(212,175,55,0.15);
-    border: 1px solid #d4af37;
-    color: #d4af37;
-    font-size: 11px;
-    padding: 3px 12px;
-    border-radius: 20px;
-    letter-spacing: 1px;
-  }
-  .form-wrapper iframe {
-    width: 100%;
-    height: 950px;
-    border: none;
-    display: block;
-  }
+.option {
+  display:flex; align-items:flex-start; gap:12px;
+  padding:12px 14px; border-radius:8px;
+  border:2px solid #e8dfc8; margin-bottom:8px;
+  cursor:pointer; transition:all 0.18s; background:#fff;
+  text-align:left; width:100%;
+}
+.option:last-of-type { margin-bottom:0; }
+.option:hover { border-color:#d4af37; background:#faf8f4; }
+.option.selected {
+  border-color:#d4af37; background:#fdf9ee;
+}
+.option-dot {
+  width:20px; height:20px; border-radius:50%;
+  border:2px solid #d0c8b0; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  transition:all 0.18s; margin-top:1px;
+}
+.option.selected .option-dot {
+  background:#d4af37; border-color:#d4af37;
+}
+.option.selected .option-dot::after {
+  content:''; width:8px; height:8px; border-radius:50%; background:#1a2a4a;
+}
+.option-text { font-size:14px; color:#2a3a54; line-height:1.55; }
 
-  .footer {
-    background: #1a2a4a;
-    margin-top: 48px;
-    padding: 16px 40px;
-    text-align: center;
-    font-size: 11px;
-    color: #8090a8;
-    letter-spacing: 1px;
-  }
-  .footer strong { color: #d4af37; }
+/* Submit */
+.submit-wrap { margin-top:28px; text-align:center; }
+.btn-submit {
+  background:#1a2a4a; color:#d4af37;
+  border:none; padding:14px 40px; border-radius:8px;
+  font-size:14px; font-weight:700; cursor:pointer;
+  transition:all 0.2s; letter-spacing:0.5px;
+  opacity:0.4; pointer-events:none;
+}
+.btn-submit.ready { opacity:1; pointer-events:auto; }
+.btn-submit.ready:hover { background:#d4af37; color:#1a2a4a; }
 
-  @media (max-width: 600px) {
-    .score-grid { grid-template-columns: 1fr; }
-    .main { padding: 0 16px; }
-    .header { padding: 18px 20px; }
-  }
+.progress-hint {
+  font-size:12px; color:#8090a8; margin-top:10px;
+}
+
+/* ERGEBNIS */
+#result-screen { display:none; }
+
+.result-card {
+  background:#fff; border-radius:12px; border:2px solid #d4af37;
+  padding:36px 32px; text-align:center;
+  box-shadow:0 4px 24px rgba(212,175,55,0.15);
+  animation:fadeIn 0.4s ease;
+}
+@keyframes fadeIn {
+  from { opacity:0; transform:translateY(16px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+.result-emoji { font-size:52px; margin-bottom:12px; }
+.result-label {
+  font-size:11px; color:#d4af37; letter-spacing:2px;
+  text-transform:uppercase; font-weight:600; margin-bottom:8px;
+}
+.result-title {
+  font-family:Georgia,serif; font-size:26px; color:#1a2a4a;
+  font-weight:normal; margin-bottom:16px; line-height:1.3;
+}
+.result-score {
+  display:inline-block; background:#1a2a4a; color:#d4af37;
+  padding:6px 20px; border-radius:20px;
+  font-size:13px; font-weight:700; margin-bottom:20px;
+}
+.result-text {
+  font-size:15px; line-height:1.75; color:#2a3a54;
+  max-width:480px; margin:0 auto 24px;
+}
+
+.result-divider {
+  height:1px; background:linear-gradient(90deg,transparent,#d4af37,transparent);
+  margin:24px 0;
+}
+
+.result-saved {
+  font-size:12px; color:#8090a8; margin-bottom:20px;
+}
+.result-saved span { color:#4aaa60; font-weight:600; }
+
+.btn-back {
+  display:inline-block; background:transparent;
+  border:2px solid #1a2a4a; color:#1a2a4a;
+  padding:11px 28px; border-radius:8px;
+  font-size:13px; font-weight:600; cursor:pointer;
+  text-decoration:none; transition:all 0.2s; margin:4px;
+}
+.btn-back:hover { background:#1a2a4a; color:#d4af37; }
+
+.btn-retry {
+  display:inline-block; background:transparent;
+  border:2px solid rgba(212,175,55,0.5); color:#8090a8;
+  padding:11px 28px; border-radius:8px;
+  font-size:13px; font-weight:600; cursor:pointer;
+  transition:all 0.2s; margin:4px;
+}
+.btn-retry:hover { border-color:#d4af37; color:#d4af37; }
+
+/* Footer */
+.footer-brand {
+  background:#1a2a4a; margin-top:60px; padding:14px 40px;
+  text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px;
+}
+.footer-brand strong { color:#d4af37; }
 </style>
 </head>
 <body>
 
 <div class="header">
   <div class="brand">GASTRO-OS</div>
-  <div class="modul-label">Modul 0 &nbsp;·&nbsp; Reflexionsaufgabe</div>
+  <a href="dashboard.html" class="back-btn">← Zurück zum Dashboard</a>
 </div>
 <div class="gold-bar"></div>
 
-<div class="main">
+<div class="wrap">
 
-  <div class="intro">
-    <h1>Dein persönlicher Status-Check</h1>
-    <div class="gold-rule"></div>
-    <p>Bevor du mit dem System startest, bestimmen wir gemeinsam deinen Ausgangspunkt. Beantworte die folgenden Fragen ehrlich — es gibt keine falschen Antworten!</p>
+  <!-- FORMULAR -->
+  <div id="form-screen">
+
+    <div class="intro-card">
+      <div class="intro-label">Modul 0 · Reflexionsaufgabe</div>
+      <h1>Willkommen bei deinem Gastro-OS Status-Check! 🚀</h1>
+      <p>Schön, dass du dir die Zeit nimmst, dein Business ehrlich zu analysieren. Dieses Quiz hilft uns, deinen Startpunkt im System genau zu bestimmen.</p>
+
+      <div class="score-guide">
+        <p><strong>So wertest du dein Ergebnis aus:</strong></p>
+        <p>Jede deiner Antworten hat einen Punktwert:</p>
+        <p>· <strong>Antwort A (die oberste):</strong> 10 Punkte</p>
+        <p>· <strong>Antwort B (die mittlere):</strong> 20 Punkte</p>
+        <p>· <strong>Antwort C (die unterste):</strong> 30 Punkte</p>
+        <p style="margin-top:10px;">Am Ende erfährst du sofort, ob du aktuell als <strong>„Feuerwehrmann"</strong>, <strong>„Solider Verwalter"</strong> oder bereits als <strong>„System-Profi"</strong> agierst. Viel Erfolg!</p>
+      </div>
+    </div>
+
+    <!-- Frage 1 -->
+    <div class="question-card" id="qcard-1">
+      <div class="q-number">Frage 1 von 5</div>
+      <div class="q-title">Zeit-Invest im operativen Geschäft</div>
+      <div class="q-subtitle">Wie viele Stunden arbeitest du aktuell durchschnittlich pro Woche direkt IM Betrieb (Küche, Service, Administration, Problemlösung)?</div>
+      <button class="option" onclick="selectOption(1, 10, this)">
+        <div class="option-dot"></div>
+        <div class="option-text">Über 60 Stunden</div>
+      </button>
+      <button class="option" onclick="selectOption(1, 20, this)">
+        <div class="option-dot"></div>
+        <div class="option-text">40–60 Stunden</div>
+      </button>
+      <button class="option" onclick="selectOption(1, 30, this)">
+        <div class="option-dot"></div>
+        <div class="option-text">Unter 40 Stunden</div>
+      </button>
+    </div>
+
+    <!-- Frage 2 -->
+    <div class="question-card" id="qcard-2">
+      <div class="q-number">Frage 2 von 5</div>
+      <div class="q-title">Der „Feierabend-Faktor"</div>
+      <div class="q-subtitle">Welches Gefühl beschreibt deinen Feierabend am besten?</div>
+      <button class="option" onclick="selectOption(2, 10, this)">
+        <div class="option-dot"></div>
+        <div class="option-text">Ständige Erreichbarkeit: Mein Handy steht nie still, das Team fragt alles nach</div>
+      </button>
+      <button class="option" onclick="selectOption(2, 20, this)">
+        <div class="option-dot"></div>
+        <div class="option-text">Erschöpfung: Ich habe viel geschafft, aber nur Brände gelöscht</div>
+      </button>
+      <button class="option" onclick="selectOption(2, 30, this)">
+        <div class="option-dot"></div>
+        <div class="option-text">Zufriedenheit: Der Betrieb läuft auch ohne mein ständiges Eingreifen</div>
+      </button>
+    </div>
+
+    <!-- Frage 3 -->
+    <div class="question-card" id="qcard-3">
+      <div class="q-number">Frage 3 von 5</div>
+      <div class="q-title">Finanzielle Klarheit</div>
+      <div class="q-subtitle">Wie sicher bist du dir bei der Kalkulation deiner Speisen und Getränke?</div>
+      <button class="option" onclick="selectOption(3, 10, this)">
+        <div class="option-dot"></div>
+        <div class="option-text">Ich hoffe am Monatsende einfach, dass etwas übrig bleibt</div>
+      </button>
+      <button class="option" onclick="selectOption(3, 20, this)">
+        <div class="option-dot"></div>
+        <div class="option-text">Ich habe ein grobes Bauchgefühl für meine Margen</div>
+      </button>
+      <button class="option" onclick="selectOption(3, 30, this)">
+        <div class="option-dot"></div>
+        <div class="option-text">Ich kenne meinen Wareneinsatz und meine Deckungsbeiträge auf den Cent genau</div>
+      </button>
+    </div>
+
+    <!-- Frage 4 -->
+    <div class="question-card" id="qcard-4">
+      <div class="q-number">Frage 4 von 5</div>
+      <div class="q-title">Der „Urlaubs-Test"</div>
+      <div class="q-subtitle">Was passiert, wenn du heute für zwei Wochen spontan komplett ausfällst?</div>
+      <button class="option" onclick="selectOption(4, 10, this)">
+        <div class="option-dot"></div>
+        <div class="option-text">Das totale Chaos – der Betrieb müsste wahrscheinlich schließen</div>
+      </button>
+      <button class="option" onclick="selectOption(4, 20, this)">
+        <div class="option-dot"></div>
+        <div class="option-text">Es läuft irgendwie weiter, aber die Qualität und der Service leiden massiv</div>
+      </button>
+      <button class="option" onclick="selectOption(4, 30, this)">
+        <div class="option-dot"></div>
+        <div class="option-text">Kein Problem – mein Team weiß exakt, was zu tun ist, die Systeme laufen</div>
+      </button>
+    </div>
+
+    <!-- Frage 5 -->
+    <div class="question-card" id="qcard-5">
+      <div class="q-number">Frage 5 von 5</div>
+      <div class="q-title">Umgang mit Kostensteigerungen</div>
+      <div class="q-subtitle">Wie reagierst du auf steigende Kosten (Energie, Personal, Ware)?</div>
+      <button class="option" onclick="selectOption(5, 10, this)">
+        <div class="option-dot"></div>
+        <div class="option-text">Ich versuche durchzuhalten und hoffe auf bessere Zeiten</div>
+      </button>
+      <button class="option" onclick="selectOption(5, 20, this)">
+        <div class="option-dot"></div>
+        <div class="option-text">Ich erhöhe gelegentlich die Preise, wenn es gar nicht mehr anders geht</div>
+      </button>
+      <button class="option" onclick="selectOption(5, 30, this)">
+        <div class="option-dot"></div>
+        <div class="option-text">Ich optimiere laufend meine Prozesse und nutze Tools zur Kostensenkung</div>
+      </button>
+    </div>
+
+    <div class="submit-wrap">
+      <button class="btn-submit" id="btn-submit" onclick="submitReflexion()">
+        Ergebnis anzeigen →
+      </button>
+      <div class="progress-hint" id="progress-hint">Bitte alle 5 Fragen beantworten</div>
+    </div>
+
+  </div><!-- /form-screen -->
+
+  <!-- ERGEBNIS -->
+  <div id="result-screen">
+    <div class="result-card">
+      <div class="result-emoji" id="res-emoji"></div>
+      <div class="result-label">Dein Ergebnis</div>
+      <div class="result-title" id="res-title"></div>
+      <div class="result-score" id="res-score"></div>
+      <div class="result-text" id="res-text"></div>
+      <div class="result-divider"></div>
+      <div class="result-saved" id="res-saved"></div>
+      <div>
+        <a href="dashboard.html" class="btn-back">← Zurück zum Dashboard</a>
+        <button class="btn-retry" onclick="resetReflexion()">Nochmal ausfüllen</button>
+      </div>
+    </div>
   </div>
 
-  <!-- Auswertung -->
-  <div class="score-title">📊 So wertest du dein Ergebnis aus:</div>
+</div><!-- /wrap -->
 
-  <div class="score-grid">
-    <div class="score-card red">
-      <div class="icon">👨‍🚒</div>
-      <div class="range">30 – 50 Punkte</div>
-      <div class="name">Feuerwehr-Modus</div>
-      <div class="desc">Du löschst aktuell nur Brände. Das GASTRO-OS ist deine Rettungsweste. Starte sofort mit Modul 1!</div>
-    </div>
-    <div class="score-card amber">
-      <div class="icon">📋</div>
-      <div class="range">55 – 75 Punkte</div>
-      <div class="name">Der solide Verwalter</div>
-      <div class="desc">Die Basis steht, aber du verschenkst Freiheit und Gewinn. Wir feintunen jetzt dein System.</div>
-    </div>
-    <div class="score-card green">
-      <div class="icon">🚀</div>
-      <div class="range">80 – 90 Punkte</div>
-      <div class="name">System-Profi</div>
-      <div class="desc">Du bist bereit für die Skalierung. Das GASTRO-OS bringt dich auf das nächste Level.</div>
-    </div>
-  </div>
-
-  <div class="punkte-hinweis">
-    <strong>💡 Punktesystem:</strong> Notiere dir beim Ausfüllen kurz deine Punkte oder rechne sie am Ende zusammen.
-    <div class="punkte-row">
-      <span class="punkte-badge">Antwort A (oben) = 10 Punkte</span>
-      <span class="punkte-badge">Antwort B (Mitte) = 20 Punkte</span>
-      <span class="punkte-badge">Antwort C (unten) = 30 Punkte</span>
-    </div>
-  </div>
-
-  <!-- Google Form -->
-  <div class="form-wrapper">
-    <div class="form-header">
-      <span class="label">📝 Modul 0 — Reflexionsaufgabe</span>
-      <span class="badge">GASTRO-OS</span>
-    </div>
-    <iframe
-      src="https://docs.google.com/forms/d/e/1FAIpQLSde73gYwouFJCPMiXVCmv-nlqYFOEZMaNeS0ZrqUZhgIGRiVQ/viewform?embedded=true"
-      frameborder="0"
-      marginheight="0"
-      marginwidth="0">
-      Wird geladen…
-    </iframe>
-  </div>
-
-</div>
-
-<div class="gold-bar"></div>
-<div class="footer">
+<div class="footer-brand">
   <strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg
 </div>
+
+<script>
+const SUPABASE_URL = 'https://hchlganbgjeciwhwaisj.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3';
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const answers = {};   // { 1: 10, 2: 20, ... }
+
+function selectOption(qNum, pts, el) {
+  // Alle Optionen der Frage zurücksetzen
+  const card = document.getElementById('qcard-' + qNum);
+  card.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+  // Gewählte Option markieren
+  el.classList.add('selected');
+  card.classList.add('answered');
+  answers[qNum] = pts;
+  updateSubmit();
+}
+
+function updateSubmit() {
+  const count = Object.keys(answers).length;
+  const btn = document.getElementById('btn-submit');
+  const hint = document.getElementById('progress-hint');
+  if (count === 5) {
+    btn.classList.add('ready');
+    hint.textContent = '✓ Alle Fragen beantwortet — bereit!';
+    hint.style.color = '#4aaa60';
+  } else {
+    btn.classList.remove('ready');
+    hint.textContent = (5 - count) + ' Frage' + (5 - count !== 1 ? 'n' : '') + ' noch offen';
+    hint.style.color = '#8090a8';
+  }
+}
+
+function getResult(score) {
+  if (score <= 80) {
+    return {
+      emoji: '👨‍🚒',
+      title: '"FEUERWEHR-MODUS"',
+      text: 'Du löschst aktuell nur Brände. Das Gastro-OS ist deine Rettungsweste. Starte sofort mit Modul 1!',
+      key: 'feuerwehr'
+    };
+  } else if (score <= 115) {
+    return {
+      emoji: '📋',
+      title: '"DER SOLIDE VERWALTER"',
+      text: 'Die Basis steht, aber du verschenkst Freiheit und Gewinn. Wir feintunen jetzt dein System.',
+      key: 'verwalter'
+    };
+  } else {
+    return {
+      emoji: '🚀',
+      title: '"SYSTEM-PROFI"',
+      text: 'Du bist bereit für die Skalierung. Das Gastro-OS bringt dich auf das nächste Level.',
+      key: 'systemprofi'
+    };
+  }
+}
+
+async function submitReflexion() {
+  if (Object.keys(answers).length < 5) return;
+
+  const total = Object.values(answers).reduce((a, b) => a + b, 0);
+  const result = getResult(total);
+
+  // Ergebnis anzeigen
+  document.getElementById('form-screen').style.display = 'none';
+  document.getElementById('result-screen').style.display = 'block';
+  document.getElementById('res-emoji').textContent = result.emoji;
+  document.getElementById('res-title').textContent = result.title;
+  document.getElementById('res-score').textContent = total + ' von 150 Punkten';
+  document.getElementById('res-text').textContent = result.text;
+
+  // In Supabase speichern
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    if (session) {
+      await sb.from('user_tool_data').upsert({
+        user_id: session.user.id,
+        tool_name: 'reflexion_modul0',
+        data: {
+          answers,
+          score: total,
+          result: result.key,
+          abgeschlossen: true,
+          datum: new Date().toISOString()
+        },
+        updated_at: new Date().toISOString()
+      }, { onConflict: 'user_id,tool_name' });
+      document.getElementById('res-saved').innerHTML =
+        '<span>✓</span> Dein Ergebnis wurde gespeichert.';
+    }
+  } catch(e) {
+    document.getElementById('res-saved').textContent = 'Ergebnis lokal ausgewertet.';
+  }
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function resetReflexion() {
+  Object.keys(answers).forEach(k => delete answers[k]);
+  document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+  document.querySelectorAll('.question-card').forEach(c => c.classList.remove('answered'));
+  document.getElementById('btn-submit').classList.remove('ready');
+  document.getElementById('progress-hint').textContent = 'Bitte alle 5 Fragen beantworten';
+  document.getElementById('progress-hint').style.color = '#8090a8';
+  document.getElementById('form-screen').style.display = 'block';
+  document.getElementById('result-screen').style.display = 'none';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
 
 </body>
 </html>
