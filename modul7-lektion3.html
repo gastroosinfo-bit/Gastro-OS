@@ -3,73 +3,105 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GASTRO-OS – Modul 7 | Lektion 3</title>
-<style>* { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f0e8; color: #1a2a4a; min-height: 100vh; }
-  .header { background: #1a2a4a; padding: 22px 40px; text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,0.3); }
-  .header .brand { font-family: Georgia, serif; font-size: 22px; color: #d4af37; letter-spacing: 4px; font-weight: normal; }
-  .header .modul-label { font-size: 11px; color: #a0b0c8; letter-spacing: 3px; text-transform: uppercase; margin-top: 4px; }
-  .gold-bar { height: 3px; background: linear-gradient(90deg, #1a2a4a, #d4af37, #1a2a4a); }
-  .main { max-width: 780px; margin: 36px auto; padding: 0 24px 60px; }
-  .cream-box { background: #fff; border-radius: 12px; padding: 36px 40px; border: 3px solid #9A7D3A; margin-bottom: 28px; }
-  .cream-box h1 { font-family: Georgia, serif; font-size: 26px; color: #1a2a4a; margin-bottom: 8px; }
-  .gold-rule { width: 56px; height: 2px; background: #d4af37; margin: 10px 0 20px; }
-  .intro { font-size: 14px; color: #5060a0; line-height: 1.7; }
-  .chapter { background: #fff; border-radius: 10px; padding: 28px 32px; margin-bottom: 20px; border: 1px solid #e8dfc8; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
-  .chapter h2 { font-family: Georgia, serif; font-size: 19px; color: #1a2a4a; margin-bottom: 6px; padding-bottom: 8px; border-bottom: 2px solid #d4af37; }
-  .chapter h3 { font-size: 14px; font-weight: 700; color: #1a2a4a; margin: 18px 0 8px; text-transform: uppercase; letter-spacing: 0.5px; }
-  .chapter p { font-size: 14px; color: #334; line-height: 1.8; margin-bottom: 12px; }
-  .chapter p:last-child { margin-bottom: 0; }
-  .aufgabe { background: #f0f4fb; border-radius: 8px; padding: 16px 20px; margin-top: 20px; border-left: 4px solid #1a2a4a; }
-  .aufgabe .label { font-size: 11px; font-weight: 700; color: #d4af37; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
-  .aufgabe p { font-size: 13px; color: #1a2a4a; line-height: 1.7; margin: 0; }
-  .warning-box { background: #fff3cd; border-radius: 8px; padding: 14px 18px; margin: 16px 0; border: 1px solid #ffc107; font-size: 13px; color: #664d03; line-height: 1.7; }
-  .footer { background: #1a2a4a; margin-top: 48px; padding: 14px 40px; text-align: center; font-size: 11px; color: #8090a8; letter-spacing: 1px; }
-  .footer strong { color: #d4af37; }</style>
+<title>Lektion 3 – Modul 7 | GASTRO-OS</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
+.header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:20px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.btn-back { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; text-decoration:none; display:inline-block; }
+.btn-back:hover { border-color:#d4af37; color:#d4af37; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+.main { max-width:860px; margin:36px auto; padding:0 24px 60px; }
+.page-tag { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; margin-bottom:8px; }
+.page-title { font-family:Georgia,serif; font-size:26px; color:#1a2a4a; margin-bottom:6px; }
+.page-sub { font-size:13px; color:#8090a8; margin-bottom:28px; }
+.welcome-card { background:#1a2a4a; border-radius:12px; padding:24px 28px; margin-bottom:28px; }
+.welcome-card p { font-size:14px; color:#c0cce0; line-height:1.85; }
+.chapter { background:#fff; border:1px solid #e8dfc8; border-radius:12px; padding:28px 32px; margin-bottom:24px; box-shadow:0 2px 8px rgba(0,0,0,0.04); }
+.chapter h2 { font-family:Georgia,serif; font-size:18px; color:#1a2a4a; margin-bottom:18px; padding-bottom:12px; border-bottom:2px solid #e8dfc8; }
+.chapter h3 { font-family:Georgia,serif; font-size:15px; color:#d4af37; margin:20px 0 10px; }
+.chapter p { font-size:14px; color:#4a5a6a; line-height:1.85; margin-bottom:14px; }
+.chapter p:last-child { margin-bottom:0; }
+.warn-box { background:#fff3e0; border-left:4px solid #e67e22; border-radius:0 8px 8px 0; padding:14px 18px; margin:16px 0; font-size:13px; color:#7a4010; line-height:1.7; }
+.task-box { background:#f5f0e8; border-left:4px solid #d4af37; border-radius:0 8px 8px 0; padding:16px 20px; margin-top:20px; }
+.task-box strong { font-size:13px; color:#1a2a4a; display:block; margin-bottom:6px; }
+.task-box p { font-size:13px; color:#4a5a6a; margin-bottom:0; }
+.nav-row { display:flex; gap:12px; justify-content:space-between; margin-top:24px; }
+.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:12px 24px; border-radius:8px; font-size:13px; font-weight:600; text-decoration:none; transition:all 0.2s; display:inline-block; }
+.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
+.nav-btn.secondary { background:transparent; border:1px solid rgba(26,42,74,0.3); color:#1a2a4a; }
+.nav-btn.secondary:hover { background:#1a2a4a; color:#d4af37; }
+.footer { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; }
+.footer strong { color:#d4af37; }
+</style>
 </head>
 <body>
 <div class="header">
   <div class="brand">GASTRO-OS</div>
-  <div class="modul-label">Modul 7 · Lektion 3</div>
+  <a href="modul7-uebersicht.html" class="btn-back">← Modulübersicht</a>
 </div>
 <div class="gold-bar"></div>
 <div class="main">
-  <div class="cream-box">
-    <h1>📖 Lektion 3 — Verschwendung stoppen</h1>
-    <div class="gold-rule"></div>
-    <p class="intro">In der deutschen Gastronomie werden laut Studien bis zu 30 Prozent aller eingekauften Lebensmittel weggeworfen. Von jedem Euro den du für Ware ausgibst landen 30 Cent im Müll. Nicht weil die Mitarbeiter es wollen. Sondern weil kein System existiert das es verhindert. In Lektion 3 bauen wir dieses System auf.</p>
+  <div class="page-tag">Modul 7 · Kostenkontrolle &amp; Effizienz</div>
+  <div class="page-title">📖 Lektion 3 — Verschwendung stoppen</div>
+  <div class="page-sub">30% aller Lebensmittel landen im Müll — so stoppst du das</div>
+
+  <div class="welcome-card">
+    <p>In Lektion 2 haben wir uns angeschaut wo Energiekosten wirklich entstehen und wie du deine Kühlgeräte so managst dass sie effizient arbeiten. Jetzt kommen wir zum dritten großen Bereich der versteckten Kosten. In der deutschen Gastronomie werden laut Studien bis zu 30 Prozent aller eingekauften Lebensmittel weggeworfen. Von jedem Euro den du für Ware ausgibst landen 30 Cent im Müll. Nicht weil die Mitarbeiter es wollen. Sondern weil kein System existiert das es verhindert. In Lektion 3 bauen wir dieses System auf.</p>
   </div>
 
   <div class="chapter">
     <h2>Kapitel 1 — Wo Verschwendung wirklich entsteht</h2>
+
     <h3>Überproduktion — zu viel vorbereiten aus Angst zu wenig zu haben</h3>
-    <p>Überproduktion ist in der Gastronomie weit verbreitet. Und sie ist menschlich. Niemand möchte einem Gast sagen dass ein Gericht nicht mehr verfügbar ist. Also wird zu viel produziert, zu viel vorbereitet, zu viel eingekauft. Das Ergebnis: volle Mülleimer am Abend, ein Wareneinsatz der deutlich über dem Optimum liegt.</p>
-    <p>Überproduktion ist keine Frage des guten Willens. Sie ist eine Frage fehlender Daten. Wer nicht weiß wie viel er durchschnittlich von einem Gericht verkauft, bereitet auf Basis von Gefühl vor. Eine einfache Tabelle die täglich festhält wie viele Portionen verkauft wurden zeigt nach zwei Wochen klare Muster.</p>
+    <p>Überproduktion ist in der Gastronomie weit verbreitet. Und sie ist menschlich. Niemand möchte einem Gast sagen dass ein Gericht nicht mehr verfügbar ist. Also wird zu viel produziert, zu viel vorbereitet, zu viel eingekauft. Das Ergebnis ist vorhersehbar: volle Mülleimer am Abend.</p>
+    <p>Überproduktion ist keine Frage des guten Willens. Sie ist eine Frage fehlender Daten. Wer nicht weiß wie viel er durchschnittlich von einem Gericht verkauft, bereitet auf Basis von Gefühl vor. Und Gefühl liegt meistens zu hoch. Eine einfache Tabelle die täglich festhält wie viele Portionen von jedem Gericht verkauft wurden, zeigt nach zwei Wochen klare Muster. Wenn du weißt dass du am Dienstag durchschnittlich 12 Portionen Tagessuppe verkaufst, bereitest du 14 vor. Nicht 25.</p>
+
     <h3>Portionsinkonsistenz — wenn jeder Koch anders portioniert</h3>
-    <p>Eine Portion die zehn Gramm zu schwer ist klingt nach wenig. Bei 50 Portionen am Tag sind das 500 Gramm Mehrverbrauch täglich. 15 Kilogramm im Monat. Je nach Produkt können das schnell dreistellige Beträge sein. Klare Portionsstandards lösen dieses Problem — nicht als Kontrollinstrument, sondern als Qualitätswerkzeug das Konsistenz sichert.</p>
+    <p>Portionsinkonsistenz ist ein unterschätzter Kostenfaktor der in zwei Richtungen schadet. Eine Portion die zehn Gramm zu schwer ist klingt nach wenig. Bei 50 Portionen am Tag sind das 500 Gramm Mehrverbrauch täglich — 15 Kilogramm im Monat. Je nach Produkt können das schnell dreistellige Beträge sein. Klare Portionsstandards lösen beide Probleme: Kostenkontrolle und Gästekonsistenz gleichzeitig.</p>
+
     <h3>Fehlende Resteverwertung — was gestern übrig blieb landet heute im Müll</h3>
-    <p>Was am Abend übrig bleibt wird weggeworfen weil es keine klare Regel gibt wie es weiterverwendet werden kann. Systematisch bedeutet: eine klare Regel zu haben bevor die Reste entstehen. Was kann als Tagesangebot verwertet werden. Was kann als Mitarbeiterverpflegung genutzt werden. Was kann eingefroren werden.</p>
-    <div class="warning-box">⚠️ <strong>Wichtiger Hinweis:</strong> Stelle sicher dass deine HACCP-Dokumentation aktuell ist. Temperaturkontrollen, Reinigungspläne und Lagerdokumentation sind keine Empfehlung – sie sind gesetzlich vorgeschrieben.</div>
-    <div class="aufgabe">
-      <div class="label">🎯 Deine Aufgabe</div>
-      <p>Starte diese Woche eine einfache Warenabgangsliste in deiner Küche. Datum, Produkt, Menge, Grund. Nicht mehr. Führ sie sieben Tage durch. Schau dir am Ende der Woche an was am häufigsten weggeworfen wurde und warum. Schreib die drei größten Posten auf.</p>
+    <p>Resteverwertung ist in vielen Betrieben eine Ausnahme statt ein Standard. Systematisch bedeutet nicht täglich neu zu improvisieren. Systematisch bedeutet eine klare Regel zu haben bevor die Reste entstehen: was kann als Tagesangebot verwertet werden, was als Mitarbeiterverpflegung, was kann eingefroren werden, was muss tatsächlich entsorgt werden. Viele erfolgreiche Restaurants haben aus der Resteverwertung sogar ein kreatives Konzept entwickelt — tägliche Specials die auf dem basieren was vorhanden ist.</p>
+
+    <h3>Fehlende Dokumentation — was nicht gemessen wird nicht verbessert</h3>
+    <p>Solange niemand aufschreibt was täglich weggeworfen wird, bleibt Verschwendung eine diffuse Ahnung. Eine einfache Warenabgangsliste schafft sofort Klarheit: was wird weggeworfen, wie viel ungefähr, warum. Ein Blatt Papier in der Küche, ausgefüllt am Ende jedes Tages. Nach zwei Wochen zeigen sich Muster. Und Muster lassen sich lösen.</p>
+
+    <div class="warn-box">⚠️ <strong>Wichtiger Hinweis:</strong> Stelle sicher dass deine HACCP-Dokumentation aktuell ist. Temperaturkontrollen, Reinigungspläne und Lagerdokumentation sind keine Empfehlung – sie sind gesetzlich vorgeschrieben. Wende dich im Zweifel an dein zuständiges Gesundheitsamt.</div>
+
+    <div class="task-box">
+      <strong>🎯 Aufgabe Kapitel 1</strong>
+      <p>Starte diese Woche eine einfache Warenabgangsliste in deiner Küche: Datum, Produkt, Menge, Grund. Nicht mehr. Führ sie sieben Tage durch. Schau dir am Ende der Woche an was am häufigsten weggeworfen wurde und warum. Schreib die drei größten Posten auf. Das sind deine ersten konkreten Ansatzpunkte für Kapitel 2.</p>
     </div>
   </div>
 
   <div class="chapter">
     <h2>Kapitel 2 — Verschwendung systematisch reduzieren</h2>
+
     <h3>Warum Systeme wichtiger sind als guter Wille</h3>
-    <p>Guter Wille allein ändert nichts. Du kannst deinem Team sagen bitte weniger wegwerfen. Und nach zwei Wochen ist alles wieder wie vorher. Nicht weil das Team es nicht will. Sondern weil ohne System jeder Tag von vorne anfängt. Ein System gibt klare Antworten auf wiederkehrende Fragen. Einmal definiert, immer gültig.</p>
+    <p>Es gibt eine Wahrheit über Verschwendung in der Gastronomie die viele kennen aber selten aussprechen. Guter Wille allein ändert nichts. Du kannst deinem Team sagen bitte weniger wegwerfen. Und nach zwei Wochen ist alles wieder wie vorher. Nicht weil das Team es nicht will. Sondern weil ohne System jeder Tag von vorne anfängt.</p>
+
     <h3>Bestellmengen auf Basis von Daten statt Gefühl</h3>
-    <p>Die Grundlage ist eine einfache Verbrauchsaufzeichnung. Wie viel wurde von welchem Produkt in der letzten Woche tatsächlich verbraucht. Diese Zahl ist die Basis für die nächste Bestellung. Ergänzt um einen kleinen Puffer für Unvorhergesehenes. Wer seine Verbrauchsdaten regelmäßig anschaut, passt seine Bestellmengen automatisch an.</p>
+    <p>Bestellmengen auf Basis von Daten sind zuverlässiger als Gefühl. Die Grundlage ist eine einfache Verbrauchsaufzeichnung: wie viel wurde von welchem Produkt in der letzten Woche tatsächlich verbraucht. Diese Zahl ist die Basis für die nächste Bestellung — ergänzt um einen kleinen Puffer. Wenn diese Aufzeichnung zwei oder drei Wochen lang geführt wird, entstehen Durchschnittswerte die für die regelmäßige Bestellung genutzt werden können. Mit deutlich weniger Verschwendung.</p>
+
     <h3>Portionsstandards einführen und leben</h3>
-    <p>Die praktische Umsetzung beginnt mit einer Portionsliste für die häufigsten Gerichte. Fang mit den drei Gerichten an die am häufigsten verkauft werden. Dort ist der Effekt am größten. Hilfsmittel wie Portionslöffel, Waagenmarkierungen oder Schöpfkellen in standardisierten Größen bringen schnell Stabilität.</p>
+    <p>Klare Portionsstandards sind eine der einfachsten Maßnahmen die sofort wirken. In der Gastronomie gilt Großzügigkeit oft als Tugend. Aber unkontrollierte Großzügigkeit ist eine versteckte Subvention die du alleine bezahlst. Die praktische Umsetzung beginnt mit einer Portionsliste für die häufigsten Gerichte. Gewicht oder Volumen pro Portion. Hilfsmittel die die Einhaltung erleichtern. Fang mit den drei Gerichten an die am häufigsten verkauft werden — dort ist der Effekt am größten.</p>
+
+    <h3>Resteverwertung als festen Standard etablieren</h3>
+    <p>Dafür braucht es drei Dinge: erstens eine klare Liste welche Produkte und Gerichte sich für Tagesangebote oder Mitarbeiterverpflegung eignen. Zweitens eine klare Regel wann Reste eingefroren werden können. Drittens eine klare Grenze wann etwas tatsächlich entsorgt werden muss. Lebensmittelsicherheit geht immer vor.</p>
+
     <h3>Die Kultur der Ressourcenachtsamkeit</h3>
-    <p>Ein konkreter Schritt: das wöchentliche Kurzgespräch in der Küche. Fünf Minuten. Was haben wir diese Woche weggeworfen. Was könnte weniger werden. Was hat gut funktioniert. Nicht als Kontrolle. Als gemeinsame Reflexion. Diese fünf Minuten signalisieren dem Team dass das Thema ernst genommen wird.</p>
-    <div class="aufgabe">
-      <div class="label">🎯 Deine Aufgabe</div>
+    <p>Verschwendung zu reduzieren ist am Ende keine technische Frage — es ist eine kulturelle Frage. Kultur entsteht nicht durch Appelle. Sie entsteht durch Vorbilder und durch Systeme. Ein konkreter Schritt: das wöchentliche Kurzgespräch in der Küche. Fünf Minuten. Was haben wir diese Woche weggeworfen. Was könnte weniger werden. Nicht als Kontrolle — als gemeinsame Reflexion.</p>
+
+    <div class="task-box">
+      <strong>🎯 Aufgabe Kapitel 2</strong>
       <p>Wähle jetzt einen der drei Hebel aus: Bestellmengen auf Datenbasis, Portionsstandards oder systematische Resteverwertung. Nicht alle drei auf einmal. Einen. Schreib auf wie du ihn in deinem Betrieb in den nächsten zwei Wochen einführst. Wer ist dafür verantwortlich. Was genau wird gemacht. Wann fängt es an.</p>
     </div>
+  </div>
+
+  <div class="nav-row">
+    <a href="modul7-lektion2.html" class="nav-btn secondary">← Lektion 2</a>
+    <a href="modul7-lektion4.html" class="nav-btn">Lektion 4 →</a>
   </div>
 </div>
 <div class="gold-bar"></div>

@@ -3,53 +3,450 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GASTRO-OS – Modul 7 | Kosten Analyse Tool</title>
-<style>* { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f0e8; color: #1a2a4a; min-height: 100vh; }
-  .header { background: #1a2a4a; padding: 22px 40px; text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,0.3); }
-  .header .brand { font-family: Georgia, serif; font-size: 22px; color: #d4af37; letter-spacing: 4px; font-weight: normal; }
-  .header .modul-label { font-size: 11px; color: #a0b0c8; letter-spacing: 3px; text-transform: uppercase; margin-top: 4px; }
-  .gold-bar { height: 3px; background: linear-gradient(90deg, #1a2a4a, #d4af37, #1a2a4a); }
-  .main { max-width: 780px; margin: 36px auto; padding: 0 24px 60px; }
-  h1 { font-family: Georgia, serif; font-size: 26px; color: #1a2a4a; margin-bottom: 8px; }
-  .gold-rule { width: 56px; height: 2px; background: #d4af37; margin: 10px 0 16px; }
-  .intro { font-size: 14px; color: #5060a0; line-height: 1.7; margin-bottom: 28px; }
-  .step { background: #fff; border-radius: 10px; padding: 24px 28px; margin-bottom: 16px; border: 1px solid #e8dfc8; box-shadow: 0 2px 8px rgba(0,0,0,0.04); display: flex; gap: 18px; align-items: flex-start; }
-  .step .num { background: #1a2a4a; color: #d4af37; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; flex-shrink: 0; }
-  .step .content h3 { font-family: Georgia, serif; font-size: 16px; color: #1a2a4a; margin-bottom: 8px; }
-  .step .content p { font-size: 14px; color: #334; line-height: 1.7; margin-bottom: 8px; }
-  .step .content ul { list-style: none; padding: 0; margin: 8px 0; }
-  .step .content ul li { font-size: 13px; color: #334; padding: 4px 0 4px 18px; position: relative; }
-  .step .content ul li::before { content: '👉'; position: absolute; left: 0; font-size: 11px; top: 5px; }
-  .card { background: #fff; border-radius: 10px; padding: 28px 32px; margin-bottom: 20px; border: 1px solid #e8dfc8; box-shadow: 0 2px 8px rgba(0,0,0,0.04); text-align: center; }
-  .card .icon { font-size: 48px; margin-bottom: 16px; }
-  .card h2 { font-family: Georgia, serif; font-size: 20px; color: #1a2a4a; margin-bottom: 10px; }
-  .card p { font-size: 14px; color: #5060a0; line-height: 1.7; margin-bottom: 20px; }
-  .btn { display: inline-block; background: #1a2a4a; color: #d4af37; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 14px; letter-spacing: 0.5px; transition: background 0.2s; }
-  .btn:hover { background: #2a3a5a; }
-  .hint { background: #fff8e8; border-radius: 8px; padding: 14px 18px; margin-top: 16px; font-size: 13px; color: #7a5000; border: 1px solid #d4af37; }
-  .footer { background: #1a2a4a; margin-top: 48px; padding: 14px 40px; text-align: center; font-size: 11px; color: #8090a8; letter-spacing: 1px; }
-  .footer strong { color: #d4af37; }</style>
+<title>Kosten-Analyse-Tool – Modul 7 | GASTRO-OS</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
+.header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:18px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.btn-back { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; text-decoration:none; display:inline-block; }
+.btn-back:hover { border-color:#d4af37; color:#d4af37; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+.wrap { max-width:1000px; margin:0 auto; padding:24px 20px 60px; }
+.tool-label { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:4px; }
+.tool-title { font-family:Georgia,serif; font-size:22px; color:#1a2a4a; margin-bottom:4px; }
+.tool-sub { font-size:13px; color:#5a6a80; margin-bottom:20px; }
+.action-row { display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap; align-items:center; }
+.btn-save { background:#1a2a4a; color:#d4af37; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; }
+.btn-save:hover { background:#d4af37; color:#1a2a4a; }
+.btn-print { background:#4a6a3a; color:#fff; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; }
+.btn-print:hover { background:#3a5a2a; }
+.btn-reset { background:transparent; border:1px solid #cc5544; color:#cc5544; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; }
+.btn-reset:hover { background:#cc5544; color:#fff; }
+.save-msg { font-size:12px; color:#4aaa60; display:none; }
+.tabs { display:flex; gap:2px; margin-bottom:0; }
+.tab-btn { background:#e8dfc8; border:none; padding:9px 18px; font-size:12px; font-weight:600; color:#5a6a80; cursor:pointer; border-radius:6px 6px 0 0; }
+.tab-btn.active { background:#fff; color:#1a2a4a; border-bottom:2px solid #d4af37; }
+.tab-btn:hover:not(.active) { background:#d4af37; color:#1a2a4a; }
+.tab-content { display:none; background:#fff; border:1px solid #e8dfc8; border-radius:0 10px 10px 10px; padding:20px 24px; }
+.tab-content.active { display:block; }
+.intro-box { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:12px 16px; font-size:13px; color:#4a5a6a; margin-bottom:18px; line-height:1.7; }
+/* Annahmen */
+.annahmen-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:18px; }
+.an-field { display:flex; flex-direction:column; gap:4px; }
+.an-field label { font-size:11px; font-weight:700; color:#8090a8; text-transform:uppercase; }
+.an-field input { border:1px solid #e0d8c8; border-radius:6px; padding:7px 10px; font-size:13px; background:#eaf2ff; color:#d4af37; font-weight:700; font-family:inherit; }
+.an-field input:focus { outline:none; border-color:#d4af37; }
+.an-field .an-hint { font-size:11px; color:#8090a8; margin-top:2px; }
+/* Energie Tabelle */
+.energie-table { width:100%; border-collapse:collapse; }
+.energie-table th { background:#1a2a4a; color:#d4af37; padding:8px 10px; font-size:11px; font-weight:700; text-align:center; }
+.energie-table th:first-child { text-align:left; }
+.energie-table td { border:1px solid #e8dfc8; padding:5px 8px; font-size:12px; text-align:center; }
+.energie-table td:first-child { text-align:left; font-weight:600; color:#1a2a4a; background:#faf8f4; }
+.energie-table td:nth-child(2) { color:#5a6a80; font-size:11px; background:#faf8f4; }
+.energie-table input { border:1px solid #e0d8c8; border-radius:4px; padding:4px 6px; font-size:12px; background:#eaf2ff; width:70px; text-align:center; }
+.energie-table input:focus { outline:none; border-color:#d4af37; }
+.energie-table .calc { background:#e4f5e8; color:#1a6030; font-weight:700; }
+.energie-total { background:#1a2a4a; color:#fff; font-weight:700; }
+.energie-total td { border-color:#1a2a4a; font-size:13px; }
+.energie-total td.amount { color:#d4af37; font-size:14px; font-weight:700; }
+/* Verschwendung */
+.verschw-table { width:100%; border-collapse:collapse; }
+.verschw-table th { background:#1a2a4a; color:#d4af37; padding:8px 10px; font-size:11px; font-weight:700; text-align:center; }
+.verschw-table th:first-child { text-align:left; }
+.verschw-table td { border:1px solid #e8dfc8; padding:5px 8px; font-size:12px; }
+.verschw-table td:first-child { background:#faf8f4; }
+.verschw-table input, .verschw-table select, .verschw-table textarea { border:1px solid #e0d8c8; border-radius:4px; padding:4px 6px; font-size:11px; background:#eaf2ff; font-family:inherit; }
+.verschw-table input:focus, .verschw-table select:focus { outline:none; border-color:#d4af37; }
+.verschw-total { background:#a03020; color:#fff; font-weight:700; font-size:13px; }
+.verschw-total td { border-color:#a03020; }
+.verschw-total td.amount { font-size:14px; font-weight:700; color:#fff; }
+/* Sofortanalyse */
+.sofort-table { width:100%; border-collapse:collapse; }
+.sofort-table th { background:#1a2a4a; color:#d4af37; padding:8px 10px; font-size:11px; font-weight:700; text-align:center; }
+.sofort-table th:first-child { text-align:left; min-width:160px; }
+.sofort-table td { border:1px solid #e8dfc8; padding:5px 8px; font-size:12px; text-align:center; }
+.sofort-table td:first-child { text-align:left; font-weight:600; color:#1a2a4a; background:#faf8f4; }
+.sofort-table input { border:1px solid #e0d8c8; border-radius:4px; padding:4px 8px; font-size:12px; background:#eaf2ff; width:100px; text-align:right; }
+.sofort-table input:focus { outline:none; border-color:#d4af37; }
+.sofort-table .diff-pos { color:#4aaa60; font-weight:700; }
+.sofort-table .diff-neg { color:#cc3333; font-weight:700; }
+.sofort-total { background:#1a2a4a; color:#fff; font-weight:700; }
+.sofort-total td { border-color:#1a2a4a; font-size:13px; }
+.sofort-total td.amount { color:#4aaa60; font-size:15px; font-weight:700; }
+/* Aktionsplan */
+.aktions-table { width:100%; border-collapse:collapse; margin-top:20px; }
+.aktions-table th { background:#1a2a4a; color:#d4af37; padding:8px 10px; font-size:11px; font-weight:700; text-align:left; }
+.aktions-table td { border:1px solid #e8dfc8; padding:6px 8px; font-size:12px; }
+.aktions-table td:first-child { background:#faf8f4; font-weight:700; color:#1a2a4a; white-space:nowrap; }
+.aktions-table input { border:1px solid #e0d8c8; border-radius:4px; padding:5px 8px; font-size:12px; background:#eaf2ff; width:100%; font-family:inherit; }
+.aktions-table input:focus { outline:none; border-color:#d4af37; }
+.nav-row { display:flex; gap:12px; justify-content:space-between; margin-top:20px; }
+.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:11px 22px; border-radius:8px; font-size:13px; font-weight:600; text-decoration:none; transition:all 0.2s; display:inline-block; }
+.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
+.nav-btn.secondary { background:transparent; border:1px solid rgba(26,42,74,0.3); color:#1a2a4a; }
+.nav-btn.secondary:hover { background:#1a2a4a; color:#d4af37; }
+@media print { .header,.action-row,.tabs,.nav-row,.gold-bar{display:none!important;} body{background:#fff;} }
+@media(max-width:600px){ .annahmen-grid{grid-template-columns:1fr;} }
+.footer-brand { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; }
+.footer-brand strong { color:#d4af37; }
+</style>
 </head>
 <body>
 <div class="header">
   <div class="brand">GASTRO-OS</div>
-  <div class="modul-label">Modul 7 · Kosten Analyse Tool</div>
+  <a href="modul7-uebersicht.html" class="btn-back">← Modulübersicht</a>
 </div>
 <div class="gold-bar"></div>
-<div class="main">
-  <h1>📊 Kosten Analyse Tool</h1>
-  <div class="gold-rule"></div>
-  <p class="intro">Das ist dein persönliches Werkzeug um herauszufinden wo dein Betrieb gerade wirklich Geld verliert. Nicht geschätzt. Nicht gefühlt. Berechnet. Drei Sheets. Dreißig Minuten. Ein klares Bild von deinen Kosten.</p>
-  <div class="card">
-    <div class="icon">📊</div>
-    <h2>Kosten Analyse Tool öffnen</h2>
-    <p>Schau dir vorher den Tab 📸 <strong>So nutzt du das Kosten Analyse Tool</strong> an damit du weißt was wo eingetragen wird. <strong>Fang mit Sheet 3 an</strong> wenn du wenig Zeit hast — er zeigt dir in 10 Minuten wo du diese Woche anfangen sollst.</p>
-    <a href="https://docs.google.com/spreadsheets/d/1aw0ICC1XD3g9vQLj7b4SfFWygoPwZg-Q/edit?usp=sharing" target="_blank" class="btn">→ Zum Kosten Analyse Tool</a>
-    <div class="hint">💡 Sheet 1: Geräte und Energiekosten eingeben. Sheet 2: täglich Warenabgang notieren. Sheet 3: aktuelle Kosten eintragen und Einsparpotenzial sofort sehen. Nach zwei Wochen erkennst du klare Muster.</div>
+<div class="wrap">
+  <div class="tool-label">Modul 7 · Tool</div>
+  <div class="tool-title">GASTRO-OS | Kosten-Analyse-Tool</div>
+  <div class="tool-sub">Bonus-Modul — Modul 7: Kostenkontrolle &amp; Effizienz · Drei Sheets. Dreißig Minuten. Ein klares Bild.</div>
+  <div class="action-row">
+    <button class="btn-save" onclick="saveData()">💾 Speichern</button>
+    <button class="btn-print" onclick="window.print()">🖨️ Drucken / PDF</button>
+    <button class="btn-reset" onclick="resetData()">🔄 Neu starten</button>
+    <span class="save-msg" id="save-msg">✓ Gespeichert</span>
+  </div>
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('energie')">⚡ Energie-Analyse</button>
+    <button class="tab-btn" onclick="switchTab('verschw')">🗑️ Verschwendung</button>
+    <button class="tab-btn" onclick="switchTab('sofort')">📊 Kosten-Sofortanalyse</button>
+  </div>
+
+  <!-- TAB 1: ENERGIE -->
+  <div class="tab-content active" id="tab-energie">
+    <div class="intro-box">Trage alle Geräte in deinem Betrieb ein. Das Tool berechnet automatisch die jährlichen Energiekosten und zeigt dir wo der größte Einsparhebel liegt.</div>
+    <div class="annahmen-grid">
+      <div class="an-field"><label>Strompreis (€/kWh)</label><input type="number" id="an-strom" value="0.35" step="0.01" oninput="calcEnergie();autoSave()"><div class="an-hint">Aktuellen Tarif eintragen</div></div>
+      <div class="an-field"><label>Gaspreis (€/kWh)</label><input type="number" id="an-gas" value="0.12" step="0.01" oninput="calcEnergie();autoSave()"><div class="an-hint">Aktuellen Tarif eintragen</div></div>
+      <div class="an-field"><label>Betriebstage pro Jahr</label><input type="number" id="an-tage" value="300" oninput="calcEnergie();autoSave()"><div class="an-hint">Wie viele Tage ist der Betrieb geöffnet?</div></div>
+    </div>
+    <div style="overflow-x:auto">
+    <table class="energie-table">
+      <thead><tr>
+        <th>Gerät / Bezeichnung</th><th>Energie</th>
+        <th>Leistung (kW)</th><th>Betrieb Std/Tag</th>
+        <th>Verbrauch kWh/Tag</th><th>Kosten €/Tag</th><th>Kosten €/Jahr</th>
+      </tr></thead>
+      <tbody id="energie-body"></tbody>
+      <tfoot><tr class="energie-total">
+        <td colspan="5" style="text-align:right;padding:10px">GESAMTKOSTEN ENERGIE PRO JAHR</td>
+        <td class="amount" id="etotal-tag">0,00 €</td>
+        <td class="amount" id="etotal-jahr">0,00 €</td>
+      </tr></tfoot>
+    </table>
+    </div>
+  </div>
+
+  <!-- TAB 2: VERSCHWENDUNG -->
+  <div class="tab-content" id="tab-verschw">
+    <div class="intro-box">Dokumentiere täglich was weggeworfen wird. Nach 2 Wochen erkennst du klare Muster — und weißt genau wo du ansetzen musst.</div>
+    <div style="margin-bottom:12px;display:flex;align-items:center;gap:12px;">
+      <label style="font-size:12px;font-weight:700;color:#1a2a4a">Durchschnittlicher Warenwert (€/kg):</label>
+      <input type="number" id="vw-preis" value="8.00" step="0.10" style="border:1px solid #e0d8c8;border-radius:6px;padding:6px 10px;font-size:13px;background:#eaf2ff;color:#d4af37;font-weight:700;width:100px" oninput="calcVerschw();autoSave()">
+      <span style="font-size:11px;color:#8090a8">Passe den Wert an deine durchschnittlichen Einkaufspreise an</span>
+    </div>
+    <div style="overflow-x:auto">
+    <table class="verschw-table">
+      <thead><tr>
+        <th style="text-align:left">Datum</th><th style="text-align:left">Produkt / Ware</th>
+        <th>Menge (kg)</th><th style="text-align:left">Ursache</th>
+        <th>Warenwert (€)</th><th>Vermeidbar?</th><th style="text-align:left">Maßnahme</th>
+      </tr></thead>
+      <tbody id="verschw-body"></tbody>
+      <tfoot><tr class="verschw-total">
+        <td colspan="4" style="text-align:right;padding:10px">GESAMTVERLUST DURCH VERSCHWENDUNG</td>
+        <td class="amount" id="vtotal">0,00 €</td>
+        <td colspan="2"></td>
+      </tr></tfoot>
+    </table>
+    </div>
+  </div>
+
+  <!-- TAB 3: SOFORTANALYSE -->
+  <div class="tab-content" id="tab-sofort">
+    <div class="intro-box">Fülle diese Analyse in unter 30 Minuten aus. Sie zeigt dir sofort wo dein Betrieb Geld verliert — und was du als erstes angehst.</div>
+    <div style="overflow-x:auto">
+    <table class="sofort-table">
+      <thead><tr>
+        <th>Kostenbereich</th>
+        <th>Ist-Kosten (€/Monat)</th><th>Zielwert (€/Monat)</th>
+        <th>Differenz (€)</th><th>Einsparpotenzial/Jahr</th>
+        <th>Priorität</th><th>Status</th>
+      </tr></thead>
+      <tbody id="sofort-body"></tbody>
+      <tfoot><tr class="sofort-total">
+        <td colspan="3" style="text-align:right;padding:10px">GESAMTES EINSPARPOTENZIAL PRO JAHR</td>
+        <td class="amount" id="stotal-diff">0,00 €</td>
+        <td class="amount" id="stotal-jahr">0,00 €</td>
+        <td colspan="2"></td>
+      </tr></tfoot>
+    </table>
+    </div>
+    <div style="margin-top:24px">
+      <div style="background:#1a2a4a;color:#d4af37;font-size:12px;font-weight:700;letter-spacing:1px;padding:10px 14px;border-radius:6px 6px 0 0;">📋 MEIN SOFORT-AKTIONSPLAN — Die 3 größten Hebel diese Woche angehen</div>
+      <table class="aktions-table">
+        <thead><tr><th>Priorität</th><th>Maßnahme</th><th>Erwartete Ersparnis</th><th>Bis wann</th><th>Verantwortlich</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>🥇 Sofort — diese Woche</td>
+            <td><input type="text" id="ak-1-m" placeholder="Maßnahme..." oninput="autoSave()"></td>
+            <td><input type="text" id="ak-1-e" placeholder="€/Monat" oninput="autoSave()"></td>
+            <td><input type="date" id="ak-1-d" oninput="autoSave()"></td>
+            <td><input type="text" id="ak-1-v" placeholder="Wer?" oninput="autoSave()"></td>
+            <td><input type="text" id="ak-1-s" placeholder="Status..." oninput="autoSave()"></td>
+          </tr>
+          <tr><td>🥈 Kurzfristig — diesen Monat</td>
+            <td><input type="text" id="ak-2-m" placeholder="Maßnahme..." oninput="autoSave()"></td>
+            <td><input type="text" id="ak-2-e" placeholder="€/Monat" oninput="autoSave()"></td>
+            <td><input type="date" id="ak-2-d" oninput="autoSave()"></td>
+            <td><input type="text" id="ak-2-v" placeholder="Wer?" oninput="autoSave()"></td>
+            <td><input type="text" id="ak-2-s" placeholder="Status..." oninput="autoSave()"></td>
+          </tr>
+          <tr><td>🥉 Mittelfristig — nächstes Quartal</td>
+            <td><input type="text" id="ak-3-m" placeholder="Maßnahme..." oninput="autoSave()"></td>
+            <td><input type="text" id="ak-3-e" placeholder="€/Monat" oninput="autoSave()"></td>
+            <td><input type="date" id="ak-3-d" oninput="autoSave()"></td>
+            <td><input type="text" id="ak-3-v" placeholder="Wer?" oninput="autoSave()"></td>
+            <td><input type="text" id="ak-3-s" placeholder="Status..." oninput="autoSave()"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="action-row" style="margin-top:16px">
+    <button class="btn-save" onclick="saveData()">💾 Speichern</button>
+    <button class="btn-print" onclick="window.print()">🖨️ Drucken / PDF</button>
+    <span class="save-msg" id="save-msg2">✓ Gespeichert</span>
+  </div>
+  <div class="nav-row">
+    <a href="modul7-kostenanalyse-anleitung.html" class="nav-btn secondary">← Anleitung</a>
+    <a href="modul7-quiz.html" class="nav-btn">Zum Quiz →</a>
   </div>
 </div>
 <div class="gold-bar"></div>
-<div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+<div class="footer-brand"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+
+<script>
+const SUPABASE_URL='https://hchlganbgjeciwhwaisj.supabase.co';
+const SUPABASE_KEY='sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3';
+const{createClient}=supabase;
+const sb=createClient(SUPABASE_URL,SUPABASE_KEY);
+let currentUser=null,saveTimer=null;
+
+const GERAETE=[
+  {n:'Kühlschrank (alt)',e:'Strom'},{n:'Kühlschrank (neu)',e:'Strom'},
+  {n:'Kühlraum',e:'Strom'},{n:'Tiefkühler',e:'Strom'},
+  {n:'Herd / Gasherd',e:'Gas'},{n:'Fritteuse',e:'Gas'},
+  {n:'Backofen',e:'Gas'},{n:'Spülmaschine',e:'Strom'},
+  {n:'Dunstabzug',e:'Strom'},{n:'Beleuchtung Küche',e:'Strom'},
+  {n:'Beleuchtung Gastraum',e:'Strom'},{n:'Warmwasserboiler',e:'Strom'},
+  {n:'Kaffeemaschine',e:'Strom'},{n:'Sonstiges',e:'Strom'},{n:'Sonstiges',e:'Strom'},
+];
+const VERSCHW_ROWS=15;
+const SOFORT_ROWS=[
+  'Stromkosten','Gaskosten','Wasserkosten','Lebensmittelverschwendung',
+  'Überproduktion','Ineffiziente Prozesse','Wartungskosten','Sonstiges'
+];
+
+function buildEnergie(){
+  const tbody=document.getElementById('energie-body');
+  GERAETE.forEach((g,i)=>{
+    tbody.innerHTML+=`<tr>
+      <td>${g.n}</td><td style="color:#5a6a80;font-size:11px">${g.e}</td>
+      <td><input type="number" id="e-kw-${i}" step="0.1" placeholder="kW" oninput="calcEnergie();autoSave()"></td>
+      <td><input type="number" id="e-std-${i}" step="0.5" placeholder="Std" oninput="calcEnergie();autoSave()"></td>
+      <td class="calc" id="e-kwh-${i}">0,00</td>
+      <td class="calc" id="e-tag-${i}">0,00 €</td>
+      <td class="calc" id="e-jahr-${i}">0,00 €</td>
+    </tr>`;
+  });
+}
+
+function calcEnergie(){
+  const strom=parseFloat(document.getElementById('an-strom').value)||0.35;
+  const gas=parseFloat(document.getElementById('an-gas').value)||0.12;
+  const tage=parseFloat(document.getElementById('an-tage').value)||300;
+  let totalTag=0, totalJahr=0;
+  GERAETE.forEach((g,i)=>{
+    const kw=parseFloat(document.getElementById(`e-kw-${i}`)?.value)||0;
+    const std=parseFloat(document.getElementById(`e-std-${i}`)?.value)||0;
+    const preis=g.e==='Gas'?gas:strom;
+    const kwh=kw*std;
+    const tag=kwh*preis;
+    const jahr=tag*tage;
+    totalTag+=tag; totalJahr+=jahr;
+    const fmt=(n)=>n.toFixed(2).replace('.',',');
+    if(document.getElementById(`e-kwh-${i}`)) document.getElementById(`e-kwh-${i}`).textContent=fmt(kwh);
+    if(document.getElementById(`e-tag-${i}`)) document.getElementById(`e-tag-${i}`).textContent=fmt(tag)+' €';
+    if(document.getElementById(`e-jahr-${i}`)) document.getElementById(`e-jahr-${i}`).textContent=fmt(jahr)+' €';
+  });
+  document.getElementById('etotal-tag').textContent=totalTag.toFixed(2).replace('.',',')+' €';
+  document.getElementById('etotal-jahr').textContent=totalJahr.toFixed(2).replace('.',',')+' €';
+}
+
+function buildVerschw(){
+  const tbody=document.getElementById('verschw-body');
+  for(let i=0;i<VERSCHW_ROWS;i++){
+    tbody.innerHTML+=`<tr>
+      <td><input type="date" id="v-dat-${i}" oninput="autoSave()"></td>
+      <td><input type="text" id="v-prod-${i}" placeholder="Produkt..." style="width:120px" oninput="autoSave()"></td>
+      <td style="text-align:center"><input type="number" id="v-kg-${i}" step="0.1" placeholder="kg" style="width:60px" oninput="calcVerschw();autoSave()"></td>
+      <td><input type="text" id="v-urs-${i}" placeholder="Ursache..." style="width:120px" oninput="autoSave()"></td>
+      <td class="calc" style="text-align:center" id="v-wert-${i}">—</td>
+      <td style="text-align:center"><select id="v-verm-${i}" oninput="autoSave()"><option value="">—</option><option value="ja">✅ Ja</option><option value="nein">❌ Nein</option></select></td>
+      <td><input type="text" id="v-mass-${i}" placeholder="Maßnahme..." style="width:120px" oninput="autoSave()"></td>
+    </tr>`;
+  }
+}
+
+function calcVerschw(){
+  const preis=parseFloat(document.getElementById('vw-preis').value)||8;
+  let total=0;
+  for(let i=0;i<VERSCHW_ROWS;i++){
+    const kg=parseFloat(document.getElementById(`v-kg-${i}`)?.value)||0;
+    const wert=kg*preis;
+    total+=wert;
+    const el=document.getElementById(`v-wert-${i}`);
+    if(el) el.textContent=wert>0?(wert.toFixed(2).replace('.',',')+' €'):'—';
+  }
+  document.getElementById('vtotal').textContent=total.toFixed(2).replace('.',',')+' €';
+}
+
+function buildSofort(){
+  const tbody=document.getElementById('sofort-body');
+  SOFORT_ROWS.forEach((r,i)=>{
+    tbody.innerHTML+=`<tr>
+      <td>${r}</td>
+      <td><input type="number" id="sf-ist-${i}" step="10" placeholder="0" oninput="calcSofort();autoSave()"></td>
+      <td><input type="number" id="sf-ziel-${i}" step="10" placeholder="0" oninput="calcSofort();autoSave()"></td>
+      <td id="sf-diff-${i}">—</td>
+      <td id="sf-jahr-${i}">—</td>
+      <td><input type="text" id="sf-prio-${i}" placeholder="Hoch/Mittel/Niedrig" style="width:110px" oninput="autoSave()"></td>
+      <td><input type="text" id="sf-stat-${i}" placeholder="Status..." style="width:100px" oninput="autoSave()"></td>
+    </tr>`;
+  });
+}
+
+function calcSofort(){
+  let totalDiff=0, totalJahr=0;
+  SOFORT_ROWS.forEach((_,i)=>{
+    const ist=parseFloat(document.getElementById(`sf-ist-${i}`)?.value)||0;
+    const ziel=parseFloat(document.getElementById(`sf-ziel-${i}`)?.value)||0;
+    const diff=ist-ziel;
+    const jahr=diff*12;
+    totalDiff+=diff; totalJahr+=jahr;
+    const fmt=n=>n.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g,'.')+' €';
+    const dEl=document.getElementById(`sf-diff-${i}`);
+    const jEl=document.getElementById(`sf-jahr-${i}`);
+    if(dEl){dEl.textContent=diff!==0?fmt(diff):'—';dEl.className=diff>0?'diff-pos':diff<0?'diff-neg':'';}
+    if(jEl){jEl.textContent=jahr!==0?fmt(jahr):'—';}
+  });
+  document.getElementById('stotal-diff').textContent=totalDiff.toFixed(0)+' €';
+  document.getElementById('stotal-jahr').textContent=totalJahr.toFixed(0)+' €';
+}
+
+function switchTab(tab){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+  const map={energie:0,verschw:1,sofort:2};
+  document.querySelectorAll('.tab-btn')[map[tab]].classList.add('active');
+  document.getElementById('tab-'+tab).classList.add('active');
+}
+
+function getData(){
+  const e={};
+  e.strom=document.getElementById('an-strom').value;
+  e.gas=document.getElementById('an-gas').value;
+  e.tage=document.getElementById('an-tage').value;
+  GERAETE.forEach((_,i)=>{
+    e[`kw${i}`]=document.getElementById(`e-kw-${i}`)?.value||'';
+    e[`std${i}`]=document.getElementById(`e-std-${i}`)?.value||'';
+  });
+  const v={};
+  v.preis=document.getElementById('vw-preis').value;
+  for(let i=0;i<VERSCHW_ROWS;i++){
+    v[`dat${i}`]=document.getElementById(`v-dat-${i}`)?.value||'';
+    v[`prod${i}`]=document.getElementById(`v-prod-${i}`)?.value||'';
+    v[`kg${i}`]=document.getElementById(`v-kg-${i}`)?.value||'';
+    v[`urs${i}`]=document.getElementById(`v-urs-${i}`)?.value||'';
+    v[`verm${i}`]=document.getElementById(`v-verm-${i}`)?.value||'';
+    v[`mass${i}`]=document.getElementById(`v-mass-${i}`)?.value||'';
+  }
+  const s={};
+  SOFORT_ROWS.forEach((_,i)=>{
+    s[`ist${i}`]=document.getElementById(`sf-ist-${i}`)?.value||'';
+    s[`ziel${i}`]=document.getElementById(`sf-ziel-${i}`)?.value||'';
+    s[`prio${i}`]=document.getElementById(`sf-prio-${i}`)?.value||'';
+    s[`stat${i}`]=document.getElementById(`sf-stat-${i}`)?.value||'';
+  });
+  const ak={};
+  for(let i=1;i<=3;i++) ['m','e','d','v','s'].forEach(f=>{ak[`${i}${f}`]=document.getElementById(`ak-${i}-${f}`)?.value||'';});
+  return{e,v,s,ak};
+}
+
+function setData(d){
+  if(!d)return;
+  if(d.e){
+    const set=(id,v)=>{const el=document.getElementById(id);if(el&&v)el.value=v;};
+    set('an-strom',d.e.strom);set('an-gas',d.e.gas);set('an-tage',d.e.tage);
+    GERAETE.forEach((_,i)=>{set(`e-kw-${i}`,d.e[`kw${i}`]);set(`e-std-${i}`,d.e[`std${i}`]);});
+    calcEnergie();
+  }
+  if(d.v){
+    const set=(id,v)=>{const el=document.getElementById(id);if(el&&v)el.value=v;};
+    set('vw-preis',d.v.preis);
+    for(let i=0;i<VERSCHW_ROWS;i++){
+      ['dat','prod','kg','urs','verm','mass'].forEach(f=>set(`v-${f}-${i}`,d.v[`${f}${i}`]));
+    }
+    calcVerschw();
+  }
+  if(d.s){
+    const set=(id,v)=>{const el=document.getElementById(id);if(el&&v)el.value=v;};
+    SOFORT_ROWS.forEach((_,i)=>{
+      ['ist','ziel','prio','stat'].forEach(f=>set(`sf-${f}-${i}`,d.s[`${f}${i}`]));
+    });
+    calcSofort();
+  }
+  if(d.ak){
+    for(let i=1;i<=3;i++) ['m','e','d','v','s'].forEach(f=>{
+      const el=document.getElementById(`ak-${i}-${f}`);if(el&&d.ak[`${i}${f}`])el.value=d.ak[`${i}${f}`];
+    });
+  }
+}
+
+async function saveData(){
+  if(!currentUser)return;
+  await sb.from('user_tool_data').upsert({user_id:currentUser.id,tool_name:'kostenanalyse_modul7',data:getData(),updated_at:new Date().toISOString()},{onConflict:'user_id,tool_name'});
+  ['save-msg','save-msg2'].forEach(id=>{const el=document.getElementById(id);if(el){el.style.display='inline';setTimeout(()=>el.style.display='none',2500);}});
+}
+
+function autoSave(){clearTimeout(saveTimer);saveTimer=setTimeout(saveData,1500);}
+
+function resetData(){
+  if(!confirm('Alle Eingaben zurücksetzen?'))return;
+  document.querySelectorAll('input[type=number],input[type=text],input[type=date],select').forEach(el=>{
+    if(el.id==='an-strom')el.value='0.35';
+    else if(el.id==='an-gas')el.value='0.12';
+    else if(el.id==='an-tage')el.value='300';
+    else if(el.id==='vw-preis')el.value='8.00';
+    else el.value='';
+  });
+  calcEnergie();calcVerschw();calcSofort();saveData();
+}
+
+async function init(){
+  const{data:{session}}=await sb.auth.getSession();
+  if(!session){window.location.href='login.html';return;}
+  currentUser=session.user;
+  buildEnergie();buildVerschw();buildSofort();
+  const{data:td}=await sb.from('user_tool_data').select('data').eq('user_id',currentUser.id).eq('tool_name','kostenanalyse_modul7').maybeSingle();
+  if(td&&td.data)setData(td.data);
+}
+init();
+</script>
 </body>
 </html>

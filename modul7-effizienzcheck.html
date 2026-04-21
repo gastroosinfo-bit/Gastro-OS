@@ -3,56 +3,330 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GASTRO-OS – Modul 7 | Gastro Effizienz Check</title>
+<title>Gastro-Effizienz-Check – Modul 7 | GASTRO-OS</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f0e8; color: #1a2a4a; min-height: 100vh; }
-  .header { background: #1a2a4a; padding: 22px 40px; text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,0.3); }
-  .header .brand { font-family: Georgia, serif; font-size: 22px; color: #d4af37; letter-spacing: 4px; font-weight: normal; }
-  .header .modul-label { font-size: 11px; color: #a0b0c8; letter-spacing: 3px; text-transform: uppercase; margin-top: 4px; }
-  .gold-bar { height: 3px; background: linear-gradient(90deg, #1a2a4a, #d4af37, #1a2a4a); }
-  .main { max-width: 780px; margin: 36px auto; padding: 0 24px 60px; }
-  h1 { font-family: Georgia, serif; font-size: 26px; color: #1a2a4a; margin-bottom: 8px; }
-  .gold-rule { width: 56px; height: 2px; background: #d4af37; margin: 10px 0 16px; }
-  .intro { font-size: 14px; color: #5060a0; line-height: 1.7; margin-bottom: 28px; }
-  .step { background: #fff; border-radius: 10px; padding: 24px 28px; margin-bottom: 16px; border: 1px solid #e8dfc8; box-shadow: 0 2px 8px rgba(0,0,0,0.04); display: flex; gap: 18px; align-items: flex-start; }
-  .step .num { background: #1a2a4a; color: #d4af37; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; flex-shrink: 0; }
-  .step .content h3 { font-family: Georgia, serif; font-size: 16px; color: #1a2a4a; margin-bottom: 8px; }
-  .step .content p { font-size: 14px; color: #334; line-height: 1.7; margin-bottom: 8px; }
-  .step .content ul { list-style: none; padding: 0; margin: 8px 0; }
-  .step .content ul li { font-size: 13px; color: #334; padding: 4px 0 4px 18px; position: relative; }
-  .step .content ul li::before { content: '👉'; position: absolute; left: 0; font-size: 11px; top: 5px; }
-  .screenshot { background: #1a2a4a; border-radius: 8px; padding: 14px 18px; margin: 10px 0; font-size: 12px; color: #a0b0c8; font-style: italic; text-align: center; }
-  .footer { background: #1a2a4a; margin-top: 48px; padding: 14px 40px; text-align: center; font-size: 11px; color: #8090a8; letter-spacing: 1px; }
-  .footer strong { color: #d4af37; }
-  .card { background: #fff; border-radius: 10px; padding: 28px 32px; margin-bottom: 20px; border: 1px solid #e8dfc8; box-shadow: 0 2px 8px rgba(0,0,0,0.04); text-align: center; }
-  .card .icon { font-size: 48px; margin-bottom: 16px; }
-  .card h2 { font-family: Georgia, serif; font-size: 20px; color: #1a2a4a; margin-bottom: 10px; }
-  .card p { font-size: 14px; color: #5060a0; line-height: 1.7; margin-bottom: 20px; }
-  .btn { display: inline-block; background: #1a2a4a; color: #d4af37; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 14px; letter-spacing: 0.5px; transition: background 0.2s; }
-  .btn:hover { background: #2a3a5a; }
-  .hint { background: #fff8e8; border-radius: 8px; padding: 14px 18px; margin-top: 16px; font-size: 13px; color: #7a5000; border: 1px solid #d4af37; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
+.header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:18px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.btn-back { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; text-decoration:none; display:inline-block; }
+.btn-back:hover { border-color:#d4af37; color:#d4af37; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+.wrap { max-width:1000px; margin:0 auto; padding:24px 20px 60px; }
+.tool-label { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:4px; }
+.tool-title { font-family:Georgia,serif; font-size:22px; color:#1a2a4a; margin-bottom:4px; }
+.tool-sub { font-size:13px; color:#5a6a80; margin-bottom:20px; }
+.action-row { display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap; align-items:center; }
+.btn-save { background:#1a2a4a; color:#d4af37; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; }
+.btn-save:hover { background:#d4af37; color:#1a2a4a; }
+.btn-print { background:#4a6a3a; color:#fff; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; }
+.btn-print:hover { background:#3a5a2a; }
+.btn-reset { background:transparent; border:1px solid #cc5544; color:#cc5544; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; }
+.btn-reset:hover { background:#cc5544; color:#fff; }
+.save-msg { font-size:12px; color:#4aaa60; display:none; }
+.tabs { display:flex; gap:2px; margin-bottom:0; }
+.tab-btn { background:#e8dfc8; border:none; padding:9px 18px; font-size:12px; font-weight:600; color:#5a6a80; cursor:pointer; border-radius:6px 6px 0 0; }
+.tab-btn.active { background:#fff; color:#1a2a4a; border-bottom:2px solid #d4af37; }
+.tab-btn:hover:not(.active) { background:#d4af37; color:#1a2a4a; }
+.tab-content { display:none; background:#fff; border:1px solid #e8dfc8; border-radius:0 10px 10px 10px; padding:20px 24px; }
+.tab-content.active { display:block; }
+.intro-box { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:12px 16px; font-size:13px; color:#4a5a6a; margin-bottom:18px; line-height:1.7; }
+.check-table { width:100%; border-collapse:collapse; }
+.check-table th { background:#1a2a4a; color:#d4af37; padding:9px 12px; font-size:11px; font-weight:700; text-align:left; }
+.check-table th.center { text-align:center; }
+.check-section-head td { background:#1a2a4a; color:#d4af37; font-size:12px; font-weight:700; padding:8px 12px; letter-spacing:0.5px; }
+.check-table td { border:1px solid #e8dfc8; padding:6px 10px; font-size:12px; vertical-align:middle; }
+.check-table tr:nth-child(even) td { background:#faf8f4; }
+.check-table td.pruef { font-weight:600; color:#1a2a4a; min-width:160px; }
+.check-table td.detail { color:#5a6a80; font-size:11px; max-width:220px; }
+.status-cell { text-align:center; }
+.status-cell select { border:1px solid #e0d8c8; border-radius:4px; padding:4px 6px; font-size:11px; background:#eaf2ff; color:#1a2a4a; cursor:pointer; }
+.status-cell select.ok { background:#e4f5e8; color:#1a6030; }
+.status-cell select.mangel { background:#fde8e4; color:#a03020; }
+.status-cell select.dringend { background:#fff3e0; color:#7a4010; font-weight:700; }
+.date-cell input { border:1px solid #e0d8c8; border-radius:4px; padding:3px 6px; font-size:11px; background:#eaf2ff; width:110px; }
+.notiz-cell input { border:1px solid #e0d8c8; border-radius:4px; padding:3px 6px; font-size:11px; background:#eaf2ff; width:100%; min-width:120px; }
+.jahres-table { width:100%; border-collapse:collapse; }
+.jahres-table th { background:#1a2a4a; color:#d4af37; padding:8px 10px; font-size:11px; font-weight:700; text-align:center; }
+.jahres-table th:first-child { text-align:left; min-width:180px; }
+.jahres-table td { border:1px solid #e8dfc8; padding:6px 8px; text-align:center; font-size:12px; }
+.jahres-table td:first-child { font-weight:600; color:#1a2a4a; text-align:left; background:#faf8f4; }
+.jahres-table td input[type=checkbox] { width:16px; height:16px; cursor:pointer; accent-color:#d4af37; }
+.nav-row { display:flex; gap:12px; justify-content:space-between; margin-top:20px; }
+.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:11px 22px; border-radius:8px; font-size:13px; font-weight:600; text-decoration:none; transition:all 0.2s; display:inline-block; }
+.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
+.nav-btn.secondary { background:transparent; border:1px solid rgba(26,42,74,0.3); color:#1a2a4a; }
+.nav-btn.secondary:hover { background:#1a2a4a; color:#d4af37; }
+@media print { .header,.action-row,.tabs,.nav-row,.gold-bar{display:none!important;} body{background:#fff;} }
+.footer-brand { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; }
+.footer-brand strong { color:#d4af37; }
 </style>
 </head>
 <body>
 <div class="header">
   <div class="brand">GASTRO-OS</div>
-  <div class="modul-label">Modul 7 · Gastro Effizienz Check</div>
+  <a href="modul7-uebersicht.html" class="btn-back">← Modulübersicht</a>
 </div>
 <div class="gold-bar"></div>
-<div class="main">
-  <h1>📊 Gastro Effizienz Check</h1>
-  <div class="gold-rule"></div>
-  <p class="intro">Dieser Check ist dein monatlicher Blick auf die Bereiche die still Geld kosten. Energie, Kühlung, Technik, Hygiene. Einmal im Monat, 20 Minuten, und du weißt genau wo Handlungsbedarf besteht. Alle Punkte mit Dringend sind deine erste Aufgabe für die nächste Woche.</p>
-  <div class="card">
-    <div class="icon">📊</div>
-    <h2>Gastro Effizienz Check öffnen</h2>
-    <p>Schau dir vorher den Tab 📸 <strong>So nutzt du den Gastro Effizienz Check</strong> an damit du weißt was wo eingetragen wird.</p>
-    <a href="https://docs.google.com/spreadsheets/d/1JCgLZ25l6zAJ9xrWwEd0wvl7sttmvy5Y/edit?usp=sharing" target="_blank" class="btn">→ Zum Gastro Effizienz Check</a>
-    <div class="hint">💡 Das Tool öffnet sich in Google Sheets. Führ den Check einmal im Monat durch. Die Monatsübersicht im dritten Sheet zeigt dir nach drei Monaten ob sich dein Betrieb verbessert.</div>
+<div class="wrap">
+  <div class="tool-label">Modul 7 · Tool</div>
+  <div class="tool-title">GASTRO-OS | Gastro-Effizienz-Check</div>
+  <div class="tool-sub">Modul 7: Kostenkontrolle &amp; Effizienz · Einmal im Monat, 20 Minuten, klarer Überblick</div>
+  <div class="action-row">
+    <button class="btn-save" onclick="saveData()">💾 Speichern</button>
+    <button class="btn-print" onclick="window.print()">🖨️ Drucken / PDF</button>
+    <button class="btn-reset" onclick="resetData()">🔄 Neu starten</button>
+    <span class="save-msg" id="save-msg">✓ Gespeichert</span>
+  </div>
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('tech')">⚡ Technischer Check</button>
+    <button class="tab-btn" onclick="switchTab('hygiene')">🧼 Hygienischer Check</button>
+    <button class="tab-btn" onclick="switchTab('jahres')">📅 Jahresübersicht</button>
+  </div>
+
+  <!-- TAB 1: TECHNISCHER CHECK -->
+  <div class="tab-content active" id="tab-tech">
+    <div class="intro-box">Führe diesen Check einmal im Monat durch. Trage Datum und Status ein — so siehst du auf einen Blick wo Handlungsbedarf besteht und kannst deinen Fortschritt über Zeit verfolgen.</div>
+    <div style="overflow-x:auto">
+    <table class="check-table" id="tech-table">
+      <thead><tr>
+        <th>Prüfpunkt</th><th>Details / Maßnahme</th>
+        <th class="center" style="width:120px">Status</th>
+        <th style="width:115px">Letzter Check</th>
+        <th style="width:115px">Nächster Check</th>
+        <th>Notiz</th>
+      </tr></thead>
+      <tbody id="tech-body"></tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- TAB 2: HYGIENISCHER CHECK -->
+  <div class="tab-content" id="tab-hygiene">
+    <div class="intro-box">Hygiene ist kein bürokratischer Aufwand — sie schützt deine Gäste, dein Team und deinen Betrieb. Dieser Check hilft dir Mängel früh zu erkennen bevor sie teuer werden.</div>
+    <div style="overflow-x:auto">
+    <table class="check-table" id="hygiene-table">
+      <thead><tr>
+        <th>Prüfpunkt</th><th>Details / Maßnahme</th>
+        <th class="center" style="width:120px">Status</th>
+        <th style="width:115px">Letzter Check</th>
+        <th style="width:115px">Nächster Check</th>
+        <th>Notiz</th>
+      </tr></thead>
+      <tbody id="hygiene-body"></tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- TAB 3: JAHRESÜBERSICHT -->
+  <div class="tab-content" id="tab-jahres">
+    <div class="intro-box">Hake jeden Monat ab welche Checks du durchgeführt hast. So siehst du nach drei Monaten ob sich dein Betrieb wirklich verbessert.</div>
+    <div style="overflow-x:auto">
+    <table class="jahres-table">
+      <thead><tr><th>Check-Bereich</th><th>Jan</th><th>Feb</th><th>Mär</th><th>Apr</th><th>Mai</th><th>Jun</th><th>Jul</th><th>Aug</th><th>Sep</th><th>Okt</th><th>Nov</th><th>Dez</th></tr></thead>
+      <tbody id="jahres-body"></tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="action-row" style="margin-top:16px">
+    <button class="btn-save" onclick="saveData()">💾 Speichern</button>
+    <button class="btn-print" onclick="window.print()">🖨️ Drucken / PDF</button>
+    <span class="save-msg" id="save-msg2">✓ Gespeichert</span>
+  </div>
+  <div class="nav-row">
+    <a href="modul7-effizienzcheck-anleitung.html" class="nav-btn secondary">← Anleitung</a>
+    <a href="modul7-kostenanalyse.html" class="nav-btn">Kosten-Analyse-Tool →</a>
   </div>
 </div>
 <div class="gold-bar"></div>
-<div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+<div class="footer-brand"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+
+<script>
+const SUPABASE_URL='https://hchlganbgjeciwhwaisj.supabase.co';
+const SUPABASE_KEY='sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3';
+const{createClient}=supabase;
+const sb=createClient(SUPABASE_URL,SUPABASE_KEY);
+let currentUser=null, saveTimer=null;
+
+const TECH_DATA=[
+  {sec:'⚡ ENERGIE — Geräte & Verbrauch'},
+  {p:'Alle Gerätelaufzeiten überprüft',d:'Laufen Geräte nur wenn sie gebraucht werden?'},
+  {p:'Standby-Geräte identifiziert',d:'Welche Geräte laufen unnötig im Standby?'},
+  {p:'Beleuchtung in Lagerräumen',d:'Wird Licht in ungenutzten Bereichen ausgeschaltet?'},
+  {p:'Fritteuse / Herdtemperaturen',d:'Werden Geräte rechtzeitig vor dem Service heruntergeregelt?'},
+  {p:'Warmwasserboiler',d:'Nur zu Betriebszeiten auf Temperatur — Nachtabsenkung?'},
+  {p:'Strom- / Gastarif überprüft',d:'Letzter Tarifvergleich — wann? Günstigerer Anbieter verfügbar?'},
+  {p:'Energieverbrauch Monat dokumentiert',d:'Verbrauch notiert zum Vergleich mit Vormonat'},
+  {sec:'❄️ KÜHLUNG — Kühlgeräte & Kühlräume'},
+  {p:'Türdichtungen aller Kühlgeräte',d:'Dichtungen auf Risse, Verformung oder Undichtigkeit prüfen'},
+  {p:'Temperaturen dokumentiert',d:'Alle Kühlzonen gemessen und protokolliert?'},
+  {p:'Kondensatoren gereinigt',d:'Rückseite der Geräte von Staub befreit?'},
+  {p:'Kühlraum-Organisation geprüft',d:'Ausreichend Platz für Luftzirkulation vorhanden?'},
+  {p:'Kühlgeräte nah an Wärmequellen',d:'Keine Geräte direkt neben Herd oder Ofen aufgestellt?'},
+  {p:'Kühlraum-Licht automatisch aus',d:'Licht schaltet sich beim Schließen der Tür aus?'},
+  {p:'Alter der Kühlgeräte dokumentiert',d:'Geräte über 8 Jahre — Effizienzvergleich mit Neugerät?'},
+  {sec:'🔧 GERÄTE & TECHNIK — Allgemeiner Zustand'},
+  {p:'Spülmaschine / Wasserverbrauch',d:'Vollbeladung vor jedem Durchlauf? Wasserenthärter aktiv?'},
+  {p:'Dunstabzug / Filter gereinigt',d:'Fettfilter gereinigt — erhöht Effizienz und verhindert Brandgefahr'},
+  {p:'Beleuchtung auf LED umgestellt',d:'Veraltete Leuchtmittel identifizieren und ersetzen'},
+  {p:'Druckluft / CO2-Anlage geprüft',d:'Leitungen auf Undichtigkeit kontrolliert?'},
+  {p:'Regelmäßige Wartungsverträge',d:'Welche Geräte haben Wartungsverträge — was fehlt?'},
+];
+
+const HYGIENE_DATA=[
+  {sec:'🥗 LEBENSMITTELHYGIENE — Lagerung & Haltbarkeit'},
+  {p:'FIFO-Prinzip eingehalten',d:'First In First Out — ältere Ware immer vorne?'},
+  {p:'Alle Lebensmittel korrekt beschriftet',d:'Datum der Öffnung / Zubereitung auf allen Behältern?'},
+  {p:'Temperaturen Kühlzone dokumentiert',d:'Tagesprotokoll Kühltemperaturen vorhanden?'},
+  {p:'Wareneingang kontrolliert',d:'Temperatur bei Lieferung geprüft? Ablaufdaten kontrolliert?'},
+  {p:'Allergene dokumentiert',d:'Allergenliste aktuell? Team informiert?'},
+  {p:'Trennung rohe / gegarte Lebensmittel',d:'Separate Schneidbretter und Behälter vorhanden?'},
+  {p:'Lebensmittelabfälle dokumentiert',d:'Warenabgangsliste geführt? Muster erkennbar?'},
+  {sec:'🧹 KÜCHENHYGIENE — Reinigung & Desinfektion'},
+  {p:'Reinigungsplan vorhanden & aktuell',d:'Schriftlicher Plan mit Verantwortlichkeiten und Frequenz?'},
+  {p:'Arbeitsflächen täglich desinfiziert',d:'Alle Arbeitsflächen nach jedem Servicende gereinigt?'},
+  {p:'Schneidebrettfarben eingehalten',d:'Farbsystem für verschiedene Lebensmittelgruppen bekannt?'},
+  {p:'Frittierfett Qualität geprüft',d:'Fetttestreifen verwendet? Wechselintervall dokumentiert?'},
+  {p:'Kühlraumreinigung durchgeführt',d:'Böden, Wände, Regale regelmäßig gereinigt?'},
+  {p:'Abflusssysteme kontrolliert',d:'Abflüsse gereinigt und auf Verstopfungen geprüft?'},
+  {p:'Schädlingsprävention aktiv',d:'Letzter Schädlingscheck — wann? Vertrag vorhanden?'},
+  {sec:'👤 PERSONALHYGIENE & DOKUMENTATION'},
+  {p:'Gesundheitszeugnisse aktuell',d:'Alle Mitarbeiter mit gültigem Gesundheitszeugnis?'},
+  {p:'Hygieneschulungen dokumentiert',d:'Letzte Schulung — wann? Alle Mitarbeiter erfasst?'},
+  {p:'Schutzkleidung vorhanden & sauber',d:'Ausreichend saubere Schürzen, Handschuhe, Haarnetze?'},
+  {p:'Händewaschpflicht bekannt',d:'Waschbecken zugänglich? Seife und Einmaltücher vorhanden?'},
+  {p:'Krankmeldungsprotokoll vorhanden',d:'Klare Regel: krank = kein Service mit Lebensmitteln?'},
+];
+
+const JAHRES_ROWS=[
+  'Energieverbrauch geprüft','Kühlgeräte-Check','Technische Geräte gewartet',
+  'Hygieneprotokoll geführt','Warenabgang dokumentiert','Reinigungsplan eingehalten',
+  'Personalhygiene kontrolliert','Schädlingsprävention geprüft'
+];
+const MONTHS=['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+
+function buildTable(tbodyId, data, prefix){
+  const tbody = document.getElementById(tbodyId);
+  data.forEach((row,i)=>{
+    const tr = document.createElement('tr');
+    if(row.sec){
+      tr.className='check-section-head';
+      tr.innerHTML=`<td colspan="6">${row.sec}</td>`;
+    } else {
+      tr.innerHTML=`
+        <td class="pruef">${row.p}</td>
+        <td class="detail">${row.d}</td>
+        <td class="status-cell"><select id="${prefix}-s-${i}" onchange="updateStatusColor(this);autoSave()">
+          <option value="">—</option>
+          <option value="ok">✅ OK</option>
+          <option value="mangel">⚠️ Mangel</option>
+          <option value="dringend">🔴 Dringend</option>
+        </select></td>
+        <td class="date-cell"><input type="date" id="${prefix}-lc-${i}" oninput="autoSave()"></td>
+        <td class="date-cell"><input type="date" id="${prefix}-nc-${i}" oninput="autoSave()"></td>
+        <td class="notiz-cell"><input type="text" id="${prefix}-n-${i}" placeholder="Notiz..." oninput="autoSave()"></td>`;
+    }
+    tbody.appendChild(tr);
+  });
+}
+
+function buildJahres(){
+  const tbody = document.getElementById('jahres-body');
+  JAHRES_ROWS.forEach((r,ri)=>{
+    let tds = MONTHS.map((_,mi)=>`<td><input type="checkbox" id="j-${ri}-${mi}" onchange="autoSave()"></td>`).join('');
+    tbody.innerHTML += `<tr><td>${r}</td>${tds}</tr>`;
+  });
+}
+
+function updateStatusColor(sel){
+  sel.className='';
+  if(sel.value==='ok') sel.className='ok';
+  else if(sel.value==='mangel') sel.className='mangel';
+  else if(sel.value==='dringend') sel.className='dringend';
+}
+
+function switchTab(tab){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+  const map={tech:0,hygiene:1,jahres:2};
+  document.querySelectorAll('.tab-btn')[map[tab]].classList.add('active');
+  document.getElementById('tab-'+tab).classList.add('active');
+}
+
+function getData(){
+  const tech={}, hyg={};
+  TECH_DATA.forEach((_,i)=>{
+    if(!TECH_DATA[i].sec){
+      tech[`s${i}`]=document.getElementById(`tech-s-${i}`)?.value||'';
+      tech[`lc${i}`]=document.getElementById(`tech-lc-${i}`)?.value||'';
+      tech[`nc${i}`]=document.getElementById(`tech-nc-${i}`)?.value||'';
+      tech[`n${i}`]=document.getElementById(`tech-n-${i}`)?.value||'';
+    }
+  });
+  HYGIENE_DATA.forEach((_,i)=>{
+    if(!HYGIENE_DATA[i].sec){
+      hyg[`s${i}`]=document.getElementById(`hyg-s-${i}`)?.value||'';
+      hyg[`lc${i}`]=document.getElementById(`hyg-lc-${i}`)?.value||'';
+      hyg[`nc${i}`]=document.getElementById(`hyg-nc-${i}`)?.value||'';
+      hyg[`n${i}`]=document.getElementById(`hyg-n-${i}`)?.value||'';
+    }
+  });
+  const jahres={};
+  JAHRES_ROWS.forEach((_,ri)=>MONTHS.forEach((_,mi)=>{
+    jahres[`${ri}-${mi}`]=document.getElementById(`j-${ri}-${mi}`)?.checked||false;
+  }));
+  return{tech,hyg,jahres};
+}
+
+function setData(d){
+  if(!d)return;
+  if(d.tech) Object.entries(d.tech).forEach(([k,v])=>{
+    const m=k.match(/^(s|lc|nc|n)(\d+)$/);
+    if(!m)return;
+    const el=document.getElementById(`tech-${m[1]}-${m[2]}`);
+    if(el){el.value=v;if(m[1]==='s')updateStatusColor(el);}
+  });
+  if(d.hyg) Object.entries(d.hyg).forEach(([k,v])=>{
+    const m=k.match(/^(s|lc|nc|n)(\d+)$/);
+    if(!m)return;
+    const el=document.getElementById(`hyg-${m[1]}-${m[2]}`);
+    if(el){el.value=v;if(m[1]==='s')updateStatusColor(el);}
+  });
+  if(d.jahres) Object.entries(d.jahres).forEach(([k,v])=>{
+    const el=document.getElementById(`j-${k}`);
+    if(el)el.checked=v;
+  });
+}
+
+async function saveData(){
+  if(!currentUser)return;
+  await sb.from('user_tool_data').upsert({user_id:currentUser.id,tool_name:'effizienzcheck_modul7',data:getData(),updated_at:new Date().toISOString()},{onConflict:'user_id,tool_name'});
+  ['save-msg','save-msg2'].forEach(id=>{const el=document.getElementById(id);if(el){el.style.display='inline';setTimeout(()=>el.style.display='none',2500);}});
+}
+
+function autoSave(){clearTimeout(saveTimer);saveTimer=setTimeout(saveData,1500);}
+
+function resetData(){
+  if(!confirm('Alle Eingaben zurücksetzen?'))return;
+  document.querySelectorAll('select').forEach(el=>{el.value='';updateStatusColor(el);});
+  document.querySelectorAll('input[type=date],input[type=text]').forEach(el=>el.value='');
+  document.querySelectorAll('input[type=checkbox]').forEach(el=>el.checked=false);
+  saveData();
+}
+
+async function init(){
+  const{data:{session}}=await sb.auth.getSession();
+  if(!session){window.location.href='login.html';return;}
+  currentUser=session.user;
+  buildTable('tech-body',TECH_DATA,'tech');
+  buildTable('hygiene-body',HYGIENE_DATA,'hyg');
+  buildJahres();
+  const{data:td}=await sb.from('user_tool_data').select('data').eq('user_id',currentUser.id).eq('tool_name','effizienzcheck_modul7').maybeSingle();
+  if(td&&td.data)setData(td.data);
+}
+init();
+</script>
 </body>
 </html>

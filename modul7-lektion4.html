@@ -3,109 +3,134 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GASTRO-OS – Modul 7 | Lektion 4</title>
-<style>* { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f0e8; color: #1a2a4a; min-height: 100vh; }
-  .header { background: #1a2a4a; padding: 22px 40px; text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,0.3); }
-  .header .brand { font-family: Georgia, serif; font-size: 22px; color: #d4af37; letter-spacing: 4px; font-weight: normal; }
-  .header .modul-label { font-size: 11px; color: #a0b0c8; letter-spacing: 3px; text-transform: uppercase; margin-top: 4px; }
-  .gold-bar { height: 3px; background: linear-gradient(90deg, #1a2a4a, #d4af37, #1a2a4a); }
-  .main { max-width: 780px; margin: 36px auto; padding: 0 24px 60px; }
-  .cream-box { background: #fff; border-radius: 12px; padding: 36px 40px; border: 3px solid #9A7D3A; margin-bottom: 28px; }
-  .cream-box h1 { font-family: Georgia, serif; font-size: 26px; color: #1a2a4a; margin-bottom: 8px; }
-  .gold-rule { width: 56px; height: 2px; background: #d4af37; margin: 10px 0 20px; }
-  .intro { font-size: 14px; color: #5060a0; line-height: 1.7; }
-  .chapter { background: #fff; border-radius: 10px; padding: 28px 32px; margin-bottom: 20px; border: 1px solid #e8dfc8; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
-  .chapter h2 { font-family: Georgia, serif; font-size: 19px; color: #1a2a4a; margin-bottom: 6px; padding-bottom: 8px; border-bottom: 2px solid #d4af37; }
-  .chapter h3 { font-size: 14px; font-weight: 700; color: #1a2a4a; margin: 18px 0 8px; text-transform: uppercase; letter-spacing: 0.5px; }
-  .chapter p { font-size: 14px; color: #334; line-height: 1.8; margin-bottom: 12px; }
-  .chapter p:last-child { margin-bottom: 0; }
-  .aufgabe { background: #f0f4fb; border-radius: 8px; padding: 16px 20px; margin-top: 20px; border-left: 4px solid #1a2a4a; }
-  .aufgabe .label { font-size: 11px; font-weight: 700; color: #d4af37; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
-  .aufgabe p { font-size: 13px; color: #1a2a4a; line-height: 1.7; margin: 0; }
-  .tool-hint { background: #fff8e8; border-radius: 8px; padding: 14px 18px; margin-top: 12px; font-size: 13px; color: #7a5000; border: 1px solid #d4af37; }
-  .wochenplan { display: flex; flex-direction: column; gap: 12px; margin: 16px 0; }
-  .woche { background: #faf8f4; border-radius: 8px; padding: 16px 20px; border: 1px solid #e8dfc8; display: flex; gap: 14px; }
-  .woche .wnum { background: #d4af37; color: #1a2a4a; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; flex-shrink: 0; }
-  .woche .winfo .wtitle { font-size: 14px; font-weight: 700; color: #1a2a4a; margin-bottom: 4px; }
-  .woche .winfo p { font-size: 13px; color: #334; line-height: 1.6; margin: 0; }
-  .finale { background: #1a2a4a; border-radius: 12px; padding: 28px 32px; text-align: center; margin-top: 12px; }
-  .finale p { color: #c0cce0; font-size: 14px; line-height: 1.8; }
-  .footer { background: #1a2a4a; margin-top: 48px; padding: 14px 40px; text-align: center; font-size: 11px; color: #8090a8; letter-spacing: 1px; }
-  .footer strong { color: #d4af37; }</style>
+<title>Lektion 4 – Modul 7 | GASTRO-OS</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
+.header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:20px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.btn-back { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; text-decoration:none; display:inline-block; }
+.btn-back:hover { border-color:#d4af37; color:#d4af37; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+.main { max-width:860px; margin:36px auto; padding:0 24px 60px; }
+.page-tag { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; margin-bottom:8px; }
+.page-title { font-family:Georgia,serif; font-size:26px; color:#1a2a4a; margin-bottom:6px; }
+.page-sub { font-size:13px; color:#8090a8; margin-bottom:28px; }
+.welcome-card { background:#1a2a4a; border-radius:12px; padding:24px 28px; margin-bottom:28px; }
+.welcome-card p { font-size:14px; color:#c0cce0; line-height:1.85; }
+.chapter { background:#fff; border:1px solid #e8dfc8; border-radius:12px; padding:28px 32px; margin-bottom:24px; box-shadow:0 2px 8px rgba(0,0,0,0.04); }
+.chapter h2 { font-family:Georgia,serif; font-size:18px; color:#1a2a4a; margin-bottom:18px; padding-bottom:12px; border-bottom:2px solid #e8dfc8; }
+.chapter h3 { font-family:Georgia,serif; font-size:15px; color:#d4af37; margin:20px 0 10px; }
+.chapter p { font-size:14px; color:#4a5a6a; line-height:1.85; margin-bottom:14px; }
+.chapter p:last-child { margin-bottom:0; }
+.wochen-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:14px 0; }
+.woche-card { border:1px solid #e8dfc8; border-radius:8px; padding:16px 18px; background:#faf8f4; }
+.woche-card h4 { font-family:Georgia,serif; font-size:13px; color:#d4af37; margin-bottom:8px; }
+.woche-card p { font-size:13px; color:#4a5a6a; line-height:1.7; margin-bottom:4px; }
+.woche-card .result { font-size:12px; color:#4aaa70; font-weight:600; margin-top:8px; padding-top:8px; border-top:1px solid #e8dfc8; }
+.hint-box { background:#e8f0fb; border:1px solid #5a8ad0; border-radius:8px; padding:14px 18px; margin:16px 0; font-size:13px; color:#1a3a6a; line-height:1.7; }
+.highlight { background:#fff8e8; border-left:4px solid #d4af37; border-radius:0 8px 8px 0; padding:14px 18px; margin:16px 0; font-size:14px; color:#5a4000; line-height:1.7; }
+.task-box { background:#f5f0e8; border-left:4px solid #d4af37; border-radius:0 8px 8px 0; padding:16px 20px; margin-top:20px; }
+.task-box strong { font-size:13px; color:#1a2a4a; display:block; margin-bottom:6px; }
+.task-box p { font-size:13px; color:#4a5a6a; margin-bottom:0; }
+.abschluss { background:#1a2a4a; border-radius:12px; padding:24px 28px; margin-top:24px; text-align:center; }
+.abschluss h3 { font-family:Georgia,serif; font-size:18px; color:#d4af37; margin-bottom:10px; }
+.abschluss p { font-size:14px; color:#c0cce0; line-height:1.7; }
+.nav-row { display:flex; gap:12px; justify-content:space-between; margin-top:24px; }
+.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:12px 24px; border-radius:8px; font-size:13px; font-weight:600; text-decoration:none; transition:all 0.2s; display:inline-block; }
+.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
+.nav-btn.secondary { background:transparent; border:1px solid rgba(26,42,74,0.3); color:#1a2a4a; }
+.nav-btn.secondary:hover { background:#1a2a4a; color:#d4af37; }
+.footer { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; }
+.footer strong { color:#d4af37; }
+@media(max-width:600px){ .wochen-grid{grid-template-columns:1fr;} }
+</style>
 </head>
 <body>
 <div class="header">
   <div class="brand">GASTRO-OS</div>
-  <div class="modul-label">Modul 7 · Lektion 4</div>
+  <a href="modul7-uebersicht.html" class="btn-back">← Modulübersicht</a>
 </div>
 <div class="gold-bar"></div>
 <div class="main">
-  <div class="cream-box">
-    <h1>📖 Lektion 4 — Vom Plan zur Umsetzung</h1>
-    <div class="gold-rule"></div>
-    <p class="intro">Jetzt bringen wir alles zusammen. In Lektion 4 schauen wir uns an wo ineffiziente Prozesse versteckte Kosten schaffen — und danach bekommst du deinen persönlichen 30-Tage-Aktionsplan für Kostenkontrolle und Effizienz.</p>
+  <div class="page-tag">Modul 7 · Kostenkontrolle &amp; Effizienz</div>
+  <div class="page-title">📖 Lektion 4 — Vom Plan zur Umsetzung</div>
+  <div class="page-sub">Prozesse verschlanken + dein 30-Tage-Aktionsplan</div>
+
+  <div class="welcome-card">
+    <p>In Lektion 3 haben wir uns angeschaut wo Verschwendung wirklich entsteht, warum guter Wille allein nichts ändert und wie du mit drei konkreten Hebeln dauerhaft weniger Geld im Müll landen lässt. Jetzt bringen wir alles zusammen: wie Kostenkontrolle und Effizienz in einem echten Betrieb aussehen — und dein persönlicher 30-Tage-Aktionsplan.</p>
   </div>
 
   <div class="chapter">
-    <h2>Kapitel 1 — Prozesse verschlanken</h2>
+    <h2>Kapitel 1 — Prozesse verschlanken: wo versteckte Zeit versteckte Kosten schafft</h2>
+
     <h3>Zeit ist Geld — aber nicht so wie du denkst</h3>
-    <p>Ineffiziente Prozesse kosten täglich Arbeitsstunden die woanders gebraucht werden. Ein schlecht organisiertes Lager bedeutet dass dein Team jeden Tag Minuten damit verbringt Dinge zu suchen. Eine unklare Kommunikation zwischen Küche und Service bedeutet Nachfragen, Fehler und Korrekturen. Das sind keine Kleinigkeiten. Das summiert sich über Wochen und Monate zu echten Beträgen.</p>
-    <h3>Wo Prozessineffizienz entsteht</h3>
-    <p>Erstens das Lager: Ein unorganisiertes Lager kostet täglich mehr Zeit als die meisten Gastronomen realisieren. Mitarbeiter suchen Produkte. Bestellungen werden doppelt aufgegeben. Waren laufen ab weil sie hinten im Regal unsichtbar sind.</p>
-    <p>Zweitens Küche und Service: Klare Kommunikationskanäle und feste Übergabemomente — zum Beispiel ein kurzes Briefing vor dem Service — reduzieren Fehler und sparen die Zeit die sonst für Korrekturen draufgeht.</p>
-    <p>Drittens der Dienstplan: Ein Dienstplan der auf Gewohnheit statt auf Auslastungsdaten basiert erzeugt regelmäßig entweder zu viel oder zu wenig Personal. Beides ist teuer.</p>
-    <p>Viertens das Mise en Place: Zu viel Mise en Place kostet doppelt. Einmal die Arbeitszeit. Einmal den Wareneinsatz wenn es nicht verbraucht wird.</p>
-    <div class="aufgabe">
-      <div class="label">🎯 Deine Aufgabe</div>
-      <p>Plane für diese Woche eine Stunde bewusste Beobachtung in deinem Betrieb. Kein Eingreifen, kein Lösen, nur Beobachten. Schreib alles auf was dir auffällt. Wo wird Zeit verbraucht ohne dass Wert entsteht. Diese Liste ist dein Ausgangspunkt für Prozessoptimierungen die Geld sparen ohne Qualität zu kosten.</p>
+    <p>In der Gastronomie wird Kosteneffizienz fast immer mit Energie, Ware und Personal in Verbindung gebracht. Aber es gibt eine vierte Dimension die mindestens genauso wichtig ist und deutlich seltener beachtet wird: Zeit. Ineffiziente Prozesse kosten täglich Arbeitsstunden die woanders gebraucht werden. Ein schlecht organisiertes Lager bedeutet dass dein Team jeden Tag Minuten damit verbringt Dinge zu suchen. Jede dieser Situationen kostet Geld — nicht als einzelner großer Posten, sondern als stille Erosion von Arbeitszeit.</p>
+
+    <h3>Wo Prozessineffizienz in der Gastronomie entsteht</h3>
+    <p><strong>Das Lager:</strong> Ein unorganisiertes Lager kostet täglich mehr Zeit als die meisten Gastronomen realisieren. Eine klare Lagerorganisation mit festen Plätzen, First In First Out und einer einfachen Bestandsliste kostet einmal Zeit zum Aufbauen und spart danach täglich.</p>
+    <p><strong>Kommunikation zwischen Küche und Service:</strong> In vielen Betrieben funktioniert diese Kommunikation auf Zuruf. Klare Kommunikationskanäle und feste Übergabemomente — zum Beispiel ein kurzes Briefing vor dem Service — reduzieren Fehler und sparen die Zeit die sonst für Korrekturen draufgeht.</p>
+    <p><strong>Der Dienstplan:</strong> Ein Dienstplan der auf Gewohnheit statt auf Auslastungsdaten basiert, erzeugt regelmäßig entweder zu viel oder zu wenig Personal. Beides ist teuer. Ein Dienstplan der auf echten Auslastungsdaten basiert ist präziser und kostengünstiger.</p>
+    <p><strong>Das Mise en Place:</strong> Zu viel kostet doppelt — einmal die Arbeitszeit, einmal den Wareneinsatz wenn es nicht verbraucht wird. Die Balance zu finden erfordert Daten und Erfahrung. Aber sie lohnt sich.</p>
+
+    <h3>Standardisierung als Effizienzwerkzeug</h3>
+    <p>Wenn jeder Handgriff immer gleich ausgeführt wird — von der Warenannahme über das Mise en Place bis zum Abschluss des Abends — entstehen Verlässlichkeit, Geschwindigkeit und Qualitätskonsistenz gleichzeitig. Ein Team das in standardisierten Abläufen sicher ist, hat im Kopf Kapazität frei für das was wirklich Aufmerksamkeit erfordert: den Gast, die Qualität, das besondere Erlebnis.</p>
+
+    <div class="task-box">
+      <strong>🎯 Aufgabe Kapitel 1</strong>
+      <p>Plane für diese Woche eine Stunde bewusste Beobachtung in deinem Betrieb. Kein Eingreifen, kein Lösen, nur Beobachten. Schreib alles auf was dir auffällt: wo wird Zeit verbraucht ohne dass Wert entsteht, wo entstehen Fehler die vermieden werden könnten, wo gibt es Kommunikationslücken.</p>
     </div>
   </div>
 
   <div class="chapter">
-    <h2>Kapitel 2 — Dein 30-Tage-Aktionsplan</h2>
-    <p>Pro Woche ein einziger klarer Fokus. Nicht fünf Dinge gleichzeitig. Einen. Am Ende jeder Woche weißt du ob du ihn umgesetzt hast oder nicht.</p>
+    <h2>Kapitel 2 — Dein 30-Tage-Aktionsplan für Kostenkontrolle und Effizienz</h2>
 
-    <div class="wochenplan">
-      <div class="woche">
-        <div class="wnum">1</div>
-        <div class="winfo">
-          <div class="wtitle">Sichtbar machen was unsichtbar war</div>
-          <p>Warenabgangsliste starten. Geräteliste erstellen. Ersten Kühlcheck durchführen. Stunde bewusster Beobachtung planen. Am Ende von Woche 1 hast du ein klares Bild wo die größten Kostenhebel liegen.</p>
-        </div>
+    <div class="wochen-grid">
+      <div class="woche-card">
+        <h4>👁️ Woche 1 — Sichtbar machen was unsichtbar war</h4>
+        <p>Starte die Warenabgangsliste. Erstelle die Geräteliste mit geschätzten Laufzeiten und wann sie wirklich gebraucht werden. Führe deinen ersten Kühlcheck durch. Plane deine Stunde bewusster Beobachtung — mit konkretem Termin im Kalender.</p>
+        <div class="result">→ Klares Bild der größten Kostenhebel</div>
       </div>
-      <div class="woche">
-        <div class="wnum">2</div>
-        <div class="winfo">
-          <div class="wtitle">Erste konkrete Maßnahme umsetzen</div>
-          <p>Nur eine Maßnahme. Die die auf Basis von Woche 1 den größten Effekt bei geringstem Aufwand hat. Kommuniziere sie dem Team. Nicht als Ansage. Als Erklärung. Und beobachte was passiert.</p>
-        </div>
+      <div class="woche-card">
+        <h4>🔧 Woche 2 — Erste konkrete Maßnahme umsetzen</h4>
+        <p>Wähle die Maßnahme mit dem größten Effekt bei geringstem Aufwand: Geräteregel, Portionsstandard oder Lagerregel. Kommuniziere sie dem Team — als Erklärung, nicht als Ansage. Beobachte was sich nach einer Woche verändert hat.</p>
+        <div class="result">→ Erste Maßnahme im Betrieb aktiv</div>
       </div>
-      <div class="woche">
-        <div class="wnum">3</div>
-        <div class="winfo">
-          <div class="wtitle">Zweite Maßnahme und erste Auswertung</div>
-          <p>Werte Woche 2 aus: Hat die Maßnahme funktioniert? Was muss angepasst werden? Führe eine zweite Maßnahme aus einem anderen Bereich ein. Und: Stromtarif vergleichen — eine Stunde, potenziell dreistellige Einsparungen.</p>
-        </div>
+      <div class="woche-card">
+        <h4>📊 Woche 3 — Zweite Maßnahme und erste Auswertung</h4>
+        <p>Führe eine zweite Maßnahme aus einem anderen Bereich ein. Werte gleichzeitig die erste aus — zehn Minuten reichen. Führe außerdem einen Vergleich deines Stromtarifs durch. Eine Stunde Aufwand, potenziell dreistellige monatliche Einsparungen.</p>
+        <div class="result">→ Zwei Bereiche aktiv bearbeitet</div>
       </div>
-      <div class="woche">
-        <div class="wnum">4</div>
-        <div class="winfo">
-          <div class="wtitle">Routinen verankern</div>
-          <p>Was wird wer wann regelmäßig tun? Warenabgangsliste täglich, Kühlcheck monatlich, Geräteregel täglich, Portionsstandards immer. Schreib diese Routinen auf, weise sie Personen zu, trag sie in die SOPs ein.</p>
-        </div>
+      <div class="woche-card">
+        <h4>📌 Woche 4 — Routinen verankern</h4>
+        <p>Was wird wer wann regelmäßig tun? Warenabgangsliste täglich, Kühlcheck monatlich, Geräteregel täglich, Portionsstandards immer. Weise die Routinen konkreten Personen zu. Trag sie in die SOPs aus Modul 5 ein.</p>
+        <div class="result">→ Routinen dokumentiert und zugewiesen</div>
       </div>
     </div>
 
-    <div class="tool-hint">👉 Den <strong>Gastro Effizienz Check</strong> findest du im Tab <strong>📊 Gastro Effizienz Check</strong>.<br>🔍 Das <strong>Kosten Analyse Tool</strong> findest du im Tab <strong>📊 Kosten Analyse Tool</strong>.</div>
+    <div class="highlight">
+      Nach 30 Tagen wirst du erste messbare Effekte sehen. Der Wareneinsatz geht leicht zurück. Die Energierechnung ist etwas niedriger. Das Team hat weniger Suchzeiten. Die Warenabgangsliste zeigt klare Muster. Das ist der Anfang. Nicht das Ende.
+    </div>
 
-    <div class="finale">
-      <p>Nach 30 Tagen wirst du erste messbare Effekte sehen. Der Wareneinsatz geht leicht zurück. Die Energierechnung ist etwas niedriger. Das Team hat weniger Suchzeiten. Das ist der Anfang. Nicht das Ende. Kostenkontrolle und Effizienz sind keine Projekte die abgeschlossen werden. Sie sind Haltungen die sich in den Alltag einbetten.<br><br><strong style="color:#d4af37">Geh jetzt in den Gastro Effizienz Check. Füll ihn aus. Heute.</strong></p>
+    <div class="hint-box">
+      👉 Den Gastro-Effizienz-Check findest du im Tab 📊 Gastro-Effizienz-Check.<br>
+      🔍 Das Kosten-Analyse-Tool findest du im Tab 📊 Kosten-Analyse-Tool. Es zeigt dir schwarz auf weiß wo dein Betrieb gerade Geld verliert.
     </div>
-    <div class="aufgabe" style="margin-top:20px;">
-      <div class="label">🎯 Deine Aufgabe</div>
-      <p>Schreib deinen persönlichen 30-Tage-Plan auf. Konkret. Woche 1: welche drei Grundlagen erarbeitest du genau. Woche 2: welche erste Maßnahme setzt du um. Woche 3: welche zweite Maßnahme kommt hinzu. Woche 4: welche Routinen verankerst du. Je konkreter dein Plan, desto höher die Wahrscheinlichkeit dass du ihn wirklich umsetzt.</p>
+
+    <div class="task-box">
+      <strong>🎯 Aufgabe Kapitel 2</strong>
+      <p>Schreib deinen persönlichen 30-Tage-Plan auf. Konkret. Woche 1: welche drei Grundlagen erarbeitest du genau. Woche 2: welche erste Maßnahme setzt du um und wer ist verantwortlich. Woche 3: welche zweite Maßnahme kommt hinzu. Woche 4: welche Routinen verankerst du und in welchen SOPs stehen sie.</p>
     </div>
+  </div>
+
+  <div class="abschluss">
+    <h3>Geh jetzt in den Gastro-Effizienz-Check</h3>
+    <p>Füll ihn aus. <strong style="color:#d4af37;">Heute.</strong></p>
+  </div>
+
+  <div class="nav-row">
+    <a href="modul7-lektion3.html" class="nav-btn secondary">← Lektion 3</a>
+    <a href="modul7-effizienzcheck.html" class="nav-btn">Zum Effizienz-Check →</a>
   </div>
 </div>
 <div class="gold-bar"></div>
