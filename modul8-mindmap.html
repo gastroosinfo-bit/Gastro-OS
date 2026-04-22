@@ -5,168 +5,39 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mindmap Team Übersicht Upselling – Modul 8</title>
 <style>
-* { margin:0; padding:0; box-sizing:border-box; }
-body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
-.header { background:#1a2a4a; padding:16px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
-.brand { font-family:Georgia,serif; font-size:20px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
-.btn-back { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
-.btn-back:hover { border-color:#d4af37; color:#d4af37; }
-.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
-.main { max-width:960px; margin:40px auto; padding:0 24px 60px; text-align:center; }
-.modul-badge { display:inline-block; background:#1a2a4a; color:#d4af37; font-size:11px; font-weight:700; letter-spacing:2px; padding:4px 14px; border-radius:4px; margin-bottom:12px; }
-h1 { font-family:Georgia,serif; font-size:26px; color:#1a2a4a; margin-bottom:24px; }
-.card { background:#fff; border:1px solid #e8dfc8; border-radius:10px; padding:36px 32px; margin-bottom:24px; box-shadow:0 2px 8px rgba(0,0,0,0.04); }
-.card .icon { font-size:56px; margin-bottom:16px; }
-h2 { font-family:Georgia,serif; font-size:20px; color:#1a2a4a; margin-bottom:16px; }
-p { font-size:14px; line-height:1.8; color:#3a4a6a; margin-bottom:12px; }
-.gold-divider { height:2px; background:linear-gradient(90deg,transparent,#d4af37,transparent); margin:28px 0; }
-.highlight-box { background:#faf6ec; border:1px solid #e8dfc8; border-radius:8px; padding:20px 24px; margin:20px 0; }
-.highlight-box p { font-size:14px; font-weight:600; color:#1a2a4a; margin-bottom:4px; }
-.highlight-box span { font-size:13px; color:#8090a8; }
-
-/* Mindmap Vorschau – anklickbares Embed */
-.mindmap-preview {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  background: #0a0f1e;
-  border-radius: 10px;
-  overflow: hidden;
-  margin: 24px 0;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.18);
-  cursor: zoom-in;
-}
-.mindmap-preview iframe {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%;
-  height: 100%;
-  border: none;
-  pointer-events: none; /* Klick geht an Overlay */
-}
-.mindmap-preview .zoom-hint {
-  position: absolute;
-  bottom: 12px;
-  right: 12px;
-  background: rgba(26,42,74,0.85);
-  color: #d4af37;
-  font-size: 12px;
-  font-weight: 600;
-  padding: 6px 14px;
-  border-radius: 20px;
-  letter-spacing: 1px;
-  pointer-events: none;
-  z-index: 5;
-}
-.mindmap-preview .click-overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 10;
-  background: transparent;
-  cursor: zoom-in;
-}
-
-/* Zoom Modal */
-.zoom-modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  z-index: 9000;
-  background: rgba(10,15,30,0.95);
-  flex-direction: column;
-}
-.zoom-modal.active { display: flex; }
-
-.zoom-modal-header {
-  background: #1a2a4a;
-  padding: 12px 24px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-shrink: 0;
-  border-bottom: 2px solid #d4af37;
-}
-.zoom-modal-title {
-  font-family: Georgia, serif;
-  color: #d4af37;
-  font-size: 15px;
-  letter-spacing: 1px;
-}
-.zoom-close {
-  background: transparent;
-  border: 1px solid rgba(212,175,55,0.5);
-  color: #d4af37;
-  font-size: 20px;
-  width: 36px; height: 36px;
-  border-radius: 6px;
-  cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: all 0.2s;
-}
-.zoom-close:hover { background: #d4af37; color: #1a2a4a; }
-
-.zoom-controls {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-.zoom-btn {
-  background: #1a2a4a;
-  border: 1px solid rgba(212,175,55,0.4);
-  color: #d4af37;
-  font-size: 18px;
-  width: 36px; height: 36px;
-  border-radius: 6px;
-  cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: all 0.2s;
-  font-weight: bold;
-}
-.zoom-btn:hover { background: #d4af37; color: #1a2a4a; }
-.zoom-level {
-  color: #a0b0c8;
-  font-size: 12px;
-  min-width: 40px;
-  text-align: center;
-}
-
-.zoom-viewport {
-  flex: 1;
-  overflow: hidden;
-  position: relative;
-  cursor: grab;
-}
-.zoom-viewport.dragging { cursor: grabbing; }
-
-.zoom-content {
-  position: absolute;
-  top: 0; left: 0;
-  transform-origin: 0 0;
-  will-change: transform;
-}
-.zoom-content iframe {
-  display: block;
-  border: none;
-  /* Größe wird per JS gesetzt */
-}
-
-.zoom-hint-modal {
-  position: absolute;
-  bottom: 16px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(26,42,74,0.8);
-  color: #a0b0c8;
-  font-size: 11px;
-  padding: 6px 16px;
-  border-radius: 20px;
-  pointer-events: none;
-  white-space: nowrap;
-  letter-spacing: 0.5px;
-}
-
-.footer { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
-.footer strong { color:#d4af37; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f0e8; color: #1a2a4a; min-height: 100vh; }
+  .header { background: #1a2a4a; padding: 16px 40px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 12px rgba(0,0,0,0.3); }
+  .brand { font-family: Georgia, serif; font-size: 20px; color: #d4af37; letter-spacing: 3px; font-weight: normal; }
+  .btn-back { background: transparent; border: 1px solid rgba(212,175,55,0.4); color: #a0b0c8; padding: 7px 16px; border-radius: 6px; font-size: 12px; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.2s; }
+  .btn-back:hover { border-color: #d4af37; color: #d4af37; }
+  .gold-bar { height: 3px; background: linear-gradient(90deg, #1a2a4a, #d4af37, #1a2a4a); }
+  .main { max-width: 960px; margin: 36px auto; padding: 0 24px 60px; }
+  .modul-badge { display: inline-block; background: #1a2a4a; color: #d4af37; font-size: 11px; font-weight: 700; letter-spacing: 2px; padding: 4px 14px; border-radius: 4px; margin-bottom: 12px; }
+  .intro { margin-bottom: 24px; }
+  .intro h1 { font-family: Georgia, serif; font-size: 24px; color: #1a2a4a; margin-bottom: 8px; }
+  .gold-rule { width: 56px; height: 2px; background: #d4af37; margin: 10px 0 12px; }
+  .intro p { font-size: 14px; color: #5060a0; line-height: 1.7; max-width: 640px; }
+  .zoom-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .zoom-btn { background: #1a2a4a; color: #d4af37; border: none; width: 34px; height: 34px; border-radius: 6px; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+  .zoom-btn:hover { background: #2a3a5a; }
+  .zoom-label { font-size: 12px; color: #8090a8; min-width: 40px; text-align: center; }
+  .zoom-hint { font-size: 12px; color: #a0b0c8; margin-left: 8px; }
+  .mindmap-wrapper { background: #fff; border: 2px solid #d4af37; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 24px rgba(26,42,74,0.12); }
+  .mindmap-header { background: #1a2a4a; padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; }
+  .mindmap-header .label { font-size: 12px; color: #a0b0c8; letter-spacing: 1px; text-transform: uppercase; }
+  .mindmap-header .badge { background: rgba(212,175,55,0.15); border: 1px solid #d4af37; color: #d4af37; font-size: 11px; padding: 3px 12px; border-radius: 20px; letter-spacing: 1px; }
+  .mindmap-scroll { overflow: auto; max-height: 680px; cursor: grab; background: #faf8f4; }
+  .mindmap-scroll:active { cursor: grabbing; }
+  .mindmap-scroll img { display: block; transition: transform 0.2s; transform-origin: top left; max-width: none; }
+  .mindmap-footer { background: #fffdf0; border-top: 1px solid #e8dfc8; padding: 10px 16px; font-size: 12px; color: #9a8040; display: flex; align-items: center; gap: 8px; }
+  .highlight-box { background: #faf6ec; border: 1px solid #e8dfc8; border-radius: 8px; padding: 20px 24px; margin: 0 0 20px; }
+  .highlight-box p { font-size: 14px; font-weight: 600; color: #1a2a4a; margin-bottom: 4px; }
+  .highlight-box span { font-size: 13px; color: #8090a8; }
+  .hinweis { margin-top: 20px; background: #fff; border: 1px solid #e8dfc8; border-left: 4px solid #d4af37; border-radius: 0 8px 8px 0; padding: 16px 20px; font-size: 13px; color: #5060a0; line-height: 1.7; }
+  .hinweis strong { color: #1a2a4a; }
+  .footer { background: #1a2a4a; margin-top: 60px; padding: 14px 40px; text-align: center; font-size: 11px; color: #8090a8; letter-spacing: 1px; }
+  .footer strong { color: #d4af37; }
 </style>
 </head>
 <body>
@@ -179,239 +50,75 @@ p { font-size:14px; line-height:1.8; color:#3a4a6a; margin-bottom:12px; }
 
 <div class="main">
   <div class="modul-badge">MODUL 8 · MINDMAP</div>
-  <h1>📋 Mindmap Team Übersicht Upselling</h1>
 
-  <div class="card">
-    <div class="icon">📋</div>
-    <h2>Team Übersicht Upselling</h2>
-
-    <div class="highlight-box">
-      <p>Diese Übersicht gehört ins Team.</p>
-      <span>Drucke sie aus. Häng sie auf. Zeig sie beim nächsten Briefing.</span>
-    </div>
-
-    <p>Upselling ist kein Talent – es ist eine Gewohnheit. Und Gewohnheiten brauchen Struktur.</p>
-
-    <div class="gold-divider"></div>
-
-    <!-- Native Mindmap Vorschau mit Zoom -->
-    <div class="mindmap-preview" id="mindmapPreview">
-      <iframe
-        src="https://drive.google.com/file/d/1yIhDQaKOuoX1LMr7-QBsbMNscevx3WrR/preview"
-        allow="autoplay"
-        allowfullscreen
-        title="Mindmap Upselling Vorschau">
-      </iframe>
-      <div class="zoom-hint">🔍 Klicken zum Vergrößern</div>
-      <div class="click-overlay" id="openZoom"></div>
-    </div>
-
+  <div class="intro">
+    <h1>📋 Team Übersicht Upselling</h1>
+    <div class="gold-rule"></div>
+    <p>Diese Mindmap zeigt dir und deinem Team die wichtigsten Upselling-Hebel auf einen Blick. Nutze die Zoom-Buttons um die Details besser zu erkennen.</p>
   </div>
 
-  <div class="gold-divider"></div>
-  <p style="font-size:12px; color:#8090a8; letter-spacing:1px;">GASTRO-OS | System · Strategie · Erfolg</p>
+  <div class="highlight-box">
+    <p>Diese Übersicht gehört ins Team.</p>
+    <span>Drucke sie aus. Häng sie auf. Zeig sie beim nächsten Briefing.</span>
+  </div>
+
+  <div class="zoom-bar">
+    <button class="zoom-btn" onclick="zoomOut()">−</button>
+    <span class="zoom-label" id="zoom-label">100%</span>
+    <button class="zoom-btn" onclick="zoomIn()">+</button>
+    <button class="zoom-btn" onclick="zoomReset()" title="Zurücksetzen" style="font-size:13px;">↺</button>
+    <span class="zoom-hint">💡 Tipp: Scrollen zum Zoomen, Ziehen zum Verschieben</span>
+  </div>
+
+  <div class="mindmap-wrapper">
+    <div class="mindmap-header">
+      <span class="label">📋 Modul 8 — Team Übersicht Upselling</span>
+      <span class="badge">GASTRO-OS</span>
+    </div>
+
+    <div class="mindmap-scroll" id="scrollBox">
+      <img
+        id="mindmap-img"
+        src="https://drive.google.com/thumbnail?id=1yIhDQaKOuoX1LMr7-QBsbMNscevx3WrR&sz=w2000"
+        alt="GASTRO-OS Modul 8 Mindmap Upselling"
+        style="width: 100%;"
+        onerror="this.onerror=null; this.src='https://drive.google.com/uc?export=view&id=1yIhDQaKOuoX1LMr7-QBsbMNscevx3WrR';"
+      />
+    </div>
+
+    <div class="mindmap-footer">
+      💡 Bild lässt sich zoomen und verschieben &nbsp;·&nbsp; Bei Unschärfe: Zoom erhöhen
+    </div>
+  </div>
+
+  <div class="hinweis">
+    <strong>📌 So nutzt du die Mindmap:</strong> Upselling ist kein Talent – es ist eine Gewohnheit. Schau dir die Übersicht in Ruhe an und markiere die Bereiche, die du noch nicht aktiv nutzt. Bring sie ins nächste Team-Briefing.
+  </div>
+
 </div>
 
-<!-- Zoom Modal -->
-<div class="zoom-modal" id="zoomModal">
-  <div class="zoom-modal-header">
-    <div class="zoom-modal-title">📋 Mindmap · Team Übersicht Upselling</div>
-    <div class="zoom-controls">
-      <button class="zoom-btn" id="zoomOut" title="Verkleinern">−</button>
-      <span class="zoom-level" id="zoomLevel">100%</span>
-      <button class="zoom-btn" id="zoomIn" title="Vergrößern">+</button>
-      <button class="zoom-btn" id="zoomReset" title="Zurücksetzen" style="font-size:14px;">↺</button>
-      <button class="zoom-close" id="closeZoom" title="Schließen">✕</button>
-    </div>
-  </div>
-  <div class="zoom-viewport" id="zoomViewport">
-    <div class="zoom-content" id="zoomContent">
-      <iframe
-        id="zoomIframe"
-        src="https://drive.google.com/file/d/1yIhDQaKOuoX1LMr7-QBsbMNscevx3WrR/preview"
-        allow="autoplay"
-        allowfullscreen
-        title="Mindmap Upselling Zoom">
-      </iframe>
-    </div>
-    <div class="zoom-hint-modal">Scrollen oder Pinch zum Zoomen · Ziehen zum Verschieben</div>
-  </div>
-</div>
-
+<div class="gold-bar"></div>
 <div class="footer">
   <strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg
 </div>
 
 <script>
-(function() {
-  const modal       = document.getElementById('zoomModal');
-  const viewport    = document.getElementById('zoomViewport');
-  const content     = document.getElementById('zoomContent');
-  const iframe      = document.getElementById('zoomIframe');
-  const openBtn     = document.getElementById('openZoom');
-  const closeBtn    = document.getElementById('closeZoom');
-  const zoomInBtn   = document.getElementById('zoomIn');
-  const zoomOutBtn  = document.getElementById('zoomOut');
-  const zoomResetBtn= document.getElementById('zoomReset');
-  const zoomLabel   = document.getElementById('zoomLevel');
+  let currentZoom = 1;
+  const img = document.getElementById('mindmap-img');
+  const label = document.getElementById('zoom-label');
 
-  let scale = 1;
-  let tx = 0, ty = 0;
-  let isDragging = false;
-  let startX, startY, startTx, startTy;
-
-  // iframe Größe = Viewport-Größe × initiale Auflösung
-  const BASE_W = 1600;
-  const BASE_H = 900;
-
-  function setIframeSize() {
-    iframe.style.width  = BASE_W + 'px';
-    iframe.style.height = BASE_H + 'px';
+  function zoomIn() { currentZoom = Math.min(currentZoom + 0.25, 3); applyZoom(); }
+  function zoomOut() { currentZoom = Math.max(currentZoom - 0.25, 0.5); applyZoom(); }
+  function zoomReset() { currentZoom = 1; applyZoom(); }
+  function applyZoom() {
+    img.style.width = (currentZoom * 100) + '%';
+    label.textContent = Math.round(currentZoom * 100) + '%';
   }
 
-  function applyTransform() {
-    content.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
-    zoomLabel.textContent = Math.round(scale * 100) + '%';
-  }
-
-  function centerContent() {
-    const vw = viewport.clientWidth;
-    const vh = viewport.clientHeight;
-    tx = (vw - BASE_W * scale) / 2;
-    ty = (vh - BASE_H * scale) / 2;
-  }
-
-  function openModal() {
-    setIframeSize();
-    scale = 1;
-    modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-    requestAnimationFrame(() => {
-      centerContent();
-      applyTransform();
-    });
-  }
-
-  function closeModal() {
-    modal.classList.remove('active');
-    document.body.style.overflow = '';
-  }
-
-  openBtn.addEventListener('click', openModal);
-  closeBtn.addEventListener('click', closeModal);
-
-  // Escape
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closeModal();
-  });
-
-  // Zoom buttons
-  zoomInBtn.addEventListener('click', () => {
-    const prev = scale;
-    scale = Math.min(scale * 1.25, 5);
-    const vw = viewport.clientWidth, vh = viewport.clientHeight;
-    tx = vw/2 - (vw/2 - tx) * (scale/prev);
-    ty = vh/2 - (vh/2 - ty) * (scale/prev);
-    applyTransform();
-  });
-  zoomOutBtn.addEventListener('click', () => {
-    const prev = scale;
-    scale = Math.max(scale / 1.25, 0.2);
-    const vw = viewport.clientWidth, vh = viewport.clientHeight;
-    tx = vw/2 - (vw/2 - tx) * (scale/prev);
-    ty = vh/2 - (vh/2 - ty) * (scale/prev);
-    applyTransform();
-  });
-  zoomResetBtn.addEventListener('click', () => {
-    scale = 1;
-    centerContent();
-    applyTransform();
-  });
-
-  // Scroll-Zoom
-  viewport.addEventListener('wheel', e => {
+  document.getElementById('scrollBox').addEventListener('wheel', function(e) {
     e.preventDefault();
-    const rect = viewport.getBoundingClientRect();
-    const mx = e.clientX - rect.left;
-    const my = e.clientY - rect.top;
-    const delta = e.deltaY < 0 ? 1.1 : 0.9;
-    const prev = scale;
-    scale = Math.max(0.2, Math.min(5, scale * delta));
-    tx = mx - (mx - tx) * (scale/prev);
-    ty = my - (my - ty) * (scale/prev);
-    applyTransform();
+    if (e.deltaY < 0) zoomIn(); else zoomOut();
   }, { passive: false });
-
-  // Drag
-  viewport.addEventListener('mousedown', e => {
-    if (e.button !== 0) return;
-    isDragging = true;
-    startX = e.clientX; startY = e.clientY;
-    startTx = tx; startTy = ty;
-    viewport.classList.add('dragging');
-  });
-  window.addEventListener('mousemove', e => {
-    if (!isDragging) return;
-    tx = startTx + (e.clientX - startX);
-    ty = startTy + (e.clientY - startY);
-    applyTransform();
-  });
-  window.addEventListener('mouseup', () => {
-    isDragging = false;
-    viewport.classList.remove('dragging');
-  });
-
-  // Touch Zoom & Pan
-  let lastDist = null;
-  let lastTouchMid = null;
-  viewport.addEventListener('touchstart', e => {
-    if (e.touches.length === 2) {
-      lastDist = Math.hypot(
-        e.touches[0].clientX - e.touches[1].clientX,
-        e.touches[0].clientY - e.touches[1].clientY
-      );
-      lastTouchMid = {
-        x: (e.touches[0].clientX + e.touches[1].clientX) / 2,
-        y: (e.touches[0].clientY + e.touches[1].clientY) / 2
-      };
-    } else if (e.touches.length === 1) {
-      startX = e.touches[0].clientX; startY = e.touches[0].clientY;
-      startTx = tx; startTy = ty;
-    }
-  }, { passive: true });
-  viewport.addEventListener('touchmove', e => {
-    if (e.touches.length === 2) {
-      e.preventDefault();
-      const dist = Math.hypot(
-        e.touches[0].clientX - e.touches[1].clientX,
-        e.touches[0].clientY - e.touches[1].clientY
-      );
-      const mid = {
-        x: (e.touches[0].clientX + e.touches[1].clientX) / 2,
-        y: (e.touches[0].clientY + e.touches[1].clientY) / 2
-      };
-      const rect = viewport.getBoundingClientRect();
-      const mx = mid.x - rect.left;
-      const my = mid.y - rect.top;
-      if (lastDist) {
-        const prev = scale;
-        scale = Math.max(0.2, Math.min(5, scale * dist / lastDist));
-        tx = mx - (mx - tx) * (scale/prev);
-        ty = my - (my - ty) * (scale/prev);
-        applyTransform();
-      }
-      lastDist = dist;
-      lastTouchMid = mid;
-    } else if (e.touches.length === 1) {
-      tx = startTx + (e.touches[0].clientX - startX);
-      ty = startTy + (e.touches[0].clientY - startY);
-      applyTransform();
-    }
-  }, { passive: false });
-  viewport.addEventListener('touchend', () => { lastDist = null; }, { passive: true });
-
-})();
 </script>
-
 </body>
 </html>

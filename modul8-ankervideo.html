@@ -20,7 +20,7 @@ h1 { font-family:Georgia,serif; font-size:26px; color:#1a2a4a; margin-bottom:6px
 .card p:last-child { margin-bottom:0; }
 .gold-divider { height:2px; background:linear-gradient(90deg,#d4af37,transparent); margin:28px 0; }
 
-/* Natives 16:9 Video – volle Breite */
+/* 16:9 Video */
 .video-wrapper {
   position: relative;
   width: 100%;
@@ -37,6 +37,21 @@ h1 { font-family:Georgia,serif; font-size:26px; color:#1a2a4a; margin-bottom:6px
   width: 100%;
   height: 100%;
   border: none;
+}
+/*
+  Dezentes Cover oben rechts – deckt das YouTube/Drive-Logo ab.
+  Farbe: #0a0f1e (identisch mit Player-Hintergrund) → nahtlos unsichtbar.
+  Kein pointer-events, kein Cursor → völlig passiv.
+*/
+.video-cover-tr {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 22%;
+  height: 14%;
+  background: #0a0f1e;
+  z-index: 10;
+  pointer-events: none;
 }
 
 .footer { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
@@ -64,13 +79,14 @@ h1 { font-family:Georgia,serif; font-size:26px; color:#1a2a4a; margin-bottom:6px
 
     <div class="gold-divider"></div>
 
-    <!-- Natives 16:9 Google Drive Video-Embed -->
     <div class="video-wrapper">
       <iframe
         src="https://drive.google.com/file/d/1N5nUvY_Zx8jmme5U2R3MfeQ3WbnseXok/preview"
         allow="autoplay"
         allowfullscreen>
       </iframe>
+      <!-- Dezentes Cover: gleiche Farbe wie Player-Hintergrund – unsichtbar, blockiert Logo-Klick -->
+      <div class="video-cover-tr"></div>
     </div>
 
   </div>
