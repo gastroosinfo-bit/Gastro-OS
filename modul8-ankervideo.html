@@ -43,13 +43,19 @@ h1 { font-family:Georgia,serif; font-size:26px; color:#1a2a4a; margin-bottom:6px
   Farbe: #0a0f1e (identisch mit Player-Hintergrund) → nahtlos unsichtbar.
   Kein pointer-events, kein Cursor → völlig passiv.
 */
+/* Cover oben rechts: weicher Verlauf, wirkt wie natürlicher Rand des Players */
 .video-cover-tr {
   position: absolute;
   top: 0;
   right: 0;
-  width: 22%;
-  height: 14%;
-  background: #0a0f1e;
+  width: 24%;
+  height: 17%;
+  background: linear-gradient(
+    225deg,
+    rgba(8,12,22,0.97) 0%,
+    rgba(8,12,22,0.70) 50%,
+    rgba(8,12,22,0.00) 100%
+  );
   z-index: 10;
   pointer-events: none;
 }

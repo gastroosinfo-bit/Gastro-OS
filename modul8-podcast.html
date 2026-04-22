@@ -51,14 +51,19 @@ p:last-child { margin-bottom:0; }
   height: 100%;
   border: none;
 }
-/* Dezentes Cover oben rechts – Farbe = Player-Hintergrund */
+/* Cover oben rechts: weicher Verlauf, wirkt wie natürlicher Rand des Players */
 .video-cover-tr {
   position: absolute;
   top: 0;
   right: 0;
-  width: 22%;
-  height: 14%;
-  background: #0a0f1e;
+  width: 24%;
+  height: 17%;
+  background: linear-gradient(
+    225deg,
+    rgba(8,12,22,0.97) 0%,
+    rgba(8,12,22,0.70) 50%,
+    rgba(8,12,22,0.00) 100%
+  );
   z-index: 10;
   pointer-events: none;
 }

@@ -38,6 +38,42 @@
   .hinweis strong { color: #1a2a4a; }
   .footer { background: #1a2a4a; margin-top: 60px; padding: 14px 40px; text-align: center; font-size: 11px; color: #8090a8; letter-spacing: 1px; }
   .footer strong { color: #d4af37; }
+
+  .print-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #1a2a4a;
+    color: #d4af37;
+    border: 1.5px solid #d4af37;
+    padding: 9px 20px;
+    border-radius: 7px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: all 0.2s;
+    margin-top: 10px;
+  }
+  .print-btn:hover { background: #d4af37; color: #1a2a4a; }
+
+  @media print {
+    body { background: #fff !important; }
+    .header, .gold-bar, .btn-back, .modul-badge, .intro,
+    .zoom-bar, .mindmap-header, .mindmap-footer,
+    .highlight-box, .hinweis, .footer, .print-btn { display: none !important; }
+    .main { margin: 0 !important; padding: 0 !important; max-width: 100% !important; }
+    .mindmap-wrapper { border: none !important; box-shadow: none !important; border-radius: 0 !important; }
+    .mindmap-scroll {
+      overflow: visible !important;
+      max-height: none !important;
+      cursor: default !important;
+    }
+    .mindmap-scroll img {
+      width: 100% !important;
+      max-width: 100% !important;
+    }
+  }
 </style>
 </head>
 <body>
@@ -60,6 +96,8 @@
   <div class="highlight-box">
     <p>Diese Übersicht gehört ins Team.</p>
     <span>Drucke sie aus. Häng sie auf. Zeig sie beim nächsten Briefing.</span>
+    <br>
+    <button class="print-btn" onclick="window.print()">🖨️ Mindmap drucken</button>
   </div>
 
   <div class="zoom-bar">
