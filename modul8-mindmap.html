@@ -12,7 +12,7 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 .btn-back { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
 .btn-back:hover { border-color:#d4af37; color:#d4af37; }
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
-.main { max-width:780px; margin:40px auto; padding:0 24px 60px; text-align:center; }
+.main { max-width:960px; margin:40px auto; padding:0 24px 60px; text-align:center; }
 .modul-badge { display:inline-block; background:#1a2a4a; color:#d4af37; font-size:11px; font-weight:700; letter-spacing:2px; padding:4px 14px; border-radius:4px; margin-bottom:12px; }
 h1 { font-family:Georgia,serif; font-size:26px; color:#1a2a4a; margin-bottom:24px; }
 .card { background:#fff; border:1px solid #e8dfc8; border-radius:10px; padding:36px 32px; margin-bottom:24px; box-shadow:0 2px 8px rgba(0,0,0,0.04); }
@@ -20,11 +20,151 @@ h1 { font-family:Georgia,serif; font-size:26px; color:#1a2a4a; margin-bottom:24p
 h2 { font-family:Georgia,serif; font-size:20px; color:#1a2a4a; margin-bottom:16px; }
 p { font-size:14px; line-height:1.8; color:#3a4a6a; margin-bottom:12px; }
 .gold-divider { height:2px; background:linear-gradient(90deg,transparent,#d4af37,transparent); margin:28px 0; }
-.drive-btn { display:inline-flex; align-items:center; gap:10px; background:#1a2a4a; color:#d4af37; border:2px solid #d4af37; padding:16px 36px; border-radius:8px; font-size:16px; font-weight:600; text-decoration:none; transition:all 0.2s; margin:16px 0; }
-.drive-btn:hover { background:#d4af37; color:#1a2a4a; }
 .highlight-box { background:#faf6ec; border:1px solid #e8dfc8; border-radius:8px; padding:20px 24px; margin:20px 0; }
 .highlight-box p { font-size:14px; font-weight:600; color:#1a2a4a; margin-bottom:4px; }
 .highlight-box span { font-size:13px; color:#8090a8; }
+
+/* Mindmap Vorschau – anklickbares Embed */
+.mindmap-preview {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #0a0f1e;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 24px 0;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+  cursor: zoom-in;
+}
+.mindmap-preview iframe {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  pointer-events: none; /* Klick geht an Overlay */
+}
+.mindmap-preview .zoom-hint {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  background: rgba(26,42,74,0.85);
+  color: #d4af37;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 20px;
+  letter-spacing: 1px;
+  pointer-events: none;
+  z-index: 5;
+}
+.mindmap-preview .click-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  background: transparent;
+  cursor: zoom-in;
+}
+
+/* Zoom Modal */
+.zoom-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  background: rgba(10,15,30,0.95);
+  flex-direction: column;
+}
+.zoom-modal.active { display: flex; }
+
+.zoom-modal-header {
+  background: #1a2a4a;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  border-bottom: 2px solid #d4af37;
+}
+.zoom-modal-title {
+  font-family: Georgia, serif;
+  color: #d4af37;
+  font-size: 15px;
+  letter-spacing: 1px;
+}
+.zoom-close {
+  background: transparent;
+  border: 1px solid rgba(212,175,55,0.5);
+  color: #d4af37;
+  font-size: 20px;
+  width: 36px; height: 36px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+.zoom-close:hover { background: #d4af37; color: #1a2a4a; }
+
+.zoom-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.zoom-btn {
+  background: #1a2a4a;
+  border: 1px solid rgba(212,175,55,0.4);
+  color: #d4af37;
+  font-size: 18px;
+  width: 36px; height: 36px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+  font-weight: bold;
+}
+.zoom-btn:hover { background: #d4af37; color: #1a2a4a; }
+.zoom-level {
+  color: #a0b0c8;
+  font-size: 12px;
+  min-width: 40px;
+  text-align: center;
+}
+
+.zoom-viewport {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  cursor: grab;
+}
+.zoom-viewport.dragging { cursor: grabbing; }
+
+.zoom-content {
+  position: absolute;
+  top: 0; left: 0;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+.zoom-content iframe {
+  display: block;
+  border: none;
+  /* Größe wird per JS gesetzt */
+}
+
+.zoom-hint-modal {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(26,42,74,0.8);
+  color: #a0b0c8;
+  font-size: 11px;
+  padding: 6px 16px;
+  border-radius: 20px;
+  pointer-events: none;
+  white-space: nowrap;
+  letter-spacing: 0.5px;
+}
+
 .footer { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer strong { color:#d4af37; }
 </style>
@@ -54,17 +194,224 @@ p { font-size:14px; line-height:1.8; color:#3a4a6a; margin-bottom:12px; }
 
     <div class="gold-divider"></div>
 
-    <a href="https://drive.google.com/file/d/1yIhDQaKOuoX1LMr7-QBsbMNscevx3WrR/view?usp=sharing" target="_blank" class="drive-btn">
-      ▶ Hier geht es zur Mindmap
-    </a>
+    <!-- Native Mindmap Vorschau mit Zoom -->
+    <div class="mindmap-preview" id="mindmapPreview">
+      <iframe
+        src="https://drive.google.com/file/d/1yIhDQaKOuoX1LMr7-QBsbMNscevx3WrR/preview"
+        allow="autoplay"
+        allowfullscreen
+        title="Mindmap Upselling Vorschau">
+      </iframe>
+      <div class="zoom-hint">🔍 Klicken zum Vergrößern</div>
+      <div class="click-overlay" id="openZoom"></div>
+    </div>
+
   </div>
 
   <div class="gold-divider"></div>
   <p style="font-size:12px; color:#8090a8; letter-spacing:1px;">GASTRO-OS | System · Strategie · Erfolg</p>
 </div>
 
+<!-- Zoom Modal -->
+<div class="zoom-modal" id="zoomModal">
+  <div class="zoom-modal-header">
+    <div class="zoom-modal-title">📋 Mindmap · Team Übersicht Upselling</div>
+    <div class="zoom-controls">
+      <button class="zoom-btn" id="zoomOut" title="Verkleinern">−</button>
+      <span class="zoom-level" id="zoomLevel">100%</span>
+      <button class="zoom-btn" id="zoomIn" title="Vergrößern">+</button>
+      <button class="zoom-btn" id="zoomReset" title="Zurücksetzen" style="font-size:14px;">↺</button>
+      <button class="zoom-close" id="closeZoom" title="Schließen">✕</button>
+    </div>
+  </div>
+  <div class="zoom-viewport" id="zoomViewport">
+    <div class="zoom-content" id="zoomContent">
+      <iframe
+        id="zoomIframe"
+        src="https://drive.google.com/file/d/1yIhDQaKOuoX1LMr7-QBsbMNscevx3WrR/preview"
+        allow="autoplay"
+        allowfullscreen
+        title="Mindmap Upselling Zoom">
+      </iframe>
+    </div>
+    <div class="zoom-hint-modal">Scrollen oder Pinch zum Zoomen · Ziehen zum Verschieben</div>
+  </div>
+</div>
+
 <div class="footer">
   <strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg
 </div>
+
+<script>
+(function() {
+  const modal       = document.getElementById('zoomModal');
+  const viewport    = document.getElementById('zoomViewport');
+  const content     = document.getElementById('zoomContent');
+  const iframe      = document.getElementById('zoomIframe');
+  const openBtn     = document.getElementById('openZoom');
+  const closeBtn    = document.getElementById('closeZoom');
+  const zoomInBtn   = document.getElementById('zoomIn');
+  const zoomOutBtn  = document.getElementById('zoomOut');
+  const zoomResetBtn= document.getElementById('zoomReset');
+  const zoomLabel   = document.getElementById('zoomLevel');
+
+  let scale = 1;
+  let tx = 0, ty = 0;
+  let isDragging = false;
+  let startX, startY, startTx, startTy;
+
+  // iframe Größe = Viewport-Größe × initiale Auflösung
+  const BASE_W = 1600;
+  const BASE_H = 900;
+
+  function setIframeSize() {
+    iframe.style.width  = BASE_W + 'px';
+    iframe.style.height = BASE_H + 'px';
+  }
+
+  function applyTransform() {
+    content.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
+    zoomLabel.textContent = Math.round(scale * 100) + '%';
+  }
+
+  function centerContent() {
+    const vw = viewport.clientWidth;
+    const vh = viewport.clientHeight;
+    tx = (vw - BASE_W * scale) / 2;
+    ty = (vh - BASE_H * scale) / 2;
+  }
+
+  function openModal() {
+    setIframeSize();
+    scale = 1;
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    requestAnimationFrame(() => {
+      centerContent();
+      applyTransform();
+    });
+  }
+
+  function closeModal() {
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  openBtn.addEventListener('click', openModal);
+  closeBtn.addEventListener('click', closeModal);
+
+  // Escape
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeModal();
+  });
+
+  // Zoom buttons
+  zoomInBtn.addEventListener('click', () => {
+    const prev = scale;
+    scale = Math.min(scale * 1.25, 5);
+    const vw = viewport.clientWidth, vh = viewport.clientHeight;
+    tx = vw/2 - (vw/2 - tx) * (scale/prev);
+    ty = vh/2 - (vh/2 - ty) * (scale/prev);
+    applyTransform();
+  });
+  zoomOutBtn.addEventListener('click', () => {
+    const prev = scale;
+    scale = Math.max(scale / 1.25, 0.2);
+    const vw = viewport.clientWidth, vh = viewport.clientHeight;
+    tx = vw/2 - (vw/2 - tx) * (scale/prev);
+    ty = vh/2 - (vh/2 - ty) * (scale/prev);
+    applyTransform();
+  });
+  zoomResetBtn.addEventListener('click', () => {
+    scale = 1;
+    centerContent();
+    applyTransform();
+  });
+
+  // Scroll-Zoom
+  viewport.addEventListener('wheel', e => {
+    e.preventDefault();
+    const rect = viewport.getBoundingClientRect();
+    const mx = e.clientX - rect.left;
+    const my = e.clientY - rect.top;
+    const delta = e.deltaY < 0 ? 1.1 : 0.9;
+    const prev = scale;
+    scale = Math.max(0.2, Math.min(5, scale * delta));
+    tx = mx - (mx - tx) * (scale/prev);
+    ty = my - (my - ty) * (scale/prev);
+    applyTransform();
+  }, { passive: false });
+
+  // Drag
+  viewport.addEventListener('mousedown', e => {
+    if (e.button !== 0) return;
+    isDragging = true;
+    startX = e.clientX; startY = e.clientY;
+    startTx = tx; startTy = ty;
+    viewport.classList.add('dragging');
+  });
+  window.addEventListener('mousemove', e => {
+    if (!isDragging) return;
+    tx = startTx + (e.clientX - startX);
+    ty = startTy + (e.clientY - startY);
+    applyTransform();
+  });
+  window.addEventListener('mouseup', () => {
+    isDragging = false;
+    viewport.classList.remove('dragging');
+  });
+
+  // Touch Zoom & Pan
+  let lastDist = null;
+  let lastTouchMid = null;
+  viewport.addEventListener('touchstart', e => {
+    if (e.touches.length === 2) {
+      lastDist = Math.hypot(
+        e.touches[0].clientX - e.touches[1].clientX,
+        e.touches[0].clientY - e.touches[1].clientY
+      );
+      lastTouchMid = {
+        x: (e.touches[0].clientX + e.touches[1].clientX) / 2,
+        y: (e.touches[0].clientY + e.touches[1].clientY) / 2
+      };
+    } else if (e.touches.length === 1) {
+      startX = e.touches[0].clientX; startY = e.touches[0].clientY;
+      startTx = tx; startTy = ty;
+    }
+  }, { passive: true });
+  viewport.addEventListener('touchmove', e => {
+    if (e.touches.length === 2) {
+      e.preventDefault();
+      const dist = Math.hypot(
+        e.touches[0].clientX - e.touches[1].clientX,
+        e.touches[0].clientY - e.touches[1].clientY
+      );
+      const mid = {
+        x: (e.touches[0].clientX + e.touches[1].clientX) / 2,
+        y: (e.touches[0].clientY + e.touches[1].clientY) / 2
+      };
+      const rect = viewport.getBoundingClientRect();
+      const mx = mid.x - rect.left;
+      const my = mid.y - rect.top;
+      if (lastDist) {
+        const prev = scale;
+        scale = Math.max(0.2, Math.min(5, scale * dist / lastDist));
+        tx = mx - (mx - tx) * (scale/prev);
+        ty = my - (my - ty) * (scale/prev);
+        applyTransform();
+      }
+      lastDist = dist;
+      lastTouchMid = mid;
+    } else if (e.touches.length === 1) {
+      tx = startTx + (e.touches[0].clientX - startX);
+      ty = startTy + (e.touches[0].clientY - startY);
+      applyTransform();
+    }
+  }, { passive: false });
+  viewport.addEventListener('touchend', () => { lastDist = null; }, { passive: true });
+
+})();
+</script>
+
 </body>
 </html>
