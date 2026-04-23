@@ -54,6 +54,48 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 .footer { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer strong { color:#d4af37; }
 @media(max-width:600px){ .zone-grid { grid-template-columns:1fr; } }
+
+.btn-dashboard {
+  background: transparent;
+  border: 1px solid rgba(212,175,55,0.4);
+  color: #a0b0c8;
+  padding: 7px 16px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.2s;
+}
+.btn-dashboard:hover { border-color: #d4af37; color: #d4af37; }
+.lektion-hero {
+  background: #1a2a4a;
+  border-radius: 12px;
+  padding: 28px 32px;
+  margin-bottom: 28px;
+  border: 2px solid #d4af37;
+}
+.lektion-hero .lektion-tag {
+  font-size: 11px;
+  color: #d4af37;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.lektion-hero .lektion-title {
+  font-family: Georgia, serif;
+  font-size: 24px;
+  color: #fff;
+  margin-bottom: 6px;
+  font-weight: normal;
+  line-height: 1.3;
+}
+.lektion-hero .lektion-sub {
+  font-size: 13px;
+  color: #a0b0c8;
+  margin-bottom: 0;
+}
 </style>
 </head>
 <body>
@@ -86,17 +128,17 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 })();
 </script>
 <div class="header">
-  <div class="brand">GASTRO-OS</div>
+  <div class="brand">GASTRO-OS
+  <a href="dashboard.html" class="btn-dashboard">← Zurück zum Dashboard</a>
+</div>
   <a href="modul5-uebersicht.html" class="btn-back">← Modulübersicht</a>
 </div>
 <div class="gold-bar"></div>
 <div class="main">
-  <div class="page-tag">Modul 5 · Struktur &amp; Organisation</div>
-  <div class="page-title">📖 Lektion 3 — Deine Tagesstruktur als Unternehmer</div>
-  <div class="page-sub">Wann du was tust — und warum das den Unterschied macht</div>
-
-  <div class="welcome-card">
-    <p>In Lektion 2 haben wir uns angeschaut was SOPs sind und wie du deine ersten drei schreibst. Aber ein System aus SOPs allein reicht nicht. Du kannst die besten Prozesse der Welt haben und trotzdem jeden Tag im Chaos versinken wenn du keine Struktur hast wann du was tust. Genau darum geht es in Lektion 3. Nicht nur was du tust, sondern wann du es tust.</p>
+  <div class="lektion-hero">
+    <div class="lektion-tag">Modul 5 · Struktur &amp; Organisation</div>
+    <div class="lektion-title">📖 Lektion 3 — Deine Tagesstruktur als Unternehmer</div>
+    <p class="lektion-sub">Wann du was tust — und warum das den Unterschied macht</p>
   </div>
 
   <div class="chapter">

@@ -29,6 +29,47 @@
   .outcome-box ul li::before { content: '✓'; position: absolute; left: 0; color: #d4af37; font-weight: 700; }
   .footer { background: #1a2a4a; margin-top: 48px; padding: 14px 40px; text-align: center; font-size: 11px; color: #8090a8; letter-spacing: 1px; }
   .footer strong { color: #d4af37; }
+
+.btn-dashboard {
+  background: transparent;
+  border: 1px solid rgba(212,175,55,0.4);
+  color: #a0b0c8;
+  padding: 7px 16px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.2s;
+}
+.btn-dashboard:hover { border-color: #d4af37; color: #d4af37; }
+.modul-header {
+  background: #1a2a4a;
+  border-radius: 12px;
+  padding: 28px 32px;
+  margin-bottom: 28px;
+  border: 2px solid #d4af37;
+}
+.modul-header .nummer {
+  font-size: 12px;
+  color: #d4af37;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+.modul-header h1 {
+  font-family: Georgia, serif;
+  font-size: 26px;
+  color: #fff;
+  margin-bottom: 12px;
+}
+.modul-header p {
+  font-size: 14px;
+  color: #a0b0c8;
+  line-height: 1.7;
+  margin-bottom: 0;
+}
 </style>
 </head>
 <body>
@@ -61,11 +102,18 @@
 })();
 </script>
 <div class="header">
-  <div class="brand">GASTRO-OS</div>
+  <div class="brand">GASTRO-OS
+  <a href="dashboard.html" class="btn-dashboard">← Zurück zum Dashboard</a>
+</div>
   <div class="modul-label">Modul 6 &nbsp;·&nbsp; Übersicht</div>
 </div>
 <div class="gold-bar"></div>
 <div class="main">
+  <div class="modul-header">
+    <div class="nummer">Modul 6</div>
+    <h1>Mitarbeiter führen statt nur reagieren</h1>
+    <p>Dein Betrieb hat Struktur. Jetzt geht es um dein Team — klare Rollen, weniger Chaos, mehr Eigenverantwortung.</p>
+  </div>
   <div class="hero">
     <h1>Mitarbeiter führen statt nur reagieren</h1>
     <div class="gold-rule"></div>

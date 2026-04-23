@@ -34,6 +34,20 @@ h1 { font-family:Georgia,serif; font-size:26px; color:#1a2a4a; margin-bottom:8px
 .btn:hover { opacity:.85; }
 .footer { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; }
 .footer strong { color:#d4af37; }
+
+.btn-dashboard {
+  background: transparent;
+  border: 1px solid rgba(212,175,55,0.4);
+  color: #a0b0c8;
+  padding: 7px 16px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.2s;
+}
+.btn-dashboard:hover { border-color: #d4af37; color: #d4af37; }
 </style>
 </head>
 <body>
@@ -66,7 +80,9 @@ h1 { font-family:Georgia,serif; font-size:26px; color:#1a2a4a; margin-bottom:8px
 })();
 </script>
 <div class="header">
-  <div class="brand">GASTRO-OS</div>
+  <div class="brand">GASTRO-OS
+  <a href="dashboard.html" class="btn-dashboard">← Zurück zum Dashboard</a>
+</div>
   <div class="modul-label">Modul 6 &nbsp;·&nbsp; Anleitung</div>
 </div>
 <div class="gold-bar"></div>
