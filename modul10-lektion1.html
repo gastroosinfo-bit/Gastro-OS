@@ -51,6 +51,49 @@ p { font-size:14px; line-height:1.9; color:#2a3a4a; margin-bottom:16px; }
 
 .footer { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer strong { color:#d4af37; }
+
+.btn-dashboard {
+  background: transparent;
+  border: 1px solid rgba(212,175,55,0.4);
+  color: #a0b0c8;
+  padding: 7px 16px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.2s;
+}
+.btn-dashboard:hover { border-color: #d4af37; color: #d4af37; }
+.lektion-hero {
+  background: #1a2a4a;
+  border-radius: 12px;
+  padding: 28px 32px;
+  margin-bottom: 28px;
+  border: 2px solid #d4af37;
+}
+.lektion-hero .lektion-tag {
+  font-size: 11px;
+  color: #d4af37;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.lektion-hero h1, .lektion-hero .lektion-title {
+  font-family: Georgia, serif;
+  font-size: 26px;
+  color: #fff;
+  margin-bottom: 12px;
+  font-weight: normal;
+  line-height: 1.3;
+}
+.lektion-hero .lektion-intro-text {
+  font-size: 14px;
+  color: #a0b0c8;
+  line-height: 1.7;
+  margin-bottom: 0;
+}
 </style>
 </head>
 <body>
@@ -83,20 +126,18 @@ p { font-size:14px; line-height:1.9; color:#2a3a4a; margin-bottom:16px; }
 })();
 </script>
 <div class="header">
-  <div class="brand">GASTRO-OS</div>
+  <div class="brand">GASTRO-OS
+  <a href="dashboard.html" class="btn-dashboard">← Zurück zum Dashboard</a>
+</div>
   <a href="modul10-uebersicht.html" class="back-btn">← Modulübersicht</a>
 </div>
 <div class="gold-bar"></div>
 
 <div class="main">
-  <div class="page-tag">Modul 10 · Lektion 1</div>
-  <div class="page-title">Ist dein Fundament stabil genug?</div>
-  <div class="page-welcome">
-    <strong>Willkommen in Lektion 1</strong><br><br>
-    In Modul 9 haben wir uns angeschaut wie du mit Google, Bewertungen und einem einfachen wöchentlichen System dauerhafte lokale Sichtbarkeit aufbaust. Du hast deinen ersten Marketing Aktionsplan geschrieben und weißt jetzt wie du mit minimalem Aufwand maximal sichtbar bist.<br><br>
-    Jetzt kommen wir zu einem Thema das viele Gastronomen beschäftigt sobald der erste Betrieb wirklich läuft. Wachstum. Der zweite Standort. Die Erweiterung. Das neue Konzept. Die Idee die schon lange im Kopf ist und jetzt vielleicht realisierbar wird.<br><br>
-    Aber bevor wir über Wachstum sprechen, müssen wir über das Fundament sprechen. Denn Wachstum ohne stabiles Fundament ist nicht Wachstum. Es ist Risiko. Und in der Gastronomie ist unkontrolliertes Wachstum einer der häufigsten Wege in die Insolvenz.<br><br>
-    In Lektion 1 schauen wir uns ehrlich an was ein stabiles Fundament in der Gastronomie bedeutet. Welche Voraussetzungen wirklich erfüllt sein müssen bevor Wachstum Sinn macht. Und wie du heute einschätzen kannst ob dein Betrieb bereit ist.
+  <div class="lektion-hero">
+    <div class="lektion-tag">Modul 10 · Lektion 1</div>
+    <div class="lektion-title">Ist dein Fundament stabil genug?</div>
+    <p class="lektion-intro-text">Willkommen in Lektion 1 In Modul 9 haben wir uns angeschaut wie du mit Google, Bewertungen und einem einfachen wöchentlichen System dauerhafte lokale Sichtbarkeit aufbaust. Du hast deinen ersten Marketing Aktionsplan geschrieben und weißt jetzt wie du mit minimalem Aufwand maximal sichtbar bist. Jet</p>
   </div>
 
   <!-- KAPITEL 1 -->

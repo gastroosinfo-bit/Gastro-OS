@@ -52,6 +52,49 @@ p { font-size:14px; line-height:1.9; color:#2a3a4a; margin-bottom:16px; }
 
 .footer { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer strong { color:#d4af37; }
+
+.btn-dashboard {
+  background: transparent;
+  border: 1px solid rgba(212,175,55,0.4);
+  color: #a0b0c8;
+  padding: 7px 16px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.2s;
+}
+.btn-dashboard:hover { border-color: #d4af37; color: #d4af37; }
+.lektion-hero {
+  background: #1a2a4a;
+  border-radius: 12px;
+  padding: 28px 32px;
+  margin-bottom: 28px;
+  border: 2px solid #d4af37;
+}
+.lektion-hero .lektion-tag {
+  font-size: 11px;
+  color: #d4af37;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.lektion-hero h1, .lektion-hero .lektion-title {
+  font-family: Georgia, serif;
+  font-size: 26px;
+  color: #fff;
+  margin-bottom: 12px;
+  font-weight: normal;
+  line-height: 1.3;
+}
+.lektion-hero .lektion-intro-text {
+  font-size: 14px;
+  color: #a0b0c8;
+  line-height: 1.7;
+  margin-bottom: 0;
+}
 </style>
 </head>
 <body>
@@ -84,19 +127,18 @@ p { font-size:14px; line-height:1.9; color:#2a3a4a; margin-bottom:16px; }
 })();
 </script>
 <div class="header">
-  <div class="brand">GASTRO-OS</div>
+  <div class="brand">GASTRO-OS
+  <a href="dashboard.html" class="btn-dashboard">← Zurück zum Dashboard</a>
+</div>
   <a href="modul10-uebersicht.html" class="back-btn">← Modulübersicht</a>
 </div>
 <div class="gold-bar"></div>
 
 <div class="main">
-  <div class="page-tag">Modul 10 · Lektion 2</div>
-  <div class="page-title">Wann ist Wachstum sinnvoll</div>
-  <div class="page-welcome">
-    <strong>Willkommen in Lektion 2</strong><br><br>
-    In Lektion 1 haben wir uns angeschaut warum so viele Expansionen in der Gastronomie scheitern, welche fünf Fehler immer wieder gemacht werden und was ein stabiles Fundament wirklich bedeutet. Du hast die sechs Fundament Fragen beantwortet und weißt jetzt wo du heute stehst und was noch fehlt.<br><br>
-    Jetzt gehen wir einen Schritt weiter. Denn die Frage ist nicht nur ob das Fundament stabil genug ist. Die Frage ist auch wann Wachstum wirklich Sinn macht. Nicht wenn es möglich ist. Wenn es sinnvoll ist. Das sind zwei verschiedene Dinge.<br><br>
-    In Lektion 2 schauen wir uns an welche Signale zeigen dass ein Betrieb bereit für Wachstum ist, welche Wachstumsformen es gibt und welche für welchen Betrieb passt, und wie du eine fundierte Wachstumsentscheidung triffst die nicht auf Bauchgefühl basiert sondern auf echten Daten.
+  <div class="lektion-hero">
+    <div class="lektion-tag">Modul 10 · Lektion 2</div>
+    <div class="lektion-title">Wann ist Wachstum sinnvoll</div>
+    <p class="lektion-intro-text">Willkommen in Lektion 2 In Lektion 1 haben wir uns angeschaut warum so viele Expansionen in der Gastronomie scheitern, welche fünf Fehler immer wieder gemacht werden und was ein stabiles Fundament wirklich bedeutet. Du hast die sechs Fundament Fragen beantwortet und weißt jetzt wo du heute stehst un</p>
   </div>
 
   <!-- KAPITEL 1 -->

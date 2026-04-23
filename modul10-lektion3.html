@@ -51,6 +51,49 @@ p { font-size:14px; line-height:1.9; color:#2a3a4a; margin-bottom:16px; }
 
 .footer { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer strong { color:#d4af37; }
+
+.btn-dashboard {
+  background: transparent;
+  border: 1px solid rgba(212,175,55,0.4);
+  color: #a0b0c8;
+  padding: 7px 16px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.2s;
+}
+.btn-dashboard:hover { border-color: #d4af37; color: #d4af37; }
+.lektion-hero {
+  background: #1a2a4a;
+  border-radius: 12px;
+  padding: 28px 32px;
+  margin-bottom: 28px;
+  border: 2px solid #d4af37;
+}
+.lektion-hero .lektion-tag {
+  font-size: 11px;
+  color: #d4af37;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.lektion-hero h1, .lektion-hero .lektion-title {
+  font-family: Georgia, serif;
+  font-size: 26px;
+  color: #fff;
+  margin-bottom: 12px;
+  font-weight: normal;
+  line-height: 1.3;
+}
+.lektion-hero .lektion-intro-text {
+  font-size: 14px;
+  color: #a0b0c8;
+  line-height: 1.7;
+  margin-bottom: 0;
+}
 </style>
 </head>
 <body>
@@ -83,18 +126,18 @@ p { font-size:14px; line-height:1.9; color:#2a3a4a; margin-bottom:16px; }
 })();
 </script>
 <div class="header">
-  <div class="brand">GASTRO-OS</div>
+  <div class="brand">GASTRO-OS
+  <a href="dashboard.html" class="btn-dashboard">← Zurück zum Dashboard</a>
+</div>
   <a href="modul10-uebersicht.html" class="back-btn">← Modulübersicht</a>
 </div>
 <div class="gold-bar"></div>
 
 <div class="main">
-  <div class="page-tag">Modul 10 · Lektion 3</div>
-  <div class="page-title">Expansion mit System</div>
-  <div class="page-welcome">
-    <strong>Willkommen in Lektion 3</strong><br><br>
-    In Lektion 2 haben wir uns angeschaut welche sieben Signale zeigen dass ein Betrieb wirklich bereit für Wachstum ist und welche Wachstumsformen es gibt. Du hast bewertet wie stark dein Fundament heute ist und welche Wachstumsform für deinen Betrieb in den nächsten zwölf Monaten realistisch und sinnvoll ist.<br><br>
-    Jetzt gehen wir in die Umsetzung. Denn Wachstum zu wollen und Wachstum mit System anzugehen sind zwei verschiedene Dinge. In Lektion 3 schauen wir uns an wie eine strukturierte Expansion konkret aussieht. Wie du den richtigen Standort findest und bewertest. Wie du ein neues Team aufbaust das nach denselben Standards arbeitet wie dein bestehendes. Und wie du die Qualität deines ersten Standorts sicherst während du am zweiten aufbaust.
+  <div class="lektion-hero">
+    <div class="lektion-tag">Modul 10 · Lektion 3</div>
+    <div class="lektion-title">Expansion mit System</div>
+    <p class="lektion-intro-text">Willkommen in Lektion 3 In Lektion 2 haben wir uns angeschaut welche sieben Signale zeigen dass ein Betrieb wirklich bereit für Wachstum ist und welche Wachstumsformen es gibt. Du hast bewertet wie stark dein Fundament heute ist und welche Wachstumsform für deinen Betrieb in den nächsten zwölf Monat</p>
   </div>
 
   <!-- KAPITEL 1 -->
