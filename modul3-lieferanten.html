@@ -65,6 +65,15 @@ td.calc { font-weight:600; font-size:13px; }
 .star-hint { font-size:11px; color:#8090a8; }
 @media print{.header,.back-btn,.gold-bar{display:none!important;}body{background:#fff;}}
 </style>
+<script>
+(function(){
+  document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
+  document.addEventListener('keydown', function(e){
+    if (e.ctrlKey && ['s','u','p','a'].includes(e.key.toLowerCase())) e.preventDefault();
+    if (e.key === 'F12') e.preventDefault();
+  });
+})();
+</script>
 </head>
 <body>
 <div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html" class="back-btn">← Zurück zum Dashboard</a></div>
