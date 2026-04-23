@@ -41,19 +41,20 @@ h1 { font-family:Georgia,serif; font-size:26px; color:#1a2a4a; font-weight:norma
 .video-wrap {
   position: relative;
   width: 100%;
-  padding-bottom: 56.25%; /* 16:9 */
-  background: #000;
-  overflow: hidden;
-  margin: 20px 0;
+  aspect-ratio: 16 / 9;
   border-radius: 8px 0 8px 8px;
+  overflow: hidden;
+  background: #0a0f1e;
+  margin: 24px 0;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.18);
 }
 .video-wrap iframe {
   position: absolute;
+  top: -79px;
   left: 0;
   width: 100%;
-  border: none;
-  top: -79px;
   height: calc(100% + 79px);
+  border: none;
 }
 /* GASTRO-OS Logo deckt Drive-Icon oben rechts ab */
 .video-cover-tr {
