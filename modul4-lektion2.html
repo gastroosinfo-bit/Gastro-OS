@@ -41,6 +41,48 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 .nav-btn.secondary:hover { background:#1a2a4a; color:#d4af37; }
 .footer { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer strong { color:#d4af37; }
+
+.btn-dashboard {
+  background: transparent;
+  border: 1px solid rgba(212,175,55,0.4);
+  color: #a0b0c8;
+  padding: 7px 16px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.2s;
+}
+.btn-dashboard:hover { border-color: #d4af37; color: #d4af37; }
+.lektion-hero {
+  background: #1a2a4a;
+  border-radius: 12px;
+  padding: 28px 32px;
+  margin-bottom: 28px;
+  border: 2px solid #d4af37;
+}
+.lektion-hero .lektion-tag {
+  font-size: 11px;
+  color: #d4af37;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.lektion-hero .lektion-title {
+  font-family: Georgia, serif;
+  font-size: 24px;
+  color: #fff;
+  margin-bottom: 6px;
+  font-weight: normal;
+  line-height: 1.3;
+}
+.lektion-hero .lektion-sub {
+  font-size: 13px;
+  color: #a0b0c8;
+  margin-bottom: 0;
+}
 </style>
 </head>
 <body>
@@ -73,17 +115,17 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 })();
 </script>
 <div class="header">
-  <div class="brand">GASTRO-OS</div>
+  <div class="brand">GASTRO-OS
+  <a href="dashboard.html" class="btn-dashboard">← Zurück zum Dashboard</a>
+</div>
   <a href="modul4-uebersicht.html" class="btn-back">← Modulübersicht</a>
 </div>
 <div class="gold-bar"></div>
 <div class="main">
-  <div class="page-tag">Modul 4 · Zahlen verstehen &amp; kontrollieren</div>
-  <div class="page-title">📖 Lektion 2 — Die BWA richtig lesen</div>
-  <div class="page-sub">Dein monatlicher Finanzspiegel — endlich verstehen</div>
-
-  <div class="welcome-card">
-    <p>In Lektion 1 hast du den Unterschied zwischen Fixkosten und variablen Kosten verstanden und gelernt wie du deinen Break-Even berechnest. Jetzt gehen wir einen Schritt weiter. Die BWA ist das wichtigste Dokument das dein Steuerberater jeden Monat erstellt. In dieser Lektion lernst du es wirklich zu lesen und zu verstehen.</p>
+  <div class="lektion-hero">
+    <div class="lektion-tag">Modul 4 · Zahlen verstehen &amp; kontrollieren</div>
+    <div class="lektion-title">📖 Lektion 2 — Die BWA richtig lesen</div>
+    <p class="lektion-sub">Dein monatlicher Finanzspiegel — endlich verstehen</p>
   </div>
 
   <div class="chapter">

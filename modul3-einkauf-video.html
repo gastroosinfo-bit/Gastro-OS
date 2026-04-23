@@ -27,6 +27,20 @@ p{font-size:15px;color:#2a3a5a;line-height:1.8;margin-bottom:14px}
 .cta-link{display:inline-block;background:#d4af37;color:#1a2a4a;font-weight:700;font-size:15px;padding:13px 32px;border-radius:6px;text-decoration:none}
 .footer{background:#1a2a4a;margin-top:48px;padding:14px 40px;text-align:center;font-size:11px;color:#8090a8}
 .footer strong{color:#d4af37}
+
+.btn-dashboard {
+  background: transparent;
+  border: 1px solid rgba(212,175,55,0.4);
+  color: #a0b0c8;
+  padding: 7px 16px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.2s;
+}
+.btn-dashboard:hover { border-color: #d4af37; color: #d4af37; }
 </style></head><body>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -56,7 +70,9 @@ p{font-size:15px;color:#2a3a5a;line-height:1.8;margin-bottom:14px}
   })();
 })();
 </script>
-<div class="header"><div class="brand">GASTRO-OS</div><div class="modul-label">Modul 3 &nbsp;·&nbsp; Anleitung</div></div>
+<div class="header"><div class="brand">GASTRO-OS
+  <a href="dashboard.html" class="btn-dashboard">← Zurück zum Dashboard</a>
+</div><div class="modul-label">Modul 3 &nbsp;·&nbsp; Anleitung</div></div>
 <div class="gold-bar"></div>
 <div class="main">
 <h1>📸 So nutzt du den Einkaufs Check</h1>
