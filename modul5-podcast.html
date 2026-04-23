@@ -28,6 +28,34 @@
   opacity: 1;
 }
 </style></head><body>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function(){
+  // Rechtsklick & Tastenkürzel sperren
+  document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
+  document.addEventListener('keydown', function(e){
+    if (e.ctrlKey && ['s','u','p','a'].includes(e.key.toLowerCase())) e.preventDefault();
+    if (e.key === 'F12') e.preventDefault();
+  });
+
+  // Supabase Auth Check
+  const sb = supabase.createClient(
+    'https://hchlganbgjeciwhwaisj.supabase.co',
+    'sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3'
+  );
+  (async function(){
+    const { data:{ session } } = await sb.auth.getSession();
+    if (!session) { window.location.href = 'login.html'; return; }
+    const { data: profile } = await sb.from('profiles')
+      .select('is_active,subscription_status')
+      .eq('id', session.user.id).maybeSingle();
+    if (profile && (!profile.is_active || profile.subscription_status !== 'active')) {
+      await sb.auth.signOut();
+      window.location.href = 'login.html';
+    }
+  })();
+})();
+</script>
 <div class="header"><div class="brand">GASTRO-OS</div><div class="modul-label">Modul 5 &nbsp;·&nbsp; Küchenfunk #2</div></div>
 <div class="gold-bar"></div>
 <div class="main">
