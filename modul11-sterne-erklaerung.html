@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>So nutzt du das Sterne Level System | GASTRO-OS</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
+.header { background:#1a2a4a; padding:16px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:20px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.back-btn { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; cursor:pointer; text-decoration:none; transition:all 0.2s; }
+.back-btn:hover { border-color:#d4af37; color:#d4af37; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+.main { max-width:760px; margin:36px auto; padding:0 24px 60px; }
+.page-tag { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; margin-bottom:8px; }
+.page-title { font-family:Georgia,serif; font-size:24px; color:#1a2a4a; margin-bottom:6px; }
+.page-sub { font-size:13px; color:#8090a8; margin-bottom:28px; }
+.intro { font-size:14px; color:#4a5a6a; line-height:1.8; margin-bottom:24px; }
+.screenshot-wrap { background:#fff; border:1px solid #e8dfc8; border-radius:10px; overflow:hidden; margin-bottom:24px; }
+.screenshot-wrap img { width:100%; display:block; }
+.steps { display:flex; flex-direction:column; gap:12px; margin:24px 0; }
+.step { background:#fff; border:1px solid #e8dfc8; border-radius:8px; padding:14px 18px; display:flex; gap:12px; align-items:flex-start; }
+.step-num { background:#d4af37; color:#1a2a4a; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; flex-shrink:0; }
+.step-text strong { display:block; font-size:13px; color:#1a2a4a; margin-bottom:3px; }
+.step-text span { font-size:12px; color:#4a5a6a; line-height:1.6; }
+.nav-row { display:flex; gap:12px; justify-content:space-between; margin-top:28px; }
+.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:12px 24px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none; transition:all 0.2s; }
+.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
+.nav-btn.secondary { background:transparent; border:1px solid rgba(26,42,74,0.3); color:#1a2a4a; }
+.nav-btn.secondary:hover { background:#1a2a4a; color:#d4af37; }
+.footer { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer strong { color:#d4af37; }
+
+.btn-dashboard {
+  background: transparent;
+  border: 1px solid rgba(212,175,55,0.4);
+  color: #a0b0c8;
+  padding: 7px 16px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.2s;
+}
+.btn-dashboard:hover { border-color: #d4af37; color: #d4af37; }
+</style>
+</head>
+<body>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function(){
+  // Rechtsklick & Tastenkürzel sperren
+  document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
+  document.addEventListener('keydown', function(e){
+    if (e.ctrlKey && ['s','u','p','a'].includes(e.key.toLowerCase())) e.preventDefault();
+    if (e.key === 'F12') e.preventDefault();
+  });
+
+  // Supabase Auth Check
+  const sb = supabase.createClient(
+    'https://hchlganbgjeciwhwaisj.supabase.co',
+    'sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3'
+  );
+  (async function(){
+    const { data:{ session } } = await sb.auth.getSession();
+    if (!session) { window.location.href = 'login.html'; return; }
+    const { data: profile } = await sb.from('profiles')
+      .select('is_active,subscription_status')
+      .eq('id', session.user.id).maybeSingle();
+    if (profile && (!profile.is_active || profile.subscription_status !== 'active')) {
+      await sb.auth.signOut();
+      window.location.href = 'login.html';
+    }
+  })();
+})();
+</script>
+<div class="header"><div class="brand">GASTRO-OS
+  <a href="dashboard.html" class="btn-dashboard">← Zurück zum Dashboard</a>
+</div><a href="modul11-uebersicht.html" class="back-btn">← Modulübersicht</a></div>
+<div class="gold-bar"></div>
+<div class="main">
+  <div class="page-tag">Modul 11 · Sterne Level System</div>
+  <div class="page-title">📸 So nutzt du das Sterne Level System</div>
+  <div class="page-sub">Lies diese Anleitung bevor du das System ausfüllst.</div>
+  <p class="intro">Das Sterne Level System zeigt dir auf einen Blick wo du als Unternehmer heute stehst und wie weit du seit dem Start gekommen bist. Einmal pro Quartal ausfüllen, 30 Minuten, ehrlich bewerten. Die Screenshots unten zeigen dir Schritt für Schritt was wo eingetragen wird.</p>
+
+  <div class="screenshot-wrap">
+    <img src="sterne_v7.jpg" alt="Sterne Level System Übersicht">
+  </div>
+
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Die 5 Level verstehen</strong><span>Level 1 Einsteiger bis Level 5 Gastro-OS Master. Lies die Beschreibungen durch bevor du dich selbst bewertest. Sie geben dir den Rahmen für deine ehrliche Einschätzung.</span></div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Jeden Bereich ehrlich bewerten</strong><span>Bewerte dich in jedem der 10 Bereiche von 1 (schwach) bis 5 (stark). Keine richtigen oder falschen Antworten — nur ehrliche. Zahlen &amp; Finanzen, Team &amp; Führung, Zeitmanagement, Prozesse, Marketing, Mindset, Speisekarte, Systeme, Persönliche Freiheit, Wachstum.</span></div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-text"><strong>Kursstart eintragen</strong><span>Beim ersten Mal trägst du deine Bewertung als Kursstart ein. Das ist dein Ausgangspunkt.</span></div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-text"><strong>Zum Vergleich Monat 6 &amp; 12</strong><span>Nach 6 und 12 Monaten füllst du das System erneut aus. So siehst du schwarz auf weiß wie weit du wirklich gekommen bist.</span></div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-text"><strong>Dein Gesamtscore</strong><span>Am Ende siehst du deinen Gesamtscore. Er zeigt dir deinen aktuellen Level auf dem Weg vom Selbstständigen zum Unternehmer.</span></div></div>
+    <div class="step"><div class="step-num">6</div><div class="step-text"><strong>Stärken &amp; Schwächen Profil</strong><span>Trag deine 3 stärksten Bereiche, deine 3 größten Hebel, deinen Fokus-Bereich und was dich selbst aufhält ein. Das ist dein persönlicher Entwicklungsplan.</span></div></div>
+  </div>
+
+  <div class="nav-row">
+    <a href="modul11-reflexion.html" class="nav-btn secondary">← Monats Reflexion</a>
+    <a href="modul11-sterne.html" class="nav-btn">Zum Sterne Level System →</a>
+  </div>
+</div>
+<div class="gold-bar"></div>
+<div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+</body>
+</html>

@@ -43,6 +43,33 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 .progress-fill { height:100%; background:linear-gradient(90deg,#1a2a4a,#d4af37); border-radius:4px; transition:width 0.4s ease; }
 .footer { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer strong { color:#d4af37; }
+.modul-header {
+  background: #1a2a4a;
+  border-radius: 12px;
+  padding: 28px 32px;
+  margin-bottom: 28px;
+  border: 2px solid #d4af37;
+}
+.modul-header .nummer {
+  font-size: 12px;
+  color: #d4af37;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+.modul-header h1 {
+  font-family: Georgia, serif;
+  font-size: 26px;
+  color: #fff;
+  margin-bottom: 12px;
+}
+.modul-header p {
+  font-size: 14px;
+  color: #a0b0c8;
+  line-height: 1.7;
+  margin-bottom: 0;
+}
 </style>
 <script>
 (function(){
@@ -61,6 +88,11 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 </div>
 <div class="gold-bar"></div>
 <div class="main">
+  <div class="modul-header">
+    <div class="nummer">Modul 12</div>
+    <h1>Mitarbeiter finden & halten</h1>
+    <p>Du hast Freiheit gewonnen. Jetzt baust du das Team das dafür sorgt dass sie bleibt.</p>
+  </div>
   <div class="page-tag">Modul 12 · Mitarbeiter finden &amp; halten</div>
   <div class="page-title">👥 Mitarbeiter finden &amp; halten</div>
   <div class="page-sub">Kein Zufall. Kein Glück. Sondern System.</div>
@@ -78,15 +110,15 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 
   <div class="section-title">Was dich in diesem Modul erwartet</div>
   <div class="content-list">
-    <div class="content-item"><div class="check-box" id="chk-0" onclick="toggleCheck(0)"></div><span class="item-icon">🎬</span><div class="item-info"><div class="item-title">Ankervideo — Starte hier</div><div class="item-sub">Schau das Video bevor du weiterliest</div></div><a href="modul12-ankervideo.html" target="_blank" class="item-link">Öffnen →</a></div>
-    <div class="content-item"><div class="check-box" id="chk-1" onclick="toggleCheck(1)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title">Lektion 1 — Warum gute Leute gehen</div><div class="item-sub">Die wahren Gründe und was du ab sofort ändern kannst</div></div><a href="modul12-lektion1.html" target="_blank" class="item-link">Öffnen →</a></div>
-    <div class="content-item"><div class="check-box" id="chk-2" onclick="toggleCheck(2)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title">Lektion 2 — Die richtige Stellenanzeige</div><div class="item-sub">So schreibst du Anzeigen die wirklich funktionieren</div></div><a href="modul12-lektion2.html" target="_blank" class="item-link">Öffnen →</a></div>
-    <div class="content-item"><div class="check-box" id="chk-3" onclick="toggleCheck(3)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title">Lektion 3 — Onboarding mit System</div><div class="item-sub">Warum die ersten Wochen alles entscheiden</div></div><a href="modul12-lektion3.html" target="_blank" class="item-link">Öffnen →</a></div>
-    <div class="content-item"><div class="check-box" id="chk-4" onclick="toggleCheck(4)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title">Lektion 4 — Vom Plan zur Umsetzung</div><div class="item-sub">Dein 30-Tage-Recruiting-Plan</div></div><a href="modul12-lektion4.html" target="_blank" class="item-link">Öffnen →</a></div>
-    <div class="content-item"><div class="check-box" id="chk-5" onclick="toggleCheck(5)"></div><span class="item-icon">🎙️</span><div class="item-info"><div class="item-title">Podcast Küchenfunk #6 — Modul 12</div><div class="item-sub">Perfekt für unterwegs oder vor dem Service</div></div><a href="modul12-podcast.html" target="_blank" class="item-link">Öffnen →</a></div>
-    <div class="content-item"><div class="check-box" id="chk-6" onclick="toggleCheck(6)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title">So nutzt du den Mitarbeiter Recruiting Plan</div><div class="item-sub">Schritt-für-Schritt Anleitung</div></div><a href="modul12-recruiting-video.html" target="_blank" class="item-link">Öffnen →</a></div>
-    <div class="content-item"><div class="check-box" id="chk-7" onclick="toggleCheck(7)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title">Mitarbeiter Recruiting Plan</div><div class="item-sub">Einmal pro offener Stelle — konsequent durcharbeiten</div></div><a href="modul12-recruiting.html" target="_blank" class="item-link">Öffnen →</a></div>
-    <div class="content-item"><div class="check-box" id="chk-8" onclick="toggleCheck(8)"></div><span class="item-icon">🎯</span><div class="item-info"><div class="item-title">Quiz — Teste dein Wissen</div><div class="item-sub">8 Fragen · Sofortiges Feedback</div></div><a href="modul12-quiz.html" target="_blank" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-0" onclick="toggleCheck(0)"></div><span class="item-icon">🎬</span><div class="item-info"><div class="item-title">Ankervideo — Starte hier</div><div class="item-sub">Schau das Video bevor du weiterliest</div></div><a href="modul12-ankervideo.html"  class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-1" onclick="toggleCheck(1)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title">Lektion 1 — Warum gute Leute gehen</div><div class="item-sub">Die wahren Gründe und was du ab sofort ändern kannst</div></div><a href="modul12-lektion1.html"  class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-2" onclick="toggleCheck(2)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title">Lektion 2 — Die richtige Stellenanzeige</div><div class="item-sub">So schreibst du Anzeigen die wirklich funktionieren</div></div><a href="modul12-lektion2.html"  class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-3" onclick="toggleCheck(3)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title">Lektion 3 — Onboarding mit System</div><div class="item-sub">Warum die ersten Wochen alles entscheiden</div></div><a href="modul12-lektion3.html"  class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-4" onclick="toggleCheck(4)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title">Lektion 4 — Vom Plan zur Umsetzung</div><div class="item-sub">Dein 30-Tage-Recruiting-Plan</div></div><a href="modul12-lektion4.html"  class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-5" onclick="toggleCheck(5)"></div><span class="item-icon">🎙️</span><div class="item-info"><div class="item-title">Podcast Küchenfunk #6 — Modul 12</div><div class="item-sub">Perfekt für unterwegs oder vor dem Service</div></div><a href="modul12-podcast.html"  class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-6" onclick="toggleCheck(6)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title">So nutzt du den Mitarbeiter Recruiting Plan</div><div class="item-sub">Schritt-für-Schritt Anleitung</div></div><a href="modul12-recruiting-video.html"  class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-7" onclick="toggleCheck(7)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title">Mitarbeiter Recruiting Plan</div><div class="item-sub">Einmal pro offener Stelle — konsequent durcharbeiten</div></div><a href="modul12-recruiting.html"  class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-8" onclick="toggleCheck(8)"></div><span class="item-icon">🎯</span><div class="item-info"><div class="item-title">Quiz — Teste dein Wissen</div><div class="item-sub">8 Fragen · Sofortiges Feedback</div></div><a href="modul12-quiz.html"  class="item-link">Öffnen →</a></div>
   </div>
 
   <div class="howto-card">

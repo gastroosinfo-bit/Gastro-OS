@@ -29,6 +29,49 @@ p { font-size:14px; line-height:1.9; color:#2a3a4a; margin-bottom:16px; }
 .nav-btn.secondary:hover { background:#1a2a4a; color:#d4af37; }
 .footer { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer strong { color:#d4af37; }
+
+.btn-dashboard {
+  background: transparent;
+  border: 1px solid rgba(212,175,55,0.4);
+  color: #a0b0c8;
+  padding: 7px 16px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.2s;
+}
+.btn-dashboard:hover { border-color: #d4af37; color: #d4af37; }
+.lektion-hero {
+  background: #1a2a4a;
+  border-radius: 12px;
+  padding: 28px 32px;
+  margin-bottom: 28px;
+  border: 2px solid #d4af37;
+}
+.lektion-hero .lektion-tag {
+  font-size: 11px;
+  color: #d4af37;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.lektion-hero h1, .lektion-hero .lektion-title {
+  font-family: Georgia, serif;
+  font-size: 26px;
+  color: #fff;
+  margin-bottom: 12px;
+  font-weight: normal;
+  line-height: 1.3;
+}
+.lektion-hero .lektion-intro-text {
+  font-size: 14px;
+  color: #a0b0c8;
+  line-height: 1.7;
+  margin-bottom: 0;
+}
 </style>
 </head>
 <body>
@@ -60,17 +103,15 @@ p { font-size:14px; line-height:1.9; color:#2a3a4a; margin-bottom:16px; }
   })();
 })();
 </script>
-<div class="header"><div class="brand">GASTRO-OS</div><a href="modul11-uebersicht.html" class="back-btn">← Modulübersicht</a></div>
+<div class="header"><div class="brand">GASTRO-OS
+  <a href="dashboard.html" class="btn-dashboard">← Zurück zum Dashboard</a>
+</div><a href="modul11-uebersicht.html" class="back-btn">← Modulübersicht</a></div>
 <div class="gold-bar"></div>
 <div class="main">
-  <div class="page-tag">Modul 11 · Lektion 1</div>
-  <div class="page-title">Raus aus dem Dauerstress</div>
-  <div class="page-welcome">
-    <strong>Willkommen in Lektion 1</strong><br><br>
-    In Modul 10 haben wir uns angeschaut wie Wachstum in der Gastronomie wirklich funktioniert, welche Voraussetzungen erfüllt sein müssen bevor eine Expansion Sinn macht und wie du mit dem Standort Analyse Tool fundierte Entscheidungen triffst. Du weißt jetzt wo du stehst und was der nächste konkrete Schritt auf deinem Wachstumsweg ist.<br><br>
-    Modul 11 ist anders als alle Module davor. Es geht nicht um Zahlen, nicht um Prozesse, nicht um Systeme. Es geht um dich. Um deine Zeit. Um deine Energie. Um die Frage ob der Betrieb den du aufgebaut hast dir das Leben gibt das du dir vorgestellt hast als du angefangen hast.<br><br>
-    Für viele Gastronomen ist die ehrliche Antwort auf diese Frage unbequem. Der Betrieb läuft. Aber das Leben drumherum leidet. Die Familie sieht dich kaum. Urlaub ist ein Fremdwort. Wochenenden existieren nicht. Und irgendwo zwischen dem ersten Kaffee morgens und dem letzten Blick auf die Kasse abends ist der Gedanke verschwunden warum du das alles eigentlich machst.<br><br>
-    Lektion 1 beginnt genau dort. Nicht mit Lösungen. Mit ehrlichem Hinschauen.
+  <div class="lektion-hero">
+    <div class="lektion-tag">Modul 11 · Lektion 1</div>
+    <div class="lektion-title">Raus aus dem Dauerstress</div>
+    <p class="lektion-intro-text">Willkommen in Lektion 1 In Modul 10 haben wir uns angeschaut wie Wachstum in der Gastronomie wirklich funktioniert, welche Voraussetzungen erfüllt sein müssen bevor eine Expansion Sinn macht und wie du mit dem Standort Analyse Tool fundierte Entscheidungen triffst. Du weißt jetzt wo du stehst und wa</p>
   </div>
 
   <div class="chapter">

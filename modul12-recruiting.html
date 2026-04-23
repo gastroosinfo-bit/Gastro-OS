@@ -51,6 +51,20 @@ textarea { resize:vertical; min-height:80px; }
 .footer { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer strong { color:#d4af37; }
 @media(max-width:600px){ .form-grid{grid-template-columns:1fr;} .kanal-row{grid-template-columns:1fr 1fr;} }
+
+.btn-dashboard {
+  background: transparent;
+  border: 1px solid rgba(212,175,55,0.4);
+  color: #a0b0c8;
+  padding: 7px 16px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.2s;
+}
+.btn-dashboard:hover { border-color: #d4af37; color: #d4af37; }
 </style>
 <script>
 (function(){
@@ -64,7 +78,9 @@ textarea { resize:vertical; min-height:80px; }
 </head>
 <body>
 <div class="header">
-  <div class="brand">GASTRO-OS</div>
+  <div class="brand">GASTRO-OS
+  <a href="dashboard.html" class="btn-dashboard">← Zurück zum Dashboard</a>
+</div>
   <a href="modul12-uebersicht.html" class="btn-back">← Modulübersicht</a>
 </div>
 <div class="gold-bar"></div>
@@ -77,7 +93,7 @@ textarea { resize:vertical; min-height:80px; }
     <p>Trag jede neue Stelle von Anfang an vollständig ein — Stellenprofil, Anforderungen, Kanäle, Bewerber und Onboarding. Am Ende hast du für jede Einstellung eine saubere Dokumentation. Speichere für jede neue Stelle eine eigene Kopie.</p>
   </div>
 
-  <a href="https://docs.google.com/spreadsheets/d/1cY05aWNcirRAAuDknpq_4NNswBUNQNMb/edit?gid=1101967454#gid=1101967454" target="_blank" class="external-btn">
+  <a href="https://docs.google.com/spreadsheets/d/1cY05aWNcirRAAuDknpq_4NNswBUNQNMb/edit?gid=1101967454#gid=1101967454" class="external-btn">
     📊 Mitarbeiter Recruiting Plan öffnen →
   </a>
 

@@ -29,6 +29,49 @@ p { font-size:14px; line-height:1.9; color:#2a3a4a; margin-bottom:16px; }
 .nav-btn.secondary:hover { background:#1a2a4a; color:#d4af37; }
 .footer { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer strong { color:#d4af37; }
+
+.btn-dashboard {
+  background: transparent;
+  border: 1px solid rgba(212,175,55,0.4);
+  color: #a0b0c8;
+  padding: 7px 16px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.2s;
+}
+.btn-dashboard:hover { border-color: #d4af37; color: #d4af37; }
+.lektion-hero {
+  background: #1a2a4a;
+  border-radius: 12px;
+  padding: 28px 32px;
+  margin-bottom: 28px;
+  border: 2px solid #d4af37;
+}
+.lektion-hero .lektion-tag {
+  font-size: 11px;
+  color: #d4af37;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.lektion-hero h1, .lektion-hero .lektion-title {
+  font-family: Georgia, serif;
+  font-size: 26px;
+  color: #fff;
+  margin-bottom: 12px;
+  font-weight: normal;
+  line-height: 1.3;
+}
+.lektion-hero .lektion-intro-text {
+  font-size: 14px;
+  color: #a0b0c8;
+  line-height: 1.7;
+  margin-bottom: 0;
+}
 </style>
 </head>
 <body>
@@ -60,16 +103,15 @@ p { font-size:14px; line-height:1.9; color:#2a3a4a; margin-bottom:16px; }
   })();
 })();
 </script>
-<div class="header"><div class="brand">GASTRO-OS</div><a href="modul11-uebersicht.html" class="back-btn">← Modulübersicht</a></div>
+<div class="header"><div class="brand">GASTRO-OS
+  <a href="dashboard.html" class="btn-dashboard">← Zurück zum Dashboard</a>
+</div><a href="modul11-uebersicht.html" class="back-btn">← Modulübersicht</a></div>
 <div class="gold-bar"></div>
 <div class="main">
-  <div class="page-tag">Modul 11 · Lektion 2</div>
-  <div class="page-title">Zeit für Familie und Freizeit</div>
-  <div class="page-welcome">
-    <strong>Willkommen in Lektion 2</strong><br><br>
-    In Lektion 1 haben wir uns angeschaut was Dauerstress in der Gastronomie wirklich ist, wie er entsteht und welche drei Hebel ihn direkt reduzieren. Du hast einen konkreten ersten Schritt gewählt und aufgeschrieben. Das war keine kleine Sache. Die meisten Gastronomen denken jahrelang darüber nach ohne etwas zu ändern.<br><br>
-    Jetzt gehen wir tiefer. Denn weniger Stress im Betrieb ist nur die halbe Gleichung. Die andere Hälfte ist mehr Leben außerhalb des Betriebs. Zeit für die Menschen die dir wichtig sind. Zeit für dich. Zeit für Dinge die nichts mit Gastronomie zu tun haben.<br><br>
-    In Lektion 2 schauen wir uns an wie du diese Zeit aktiv schaffst. Nicht hoffst dass sie irgendwann übrig bleibt. Aktiv schaffst. Mit denselben Methoden mit denen du deinen Betrieb organisierst.
+  <div class="lektion-hero">
+    <div class="lektion-tag">Modul 11 · Lektion 2</div>
+    <div class="lektion-title">Zeit für Familie und Freizeit</div>
+    <p class="lektion-intro-text">Willkommen in Lektion 2 In Lektion 1 haben wir uns angeschaut was Dauerstress in der Gastronomie wirklich ist, wie er entsteht und welche drei Hebel ihn direkt reduzieren. Du hast einen konkreten ersten Schritt gewählt und aufgeschrieben. Das war keine kleine Sache. Die meisten Gastronomen denken ja</p>
   </div>
 
   <div class="chapter">
