@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>So nutzt du das Standort Analyse Tool | GASTRO-OS</title>
+<style>* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
+.header{background:#1a2a4a;padding:14px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
+.brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
+.btn-back{background:#d4af37;color:#1a2a4a;border:none;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.2s;box-shadow:0 2px 6px rgba(212,175,55,0.3)}
+.btn-back:hover{background:#c8a030}
+.gold-bar{height:3px;background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a)}
+.wrap{max-width:760px;margin:40px auto;padding:0 24px 60px}
+.hero{background:#1a2a4a;border-radius:12px;padding:28px 32px;margin-bottom:32px;border:2px solid #d4af37}
+.hero .tag{font-size:11px;color:#d4af37;letter-spacing:2px;text-transform:uppercase;font-weight:600;margin-bottom:10px}
+.hero h1{font-family:Georgia,serif;font-size:24px;color:#fff;font-weight:normal;margin-bottom:8px}
+.hero p{font-size:14px;color:#a0b0c8;line-height:1.7}
+.step{background:#fff;border:1px solid #e8dfc8;border-radius:10px;padding:24px 28px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,0.04)}
+.step-num{display:inline-flex;align-items:center;justify-content:center;background:#1a2a4a;color:#d4af37;font-size:13px;font-weight:700;width:32px;height:32px;border-radius:50%;flex-shrink:0}
+.step h2{font-family:Georgia,serif;font-size:17px;color:#1a2a4a;font-weight:normal;margin-bottom:10px;display:flex;align-items:center;gap:12px}
+.step p{font-size:14px;color:#3a4a6a;line-height:1.8;margin-bottom:12px}
+.step p:last-child{margin-bottom:0}
+.mockup{background:#f0ece4;border:2px solid #d4af37;border-radius:10px;overflow:hidden;margin:16px 0;box-shadow:0 3px 12px rgba(0,0,0,0.1)}
+.mockup-bar{background:#1a2a4a;padding:8px 16px;display:flex;align-items:center;justify-content:space-between}
+.mockup-bar span{font-size:11px;color:#a0b0c8;letter-spacing:1px}
+.mockup-bar .gold{color:#d4af37}
+.mockup-inner{padding:16px 20px}
+.mock-actions{display:flex;gap:8px;margin-bottom:16px;padding-bottom:14px;border-bottom:2px solid #e8dfc8}
+.mock-btn{padding:7px 14px;border-radius:5px;font-size:12px;font-weight:600}
+.mock-btn-save{background:#1a2a4a;color:#d4af37}
+.mock-btn-print{background:#a09060;color:#fff}
+.mock-btn-reset{background:transparent;border:1.5px solid #c0b090;color:#8070a0}
+.mock-label{font-size:10px;color:#d4af37;letter-spacing:2px;text-transform:uppercase;font-weight:600;margin-bottom:4px}
+.mock-title{font-family:Georgia,serif;font-size:15px;color:#1a2a4a;font-weight:700;margin-bottom:2px}
+.mock-section{background:#f8f6f2;border:1px solid #e8dfc8;border-radius:7px;padding:12px 16px;margin-bottom:10px}
+.mock-section-head{background:#1a2a4a;color:#d4af37;font-size:11px;font-weight:700;padding:7px 14px;border-radius:5px;margin-bottom:10px;letter-spacing:0.5px}
+.mock-field-row{display:grid;gap:8px;margin-bottom:8px}
+.mock-field{background:#fff;border:1px solid #e0d8c8;border-radius:5px;padding:7px 10px}
+.mock-field label{font-size:10px;color:#8090a8;display:block;margin-bottom:3px}
+.mock-bar{background:#eee;border-radius:3px;height:14px;width:80%}
+.mock-bar.filled{background:#d4af37;opacity:0.5;width:60%}
+.mock-row{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#fff;border:1px solid #e8dfc8;border-radius:5px;margin-bottom:6px;font-size:12px;color:#3a4a6a}
+.mock-row.highlight{border-color:#d4af37;background:#fffdf0;font-weight:600}
+.mock-badge{background:#1a2a4a;color:#d4af37;font-size:10px;font-weight:700;padding:3px 8px;border-radius:10px}
+.mock-badge-gold{background:#d4af37;color:#1a2a4a;font-size:10px;font-weight:700;padding:3px 8px;border-radius:10px}
+.mock-table{width:100%;border-collapse:collapse;font-size:11px}
+.mock-table th{background:#1a2a4a;color:#d4af37;padding:7px 10px;text-align:left}
+.mock-table td{padding:7px 10px;border-bottom:1px solid #e8dfc8;color:#3a4a6a}
+.mock-input{background:#f0ece4;border:1px solid #e0d8c8;border-radius:4px;width:70px;height:20px;display:inline-block}
+.mock-textarea{background:#f0ece4;border:1px solid #e0d8c8;border-radius:4px;width:100%;height:36px;display:block;margin-top:4px}
+.mock-result{background:#1a2a4a;border-radius:8px;padding:14px 20px;text-align:center;margin-top:10px}
+.mock-result-num{font-size:28px;color:#d4af37;font-weight:700;font-family:Georgia,serif}
+.mock-result-label{font-size:10px;color:#a0b0c8;margin-top:4px}
+.mock-result-type{font-size:13px;color:#fff;font-weight:600;margin-top:6px}
+.mock-select{background:#f0ece4;border:1px solid #e0d8c8;border-radius:4px;padding:5px 10px;font-size:11px;color:#3a4a6a;width:140px}
+.highlight{background:#fff8e8;border-left:4px solid #d4af37;padding:14px 18px;border-radius:0 8px 8px 0;font-size:14px;color:#5a4000;line-height:1.7;margin:16px 0}
+.arrow-hint{display:flex;align-items:center;gap:10px;background:#f0ece4;border-radius:8px;padding:10px 16px;margin:10px 0;font-size:13px;color:#5060a0}
+.arrow-hint .arr{font-size:18px;color:#d4af37}
+.nav-row{display:flex;gap:12px;justify-content:space-between;margin-top:40px}
+.nav-btn{background:#1a2a4a;color:#d4af37;border:none;padding:12px 24px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;transition:all 0.2s}
+.nav-btn:hover{background:#d4af37;color:#1a2a4a}
+.nav-btn.secondary{background:transparent;border:1px solid rgba(26,42,74,0.3);color:#1a2a4a}
+.nav-btn.secondary:hover{background:#1a2a4a;color:#d4af37}
+.footer-lbl{margin-top:48px;padding-top:20px;border-top:2px solid #e8dfc8;font-size:11px;color:#8090a8;letter-spacing:1px}
+.footer-lbl strong{color:#d4af37}
+.footer-main{background:#1a2a4a;margin-top:60px;padding:14px 40px;text-align:center;font-size:11px;color:#8090a8;letter-spacing:1px}
+.footer-main strong{color:#d4af37}</style>
+</head>
+<body>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function(){
+  document.addEventListener('contextmenu',function(e){e.preventDefault();});
+  document.addEventListener('keydown',function(e){
+    if(e.ctrlKey&&['s','u','p','a'].includes(e.key.toLowerCase()))e.preventDefault();
+    if(e.key==='F12')e.preventDefault();
+  });
+  const sb=supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3');
+  (async function(){
+    const{data:{session}}=await sb.auth.getSession();
+    if(!session){window.location.href='login.html';return;}
+    const{data:p}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
+    if(p&&(!p.is_active||p.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
+  })();
+})();
+</script>
+<div class="header">
+  <div class="brand">GASTRO-OS</div>
+  <a href="dashboard.html" class="btn-back">← Zurück zum Dashboard</a>
+</div>
+<div class="gold-bar"></div>
+<div class="wrap">
+  <div class="hero">
+    <div class="tag">Modul 10 · Anleitung</div>
+    <h1>📸 So nutzt du das Standort Analyse Tool</h1>
+    <p>Das Standort Analyse Tool hilft dir eine fundierte Entscheidung für oder gegen einen neuen Standort zu treffen. Kein Bauchgefühl — sondern strukturierte Analyse.</p>
+  </div>
+  
+  <div class="step">
+    <h2><span class="step-num">1</span> Standort-Grunddaten eintragen</h2>
+    <p>Trage alle relevanten Grunddaten zum potenziellen Standort ein — Adresse, Größe, Mietpreis und Lage.</p>
+    <div class="mockup">
+      <div class="mockup-bar"><span>Schritt 1 — Standort</span><span class="gold"></span></div>
+      <div class="mockup-inner"><div class="mock-section"><div class="mock-section-head">📍 Grunddaten</div><div class="mock-field"><label>Adresse / Ort</label><div class="mock-bar filled"></div></div><div class="mock-field"><label>Fläche m²</label><div class="mock-bar"></div></div><div class="mock-field"><label>Monatliche Miete €</label><div class="mock-bar"></div></div><div class="mock-field"><label>Lage (Innenstadt / Gewerbe / Wohngebiet)</label><div class="mock-bar"></div></div></div></div>
+    </div>
+    <div class="arrow-hint"><span class="arr">💡</span> Besorge dir die genauen Mietkonditionen schriftlich — Nettomiete, Nebenkosten und Mietdauer.</div>
+  </div>
+  <div class="step">
+    <h2><span class="step-num">2</span> Markt & Wettbewerb analysieren</h2>
+    <p>Trage ein wie viele potenzielle Gäste im Einzugsgebiet wohnen und wie stark der Wettbewerb ist.</p>
+    <div class="mockup">
+      <div class="mockup-bar"><span>Schritt 2 — Markt</span><span class="gold"></span></div>
+      <div class="mockup-inner"><div class="mock-row"><span>Einwohner im Radius 1km</span><span class="mock-badge-gold">12.400</span></div><div class="mock-row highlight"><span>Direkte Konkurrenten in der Nähe</span><span class="mock-badge-gold">3 Betriebe</span></div><div class="mock-row"><span>Laufkundschaft (täglich geschätzt)</span><span class="mock-badge-gold">200–300 Personen</span></div><div class="mock-row"><span>Parkplätze verfügbar?</span><span class="mock-badge-gold">✅ 12 Parkplätze</span></div><div class="mock-row"><span>ÖPNV-Anbindung?</span><span class="mock-badge-gold">✅ Bus hält direkt vor der Tür</span></div></div>
+    </div>
+    <div class="arrow-hint"><span class="arr">💡</span> Gehe den Standort zu verschiedenen Tageszeiten persönlich besuchen — Zahlen allein lügen manchmal.</div>
+  </div>
+  <div class="step">
+    <h2><span class="step-num">3</span> Wirtschaftlichkeit berechnen</h2>
+    <p>Das Tool berechnet ob sich der Standort rechnet — Break-Even, nötiger Umsatz und Rentabilitätszeitraum.</p>
+    <div class="mockup">
+      <div class="mockup-bar"><span>Schritt 3 — Wirtschaftlichkeit</span><span class="gold"></span></div>
+      <div class="mockup-inner"><div class="mock-result">
+        <div class="mock-result-num">18 Monate</div>
+        <div class="mock-result-label">Break-Even Zeitraum</div>
+        <div class="mock-result-type">⚠️ Prüfe ob das realistisch ist</div>
+      </div><div class="mock-row"><span>Nötiger Monatsumsatz</span><span class="mock-badge-gold">42.000 € / Monat</span></div><div class="mock-row"><span>Geschätzter Umsatz Monat 1</span><span class="mock-badge-gold">28.000 €</span></div><div class="mock-row highlight"><span>Investitionssumme gesamt</span><span class="mock-badge-gold">85.000 €</span></div></div>
+    </div>
+    <div class="arrow-hint"><span class="arr">💡</span> <strong>Faustregel:</strong> Der nötige Monatsumsatz sollte in deiner Branche und Lage realistisch erreichbar sein. Wenn er über dem Marktdurchschnitt liegt — kritisch prüfen.</div>
+  </div>
+  <div class="step">
+    <h2><span class="step-num">4</span> Gesamtbewertung & Entscheidung</h2>
+    <p>Das Tool gibt dir eine Gesamtbewertung und Empfehlung. Die finale Entscheidung triffst du — aber auf Basis von Fakten.</p>
+    <div class="mockup">
+      <div class="mockup-bar"><span>Schritt 4 — Entscheidung</span><span class="gold"></span></div>
+      <div class="mockup-inner"><div class="mock-actions">
+        <div class="mock-btn mock-btn-save">💾 Speichern</div>
+        <div class="mock-btn mock-btn-print">🖨️ Drucken / PDF</div>
+        <div class="mock-btn mock-btn-reset">↺ Neu starten</div>
+      </div><div class="mock-result">
+        <div class="mock-result-num">67/100</div>
+        <div class="mock-result-label">Standort-Score</div>
+        <div class="mock-result-type">🟡 Potenzial vorhanden — sorgfältig prüfen</div>
+      </div><div class="mock-row"><span>Stärken: Lage, Laufkundschaft, ÖPNV</span><span class="mock-badge-gold">✅</span></div><div class="mock-row highlight"><span>Risiken: Hohe Miete, starker Wettbewerb</span><span class="mock-badge-gold">⚠️</span></div></div>
+    </div>
+    
+  </div>
+  <div class="nav-row">
+    <a href="modul10-uebersicht.html" class="nav-btn secondary">← Modul 10 Übersicht</a>
+    <a href="modul10-tool.html" class="nav-btn">📊 Zum Standort Analyse Tool →</a>
+  </div>
+  <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
+</div>
+<div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+</body>
+</html>
