@@ -3,107 +3,84 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lektion 4 – Vom Plan zur Umsetzung | GASTRO-OS</title>
+<title>GASTRO-OS – Modul 11 | Lektion 4</title>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
 .header{background:#1a2a4a;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
 .brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
-.back-btn { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; cursor:pointer; text-decoration:none; transition:all 0.2s; }
-.back-btn:hover { border-color:#d4af37; color:#d4af37; }
+.btn-back-modul{background:#d4af37;color:#1a2a4a;border:none;padding:9px 20px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.2s;letter-spacing:0.3px}
+.btn-back-modul:hover{background:#c8a030;color:#1a2a4a}
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
-.main { max-width:760px; margin:36px auto; padding:0 24px 60px; }
-.page-tag { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; margin-bottom:8px; }
-.page-title { font-family:Georgia,serif; font-size:26px; color:#1a2a4a; margin-bottom:6px; }
-.page-welcome { font-size:13px; color:#8090a8; margin-bottom:32px; padding-bottom:20px; border-bottom:1px solid #e8dfc8; line-height:1.8; }
-.chapter { margin-bottom:40px; }
-.chapter-title { font-family:Georgia,serif; font-size:18px; color:#1a2a4a; margin-bottom:18px; padding:12px 18px; background:#fff; border-left:4px solid #d4af37; border-radius:0 8px 8px 0; box-shadow:0 1px 6px rgba(0,0,0,0.05); }
-p { font-size:14px; line-height:1.9; color:#2a3a4a; margin-bottom:16px; }
-.wochen-list { display:flex; flex-direction:column; gap:14px; margin:20px 0; }
-.woche-item { background:#fff; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; display:flex; gap:16px; }
-.woche-num { background:#1a2a4a; color:#d4af37; width:36px; height:36px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-family:Georgia,serif; font-size:14px; font-weight:700; flex-shrink:0; }
-.woche-text strong { display:block; font-size:14px; color:#1a2a4a; margin-bottom:5px; }
-.woche-text span { font-size:13px; color:#4a5a6a; line-height:1.7; }
-.aufgabe-box { background:#fff; border:1px solid #d4af37; border-radius:10px; padding:20px 24px; margin:28px 0; }
-.aufgabe-box .aufgabe-title { font-size:12px; font-weight:700; color:#d4af37; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:10px; }
-.aufgabe-box p { font-size:13px; color:#2a3a4a; margin-bottom:0; line-height:1.8; }
-.hint-box { background:#e8f4fd; border:1px solid #b0d4f0; border-radius:8px; padding:14px 18px; margin:20px 0; font-size:13px; color:#1a3a5a; line-height:1.8; }
-.hint-box a { color:#1a6aaa; text-decoration:none; font-weight:600; }
-.closing-box { background:#1a2a4a; border-radius:10px; padding:24px 28px; margin-top:28px; }
-.closing-box p { color:#c0cce0; font-size:14px; line-height:1.8; margin-bottom:8px; }
-.closing-box p:last-child { margin-bottom:0; }
-.closing-box a { color:#d4af37; font-weight:600; }
-.nav-row { display:flex; gap:12px; justify-content:space-between; margin-top:36px; }
+.wrap { max-width:720px; margin:40px auto; padding:0 24px 60px; }
+.lbl { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:8px; }
+h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:10px; line-height:1.3; }
+.lektion-hero { background:#1a2a4a; border-radius:12px; padding:28px 32px; margin-bottom:28px; border:2px solid #d4af37; }
+.lektion-hero .lektion-tag { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:10px; }
+.lektion-hero h1 { font-family:Georgia,serif; font-size:26px; color:#fff; margin-bottom:0; font-weight:normal; line-height:1.3; }
+.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:20px 0 32px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:normal; margin:36px 0 14px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
+h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:24px 0 10px; }
+p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
+ul, ol { margin:12px 0 16px 20px; }
+li { font-size:15px; line-height:1.8; color:#2a3a54; margin-bottom:6px; }
+.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin-top:24px; }
+.aufgabe-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
+.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; }
+.highlight { background:#fff8e8; border-left:3px solid #d4af37; padding:14px 18px; margin:20px 0; font-size:14px; color:#5a4000; line-height:1.7; }
+.nav-row { display:flex; gap:12px; justify-content:space-between; margin-top:40px; }
 .nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:12px 24px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none; transition:all 0.2s; }
 .nav-btn:hover { background:#d4af37; color:#1a2a4a; }
 .nav-btn.secondary { background:transparent; border:1px solid rgba(26,42,74,0.3); color:#1a2a4a; }
 .nav-btn.secondary:hover { background:#1a2a4a; color:#d4af37; }
-.footer { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
-.footer strong { color:#d4af37; }
-
-.btn-dashboard {
-  background: transparent;
-  border: 1px solid rgba(212,175,55,0.4);
-  color: #a0b0c8;
-  padding: 7px 16px;
-  border-radius: 6px;
-  font-size: 12px;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-block;
-  transition: all 0.2s;
-}
-.btn-dashboard:hover { border-color: #d4af37; color: #d4af37; }
-.lektion-hero {
-  background: #1a2a4a;
-  border-radius: 12px;
-  padding: 28px 32px;
-  margin-bottom: 28px;
-  border: 2px solid #d4af37;
-}
-.lektion-hero .lektion-tag {
-  font-size: 11px;
-  color: #d4af37;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  font-weight: 600;
-  margin-bottom: 10px;
-}
-.lektion-hero h1, .lektion-hero .lektion-title {
-  font-family: Georgia, serif;
-  font-size: 26px;
-  color: #fff;
-  margin-bottom: 12px;
-  font-weight: normal;
-  line-height: 1.3;
-}
-.lektion-hero .lektion-intro-text {
-  font-size: 14px;
-  color: #a0b0c8;
-  line-height: 1.7;
-  margin-bottom: 0;
-}
-
-.btn-back-modul {
-  background: #d4af37;
-  color: #1a2a4a;
-  border: none;
-  padding: 9px 20px;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-block;
-  transition: all 0.2s;
-  letter-spacing: 0.3px;
-}
-.btn-back-modul:hover { background: #c8a030; color: #1a2a4a; }
-
+.footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-lbl strong { color:#d4af37; }
+.footer-main { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-main strong { color:#d4af37; }
+@media (max-width:600px) { .wrap{padding:0 16px 40px} h1{font-size:22px} h2{font-size:17px} }
 </style>
 </head>
 <body>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function(){
+  document.addEventListener('contextmenu',function(e){e.preventDefault();});
+  document.addEventListener('keydown',function(e){
+    if(e.ctrlKey&&['s','u','p','a'].includes(e.key.toLowerCase()))e.preventDefault();
+    if(e.key==='F12')e.preventDefault();
+  });
+  const sb=supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3');
+  (async function(){
+    const{data:{session}}=await sb.auth.getSession();
+    if(!session){window.location.href='login.html';return;}
+    const{data:profile}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
+    if(profile&&(!profile.is_active||profile.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
+  })();
+})();
+</script>
+<div class="header">
+  <div class="brand">GASTRO-OS</div>
+  <a href="modul11-uebersicht.html" class="btn-back-modul">← Zurück zu Modul 11</a>
+</div>
+<div class="gold-bar"></div>
+
+<div class="wrap">
+  <div class="lbl">Modul 11 · Lektion 4</div>
+  <div class="lektion-hero">
+    <div class="lektion-tag">Modul 11 · Lektion 4</div>
+    <h1>Vom Plan zur Umsetzung</h1>
+  </div>
+  <div class="intro">Willkommen in Lektion 4 In Lektion 3 haben wir uns angeschaut was ein Unternehmer Rhythmus ist, auf welchen vier Säulen er steht und wie du ihn Schritt für Schritt aufbaust und schützt. Du hast deinen ersten konkreten Schritt definiert und deine Minimal Version des Rhythmus festgelegt. Das ist kein</div>
+
+
+
+  <div class="nav-row">
+    <a href="modul11-lektion3.html" class="nav-btn secondary">← Lektion 3</a>
+    <a href="modul11-podcast.html" class="nav-btn">Weiter zum Küchenfunk →</a>
+  </div>
+  <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
+</div>
+<div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
 <script>
 (function(){
   // Rechtsklick & Tastenkürzel sperren
@@ -131,100 +108,5 @@ p { font-size:14px; line-height:1.9; color:#2a3a4a; margin-bottom:16px; }
   })();
 })();
 </script>
-<div class="header">
-  <div class="brand">GASTRO-OS</div>
-  <a href="modul11-uebersicht.html" class="btn-back-modul">← Zurück zu Modul 11</a>
-</div>
-<div class="gold-bar"></div>
-<div class="main">
-  <div class="lektion-hero">
-    <div class="lektion-tag">Modul 11 · Lektion 4</div>
-    <div class="lektion-title">Vom Plan zur Umsetzung</div>
-    <p class="lektion-intro-text">Willkommen in Lektion 4 In Lektion 3 haben wir uns angeschaut was ein Unternehmer Rhythmus ist, auf welchen vier Säulen er steht und wie du ihn Schritt für Schritt aufbaust und schützt. Du hast deinen ersten konkreten Schritt definiert und deine Minimal Version des Rhythmus festgelegt. Das ist kein </p>
-  </div>
-
-  <div class="chapter">
-    <div class="chapter-title">Kapitel 1: Wo stehst du heute im Vergleich zu Modul 1</div>
-    <p><strong>Die Reise die du hinter dir hast</strong></p>
-    <p>Elf Module. Zahlen, Prozesse, Team, Kosten, Marketing, Upselling, Wachstum, Lebensqualität. Jedes Modul hat dir ein Werkzeug gegeben. Jedes Modul hat dich als Unternehmer ein Stück weitergebracht.</p>
-    <p>Aber Fortschritt ist schwer zu sehen wenn man mittendrin ist. Der tägliche Betrieb absorbiert die Aufmerksamkeit. Die kleinen Verbesserungen die sich über Wochen und Monate aufgebaut haben, werden zur neuen Normalität. Und irgendwann fragt man sich ob sich wirklich etwas verändert hat.</p>
-    <p>Die Antwort ist fast immer ja. Aber sie braucht einen Spiegel. Einen Vergleich zwischen dem wo du in Modul 1 warst und dem wo du heute bist. Genau das macht die Monats Reflexion und das Sterne Level System sichtbar.</p>
-    <p><strong>Was sich verändert haben sollte</strong></p>
-    <p>Wenn du Gastro OS konsequent durchgearbeitet und die Werkzeuge wirklich genutzt hast, sollten sich konkrete Dinge verändert haben.</p>
-    <p>Deine Zahlen sollten transparenter sein. Du weißt heute was dein Wareneinsatz ist, was deine Personalkosten sind und wo deine Marge liegt. Nicht einmal im Jahr wenn der Steuerberater kommt. Regelmäßig, wöchentlich oder monatlich.</p>
-    <p>Dein Betrieb sollte selbständiger laufen. Du wirst weniger oft gerufen. Das Team trifft mehr Entscheidungen selbst. Der Schichtleiter trägt echte Verantwortung. Abläufe sind dokumentiert und funktionieren auch ohne dich.</p>
-    <p>Dein Team sollte klarer strukturiert sein. Rollenbeschreibungen existieren. Feedback Gespräche finden statt. Die Kommunikation ist klarer und die Fragen an dich sind weniger geworden.</p>
-    <p>Deine Kosten sollten unter besserer Kontrolle sein. Du weißt wo Energie verschwendet wird. Die Warenabgangsliste läuft. Portionsstandards sind definiert. Der Gastro Effizienz Check findet monatlich statt.</p>
-    <p>Dein Marketing sollte regelmäßiger laufen. Google Profil ist aktuell. Bewertungen werden aktiv gesammelt und beantwortet. Der 15 Minuten Marketingplan strukturiert deine Social Media Aktivitäten.</p>
-    <p>Und du als Mensch solltest mehr Zeit haben. Nicht unbedingt viel mehr. Aber bewusst mehr. Mit klaren Grenzen, einem Rhythmus der dir gehört und dem Gefühl mehr Kontrolle über dein Leben zu haben.</p>
-    <p><strong>Was wenn nicht alles umgesetzt wurde</strong></p>
-    <p>Kein Gastronom setzt alles sofort um. Das ist keine Schwäche. Das ist die Realität eines vollen Betriebs. Nicht jedes Modul trifft jeden Betrieb gleich stark. Nicht jedes Werkzeug ist sofort anwendbar.</p>
-    <p>Das ist kein Problem. Gastro OS ist kein Kurs den du einmal durchmachst und dann abhakst. Es ist ein System das du immer wieder nutzt und das kontinuierlich wächst. Die Lektionen bleiben. Die Tools bleiben. Du kannst jederzeit zurückgehen und das angehen was beim ersten Durchlauf liegengeblieben ist. Und neue Inhalte kommen regelmäßig dazu.</p>
-    <p>Was zählt ist nicht Perfektion. Was zählt ist Richtung. Bewegst du dich in die richtige Richtung. Bist du heute als Unternehmer einen Schritt weiter als vor elf Modulen. Wenn ja, dann arbeitet das System für dich. Und das ist erst der Anfang.</p>
-    <div class="aufgabe-box">
-      <div class="aufgabe-title">✏️ Deine Aufgabe für Kapitel 1</div>
-      <p>Schreib jetzt auf welche drei Dinge sich in deinem Betrieb und in deinem Leben seit Modul 1 am deutlichsten verändert haben. Konkret. Nicht allgemein. Und schreib auf welche drei Bereiche noch am meisten Aufmerksamkeit brauchen. Diese sechs Punkte sind dein persönlicher Fortschrittsbericht. Und sie sind die Grundlage für das Sterne Level System das du danach ausfüllst.</p>
-    </div>
-  </div>
-
-  <div class="chapter">
-    <div class="chapter-title">Kapitel 2: Dein 30 Tage Aktionsplan für Freiheit und Lebensqualität</div>
-    <p><strong>Warum dieser Aktionsplan anders ist</strong></p>
-    <p>Die 30 Tage Aktionspläne der vorherigen Module haben sich auf den Betrieb konzentriert. Prozesse, Zahlen, Team, Marketing. Dieser Aktionsplan ist anders. Er konzentriert sich auf dich. Nicht auf den Betrieb als abstraktes System. Sondern auf dich als Mensch der einen Betrieb führt. Auf deine Zeit, deine Energie, deine Beziehungen, deine Lebensqualität. Denn das ist letztendlich der Grund warum du all die anderen Aktionspläne umgesetzt hast.</p>
-
-    <div class="wochen-list">
-      <div class="woche-item">
-        <div class="woche-num">1</div>
-        <div class="woche-text">
-          <strong>Woche 1 — Bestandsaufnahme und erste Grenzen</strong>
-          <span>In der ersten Woche machst du eine ehrliche Bestandsaufnahme deiner aktuellen Situation. Wie viele Stunden arbeitest du wirklich. Wann hast du zuletzt wirklich abgeschaltet. Was vermisst du am meisten außerhalb des Betriebs. Danach setzt du deine erste Grenze. Konkret und kommuniziert. Eine Grenze. Kommuniziert. Eingehalten.</span>
-        </div>
-      </div>
-      <div class="woche-item">
-        <div class="woche-num">2</div>
-        <div class="woche-text">
-          <strong>Woche 2 — Rhythmus aufbauen</strong>
-          <span>In der zweiten Woche baust du deinen Wochenrhythmus auf. Du nimmst das Idealbild aus Lektion 3 und überträgst was heute möglich ist in deinen Kalender. Unternehmer Zeit, persönliche Zeit, Erholungszeit. Alle drei kommen in den Kalender. Mit konkreten Zeiten. Mit konkreten Verantwortlichkeiten für den Betrieb in dieser Zeit. Und du füllst die Monats Reflexion für den laufenden Monat aus. Zum ersten Mal. Als Ausgangspunkt für alle folgenden Monate.</span>
-        </div>
-      </div>
-      <div class="woche-item">
-        <div class="woche-num">3</div>
-        <div class="woche-text">
-          <strong>Woche 3 — Rhythmus leben</strong>
-          <span>In der dritten Woche lebst du deinen Rhythmus. Nicht perfekt. Aber konsequent. Du hältst deine Grenzen auch wenn es Situationen gibt die eine Ausnahme zu rechtfertigen scheinen. Du füllst in dieser Woche außerdem das Sterne Level System zum ersten Mal aus. Es zeigt dir auf einen Blick wo du heute stehst. In allen Bereichen von Gastro OS. Und es gibt dir einen Vergleichspunkt für das nächste Quartal.</span>
-        </div>
-      </div>
-      <div class="woche-item">
-        <div class="woche-num">4</div>
-        <div class="woche-text">
-          <strong>Woche 4 — Reflektieren und verankern</strong>
-          <span>In der vierten Woche reflektierst du die ersten drei Wochen. Was hat funktioniert. Was war schwierig. Was muss angepasst werden. Diese Reflexion dauert 20 Minuten und ist die Grundlage für deinen Rhythmus der nächsten Monate. Dann verankerst du was funktioniert hat als feste Routine. Die Grenze die du in Woche 1 gesetzt hast. Die Zeiten die du in Woche 2 blockiert hast. Die Monats Reflexion am Ende jedes Monats. Das Sterne Level System einmal pro Quartal.</span>
-        </div>
-      </div>
-    </div>
-
-    <p><strong>Gastro OS wächst mit dir</strong></p>
-    <p>Gastro OS ist kein statisches System. Es wächst kontinuierlich. Neue Inhalte, neue Tools, neue Themen die Gastronomen wirklich bewegen. Weil sich die Gastronomie verändert. Weil sich dein Betrieb verändert. Und weil es immer neue Fragen gibt die Antworten brauchen.</p>
-    <p>Wenn es Themen gibt die du dir für neue Inhalte wünschst, Bereiche die du gerne tiefer behandelt hättest oder Fragen die noch offen sind, schreib uns. Wir lesen jede Nachricht und nehmen jedes Feedback ernst. Denn Gastro OS wird besser durch die Menschen die es nutzen.</p>
-
-    <div class="closing-box">
-      <p>👉 Dein Feedback ist willkommen: <a href="mailto:gastro.os.info@gmail.com">gastro.os.info@gmail.com</a></p>
-      <p>👉 Die Monats Reflexion findest du im Tab <a href="modul11-reflexion.html">📊 Monats Reflexion</a>.</p>
-      <p>👉 Das Sterne Level System findest du im Tab <a href="modul11-sterne.html">📊 Sterne Level System</a>.</p>
-    </div>
-
-    <div class="aufgabe-box">
-      <div class="aufgabe-title">✏️ Deine Aufgabe für Kapitel 2</div>
-      <p>Schreib deinen persönlichen 30 Tage Plan auf. Woche 1, welche eine Grenze setzt du und wie kommunizierst du sie. Woche 2, welche Zeiten blockierst du und wer übernimmt den Betrieb in dieser Zeit. Woche 3, wann füllst du das Sterne Level System aus und mit wem besprichst du die Ergebnisse. Woche 4, was verankerst du als dauerhafte Routine und wie stellst du sicher dass du sie auch in stressigen Monaten nicht aufgibst.</p>
-    </div>
-  </div>
-
-  <div class="nav-row">
-    <a href="modul11-lektion3.html" class="nav-btn secondary">← Lektion 3</a>
-    <a href="modul11-podcast.html" class="nav-btn">Weiter zum Küchenfunk →</a>
-  </div>
-</div>
-<div class="gold-bar"></div>
-<div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
 </body>
 </html>

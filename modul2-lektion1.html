@@ -3,79 +3,101 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lektion 1 — Die Karte als Umsatzmaschine | GASTRO-OS</title>
+<title>GASTRO-OS – Modul 2 | Lektion 1</title>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
 .header{background:#1a2a4a;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
 .brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
-.back-btn { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; text-decoration:none; display:inline-block; transition:all 0.2s; }
-.back-btn:hover { border-color:#d4af37; color:#d4af37; }
+.btn-back-modul{background:#d4af37;color:#1a2a4a;border:none;padding:9px 20px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.2s;letter-spacing:0.3px}
+.btn-back-modul:hover{background:#c8a030;color:#1a2a4a}
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
 .wrap { max-width:720px; margin:40px auto; padding:0 24px 60px; }
 .lbl { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:8px; }
 h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:10px; line-height:1.3; }
+.lektion-hero { background:#1a2a4a; border-radius:12px; padding:28px 32px; margin-bottom:28px; border:2px solid #d4af37; }
+.lektion-hero .lektion-tag { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:10px; }
+.lektion-hero h1 { font-family:Georgia,serif; font-size:26px; color:#fff; margin-bottom:0; font-weight:normal; line-height:1.3; }
 .intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:20px 0 32px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
 h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:normal; margin:36px 0 14px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
 h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:24px 0 10px; }
 p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
+ul, ol { margin:12px 0 16px 20px; }
+li { font-size:15px; line-height:1.8; color:#2a3a54; margin-bottom:6px; }
 .aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin-top:24px; }
 .aufgabe-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
 .aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; }
+.highlight { background:#fff8e8; border-left:3px solid #d4af37; padding:14px 18px; margin:20px 0; font-size:14px; color:#5a4000; line-height:1.7; }
+.nav-row { display:flex; gap:12px; justify-content:space-between; margin-top:40px; }
+.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:12px 24px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none; transition:all 0.2s; }
+.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
+.nav-btn.secondary { background:transparent; border:1px solid rgba(26,42,74,0.3); color:#1a2a4a; }
+.nav-btn.secondary:hover { background:#1a2a4a; color:#d4af37; }
 .footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-lbl strong { color:#d4af37; }
 .footer-main { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-main strong { color:#d4af37; }
-.lektion-hero {
-  background: #1a2a4a;
-  border-radius: 12px;
-  padding: 28px 32px;
-  margin-bottom: 28px;
-  border: 2px solid #d4af37;
-}
-.lektion-hero .lektion-tag {
-  font-size: 11px;
-  color: #d4af37;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  font-weight: 600;
-  margin-bottom: 10px;
-}
-.lektion-hero h1 {
-  font-family: Georgia, serif;
-  font-size: 26px;
-  color: #fff;
-  margin-bottom: 12px;
-  font-weight: normal;
-  line-height: 1.3;
-}
-.lektion-hero .lektion-intro-text {
-  font-size: 14px;
-  color: #a0b0c8;
-  line-height: 1.7;
-  margin-bottom: 0;
-}
-
-.btn-back-modul {
-  background: #d4af37;
-  color: #1a2a4a;
-  border: none;
-  padding: 9px 20px;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-block;
-  transition: all 0.2s;
-  letter-spacing: 0.3px;
-}
-.btn-back-modul:hover { background: #c8a030; color: #1a2a4a; }
-
+@media (max-width:600px) { .wrap{padding:0 16px 40px} h1{font-size:22px} h2{font-size:17px} }
 </style>
 </head>
 <body>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function(){
+  document.addEventListener('contextmenu',function(e){e.preventDefault();});
+  document.addEventListener('keydown',function(e){
+    if(e.ctrlKey&&['s','u','p','a'].includes(e.key.toLowerCase()))e.preventDefault();
+    if(e.key==='F12')e.preventDefault();
+  });
+  const sb=supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3');
+  (async function(){
+    const{data:{session}}=await sb.auth.getSession();
+    if(!session){window.location.href='login.html';return;}
+    const{data:profile}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
+    if(profile&&(!profile.is_active||profile.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
+  })();
+})();
+</script>
+<div class="header">
+  <div class="brand">GASTRO-OS</div>
+  <a href="modul2-uebersicht.html" class="btn-back-modul">← Zurück zu Modul 2</a>
+</div>
+<div class="gold-bar"></div>
+
+<div class="wrap">
+  <div class="lbl">Modul 2 · Lektion 1</div>
+  <div class="lektion-hero">
+    <div class="lektion-tag">Modul 2 · Lektion 1</div>
+    <h1>Die Karte als Umsatzmaschine</h1>
+  </div>
+  <div class="intro">In diesem Modul dreht sich alles um deine Speisekarte. Nicht darum wie sie aussieht oder was draufsteht, sondern darum wie sie für dich arbeitet. Diese Lektion legt das Fundament für alles was folgt. Nimm dir Zeit, lies es in Ruhe durch und sei ehrlich mit dir selbst.</div>
+
+<h2>Kapitel 1 — Die Karte als Umsatzmaschine</h2>
+  <p>Stell dir vor du öffnest eine Speisekarte in einem Restaurant. Du siehst dreißig Gerichte. Vorspeisen, Hauptgänge, Desserts, Sonderwünsche, Tageskarte, Kinderkarte. Du blätterst. Du liest. Du kannst dich nicht entscheiden und bestellst am Ende das was du schon kennst.</p>
+  <p>Das passiert täglich in tausenden Restaurants. Und der Gastronom denkt: Mehr Auswahl bedeutet mehr Umsatz. Mehr Gerichte bedeutet mehr Gäste. Mehr Optionen bedeutet mehr Zufriedenheit. Das Gegenteil ist wahr.</p>
+  <h3>Das Paradox der Wahl</h3>
+  <p>Zu viele Optionen lähmen. Sie erzeugen Stress beim Gast, verlangsamen die Bestellung, erhöhen die Reuegefühle nach der Entscheidung und senken die Gesamtzufriedenheit. Das ist keine Theorie, das ist vielfach untersuchte Konsumpsychologie.</p>
+  <p>Aber für dich als Unternehmer ist das Paradox der Wahl noch kostspieliger als für deinen Gast. Denn jedes Gericht auf deiner Karte bedeutet: Einkauf eines weiteren Produkts. Lagerhaltung. Schulung des Teams. Mögliche Verschwendung bei geringer Nachfrage. Komplexität in der Küche zur Stoßzeit. Und in den meisten Fällen eine Marge die du nie wirklich durchgerechnet hast.</p>
+  <h3>Die Wahrheit über Vielfalt</h3>
+  <p>Eine Karte mit zwanzig gut kalkulierten, effizient produzierbaren Gerichten verdient mehr als eine Karte mit vierzig halbherzig kalkulierten Gerichten. Das ist kein Dogma, das ist Mathematik. Und es ist die Grundlage dieses Moduls.</p>
+  <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 1</div><p>Zähle jetzt die Gerichte auf deiner aktuellen Karte. Schreibe die Zahl auf. Du wirst sie in Lektion 5 wieder brauchen.</p></div>
+  <h2>Kapitel 2 — Die vier Gericht-Typen</h2>
+  <p>In der Gastronomie gibt es ein bewährtes Analyse-Framework das heute in jedem professionell geführten Restaurantbetrieb eingesetzt wird: die Menu Engineering Matrix. Sie teilt alle Gerichte deiner Karte in vier Kategorien ein, abhängig von zwei Faktoren: Popularität und Marge.</p>
+  <h3>Die Stars: Beliebt und profitabel</h3>
+  <p>Stars sind deine besten Gerichte. Sie werden häufig bestellt und bringen dir gleichzeitig eine überdurchschnittliche Marge. Das sind die Gerichte auf die deine gesamte Karte ausgerichtet sein sollte. Sie stehen prominent. Sie werden vom Service aktiv empfohlen. Sie bekommen das beste Foto, die beste Beschreibung, den meisten Raum auf der Karte. Wenn du zehn Hauptgänge hast sollten mindestens vier davon Stars sein.</p>
+  <h3>Die Plowhorses: Beliebt, aber margenarm</h3>
+  <p>Plowhorses, auf Deutsch Arbeitstiere, sind Gerichte die deine Gäste lieben, die dir aber wenig einbringen. Das klassische Beispiel: das günstige Pasta-Gericht das jeder bestellt weil es preiswert ist und gut schmeckt. Bei einem Plowhorse gibt es drei Möglichkeiten: Preis erhöhen, Einkaufskosten senken, oder das Gericht strategisch zurückdrängen ohne es zu streichen.</p>
+  <h3>Die Puzzles: Hohe Marge, aber selten bestellt</h3>
+  <p>Puzzles sind Gerichte mit exzellenter Marge die aber kaum jemand bestellt. Das ist fast immer ein Positionierungsproblem, kein Geschmacksproblem. Vielleicht steht das Gericht an der falschen Stelle auf der Karte. Vielleicht hat es keinen ansprechenden Namen. Vielleicht empfiehlt der Service es nicht aktiv. Puzzles haben das höchste Potenzial für deinen Gewinn, wenn du lernst sie richtig zu platzieren und zu bewerben.</p>
+  <h3>Die Dogs: Selten bestellt und margenarm</h3>
+  <p>Dogs sind Gerichte die weder häufig bestellt werden noch eine gute Marge haben. Sie existieren auf vielen Karten aus Gewohnheit oder aus dem Gefühl heraus dass man sie anbieten muss. Dogs kosten dich Lagerplatz, Komplexität in der Küche und Aufmerksamkeit des Teams, und bringen dir nichts zurück. Sie gehören gestrichen.</p>
+  <p>Natürlich gibt es Ausnahmen. Ein Dog-Gericht das einen strategischen Zweck erfüllt, etwa als Preisanker oder als Einstiegsgericht für neue Gäste, kann bewusst auf der Karte bleiben. Aber dann ist es eine strategische Entscheidung, keine Gewohnheit.</p>
+  <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 2</div><p>Schau dir deine aktuelle Karte an und versuche intuitiv einzuschätzen: Welche Gerichte sind wahrscheinlich deine Stars? Welche könnten Dogs sein? Schreib deine Vermutungen auf. In Lektion 2 und mit dem Marge Tool wirst du sehen ob deine Intuition stimmt.</p></div>
+
+  
+  <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
+</div>
+<div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
 <script>
 (function(){
   // Rechtsklick & Tastenkürzel sperren
@@ -103,41 +125,5 @@ p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
   })();
 })();
 </script>
-<div class="header">
-  <div class="brand">GASTRO-OS</div>
-  <a href="modul2-uebersicht.html" class="btn-back-modul">← Zurück zu Modul 2</a>
-</div>
-<div class="gold-bar"></div>
-<div class="wrap">
-  <div class="lbl">Modul 2 · Lektion 1</div>
-  <div class="lektion-hero">
-    <div class="lektion-tag">Modul 2 · Lektion 1</div>
-    <h1>Die Karte als Umsatzmaschine</h1>
-  </div>
-  <div class="intro">In diesem Modul dreht sich alles um deine Speisekarte. Nicht darum wie sie aussieht oder was draufsteht, sondern darum wie sie für dich arbeitet. Diese Lektion legt das Fundament für alles was folgt. Nimm dir Zeit, lies es in Ruhe durch und sei ehrlich mit dir selbst.</div>
-  <h2>Kapitel 1 — Die Karte als Umsatzmaschine</h2>
-  <p>Stell dir vor du öffnest eine Speisekarte in einem Restaurant. Du siehst dreißig Gerichte. Vorspeisen, Hauptgänge, Desserts, Sonderwünsche, Tageskarte, Kinderkarte. Du blätterst. Du liest. Du kannst dich nicht entscheiden und bestellst am Ende das was du schon kennst.</p>
-  <p>Das passiert täglich in tausenden Restaurants. Und der Gastronom denkt: Mehr Auswahl bedeutet mehr Umsatz. Mehr Gerichte bedeutet mehr Gäste. Mehr Optionen bedeutet mehr Zufriedenheit. Das Gegenteil ist wahr.</p>
-  <h3>Das Paradox der Wahl</h3>
-  <p>Zu viele Optionen lähmen. Sie erzeugen Stress beim Gast, verlangsamen die Bestellung, erhöhen die Reuegefühle nach der Entscheidung und senken die Gesamtzufriedenheit. Das ist keine Theorie, das ist vielfach untersuchte Konsumpsychologie.</p>
-  <p>Aber für dich als Unternehmer ist das Paradox der Wahl noch kostspieliger als für deinen Gast. Denn jedes Gericht auf deiner Karte bedeutet: Einkauf eines weiteren Produkts. Lagerhaltung. Schulung des Teams. Mögliche Verschwendung bei geringer Nachfrage. Komplexität in der Küche zur Stoßzeit. Und in den meisten Fällen eine Marge die du nie wirklich durchgerechnet hast.</p>
-  <h3>Die Wahrheit über Vielfalt</h3>
-  <p>Eine Karte mit zwanzig gut kalkulierten, effizient produzierbaren Gerichten verdient mehr als eine Karte mit vierzig halbherzig kalkulierten Gerichten. Das ist kein Dogma, das ist Mathematik. Und es ist die Grundlage dieses Moduls.</p>
-  <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 1</div><p>Zähle jetzt die Gerichte auf deiner aktuellen Karte. Schreibe die Zahl auf. Du wirst sie in Lektion 5 wieder brauchen.</p></div>
-  <h2>Kapitel 2 — Die vier Gericht-Typen</h2>
-  <p>In der Gastronomie gibt es ein bewährtes Analyse-Framework das heute in jedem professionell geführten Restaurantbetrieb eingesetzt wird: die Menu Engineering Matrix. Sie teilt alle Gerichte deiner Karte in vier Kategorien ein, abhängig von zwei Faktoren: Popularität und Marge.</p>
-  <h3>Die Stars: Beliebt und profitabel</h3>
-  <p>Stars sind deine besten Gerichte. Sie werden häufig bestellt und bringen dir gleichzeitig eine überdurchschnittliche Marge. Das sind die Gerichte auf die deine gesamte Karte ausgerichtet sein sollte. Sie stehen prominent. Sie werden vom Service aktiv empfohlen. Sie bekommen das beste Foto, die beste Beschreibung, den meisten Raum auf der Karte. Wenn du zehn Hauptgänge hast sollten mindestens vier davon Stars sein.</p>
-  <h3>Die Plowhorses: Beliebt, aber margenarm</h3>
-  <p>Plowhorses, auf Deutsch Arbeitstiere, sind Gerichte die deine Gäste lieben, die dir aber wenig einbringen. Das klassische Beispiel: das günstige Pasta-Gericht das jeder bestellt weil es preiswert ist und gut schmeckt. Bei einem Plowhorse gibt es drei Möglichkeiten: Preis erhöhen, Einkaufskosten senken, oder das Gericht strategisch zurückdrängen ohne es zu streichen.</p>
-  <h3>Die Puzzles: Hohe Marge, aber selten bestellt</h3>
-  <p>Puzzles sind Gerichte mit exzellenter Marge die aber kaum jemand bestellt. Das ist fast immer ein Positionierungsproblem, kein Geschmacksproblem. Vielleicht steht das Gericht an der falschen Stelle auf der Karte. Vielleicht hat es keinen ansprechenden Namen. Vielleicht empfiehlt der Service es nicht aktiv. Puzzles haben das höchste Potenzial für deinen Gewinn, wenn du lernst sie richtig zu platzieren und zu bewerben.</p>
-  <h3>Die Dogs: Selten bestellt und margenarm</h3>
-  <p>Dogs sind Gerichte die weder häufig bestellt werden noch eine gute Marge haben. Sie existieren auf vielen Karten aus Gewohnheit oder aus dem Gefühl heraus dass man sie anbieten muss. Dogs kosten dich Lagerplatz, Komplexität in der Küche und Aufmerksamkeit des Teams, und bringen dir nichts zurück. Sie gehören gestrichen.</p>
-  <p>Natürlich gibt es Ausnahmen. Ein Dog-Gericht das einen strategischen Zweck erfüllt, etwa als Preisanker oder als Einstiegsgericht für neue Gäste, kann bewusst auf der Karte bleiben. Aber dann ist es eine strategische Entscheidung, keine Gewohnheit.</p>
-  <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 2</div><p>Schau dir deine aktuelle Karte an und versuche intuitiv einzuschätzen: Welche Gerichte sind wahrscheinlich deine Stars? Welche könnten Dogs sein? Schreib deine Vermutungen auf. In Lektion 2 und mit dem Marge Tool wirst du sehen ob deine Intuition stimmt.</p></div>
-  <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
-</div>
-<div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
 </body>
 </html>
