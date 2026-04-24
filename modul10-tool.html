@@ -390,15 +390,6 @@ const KRITERIEN=[
   {name:'Zustand der Immobilie',  desc:'Wie viel Investition braucht die Immobilie?',            weight:10},
   {name:'Wachstumspotenzial',     desc:'Entwickelt sich das Viertel positiv?',                   weight:10},
 ];
-function switchTab(tabName) {
-  document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active');});
-  document.querySelectorAll('#tab-bar .tab-btn').forEach(function(b){b.classList.remove('active');});
-  var panel=document.getElementById('tab-'+tabName);
-  if(panel)panel.classList.add('active');
-  document.querySelectorAll('#tab-bar .tab-btn').forEach(function(b){
-    if(b.getAttribute('data-tab')===tabName)b.classList.add('active');
-  });
-}
 
 
 
@@ -573,8 +564,12 @@ async function saveData(){
 
 function autosave(){clearTimeout(saveTimer);saveTimer=setTimeout(saveData,1500);}
 
-async function init(){
+// Matrix sofort beim Laden aufbauen (unabhängig von Auth)
+document.addEventListener('DOMContentLoaded', function() {
   buildMatrix();
+});
+
+async function init(){
   const{data:{session}}=await sb.auth.getSession();
   if(!session){window.location.href='login.html';return;}
   currentUser=session.user;
@@ -583,23 +578,16 @@ async function init(){
 }
 init();
 
-// Tab-Switching direkt verfügbar
+// Tab-Switching
 function switchTab(tabName) {
   document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
   document.querySelectorAll('#tab-bar .tab-btn').forEach(function(b) { b.classList.remove('active'); });
   var panel = document.getElementById('tab-' + tabName);
-  if(panel) panel.classList.add('active');
-  var btns = document.querySelectorAll('#tab-bar .tab-btn');
-  btns.forEach(function(b) { if(b.getAttribute('data-tab') === tabName) b.classList.add('active'); });
-}
-// Tabs nach DOM-Load initialisieren
-window.addEventListener('load', function() {
-  document.querySelectorAll('#tab-bar .tab-btn').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      switchTab(this.getAttribute('data-tab'));
-    });
+  if (panel) panel.classList.add('active');
+  document.querySelectorAll('#tab-bar .tab-btn').forEach(function(b) {
+    if (b.getAttribute('data-tab') === tabName) b.classList.add('active');
   });
-});
+}
 </script>
 </body>
 </html>
