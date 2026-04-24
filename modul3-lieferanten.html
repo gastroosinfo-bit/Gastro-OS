@@ -8,7 +8,7 @@
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
-.header{background:#1a2a4a;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
+.header{background:#1a2a4a;padding:14px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
 .brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
 .back-btn { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; text-decoration:none; display:inline-block; transition:all 0.2s; }
 .back-btn:hover { border-color:#d4af37; color:#d4af37; }
@@ -81,6 +81,14 @@ td.calc { font-weight:600; font-size:13px; }
 }
 .btn-back-modul:hover { background: #c8a030; color: #1a2a4a; }
 
+.action-row{display:flex;gap:10px;margin-bottom:28px;flex-wrap:wrap;align-items:center;padding:16px 0;border-bottom:2px solid #e8dfc8}
+.btn-save{background:#1a2a4a;color:#d4af37;border:none;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s}
+.btn-save:hover{background:#d4af37;color:#1a2a4a}
+.btn-print{background:#a09060;color:#fff;border:none;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s}
+.btn-print:hover{background:#d4af37;color:#1a2a4a}
+.btn-reset{background:transparent;border:1.5px solid #c0b090;color:#8070a0;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s}
+.btn-reset:hover{background:#f0ece0;color:#1a2a4a;border-color:#1a2a4a}
+.save-msg{font-size:13px;color:#4a8a4a;align-self:center;display:none}
 </style>
 <script>
 (function(){
@@ -100,6 +108,12 @@ td.calc { font-weight:600; font-size:13px; }
 <div class="gold-bar"></div>
 
 <div class="wrap">
+  <div class="action-row">
+    <button class="btn-save" onclick="saveData()">💾 Speichern</button>
+    <button class="btn-print" onclick="window.print()">🖨️ Drucken / PDF</button>
+    <button class="btn-reset" onclick="resetData()">↺ Neu starten</button>
+    <span class="save-msg" id="save-msg">✓ Gespeichert</span>
+  </div>
   <div class="tool-lbl">Modul 3 · Tool</div>
   <div class="tool-title">GASTRO-OS | LIEFERANTEN-VERGLEICH</div>
   <div class="hint-bar"><span>Blaue Felder = Eingabe</span> &nbsp;|&nbsp; Schwarze Felder = automatische Berechnung</div>
@@ -137,7 +151,7 @@ td.calc { font-weight:600; font-size:13px; }
     <div class="save-row">
       <button class="btn-save" onclick="saveData()">💾 Speichern</button>
       <button class="btn-save" style="background:#4a6a3a;" onclick="window.print()">🖨️ Drucken / PDF</button>
-      <button class="btn-save" style="background:transparent;border:1px solid #cc5544;color:#cc5544;" onclick="resetData()">🔄 Neu starten</button>
+      <button class="btn-save" style="background:transparent;border:1px solid #cc5544;color:#cc5544;" onclick="resetData()">↺ Neu starten</button>
       <span class="save-msg" id="sm1">✓ Gespeichert</span>
     </div>
     <div class="footer-note"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg &nbsp;|&nbsp; Modul 3: Einkauf &amp; Wareneinsatz</div>
@@ -173,7 +187,7 @@ td.calc { font-weight:600; font-size:13px; }
     <div class="save-row">
       <button class="btn-save" onclick="saveData()">💾 Speichern</button>
       <button class="btn-save" style="background:#4a6a3a;" onclick="window.print()">🖨️ Drucken / PDF</button>
-      <button class="btn-save" style="background:transparent;border:1px solid #cc5544;color:#cc5544;" onclick="resetData()">🔄 Neu starten</button>
+      <button class="btn-save" style="background:transparent;border:1px solid #cc5544;color:#cc5544;" onclick="resetData()">↺ Neu starten</button>
       <span class="save-msg" id="sm2">✓ Gespeichert</span>
     </div>
     <div class="footer-note"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg &nbsp;|&nbsp; Modul 3: Einkauf &amp; Wareneinsatz</div>
@@ -204,7 +218,7 @@ td.calc { font-weight:600; font-size:13px; }
     <div class="save-row">
       <button class="btn-save" onclick="saveData()">💾 Speichern</button>
       <button class="btn-save" style="background:#4a6a3a;" onclick="window.print()">🖨️ Drucken / PDF</button>
-      <button class="btn-save" style="background:transparent;border:1px solid #cc5544;color:#cc5544;" onclick="resetData()">🔄 Neu starten</button>
+      <button class="btn-save" style="background:transparent;border:1px solid #cc5544;color:#cc5544;" onclick="resetData()">↺ Neu starten</button>
       <span class="save-msg" id="sm3">✓ Gespeichert</span>
     </div>
     <div class="footer-note"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg &nbsp;|&nbsp; Modul 3: Einkauf &amp; Wareneinsatz</div>
