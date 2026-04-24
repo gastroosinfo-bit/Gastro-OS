@@ -332,10 +332,27 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
     <div class="section">
       <div class="section-head"><div class="section-num">③</div><h2>ENTSCHEIDUNG — Deine finale Einschätzung</h2></div>
 
-      <div id="empfehlung-box" style="background:#1a2a4a;border-radius:10px;padding:20px 24px;margin-bottom:20px;display:none">
-        <div style="font-size:11px;color:#a0b0c8;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px">GASTRO-OS EMPFEHLUNG</div>
-        <div id="empfehlung-text" style="font-size:18px;color:#d4af37;font-weight:700;font-family:Georgia,serif;margin-bottom:8px">—</div>
-        <div id="empfehlung-sub" style="font-size:13px;color:#a0b0c8;line-height:1.7">—</div>
+      <div id="empfehlung-box" style="display:none;margin-bottom:24px">
+        <!-- Score Box -->
+        <div style="background:#1a2a4a;border-radius:10px;padding:24px;text-align:center;margin-bottom:12px">
+          <div style="font-size:11px;color:#a0b0c8;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px">GASTRO-OS GESAMTSCORE</div>
+          <div id="empfehlung-score" style="font-size:42px;color:#d4af37;font-weight:700;font-family:Georgia,serif;line-height:1">—</div>
+          <div style="font-size:11px;color:#a0b0c8;margin:4px 0 12px">von 100 Punkten</div>
+          <div id="empfehlung-text" style="font-size:15px;color:#fff;font-weight:600">—</div>
+        </div>
+        <!-- Stärken & Risiken -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+          <div style="background:#e8f5e9;border:1px solid #a5d6a7;border-radius:8px;padding:14px 16px">
+            <div style="font-size:11px;color:#2e7d32;font-weight:700;letter-spacing:1px;margin-bottom:8px">✅ STÄRKEN</div>
+            <div id="empfehlung-staerken" style="font-size:13px;color:#2e7d32;line-height:1.7">—</div>
+          </div>
+          <div style="background:#fff8e1;border:1px solid #ffe082;border-radius:8px;padding:14px 16px">
+            <div style="font-size:11px;color:#f57f17;font-weight:700;letter-spacing:1px;margin-bottom:8px">⚠️ RISIKEN</div>
+            <div id="empfehlung-risiken" style="font-size:13px;color:#e65100;line-height:1.7">—</div>
+          </div>
+        </div>
+        <!-- Empfehlung Text -->
+        <div id="empfehlung-sub" style="background:#f5f0e8;border-left:4px solid #d4af37;border-radius:0 8px 8px 0;padding:14px 18px;font-size:14px;color:#5a4000;line-height:1.7">—</div>
       </div>
 
       <table class="tool-table">
@@ -462,38 +479,58 @@ function calcWirtschaft(){
 }
 
 function calcGesamt(){
-  const best={score:-1,name:''};
-  ['a','b','c'].forEach(s=>{
-    const st=parseFloat(document.getElementById('gb_standort_'+s)?.value)||0;
-    const fi=parseFloat(document.getElementById('gb_finanz_'+s)?.value)||0;
-    // Wirtschaftlichkeits-Score aus Break-Even
-    const be=parseFloat(document.getElementById('wb_breakeven_'+s)?.textContent)||99;
+  const best={score:-1,name:'',s:''};
+  ['a','b','c'].forEach(function(s){
+    const st=parseFloat(document.getElementById('gb_standort_'+s)&&document.getElementById('gb_standort_'+s).value)||0;
+    const fi=parseFloat(document.getElementById('gb_finanz_'+s)&&document.getElementById('gb_finanz_'+s).value)||0;
+    const beEl=document.getElementById('wb_breakeven_'+s);
+    const beText=beEl?beEl.textContent:'99';
+    const be=parseFloat(beText)||99;
     const ws=be<=12?5:be<=18?3:be<99?1:0;
     const gesamt=(st*0.40)+(fi*0.35)+(ws*0.25);
+    const score100=Math.round(gesamt/5*100);
     const el=document.getElementById('gb_gesamt_'+s);
     if(el){
       el.textContent=gesamt>0?gesamt.toFixed(2)+'/5':'—';
       el.style.color=gesamt>=3.5?'#4a8a4a':gesamt>=2.5?'#d4af37':'#e06060';
     }
-    if(gesamt>best.score){best.score=gesamt;best.name='Standort '+s.toUpperCase();}
-  });
-  // Empfehlung
-  const box=document.getElementById('empfehlung-box');
-  const txt=document.getElementById('empfehlung-text');
-  const sub=document.getElementById('empfehlung-sub');
-  if(box&&best.score>0){
-    box.style.display='block';
-    if(best.score>=3.5){
-      txt.textContent='✅ Empfehlung: '+best.name;
-      sub.textContent='Dieser Standort hat den stärksten Gesamtscore ('+best.score.toFixed(2)+'/5). Standort-Qualität, Finanzcheck und Wirtschaftlichkeit sprechen für diesen Standort.';
-    } else if(best.score>=2.5){
-      txt.textContent='⚠️ Prüfe genauer: '+best.name;
-      sub.textContent='Der Score ('+best.score.toFixed(2)+'/5) ist akzeptabel aber nicht überzeugend. Prüfe welche Bereiche schwach sind und ob sie verbesserbar sind bevor du entscheidest.';
-    } else {
-      txt.textContent='❌ Keiner der Standorte überzeugt aktuell';
-      sub.textContent='Der beste Score liegt bei '+best.score.toFixed(2)+'/5 — das ist zu niedrig. Überprüfe die Grundvoraussetzungen oder suche andere Standorte.';
+    if(gesamt>best.score){best.score=gesamt;best.score100=score100;best.name='Standort '+s.toUpperCase();best.s=s;
+      // Stärken & Risiken berechnen
+      const staerken=[];const risiken=[];
+      if(st>=4)staerken.push('Standort-Qualität');else if(st<3)risiken.push('Schwacher Standort-Score');
+      if(fi>=4)staerken.push('Finanzcheck bestanden');else if(fi<3)risiken.push('Finanzierung unsicher');
+      if(be>0&&be<=12)staerken.push('Break-Even unter 12 Monate');else if(be>18)risiken.push('Break-Even über 18 Monate');
+      const uEl=document.getElementById('wb_umsatz_'+s);
+      const kEl=document.getElementById('wb_kosten_'+s);
+      const u=parseFloat(uEl&&uEl.value)||0;const k=parseFloat(kEl&&kEl.value)||0;
+      if(u>0&&(u-k)/u>=0.2)staerken.push('Gute Gewinnmarge');else if(u>0&&(u-k)/u<0.1)risiken.push('Gewinnmarge zu niedrig');
+      best.staerken=staerken;best.risiken=risiken;
     }
+  });
+  const box=document.getElementById('empfehlung-box');
+  if(!box||best.score<=0)return;
+  box.style.display='block';
+  // Score anzeigen
+  const scoreEl=document.getElementById('empfehlung-score');
+  const txtEl=document.getElementById('empfehlung-text');
+  const subEl=document.getElementById('empfehlung-sub');
+  const staEl=document.getElementById('empfehlung-staerken');
+  const risEl=document.getElementById('empfehlung-risiken');
+  if(scoreEl)scoreEl.textContent=best.score100+'/100';
+  const col=best.score>=3.5?'#4a8a4a':best.score>=2.5?'#d4af37':'#e06060';
+  if(scoreEl)scoreEl.style.color=col;
+  if(txtEl){
+    if(best.score>=3.5)txtEl.textContent='✅ Empfehlung: '+best.name;
+    else if(best.score>=2.5)txtEl.textContent='🟡 Potenzial vorhanden — sorgfältig prüfen: '+best.name;
+    else txtEl.textContent='❌ Keiner der Standorte überzeugt aktuell';
   }
+  if(subEl){
+    if(best.score>=3.5)subEl.textContent='Dieser Standort hat den stärksten Gesamtscore. Standort-Qualität, Finanzcheck und Wirtschaftlichkeit sprechen für eine Entscheidung.';
+    else if(best.score>=2.5)subEl.textContent='Der Score ist akzeptabel aber nicht überzeugend. Prüfe welche Bereiche schwach sind und ob sie verbesserbar sind.';
+    else subEl.textContent='Der Gesamtscore ist zu niedrig. Überprüfe die Grundvoraussetzungen oder suche andere Standorte.';
+  }
+  if(staEl)staEl.innerHTML=best.staerken&&best.staerken.length?best.staerken.map(function(s){return'• '+s;}).join('<br>'):'Noch nicht genug Daten';
+  if(risEl)risEl.innerHTML=best.risiken&&best.risiken.length?best.risiken.map(function(r){return'• '+r;}).join('<br>'):'Keine kritischen Risiken erkannt';
 }
 
   const d={};
