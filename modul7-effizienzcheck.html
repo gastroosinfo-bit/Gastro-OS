@@ -276,7 +276,7 @@ function buildTable(tbodyId, data, prefix){
 }
 
 function buildJahres(){
-  const tbody = document.getElementById('jahres-body');
+  let tbody = document.getElementById('jahres-body');
   JAHRES_ROWS.forEach((r,ri)=>{
     let tds = MONTHS.map((_,mi)=>`<td><input type="checkbox" id="j-${ri}-${mi}" onchange="autoSave()"></td>`).join('');
     tbody.innerHTML += `<tr><td>${r}</td>${tds}</tr>`;
@@ -332,13 +332,13 @@ function setData(d){
     if(el){el.value=v;if(m[1]==='s')updateStatusColor(el);}
   });
   if(d.hyg) Object.entries(d.hyg).forEach(([k,v])=>{
-    const m=k.match(/^(s|lc|nc|n)(\d+)$/);
+    let m=k.match(/^(s|lc|nc|n)(\d+)$/);
     if(!m)return;
-    const el=document.getElementById(`hyg-${m[1]}-${m[2]}`);
+    let el=document.getElementById(`hyg-${m[1]}-${m[2]}`);
     if(el){el.value=v;if(m[1]==='s')updateStatusColor(el);}
   });
   if(d.jahres) Object.entries(d.jahres).forEach(([k,v])=>{
-    const el=document.getElementById(`j-${k}`);
+    let el=document.getElementById(`j-${k}`);
     if(el)el.checked=v;
   });
 }

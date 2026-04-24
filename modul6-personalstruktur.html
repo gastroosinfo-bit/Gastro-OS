@@ -237,7 +237,7 @@ function buildPS(){
 }
 
 function buildRM(){
-  const tbody=document.getElementById('rm-body');
+  let tbody=document.getElementById('rm-body');
   tbody.innerHTML='';
   RM_DEFAULT.forEach((row,i)=>{
     let tds='';

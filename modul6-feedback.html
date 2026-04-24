@@ -447,7 +447,7 @@ function setRating(groupId, val) {
 function restoreRating(groupId, val) {
   if (!val) return;
   ratings[groupId] = val;
-  const btns = document.getElementById(groupId).querySelectorAll('.r-btn');
+  let btns = document.getElementById(groupId).querySelectorAll('.r-btn');
   btns.forEach((b, i) => b.classList.toggle('selected', i + 1 === val));
 }
 

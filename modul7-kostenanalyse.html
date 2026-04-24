@@ -332,7 +332,7 @@ function calcEnergie(){
 }
 
 function buildVerschw(){
-  const tbody=document.getElementById('verschw-body');
+  let tbody=document.getElementById('verschw-body');
   for(let i=0;i<VERSCHW_ROWS;i++){
     tbody.innerHTML+=`<tr>
       <td><input type="date" id="v-dat-${i}" oninput="autoSave()"></td>
@@ -347,7 +347,7 @@ function buildVerschw(){
 }
 
 function calcVerschw(){
-  const preis=parseFloat(document.getElementById('vw-preis').value)||8;
+  let preis=parseFloat(document.getElementById('vw-preis').value)||8;
   let total=0;
   for(let i=0;i<VERSCHW_ROWS;i++){
     const kg=parseFloat(document.getElementById(`v-kg-${i}`)?.value)||0;
@@ -360,7 +360,7 @@ function calcVerschw(){
 }
 
 function buildSofort(){
-  const tbody=document.getElementById('sofort-body');
+  let tbody=document.getElementById('sofort-body');
   SOFORT_ROWS.forEach((r,i)=>{
     tbody.innerHTML+=`<tr>
       <td>${r}</td>
@@ -380,9 +380,9 @@ function calcSofort(){
     const ist=parseFloat(document.getElementById(`sf-ist-${i}`)?.value)||0;
     const ziel=parseFloat(document.getElementById(`sf-ziel-${i}`)?.value)||0;
     const diff=ist-ziel;
-    const jahr=diff*12;
+    let jahr=diff*12;
     totalDiff+=diff; totalJahr+=jahr;
-    const fmt=n=>n.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g,'.')+' €';
+    let fmt=n=>n.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g,'.')+' €';
     const dEl=document.getElementById(`sf-diff-${i}`);
     const jEl=document.getElementById(`sf-jahr-${i}`);
     if(dEl){dEl.textContent=diff!==0?fmt(diff):'—';dEl.className=diff>0?'diff-pos':diff<0?'diff-neg':'';}
@@ -440,7 +440,7 @@ function setData(d){
     calcEnergie();
   }
   if(d.v){
-    const set=(id,v)=>{const el=document.getElementById(id);if(el&&v)el.value=v;};
+    let set=(id,v)=>{const el=document.getElementById(id);if(el&&v)el.value=v;};
     set('vw-preis',d.v.preis);
     for(let i=0;i<VERSCHW_ROWS;i++){
       ['dat','prod','kg','urs','verm','mass'].forEach(f=>set(`v-${f}-${i}`,d.v[`${f}${i}`]));
@@ -448,7 +448,7 @@ function setData(d){
     calcVerschw();
   }
   if(d.s){
-    const set=(id,v)=>{const el=document.getElementById(id);if(el&&v)el.value=v;};
+    let set=(id,v)=>{const el=document.getElementById(id);if(el&&v)el.value=v;};
     SOFORT_ROWS.forEach((_,i)=>{
       ['ist','ziel','prio','stat'].forEach(f=>set(`sf-${f}-${i}`,d.s[`${f}${i}`]));
     });
@@ -456,7 +456,7 @@ function setData(d){
   }
   if(d.ak){
     for(let i=1;i<=3;i++) ['m','e','d','v','s'].forEach(f=>{
-      const el=document.getElementById(`ak-${i}-${f}`);if(el&&d.ak[`${i}${f}`])el.value=d.ak[`${i}${f}`];
+      let el=document.getElementById(`ak-${i}-${f}`);if(el&&d.ak[`${i}${f}`])el.value=d.ak[`${i}${f}`];
     });
   }
 }

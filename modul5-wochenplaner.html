@@ -276,7 +276,7 @@ function buildPlanner(){
 }
 
 function buildHL(){
-  const tbody=document.getElementById('hl-body');
+  let tbody=document.getElementById('hl-body');
   tbody.innerHTML='';
   HL_ROWS.forEach(row=>{
     let h=`<tr><td class="row-label">${row.label}</td>`;
@@ -286,7 +286,7 @@ function buildHL(){
 }
 
 function buildSOP(){
-  const tbody=document.getElementById('sop-body');
+  let tbody=document.getElementById('sop-body');
   for(let i=1;i<=10;i++){
     tbody.innerHTML+=`<tr><td class="step-num">${i}</td><td><textarea id="sop-s${i}-what" oninput="autoSave()"></textarea></td><td><textarea id="sop-s${i}-who" oninput="autoSave()"></textarea></td></tr>`;
   }

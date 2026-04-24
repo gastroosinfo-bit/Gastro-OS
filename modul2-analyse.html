@@ -382,12 +382,12 @@ function recalcAll() {
 }
 
 function updateSummary() {
-  const threshold = parseFloat(document.getElementById('threshold-pct').value)/100 || 0.32;
+  let threshold = parseFloat(document.getElementById('threshold-pct').value)/100 || 0.32;
   let wpSum=0, wpCount=0, stars=0, dogs=0;
   ROWS.forEach(r => {
-    const vp = parseFloat(document.getElementById('vp-'+r.nr)?.value)||0;
-    const we = parseFloat(document.getElementById('we-'+r.nr)?.value)||0;
-    const bm = parseFloat(document.getElementById('bm-'+r.nr)?.value)||0;
+    let vp = parseFloat(document.getElementById('vp-'+r.nr)?.value)||0;
+    let we = parseFloat(document.getElementById('we-'+r.nr)?.value)||0;
+    let bm = parseFloat(document.getElementById('bm-'+r.nr)?.value)||0;
     if(vp&&we){ wpSum+=we/vp; wpCount++; }
     const txt = document.getElementById('kat-'+r.nr)?.textContent||'';
     if(txt.includes('STAR')) stars++;
@@ -414,7 +414,7 @@ function updateEntscheid() {
   ROWS.forEach(r => {
     const name = document.getElementById('g-'+r.nr)?.value?.trim();
     if(!name) return;
-    const txt = document.getElementById('kat-'+r.nr)?.textContent||'';
+    let txt = document.getElementById('kat-'+r.nr)?.textContent||'';
     if(txt.includes('STAR')) cats.star.push(name);
     else if(txt.includes('PLOWHORSE')) cats.plowh.push(name);
     else if(txt.includes('PUZZLE')) cats.puzzle.push(name);

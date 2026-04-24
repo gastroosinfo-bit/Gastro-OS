@@ -485,12 +485,12 @@ function calc03(){
   const v2=parseFloat(document.getElementById('vd2').value)||0;
   const v3=parseFloat(document.getElementById('vd3').value)||0;
   const sum=v1+v2+v3;
-  const el=document.getElementById('vd-gesamt');
-  const st=document.getElementById('st03');
+  let el=document.getElementById('vd-gesamt');
+  let st=document.getElementById('st03');
   if(!v1&&!v2&&!v3){ el.textContent='—'; st.innerHTML=statusBadge('st-info','— Bitte eintragen'); updateGesamt(); return; }
   el.textContent=fmt(sum)+' €';
   if(!weGesamt){ st.innerHTML=statusBadge('st-info','— Wareneinsatz eintragen'); updateGesamt(); return; }
-  const pct=sum/weGesamt;
+  let pct=sum/weGesamt;
   el.style.color=pct<=0.03?'#1a6030':pct<=0.06?'#856404':'#a03030';
   if(pct<=0.03) st.innerHTML=statusBadge('st-gut','✔ GUT — unter 3%');
   else if(pct<=0.06) st.innerHTML=statusBadge('st-warn','▲ PRÜFEN — bis 6%');
@@ -500,10 +500,10 @@ function calc03(){
 
 function calcLief(n){
   const a=parseFloat(document.getElementById('l'+n+'a').value)||0;
-  const v=parseFloat(document.getElementById('l'+n+'v').value)||0;
-  const el=document.getElementById('lp'+n);
+  let v=parseFloat(document.getElementById('l'+n+'v').value)||0;
+  let el=document.getElementById('lp'+n);
   if(!a||!v){ el.textContent='—'; el.style.color=''; return; }
-  const pct=(a/v-1)*100;
+  let pct=(a/v-1)*100;
   el.textContent=(pct>=0?'+':'')+pct.toFixed(1).replace('.',',')+' %';
   el.style.color=pct>0?'#a03030':pct<0?'#1a6030':'#5a6a80';
 }

@@ -279,7 +279,7 @@ function buildTable() {
   // Build top5 rows
   const t5 = document.getElementById('top5-body');
   for(let i=1;i<=5;i++){
-    const tr = document.createElement('tr');
+    let tr = document.createElement('tr');
     tr.innerHTML = `<td>${i}</td><td><input class="top5-input" id="t5g-${i}" type="text" placeholder="Gericht..."></td><td><input class="top5-input" id="t5d-${i}" type="number" style="width:80px;" placeholder="0,00"></td><td><input class="top5-input" id="t5m-${i}" type="number" style="width:80px;" placeholder="0"></td><td id="t5gew-${i}">—</td>`;
     t5.appendChild(tr);
     document.getElementById('t5d-'+i).addEventListener('input',()=>calcTop5Row(i));
@@ -322,12 +322,12 @@ function updateAusw(){
   const cats={star:{cnt:0,dbSum:0,gewSum:0},plowh:{cnt:0,dbSum:0,gewSum:0},puzzle:{cnt:0,dbSum:0,gewSum:0},dog:{cnt:0,dbSum:0,gewSum:0}};
   let wpSum=0,wpCnt=0,total=0;
   for(let i=1;i<=NUM_ROWS;i++){
-    const we=parseFloat(document.getElementById('we-'+i)?.value)||0;
-    const vp=parseFloat(document.getElementById('vp-'+i)?.value)||0;
-    const bm=parseFloat(document.getElementById('bm-'+i)?.value)||0;
+    let we=parseFloat(document.getElementById('we-'+i)?.value)||0;
+    let vp=parseFloat(document.getElementById('vp-'+i)?.value)||0;
+    let bm=parseFloat(document.getElementById('bm-'+i)?.value)||0;
     if(!we||!vp) continue;
     total++;
-    const db=vp-we, wp=we/vp, gm=bm?db*bm:0;
+    let db=vp-we, wp=we/vp, gm=bm?db*bm:0;
     wpSum+=wp; wpCnt++;
     const txt=document.getElementById('kat-'+i)?.textContent||'';
     if(txt.includes('STAR')){ cats.star.cnt++;cats.star.dbSum+=db;cats.star.gewSum+=gm; }
@@ -357,7 +357,7 @@ function updateAusw(){
   // Summary row in marge table
   const foot=document.getElementById('marge-foot');
   if(wpCnt){
-    const avgWp=wpSum/wpCnt;
+    let avgWp=wpSum/wpCnt;
     foot.innerHTML=`<tr class="summary-row"><td colspan="2">GESAMT / DURCHSCHNITT</td><td></td><td></td><td></td><td class="gold">${fmt(avgWp*100,1)} %</td><td></td><td class="gold">${fmt(Object.values(cats).reduce((s,c)=>s+c.gewSum,0))} €</td><td class="gold">${cats.star.cnt} Stars | ${cats.dog.cnt} Dogs</td></tr>`;
   }
 }
@@ -395,7 +395,7 @@ async function loadData(){
     if(!session) return;
     const {data}=await sb.from('user_tool_data').select('data').eq('user_id',session.user.id).eq('tool_name','marge_tool_modul2').maybeSingle();
     if(!data?.data) return;
-    const d=data.data;
+    let d=data.data;
     if(d.rows){
       for(let i=1;i<=NUM_ROWS;i++){
         const r=d.rows[i]; if(!r) continue;
@@ -408,7 +408,7 @@ async function loadData(){
     }
     if(d.top5){
       for(let i=1;i<=5;i++){
-        const r=d.top5[i]; if(!r) continue;
+        let r=d.top5[i]; if(!r) continue;
         if(r.gericht) document.getElementById('t5g-'+i).value=r.gericht;
         if(r.db) document.getElementById('t5d-'+i).value=r.db;
         if(r.menge) document.getElementById('t5m-'+i).value=r.menge;

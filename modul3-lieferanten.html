@@ -297,9 +297,9 @@ function updateBest(){
 }
 
 function buildPP(){
-  const tbody=document.getElementById('pp-body');
+  let tbody=document.getElementById('pp-body');
   for(let i=1;i<=20;i++){
-    const tr=document.createElement('tr');
+    let tr=document.createElement('tr');
     tr.innerHTML=`
       <td class="nr">${i}</td>
       <td><input class="ti" id="pp-prod-${i}" type="text" placeholder="Produktname..."></td>
@@ -317,7 +317,7 @@ function buildPP(){
 function calcMin(i){
   const vals=[1,2,3,4].map(l=>{ const v=parseFloat(document.getElementById('pp-l'+l+'-'+i)?.value); return isNaN(v)?null:v; });
   const valid=vals.filter(v=>v!==null);
-  const el=document.getElementById('pp-min-'+i);
+  let el=document.getElementById('pp-min-'+i);
   if(!valid.length){ el.textContent='—'; updatePPSum(); return; }
   const min=Math.min(...valid);
   el.textContent=fmt(min)+' €';
@@ -335,7 +335,7 @@ function updatePPSum(){
     [1,2,3,4].forEach((l,idx)=>{ sums[idx]+=(parseFloat(document.getElementById('pp-l'+l+'-'+i)?.value)||0); });
     sums[4]+=(parseFloat(document.getElementById('pp-min-'+i)?.textContent?.replace(',','.'))||0);
   }
-  const foot=document.getElementById('pp-foot');
+  let foot=document.getElementById('pp-foot');
   foot.innerHTML=`<tr class="sum-row"><td colspan="3">SUMME Einkaufskosten:</td>
     <td>${sums[0]>0?fmt(sums[0])+' €':'—'}</td>
     <td>${sums[1]>0?fmt(sums[1])+' €':'—'}</td>
@@ -352,9 +352,9 @@ function updatePPHeaders(){
 }
 
 function buildVT(){
-  const tbody=document.getElementById('vt-body');
+  let tbody=document.getElementById('vt-body');
   for(let i=1;i<=20;i++){
-    const tr=document.createElement('tr');
+    let tr=document.createElement('tr');
     tr.innerHTML=`
       <td class="nr">${i}</td>
       <td><input class="ti" id="vt-lief-${i}" type="text" placeholder="Lieferant..."></td>
@@ -372,8 +372,8 @@ function buildVT(){
 
 function calcErsparnis(i){
   const pv=parseFloat(document.getElementById('vt-pv-'+i)?.value)||0;
-  const pn=parseFloat(document.getElementById('vt-pn-'+i)?.value)||0;
-  const el=document.getElementById('vt-ers-'+i);
+  let pn=parseFloat(document.getElementById('vt-pn-'+i)?.value)||0;
+  let el=document.getElementById('vt-ers-'+i);
   if(!pv||!pn){ el.textContent='—'; updateVTSum(); return; }
   const ers=pv-pn;
   el.textContent=(ers>=0?'+':'')+fmt(ers)+' €';
@@ -387,7 +387,7 @@ function updateVTSum(){
     const t=document.getElementById('vt-ers-'+i)?.textContent?.replace(',','.')?.replace('+','');
     if(t&&t!=='—') total+=parseFloat(t)||0;
   }
-  const foot=document.getElementById('vt-foot');
+  let foot=document.getElementById('vt-foot');
   if(total!==0){
     foot.innerHTML=`<tr class="vt-sum"><td colspan="6">GESAMT monatliche Ersparnis:</td><td>${fmt(total)} €</td><td>Jahresbetrag: ${fmt(total*12)} €</td><td></td></tr>`;
   }
