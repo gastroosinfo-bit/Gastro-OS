@@ -130,15 +130,10 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
     Bewerte jeden Standort mit 1 (schwach) bis 5 (sehr gut). Die Gewichtung zeigt wie wichtig jede Kategorie ist. Der gewichtete Gesamtscore zeigt dir welcher Standort das stärkste Fundament hat.</p>
   </div>
 
-  <div class="tabs">
-    <button class="tab-btn active" onclick="showTab('standort',this)">📊 Standort-Analyse</button>
-    <button class="tab-btn" onclick="showTab('finanzcheck',this)">💶 Finanzcheck Expansion</button>
-    <button class="tab-btn" id="tab-btn-gesamt" onclick="
-      document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active');});
-      document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
-      document.getElementById('tab-gesamtbewertung').classList.add('active');
-      this.classList.add('active');
-    ">🏆 Gesamtbewertung &amp; Entscheidung</button>
+  <div class="tabs" id="tab-bar">
+    <button class="tab-btn active" data-tab="standort">📊 Standort-Analyse</button>
+    <button class="tab-btn" data-tab="finanzcheck">💶 Finanzcheck Expansion</button>
+    <button class="tab-btn" data-tab="gesamtbewertung">🏆 Gesamtbewertung &amp; Entscheidung</button>
   </div>
 
   <!-- TAB 1 -->
@@ -538,6 +533,19 @@ async function init(){
   if(td&&td.data)fillData(td.data);
 }
 init();
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('#tab-bar .tab-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var tab = this.getAttribute('data-tab');
+      document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
+      document.querySelectorAll('#tab-bar .tab-btn').forEach(function(b) { b.classList.remove('active'); });
+      document.getElementById('tab-' + tab).classList.add('active');
+      this.classList.add('active');
+    });
+  });
+});
 </script>
 </body>
 </html>
