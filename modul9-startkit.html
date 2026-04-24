@@ -169,5 +169,15 @@ h2 { font-family:Georgia,serif; font-size:17px; color:#1a2a4a; margin-bottom:16p
   <p style="text-align:center; font-size:12px; color:#8090a8; letter-spacing:1px;">GASTRO-OS | System · Strategie · Erfolg</p>
 </div>
 <div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+
+<script>
+function saveData() {
+  document.getElementById('save-msg').style.display = 'inline';
+  setTimeout(() => { document.getElementById('save-msg').style.display = 'none'; }, 2000);
+}
+function resetData() { 
+  if(confirm('Starter Kit zurücksetzen?')) location.reload();
+}
+</script>
 </body>
 </html>
