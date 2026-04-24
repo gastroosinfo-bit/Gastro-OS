@@ -14,8 +14,8 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 .back-btn:hover { border-color:#d4af37; color:#d4af37; }
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
 .main { max-width:1020px; margin:32px auto; padding:0 20px 60px; }
-.tabs { display:flex; gap:0; margin-bottom:28px; border-bottom:2px solid #e8dfc8; }
-.tab-btn { background:none; border:none; padding:12px 28px; font-size:13px; font-weight:600; color:#8090a8; cursor:pointer; border-bottom:3px solid transparent; margin-bottom:-2px; transition:all 0.2s; }
+.tabs { display:flex; gap:0; margin-bottom:28px; border-bottom:2px solid #e8dfc8;  position:relative; z-index:5; }
+.tab-btn { background:none; border:none; padding:12px 28px; font-size:13px; font-weight:600; color:#8090a8; cursor:pointer; border-bottom:3px solid transparent; margin-bottom:-2px; transition:all 0.2s;  position:relative; z-index:5; }
 .tab-btn.active { color:#1a2a4a; border-bottom-color:#d4af37; }
 .tab-btn:hover { color:#1a2a4a; }
 .tab-panel { display:none; }
@@ -133,7 +133,12 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
   <div class="tabs">
     <button class="tab-btn active" onclick="showTab('standort',this)">📊 Standort-Analyse</button>
     <button class="tab-btn" onclick="showTab('finanzcheck',this)">💶 Finanzcheck Expansion</button>
-    <button class="tab-btn" onclick="showTab('gesamtbewertung',this)">🏆 Gesamtbewertung & Entscheidung</button>
+    <button class="tab-btn" id="tab-btn-gesamt" onclick="
+      document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active');});
+      document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
+      document.getElementById('tab-gesamtbewertung').classList.add('active');
+      this.classList.add('active');
+    ">🏆 Gesamtbewertung &amp; Entscheidung</button>
   </div>
 
   <!-- TAB 1 -->
