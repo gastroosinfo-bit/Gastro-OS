@@ -431,7 +431,10 @@ function getResult(score) {
   }
 }
 
-async function submitReflexion() {
+async 
+function saveData() { submitReflexion(); }
+function resetData() { resetReflexion(); }
+function submitReflexion() {
   if (Object.keys(answers).length < 5) return;
 
   const total = Object.values(answers).reduce((a, b) => a + b, 0);
