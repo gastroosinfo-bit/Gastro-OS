@@ -5,227 +5,138 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GASTRO-OS – Modul 1 | Übersicht</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f0e8; color: #1a2a4a; min-height: 100vh; }
-  .header{background:#1a2a4a;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
-  .header .brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
-  .header .modul-label { font-size: 11px; color: #a0b0c8; letter-spacing: 3px; text-transform: uppercase; margin-top: 4px; }
-  .gold-bar { height: 3px; background: linear-gradient(90deg, #1a2a4a, #d4af37, #1a2a4a); }
-  .main { max-width: 780px; margin: 36px auto; padding: 0 24px 60px; }
-
-  /* Modul Header */
-  .modul-header { background: #1a2a4a; border-radius: 12px; padding: 28px 32px; margin-bottom: 28px; border: 2px solid #d4af37; }
-  .modul-header .nummer { font-size: 11px; color: #d4af37; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 8px; }
-  .modul-header h1 { font-family: Georgia, serif; font-size: 26px; color: #fff; margin-bottom: 12px; }
-  .modul-header p { font-size: 14px; color: #c0d0e8; line-height: 1.7; }
-
-  /* Intro */
-  .intro-box { background: #fff; border-left: 4px solid #d4af37; border-radius: 0 8px 8px 0; padding: 18px 22px; margin-bottom: 28px; font-size: 14px; color: #5060a0; line-height: 1.7; }
-
-  /* Inhaltsverzeichnis */
-  .ivz-title { font-family: Georgia, serif; font-size: 18px; color: #1a2a4a; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid #d4af37; }
-  .ivz-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 28px; }
-  .ivz-item { display: flex; align-items: center; gap: 16px; background: #fff; border: 1px solid #e8dfc8; border-radius: 8px; padding: 14px 18px; text-decoration: none; color: #1a2a4a; transition: all 0.2s; }
-  .ivz-item:hover { border-color: #d4af37; background: #fffdf8; transform: translateX(4px); }
-  .ivz-item .icon { font-size: 20px; flex-shrink: 0; width: 32px; text-align: center; }
-  .ivz-item .info { flex: 1; }
-  .ivz-item .info .titel { font-weight: 600; font-size: 14px; color: #1a2a4a; }
-  .ivz-item .info .untertitel { font-size: 12px; color: #8090a8; margin-top: 2px; }
-  .ivz-item .pfeil { color: #d4af37; font-size: 16px; flex-shrink: 0; }
-
-  /* Hinweis */
-  .hinweis-box { background: #fff8e8; border: 1px solid #d4af37; border-radius: 8px; padding: 18px 22px; margin-bottom: 28px; }
-  .hinweis-box p { font-size: 13px; color: #5a4000; line-height: 1.7; margin: 0; }
-
-  /* So gehst du vor */
-  .vorgehen { background: #fff; border-radius: 8px; padding: 20px 24px; border: 1px solid #e8dfc8; margin-bottom: 28px; }
-  .vorgehen h3 { font-size: 15px; font-weight: 700; color: #1a2a4a; margin-bottom: 12px; }
-  .vorgehen p { font-size: 13px; color: #5060a0; line-height: 1.7; margin-bottom: 8px; }
-  .vorgehen p:last-child { margin-bottom: 0; }
-
-  /* Start Button */
-  .start-btn { display: block; text-align: center; background: #1a2a4a; color: #d4af37; font-weight: 700; padding: 16px 28px; border-radius: 8px; text-decoration: none; font-size: 15px; letter-spacing: 1px; transition: background 0.2s; }
-  .start-btn:hover { background: #2a3a5a; }
-
-  .footer { background: #1a2a4a; margin-top: 48px; padding: 14px 40px; text-align: center; font-size: 11px; color: #8090a8; letter-spacing: 1px; }
-  .footer strong { color: #d4af37; }
-
-.btn-dashboard {
-  background: transparent;
-  border: 1px solid rgba(212,175,55,0.4);
-  color: #a0b0c8;
-  padding: 7px 16px;
-  border-radius: 6px;
-  font-size: 12px;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-block;
-  transition: all 0.2s;
-}
-.btn-dashboard:hover { border-color: #d4af37; color: #d4af37; }
-
-.btn-back-modul {
-  background: #d4af37;
-  color: #1a2a4a;
-  border: none;
-  padding: 9px 20px;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-block;
-  transition: all 0.2s;
-  letter-spacing: 0.3px;
-}
-.btn-back-modul:hover { background: #c8a030; color: #1a2a4a; }
-
-
+* {margin:0;padding:0;box-sizing:border-box}
+body {font-family:'Segoe UI',Arial,sans-serif;background:#f5f0e8;color:#1a2a4a;min-height:100vh}
+.header{background:#1a2a4a;padding:14px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
+.brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
+.btn-back-modul{background:#d4af37;color:#1a2a4a;border:none;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.2s;letter-spacing:0.3px;box-shadow:0 2px 6px rgba(212,175,55,0.3)}
+.btn-back-modul:hover{background:#c8a030;color:#1a2a4a}
+.gold-bar{height:3px;background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a)}
+.main{max-width:820px;margin:36px auto;padding:0 24px 60px}
+.modul-header{background:#1a2a4a;border-radius:12px;padding:28px 32px;margin-bottom:28px;border:2px solid #d4af37}
+.modul-header .nummer{font-size:12px;color:#d4af37;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;font-weight:600}
+.modul-header h1{font-family:Georgia,serif;font-size:26px;color:#fff;margin-bottom:12px;font-weight:normal}
+.modul-header p{font-size:14px;color:#a0b0c8;line-height:1.7;margin-bottom:0}
+.hinweis{background:#fff8e8;border:1.5px solid #d4af37;border-radius:8px;padding:16px 20px;margin:0 0 20px;font-size:14px;color:#5a4000;line-height:1.7}
 .content-grid{display:flex;flex-direction:column;gap:10px}
 .content-item{background:#fff;border-radius:8px;border:1px solid #e8dfc8;padding:16px 20px;display:flex;align-items:center;gap:14px;text-decoration:none;color:#1a2a4a;transition:border-color .15s}
-.content-item:hover{border-color:#d4af37}
+.content-item:hover{border-color:#d4af37;background:#fffdf8}
 .item-icon{font-size:22px;flex-shrink:0}
-.item-title{font-weight:600;font-size:14px}
-.item-sub{font-size:12px;color:#8090a8;margin-top:2px}
-.arrow{margin-left:auto;color:#d4af37;font-weight:700}
+.item-text{flex:1}
+.item-title{font-weight:600;font-size:14px;margin-bottom:2px}
+.item-sub{font-size:12px;color:#8090a8}
+.arrow{color:#d4af37;font-weight:700;font-size:16px;flex-shrink:0}
+.footer{background:#1a2a4a;margin-top:48px;padding:14px 40px;text-align:center;font-size:11px;color:#8090a8;letter-spacing:1px}
+.footer strong{color:#d4af37}
 </style>
 </head>
 <body>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 (function(){
-  // Rechtsklick & Tastenkürzel sperren
-  document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
-  document.addEventListener('keydown', function(e){
-    if (e.ctrlKey && ['s','u','p','a'].includes(e.key.toLowerCase())) e.preventDefault();
-    if (e.key === 'F12') e.preventDefault();
+  document.addEventListener('contextmenu',function(e){e.preventDefault();});
+  document.addEventListener('keydown',function(e){
+    if(e.ctrlKey&&['s','u','p','a'].includes(e.key.toLowerCase()))e.preventDefault();
+    if(e.key==='F12')e.preventDefault();
   });
-
-  // Supabase Auth Check
-  const sb = supabase.createClient(
-    'https://hchlganbgjeciwhwaisj.supabase.co',
-    'sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3'
-  );
+  const sb=supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3');
   (async function(){
-    const { data:{ session } } = await sb.auth.getSession();
-    if (!session) { window.location.href = 'login.html'; return; }
-    const { data: profile } = await sb.from('profiles')
-      .select('is_active,subscription_status')
-      .eq('id', session.user.id).maybeSingle();
-    if (profile && (!profile.is_active || profile.subscription_status !== 'active')) {
-      await sb.auth.signOut();
-      window.location.href = 'login.html';
-    }
+    const{data:{session}}=await sb.auth.getSession();
+    if(!session){window.location.href='login.html';return;}
+    const{data:p}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
+    if(p&&(!p.is_active||p.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
   })();
 })();
 </script>
 <div class="header">
   <div class="brand">GASTRO-OS</div>
-  <a href="modul1-uebersicht.html" class="btn-back-modul">← Zurück zu Modul 1</a>
+  <a href="dashboard.html" class="btn-back-modul">← Zurück zum Dashboard</a>
 </div>
 <div class="gold-bar"></div>
 
 <div class="main">
-
   <div class="modul-header">
     <div class="nummer">Modul 1</div>
     <h1>Unternehmer-Denken & Gewinn-Fokus</h1>
-    <p>Jetzt geht es darum wie du denkst. Der Unterschied zwischen einem Selbstständigen und einem Unternehmer verändert alles.</p>
-  </div>
-    <h1>Unternehmer-Denken & Gewinn-Fokus</h1>
-    <p>Du hast Modul 0 abgeschlossen — du weißt jetzt wo du stehst. Jetzt geht es darum wie du denkst. Der Unterschied zwischen einem Selbstständigen und einem Unternehmer verändert alles.</p>
+    <p>Der Unterschied zwischen einem Selbstständigen und einem Unternehmer verändert alles.</p>
   </div>
 
-  <div class="intro-box">
-    Bevor wir über Zahlen, Prozesse oder Marketing sprechen müssen wir über etwas Grundlegenderes sprechen: deinen Blick auf dein eigenes Business. Wie du es siehst, wie du Entscheidungen triffst — und warum der Unterschied zwischen einem Selbstständigen und einem Unternehmer alles verändert.
+  <div class="hinweis">💡 <strong>So gehst du vor:</strong> Starte mit dem Ankervideo. Dann die Lektionen. Am Ende der Unternehmer-Score.</div>
+
+  <div class="content-grid">
+  <a href="modul1-ankervideo.html" class="content-item">
+    <span class="item-icon">🎬</span>
+    <div class="item-text">
+      <div class="item-title">Ankervideo — Starte hier</div>
+      <div class="item-sub">Vom Selbstständigen zum Unternehmer</div>
+    </div>
+    <span class="arrow">→</span>
+  </a>
+  <a href="modul1-lektion1.html" class="content-item">
+    <span class="item-icon">📖</span>
+    <div class="item-text">
+      <div class="item-title">Lektion 1 — Vom Selbstständigen zum Unternehmer</div>
+      <div class="item-sub">Die Psychologie der Erschöpfung</div>
+    </div>
+    <span class="arrow">→</span>
+  </a>
+  <a href="modul1-lektion2.html" class="content-item">
+    <span class="item-icon">📖</span>
+    <div class="item-text">
+      <div class="item-title">Lektion 2 — Gewinn-Fokus</div>
+      <div class="item-sub">Warum Umsatz lügt</div>
+    </div>
+    <span class="arrow">→</span>
+  </a>
+  <a href="modul1-lektion3.html" class="content-item">
+    <span class="item-icon">📖</span>
+    <div class="item-text">
+      <div class="item-title">Lektion 3 — Deine Zahlen kennen</div>
+      <div class="item-sub">Die 3 wichtigsten Kennzahlen</div>
+    </div>
+    <span class="arrow">→</span>
+  </a>
+  <a href="modul1-lektion4.html" class="content-item">
+    <span class="item-icon">📖</span>
+    <div class="item-text">
+      <div class="item-title">Lektion 4 — Dein System aufbauen</div>
+      <div class="item-sub">Die ersten konkreten Schritte</div>
+    </div>
+    <span class="arrow">→</span>
+  </a>
+  <a href="modul1-podcast.html" class="content-item">
+    <span class="item-icon">🎙️</span>
+    <div class="item-text">
+      <div class="item-title">Küchenfunk #1 — Unternehmer-Denken</div>
+      <div class="item-sub">Für unterwegs — einfach zuhören</div>
+    </div>
+    <span class="arrow">→</span>
+  </a>
+  <a href="modul1-score-video.html" class="content-item">
+    <span class="item-icon">📸</span>
+    <div class="item-text">
+      <div class="item-title">So nutzt du den Unternehmer-Score</div>
+      <div class="item-sub">Erklärvideo in unter 1 Minute</div>
+    </div>
+    <span class="arrow">→</span>
+  </a>
+  <a href="modul1-score.html" class="content-item">
+    <span class="item-icon">📊</span>
+    <div class="item-text">
+      <div class="item-title">Unternehmer-Score — Wo stehst du?</div>
+      <div class="item-sub">Dein persönlicher Status-Check</div>
+    </div>
+    <span class="arrow">→</span>
+  </a>
+  <a href="modul1-quiz.html" class="content-item">
+    <span class="item-icon">🎯</span>
+    <div class="item-text">
+      <div class="item-title">Quiz — Teste dein Wissen</div>
+      <div class="item-sub">Schaltet Modul 2 frei</div>
+    </div>
+    <span class="arrow">→</span>
+  </a>
   </div>
-
-  <div class="ivz-title">📋 Was dich in diesem Modul erwartet</div>
-
-  <div class="ivz-list">
-    <a href="modul1-ankervideo.html" class="ivz-item">
-      <span class="icon">🎬</span>
-      <div class="info">
-        <div class="titel">Ankervideo — Starte hier</div>
-        <div class="untertitel">Schau das Video bevor du weiterliest</div>
-      </div>
-      <span class="pfeil">→</span>
-    </a>
-    <a href="modul1-lektion1.html" class="ivz-item">
-      <span class="icon">📖</span>
-      <div class="info">
-        <div class="titel">Lektion 1 — Vom Selbstständigen zum Unternehmer</div>
-        <div class="untertitel">Die Psychologie der Erschöpfung & die drei Rollen</div>
-      </div>
-      <span class="pfeil">→</span>
-    </a>
-    <a href="modul1-lektion2.html" class="ivz-item">
-      <span class="icon">📖</span>
-      <div class="info">
-        <div class="titel">Lektion 2 — Das Prinzip der Ersetzbarkeit</div>
-        <div class="untertitel">SOPs, die 70%-Regel und warum Delegation befreit</div>
-      </div>
-      <span class="pfeil">→</span>
-    </a>
-    <a href="modul1-lektion3.html" class="ivz-item">
-      <span class="icon">📖</span>
-      <div class="info">
-        <div class="titel">Lektion 3 — Gewinn-Fokus & die vier Säulen</div>
-        <div class="untertitel">Profit First, Leakage-Analyse und dein Gastro-System</div>
-      </div>
-      <span class="pfeil">→</span>
-    </a>
-    <a href="modul1-lektion4.html" class="ivz-item">
-      <span class="icon">📖</span>
-      <div class="info">
-        <div class="titel">Lektion 4 — Fallstudie & 30-Tage-Schlachtplan</div>
-        <div class="untertitel">Von der Theorie in die Praxis — Woche für Woche</div>
-      </div>
-      <span class="pfeil">→</span>
-    </a>
-    <a href="modul1-podcast.html" class="ivz-item">
-      <span class="icon">🎙️</span>
-      <div class="info">
-        <div class="titel">Küchenfunk #1 — Raus aus der Schürze</div>
-        <div class="untertitel">Dein Audio-Begleiter für unterwegs</div>
-      </div>
-      <span class="pfeil">→</span>
-    </a>
-    <a href="modul1-score-video.html" class="ivz-item">
-      <span class="icon">🎬</span>
-      <div class="info">
-        <div class="titel">So nutzt du den Unternehmer-Score</div>
-        <div class="untertitel">Kurze Videoanleitung — unter 1 Minute</div>
-      </div>
-      <span class="pfeil">→</span>
-    </a>
-    <a href="modul1-score.html" class="ivz-item">
-      <span class="icon">📊</span>
-      <div class="info">
-        <div class="titel">Unternehmer-Score</div>
-        <div class="untertitel">Finde heraus wo du heute wirklich stehst</div>
-      </div>
-      <span class="pfeil">→</span>
-    </a>
-    <a href="modul1-quiz.html" class="ivz-item">
-      <span class="icon">🎯</span>
-      <div class="info">
-        <div class="titel">Quiz — Teste dein Wissen</div>
-        <div class="untertitel">5 Fragen · sofortiges Feedback · unter 3 Minuten</div>
-      </div>
-      <span class="pfeil">→</span>
-    </a>
-  </div>
-
-  <div class="vorgehen">
-    <h3>📌 So gehst du vor</h3>
-    <p>Arbeite die Lektionen der Reihe nach durch. Überspringe nichts — jede Lektion baut auf der vorherigen auf.</p>
-    <p>Der Unternehmer-Score am Ende zeigt dir schwarz auf weiß wo du heute stehst — und wo die größten Hebel für deine Entwicklung liegen.</p>
-    <p style="color:#1a6030;font-weight:600;">Viel Erfolg! 💪</p>
-  </div>
-
-  <a href="modul1-ankervideo.html" class="start-btn">🎬 Jetzt mit dem Ankervideo starten →</a>
-
 </div>
 
 <div class="gold-bar"></div>

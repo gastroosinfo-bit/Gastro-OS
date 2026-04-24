@@ -3,118 +3,84 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lektion 3 – Expansion mit System | GASTRO-OS</title>
+<title>GASTRO-OS – Modul 10 | Lektion 3</title>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
 .header{background:#1a2a4a;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
 .brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
-.back-btn { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; cursor:pointer; text-decoration:none; transition:all 0.2s; }
-.back-btn:hover { border-color:#d4af37; color:#d4af37; }
+.btn-back-modul{background:#d4af37;color:#1a2a4a;border:none;padding:9px 20px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.2s;letter-spacing:0.3px}
+.btn-back-modul:hover{background:#c8a030;color:#1a2a4a}
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
-.main { max-width:760px; margin:36px auto; padding:0 24px 60px; }
-
-.page-tag { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; margin-bottom:8px; }
-.page-title { font-family:Georgia,serif; font-size:26px; color:#1a2a4a; margin-bottom:6px; }
-.page-welcome { font-size:13px; color:#8090a8; margin-bottom:32px; padding-bottom:20px; border-bottom:1px solid #e8dfc8; }
-
-.chapter { margin-bottom:40px; }
-.chapter-title { font-family:Georgia,serif; font-size:18px; color:#1a2a4a; margin-bottom:18px; padding:12px 18px; background:#fff; border-left:4px solid #d4af37; border-radius:0 8px 8px 0; box-shadow:0 1px 6px rgba(0,0,0,0.05); }
-
-p { font-size:14px; line-height:1.9; color:#2a3a4a; margin-bottom:16px; }
-
-.dim-list { display:flex; flex-direction:column; gap:12px; margin:20px 0; }
-.dim-item { background:#fff; border:1px solid #e8dfc8; border-radius:8px; padding:16px 20px; display:flex; gap:14px; align-items:flex-start; }
-.dim-num { background:#1a2a4a; color:#d4af37; width:32px; height:32px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; flex-shrink:0; margin-top:2px; }
-.dim-text { flex:1; }
-.dim-text strong { display:block; font-size:14px; color:#1a2a4a; margin-bottom:4px; }
-.dim-text span { font-size:13px; color:#4a5a6a; line-height:1.7; }
-
-.highlight-box { background:#1a2a4a; border-radius:10px; padding:22px 26px; margin:24px 0; }
-.highlight-box p { color:#c0cce0; margin-bottom:0; }
-.highlight-box strong { color:#d4af37; }
-
-.aufgabe-box { background:#fff; border:1px solid #d4af37; border-radius:10px; padding:20px 24px; margin:28px 0; }
-.aufgabe-box .aufgabe-title { font-size:12px; font-weight:700; color:#d4af37; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:10px; }
-.aufgabe-box p { font-size:13px; color:#2a3a4a; margin-bottom:0; line-height:1.8; }
-
-.hint-box { background:#e8f4fd; border:1px solid #b0d4f0; border-radius:8px; padding:14px 18px; margin:20px 0; display:flex; gap:12px; align-items:flex-start; }
-.hint-box .hint-icon { font-size:18px; flex-shrink:0; }
-.hint-box p { font-size:13px; color:#1a3a5a; margin-bottom:0; line-height:1.7; }
-.hint-box a { color:#1a6aaa; text-decoration:none; font-weight:600; }
-
-.nav-row { display:flex; gap:12px; justify-content:space-between; margin-top:36px; }
+.wrap { max-width:720px; margin:40px auto; padding:0 24px 60px; }
+.lbl { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:8px; }
+h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:10px; line-height:1.3; }
+.lektion-hero { background:#1a2a4a; border-radius:12px; padding:28px 32px; margin-bottom:28px; border:2px solid #d4af37; }
+.lektion-hero .lektion-tag { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:10px; }
+.lektion-hero h1 { font-family:Georgia,serif; font-size:26px; color:#fff; margin-bottom:0; font-weight:normal; line-height:1.3; }
+.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:20px 0 32px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:normal; margin:36px 0 14px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
+h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:24px 0 10px; }
+p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
+ul, ol { margin:12px 0 16px 20px; }
+li { font-size:15px; line-height:1.8; color:#2a3a54; margin-bottom:6px; }
+.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin-top:24px; }
+.aufgabe-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
+.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; }
+.highlight { background:#fff8e8; border-left:3px solid #d4af37; padding:14px 18px; margin:20px 0; font-size:14px; color:#5a4000; line-height:1.7; }
+.nav-row { display:flex; gap:12px; justify-content:space-between; margin-top:40px; }
 .nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:12px 24px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none; transition:all 0.2s; }
 .nav-btn:hover { background:#d4af37; color:#1a2a4a; }
 .nav-btn.secondary { background:transparent; border:1px solid rgba(26,42,74,0.3); color:#1a2a4a; }
 .nav-btn.secondary:hover { background:#1a2a4a; color:#d4af37; }
-
-.footer { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
-.footer strong { color:#d4af37; }
-
-.btn-dashboard {
-  background: transparent;
-  border: 1px solid rgba(212,175,55,0.4);
-  color: #a0b0c8;
-  padding: 7px 16px;
-  border-radius: 6px;
-  font-size: 12px;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-block;
-  transition: all 0.2s;
-}
-.btn-dashboard:hover { border-color: #d4af37; color: #d4af37; }
-.lektion-hero {
-  background: #1a2a4a;
-  border-radius: 12px;
-  padding: 28px 32px;
-  margin-bottom: 28px;
-  border: 2px solid #d4af37;
-}
-.lektion-hero .lektion-tag {
-  font-size: 11px;
-  color: #d4af37;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  font-weight: 600;
-  margin-bottom: 10px;
-}
-.lektion-hero h1, .lektion-hero .lektion-title {
-  font-family: Georgia, serif;
-  font-size: 26px;
-  color: #fff;
-  margin-bottom: 12px;
-  font-weight: normal;
-  line-height: 1.3;
-}
-.lektion-hero .lektion-intro-text {
-  font-size: 14px;
-  color: #a0b0c8;
-  line-height: 1.7;
-  margin-bottom: 0;
-}
-
-.btn-back-modul {
-  background: #d4af37;
-  color: #1a2a4a;
-  border: none;
-  padding: 9px 20px;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-block;
-  transition: all 0.2s;
-  letter-spacing: 0.3px;
-}
-.btn-back-modul:hover { background: #c8a030; color: #1a2a4a; }
-
+.footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-lbl strong { color:#d4af37; }
+.footer-main { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-main strong { color:#d4af37; }
+@media (max-width:600px) { .wrap{padding:0 16px 40px} h1{font-size:22px} h2{font-size:17px} }
 </style>
 </head>
 <body>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function(){
+  document.addEventListener('contextmenu',function(e){e.preventDefault();});
+  document.addEventListener('keydown',function(e){
+    if(e.ctrlKey&&['s','u','p','a'].includes(e.key.toLowerCase()))e.preventDefault();
+    if(e.key==='F12')e.preventDefault();
+  });
+  const sb=supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3');
+  (async function(){
+    const{data:{session}}=await sb.auth.getSession();
+    if(!session){window.location.href='login.html';return;}
+    const{data:profile}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
+    if(profile&&(!profile.is_active||profile.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
+  })();
+})();
+</script>
+<div class="header">
+  <div class="brand">GASTRO-OS</div>
+  <a href="modul10-uebersicht.html" class="btn-back-modul">← Zurück zu Modul 10</a>
+</div>
+<div class="gold-bar"></div>
+
+<div class="wrap">
+  <div class="lbl">Modul 10 · Lektion 3</div>
+  <div class="lektion-hero">
+    <div class="lektion-tag">Modul 10 · Lektion 3</div>
+    <h1>Expansion mit System</h1>
+  </div>
+  <div class="intro">Willkommen in Lektion 3 In Lektion 2 haben wir uns angeschaut welche sieben Signale zeigen dass ein Betrieb wirklich bereit für Wachstum ist und welche Wachstumsformen es gibt. Du hast bewertet wie stark dein Fundament heute ist und welche Wachstumsform für deinen Betrieb in den nächsten zwölf Monat</div>
+
+
+
+  <div class="nav-row">
+    <a href="modul10-lektion2.html" class="nav-btn secondary">← Lektion 2</a>
+    <a href="modul10-lektion4.html" class="nav-btn">Weiter zu Lektion 4 →</a>
+  </div>
+  <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
+</div>
+<div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
 <script>
 (function(){
   // Rechtsklick & Tastenkürzel sperren
@@ -142,137 +108,5 @@ p { font-size:14px; line-height:1.9; color:#2a3a4a; margin-bottom:16px; }
   })();
 })();
 </script>
-<div class="header">
-  <div class="brand">GASTRO-OS</div>
-  <a href="modul10-uebersicht.html" class="btn-back-modul">← Zurück zu Modul 10</a>
-</div>
-<div class="gold-bar"></div>
-
-<div class="main">
-  <div class="lektion-hero">
-    <div class="lektion-tag">Modul 10 · Lektion 3</div>
-    <div class="lektion-title">Expansion mit System</div>
-    <p class="lektion-intro-text">Willkommen in Lektion 3 In Lektion 2 haben wir uns angeschaut welche sieben Signale zeigen dass ein Betrieb wirklich bereit für Wachstum ist und welche Wachstumsformen es gibt. Du hast bewertet wie stark dein Fundament heute ist und welche Wachstumsform für deinen Betrieb in den nächsten zwölf Monat</p>
-  </div>
-
-  <!-- KAPITEL 1 -->
-  <div class="chapter">
-    <div class="chapter-title">Kapitel 1: Den richtigen Standort finden und bewerten</div>
-
-    <p><strong>Warum der Standort über alles entscheidet</strong></p>
-    <p>In der Gastronomie gibt es einen Satz der seit Jahrzehnten gilt und der trotzdem immer wieder vergessen wird wenn die Expansionseuphorie einsetzt. Die drei wichtigsten Faktoren für den Erfolg eines Restaurants sind Lage, Lage und Lage.</p>
-    <p>Das ist eine Übertreibung. Aber sie enthält eine wichtige Wahrheit. Der Standort ist in der Gastronomie ein entscheidender Erfolgsfaktor der durch kein noch so gutes Konzept vollständig kompensiert werden kann. Ein mittelmäßiges Konzept an einem perfekten Standort kann erfolgreich sein. Ein perfektes Konzept am falschen Standort scheitert fast immer.</p>
-    <p>Und trotzdem werden Standortentscheidungen in der Gastronomie häufig auf Basis von Bauchgefühl getroffen. Der Laden sah gut aus. Die Straße wirkte belebt. Der Vermieter war nett. Das sind keine ausreichenden Entscheidungsgrundlagen für eine Investition die oft sechsstellige Beträge erfordert.</p>
-    <p>Eine strukturierte Standortanalyse ersetzt das Bauchgefühl durch Daten. Sie zeigt dir objektiv ob ein Standort das Potenzial hat das du dir vorstellst. Und sie zeigt dir die Risiken bevor du den Mietvertrag unterschreibst.</p>
-
-    <p><strong>Die fünf Dimensionen der Standortanalyse</strong></p>
-    <p>Eine gründliche Standortanalyse betrachtet fünf Dimensionen die zusammen ein vollständiges Bild des Standortpotenzials ergeben.</p>
-
-    <div class="dim-list">
-      <div class="dim-item">
-        <div class="dim-num">1</div>
-        <div class="dim-text">
-          <strong>Die Laufkundschaft</strong>
-          <span>Wie viele Menschen passieren den Standort täglich. Zu welchen Zeiten ist die Frequenz am höchsten. Ist die Laufkundschaft die richtige Zielgruppe für dein Konzept. Diese Analyse erfordert tatsächliches Beobachten vor Ort. An verschiedenen Tagen, zu verschiedenen Zeiten. Nicht einmal kurz vorbeischauen. Mehrfach, systematisch, mit Notizen.</span>
-        </div>
-      </div>
-      <div class="dim-item">
-        <div class="dim-num">2</div>
-        <div class="dim-text">
-          <strong>Die Konkurrenz</strong>
-          <span>Wer ist bereits in der direkten Umgebung. Welche Konzepte gibt es. Wie sind sie bewertet. Wo sind die Lücken die du füllen könntest. Konkurrenz ist nicht automatisch ein negatives Signal. Eine Gastromeile zieht mehr Gäste an als ein einzelnes Restaurant in einer ruhigen Straße. Aber zu viel direkte Konkurrenz mit identischem Konzept macht die Differenzierung schwieriger.</span>
-        </div>
-      </div>
-      <div class="dim-item">
-        <div class="dim-num">3</div>
-        <div class="dim-text">
-          <strong>Die wirtschaftlichen Rahmenbedingungen</strong>
-          <span>Wie hoch ist die Miete in Relation zu dem Umsatz den der Standort realistisch generieren kann. Die Faustregel in der Gastronomie lautet, die Miete sollte nicht mehr als 8 bis 10 Prozent des Umsatzes ausmachen. Wenn die Miete höher ist, muss der Standort außergewöhnliche andere Vorteile haben.</span>
-        </div>
-      </div>
-      <div class="dim-item">
-        <div class="dim-num">4</div>
-        <div class="dim-text">
-          <strong>Die Erreichbarkeit</strong>
-          <span>Wie gut ist der Standort mit öffentlichen Verkehrsmitteln erreichbar. Gibt es ausreichend Parkplätze in der Nähe. Ist der Standort für Lieferanten gut zugänglich. Ein Restaurant das schlecht erreichbar ist, hat eine höhere Hemmschwelle bei neuen Gästen die es noch nicht kennen.</span>
-        </div>
-      </div>
-      <div class="dim-item">
-        <div class="dim-num">5</div>
-        <div class="dim-text">
-          <strong>Das lokale Umfeld</strong>
-          <span>Wer sind die Anwohner und Passanten in diesem Bereich. Wie hoch ist die Kaufkraft. Welche anderen Geschäfte und Angebote gibt es in der Nähe. Gibt es Ankernutzer die regelmäßig Menschen in die Gegend bringen, zum Beispiel ein großes Bürogebäude, ein Einkaufszentrum, eine Schule, ein Krankenhaus.</span>
-        </div>
-      </div>
-    </div>
-
-    <p><strong>Das Standort Analyse Tool als Entscheidungsgrundlage</strong></p>
-    <p>Das Standort Analyse Tool das du in diesem Modul kennenlernst, führt dich systematisch durch alle fünf Dimensionen der Standortanalyse. Es hilft dir die richtigen Fragen zu stellen, die richtigen Daten zu sammeln und am Ende eine fundierte Bewertung des Standortpotenzials zu erstellen.</p>
-    <p>Es ersetzt nicht den gesunden Menschenverstand und dein Gespür als Gastronom. Aber es ergänzt dieses Gespür mit einer strukturierten Analyse die sicherstellt dass du keine wichtigen Faktoren übersiehst.</p>
-    <p>Nutze das Tool für jeden Standort den du ernsthaft in Betracht ziehst. Nicht einmal oberflächlich. Gründlich und ehrlich. Die Zeit die du in diese Analyse investierst ist die günstigste Versicherung gegen eine falsche Standortentscheidung die du kaufen kannst.</p>
-
-    <p><strong>Der Mietvertrag als kritischer Moment</strong></p>
-    <p>Ein letzter Punkt zur Standortfrage der oft unterschätzt wird. Der Mietvertrag. In der Gastronomie ist der Mietvertrag eines der wichtigsten Dokumente die du je unterschreiben wirst. Er bindet dich für Jahre an einen Standort und an Konditionen die deine Profitabilität direkt beeinflussen.</p>
-    <p>Wichtige Punkte im Mietvertrag die du prüfen musst. Die Mietlaufzeit und die Verlängerungsoptionen. Die Regelungen zu Mieterhöhungen. Die Klauseln zu Umbaumaßnahmen und wer dafür zahlt. Die Bedingungen für eine vorzeitige Kündigung wenn es nicht funktioniert. Und die Regelungen zu Untervermietung und Nachmieter wenn du den Betrieb irgendwann übergeben möchtest.</p>
-
-    <div class="highlight-box">
-      <p><strong>Wichtig:</strong> Lass den Mietvertrag immer von einem Anwalt prüfen bevor du unterschreibst. Die Kosten dafür sind gering im Vergleich zu dem Schaden den ein ungünstiger Mietvertrag über Jahre verursachen kann.</p>
-    </div>
-
-    <div class="aufgabe-box">
-      <div class="aufgabe-title">✏️ Deine Aufgabe für Kapitel 1</div>
-      <p>Wenn du einen konkreten Standort in Betracht ziehst, besuche ihn jetzt mindestens dreimal zu verschiedenen Tageszeiten und an verschiedenen Wochentagen. Beobachte die Laufkundschaft, die Konkurrenz und das Umfeld. Schreib deine Beobachtungen auf. Und öffne danach das Standort Analyse Tool um deine Beobachtungen systematisch zu bewerten.</p>
-    </div>
-
-    <div class="hint-box">
-      <div class="hint-icon">📊</div>
-      <p>Das Standort Analyse Tool inkl. Finanzcheck findest du im Tab <a href="modul10-tool.html">📊 Standort Analyse Tool</a>.</p>
-    </div>
-  </div>
-
-  <!-- KAPITEL 2 -->
-  <div class="chapter">
-    <div class="chapter-title">Kapitel 2: Ein neues Team aufbauen und Qualität sichern</div>
-
-    <p><strong>Die größte Herausforderung bei der Expansion</strong></p>
-    <p>Die größte Herausforderung bei der Expansion ist nicht die Finanzierung. Nicht die Standortwahl. Nicht das Konzept. Die größte Herausforderung ist Menschen. Ein neues Team aufbauen das nach denselben Standards arbeitet wie dein bestehendes. Und gleichzeitig sicherstellen dass die Qualität am ersten Standort nicht leidet während du am zweiten aufbaust.</p>
-    <p>Das ist der Moment in dem sich zeigt ob das Fundament wirklich stark genug ist. Denn wenn dein System, deine Prozesse und dein bestehendes Team stark genug sind um den ersten Standort ohne deine ständige Anwesenheit zu tragen, hast du die Ressourcen die du für den Aufbau des zweiten brauchst. Wenn nicht, wirst du zwischen beiden Standorten zerrissen.</p>
-
-    <p><strong>Wie du ein neues Team für den zweiten Standort aufbaust</strong></p>
-    <p>Der Aufbau eines neuen Teams beginnt nicht mit der Stellenausschreibung. Er beginnt mit der Frage welche Person die Führungsrolle am neuen Standort übernimmt. Die Standortleitung.</p>
-    <p>Diese Person ist die wichtigste Entscheidung die du bei einer Expansion triffst. Wichtiger als der Standort. Wichtiger als das Konzept. Denn eine starke Führungskraft am zweiten Standort kann viele andere Dinge ausgleichen. Eine schwache Führungskraft kann den besten Standort mit dem besten Konzept zum Scheitern bringen.</p>
-    <p>Idealer weise kommt die Führungskraft für den zweiten Standort aus deinem bestehenden Team. Jemand der deine Werte kennt, deine Prozesse versteht und deine Kultur lebt. Jemand dem du vertraust und dem du Verantwortung übergeben kannst. Der Schichtleiter den du in Modul 6 aufgebaut hast, ist oft der beste Kandidat.</p>
-    <p>Wenn niemand aus dem bestehenden Team für diese Rolle in Frage kommt, muss die Führungskraft extern gefunden werden. Das ist aufwendiger und riskanter. Denn eine externe Führungskraft kennt deine Kultur nicht. Sie muss sie erst lernen. Das braucht Zeit, intensive Einarbeitung und eine Probezeit am bestehenden Standort bevor sie den neuen übernimmt.</p>
-
-    <p><strong>Die Einarbeitung am bestehenden Standort</strong></p>
-    <p>Die wirksamste Methode um eine Führungskraft für den zweiten Standort vorzubereiten ist die intensive Einarbeitung am bestehenden Standort. Nicht ein kurzer Schnupperkurs. Eine wirkliche Einarbeitung über mehrere Wochen oder Monate in der die zukünftige Standortleitung alle Abläufe kennenlernt, nach deinen SOPs arbeitet und die Unternehmenskultur verinnerlicht.</p>
-    <p>In dieser Phase lernt sie wie du denkst, wie du Entscheidungen triffst und was dir wichtig ist. Sie lernt dein System kennen, nicht nur theoretisch sondern praktisch. Und du lernst ob sie wirklich die richtige Person für diese Verantwortung ist.</p>
-    <p>Die SOPs aus Modul 5 und die Rollenbeschreibungen aus Modul 6 sind die Grundlage für diese Einarbeitung. Sie machen das Wissen das sonst in deinem Kopf ist übertragbar und lernbar.</p>
-
-    <p><strong>Qualitätssicherung während der Expansion</strong></p>
-    <p>Während du dich auf den Aufbau des zweiten Standorts konzentrierst, läuft der erste Standort weiter. Und er muss weiterhin dieselbe Qualität liefern die deine Gäste kennen und erwarten.</p>
-    <p>Das erfordert ein klares Qualitätssicherungssystem. Regelmäßige kurze Besuche am ersten Standort. Klare Kennzahlen die du aus der Ferne im Blick behalten kannst, Umsatz, Bewertungen, Wareneinsatz. Einen vertrauenswürdigen Schichtleiter der die tägliche Verantwortung trägt. Und einen offenen Kommunikationskanal der sicherstellt dass Probleme zu dir kommen bevor sie eskalieren.</p>
-    <p>Die wöchentlichen Zehn Minuten Gespräche mit dem Schichtleiter aus Modul 6 sind in dieser Phase besonders wertvoll. Sie halten dich informiert ohne dass du täglich vor Ort sein musst. Und sie geben dem Schichtleiter die Sicherheit dass er nicht allein gelassen wird.</p>
-
-    <p><strong>Die ersten sechs Monate am neuen Standort</strong></p>
-    <p>Die ersten sechs Monate am neuen Standort sind die kritischsten. In dieser Phase wird das Fundament des zweiten Betriebs gelegt. Die Kultur, die Qualitätsstandards, die Prozesse, die Beziehung zum Team.</p>
-    <p>In diesen sechs Monaten solltest du deutlich mehr Zeit am neuen Standort verbringen als danach. Nicht weil du jeden Tag da sein musst. Sondern weil deine Präsenz in dieser Phase die Kultur prägt die danach ohne dich weiterlebt.</p>
-    <p>Nach sechs Monaten sollte der zweite Standort so weit stehen dass er ähnlich selbständig funktioniert wie der erste. Nicht perfekt. Aber selbständig genug dass du wieder mehr Zeit für den ersten Standort und für strategische Aufgaben hast.</p>
-    <p>Und dann beginnt der Kreislauf von neuem. Ein stabiles System das ohne dich läuft. Ein Team das führt. Prozesse die übertragbar sind. Die Voraussetzungen für den nächsten Schritt.</p>
-
-    <div class="aufgabe-box">
-      <div class="aufgabe-title">✏️ Deine Aufgabe für Kapitel 2</div>
-      <p>Schreib jetzt auf wer in deinem bestehenden Team das Potenzial hat die Führungsrolle am zweiten Standort zu übernehmen. Wenn niemand in Frage kommt, schreib auf was diese Person mitbringen müsste und wo du sie finden könntest. Und schreib auf welche deiner SOPs und Rollenbeschreibungen bereits so dokumentiert sind dass sie für ein neues Team übertragbar wären. Was fehlt noch. Das ist dein nächster konkreter Schritt in Richtung Expansion.</p>
-    </div>
-  </div>
-
-  <div class="nav-row">
-    <a href="modul10-lektion2.html" class="nav-btn secondary">← Lektion 2</a>
-    <a href="modul10-lektion4.html" class="nav-btn">Weiter zu Lektion 4 →</a>
-  </div>
-</div>
-
-<div class="gold-bar"></div>
-<div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
 </body>
 </html>
