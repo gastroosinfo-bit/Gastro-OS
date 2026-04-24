@@ -3,237 +3,293 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sterne Level System – Modul 11 | GASTRO-OS</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<title>Sterne-Level System – Modul 11 | GASTRO-OS</title>
 <style>
-* { margin:0; padding:0; box-sizing:border-box; }
-body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
-.header { background:#1a2a4a; padding:16px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); position:sticky; top:0; z-index:100; }
-.brand { font-family:Georgia,serif; font-size:20px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
-.back-btn { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; cursor:pointer; text-decoration:none; transition:all 0.2s; }
-.back-btn:hover { border-color:#d4af37; color:#d4af37; }
-.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
-.main { max-width:960px; margin:32px auto; padding:0 20px 60px; }
-.tool-hero { background:#1a2a4a; border-radius:10px; padding:22px 28px; margin-bottom:24px; }
-.tool-hero h1 { font-family:Georgia,serif; font-size:19px; color:#d4af37; margin-bottom:6px; }
-.tool-hero p { font-size:13px; color:#a0b0c8; line-height:1.7; }
-.section { background:#fff; border:1px solid #e8dfc8; border-radius:10px; margin-bottom:20px; overflow:hidden; }
-.section-head { background:#1a2a4a; padding:12px 20px; display:flex; align-items:center; gap:10px; }
-.section-num { background:#d4af37; color:#1a2a4a; width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; flex-shrink:0; }
-.section-head h2 { font-family:Georgia,serif; font-size:14px; color:#fff; }
-.level-table { width:100%; border-collapse:collapse; }
-.level-table td { padding:10px 12px; border-bottom:1px solid #f0ece4; font-size:13px; }
-.level-table tr:last-child td { border-bottom:none; }
-.stars { font-size:16px; color:#d4af37; }
-.level-name { font-weight:700; color:#1a2a4a; }
-.level-desc { color:#4a5a6a; font-size:12px; }
-.tool-table { width:100%; border-collapse:collapse; }
-.tool-table th { background:#e8dfc8; color:#1a2a4a; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.8px; padding:10px 12px; text-align:left; }
-.tool-table th.center { text-align:center; }
-.tool-table td { padding:9px 12px; border-bottom:1px solid #f0ece4; font-size:13px; vertical-align:middle; }
-.tool-table tr:last-child td { border-bottom:none; }
-.tool-table tr:hover td { background:#faf8f4; }
-.label-col { font-weight:600; color:#1a2a4a; }
-.desc-col { color:#8090a8; font-size:12px; font-style:italic; }
-.rating-select { width:100%; border:1px solid #d0c8b0; border-radius:5px; padding:6px 8px; font-size:13px; color:#1a2a4a; background:#faf8f4; cursor:pointer; }
-.rating-select:focus { outline:none; border-color:#d4af37; }
-.total-row td { background:#1a2a4a !important; color:#fff; font-weight:700; padding:12px; }
-.total-row .score-cell { color:#d4af37; font-size:16px; text-align:center; font-family:Georgia,serif; }
-.total-label { color:#d4af37; font-family:Georgia,serif; font-size:13px; text-transform:uppercase; letter-spacing:1px; }
-.tool-input { width:100%; border:1px solid #d0c8b0; border-radius:5px; padding:7px 10px; font-size:13px; color:#1a2a4a; background:#faf8f4; font-family:inherit; transition:border 0.2s; }
-.tool-input:focus { outline:none; border-color:#d4af37; background:#fff; }
-.tool-textarea { width:100%; border:1px solid #d0c8b0; border-radius:5px; padding:7px 10px; font-size:13px; color:#1a2a4a; background:#faf8f4; resize:vertical; min-height:60px; font-family:inherit; transition:border 0.2s; }
-.tool-textarea:focus { outline:none; border-color:#d4af37; background:#fff; }
-.fazit-grid { padding:20px; display:flex; flex-direction:column; gap:14px; }
-.fazit-row label { display:block; font-size:11px; font-weight:700; color:#1a2a4a; text-transform:uppercase; letter-spacing:1px; margin-bottom:5px; }
-.save-row { padding:14px 20px; border-top:1px solid #e8dfc8; display:flex; align-items:center; gap:12px; justify-content:flex-end; }
-.save-btn { background:#1a2a4a; color:#d4af37; border:none; padding:10px 24px; border-radius:7px; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; }
-.save-btn:hover { background:#d4af37; color:#1a2a4a; }
-.save-status { font-size:12px; color:#4aaa70; display:none; }
-.nav-row { display:flex; gap:12px; justify-content:space-between; margin-top:28px; }
-.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:12px 24px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none; transition:all 0.2s; }
-.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
-.nav-btn.secondary { background:transparent; border:1px solid rgba(26,42,74,0.3); color:#1a2a4a; }
-.nav-btn.secondary:hover { background:#1a2a4a; color:#d4af37; }
-.footer { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
-.footer strong { color:#d4af37; }
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f0e8;color:#1a2a4a;min-height:100vh}
+.header{background:#1a2a4a;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
+.brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
+.gold-bar{height:3px;background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a)}
+.wrap{max-width:720px;margin:40px auto;padding:0 24px 60px}
+.lektion-hero{background:#1a2a4a;border-radius:12px;padding:28px 32px;margin-bottom:28px;border:2px solid #d4af37}
+.lektion-hero .lektion-tag{font-size:11px;color:#d4af37;letter-spacing:2px;text-transform:uppercase;font-weight:600;margin-bottom:10px}
+.lektion-hero h1{font-family:Georgia,serif;font-size:26px;color:#fff;margin-bottom:0;font-weight:normal;line-height:1.3}
+.intro{background:#fff;border-left:4px solid #d4af37;padding:16px 20px;border-radius:0 8px 8px 0;font-size:14px;color:#3a4a6a;margin:0 0 32px;line-height:1.8;box-shadow:0 2px 8px rgba(0,0,0,0.05)}
+h2{font-family:Georgia,serif;font-size:19px;color:#1a2a4a;font-weight:normal;margin:36px 0 14px;padding-bottom:8px;border-bottom:1px solid #e8dfc8}
+h3{font-family:Georgia,serif;font-size:16px;color:#1a2a4a;font-weight:normal;margin:24px 0 10px}
+p{font-size:15px;line-height:1.85;color:#2a3a54;margin-bottom:16px}
+.aufgabe{background:#1a2a4a;color:#f5f0e8;border-radius:8px;padding:18px 22px;margin:24px 0;font-size:14px;line-height:1.7}
+.aufgabe strong{color:#d4af37}
+.highlight{background:#fff8e8;border-left:3px solid #d4af37;padding:14px 18px;margin:20px 0;font-size:14px;color:#5a4000;line-height:1.7}
+ul,ol{margin:12px 0 16px 20px}
+li{font-size:15px;line-height:1.8;color:#2a3a54;margin-bottom:6px}
+.nav-row{display:flex;gap:12px;justify-content:space-between;margin-top:40px}
+.nav-btn{background:#1a2a4a;color:#d4af37;border:none;padding:12px 24px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;transition:all 0.2s}
+.nav-btn:hover{background:#d4af37;color:#1a2a4a}
+.nav-btn.secondary{background:transparent;border:1px solid rgba(26,42,74,0.3);color:#1a2a4a}
+.nav-btn.secondary:hover{background:#1a2a4a;color:#d4af37}
+.footer{background:#1a2a4a;margin-top:48px;padding:14px 40px;text-align:center;font-size:11px;color:#8090a8;letter-spacing:1px}
+.footer strong{color:#d4af37}
+.wrap{max-width:820px}
+.action-row{display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap}
+.btn-save{background:#1a2a4a;color:#d4af37;border:none;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s}
+.btn-save:hover{background:#d4af37;color:#1a2a4a}
+.btn-print{background:#8a7040;color:#fff;border:none;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s}
+.btn-print:hover{background:#d4af37;color:#1a2a4a}
+.btn-reset{background:transparent;border:1px solid #a0b0c8;color:#5060a0;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s}
+.btn-reset:hover{background:#f0ece0;color:#1a2a4a}
+.save-msg{font-size:13px;color:#4a8a4a;align-self:center}
 
-.btn-dashboard {
-  background: transparent;
-  border: 1px solid rgba(212,175,55,0.4);
-  color: #a0b0c8;
-  padding: 7px 16px;
+.btn-back-modul {
+  background: #d4af37;
+  color: #1a2a4a;
+  border: none;
+  padding: 9px 20px;
   border-radius: 6px;
-  font-size: 12px;
+  font-size: 13px;
+  font-weight: 700;
   cursor: pointer;
   text-decoration: none;
   display: inline-block;
   transition: all 0.2s;
+  letter-spacing: 0.3px;
 }
-.btn-dashboard:hover { border-color: #d4af37; color: #d4af37; }
+.btn-back-modul:hover { background: #c8a030; color: #1a2a4a; }
+
+.sterne-card{background:#fff;border:1px solid #e8dfc8;border-radius:10px;padding:24px 28px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,0.04)}
+.sterne-card h3{font-family:Georgia,serif;font-size:17px;color:#1a2a4a;margin-bottom:12px}
+.sterne-row{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.sterne-label{font-size:14px;color:#3a4a6a;min-width:220px}
+.sterne-select{background:#f5f0e8;border:1px solid #e8dfc8;border-radius:6px;padding:7px 12px;font-size:14px;color:#1a2a4a;cursor:pointer;width:120px}
+.sterne-note{width:100%;background:#f5f0e8;border:1px solid #e8dfc8;border-radius:6px;padding:8px 12px;font-size:13px;color:#3a4a6a;resize:vertical;min-height:60px;margin-top:8px;font-family:'Segoe UI',Arial,sans-serif}
+.level-badge{display:inline-block;background:#1a2a4a;color:#d4af37;font-size:12px;font-weight:700;padding:4px 14px;border-radius:20px;letter-spacing:1px;margin-bottom:16px}
+.gesamt-box{background:#1a2a4a;border-radius:10px;padding:20px 24px;margin-top:24px;text-align:center}
+.gesamt-box .gesamt-label{font-size:13px;color:#a0b0c8;margin-bottom:6px}
+.gesamt-box .gesamt-sterne{font-size:36px;margin-bottom:4px}
+.gesamt-box .gesamt-level{font-size:16px;color:#d4af37;font-weight:700}
+@media print{.action-row,.header,.gold-bar,.footer,.nav-row{display:none!important}.wrap{margin:0;padding:0}.sterne-card{break-inside:avoid}}
 </style>
-<script>
-(function(){
-  document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
-  document.addEventListener('keydown', function(e){
-    if (e.ctrlKey && ['s','u','p','a'].includes(e.key.toLowerCase())) e.preventDefault();
-    if (e.key === 'F12') e.preventDefault();
-  });
-})();
-</script>
 </head>
 <body>
-<div class="header"><div class="brand">GASTRO-OS
-  <a href="dashboard.html" class="btn-dashboard">← Zurück zum Dashboard</a>
-</div><a href="modul11-uebersicht.html" class="back-btn">← Modulübersicht</a></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function(){
+  document.addEventListener('contextmenu',function(e){e.preventDefault();});
+  document.addEventListener('keydown',function(e){
+    if(e.ctrlKey&&['s','u','p','a'].includes(e.key.toLowerCase()))e.preventDefault();
+    if(e.key==='F12')e.preventDefault();
+  });
+  const sb=supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3');
+  (async function(){
+    const{data:{session}}=await sb.auth.getSession();
+    if(!session){window.location.href='login.html';return;}
+    const{data:profile}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
+    if(profile&&(!profile.is_active||profile.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
+  })();
+})();
+</script>
+<div class="header">
+  <div class="brand">GASTRO-OS</div>
+  <a href="modul11-uebersicht.html" class="btn-back-modul">← Zurück zu Modul 11</a>
+</div>
 <div class="gold-bar"></div>
-<div class="main">
-  <div class="tool-hero">
-    <h1>GASTRO-OS | Sterne-Level-System</h1>
-    <p>Modul 11: Bonus-Modul – Wo stehst du auf dem Weg vom Selbstständigen zum Unternehmer?<br>
-    Bewerte dich in jedem Bereich ehrlich von 1–5. Am Ende siehst du dein aktuelles Gesamtlevel und wo die größten Hebel für deine Weiterentwicklung liegen. Keine richtigen oder falschen Antworten — nur ehrliche.</p>
+
+<div class="wrap">
+  <div class="lektion-hero" style="margin-bottom:20px">
+    <div class="lektion-tag">Modul 11 · Tool</div>
+    <h1>⭐ Sterne-Level System</h1>
   </div>
 
-  <!-- ① DIE 5 LEVEL -->
-  <div class="section">
-    <div class="section-head"><div class="section-num">①</div><h2>DIE 5 STERNE-LEVEL — Was bedeuten sie?</h2></div>
-    <table class="level-table">
-      <tr><td style="width:80px"><span class="stars">⭐</span></td><td><span class="level-name">Level 1 — Einsteiger</span><br><span class="level-desc">Du arbeitest hauptsächlich im Betrieb. Wenig Struktur, viel Improvisation.</span></td></tr>
-      <tr><td><span class="stars">⭐⭐</span></td><td><span class="level-name">Level 2 — Im Aufbau</span><br><span class="level-desc">Erste Strukturen entstehen. Du beginnst Prozesse zu dokumentieren.</span></td></tr>
-      <tr><td><span class="stars">⭐⭐⭐</span></td><td><span class="level-name">Level 3 — Auf dem Weg</span><br><span class="level-desc">Klare Abläufe, Team funktioniert teilweise selbstständig, Zahlen bekannt.</span></td></tr>
-      <tr><td><span class="stars">⭐⭐⭐⭐</span></td><td><span class="level-name">Level 4 — Unternehmer</span><br><span class="level-desc">Betrieb läuft auch ohne dich. Du arbeitest am System, nicht im System.</span></td></tr>
-      <tr><td><span class="stars">⭐⭐⭐⭐⭐</span></td><td><span class="level-name">Level 5 — Gastro-OS Master</span><br><span class="level-desc">Vollständige Freiheit. Skalierbar. Du bestimmst wann und wie du arbeitest.</span></td></tr>
-    </table>
+  <div class="action-row">
+    <button class="btn-save" onclick="saveData()">💾 Speichern</button>
+    <button class="btn-print" onclick="window.print()">🖨️ Drucken / PDF</button>
+    <button class="btn-reset" onclick="resetData()">↺ Neu starten</button>
+    <span class="save-msg" id="save-msg"></span>
   </div>
 
-  <!-- ② SELBSTBEWERTUNG -->
-  <div class="section">
-    <div class="section-head"><div class="section-num">②</div><h2>DEINE SELBSTBEWERTUNG — Bewerte dich ehrlich von 1 (schwach) bis 5 (stark)</h2></div>
-    <table class="tool-table">
-      <thead><tr><th style="width:20%">Bereich</th><th style="width:30%">Beschreibung</th><th class="center" style="width:13%">Meine Bewertung</th><th class="center" style="width:12%">Kursstart</th><th class="center" style="width:12%">Monat 6</th><th class="center" style="width:12%">Monat 12</th></tr></thead>
-      <tbody id="bewertung-body"></tbody>
-      <tfoot>
-        <tr class="total-row">
-          <td colspan="2" class="total-label">DEIN GESAMTSCORE</td>
-          <td class="score-cell" id="score_aktuell">—</td>
-          <td class="score-cell" id="score_start">—</td>
-          <td class="score-cell" id="score_m6">—</td>
-          <td class="score-cell" id="score_m12">—</td>
-        </tr>
-      </tfoot>
-    </table>
-  </div>
-
-  <!-- ③ STÄRKEN & SCHWÄCHEN -->
-  <div class="section">
-    <div class="section-head"><div class="section-num">③</div><h2>DEIN STÄRKEN- &amp; SCHWÄCHENPROFIL</h2></div>
-    <div class="fazit-grid">
-      <div class="fazit-row"><label>Meine 3 stärksten Bereiche</label><textarea class="tool-textarea" id="sw_staerken" placeholder="Wo bin ich bereits gut aufgestellt?" oninput="autosave()"></textarea></div>
-      <div class="fazit-row"><label>Meine 3 größten Hebel</label><textarea class="tool-textarea" id="sw_hebel" placeholder="Wo liegt das meiste Verbesserungspotenzial?" oninput="autosave()"></textarea></div>
-      <div class="fazit-row"><label>Mein Fokus-Bereich diesen Monat</label><input class="tool-input" id="sw_fokus" placeholder="Eine Sache die ich als nächstes angehe" oninput="autosave()"></div>
-      <div class="fazit-row"><label>Was halte ich mich selbst auf?</label><textarea class="tool-textarea" id="sw_blockade" placeholder="Ehrliche Antwort — was blockiert mich?" oninput="autosave()"></textarea></div>
+  <div class="sterne-card">
+    <div class="level-badge">BEREICH 1 — FINANZEN & ZAHLEN</div>
+    <div class="sterne-row">
+      <span class="sterne-label">Ich kenne meinen Wareneinsatz</span>
+      <select class="sterne-select" id="f1" onchange="updateGesamt()">
+        <option value="0">☆☆☆ – Noch nicht</option>
+        <option value="1">★☆☆ – Anfänger</option>
+        <option value="2">★★☆ – Gut</option>
+        <option value="3">★★★ – Profi</option>
+      </select>
     </div>
-    <div class="save-row">
-      <span class="save-status" id="save-status">✓ Gespeichert</span>
-      <button class="save-btn" onclick="saveData()">💾 Speichern</button>
+    <div class="sterne-row">
+      <span class="sterne-label">Ich kontrolliere meine Kosten monatlich</span>
+      <select class="sterne-select" id="f2" onchange="updateGesamt()">
+        <option value="0">☆☆☆ – Noch nicht</option>
+        <option value="1">★☆☆ – Anfänger</option>
+        <option value="2">★★☆ – Gut</option>
+        <option value="3">★★★ – Profi</option>
+      </select>
     </div>
+    <div class="sterne-row">
+      <span class="sterne-label">Ich habe einen monatlichen Gewinnplan</span>
+      <select class="sterne-select" id="f3" onchange="updateGesamt()">
+        <option value="0">☆☆☆ – Noch nicht</option>
+        <option value="1">★☆☆ – Anfänger</option>
+        <option value="2">★★☆ – Gut</option>
+        <option value="3">★★★ – Profi</option>
+      </select>
+    </div>
+    <textarea class="sterne-note" id="f_note" placeholder="Meine Notizen zu diesem Bereich..."></textarea>
   </div>
 
-  <div class="nav-row">
-    <a href="modul11-sterne-video.html" class="nav-btn secondary">← Anleitung</a>
+  <div class="sterne-card">
+    <div class="level-badge">BEREICH 2 — STRUKTUR & PROZESSE</div>
+    <div class="sterne-row">
+      <span class="sterne-label">Ich habe schriftliche Prozesse (SOPs)</span>
+      <select class="sterne-select" id="s1" onchange="updateGesamt()">
+        <option value="0">☆☆☆ – Noch nicht</option>
+        <option value="1">★☆☆ – Anfänger</option>
+        <option value="2">★★☆ – Gut</option>
+        <option value="3">★★★ – Profi</option>
+      </select>
+    </div>
+    <div class="sterne-row">
+      <span class="sterne-label">Mein Betrieb läuft ohne mich (Testtag)</span>
+      <select class="sterne-select" id="s2" onchange="updateGesamt()">
+        <option value="0">☆☆☆ – Noch nicht</option>
+        <option value="1">★☆☆ – Anfänger</option>
+        <option value="2">★★☆ – Gut</option>
+        <option value="3">★★★ – Profi</option>
+      </select>
+    </div>
+    <div class="sterne-row">
+      <span class="sterne-label">Ich plane meinen Einkauf strukturiert</span>
+      <select class="sterne-select" id="s3" onchange="updateGesamt()">
+        <option value="0">☆☆☆ – Noch nicht</option>
+        <option value="1">★☆☆ – Anfänger</option>
+        <option value="2">★★☆ – Gut</option>
+        <option value="3">★★★ – Profi</option>
+      </select>
+    </div>
+    <textarea class="sterne-note" id="s_note" placeholder="Meine Notizen zu diesem Bereich..."></textarea>
+  </div>
+
+  <div class="sterne-card">
+    <div class="level-badge">BEREICH 3 — TEAM & FÜHRUNG</div>
+    <div class="sterne-row">
+      <span class="sterne-label">Alle Mitarbeiter haben klare Rollen</span>
+      <select class="sterne-select" id="t1" onchange="updateGesamt()">
+        <option value="0">☆☆☆ – Noch nicht</option>
+        <option value="1">★☆☆ – Anfänger</option>
+        <option value="2">★★☆ – Gut</option>
+        <option value="3">★★★ – Profi</option>
+      </select>
+    </div>
+    <div class="sterne-row">
+      <span class="sterne-label">Ich führe regelmäßige Feedbackgespräche</span>
+      <select class="sterne-select" id="t2" onchange="updateGesamt()">
+        <option value="0">☆☆☆ – Noch nicht</option>
+        <option value="1">★☆☆ – Anfänger</option>
+        <option value="2">★★☆ – Gut</option>
+        <option value="3">★★★ – Profi</option>
+      </select>
+    </div>
+    <div class="sterne-row">
+      <span class="sterne-label">Ich bilde mein Team aktiv weiter</span>
+      <select class="sterne-select" id="t3" onchange="updateGesamt()">
+        <option value="0">☆☆☆ – Noch nicht</option>
+        <option value="1">★☆☆ – Anfänger</option>
+        <option value="2">★★☆ – Gut</option>
+        <option value="3">★★★ – Profi</option>
+      </select>
+    </div>
+    <textarea class="sterne-note" id="t_note" placeholder="Meine Notizen zu diesem Bereich..."></textarea>
+  </div>
+
+  <div class="sterne-card">
+    <div class="level-badge">BEREICH 4 — FREIZEIT & LEBENSQUALITÄT</div>
+    <div class="sterne-row">
+      <span class="sterne-label">Ich habe mindestens 1 freien Tag pro Woche</span>
+      <select class="sterne-select" id="l1" onchange="updateGesamt()">
+        <option value="0">☆☆☆ – Noch nicht</option>
+        <option value="1">★☆☆ – Anfänger</option>
+        <option value="2">★★☆ – Gut</option>
+        <option value="3">★★★ – Profi</option>
+      </select>
+    </div>
+    <div class="sterne-row">
+      <span class="sterne-label">Ich mache regelmäßig Urlaub</span>
+      <select class="sterne-select" id="l2" onchange="updateGesamt()">
+        <option value="0">☆☆☆ – Noch nicht</option>
+        <option value="1">★☆☆ – Anfänger</option>
+        <option value="2">★★☆ – Gut</option>
+        <option value="3">★★★ – Profi</option>
+      </select>
+    </div>
+    <div class="sterne-row">
+      <span class="sterne-label">Ich arbeite strategisch AM statt IM Betrieb</span>
+      <select class="sterne-select" id="l3" onchange="updateGesamt()">
+        <option value="0">☆☆☆ – Noch nicht</option>
+        <option value="1">★☆☆ – Anfänger</option>
+        <option value="2">★★☆ – Gut</option>
+        <option value="3">★★★ – Profi</option>
+      </select>
+    </div>
+    <textarea class="sterne-note" id="l_note" placeholder="Meine Notizen zu diesem Bereich..."></textarea>
+  </div>
+
+  <div class="gesamt-box">
+    <div class="gesamt-label">Dein aktuelles Gesamtergebnis</div>
+    <div class="gesamt-sterne" id="gesamt-sterne">☆☆☆☆☆☆☆☆☆☆☆☆</div>
+    <div class="gesamt-level" id="gesamt-level">Noch keine Auswahl</div>
+  </div>
+
+  <div class="nav-row" style="margin-top:24px">
+    <a href="modul11-lektion4.html" class="nav-btn secondary">← Lektion 4</a>
     <a href="modul11-quiz.html" class="nav-btn">Zum Quiz →</a>
   </div>
 </div>
+
 <div class="gold-bar"></div>
-<div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg &nbsp;|&nbsp; Modul 11: Bonus – Sterne-Level-System</div>
+<div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
 
 <script>
-const SUPABASE_URL='https://hchlganbgjeciwhwaisj.supabase.co';
-const SUPABASE_KEY='sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3';
-const{createClient}=supabase;
-const sb=createClient(SUPABASE_URL,SUPABASE_KEY);
-let currentUser=null,saveTimer=null;
+const FIELDS = ['f1','f2','f3','s1','s2','s3','t1','t2','t3','l1','l2','l3'];
+const NOTES  = ['f_note','s_note','t_note','l_note'];
 
-const BEREICHE=[
-  {icon:'💰',name:'Zahlen & Finanzen',  desc:'Kennst du deinen Wareneinsatz, Deckungsbeitrag und Gewinn regelmäßig?'},
-  {icon:'👥',name:'Team & Führung',      desc:'Laufen Prozesse ohne dich? Hat jeder klare Rollen?'},
-  {icon:'⏱',name:'Zeitmanagement',       desc:'Hast du feste Zeiten für Familie, Freizeit und Unternehmeraufgaben?'},
-  {icon:'📋',name:'Prozesse & Struktur', desc:'Sind deine wichtigsten Abläufe dokumentiert und replizierbar?'},
-  {icon:'📣',name:'Marketing & Sichtbarkeit', desc:'Ist dein Google-Profil gepflegt? Wächst deine Sichtbarkeit?'},
-  {icon:'💡',name:'Unternehmer-Mindset', desc:'Denkst du strategisch oder nur operativ? Arbeitest du AM Betrieb?'},
-  {icon:'🍽',name:'Speisekarte & Marge', desc:'Kennst du deine Stars, Puzzles, Plowhorses und Dogs?'},
-  {icon:'🏗',name:'Systeme & Skalierung',desc:'Könnte dein Betrieb einen zweiten Standort tragen?'},
-  {icon:'😌',name:'Persönliche Freiheit', desc:'Hast du echte freie Zeit? Urlaub? Keine ständige Erreichbarkeit?'},
-  {icon:'📈',name:'Wachstum & Ziele',    desc:'Hast du klare Jahresziele und einen Plan um sie zu erreichen?'},
-];
-
-function makeSelect(id){
-  return `<select class="rating-select" id="${id}" onchange="calcScore();autosave()"><option value="0">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select>`;
+function updateGesamt() {
+  let total = FIELDS.reduce((sum,id) => sum + parseInt(document.getElementById(id).value||0), 0);
+  let max = FIELDS.length * 3;
+  let pct = total / max;
+  let stars = Math.round(pct * 12);
+  let filled = '★'.repeat(stars) + '☆'.repeat(12-stars);
+  document.getElementById('gesamt-sterne').textContent = filled;
+  let level = pct >= 0.85 ? '🏆 GASTRO-OS Profi' : pct >= 0.65 ? '⭐⭐⭐ Fortgeschritten' : pct >= 0.4 ? '⭐⭐ Auf dem Weg' : '⭐ Starter – du bist auf dem richtigen Weg';
+  document.getElementById('gesamt-level').textContent = level;
 }
 
-function buildTable(){
-  const tbody=document.getElementById('bewertung-body');
-  BEREICHE.forEach((b,i)=>{
-    const tr=document.createElement('tr');
-    tr.innerHTML=`<td class="label-col">${b.icon} ${b.name}</td><td class="desc-col">${b.desc}</td>
-      <td style="text-align:center">${makeSelect('b_aktuell_'+i)}</td>
-      <td style="text-align:center">${makeSelect('b_start_'+i)}</td>
-      <td style="text-align:center">${makeSelect('b_m6_'+i)}</td>
-      <td style="text-align:center">${makeSelect('b_m12_'+i)}</td>`;
-    tbody.appendChild(tr);
-  });
+function saveData() {
+  let d = {};
+  FIELDS.forEach(id => d[id] = document.getElementById(id).value);
+  NOTES.forEach(id => d[id] = document.getElementById(id).value);
+  localStorage.setItem('m11_sterne', JSON.stringify(d));
+  let msg = document.getElementById('save-msg');
+  msg.textContent = '✓ Gespeichert';
+  msg.style.display = 'inline';
+  setTimeout(() => msg.style.display='none', 2000);
 }
 
-function calcScore(){
-  const cols=['aktuell','start','m6','m12'];
-  cols.forEach(col=>{
-    let total=0,count=0;
-    BEREICHE.forEach((_,i)=>{
-      const v=parseFloat(document.getElementById('b_'+col+'_'+i)?.value||0);
-      if(v>0){total+=v;count++;}
-    });
-    const el=document.getElementById('score_'+col);
-    if(el)el.textContent=count>0?(total/count).toFixed(1)+' / 5':'—';
-  });
+function resetData() {
+  if(!confirm('Wirklich alles zurücksetzen?')) return;
+  FIELDS.forEach(id => document.getElementById(id).value = '0');
+  NOTES.forEach(id => document.getElementById(id).value = '');
+  localStorage.removeItem('m11_sterne');
+  updateGesamt();
 }
 
-function collectData(){
-  const d={};
-  BEREICHE.forEach((_,i)=>{
-    ['aktuell','start','m6','m12'].forEach(col=>{
-      const el=document.getElementById('b_'+col+'_'+i);
-      if(el)d['b_'+col+'_'+i]=el.value;
-    });
-  });
-  ['sw_staerken','sw_hebel','sw_fokus','sw_blockade'].forEach(f=>{
-    const el=document.getElementById(f);if(el)d[f]=el.value;
-  });
-  return d;
-}
-
-function fillData(d){
-  if(!d)return;
-  Object.keys(d).forEach(k=>{const el=document.getElementById(k);if(el)el.value=d[k];});
-  calcScore();
-}
-
-async function saveData(){
-  if(!currentUser)return;
-  await sb.from('user_tool_data').upsert({user_id:currentUser.id,tool_name:'modul11_sterne',data:collectData(),updated_at:new Date().toISOString()},{onConflict:'user_id,tool_name'});
-  const el=document.getElementById('save-status');
-  if(el){el.style.display='inline';setTimeout(()=>{el.style.display='none';},2000);}
-}
-function autosave(){clearTimeout(saveTimer);saveTimer=setTimeout(saveData,1500);}
-
-async function init(){
-  buildTable();
-  const{data:{session}}=await sb.auth.getSession();
-  if(!session){window.location.href='login.html';return;}
-  currentUser=session.user;
-  const{data:td}=await sb.from('user_tool_data').select('data').eq('user_id',currentUser.id).eq('tool_name','modul11_sterne').maybeSingle();
-  if(td&&td.data)fillData(td.data);
-}
-init();
+window.onload = function() {
+  let d = JSON.parse(localStorage.getItem('m11_sterne')||'{}');
+  FIELDS.forEach(id => { if(d[id]) document.getElementById(id).value = d[id]; });
+  NOTES.forEach(id => { if(d[id]) document.getElementById(id).value = d[id]; });
+  updateGesamt();
+};
 </script>
 </body>
 </html>

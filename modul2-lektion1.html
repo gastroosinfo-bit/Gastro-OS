@@ -7,8 +7,8 @@
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
-.header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
-.brand { font-family:Georgia,serif; font-size:18px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.header{background:#1a2a4a;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
+.brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
 .back-btn { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; text-decoration:none; display:inline-block; transition:all 0.2s; }
 .back-btn:hover { border-color:#d4af37; color:#d4af37; }
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
@@ -55,6 +55,23 @@ p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
   line-height: 1.7;
   margin-bottom: 0;
 }
+
+.btn-back-modul {
+  background: #d4af37;
+  color: #1a2a4a;
+  border: none;
+  padding: 9px 20px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.2s;
+  letter-spacing: 0.3px;
+}
+.btn-back-modul:hover { background: #c8a030; color: #1a2a4a; }
+
 </style>
 </head>
 <body>
@@ -86,7 +103,10 @@ p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
   })();
 })();
 </script>
-<div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html" class="back-btn">← Zurück zum Dashboard</a></div>
+<div class="header">
+  <div class="brand">GASTRO-OS</div>
+  <a href="modul2-uebersicht.html" class="btn-back-modul">← Zurück zu Modul 2</a>
+</div>
 <div class="gold-bar"></div>
 <div class="wrap">
   <div class="lbl">Modul 2 · Lektion 1</div>
