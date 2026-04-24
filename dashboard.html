@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GASTRO-OS – Dashboard</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
 // ── HASH NAVIGATION — open module from URL anchor ──────────────
 function openModuleFromHash() {
   const hash = window.location.hash; // e.g. #modul-8
@@ -24,7 +25,8 @@ function openModuleFromHash() {
     if (card) card.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, 400);
 }
-
+// Call on page load
+window.addEventListener('DOMContentLoaded', openModuleFromHash);
 </script>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
@@ -746,6 +748,9 @@ async function init() {
   // Fortschritt rendern
   // Gesperrte Module rendern
   renderLockedModules();
+
+  // Hash-Navigation: aufgeklapptes Modul wiederherstellen
+  openModuleFromHash();
 }
 
 // ── Modul-Karte sperren ───────────────────────────────────
