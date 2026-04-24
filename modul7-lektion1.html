@@ -3,111 +3,58 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lektion 1 — Die versteckten Kostenvernichter | GASTRO-OS</title>
-<style>* { margin:0; padding:0; box-sizing:border-box; }
+<title>GASTRO-OS – Modul 7 | Lektion 1</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
 .header{background:#1a2a4a;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
 .brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
-.back-btn { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; text-decoration:none; display:inline-block; transition:all 0.2s; }
-.back-btn:hover { border-color:#d4af37; color:#d4af37; }
+.btn-back-modul{background:#d4af37;color:#1a2a4a;border:none;padding:9px 20px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.2s;letter-spacing:0.3px}
+.btn-back-modul:hover{background:#c8a030;color:#1a2a4a}
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
 .wrap { max-width:720px; margin:40px auto; padding:0 24px 60px; }
 .lbl { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:8px; }
 h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:10px; line-height:1.3; }
+.lektion-hero { background:#1a2a4a; border-radius:12px; padding:28px 32px; margin-bottom:28px; border:2px solid #d4af37; }
+.lektion-hero .lektion-tag { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:10px; }
+.lektion-hero h1 { font-family:Georgia,serif; font-size:26px; color:#fff; margin-bottom:0; font-weight:normal; line-height:1.3; }
 .intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:20px 0 32px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
 h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:normal; margin:36px 0 14px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
 h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:24px 0 10px; }
 p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
+ul, ol { margin:12px 0 16px 20px; }
+li { font-size:15px; line-height:1.8; color:#2a3a54; margin-bottom:6px; }
 .aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin-top:24px; }
 .aufgabe-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
 .aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; }
-.hinweis { background:#fff3cd; border:1px solid #d4a800; border-radius:8px; padding:16px 18px; margin:20px 0; }
-.hinweis p { font-size:14px; color:#856404; margin-bottom:0; }
-.hinweis p strong { color:#6a4f00; }
-.kennzahlen { background:#1a2a4a; border-radius:8px; padding:20px 24px; margin:20px 0; }
-.kennzahlen p { color:#a0b0c8; font-size:14px; margin-bottom:6px; }
-.kennzahlen p:last-child { margin-bottom:0; }
-.kennzahlen span { color:#d4af37; font-weight:600; }
-.next-step { background:#fff; border:2px solid #d4af37; border-radius:8px; padding:20px 24px; margin-top:36px; }
-.next-step-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
-.next-step p { font-size:14px; color:#3a4a6a; margin-bottom:0; }
+.highlight { background:#fff8e8; border-left:3px solid #d4af37; padding:14px 18px; margin:20px 0; font-size:14px; color:#5a4000; line-height:1.7; }
+.nav-row { display:flex; gap:12px; justify-content:space-between; margin-top:40px; }
+.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:12px 24px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none; transition:all 0.2s; }
+.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
+.nav-btn.secondary { background:transparent; border:1px solid rgba(26,42,74,0.3); color:#1a2a4a; }
+.nav-btn.secondary:hover { background:#1a2a4a; color:#d4af37; }
 .footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-lbl strong { color:#d4af37; }
 .footer-main { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
-.footer-main strong { color:#d4af37; }.lektion-hero {
-  background: #1a2a4a;
-  border-radius: 12px;
-  padding: 28px 32px;
-  margin-bottom: 28px;
-  border: 2px solid #d4af37;
-}
-.lektion-hero .lektion-tag {
-  font-size: 11px;
-  color: #d4af37;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  font-weight: 600;
-  margin-bottom: 10px;
-}
-.lektion-hero h1 {
-  font-family: Georgia, serif;
-  font-size: 26px;
-  color: #fff;
-  margin-bottom: 12px;
-  font-weight: normal;
-  line-height: 1.3;
-}
-.lektion-hero .lektion-intro-text {
-  font-size: 14px;
-  color: #a0b0c8;
-  line-height: 1.7;
-  margin-bottom: 0;
-}
-
-.btn-back-modul {
-  background: #d4af37;
-  color: #1a2a4a;
-  border: none;
-  padding: 9px 20px;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-block;
-  transition: all 0.2s;
-  letter-spacing: 0.3px;
-}
-.btn-back-modul:hover { background: #c8a030; color: #1a2a4a; }
-
+.footer-main strong { color:#d4af37; }
+@media (max-width:600px) { .wrap{padding:0 16px 40px} h1{font-size:22px} h2{font-size:17px} }
 </style>
 </head>
 <body>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 (function(){
-  // Rechtsklick & Tastenkürzel sperren
-  document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
-  document.addEventListener('keydown', function(e){
-    if (e.ctrlKey && ['s','u','p','a'].includes(e.key.toLowerCase())) e.preventDefault();
-    if (e.key === 'F12') e.preventDefault();
+  document.addEventListener('contextmenu',function(e){e.preventDefault();});
+  document.addEventListener('keydown',function(e){
+    if(e.ctrlKey&&['s','u','p','a'].includes(e.key.toLowerCase()))e.preventDefault();
+    if(e.key==='F12')e.preventDefault();
   });
-
-  // Supabase Auth Check
-  const sb = supabase.createClient(
-    'https://hchlganbgjeciwhwaisj.supabase.co',
-    'sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3'
-  );
+  const sb=supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3');
   (async function(){
-    const { data:{ session } } = await sb.auth.getSession();
-    if (!session) { window.location.href = 'login.html'; return; }
-    const { data: profile } = await sb.from('profiles')
-      .select('is_active,subscription_status')
-      .eq('id', session.user.id).maybeSingle();
-    if (profile && (!profile.is_active || profile.subscription_status !== 'active')) {
-      await sb.auth.signOut();
-      window.location.href = 'login.html';
-    }
+    const{data:{session}}=await sb.auth.getSession();
+    if(!session){window.location.href='login.html';return;}
+    const{data:profile}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
+    if(profile&&(!profile.is_active||profile.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
   })();
 })();
 </script>
@@ -116,15 +63,16 @@ p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
   <a href="modul7-uebersicht.html" class="btn-back-modul">← Zurück zu Modul 7</a>
 </div>
 <div class="gold-bar"></div>
+
 <div class="wrap">
   <div class="lbl">Modul 7 · Lektion 1</div>
   <div class="lektion-hero">
     <div class="lektion-tag">Modul 7 · Lektion 1</div>
     <h1>Die versteckten Kostenvernichter</h1>
   </div>
-  <div class="intro">In Modul 6 haben wir uns angeschaut wie du dein Team führst, klare Rollen definierst und einen Schichtleiter aufbaust der Entscheidungen trifft wenn du nicht da bist. Du hast gelernt dass Struktur nicht nur Prozesse braucht sondern auch Menschen die klar wissen was von ihnen erwartet wird. Das war ein wichtiger Schritt. Jetzt wechseln wir die Perspektive. Nicht mehr das Team, nicht mehr die Abläufe. Sondern die Zahlen. Genauer gesagt die Zahlen die du nicht siehst. Die Kosten die sich eingeschlichen haben weil niemand genau hingeschaut hat. Die Verluste die sich jeden Tag wiederholen weil kein System existiert das sie verhindert. In Lektion 1 schauen wir uns an warum Kostenkontrolle so vielen Gastronomen schwerfällt, was versteckte Kostenvernichter überhaupt sind und wo sie in einem typischen Gastronomiebetrieb lauern. Das ist die Grundlage für alles was in Modul 7 folgt.</div>
+  <div class="intro">In Modul 6 haben wir uns angeschaut wie du dein Team führst, klare Rollen definierst und einen Schichtleiter aufbaust der Entscheidungen trifft wenn du nicht da bist. Du hast gelernt dass Struktur nicht nur Prozesse braucht sondern auch Menschen die klar wissen was von ihnen erwartet wird. Das war ein wichtiger Schritt. Jetzt wechseln wir die Perspektive. Nicht mehr das Team, nicht mehr die Abläuf</div>
 
-  <h2>Kapitel 1: Warum Kostenkontrolle so vielen Gastronomen schwerfällt</h2>
+<h2>Kapitel 1: Warum Kostenkontrolle so vielen Gastronomen schwerfällt</h2>
   <h3>Das Tagesgeschäft frisst die Kontrolle</h3>
   <p>Es gibt einen Grund warum Kostenkontrolle in der Gastronomie so häufig vernachlässigt wird. Nicht weil Gastronomen es nicht wollen. Nicht weil sie die Zahlen nicht kennen sollten. Sondern weil im Tagesgeschäft schlicht keine Zeit dafür bleibt.</p>
   <p>Wenn der Laden läuft, läuft er. Und wenn er nicht läuft, bist du damit beschäftigt ihn wieder zum Laufen zu bringen. Die Frage was kostet uns das eigentlich genau kommt dabei selten an erste Stelle. Sie kommt meistens dann wenn es zu spät ist. Wenn der Steuerberater am Jahresende die Zahlen präsentiert. Wenn die Liquidität eng wird. Wenn die Marge trotz gutem Umsatz nicht stimmt.</p>
@@ -166,8 +114,37 @@ p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
   <p>Modul 7 ist ein Unternehmer-Modul. Es geht nicht darum Zahlen zu verstehen die bereits passiert sind. Es geht darum Systeme aufzubauen die dafür sorgen dass die richtigen Zahlen entstehen. Schritt für Schritt, Bereich für Bereich, Gewohnheit für Gewohnheit.</p>
   <p>Und wie bei allem in Gastro-OS gilt auch hier, du musst nicht alles auf einmal ändern. Jede einzelne Maßnahme bringt für sich bereits einen messbaren Effekt. Fang mit einer Sache an. Mach sie zur Gewohnheit. Dann kommt die nächste.</p>
   <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 2</div><p>Schreib jetzt auf wie hoch dein aktueller Wareneinsatz in Prozent ist. Wenn du es nicht genau weißt, schätze ihn. Und schreib danach auf was eine Reduktion um einen Prozentpunkt bei deinem monatlichen Umsatz bedeuten würde. Diese Zahl ist deine Motivation für alles was in Modul 7 folgt.</p></div>
+
+  
   <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
 </div>
 <div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+<script>
+(function(){
+  // Rechtsklick & Tastenkürzel sperren
+  document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
+  document.addEventListener('keydown', function(e){
+    if (e.ctrlKey && ['s','u','p','a'].includes(e.key.toLowerCase())) e.preventDefault();
+    if (e.key === 'F12') e.preventDefault();
+  });
+
+  // Supabase Auth Check
+  const sb = supabase.createClient(
+    'https://hchlganbgjeciwhwaisj.supabase.co',
+    'sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3'
+  );
+  (async function(){
+    const { data:{ session } } = await sb.auth.getSession();
+    if (!session) { window.location.href = 'login.html'; return; }
+    const { data: profile } = await sb.from('profiles')
+      .select('is_active,subscription_status')
+      .eq('id', session.user.id).maybeSingle();
+    if (profile && (!profile.is_active || profile.subscription_status !== 'active')) {
+      await sb.auth.signOut();
+      window.location.href = 'login.html';
+    }
+  })();
+})();
+</script>
 </body>
 </html>

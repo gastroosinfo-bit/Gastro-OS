@@ -38,10 +38,10 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 }
 .btn-save  { background:#1a2a4a; color:#d4af37; }
 .btn-save:hover  { background:#d4af37; color:#1a2a4a; }
-.btn-print{background:#8a7040;color:#fff;border:none;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s}
+.btn-print{background:#a09060;color:#fff;border:none;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s}
 .btn-print:hover{background:#d4af37;color:#1a2a4a}
-.btn-reset{background:transparent;border:1px solid #a0b0c8;color:#5060a0;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s}
-.btn-reset:hover{background:#f0ece0;color:#1a2a4a}
+.btn-reset{background:transparent;border:1.5px solid #c0b090;color:#8070a0;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s}
+.btn-reset:hover{background:#f0ece0;color:#1a2a4a;border-color:#1a2a4a}
 .save-msg { font-size:12px; color:#4aaa60; display:none; margin-left:6px; }
 
 /* ── FORM WRAPPER ── */
@@ -250,6 +250,14 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 }
 .btn-back-modul:hover { background: #c8a030; color: #1a2a4a; }
 
+.action-row{display:flex;gap:10px;margin-bottom:28px;flex-wrap:wrap;align-items:center;padding:16px 0;border-bottom:2px solid #e8dfc8}
+.btn-save{background:#1a2a4a;color:#d4af37;border:none;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s}
+.btn-save:hover{background:#d4af37;color:#1a2a4a}
+.btn-print{background:#a09060;color:#fff;border:none;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s}
+.btn-print:hover{background:#d4af37;color:#1a2a4a}
+.btn-reset{background:transparent;border:1.5px solid #c0b090;color:#8070a0;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s}
+.btn-reset:hover{background:#f0ece0;color:#1a2a4a;border-color:#1a2a4a}
+.save-msg{font-size:13px;color:#4a8a4a;align-self:center;display:none}
 </style>
 <script>
 (function(){
@@ -276,7 +284,7 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
   </div>
   <button class="btn-toolbar btn-save" onclick="saveData()">💾 Speichern</button>
   <button class="btn-toolbar btn-print" onclick="window.print()">🖨️ Drucken</button>
-  <button class="btn-toolbar btn-reset" onclick="resetForm()">🔄 Neu starten</button>
+  <button class="btn-toolbar btn-reset" onclick="resetForm()">↺ Neu starten</button>
   <span class="save-msg" id="save-msg">✓ Gespeichert</span>
 </div>
 
