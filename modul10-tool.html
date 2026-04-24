@@ -332,27 +332,17 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
     <div class="section">
       <div class="section-head"><div class="section-num">③</div><h2>ENTSCHEIDUNG — Deine finale Einschätzung</h2></div>
 
-      <div id="empfehlung-box" style="display:none;margin-bottom:24px">
-        <!-- Score Box -->
-        <div style="background:#1a2a4a;border-radius:10px;padding:24px;text-align:center;margin-bottom:12px">
-          <div style="font-size:11px;color:#a0b0c8;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px">GASTRO-OS GESAMTSCORE</div>
-          <div id="empfehlung-score" style="font-size:42px;color:#d4af37;font-weight:700;font-family:Georgia,serif;line-height:1">—</div>
-          <div style="font-size:11px;color:#a0b0c8;margin:4px 0 12px">von 100 Punkten</div>
-          <div id="empfehlung-text" style="font-size:15px;color:#fff;font-weight:600">—</div>
+      <div id="empfehlung-box" style="display:none;margin-bottom:20px">
+        <div style="background:#1a2a4a;border-radius:10px;padding:28px 24px;text-align:center;margin-bottom:0;border-radius:10px 10px 0 0">
+          <div id="empfehlung-score" style="font-family:Georgia,serif;font-size:48px;font-weight:700;color:#d4af37;line-height:1;margin-bottom:6px">—</div>
+          <div style="font-size:12px;color:#a0b0c8;letter-spacing:1px;margin-bottom:12px">Standort-Score</div>
+          <div id="empfehlung-text" style="font-size:15px;font-weight:600;color:#fff">—</div>
         </div>
-        <!-- Stärken & Risiken -->
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
-          <div style="background:#e8f5e9;border:1px solid #a5d6a7;border-radius:8px;padding:14px 16px">
-            <div style="font-size:11px;color:#2e7d32;font-weight:700;letter-spacing:1px;margin-bottom:8px">✅ STÄRKEN</div>
-            <div id="empfehlung-staerken" style="font-size:13px;color:#2e7d32;line-height:1.7">—</div>
-          </div>
-          <div style="background:#fff8e1;border:1px solid #ffe082;border-radius:8px;padding:14px 16px">
-            <div style="font-size:11px;color:#f57f17;font-weight:700;letter-spacing:1px;margin-bottom:8px">⚠️ RISIKEN</div>
-            <div id="empfehlung-risiken" style="font-size:13px;color:#e65100;line-height:1.7">—</div>
-          </div>
+        <div id="empfehlung-staerken-row" style="background:#f5f0e8;border:1px solid #e8dfc8;border-top:none;border-radius:0 0 10px 10px;padding:12px 18px;display:flex;justify-content:space-between;align-items:center">
+          <span id="empfehlung-staerken" style="font-size:13px;color:#3a4a6a">—</span>
+          <span id="empfehlung-check" style="background:#4a8a4a;color:#fff;border-radius:4px;width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0">✓</span>
         </div>
-        <!-- Empfehlung Text -->
-        <div id="empfehlung-sub" style="background:#f5f0e8;border-left:4px solid #d4af37;border-radius:0 8px 8px 0;padding:14px 18px;font-size:14px;color:#5a4000;line-height:1.7">—</div>
+        <div id="empfehlung-sub" style="display:none"></div>
       </div>
 
       <table class="tool-table">
@@ -516,21 +506,30 @@ function calcGesamt(){
   const subEl=document.getElementById('empfehlung-sub');
   const staEl=document.getElementById('empfehlung-staerken');
   const risEl=document.getElementById('empfehlung-risiken');
-  if(scoreEl)scoreEl.textContent=best.score100+'/100';
-  const col=best.score>=3.5?'#4a8a4a':best.score>=2.5?'#d4af37':'#e06060';
-  if(scoreEl)scoreEl.style.color=col;
+  const scoreEl=document.getElementById('empfehlung-score');
+  const txtEl=document.getElementById('empfehlung-text');
+  const staEl=document.getElementById('empfehlung-staerken');
+  const checkEl=document.getElementById('empfehlung-check');
+  if(scoreEl){
+    scoreEl.textContent=best.score100+'/100';
+    scoreEl.style.color=best.score>=3.5?'#4a8a4a':best.score>=2.5?'#d4af37':'#e06060';
+  }
   if(txtEl){
-    if(best.score>=3.5)txtEl.textContent='✅ Empfehlung: '+best.name;
-    else if(best.score>=2.5)txtEl.textContent='🟡 Potenzial vorhanden — sorgfältig prüfen: '+best.name;
-    else txtEl.textContent='❌ Keiner der Standorte überzeugt aktuell';
+    if(best.score>=3.5){txtEl.innerHTML='<span style="color:#4aaa4a">●</span> ✅ Empfehlung: '+best.name;}
+    else if(best.score>=2.5){txtEl.innerHTML='<span style="color:#d4af37">●</span> Potenzial vorhanden — sorgfältig prüfen';}
+    else{txtEl.innerHTML='<span style="color:#e06060">●</span> Keiner der Standorte überzeugt aktuell';}
   }
-  if(subEl){
-    if(best.score>=3.5)subEl.textContent='Dieser Standort hat den stärksten Gesamtscore. Standort-Qualität, Finanzcheck und Wirtschaftlichkeit sprechen für eine Entscheidung.';
-    else if(best.score>=2.5)subEl.textContent='Der Score ist akzeptabel aber nicht überzeugend. Prüfe welche Bereiche schwach sind und ob sie verbesserbar sind.';
-    else subEl.textContent='Der Gesamtscore ist zu niedrig. Überprüfe die Grundvoraussetzungen oder suche andere Standorte.';
+  if(staEl){
+    var allInfo=[];
+    if(best.staerken&&best.staerken.length)allInfo=allInfo.concat(best.staerken);
+    if(best.risiken&&best.risiken.length)best.risiken.forEach(function(r){allInfo.push('⚠️ '+r);});
+    staEl.textContent=allInfo.length?'Stärken: '+best.staerken.join(', '):'Analyse ausfüllen für Bewertung';
   }
-  if(staEl)staEl.innerHTML=best.staerken&&best.staerken.length?best.staerken.map(function(s){return'• '+s;}).join('<br>'):'Noch nicht genug Daten';
-  if(risEl)risEl.innerHTML=best.risiken&&best.risiken.length?best.risiken.map(function(r){return'• '+r;}).join('<br>'):'Keine kritischen Risiken erkannt';
+  if(checkEl){
+    if(best.score>=3.5){checkEl.style.background='#4a8a4a';checkEl.textContent='✓';}
+    else if(best.score>=2.5){checkEl.style.background='#d4af37';checkEl.textContent='!';}
+    else{checkEl.style.background='#e06060';checkEl.textContent='✗';}
+  }
 }
 
   const d={};
