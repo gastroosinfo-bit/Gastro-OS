@@ -3,121 +3,247 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Upselling Tracker – Modul 8</title>
+<title>Upselling Tracker – Modul 8 | GASTRO-OS</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
-.header{background:#1a2a4a;padding:14px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
-.brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
-.btn-back { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
-.btn-back:hover { border-color:#d4af37; color:#d4af37; }
+.site-header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:18px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.back-btn { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; text-decoration:none; transition:all 0.2s; }
+.back-btn:hover { border-color:#d4af37; color:#d4af37; }
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
-.main { max-width:780px; margin:40px auto; padding:0 24px 60px; text-align:center; }
-.modul-badge { display:inline-block; background:#1a2a4a; color:#d4af37; font-size:11px; font-weight:700; letter-spacing:2px; padding:4px 14px; border-radius:4px; margin-bottom:12px; }
-h1 { font-family:Georgia,serif; font-size:26px; color:#1a2a4a; margin-bottom:24px; }
-.card { background:#fff; border:1px solid #e8dfc8; border-radius:10px; padding:36px 32px; margin-bottom:24px; box-shadow:0 2px 8px rgba(0,0,0,0.04); }
-.card .icon { font-size:56px; margin-bottom:16px; }
-p { font-size:14px; line-height:1.8; color:#3a4a6a; margin-bottom:12px; }
-.gold-divider { height:2px; background:linear-gradient(90deg,transparent,#d4af37,transparent); margin:28px 0; }
-.drive-btn { display:inline-flex; align-items:center; gap:10px; background:#1a2a4a; color:#d4af37; border:2px solid #d4af37; padding:16px 36px; border-radius:8px; font-size:16px; font-weight:600; text-decoration:none; transition:all 0.2s; margin:16px 0; }
-.drive-btn:hover { background:#d4af37; color:#1a2a4a; }
-.anleitung-link { font-size:13px; color:#8090a8; margin-top:12px; }
-.anleitung-link a { color:#d4af37; }
-.footer { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
-.footer strong { color:#d4af37; }
-
-.btn-back-modul {
-  background: #d4af37;
-  color: #1a2a4a;
-  border: none;
-  padding: 9px 20px;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-block;
-  transition: all 0.2s;
-  letter-spacing: 0.3px;
-}
-.btn-back-modul:hover { background: #c8a030; color: #1a2a4a; }
-
-.action-row{display:flex;gap:10px;margin-bottom:28px;flex-wrap:wrap;align-items:center;padding:16px 0;border-bottom:2px solid #e8dfc8}
-.btn-save{background:#1a2a4a;color:#d4af37;border:none;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s}
-.btn-save:hover{background:#d4af37;color:#1a2a4a}
-.btn-print{background:#a09060;color:#fff;border:none;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s}
-.btn-print:hover{background:#d4af37;color:#1a2a4a}
-.btn-reset{background:transparent;border:1.5px solid #c0b090;color:#8070a0;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s}
-.btn-reset:hover{background:#f0ece0;color:#1a2a4a;border-color:#1a2a4a}
-.save-msg{font-size:13px;color:#4a8a4a;align-self:center;display:none}
+.toolbar { max-width:920px; margin:18px auto 0; padding:0 24px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.tool-info { flex:1; }
+.tool-info h2 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; }
+.tool-info p { font-size:12px; color:#8090a8; margin-top:2px; }
+.btn-t { border:none; padding:9px 16px; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer; transition:all 0.2s; }
+.btn-save { background:#1a2a4a; color:#d4af37; } .btn-save:hover { background:#d4af37; color:#1a2a4a; }
+.btn-print { background:#fff; color:#1a2a4a; border:1px solid #e8dfc8; } .btn-print:hover { border-color:#1a2a4a; }
+.btn-reset { background:#fff; color:#a03030; border:1px solid #d06060; } .btn-reset:hover { background:#fdf0f0; }
+.save-msg { font-size:12px; color:#4aaa60; display:none; }
+.wrap { max-width:920px; margin:16px auto 48px; padding:0 24px; }
+.card { background:#fff; border:1px solid #e8dfc8; border-radius:10px; margin-bottom:16px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.04); }
+.card-head { background:#1a2a4a; padding:11px 20px; display:flex; justify-content:space-between; align-items:center; }
+.card-title { font-family:Georgia,serif; font-size:14px; color:#d4af37; font-weight:normal; }
+.card-hint { font-size:11px; color:#8090a8; }
+.card-body { padding:16px 20px; }
+.meta-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:12px; }
+.mf label { display:block; font-size:11px; color:#8090a8; font-weight:600; letter-spacing:0.5px; margin-bottom:4px; }
+.ti { border:1px solid #e0d8c8; border-radius:4px; padding:6px 9px; font-size:13px; color:#1a4a8a; background:#eaf2ff; width:100%; font-family:inherit; }
+.ti:focus { outline:none; border-color:#3a7ad4; }
+.ni { border:1px solid #e0d8c8; border-radius:4px; padding:6px 8px; font-size:13px; color:#1a4a8a; background:#eaf2ff; width:62px; text-align:center; font-family:inherit; }
+.ni:focus { outline:none; border-color:#3a7ad4; }
+table.tbl { width:100%; border-collapse:collapse; font-size:13px; }
+table.tbl thead tr { background:#f0ece4; }
+table.tbl th { padding:9px 10px; text-align:left; font-size:11px; font-weight:700; color:#5a6a80; letter-spacing:0.5px; border-bottom:2px solid #e8dfc8; white-space:nowrap; }
+table.tbl tbody tr:nth-child(even) { background:#faf8f4; }
+table.tbl td { padding:7px 10px; border-bottom:1px solid #f0ece4; vertical-align:middle; }
+.cc { font-weight:700; font-size:13px; }
+.g { color:#1a6030; } .w { color:#856404; } .r { color:#a03030; }
+.result-card { background:#1a2a4a; border-radius:10px; padding:20px 24px; margin-bottom:16px; }
+.result-title { font-family:Georgia,serif; font-size:14px; color:#d4af37; font-weight:normal; margin-bottom:14px; }
+.result-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:12px; }
+.rb { background:#2a3a5a; border-radius:8px; padding:12px 14px; text-align:center; }
+.rn { font-family:Georgia,serif; font-size:22px; color:#d4af37; font-weight:700; }
+.rl { font-size:10px; color:#8090a8; margin-top:4px; text-transform:uppercase; letter-spacing:0.5px; }
+.rh { font-size:11px; color:#a0b0c8; margin-top:4px; }
+.ta { width:100%; background:#2a3a5a; border:1px solid #3a4a6a; border-radius:6px; padding:10px; font-size:13px; color:#e0e8f8; font-family:inherit; resize:vertical; min-height:56px; }
+.ta:focus { outline:none; border-color:#d4af37; }
+.rl-lbl { font-size:11px; color:#d4af37; font-weight:700; text-transform:uppercase; letter-spacing:1px; display:block; margin-bottom:6px; }
+.foot-bar { font-size:11px; color:#8090a8; text-align:center; padding:10px; border:1px solid #e8dfc8; border-radius:6px; background:#fff; }
+.site-footer { background:#1a2a4a; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+@media print { .site-header,.toolbar,.gold-bar,.site-footer { display:none !important; } .wrap { margin:0; padding:0; } body { background:#fff; } }
 </style>
 </head>
 <body>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-(function(){
-  // Rechtsklick & Tastenkürzel sperren
-  document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
-  document.addEventListener('keydown', function(e){
-    if (e.ctrlKey && ['s','u','p','a'].includes(e.key.toLowerCase())) e.preventDefault();
-    if (e.key === 'F12') e.preventDefault();
-  });
-
-  // Supabase Auth Check
-  const sb = supabase.createClient(
-    'https://hchlganbgjeciwhwaisj.supabase.co',
-    'sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3'
-  );
-  (async function(){
-    const { data:{ session } } = await sb.auth.getSession();
-    if (!session) { window.location.href = 'login.html'; return; }
-    const { data: profile } = await sb.from('profiles')
-      .select('is_active,subscription_status')
-      .eq('id', session.user.id).maybeSingle();
-    if (profile && (!profile.is_active || profile.subscription_status !== 'active')) {
-      await sb.auth.signOut();
-      window.location.href = 'login.html';
-    }
-  })();
-})();
-</script>
-
-<div class="header">
-  <div class="brand">GASTRO-OS</div>
-  <a href="dashboard.html" class="btn-back-modul">← Zurück zum Dashboard</a>
-</div>
+<div class="site-header"><div class="brand">GASTRO-OS</div><a href="dashboard.html" class="back-btn">← Zurück zum Dashboard</a></div>
 <div class="gold-bar"></div>
-
-<div class="main">
-  <div class="action-row">
-    <button class="btn-save" onclick="saveData()">💾 Speichern</button>
-    <button class="btn-print" onclick="window.print()">🖨️ Drucken / PDF</button>
-    <button class="btn-reset" onclick="resetData()">↺ Neu starten</button>
-    <span class="save-msg" id="save-msg">✓ Gespeichert</span>
-  </div>
-  <div class="modul-badge">MODUL 8 · TOOL</div>
-  <h1>📊 Upselling Tracker</h1>
+<div class="toolbar">
+  <div class="tool-info"><h2>📊 Upselling Tracker</h2><p>Modul 8 · Umsatz smart steigern — täglich tracken, wöchentlich auswerten</p></div>
+  <button class="btn-t btn-save" onclick="saveData()">💾 Speichern</button>
+  <button class="btn-t btn-print" onclick="window.print()">🖨️ Drucken</button>
+  <button class="btn-t btn-reset" onclick="resetAll()">🔄 Neu starten</button>
+  <span class="save-msg" id="save-msg">✓ Gespeichert</span>
+</div>
+<div class="wrap">
 
   <div class="card">
-    <div class="icon">📊</div>
-    <p><strong>Der Upselling Tracker zeigt dir schwarz auf weiß wie oft dein Team aktiv verkauft hat, wie hoch die Erfolgsquote ist – und was es am Ende der Woche wirklich gebracht hat.</strong></p>
-    <p>Schau dir vorher den Tab 📸 So nutzt du den Upselling Tracker an damit du weißt was wo eingetragen wird.</p>
-
-    <div class="gold-divider"></div>
-
-    <a href="https://docs.google.com/spreadsheets/d/1fIoMQr4sCBtB_OnqXpHP0P7yzBeq0Hm8/edit?usp=sharing&ouid=100602345096606051107&rtpof=true&sd=true" class="drive-btn">
-      ▶ Hier geht es zum Upselling Tracker
-    </a>
-
-    <p class="anleitung-link">Noch nicht vertraut mit dem Tool? <a href="modul8-tracker-anleitung.html">Zur Anleitung →</a></p>
+    <div class="card-head"><div class="card-title">GASTRO-OS | Upselling Tracker &nbsp;·&nbsp; Modul 8: Umsatz smart steigern</div></div>
+    <div class="card-body">
+      <div class="meta-grid">
+        <div class="mf"><label>Betrieb</label><input class="ti" id="betrieb" type="text" placeholder="Dein Betrieb..."></div>
+        <div class="mf"><label>KW / Zeitraum</label><input class="ti" id="kw" type="text" placeholder="KW 21 / 19.–23.05."></div>
+        <div class="mf"><label>Mitarbeiter (Optional)</label><input class="ti" id="ma" type="text" placeholder="z.B. Gesamtteam"></div>
+        <div class="mf"><label>Ø Bon Ziel (€)</label><input class="ti ni" id="ziel-bon" type="number" min="0" step="0.5" placeholder="z.B. 38" oninput="recalcAll()" style="width:100%"></div>
+      </div>
+    </div>
   </div>
 
-  <div class="gold-divider"></div>
-  <p style="font-size:12px; color:#8090a8; letter-spacing:1px;">GASTRO-OS | System · Strategie · Erfolg</p>
-</div>
+  <div class="card">
+    <div class="card-head">
+      <div class="card-title">TÄGLICHES UPSELLING-TRACKING</div>
+      <div class="card-hint">Blaue Felder = Eingabe · Erfolgsquote &amp; Bon automatisch</div>
+    </div>
+    <table class="tbl">
+      <thead><tr><th>Tag</th><th>Service</th><th>Tische / Gäste</th><th>Versuche</th><th>Erfolge</th><th>Erfolgsquote</th><th>Umsatz gesamt (€)</th><th>Ø Bon (€)</th></tr></thead>
+      <tbody id="track-body"></tbody>
+      <tfoot id="track-foot"></tfoot>
+    </table>
+  </div>
 
-<div class="footer">
-  <strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg
+  <div class="card">
+    <div class="card-head">
+      <div class="card-title">UPSELLING-KATEGORIEN — Was wurde empfohlen?</div>
+      <div class="card-hint">Versuche und Erfolge pro Kategorie</div>
+    </div>
+    <table class="tbl">
+      <thead><tr><th>Kategorie</th><th>Versuche (Woche)</th><th>Erfolge (Woche)</th><th>Erfolgsquote</th><th>Notiz / Formulierung</th></tr></thead>
+      <tbody id="kat-body"></tbody>
+    </table>
+  </div>
+
+  <div class="result-card">
+    <div class="result-title">WOCHENERGEBNIS</div>
+    <div class="result-grid">
+      <div class="rb"><div class="rn" id="res-quote">—</div><div class="rl">Ø Erfolgsquote</div><div class="rh">Ziel: &gt; 30%</div></div>
+      <div class="rb"><div class="rn" id="res-bon">—</div><div class="rl">Ø Durchschnittsbon</div><div class="rh" id="res-bon-delta">vs. Ziel</div></div>
+      <div class="rb"><div class="rn" id="res-versuche">—</div><div class="rl">Versuche gesamt</div><div class="rh">diese Woche</div></div>
+      <div class="rb"><div class="rn" id="res-erfolge">—</div><div class="rl">Erfolge gesamt</div><div class="rh">diese Woche</div></div>
+    </div>
+    <div style="margin-top:14px"><label class="rl-lbl">Was lief diese Woche besonders gut?</label><textarea class="ta" id="notiz-gut" placeholder="z.B. Dessert-Empfehlung beim Abendservice hat sehr gut funktioniert..."></textarea></div>
+    <div style="margin-top:10px"><label class="rl-lbl">Was verbessern wir nächste Woche?</label><textarea class="ta" id="notiz-besser" placeholder="z.B. Weinempfehlung früher im Gespräch einbauen..."></textarea></div>
+  </div>
+
+  <div class="foot-bar"><strong style="color:#d4af37">GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg &nbsp;|&nbsp; Modul 8: Upselling Tracker</div>
 </div>
+<div class="site-footer"><strong style="color:#d4af37">GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+
+<script>
+const SUPABASE_URL='https://hchlganbgjeciwhwaisj.supabase.co';
+const SUPABASE_KEY='sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3';
+const {createClient}=supabase;
+const sb=createClient(SUPABASE_URL,SUPABASE_KEY);
+const DAYS=['Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag','Sonntag'];
+const SERVICES=['Mittag','Abend','Ganztag'];
+const KATS=['Getränke-Upgrade (z.B. Wasser → Wein)','Dessert empfohlen','Vorspeise vorgeschlagen','Wein zum Essen empfohlen','Kaffee / Digestif angeboten','Tagesspezial empfohlen'];
+const fmt=(v,d=1)=>v==null||v===''?'—':parseFloat(v).toFixed(d).replace('.',',');
+function qClass(q){ return q>=30?'g':q>=20?'w':'r'; }
+
+function buildTrack(){
+  const tb=document.getElementById('track-body');
+  DAYS.forEach((_,i)=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td style="font-weight:600">${DAYS[i]}</td>
+      <td><select class="ti" id="svc-${i}" style="width:90px;padding:5px 6px" onchange="recalcRow(${i})">${SERVICES.map(s=>`<option>${s}</option>`).join('')}</select></td>
+      <td><input class="ni" id="gst-${i}" type="number" min="0" step="1" placeholder="0" oninput="recalcRow(${i})"></td>
+      <td><input class="ni" id="vrs-${i}" type="number" min="0" step="1" placeholder="0" oninput="recalcRow(${i})"></td>
+      <td><input class="ni" id="erf-${i}" type="number" min="0" step="1" placeholder="0" oninput="recalcRow(${i})"></td>
+      <td class="cc" id="qt-${i}">—</td>
+      <td><input class="ti" id="ums-${i}" type="number" min="0" step="0.01" placeholder="0,00" style="width:85px" oninput="recalcRow(${i})"></td>
+      <td class="cc" id="bon-${i}">—</td>`;
+    tb.appendChild(tr);
+  });
+}
+function buildKat(){
+  const tb=document.getElementById('kat-body');
+  KATS.forEach((kat,i)=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td style="font-weight:600;min-width:200px">${kat}</td>
+      <td><input class="ni" id="kv-${i}" type="number" min="0" step="1" placeholder="0" oninput="recalcKat(${i})"></td>
+      <td><input class="ni" id="ke-${i}" type="number" min="0" step="1" placeholder="0" oninput="recalcKat(${i})"></td>
+      <td class="cc" id="kq-${i}">—</td>
+      <td><input class="ti" id="kn-${i}" type="text" placeholder="Formulierung / Notiz..."></td>`;
+    tb.appendChild(tr);
+  });
+}
+function recalcRow(i){
+  const g=parseFloat(document.getElementById(`gst-${i}`)?.value)||0;
+  const v=parseFloat(document.getElementById(`vrs-${i}`)?.value)||0;
+  const e=parseFloat(document.getElementById(`erf-${i}`)?.value)||0;
+  const u=parseFloat(document.getElementById(`ums-${i}`)?.value)||0;
+  const qt=v>0?e/v*100:null, bon=g>0?u/g:null;
+  const ze=document.getElementById(`qt-${i}`);
+  if(qt!==null){ze.textContent=fmt(qt)+' %';ze.className='cc '+qClass(qt);}else{ze.textContent='—';ze.className='cc';}
+  const be=document.getElementById(`bon-${i}`);
+  const zl=parseFloat(document.getElementById('ziel-bon')?.value)||0;
+  if(bon!==null){be.textContent=fmt(bon,2)+' €';be.className='cc '+(!zl?'':bon>=zl?'g':bon>=zl*.9?'w':'r');}else{be.textContent='—';be.className='cc';}
+  recalcAll();
+}
+function recalcKat(i){
+  const v=parseFloat(document.getElementById(`kv-${i}`)?.value)||0;
+  const e=parseFloat(document.getElementById(`ke-${i}`)?.value)||0;
+  const qt=v>0?e/v*100:null;
+  const el=document.getElementById(`kq-${i}`);
+  if(qt!==null){el.textContent=fmt(qt)+' %';el.className='cc '+qClass(qt);}else{el.textContent='—';el.className='cc';}
+}
+function recalcAll(){
+  let tv=0,te=0,tg=0,tu=0;
+  DAYS.forEach((_,i)=>{
+    tv+=parseFloat(document.getElementById(`vrs-${i}`)?.value)||0;
+    te+=parseFloat(document.getElementById(`erf-${i}`)?.value)||0;
+    tg+=parseFloat(document.getElementById(`gst-${i}`)?.value)||0;
+    tu+=parseFloat(document.getElementById(`ums-${i}`)?.value)||0;
+  });
+  const q=tv>0?te/tv*100:null, b=tg>0?tu/tg:null, zl=parseFloat(document.getElementById('ziel-bon')?.value)||0;
+  const qe=document.getElementById('res-quote');
+  if(q!==null){qe.textContent=fmt(q)+' %';qe.style.color=q>=30?'#90ff90':q>=20?'#d4af37':'#ff9090';}else{qe.textContent='—';qe.style.color='#d4af37';}
+  const be=document.getElementById('res-bon'), bd=document.getElementById('res-bon-delta');
+  if(b!==null){be.textContent=fmt(b,2)+' €';be.style.color=(!zl||b>=zl)?'#90ff90':'#ff9090';if(zl){const d=b-zl;bd.textContent=(d>=0?'+':'')+fmt(d,2)+'€ vs. Ziel';bd.style.color=d>=0?'#4aaa60':'#ff9090';}}else{be.textContent='—';be.style.color='#d4af37';}
+  document.getElementById('res-versuche').textContent=tv||'—';
+  document.getElementById('res-erfolge').textContent=te||'—';
+  const ft=document.getElementById('track-foot');
+  ft.innerHTML=`<tr style="background:#1a2a4a"><td colspan="3" style="color:#d4af37;font-weight:700;padding:10px">GESAMT WOCHE</td>
+    <td style="color:#d4af37;font-weight:700;padding:10px">${tv||'—'}</td>
+    <td style="color:#d4af37;font-weight:700;padding:10px">${te||'—'}</td>
+    <td style="color:${q!==null?(q>=30?'#90ff90':q>=20?'#d4af37':'#ff9090'):'#a0b0c8'};font-weight:700;padding:10px">${q!==null?fmt(q)+' %':'—'}</td>
+    <td style="color:#d4af37;font-weight:700;padding:10px">${tu>0?fmt(tu,2)+' €':'—'}</td>
+    <td style="color:${b!==null?'#d4af37':'#a0b0c8'};font-weight:700;padding:10px">${b!==null?fmt(b,2)+' €':'—'}</td></tr>`;
+}
+function getData(){
+  return {
+    betrieb:document.getElementById('betrieb')?.value||'',
+    kw:document.getElementById('kw')?.value||'',
+    ma:document.getElementById('ma')?.value||'',
+    ziel_bon:document.getElementById('ziel-bon')?.value||'',
+    notiz_gut:document.getElementById('notiz-gut')?.value||'',
+    notiz_besser:document.getElementById('notiz-besser')?.value||'',
+    days:DAYS.map((_,i)=>({svc:document.getElementById(`svc-${i}`)?.value||'',gst:document.getElementById(`gst-${i}`)?.value||'',vrs:document.getElementById(`vrs-${i}`)?.value||'',erf:document.getElementById(`erf-${i}`)?.value||'',ums:document.getElementById(`ums-${i}`)?.value||''})),
+    kats:KATS.map((_,i)=>({v:document.getElementById(`kv-${i}`)?.value||'',e:document.getElementById(`ke-${i}`)?.value||'',n:document.getElementById(`kn-${i}`)?.value||''})),
+    saved:new Date().toISOString()
+  };
+}
+function setData(d){
+  ['betrieb','kw','ma'].forEach(id=>{if(d[id])document.getElementById(id).value=d[id];});
+  if(d.ziel_bon)document.getElementById('ziel-bon').value=d.ziel_bon;
+  if(d.notiz_gut)document.getElementById('notiz-gut').value=d.notiz_gut;
+  if(d.notiz_besser)document.getElementById('notiz-besser').value=d.notiz_besser;
+  (d.days||[]).forEach((r,i)=>{
+    if(r.svc&&document.getElementById(`svc-${i}`))document.getElementById(`svc-${i}`).value=r.svc;
+    ['gst','vrs','erf','ums'].forEach(k=>{if(r[k])document.getElementById(`${k}-${i}`).value=r[k];});
+    recalcRow(i);
+  });
+  (d.kats||[]).forEach((r,i)=>{
+    if(r.v)document.getElementById(`kv-${i}`).value=r.v;
+    if(r.e)document.getElementById(`ke-${i}`).value=r.e;
+    if(r.n)document.getElementById(`kn-${i}`).value=r.n;
+    recalcKat(i);
+  });
+  recalcAll();
+}
+async function saveData(){
+  try{const{data:{session}}=await sb.auth.getSession();if(session){await sb.from('user_tool_data').upsert({user_id:session.user.id,tool_name:'upselling_tracker_modul8',data:getData(),updated_at:new Date().toISOString()},{onConflict:'user_id,tool_name'});}}catch(e){}
+  const m=document.getElementById('save-msg');m.style.display='inline';setTimeout(()=>m.style.display='none',2500);
+}
+async function loadData(){
+  try{const{data:{session}}=await sb.auth.getSession();if(!session)return;const{data}=await sb.from('user_tool_data').select('data').eq('user_id',session.user.id).eq('tool_name','upselling_tracker_modul8').maybeSingle();if(data?.data)setData(data.data);}catch(e){}
+}
+function resetAll(){
+  if(!confirm('Alle Eingaben zurücksetzen?'))return;
+  document.querySelectorAll('input[type=text],input[type=number],textarea').forEach(el=>{if(!['betrieb','kw','ma'].includes(el.id))el.value='';});
+  DAYS.forEach((_,i)=>recalcRow(i));KATS.forEach((_,i)=>recalcKat(i));recalcAll();
+}
+buildTrack();buildKat();loadData();
+</script>
 </body>
 </html>

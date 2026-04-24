@@ -21,24 +21,8 @@ h1 { font-family:Georgia,serif; font-size:26px; color:#1a2a4a; margin-bottom:6px
 .gold-divider { height:2px; background:linear-gradient(90deg,#d4af37,transparent); margin:28px 0; }
 
 /* 16:9 Video */
-.video-wrapper {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  background: #0a0f1e;
-  border-radius: 10px;
-  overflow: hidden;
-  margin: 24px 0;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.18);
-}
-.video-wrapper iframe {
-  position: absolute;
-  top: -79px;
-  left: 0;
-  width: 100%;
-  height: calc(100% + 79px);
-  border: none;
-}
+
+
 /*
   Dezentes Cover oben rechts – deckt das YouTube/Drive-Logo ab.
   Farbe: #0a0f1e (identisch mit Player-Hintergrund) → nahtlos unsichtbar.
@@ -76,6 +60,39 @@ h1 { font-family:Georgia,serif; font-size:26px; color:#1a2a4a; margin-bottom:6px
 }
 .btn-back-modul:hover { background: #c8a030; color: #1a2a4a; }
 
+
+.video-wrap {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  background: #000;
+  overflow: hidden;
+  margin: 20px 0;
+  border-radius: 8px 0 8px 8px;
+}
+.video-wrap iframe {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  border: none;
+  top: -79px;
+  height: calc(100% + 79px);
+}
+.video-cover-tr {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 48px;
+  height: 48px;
+  z-index: 10;
+  pointer-events: none;
+}
+.video-cover-tr img {
+  width: 48px;
+  height: 48px;
+  display: block;
+  object-fit: cover;
+}
 </style>
 </head>
 <body>
@@ -127,7 +144,7 @@ h1 { font-family:Georgia,serif; font-size:26px; color:#1a2a4a; margin-bottom:6px
 
     <div class="gold-divider"></div>
 
-    <div class="video-wrapper">
+    <div class="video-wrap">
       <iframe src="https://drive.google.com/file/d/1N5nUvY_Zx8jmme5U2R3MfeQ3WbnseXok/preview"
         allow="autoplay"
         allowfullscreen sandbox="allow-scripts allow-same-origin allow-presentation">
