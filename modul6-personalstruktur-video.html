@@ -68,82 +68,54 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 .footer-main strong{color:#d4af37}</style>
 </head>
 <body>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-(function(){
-  document.addEventListener('contextmenu',function(e){e.preventDefault();});
-  document.addEventListener('keydown',function(e){
-    if(e.ctrlKey&&['s','u','p','a'].includes(e.key.toLowerCase()))e.preventDefault();
-    if(e.key==='F12')e.preventDefault();
-  });
-  const sb=supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3');
-  (async function(){
-    const{data:{session}}=await sb.auth.getSession();
-    if(!session){window.location.href='login.html';return;}
-    const{data:p}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
-    if(p&&(!p.is_active||p.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
-  })();
-})();
-</script>
-<div class="header">
-  <div class="brand">GASTRO-OS</div>
-  <a href="dashboard.html" class="btn-back">← Zurück zum Dashboard</a>
-</div>
+<div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html" class="btn-back">← Zurück zum Dashboard</a></div>
 <div class="gold-bar"></div>
 <div class="wrap">
   <div class="hero">
     <div class="tag">Modul 6 · Anleitung</div>
     <h1>📸 So nutzt du den Personalstruktur Check</h1>
-    <p>Der Personalstruktur Check zeigt dir ob dein Team klar aufgestellt ist — klare Rollen, definierte Verantwortlichkeiten, kein Chaos mehr.</p>
-  </div>
-  
-  <div class="step">
-    <h2><span class="step-num">1</span> Mitarbeiter eintragen</h2>
-    <p>Trage alle deine Mitarbeiter ein — Name, Position und Arbeitszeit. Das ist die Basis für alles was folgt.</p>
-    <div class="mockup">
-      <div class="mockup-bar"><span>Schritt 1 — Team</span><span class="gold"></span></div>
-      <div class="mockup-inner"><div class="mock-section"><div class="mock-section-head">👥 Mitarbeiter</div><div class="mock-row"><span>Maria S. — Serviceleiterin — 40 Std.</span><span class="mock-badge-gold">✓</span></div><div class="mock-row"><span>Thomas K. — Koch — 40 Std.</span><span class="mock-badge-gold">✓</span></div><div class="mock-row"><span>+ Mitarbeiter hinzufügen</span></div></div></div>
-    </div>
-    <div class="arrow-hint"><span class="arr">💡</span> Füge auch Teilzeit- und Aushilfskräfte hinzu.</div>
+    <p>Der Personalstruktur Check zeigt in 2 Tabs wer welche Rolle hat und wer was entscheiden darf — kein Chaos mehr, klare Verantwortlichkeiten für jeden.</p>
   </div>
   <div class="step">
-    <h2><span class="step-num">2</span> Rollen & Verantwortlichkeiten definieren</h2>
-    <p>Definiere für jeden Mitarbeiter seine genaue Rolle und was er selbstständig entscheiden darf.</p>
+    <h2><span class="step-num">1</span> Mitarbeiter eintragen (Tab 📊 Personalstruktur Check)</h2>
+    <p>Trage alle Mitarbeiter ein. Pro Zeile: Name / Position, Rolle im Betrieb, Hauptaufgaben, Entscheidungsrecht (was darf er/sie selbst entscheiden?) und wann er/sie zu dir kommen soll.</p>
     <div class="mockup">
-      <div class="mockup-bar"><span>Schritt 2 — Rollen</span><span class="gold">Maria S.</span></div>
-      <div class="mockup-inner"><div class="mock-row"><span>Hauptaufgabe</span><span class="mock-badge-gold">Service koordinieren</span></div><div class="mock-row"><span>Selbstständige Entscheidungen</span><span class="mock-badge-gold">Tischreservierungen, Beschwerden bis 20€</span></div><div class="mock-row"><span>Eskaliert an Chef</span><span class="mock-badge-gold">Beschwerden über 20€</span></div><div class="mock-row highlight"><span>Schichtleiter?</span><span class="mock-badge-gold">✅ Ja</span></div></div>
+      <div class="mockup-bar"><span class="gold">GASTRO-OS</span><span>Modul · Tool</span></div>
+      <div class="mockup-inner"><div class="mock-section"><div class="mock-section-head">GASTRO-OS | Personalstruktur-Check &nbsp;·&nbsp; Rollen, Aufgaben und Entscheidungsrechte</div>
+  <table class="mock-table">
+    <tr><th>#</th><th>Name / Position</th><th>Rolle im Betrieb</th><th>Hauptaufgaben</th><th>Entscheidungsrecht</th><th>Wann zu mir?</th></tr>
+    <tr><td>1</td><td style="background:#eaf2ff"><div class="mock-input"></div></td><td style="background:#eaf2ff"><div class="mock-input"></div></td><td style="background:#eaf2ff"><div class="mock-input"></div></td><td style="background:#eaf2ff"><div class="mock-input"></div></td><td style="background:#eaf2ff"><div class="mock-input"></div></td></tr>
+    <tr><td>2</td><td style="background:#eaf2ff"><div class="mock-input"></div></td><td style="background:#eaf2ff"><div class="mock-input"></div></td><td style="background:#eaf2ff"><div class="mock-input"></div></td><td style="background:#eaf2ff"><div class="mock-input"></div></td><td style="background:#eaf2ff"><div class="mock-input"></div></td></tr>
+    <tr><td>3</td><td style="background:#eaf2ff"><div class="mock-input"></div></td><td style="background:#eaf2ff"><div class="mock-input"></div></td><td style="background:#eaf2ff"><div class="mock-input"></div></td><td style="background:#eaf2ff"><div class="mock-input"></div></td><td style="background:#eaf2ff"><div class="mock-input"></div></td></tr>
+  </table>
+  <div style="margin-top:6px;font-size:11px;color:#8090a8">💡 Tipp: Hast du noch keinen Schichtleiter? Das ist deine wichtigste Aufgabe in den nächsten 30 Tagen.</div></div></div>
     </div>
-    <div class="arrow-hint"><span class="arr">💡</span> <strong>Je klarer die Rolle, desto weniger Fragen kommen zu dir.</strong></div>
+    <div class="highlight">💡 Füge auch Teilzeit- und Aushilfskräfte hinzu — alle die regelmäßig im Betrieb sind.</div>
   </div>
   <div class="step">
-    <h2><span class="step-num">3</span> Lücken identifizieren</h2>
-    <p>Das Tool zeigt dir welche Rollen unklar sind und wo Verantwortlichkeiten fehlen.</p>
+    <h2><span class="step-num">2</span> Rollenmatrix ausfüllen (Tab 📋 Rollenmatrix)</h2>
+    <p>Im zweiten Tab siehst du die Rollenmatrix: Wer darf was selbst entscheiden? Für jede Situation und jeden Mitarbeiter trägst du ein: ✅ darf selbst entscheiden, ❌ muss fragen, 🔶 situationsabhängig.</p>
     <div class="mockup">
-      <div class="mockup-bar"><span>Schritt 3 — Auswertung</span><span class="gold"></span></div>
-      <div class="mockup-inner"><div class="mock-result">
-        <div class="mock-result-num">2</div>
-        <div class="mock-result-label">Handlungsfelder gefunden</div>
-        <div class="mock-result-type">⚠️ Rollen klären</div>
-      </div><div class="mock-row highlight"><span>Thomas K. — Keine klare Küchen-Verantwortung</span><span class="mock-badge-gold">klären!</span></div><div class="mock-row"><span>Kein Schichtleiter Abendservice</span><span class="mock-badge-gold">besetzen!</span></div><div class="mock-row"><span>Maria S. — Rolle vollständig definiert</span><span class="mock-badge-gold">✓</span></div></div>
+      <div class="mockup-bar"><span class="gold">GASTRO-OS</span><span>Modul · Tool</span></div>
+      <div class="mockup-inner"><div class="mock-section"><div class="mock-section-head">📋 Rollenmatrix — Wer darf was entscheiden?</div>
+  <div style="font-size:11px;color:#8090a8;margin-bottom:8px">✅ = darf selbst entscheiden &nbsp;&nbsp; ❌ = muss fragen &nbsp;&nbsp; 🔶 = situationsabhängig</div>
+  <table class="mock-table">
+    <tr><th>Entscheidung / Situation</th><th>Mitarbeiter 1</th><th>Mitarbeiter 2</th><th>Schichtleiter</th></tr>
+    <tr><td>Gast-Reklamation annehmen</td><td style="text-align:center">❌</td><td style="text-align:center">❌</td><td style="text-align:center">✅</td></tr>
+    <tr><td>Bestellung stornieren</td><td style="text-align:center">🔶</td><td style="text-align:center">❌</td><td style="text-align:center">✅</td></tr>
+    <tr><td>Dienstplan anpassen</td><td style="text-align:center">❌</td><td style="text-align:center">❌</td><td style="text-align:center">🔶</td></tr>
+    <tr><td>Einkauf genehmigen</td><td style="text-align:center">❌</td><td style="text-align:center">❌</td><td style="text-align:center">🔶</td></tr>
+  </table>
+  <div style="background:#eaf2ff;border-radius:4px;padding:8px 12px;margin-top:8px;font-size:11px;color:#1a4a8a">
+    <strong>Mitarbeiter hinzufügen:</strong> Spalten werden automatisch erweitert wenn du neue Mitarbeiter im ersten Tab einträgst.
+  </div></div></div>
     </div>
-    <div class="arrow-hint"><span class="arr">💡</span> Jede unklare Rolle ist ein potenzieller Konfliktherd.</div>
+    <div class="highlight">💡 💾 Speichern — so hat jeder im Team Zugang zur aktuellen Rollenverteilung.</div>
   </div>
-  <div class="step">
-    <h2><span class="step-num">4</span> Speichern & nächsten Schritt planen</h2>
-    <p>Speichere den Check und plane das nächste Gespräch mit dem betroffenen Mitarbeiter.</p>
-    <div class="mockup">
-      <div class="mockup-bar"><span>Schritt 4 — Abschluss</span><span class="gold"></span></div>
-      <div class="mockup-inner"><div class="mock-actions">
-        <div class="mock-btn mock-btn-save">💾 Speichern</div>
-        <div class="mock-btn mock-btn-print">🖨️ Drucken / PDF</div>
-        <div class="mock-btn mock-btn-reset">↺ Neu starten</div>
-      </div><div class="mock-row"><span>Thomas K. — Gespräch geplant für</span><span class="mock-badge-gold">Donnerstag 14:00</span></div><div class="mock-row highlight"><span>Nächster Check in</span><span class="mock-badge-gold">4 Wochen</span></div></div>
-    </div>
-    
-  </div>
+
   <div class="nav-row">
-    <a href="modul6-uebersicht.html" class="nav-btn secondary">← Modul 6 Übersicht</a>
-    <a href="modul6-personalstruktur.html" class="nav-btn">📊 Zum Personalstruktur Check →</a>
+    <a href="dashboard.html" class="nav-btn secondary">← Dashboard</a>
+    <a href="modul6-personalstruktur.html" class="nav-btn">→ Zum Personalstruktur Check →</a>
   </div>
   <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
 </div>

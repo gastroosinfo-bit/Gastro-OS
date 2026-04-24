@@ -3,328 +3,153 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>So nutzt du den Unternehmer-Score – Modul 1 | GASTRO-OS</title>
-<style>
-* { margin:0; padding:0; box-sizing:border-box; }
+<title>So nutzt du den Unternehmer-Score | GASTRO-OS</title>
+<style>* { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
-.header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
-.brand { font-family:Georgia,serif; font-size:20px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
-.btn-back { background:#d4af37; color:#1a2a4a; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; box-shadow:0 2px 6px rgba(212,175,55,0.3); }
-.btn-back:hover { background:#c8a030; }
-.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
-.wrap { max-width:760px; margin:40px auto; padding:0 24px 60px; }
-
-/* Hero */
-.hero { background:#1a2a4a; border-radius:12px; padding:28px 32px; margin-bottom:32px; border:2px solid #d4af37; }
-.hero .tag { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:10px; }
-.hero h1 { font-family:Georgia,serif; font-size:24px; color:#fff; font-weight:normal; margin-bottom:8px; }
-.hero p { font-size:14px; color:#a0b0c8; line-height:1.7; }
-
-/* Schritte */
-.step { background:#fff; border:1px solid #e8dfc8; border-radius:10px; padding:24px 28px; margin-bottom:20px; box-shadow:0 2px 8px rgba(0,0,0,0.04); }
-.step-num { display:inline-flex; align-items:center; justify-content:center; background:#1a2a4a; color:#d4af37; font-size:13px; font-weight:700; width:32px; height:32px; border-radius:50%; margin-bottom:14px; flex-shrink:0; }
-.step h2 { font-family:Georgia,serif; font-size:17px; color:#1a2a4a; font-weight:normal; margin-bottom:10px; display:flex; align-items:center; gap:12px; }
-.step p { font-size:14px; color:#3a4a6a; line-height:1.8; margin-bottom:12px; }
-.step p:last-child { margin-bottom:0; }
-
-/* Mockup – simulierter Screenshot */
-.mockup { background:#f0ece4; border:2px solid #d4af37; border-radius:10px; overflow:hidden; margin:16px 0; box-shadow:0 3px 12px rgba(0,0,0,0.1); }
-.mockup-bar { background:#1a2a4a; padding:8px 16px; display:flex; align-items:center; justify-content:space-between; }
-.mockup-bar span { font-size:11px; color:#a0b0c8; letter-spacing:1px; text-transform:uppercase; }
-.mockup-bar .dots { display:flex; gap:5px; }
-.mockup-bar .dot { width:8px; height:8px; border-radius:50%; }
-.mockup-inner { padding:16px 20px; }
-
-/* Simulierter Buttons-Bereich */
-.mock-actions { display:flex; gap:8px; margin-bottom:16px; padding-bottom:14px; border-bottom:2px solid #e8dfc8; }
-.mock-btn { padding:7px 16px; border-radius:5px; font-size:12px; font-weight:600; }
-.mock-btn-save { background:#1a2a4a; color:#d4af37; }
-.mock-btn-print { background:#a09060; color:#fff; }
-.mock-btn-reset { background:transparent; border:1.5px solid #c0b090; color:#8070a0; }
-
-/* Simuliertes Tool-Label */
-.mock-label { font-size:10px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:4px; }
-.mock-title { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:600; margin-bottom:2px; }
-.mock-sub { font-size:11px; color:#8090a8; margin-bottom:14px; }
-
-/* Simuliertes Eingabe-Feld */
-.mock-section { background:#f8f6f2; border:1px solid #e8dfc8; border-radius:7px; padding:12px 16px; margin-bottom:10px; }
-.mock-section-head { background:#1a2a4a; color:#d4af37; font-size:11px; font-weight:700; padding:7px 14px; border-radius:5px; margin-bottom:10px; letter-spacing:0.5px; }
-.mock-field-row { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-bottom:8px; }
-.mock-field { background:#fff; border:1px solid #e0d8c8; border-radius:5px; padding:7px 10px; }
-.mock-field label { font-size:10px; color:#8090a8; display:block; margin-bottom:3px; }
-.mock-field-input { background:#eee; border-radius:3px; height:14px; width:80%; }
-
-/* Simulierte Radio-Frage */
-.mock-question { margin-bottom:10px; }
-.mock-q-title { font-size:12px; font-weight:700; color:#1a2a4a; margin-bottom:3px; }
-.mock-q-hint { font-size:10px; color:#8090a8; margin-bottom:8px; }
-.mock-radio { display:flex; align-items:center; justify-content:space-between; background:#fff; border:1px solid #e8dfc8; border-radius:5px; padding:7px 12px; margin-bottom:5px; }
-.mock-radio.selected { border-color:#d4af37; background:#fffdf0; }
-.mock-radio-left { display:flex; align-items:center; gap:8px; }
-.mock-radio-dot { width:12px; height:12px; border-radius:50%; border:2px solid #c0c8d8; flex-shrink:0; }
-.mock-radio-dot.filled { background:#d4af37; border-color:#d4af37; }
-.mock-radio-text { font-size:11px; color:#3a4a6a; }
-.mock-pts { background:#1a2a4a; color:#d4af37; font-size:10px; font-weight:700; padding:3px 8px; border-radius:10px; }
-
-/* Simulierte Tabelle */
-.mock-table { width:100%; border-collapse:collapse; margin-top:8px; font-size:11px; }
-.mock-table th { background:#1a2a4a; color:#d4af37; padding:7px 10px; text-align:left; }
-.mock-table td { padding:7px 10px; border-bottom:1px solid #e8dfc8; color:#3a4a6a; }
-.mock-table tr:last-child td { background:#1a2a4a; color:#d4af37; font-weight:700; }
-.mock-input-cell { background:#f0ece4; border:1px solid #e0d8c8; border-radius:4px; width:60px; height:20px; display:inline-block; }
-
-/* Score-Box Mockup */
-.mock-score { background:#1a2a4a; border-radius:8px; padding:14px 20px; text-align:center; margin-top:10px; }
-.mock-score-num { font-size:28px; color:#d4af37; font-weight:700; font-family:Georgia,serif; }
-.mock-score-label { font-size:10px; color:#a0b0c8; margin-top:4px; }
-.mock-score-type { font-size:13px; color:#fff; font-weight:600; margin-top:6px; }
-
-/* Highlight */
-.highlight { background:#fff8e8; border-left:4px solid #d4af37; padding:14px 18px; border-radius:0 8px 8px 0; font-size:14px; color:#5a4000; line-height:1.7; margin:16px 0; }
-
-/* Arrow hint */
-.arrow-hint { display:flex; align-items:center; gap:10px; background:#f0ece4; border-radius:8px; padding:10px 16px; margin:10px 0; font-size:13px; color:#5060a0; }
-.arrow-hint .arr { font-size:20px; color:#d4af37; }
-
-/* Nav */
-.nav-row { display:flex; gap:12px; justify-content:space-between; margin-top:40px; }
-.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:12px 24px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none; transition:all 0.2s; }
-.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
-.nav-btn.secondary { background:transparent; border:1px solid rgba(26,42,74,0.3); color:#1a2a4a; }
-.nav-btn.secondary:hover { background:#1a2a4a; color:#d4af37; }
-
-.footer { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
-.footer strong { color:#d4af37; }
-</style>
+.header{background:#1a2a4a;padding:14px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
+.brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
+.btn-back{background:#d4af37;color:#1a2a4a;border:none;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.2s;box-shadow:0 2px 6px rgba(212,175,55,0.3)}
+.btn-back:hover{background:#c8a030}
+.gold-bar{height:3px;background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a)}
+.wrap{max-width:760px;margin:40px auto;padding:0 24px 60px}
+.hero{background:#1a2a4a;border-radius:12px;padding:28px 32px;margin-bottom:32px;border:2px solid #d4af37}
+.hero .tag{font-size:11px;color:#d4af37;letter-spacing:2px;text-transform:uppercase;font-weight:600;margin-bottom:10px}
+.hero h1{font-family:Georgia,serif;font-size:24px;color:#fff;font-weight:normal;margin-bottom:8px}
+.hero p{font-size:14px;color:#a0b0c8;line-height:1.7}
+.step{background:#fff;border:1px solid #e8dfc8;border-radius:10px;padding:24px 28px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,0.04)}
+.step-num{display:inline-flex;align-items:center;justify-content:center;background:#1a2a4a;color:#d4af37;font-size:13px;font-weight:700;width:32px;height:32px;border-radius:50%;flex-shrink:0}
+.step h2{font-family:Georgia,serif;font-size:17px;color:#1a2a4a;font-weight:normal;margin-bottom:10px;display:flex;align-items:center;gap:12px}
+.step p{font-size:14px;color:#3a4a6a;line-height:1.8;margin-bottom:12px}
+.step p:last-child{margin-bottom:0}
+.mockup{background:#f0ece4;border:2px solid #d4af37;border-radius:10px;overflow:hidden;margin:16px 0;box-shadow:0 3px 12px rgba(0,0,0,0.1)}
+.mockup-bar{background:#1a2a4a;padding:8px 16px;display:flex;align-items:center;justify-content:space-between}
+.mockup-bar span{font-size:11px;color:#a0b0c8;letter-spacing:1px}
+.mockup-bar .gold{color:#d4af37}
+.mockup-inner{padding:16px 20px}
+.mock-actions{display:flex;gap:8px;margin-bottom:16px;padding-bottom:14px;border-bottom:2px solid #e8dfc8}
+.mock-btn{padding:7px 14px;border-radius:5px;font-size:12px;font-weight:600}
+.mock-btn-save{background:#1a2a4a;color:#d4af37}
+.mock-btn-print{background:#a09060;color:#fff}
+.mock-btn-reset{background:transparent;border:1.5px solid #c0b090;color:#8070a0}
+.mock-label{font-size:10px;color:#d4af37;letter-spacing:2px;text-transform:uppercase;font-weight:600;margin-bottom:4px}
+.mock-title{font-family:Georgia,serif;font-size:15px;color:#1a2a4a;font-weight:700;margin-bottom:2px}
+.mock-section{background:#f8f6f2;border:1px solid #e8dfc8;border-radius:7px;padding:12px 16px;margin-bottom:10px}
+.mock-section-head{background:#1a2a4a;color:#d4af37;font-size:11px;font-weight:700;padding:7px 14px;border-radius:5px;margin-bottom:10px;letter-spacing:0.5px}
+.mock-field-row{display:grid;gap:8px;margin-bottom:8px}
+.mock-field{background:#fff;border:1px solid #e0d8c8;border-radius:5px;padding:7px 10px}
+.mock-field label{font-size:10px;color:#8090a8;display:block;margin-bottom:3px}
+.mock-bar{background:#eee;border-radius:3px;height:14px;width:80%}
+.mock-bar.filled{background:#d4af37;opacity:0.5;width:60%}
+.mock-row{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#fff;border:1px solid #e8dfc8;border-radius:5px;margin-bottom:6px;font-size:12px;color:#3a4a6a}
+.mock-row.highlight{border-color:#d4af37;background:#fffdf0;font-weight:600}
+.mock-badge{background:#1a2a4a;color:#d4af37;font-size:10px;font-weight:700;padding:3px 8px;border-radius:10px}
+.mock-badge-gold{background:#d4af37;color:#1a2a4a;font-size:10px;font-weight:700;padding:3px 8px;border-radius:10px}
+.mock-table{width:100%;border-collapse:collapse;font-size:11px}
+.mock-table th{background:#1a2a4a;color:#d4af37;padding:7px 10px;text-align:left}
+.mock-table td{padding:7px 10px;border-bottom:1px solid #e8dfc8;color:#3a4a6a}
+.mock-input{background:#f0ece4;border:1px solid #e0d8c8;border-radius:4px;width:70px;height:20px;display:inline-block}
+.mock-textarea{background:#f0ece4;border:1px solid #e0d8c8;border-radius:4px;width:100%;height:36px;display:block;margin-top:4px}
+.mock-result{background:#1a2a4a;border-radius:8px;padding:14px 20px;text-align:center;margin-top:10px}
+.mock-result-num{font-size:28px;color:#d4af37;font-weight:700;font-family:Georgia,serif}
+.mock-result-label{font-size:10px;color:#a0b0c8;margin-top:4px}
+.mock-result-type{font-size:13px;color:#fff;font-weight:600;margin-top:6px}
+.mock-select{background:#f0ece4;border:1px solid #e0d8c8;border-radius:4px;padding:5px 10px;font-size:11px;color:#3a4a6a;width:140px}
+.highlight{background:#fff8e8;border-left:4px solid #d4af37;padding:14px 18px;border-radius:0 8px 8px 0;font-size:14px;color:#5a4000;line-height:1.7;margin:16px 0}
+.arrow-hint{display:flex;align-items:center;gap:10px;background:#f0ece4;border-radius:8px;padding:10px 16px;margin:10px 0;font-size:13px;color:#5060a0}
+.arrow-hint .arr{font-size:18px;color:#d4af37}
+.nav-row{display:flex;gap:12px;justify-content:space-between;margin-top:40px}
+.nav-btn{background:#1a2a4a;color:#d4af37;border:none;padding:12px 24px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;transition:all 0.2s}
+.nav-btn:hover{background:#d4af37;color:#1a2a4a}
+.nav-btn.secondary{background:transparent;border:1px solid rgba(26,42,74,0.3);color:#1a2a4a}
+.nav-btn.secondary:hover{background:#1a2a4a;color:#d4af37}
+.footer-lbl{margin-top:48px;padding-top:20px;border-top:2px solid #e8dfc8;font-size:11px;color:#8090a8;letter-spacing:1px}
+.footer-lbl strong{color:#d4af37}
+.footer-main{background:#1a2a4a;margin-top:60px;padding:14px 40px;text-align:center;font-size:11px;color:#8090a8;letter-spacing:1px}
+.footer-main strong{color:#d4af37}</style>
 </head>
 <body>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-(function(){
-  document.addEventListener('contextmenu',function(e){e.preventDefault();});
-  document.addEventListener('keydown',function(e){
-    if(e.ctrlKey&&['s','u','p','a'].includes(e.key.toLowerCase()))e.preventDefault();
-    if(e.key==='F12')e.preventDefault();
-  });
-  const sb=supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3');
-  (async function(){
-    const{data:{session}}=await sb.auth.getSession();
-    if(!session){window.location.href='login.html';return;}
-    const{data:p}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
-    if(p&&(!p.is_active||p.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
-  })();
-})();
-</script>
-<div class="header">
-  <div class="brand">GASTRO-OS</div>
-  <a href="dashboard.html" class="btn-back">← Zurück zum Dashboard</a>
-</div>
+<div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html" class="btn-back">← Zurück zum Dashboard</a></div>
 <div class="gold-bar"></div>
-
 <div class="wrap">
-
   <div class="hero">
     <div class="tag">Modul 1 · Anleitung</div>
     <h1>📸 So nutzt du den Unternehmer-Score</h1>
-    <p>Der Unternehmer-Score zeigt dir in 5 Minuten wo du heute wirklich stehst — ehrlich, konkret, ohne Schönfärberei. Diese Anleitung führt dich Schritt für Schritt durch das Tool.</p>
+    <p>Der Unternehmer-Score zeigt dir in 5 Minuten wo du heute wirklich stehst — 6 Fragen, Gesamtscore 0–60, deine nächste Aufgabe sofort sichtbar.</p>
   </div>
-
-  <!-- SCHRITT 1 -->
   <div class="step">
     <h2><span class="step-num">1</span> Deine Angaben eintragen</h2>
-    <p>Trage oben deine Betriebsinfos ein. Name, Standort und Datum helfen dir später beim Vergleich wenn du den Score erneut machst.</p>
-
+    <p>Trage oben deine Betriebsinfos ein: Name / Betrieb, Standort und Datum. Diese drei Felder helfen dir beim Vergleich wenn du den Score ein zweites Mal machst.</p>
     <div class="mockup">
-      <div class="mockup-bar">
-        <span>GASTRO-OS | Unternehmer-Score</span>
-        <div class="dots">
-          <div class="dot" style="background:#d4af37"></div>
-          <div class="dot" style="background:#a0b0c8"></div>
-          <div class="dot" style="background:#a0b0c8"></div>
-        </div>
-      </div>
-      <div class="mockup-inner">
-        <div class="mock-actions">
-          <div class="mock-btn mock-btn-save">💾 Speichern</div>
-          <div class="mock-btn mock-btn-print">🖨️ Drucken / PDF</div>
-          <div class="mock-btn mock-btn-reset">↺ Neu starten</div>
-        </div>
-        <div class="mock-label">Modul 1 · Tool</div>
-        <div class="mock-title">GASTRO-OS | Unternehmer-Score</div>
-        <div class="mock-sub">Modul 1 — Status Quo & System-Check</div>
-        <div class="mock-section">
-          <div class="mock-section-head">📋 Deine Angaben</div>
-          <div class="mock-field-row">
-            <div class="mock-field">
-              <label>Name / Betrieb</label>
-              <div class="mock-field-input" style="background:#d4af37;opacity:0.4"></div>
-            </div>
-            <div class="mock-field">
-              <label>Standort</label>
-              <div class="mock-field-input"></div>
-            </div>
-            <div class="mock-field">
-              <label>Datum</label>
-              <div class="mock-field-input"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="arrow-hint"><span class="arr">👆</span> Felder ausfüllen — alle drei, das erleichtert dir den Vergleich später.</div>
+      <div class="mockup-bar"><span class="gold">GASTRO-OS</span><span>Modul · Tool</span></div>
+      <div class="mockup-inner"><div class="mock-section"><div class="mock-section-head">GASTRO-OS | Unternehmer-Score &nbsp;·&nbsp; Modul 1 — Status Quo &amp; System-Check</div>
+  <div class="mock-actions">
+    <span class="mock-btn mock-btn-save">💾 Speichern</span>
+    <span class="mock-btn mock-btn-print">🖨️ Drucken / PDF</span>
+    <span class="mock-btn mock-btn-reset">↺ Neu starten</span>
   </div>
-
-  <!-- SCHRITT 2 -->
+  <div class="mock-section-head" style="margin:0 0 8px">📋 Deine Angaben</div>
+  <div class="mock-field-row" style="grid-template-columns:1fr 1fr 1fr">
+    <div class="mock-field"><label>Name / Betrieb</label><div class="mock-input"></div></div>
+    <div class="mock-field"><label>Standort</label><div class="mock-input"></div></div>
+    <div class="mock-field"><label>Datum</label><div class="mock-input"></div></div>
+  </div>
+  <div style="font-size:11px;color:#8090a8;margin-top:6px">👆 Felder ausfüllen — alle drei, das erleichtert dir den Vergleich später.</div></div></div>
+    </div>
+    <div class="highlight">💡 Führe den Score alle 90 Tage erneut durch — so siehst du deine Entwicklung.</div>
+  </div>
   <div class="step">
     <h2><span class="step-num">2</span> Fragen beantworten — Teil 1 bis 3</h2>
-    <p>Es gibt insgesamt <strong>6 Fragen</strong> in 3 Teilen. Klick einfach auf die Antwort die am besten zu dir passt. Sei ehrlich — der Score hilft dir nur wenn du ehrlich antwortest.</p>
-
+    <p>Es gibt insgesamt 6 Fragen in 3 Teilen. Klick einfach auf die Antwort die am besten zu dir passt. Sei ehrlich — der Score hilft dir nur wenn du ehrlich antwortest.</p>
     <div class="mockup">
-      <div class="mockup-bar">
-        <span>Teil 1 &amp; 2 — Zeit &amp; Abwesenheit</span>
-        <span style="color:#d4af37">max. 20 Punkte</span>
-      </div>
-      <div class="mockup-inner">
-        <div class="mock-question">
-          <div class="mock-q-title">Frage 2 — Strategische Zeit (% deiner Zeit)</div>
-          <div class="mock-q-hint">Wie viel deiner Arbeitszeit verbringst du strategisch — AM Betrieb statt IM Betrieb?</div>
-          <div class="mock-radio">
-            <div class="mock-radio-left">
-              <div class="mock-radio-dot"></div>
-              <span class="mock-radio-text">Strategisch über 30% meiner Zeit</span>
-            </div>
-            <span class="mock-pts">10 Pkt.</span>
-          </div>
-          <div class="mock-radio selected">
-            <div class="mock-radio-left">
-              <div class="mock-radio-dot filled"></div>
-              <span class="mock-radio-text" style="font-weight:600">Strategisch 10%–30% meiner Zeit</span>
-            </div>
-            <span class="mock-pts">5 Pkt.</span>
-          </div>
-          <div class="mock-radio">
-            <div class="mock-radio-left">
-              <div class="mock-radio-dot"></div>
-              <span class="mock-radio-text">Strategisch unter 10% (Hamsterrad-Modus)</span>
-            </div>
-            <span class="mock-pts">0 Pkt.</span>
-          </div>
-        </div>
-      </div>
+      <div class="mockup-bar"><span class="gold">GASTRO-OS</span><span>Modul · Tool</span></div>
+      <div class="mockup-inner"><div class="mock-section"><div class="mock-section-head">Teil 1 &amp; 2 — Zeit &amp; Abwesenheit &nbsp; max. 20 Punkte</div>
+  <div class="mock-row" style="flex-direction:column;align-items:flex-start;gap:6px">
+    <div style="font-size:12px;font-weight:600;color:#1a2a4a">Frage 2 — Strategische Zeit (% deiner Zeit)</div>
+    <div style="font-size:11px;color:#5a6a80">Wie viel deiner Arbeitszeit verbringst du strategisch — AM Betrieb statt IM Betrieb?</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap">
+      <span style="background:#1a2a4a;color:#d4af37;padding:5px 12px;border-radius:5px;font-size:11px;font-weight:700;cursor:pointer">Strategisch über 30% &nbsp; 10 Pkt.</span>
+      <span style="border:1px solid #d0c8b0;padding:5px 12px;border-radius:5px;font-size:11px">10–30% &nbsp; 5 Pkt.</span>
+      <span style="border:1px solid #d0c8b0;padding:5px 12px;border-radius:5px;font-size:11px">Unter 10% &nbsp; 0 Pkt.</span>
     </div>
-    <div class="highlight">💡 <strong>Tipp:</strong> Wähle die Antwort die heute zutrifft — nicht die die du dir wünschst. Der Score ist dein ehrlicher Spiegel.</div>
+  </div></div>
+  <div class="mock-section" style="margin-top:8px"><div class="mock-section-head">Teil 3 — Zahlen &amp; Systeme &nbsp; max. 20 Punkte</div>
+  <div class="mock-row" style="flex-direction:column;align-items:flex-start;gap:6px">
+    <div style="font-size:12px;font-weight:600;color:#1a2a4a">Frage 6 — Wareneinsatz & Kalkulation</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap">
+      <span style="border:1px solid #d0c8b0;padding:5px 12px;border-radius:5px;font-size:11px">Kenne ich exakt &nbsp; 10 Pkt.</span>
+      <span style="background:#1a2a4a;color:#d4af37;padding:5px 12px;border-radius:5px;font-size:11px;font-weight:700">Ungefähr &nbsp; 5 Pkt.</span>
+      <span style="border:1px solid #d0c8b0;padding:5px 12px;border-radius:5px;font-size:11px">Keine Ahnung &nbsp; 0 Pkt.</span>
+    </div>
+  </div></div></div>
+    </div>
+    
   </div>
-
-  <!-- SCHRITT 3 -->
   <div class="step">
-    <h2><span class="step-num">3</span> System-Diagnose ausfüllen — Teil 4</h2>
-    <p>Im letzten Abschnitt bewertest du <strong>5 Bereiche</strong> deines Betriebs von 1 bis 10. Gib für jeden Bereich eine Zahl ein — 1 bedeutet "schlecht", 10 bedeutet "perfekt".</p>
-
+    <h2><span class="step-num">3</span> Gesamtscore ablesen</h2>
+    <p>Nach allen 6 Fragen zeigt das Tool deinen Gesamtscore von 0–60 Punkten mit Bewertung und deiner wichtigsten nächsten Aufgabe. 60 Punkte = Unternehmer-Niveau.</p>
     <div class="mockup">
-      <div class="mockup-bar">
-        <span>Teil 4 — System-Diagnose</span>
-        <span style="color:#d4af37">max. 20 Punkte</span>
-      </div>
-      <div class="mockup-inner">
-        <table class="mock-table">
-          <tr>
-            <th style="width:65%">Bereich</th>
-            <th>Score (1–10)</th>
-            <th>Ziel</th>
-          </tr>
-          <tr>
-            <td>1. Mitarbeiter-Autonomie</td>
-            <td><div class="mock-input-cell" style="background:#d4af37;opacity:0.4;text-align:center;line-height:20px;font-size:11px;font-weight:700">7</div></td>
-            <td style="color:#d4af37;font-weight:700">8+</td>
-          </tr>
-          <tr>
-            <td>2. Marketing-Konstanz</td>
-            <td><div class="mock-input-cell"></div></td>
-            <td style="color:#d4af37;font-weight:700">7+</td>
-          </tr>
-          <tr>
-            <td>3. Sauberkeit &amp; Standards</td>
-            <td><div class="mock-input-cell"></div></td>
-            <td style="color:#d4af37;font-weight:700">9+</td>
-          </tr>
-          <tr>
-            <td>4. Einkauf &amp; Lager</td>
-            <td><div class="mock-input-cell"></div></td>
-            <td style="color:#d4af37;font-weight:700">7+</td>
-          </tr>
-          <tr>
-            <td>5. Persönliche Freiheit</td>
-            <td><div class="mock-input-cell"></div></td>
-            <td style="color:#d4af37;font-weight:700">8+</td>
-          </tr>
-          <tr>
-            <td colspan="3" style="background:#1a2a4a;color:#d4af37;font-weight:700">Punkte Teil 4 werden automatisch berechnet</td>
-          </tr>
-        </table>
-      </div>
+      <div class="mockup-bar"><span class="gold">GASTRO-OS</span><span>Modul · Tool</span></div>
+      <div class="mockup-inner"><div class="mock-result">
+  <div class="mock-result-num">38 / 60</div>
+  <div class="mock-result-label">Dein Unternehmer-Score</div>
+  <div class="mock-result-type" style="color:#d4af37">⚠️ POTENTIAL — Du bist auf dem richtigen Weg!</div>
+  <div style="margin-top:12px;text-align:left">
+    <table class="mock-table">
+      <tr><th>Bereich</th><th>Score (1–10)</th><th>Punkte</th><th>Dein Status</th><th>Deine nächste Aufgabe</th></tr>
+      <tr><td>Zeit &amp; Abwesenheit</td><td>5</td><td>10</td><td style="color:#856404;font-weight:700">⚠️ Teilweise</td><td style="font-size:10px;color:#8090a8">Schichtleiter aufbauen</td></tr>
+      <tr><td>Zahlen &amp; Systeme</td><td>7</td><td>14</td><td style="color:#1a6030;font-weight:700">✅ Gut</td><td style="font-size:10px;color:#8090a8">Weiter dokumentieren</td></tr>
+    </table>
+  </div></div></div>
     </div>
-    <div class="arrow-hint"><span class="arr">✏️</span> Trage eine Zahl zwischen 1 und 10 ein — der Durchschnitt wird automatisch berechnet.</div>
-  </div>
-
-  <!-- SCHRITT 4 -->
-  <div class="step">
-    <h2><span class="step-num">4</span> Dein Ergebnis ablesen</h2>
-    <p>Sobald du alle Fragen beantwortet hast erscheint dein Gesamt-Score automatisch. Darunter siehst du dein Status-Level und was dein nächster konkreter Schritt ist.</p>
-
-    <div class="mockup">
-      <div class="mockup-bar">
-        <span>Gesamt-Score — Dein Ergebnis</span>
-      </div>
-      <div class="mockup-inner">
-        <div class="mock-score">
-          <div class="mock-score-num">32</div>
-          <div class="mock-score-label">von 50 möglichen Punkten</div>
-          <div class="mock-score-type">📈 Der angehende Unternehmer</div>
-          <div style="font-size:11px;color:#a0b0c8;margin-top:8px">Du siehst das System — jetzt geht es darum es konsequent umzusetzen.</div>
-        </div>
-        <table class="mock-table" style="margin-top:10px">
-          <tr><th>Punkte</th><th>Status</th></tr>
-          <tr><td>0–15</td><td>👨‍🚒 Der Sklave des Betriebs</td></tr>
-          <tr><td>16–30</td><td>🔧 Der überlastete Allrounder</td></tr>
-          <tr style="background:#fff8e8"><td style="font-weight:700;color:#d4af37">31–45</td><td style="font-weight:700">📈 Der angehende Unternehmer</td></tr>
-          <tr><td>46–50</td><td>🏆 Der echte Gastro-Unternehmer</td></tr>
-        </table>
-      </div>
-    </div>
-    <div class="highlight">💡 <strong>Wichtig:</strong> Dein Score ist kein Urteil — er ist ein Startpunkt. Mach den Score in 90 Tagen erneut und sieh wie weit du gekommen bist.</div>
-  </div>
-
-  <!-- SCHRITT 5 -->
-  <div class="step">
-    <h2><span class="step-num">5</span> Speichern & wiederholen</h2>
-    <p>Klicke oben auf <strong>💾 Speichern</strong> damit dein Score gespeichert wird. Du kannst jederzeit zurückkommen und deinen Fortschritt verfolgen. Mit <strong>🖨️ Drucken / PDF</strong> kannst du dein Ergebnis ausdrucken oder als PDF speichern.</p>
-
-    <div class="mockup">
-      <div class="mockup-bar">
-        <span>Buttons — oben im Tool</span>
-      </div>
-      <div class="mockup-inner">
-        <div class="mock-actions" style="margin-bottom:0;padding-bottom:0;border:none">
-          <div class="mock-btn mock-btn-save" style="font-size:13px;padding:10px 18px">💾 Speichern</div>
-          <div class="mock-btn mock-btn-print" style="font-size:13px;padding:10px 18px">🖨️ Drucken / PDF</div>
-          <div class="mock-btn mock-btn-reset" style="font-size:13px;padding:10px 18px">↺ Neu starten</div>
-        </div>
-      </div>
-    </div>
-    <div class="arrow-hint"><span class="arr">⚠️</span> <strong>Neu starten</strong> löscht alle Eingaben — nur klicken wenn du wirklich von vorne anfangen möchtest.</div>
+    <div class="highlight">💡 Unter 20 Punkten? Modul 1 komplett durcharbeiten — die Lektionen zeigen dir genau was zu tun ist.</div>
   </div>
 
   <div class="nav-row">
-    <a href="modul1-uebersicht.html" class="nav-btn secondary">← Modul 1 Übersicht</a>
-    <a href="modul1-score.html" class="nav-btn">📊 Zum Unternehmer-Score →</a>
+    <a href="dashboard.html" class="nav-btn secondary">← Dashboard</a>
+    <a href="modul1-score.html" class="nav-btn">→ Zum Unternehmer-Score →</a>
   </div>
-
-  <div style="margin-top:28px;padding-top:20px;border-top:2px solid #e8dfc8;font-size:11px;color:#8090a8;letter-spacing:1px">
-    <strong style="color:#d4af37">GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg
-  </div>
+  <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
 </div>
-
-<div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+<div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
 </body>
 </html>

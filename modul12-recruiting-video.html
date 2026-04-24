@@ -68,78 +68,88 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 .footer-main strong{color:#d4af37}</style>
 </head>
 <body>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-(function(){
-  document.addEventListener('contextmenu',function(e){e.preventDefault();});
-  document.addEventListener('keydown',function(e){
-    if(e.ctrlKey&&['s','u','p','a'].includes(e.key.toLowerCase()))e.preventDefault();
-    if(e.key==='F12')e.preventDefault();
-  });
-  const sb=supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3');
-  (async function(){
-    const{data:{session}}=await sb.auth.getSession();
-    if(!session){window.location.href='login.html';return;}
-    const{data:p}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
-    if(p&&(!p.is_active||p.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
-  })();
-})();
-</script>
-<div class="header">
-  <div class="brand">GASTRO-OS</div>
-  <a href="dashboard.html" class="btn-back">← Zurück zum Dashboard</a>
-</div>
+<div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html" class="btn-back">← Zurück zum Dashboard</a></div>
 <div class="gold-bar"></div>
 <div class="wrap">
   <div class="hero">
     <div class="tag">Modul 12 · Anleitung</div>
     <h1>📸 So nutzt du den Mitarbeiter Recruiting Plan</h1>
-    <p>Der Recruiting Plan führt dich Schritt für Schritt durch den gesamten Prozess — von der Stellendefinition bis zum Onboarding. Kein Kandidat fällt mehr durchs Raster.</p>
+    <p>Der Recruiting Plan führt dich in 4 Schritten durch den gesamten Prozess: Stelle definieren, Anzeige erstellen, Kandidaten verwalten und Onboarding planen.</p>
   </div>
-  
   <div class="step">
-    <h2><span class="step-num">1</span> Stelle definieren</h2>
-    <p>Definiere genau welche Person du suchst — Aufgaben, Stunden, Gehalt und Must-Haves. Je klarer du weißt wen du willst, desto besser wird deine Anzeige.</p>
+    <h2><span class="step-num">1</span> Schritt 1 — Stelle definieren</h2>
+    <p>Trage alle Details der gesuchten Stelle ein: Bezeichnung, Arbeitsstunden/Woche, Stundenlohn/Gehalt, geplantes Start-Datum sowie Must-Have und Nice-to-Have Fähigkeiten.</p>
     <div class="mockup">
-      <div class="mockup-bar"><span>Schritt 1 — Stelle</span><span class="gold"></span></div>
-      <div class="mockup-inner"><div class="mock-section"><div class="mock-section-head">📋 Stellen-Definition</div><div class="mock-field"><label>Stellenbezeichnung</label><div class="mock-bar filled"></div></div><div class="mock-field"><label>Stunden / Woche</label><div class="mock-bar"></div></div><div class="mock-field"><label>Gehalt / Stundenlohn</label><div class="mock-bar"></div></div></div></div>
+      <div class="mockup-bar"><span class="gold">GASTRO-OS</span><span>Modul · Tool</span></div>
+      <div class="mockup-inner"><div class="mock-section"><div class="mock-section-head">SCHRITT 1 — STELLE DEFINIEREN</div>
+  <div class="mock-field-row" style="grid-template-columns:1fr 1fr">
+    <div class="mock-field"><label>Stellenbezeichnung</label><div class="mock-input"></div></div>
+    <div class="mock-field"><label>Arbeitsstunden / Woche</label><div class="mock-input"></div></div>
+    <div class="mock-field"><label>Stundenlohn / Gehalt</label><div class="mock-input"></div></div>
+    <div class="mock-field"><label>Start-Datum (geplant)</label><div class="mock-input"></div></div>
+  </div>
+  <div class="mock-field"><label>Was muss die Person können? (Must-Have)</label><div class="mock-textarea"></div></div>
+  <div class="mock-field" style="margin-top:8px"><label>Was wäre ein Bonus? (Nice-to-Have)</label><div class="mock-textarea"></div></div></div></div>
     </div>
-    <div class="arrow-hint"><span class="arr">💡</span> <strong>Must-Have vs. Nice-to-Have.</strong> Was ist absolut nötig — und was wäre ein Bonus? Schreibe beides auf.</div>
+    <div class="highlight">💡 Je klarer du weißt wen du willst, desto besser wird deine Anzeige.</div>
   </div>
   <div class="step">
-    <h2><span class="step-num">2</span> Stellenanzeige erstellen</h2>
-    <p>Das Tool hilft dir eine Anzeige zu schreiben die die richtigen Menschen anspricht — authentisch statt generisch.</p>
+    <h2><span class="step-num">2</span> Schritt 2 — Stellenanzeige erstellen</h2>
+    <p>Schreib die Stellenanzeige direkt im Tool: Überschrift, Anzeigentext und wo du die Anzeige schalten wirst. So hast du alles an einem Ort.</p>
     <div class="mockup">
-      <div class="mockup-bar"><span>Schritt 2 — Anzeige</span><span class="gold"></span></div>
-      <div class="mockup-inner"><div class="mock-row highlight"><span>Überschrift der Anzeige</span></div><div class="mock-textarea"></div><div class="mock-row"><span>Wo schaltest du die Anzeige?</span></div><div class="mock-row"><span>Instagram, Facebook, Aushang, Indeed</span><span class="mock-badge-gold">✓</span></div></div>
-    </div>
-    <div class="arrow-hint"><span class="arr">💡</span> Schreibe wie du sprichst. 'Wir suchen einen Kollegen der mit Herz dabei ist' überzeugt mehr als 'Wir suchen eine qualifizierte Fachkraft'.</div>
-  </div>
-  <div class="step">
-    <h2><span class="step-num">3</span> Kandidaten verwalten</h2>
-    <p>Für jeden Bewerber gibt es eine eigene Karte mit Kontaktdaten, Notizen und Status — von 'Beworben' bis 'Eingestellt'.</p>
-    <div class="mockup">
-      <div class="mockup-bar"><span>Schritt 3 — Kandidaten</span><span class="gold"></span></div>
-      <div class="mockup-inner"><div class="mock-row highlight"><span>Anna M. — Servicekraft</span><span class="mock-badge-gold">📅 Gespräch Di. 14:00</span></div><div class="mock-row"><span>Peter K. — Servicekraft</span><span class="mock-badge-gold">✅ Eingestellt</span></div><div class="mock-row"><span>Lisa H. — Servicekraft</span><span class="mock-badge-gold">❌ Abgesagt</span></div><div class="mock-row"><span>+ Kandidaten hinzufügen</span></div></div>
-    </div>
-    <div class="arrow-hint"><span class="arr">💡</span> Trage jeden Kandidaten sofort ein sobald er sich bewirbt — auch Absagen. So siehst du wie viele Menschen du erreicht hast.</div>
-  </div>
-  <div class="step">
-    <h2><span class="step-num">4</span> Onboarding planen & Speichern</h2>
-    <p>Plane den ersten Tag und die erste Woche des neuen Mitarbeiters im voraus. Gut eingearbeitete Mitarbeiter bleiben länger.</p>
-    <div class="mockup">
-      <div class="mockup-bar"><span>Schritt 4 — Onboarding</span><span class="gold"></span></div>
-      <div class="mockup-inner"><div class="mock-actions">
-        <div class="mock-btn mock-btn-save">💾 Speichern</div>
-        <div class="mock-btn mock-btn-print">🖨️ Drucken / PDF</div>
-        <div class="mock-btn mock-btn-reset">↺ Neu starten</div>
-      </div><div class="mock-row"><span>Tag 1: Betrieb zeigen, Team vorstellen</span><span class="mock-badge-gold">✓</span></div><div class="mock-row highlight"><span>Woche 1: Tägliches 5-Min-Feedback</span><span class="mock-badge-gold">geplant</span></div><div class="mock-row"><span>Ansprechpartner: Maria S.</span><span class="mock-badge-gold">✓</span></div></div>
+      <div class="mockup-bar"><span class="gold">GASTRO-OS</span><span>Modul · Tool</span></div>
+      <div class="mockup-inner"><div class="mock-section"><div class="mock-section-head">SCHRITT 2 — STELLENANZEIGE</div>
+  <div class="mock-field"><label>Überschrift der Anzeige</label><div class="mock-input"></div></div>
+  <div class="mock-field" style="margin-top:8px"><label>Anzeigen-Text (was macht euren Betrieb besonders?)</label><div class="mock-textarea" style="height:60px"></div></div>
+  <div class="mock-field" style="margin-top:8px"><label>Wo schaltest du die Anzeige?</label><div class="mock-input"></div></div></div></div>
     </div>
     
   </div>
+  <div class="step">
+    <h2><span class="step-num">3</span> Schritt 3 — Bewerbungen verwalten (Kandidaten-Übersicht)</h2>
+    <p>Trage jeden Kandidaten mit Name, Kontakt und Notizen ein. Der Status wird per Dropdown verwaltet: Beworben → Zum Gespräch eingeladen → Gespräch geführt → Probearbeit → Angebot → Eingestellt oder Abgesagt.</p>
+    <div class="mockup">
+      <div class="mockup-bar"><span class="gold">GASTRO-OS</span><span>Modul · Tool</span></div>
+      <div class="mockup-inner"><div class="mock-section"><div class="mock-section-head">SCHRITT 3 — BEWERBUNGEN VERWALTEN &nbsp;·&nbsp; Kandidaten-Übersicht</div>
+  <div class="mock-section" style="margin:0">
+    <div style="font-size:11px;font-weight:600;color:#d4af37;margin-bottom:8px">Kandidat 1</div>
+    <div class="mock-field-row" style="grid-template-columns:1fr 1fr 1fr">
+      <div class="mock-field"><label>Name</label><div class="mock-input"></div></div>
+      <div class="mock-field"><label>Kontakt</label><div class="mock-input"></div></div>
+      <div class="mock-field"><label>Status</label>
+        <select style="background:#eaf2ff;border:1px solid #e0d8c8;border-radius:4px;padding:5px;font-size:11px;color:#1a4a8a;width:100%">
+          <option>📩 Beworben</option>
+          <option>📅 Zum Gespräch eingeladen</option>
+          <option>🗣️ Gespräch geführt</option>
+          <option>🔧 Probearbeit vereinbart</option>
+          <option>✅ Eingestellt</option>
+          <option>❌ Abgesagt</option>
+        </select>
+      </div>
+    </div>
+    <div class="mock-field" style="margin-top:4px"><label>Notizen</label><div class="mock-textarea"></div></div>
+  </div></div></div>
+    </div>
+    <div class="highlight">💡 Kein Kandidat fällt mehr durchs Raster — alle Informationen an einem Ort.</div>
+  </div>
+  <div class="step">
+    <h2><span class="step-num">4</span> Schritt 4 — Erster Tag & erste Woche</h2>
+    <p>Plane den ersten Tag direkt im Tool: Was passiert in der ersten Stunde, am ersten Tag, in der ersten Woche. So startet jeder neue Mitarbeiter strukturiert.</p>
+    <div class="mockup">
+      <div class="mockup-bar"><span class="gold">GASTRO-OS</span><span>Modul · Tool</span></div>
+      <div class="mockup-inner"><div class="mock-section"><div class="mock-section-head">SCHRITT 4 — ERSTER TAG &amp; ERSTE WOCHE</div>
+  <div class="mock-field-row">
+    <div class="mock-field"><label>Erste Stunde — Was zeige ich zuerst?</label><div class="mock-textarea"></div></div>
+    <div class="mock-field" style="margin-top:8px"><label>Erster Tag — Aufgaben &amp; Einführung</label><div class="mock-textarea"></div></div>
+    <div class="mock-field" style="margin-top:8px"><label>Erste Woche — Meilensteine</label><div class="mock-textarea"></div></div>
+  </div></div></div>
+    </div>
+    <div class="highlight">💡 💾 Speichern — 🖨️ Drucken als physische Checkliste für den ersten Tag.</div>
+  </div>
+
   <div class="nav-row">
-    <a href="modul12-uebersicht.html" class="nav-btn secondary">← Modul 12 Übersicht</a>
-    <a href="modul12-recruiting.html" class="nav-btn">📊 Zum Recruiting Plan →</a>
+    <a href="dashboard.html" class="nav-btn secondary">← Dashboard</a>
+    <a href="modul12-recruiting.html" class="nav-btn">→ Zum Recruiting Plan →</a>
   </div>
   <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
 </div>

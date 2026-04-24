@@ -68,86 +68,72 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 .footer-main strong{color:#d4af37}</style>
 </head>
 <body>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-(function(){
-  document.addEventListener('contextmenu',function(e){e.preventDefault();});
-  document.addEventListener('keydown',function(e){
-    if(e.ctrlKey&&['s','u','p','a'].includes(e.key.toLowerCase()))e.preventDefault();
-    if(e.key==='F12')e.preventDefault();
-  });
-  const sb=supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3');
-  (async function(){
-    const{data:{session}}=await sb.auth.getSession();
-    if(!session){window.location.href='login.html';return;}
-    const{data:p}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
-    if(p&&(!p.is_active||p.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
-  })();
-})();
-</script>
-<div class="header">
-  <div class="brand">GASTRO-OS</div>
-  <a href="dashboard.html" class="btn-back">← Zurück zum Dashboard</a>
-</div>
+<div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html" class="btn-back">← Zurück zum Dashboard</a></div>
 <div class="gold-bar"></div>
 <div class="wrap">
   <div class="hero">
     <div class="tag">Modul 10 · Anleitung</div>
     <h1>📸 So nutzt du das Standort Analyse Tool</h1>
-    <p>Das Standort Analyse Tool hilft dir eine fundierte Entscheidung für oder gegen einen neuen Standort zu treffen. Kein Bauchgefühl — sondern strukturierte Analyse.</p>
-  </div>
-  
-  <div class="step">
-    <h2><span class="step-num">1</span> Standort-Grunddaten eintragen</h2>
-    <p>Trage alle relevanten Grunddaten zum potenziellen Standort ein — Adresse, Größe, Mietpreis und Lage.</p>
-    <div class="mockup">
-      <div class="mockup-bar"><span>Schritt 1 — Standort</span><span class="gold"></span></div>
-      <div class="mockup-inner"><div class="mock-section"><div class="mock-section-head">📍 Grunddaten</div><div class="mock-field"><label>Adresse / Ort</label><div class="mock-bar filled"></div></div><div class="mock-field"><label>Fläche m²</label><div class="mock-bar"></div></div><div class="mock-field"><label>Monatliche Miete €</label><div class="mock-bar"></div></div><div class="mock-field"><label>Lage (Innenstadt / Gewerbe / Wohngebiet)</label><div class="mock-bar"></div></div></div></div>
-    </div>
-    <div class="arrow-hint"><span class="arr">💡</span> Besorge dir die genauen Mietkonditionen schriftlich — Nettomiete, Nebenkosten und Mietdauer.</div>
+    <p>Das Standort Analyse Tool vergleicht bis zu 3 Standorte gleichzeitig — Bewertungsmatrix, Finanzcheck und automatischer Gesamtscore in 3 Tabs.</p>
   </div>
   <div class="step">
-    <h2><span class="step-num">2</span> Markt & Wettbewerb analysieren</h2>
-    <p>Trage ein wie viele potenzielle Gäste im Einzugsgebiet wohnen und wie stark der Wettbewerb ist.</p>
+    <h2><span class="step-num">1</span> Bis zu 3 Standorte vergleichen (Tab 📊 Standort-Analyse)</h2>
+    <p>Trage oben die Stammdaten für Standort A, B und C ein: Name/Adresse, Konzept, Mietkosten, Fläche und Sitzplätze. Du kannst auch nur einen oder zwei Standorte vergleichen.</p>
     <div class="mockup">
-      <div class="mockup-bar"><span>Schritt 2 — Markt</span><span class="gold"></span></div>
-      <div class="mockup-inner"><div class="mock-row"><span>Einwohner im Radius 1km</span><span class="mock-badge-gold">12.400</span></div><div class="mock-row highlight"><span>Direkte Konkurrenten in der Nähe</span><span class="mock-badge-gold">3 Betriebe</span></div><div class="mock-row"><span>Laufkundschaft (täglich geschätzt)</span><span class="mock-badge-gold">200–300 Personen</span></div><div class="mock-row"><span>Parkplätze verfügbar?</span><span class="mock-badge-gold">✅ 12 Parkplätze</span></div><div class="mock-row"><span>ÖPNV-Anbindung?</span><span class="mock-badge-gold">✅ Bus hält direkt vor der Tür</span></div></div>
-    </div>
-    <div class="arrow-hint"><span class="arr">💡</span> Gehe den Standort zu verschiedenen Tageszeiten persönlich besuchen — Zahlen allein lügen manchmal.</div>
-  </div>
-  <div class="step">
-    <h2><span class="step-num">3</span> Wirtschaftlichkeit berechnen</h2>
-    <p>Das Tool berechnet ob sich der Standort rechnet — Break-Even, nötiger Umsatz und Rentabilitätszeitraum.</p>
-    <div class="mockup">
-      <div class="mockup-bar"><span>Schritt 3 — Wirtschaftlichkeit</span><span class="gold"></span></div>
-      <div class="mockup-inner"><div class="mock-result">
-        <div class="mock-result-num">18 Monate</div>
-        <div class="mock-result-label">Break-Even Zeitraum</div>
-        <div class="mock-result-type">⚠️ Prüfe ob das realistisch ist</div>
-      </div><div class="mock-row"><span>Nötiger Monatsumsatz</span><span class="mock-badge-gold">42.000 € / Monat</span></div><div class="mock-row"><span>Geschätzter Umsatz Monat 1</span><span class="mock-badge-gold">28.000 €</span></div><div class="mock-row highlight"><span>Investitionssumme gesamt</span><span class="mock-badge-gold">85.000 €</span></div></div>
-    </div>
-    <div class="arrow-hint"><span class="arr">💡</span> <strong>Faustregel:</strong> Der nötige Monatsumsatz sollte in deiner Branche und Lage realistisch erreichbar sein. Wenn er über dem Marktdurchschnitt liegt — kritisch prüfen.</div>
-  </div>
-  <div class="step">
-    <h2><span class="step-num">4</span> Gesamtbewertung & Entscheidung</h2>
-    <p>Das Tool gibt dir eine Gesamtbewertung und Empfehlung. Die finale Entscheidung triffst du — aber auf Basis von Fakten.</p>
-    <div class="mockup">
-      <div class="mockup-bar"><span>Schritt 4 — Entscheidung</span><span class="gold"></span></div>
-      <div class="mockup-inner"><div class="mock-actions">
-        <div class="mock-btn mock-btn-save">💾 Speichern</div>
-        <div class="mock-btn mock-btn-print">🖨️ Drucken / PDF</div>
-        <div class="mock-btn mock-btn-reset">↺ Neu starten</div>
-      </div><div class="mock-result">
-        <div class="mock-result-num">67/100</div>
-        <div class="mock-result-label">Standort-Score</div>
-        <div class="mock-result-type">🟡 Potenzial vorhanden — sorgfältig prüfen</div>
-      </div><div class="mock-row"><span>Stärken: Lage, Laufkundschaft, ÖPNV</span><span class="mock-badge-gold">✅</span></div><div class="mock-row highlight"><span>Risiken: Hohe Miete, starker Wettbewerb</span><span class="mock-badge-gold">⚠️</span></div></div>
+      <div class="mockup-bar"><span class="gold">GASTRO-OS</span><span>Modul · Tool</span></div>
+      <div class="mockup-inner"><div class="mock-section"><div class="mock-section-head">GASTRO-OS | Standort-Analyse-Tool &nbsp;·&nbsp; Analysiere bis zu 3 potenzielle Standorte im Vergleich.</div>
+  <div class="mock-section-head" style="margin-bottom:8px">① STANDORT-STAMMDATEN</div>
+  <table class="mock-table">
+    <tr><th>Beschreibung</th><th>Standort A</th><th>Standort B</th><th>Standort C</th></tr>
+    <tr><td>Standortname / Adresse</td><td style="background:#eaf2ff"><div class="mock-input"></div></td><td style="background:#eaf2ff"><div class="mock-input"></div></td><td style="background:#eaf2ff"><div class="mock-input"></div></td></tr>
+    <tr><td>Konzept geplant</td><td style="background:#eaf2ff"><div class="mock-input"></div></td><td style="background:#eaf2ff"><div class="mock-input"></div></td><td style="background:#eaf2ff"><div class="mock-input"></div></td></tr>
+    <tr><td>Mietkosten mtl. (€)</td><td style="background:#eaf2ff"><div class="mock-input"></div></td><td style="background:#eaf2ff"><div class="mock-input"></div></td><td style="background:#eaf2ff"><div class="mock-input"></div></td></tr>
+    <tr><td>Fläche (m²)</td><td style="background:#eaf2ff"><div class="mock-input"></div></td><td style="background:#eaf2ff"><div class="mock-input"></div></td><td style="background:#eaf2ff"><div class="mock-input"></div></td></tr>
+    <tr><td>Sitzplätze geplant</td><td style="background:#eaf2ff"><div class="mock-input"></div></td><td style="background:#eaf2ff"><div class="mock-input"></div></td><td style="background:#eaf2ff"><div class="mock-input"></div></td></tr>
+  </table></div></div>
     </div>
     
   </div>
+  <div class="step">
+    <h2><span class="step-num">2</span> Bewertungsmatrix ausfüllen — 1 bis 5 Sterne</h2>
+    <p>Bewerte jeden Standort in allen Kategorien mit 1 (schwach) bis 5 (sehr gut). Die Gewichtung zeigt wie wichtig jede Kategorie ist. Der gewichtete Gesamtscore erscheint automatisch.</p>
+    <div class="mockup">
+      <div class="mockup-bar"><span class="gold">GASTRO-OS</span><span>Modul · Tool</span></div>
+      <div class="mockup-inner"><div class="mock-section"><div class="mock-section-head">② BEWERTUNGSMATRIX — Bewertung 1 (schwach) bis 5 (sehr gut)</div>
+  <table class="mock-table">
+    <tr><th>Kriterium</th><th>Gewicht</th><th>Standort A</th><th>Standort B</th><th>Standort C</th></tr>
+    <tr><td>Lage &amp; Erreichbarkeit</td><td style="color:#d4af37;font-weight:700">25%</td><td style="background:#eaf2ff"><div class="mock-input"></div></td><td style="background:#eaf2ff"><div class="mock-input"></div></td><td style="background:#eaf2ff"><div class="mock-input"></div></td></tr>
+    <tr><td>Passantenfrequenz</td><td style="color:#d4af37;font-weight:700">20%</td><td style="background:#eaf2ff"><div class="mock-input"></div></td><td style="background:#eaf2ff"><div class="mock-input"></div></td><td style="background:#eaf2ff"><div class="mock-input"></div></td></tr>
+    <tr><td>Wettbewerbssituation</td><td style="color:#d4af37;font-weight:700">15%</td><td style="background:#eaf2ff"><div class="mock-input"></div></td><td style="background:#eaf2ff"><div class="mock-input"></div></td><td style="background:#eaf2ff"><div class="mock-input"></div></td></tr>
+    <tr style="background:#1a2a4a"><td colspan="2" style="color:#d4af37;font-weight:700">Gewichteter Gesamtscore</td><td style="color:#d4af37;font-weight:700;font-size:15px">—</td><td style="color:#a0b0c8;font-weight:700;font-size:15px">—</td><td style="color:#a0b0c8;font-weight:700;font-size:15px">—</td></tr>
+  </table></div></div>
+    </div>
+    <div class="highlight">💡 Bewertungsmatrix und Finanzcheck Expansion (Tab 2) zusammen geben dir das vollständige Bild.</div>
+  </div>
+  <div class="step">
+    <h2><span class="step-num">3</span> Gesamtbewertung & Entscheidung (Tab 🏆 Gesamtbewertung)</h2>
+    <p>Im dritten Tab siehst du die Gesamtbewertung aller drei Standorte nebeneinander: Standort-Score, Finanz-Score und Gesamt-Empfehlung. Der beste Standort wird automatisch hervorgehoben.</p>
+    <div class="mockup">
+      <div class="mockup-bar"><span class="gold">GASTRO-OS</span><span>Modul · Tool</span></div>
+      <div class="mockup-inner"><div class="mock-result">
+  <div style="font-family:Georgia,serif;font-size:13px;color:#d4af37;margin-bottom:10px">🏆 GESAMTBEWERTUNG &amp; ENTSCHEIDUNG</div>
+  <table class="mock-table">
+    <tr><th></th><th style="color:#d4af37">Standort A</th><th>Standort B</th><th>Standort C</th></tr>
+    <tr><td style="color:#a0b0c8">Standort-Score</td><td style="color:#d4af37;font-weight:700;font-size:15px">82 / 100</td><td style="color:#a0b0c8">71</td><td style="color:#a0b0c8">65</td></tr>
+    <tr><td style="color:#a0b0c8">Finanz-Score</td><td style="color:#d4af37;font-weight:700">Positiv</td><td style="color:#a0b0c8">Neutral</td><td style="color:#a0b0c8">Risiko</td></tr>
+    <tr><td style="color:#a0b0c8">Empfehlung</td><td style="color:#d4af37;font-weight:700">⭐ EMPFOHLEN</td><td style="color:#a0b0c8">Möglich</td><td style="color:#a0b0c8">Nicht empfohlen</td></tr>
+  </table>
+  <div style="background:#2a3a5a;border-radius:5px;padding:10px;margin-top:8px">
+    <div style="font-size:11px;color:#a0b0c8">Entscheidungsnotiz:</div>
+    <div style="background:#1a2a4a;border-radius:3px;padding:6px;margin-top:4px"><div class="mock-input"></div></div>
+  </div></div></div>
+    </div>
+    <div class="highlight">💡 Tab 2 Finanzcheck: trage 3 Szenarien ein (optimistisch/realistisch/pessimistisch) um das Risiko zu bewerten.</div>
+  </div>
+
   <div class="nav-row">
-    <a href="modul10-uebersicht.html" class="nav-btn secondary">← Modul 10 Übersicht</a>
-    <a href="modul10-tool.html" class="nav-btn">📊 Zum Standort Analyse Tool →</a>
+    <a href="dashboard.html" class="nav-btn secondary">← Dashboard</a>
+    <a href="modul10-tool.html" class="nav-btn">→ Zum Standort Analyse Tool →</a>
   </div>
   <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
 </div>

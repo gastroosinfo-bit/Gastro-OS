@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>So nutzt du den Gewinn Rechner | GASTRO-OS</title>
+<title>So nutzt du den Gewinn-Rechner | GASTRO-OS</title>
 <style>* { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
 .header{background:#1a2a4a;padding:14px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
@@ -68,82 +68,73 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 .footer-main strong{color:#d4af37}</style>
 </head>
 <body>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-(function(){
-  document.addEventListener('contextmenu',function(e){e.preventDefault();});
-  document.addEventListener('keydown',function(e){
-    if(e.ctrlKey&&['s','u','p','a'].includes(e.key.toLowerCase()))e.preventDefault();
-    if(e.key==='F12')e.preventDefault();
-  });
-  const sb=supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3');
-  (async function(){
-    const{data:{session}}=await sb.auth.getSession();
-    if(!session){window.location.href='login.html';return;}
-    const{data:p}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
-    if(p&&(!p.is_active||p.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
-  })();
-})();
-</script>
-<div class="header">
-  <div class="brand">GASTRO-OS</div>
-  <a href="dashboard.html" class="btn-back">← Zurück zum Dashboard</a>
-</div>
+<div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html" class="btn-back">← Zurück zum Dashboard</a></div>
 <div class="gold-bar"></div>
 <div class="wrap">
   <div class="hero">
     <div class="tag">Modul 4 · Anleitung</div>
-    <h1>📸 So nutzt du den Gewinn Rechner</h1>
-    <p>Der Gewinn Rechner zeigt dir in 5 Minuten was dein Betrieb wirklich verdient — nicht was du hoffst, sondern was die Zahlen sagen. Monat für Monat, schwarz auf weiß.</p>
+    <h1>📸 So nutzt du den Gewinn-Rechner</h1>
+    <p>Der Gewinn-Rechner braucht nur 4 Zahlen — Umsatz, Wareneinsatz, Fixkosten, Personal. Alles andere: automatisch. Gewinn, Marge, Break-Even und Unternehmer-Score auf einen Blick.</p>
   </div>
-  
   <div class="step">
-    <h2><span class="step-num">1</span> Umsatz eintragen</h2>
-    <p>Trage deinen monatlichen Gesamtumsatz ein. Du findest diese Zahl in deiner Kasse oder deiner BWA.</p>
+    <h2><span class="step-num">1</span> Deine vier Zahlen eintragen — ① EINGABEN</h2>
+    <p>Trage nur vier Zahlen ein: Monatsumsatz (€ netto), Wareneinsatz (€), Fixkosten pro Monat (€) und Personalkosten (€). Das ist alles. Das Tool berechnet den Rest automatisch.</p>
     <div class="mockup">
-      <div class="mockup-bar"><span>Schritt 1 — Umsatz</span><span class="gold">Monat</span></div>
-      <div class="mockup-inner"><div class="mock-section"><div class="mock-section-head">📊 Monatsumsatz</div><div class="mock-field"><label>Gesamtumsatz (Netto) €</label><div class="mock-bar filled"></div></div><div class="mock-field"><label>Monat / Jahr</label><div class="mock-bar"></div></div></div></div>
+      <div class="mockup-bar"><span class="gold">GASTRO-OS</span><span>Modul · Tool</span></div>
+      <div class="mockup-inner"><div class="mock-section"><div class="mock-section-head">GASTRO-OS | Gewinn-Rechner &nbsp;·&nbsp; Gewinn, Break-Even &amp; Unternehmer-Score</div>
+  <div class="mock-actions">
+    <span class="mock-btn mock-btn-save">💾 Speichern</span>
+    <span class="mock-btn mock-btn-print">🖨️ Drucken / PDF</span>
+    <span class="mock-btn mock-btn-reset">↺ Neu starten</span>
+  </div>
+  <div class="mock-section-head" style="margin:0 0 8px">① EINGABEN — Trage deine vier Zahlen ein</div>
+  <div class="mock-field-row" style="grid-template-columns:1fr 1fr">
+    <div class="mock-field"><label>Monatsumsatz (€ netto) — Nettoumsatz ohne MwSt.</label><div class="mock-input"></div></div>
+    <div class="mock-field"><label>Wareneinsatz (€) — Lebensmittel + Getränke</label><div class="mock-input"></div></div>
+    <div class="mock-field"><label>Fixkosten pro Monat (€) — Miete, Versicherungen, Leasing …</label><div class="mock-input"></div></div>
+    <div class="mock-field"><label>Personalkosten (€) — Löhne inkl. Lohnnebenkosten</label><div class="mock-input"></div></div>
+  </div></div></div>
     </div>
-    <div class="arrow-hint"><span class="arr">💡</span> Nutze den Netto-Umsatz (ohne Mehrwertsteuer). Der steht in deiner BWA ganz oben.</div>
+    <div class="highlight">💡 Nutze den Netto-Umsatz (ohne MwSt.) — der steht in deiner BWA ganz oben.</div>
   </div>
   <div class="step">
-    <h2><span class="step-num">2</span> Kosten eintragen</h2>
-    <p>Trage deine monatlichen Kosten ein. Wareneinsatz, Personalkosten, Miete und sonstige Kosten.</p>
+    <h2><span class="step-num">2</span> Ergebnis ablesen — ② BERECHNUNG</h2>
+    <p>Sofort nach der Eingabe erscheinen alle berechneten Werte: Gewinn/Verlust, Gewinnmarge, Wareneinsatz%, Personalkosten%, Gesamtkosten, Break-Even Umsatz und ein Fortschrittsbalken.</p>
     <div class="mockup">
-      <div class="mockup-bar"><span>Schritt 2 — Kosten</span><span class="gold"></span></div>
-      <div class="mockup-inner"><table class="mock-table"><tr><th>Kostenart</th><th>Betrag €</th><th>% vom Umsatz</th></tr><tr><td>Wareneinsatz</td><td><div class="mock-input">8.400</div></td><td style="color:#d4af37">28%</td></tr><tr><td>Personalkosten</td><td><div class="mock-input">9.600</div></td><td style="color:#d4af37">32%</td></tr><tr><td>Miete & Nebenkosten</td><td><div class="mock-input">3.000</div></td><td style="color:#a0b0c8">10%</td></tr><tr><td>Sonstige Kosten</td><td><div class="mock-input">1.500</div></td><td style="color:#a0b0c8">5%</td></tr><tr><td style="font-weight:700">Gesamt Kosten</td><td style="color:#e06060;font-weight:700">22.500 €</td><td style="color:#e06060;font-weight:700">75%</td></tr></table></div>
-    </div>
-    <div class="arrow-hint"><span class="arr">💡</span> Hast du die Zahlen nicht griffbereit? Schau in deine letzte BWA — dort stehen alle Kostenpositionen.</div>
+      <div class="mockup-bar"><span class="gold">GASTRO-OS</span><span>Modul · Tool</span></div>
+      <div class="mockup-inner"><div class="mock-section"><div class="mock-section-head">② BERECHNUNG — Dein Ergebnis</div>
+  <div class="mock-field-row" style="grid-template-columns:1fr 1fr 1fr">
+    <div class="mock-field" style="border-color:#d4af37"><label>Gewinn / Verlust</label><span style="font-size:15px;font-weight:700;color:#1a6030">+2.450 €</span></div>
+    <div class="mock-field"><label>Gewinnmarge</label><span style="font-size:15px;font-weight:700;color:#1a6030">8,2% &nbsp;<span style="font-size:10px;color:#8090a8">Ziel: &gt; 10%</span></span></div>
+    <div class="mock-field"><label>Wareneinsatz %</label><span style="font-size:15px;font-weight:700;color:#d4af37">31% &nbsp;<span style="font-size:10px;color:#8090a8">Ziel: &lt; 30%</span></span></div>
+    <div class="mock-field"><label>Personalkosten %</label><span style="font-size:15px;font-weight:700;color:#1a6030">33% &nbsp;<span style="font-size:10px;color:#8090a8">Ziel: &lt; 35%</span></span></div>
+    <div class="mock-field"><label>Gesamtkosten</label><span style="font-size:13px;font-weight:700">27.550 €</span></div>
+    <div class="mock-field" style="border-color:#3a7ad4"><label>Break-Even Umsatz</label><span style="font-size:13px;font-weight:700;color:#3a7ad4">26.800 €</span></div>
   </div>
-  <div class="step">
-    <h2><span class="step-num">3</span> Gewinn & Break-Even ablesen</h2>
-    <p>Das Tool berechnet sofort deinen monatlichen Gewinn und deinen täglichen Break-Even — die wichtigste Zahl für jeden Gastronomen.</p>
-    <div class="mockup">
-      <div class="mockup-bar"><span>Schritt 3 — Ergebnis</span><span class="gold"></span></div>
-      <div class="mockup-inner"><div class="mock-result">
-        <div class="mock-result-num">7.500 €</div>
-        <div class="mock-result-label">Monatlicher Gewinn (vor Steuern)</div>
-        <div class="mock-result-type">25% Gewinnmarge</div>
-      </div><div class="mock-row"><span>Umsatz</span><span class="mock-badge-gold">30.000 €</span></div><div class="mock-row"><span>Gesamtkosten</span><span class="mock-badge-gold">22.500 €</span></div><div class="mock-row highlight"><span>Täglicher Break-Even</span><span class="mock-badge-gold">750 € / Tag</span></div></div>
-    </div>
-    <div class="arrow-hint"><span class="arr">💡</span> <strong>Der tägliche Break-Even</strong> ist die Zahl die du auswendig wissen solltest. Wirst du diesen Betrag heute einnehmen? Diese Frage stellt dir das System täglich.</div>
-  </div>
-  <div class="step">
-    <h2><span class="step-num">4</span> Szenarien durchspielen & Speichern</h2>
-    <p>Was passiert wenn du den Wareneinsatz um 2% senkst? Oder die Personalkosten optimierst? Spiele Szenarien durch und sieh sofort die Auswirkung auf deinen Gewinn.</p>
-    <div class="mockup">
-      <div class="mockup-bar"><span>Schritt 4 — Szenarien</span><span class="gold"></span></div>
-      <div class="mockup-inner"><div class="mock-actions">
-        <div class="mock-btn mock-btn-save">💾 Speichern</div>
-        <div class="mock-btn mock-btn-print">🖨️ Drucken / PDF</div>
-        <div class="mock-btn mock-btn-reset">↺ Neu starten</div>
-      </div><div class="mock-row highlight"><span>Szenario: Wareneinsatz −2%</span><span class="mock-badge-gold">+600 €/Monat ✅</span></div><div class="mock-row"><span>Szenario: Personal −5%</span><span class="mock-badge-gold">+1.500 €/Monat</span></div><div class="mock-row"><span>Aktueller Gewinn gespeichert</span><span class="mock-badge-gold">✓</span></div></div>
+  <div style="background:#e0e8f0;border-radius:4px;height:12px;margin:8px 0"><div style="background:#3a7ad4;width:112%;height:12px;border-radius:4px"></div></div>
+  <div style="font-size:11px;color:#5a6a80">Break-Even Fortschritt: 112% — <span style="color:#1a6030;font-weight:700">Umsatz über Break-Even ✅</span></div></div></div>
     </div>
     
   </div>
+  <div class="step">
+    <h2><span class="step-num">3</span> Unternehmer-Score ablesen</h2>
+    <p>Unterhalb der Berechnung erscheint dein persönlicher Unternehmer-Score von 0–100 Punkten — basierend auf Gewinnmarge, Wareneinsatz% und Personalkosten% im Vergleich zu den Zielwerten.</p>
+    <div class="mockup">
+      <div class="mockup-bar"><span class="gold">GASTRO-OS</span><span>Modul · Tool</span></div>
+      <div class="mockup-inner"><div class="mock-result">
+  <div class="mock-result-num">67 <span style="font-size:14px">von 100</span></div>
+  <div class="mock-result-label">Unternehmer-Score</div>
+  <div style="background:#2a3a5a;border-radius:6px;padding:10px 16px;margin-top:10px;text-align:left">
+    <div style="font-size:11px;color:#a0b0c8">Nächste Aufgabe:</div>
+    <div style="font-size:13px;color:#fff;margin-top:4px">Wareneinsatz um 1% senken → Einkaufs-Check starten</div>
+  </div></div></div>
+    </div>
+    <div class="highlight">💡 Score unter 40? Modul 4 Lektionen durcharbeiten — dort findest du die konkreten Hebel.</div>
+  </div>
+
   <div class="nav-row">
-    <a href="modul4-uebersicht.html" class="nav-btn secondary">← Modul 4 Übersicht</a>
-    <a href="modul4-gewinn.html" class="nav-btn">📊 Zum Gewinn Rechner →</a>
+    <a href="dashboard.html" class="nav-btn secondary">← Dashboard</a>
+    <a href="modul4-gewinn.html" class="nav-btn">→ Zum Gewinn-Rechner →</a>
   </div>
   <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
 </div>

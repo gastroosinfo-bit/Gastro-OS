@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>So nutzt du die Kostentreiber Checkliste | GASTRO-OS</title>
+<title>So nutzt du den Kostentreiber-Check | GASTRO-OS</title>
 <style>* { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
 .header{background:#1a2a4a;padding:14px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
@@ -68,82 +68,76 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 .footer-main strong{color:#d4af37}</style>
 </head>
 <body>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-(function(){
-  document.addEventListener('contextmenu',function(e){e.preventDefault();});
-  document.addEventListener('keydown',function(e){
-    if(e.ctrlKey&&['s','u','p','a'].includes(e.key.toLowerCase()))e.preventDefault();
-    if(e.key==='F12')e.preventDefault();
-  });
-  const sb=supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3');
-  (async function(){
-    const{data:{session}}=await sb.auth.getSession();
-    if(!session){window.location.href='login.html';return;}
-    const{data:p}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
-    if(p&&(!p.is_active||p.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
-  })();
-})();
-</script>
-<div class="header">
-  <div class="brand">GASTRO-OS</div>
-  <a href="dashboard.html" class="btn-back">← Zurück zum Dashboard</a>
-</div>
+<div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html" class="btn-back">← Zurück zum Dashboard</a></div>
 <div class="gold-bar"></div>
 <div class="wrap">
   <div class="hero">
     <div class="tag">Modul 4 · Anleitung</div>
-    <h1>📸 So nutzt du die Kostentreiber Checkliste</h1>
-    <p>Die Kostentreiber Checkliste zeigt dir in wenigen Minuten wo in deinem Betrieb das meiste Geld verloren geht. Gehe jeden Bereich ehrlich durch — die Ergebnisse werden dich überraschen.</p>
-  </div>
-  
-  <div class="step">
-    <h2><span class="step-num">1</span> Bereich für Bereich durchgehen</h2>
-    <p>Die Checkliste ist in 6 Bereiche aufgeteilt: Wareneinsatz, Personal, Energie, Miete, Marketing und Diverses. Gehe jeden Bereich der Reihe nach durch.</p>
-    <div class="mockup">
-      <div class="mockup-bar"><span>Schritt 1 — Bereiche</span><span class="gold"></span></div>
-      <div class="mockup-inner"><div class="mock-row"><span>✅ 1. Wareneinsatz & Einkauf</span><span class="mock-badge-gold">Erledigt</span></div><div class="mock-row highlight"><span>⏳ 2. Personalkosten</span><span class="mock-badge-gold">In Bearbeitung</span></div><div class="mock-row"><span>○ 3. Energiekosten</span><span class="mock-badge-gold">Noch offen</span></div><div class="mock-row"><span>○ 4. Miet- & Nebenkosten</span><span class="mock-badge-gold">Noch offen</span></div><div class="mock-row"><span>○ 5. Marketing & Werbung</span><span class="mock-badge-gold">Noch offen</span></div><div class="mock-row"><span>○ 6. Diverses & versteckte Kosten</span><span class="mock-badge-gold">Noch offen</span></div></div>
-    </div>
-    <div class="arrow-hint"><span class="arr">💡</span> Plane 30 Minuten für die gesamte Checkliste ein. Mache sie in Ruhe — nicht zwischen zwei Services.</div>
+    <h1>📸 So nutzt du den Kostentreiber-Check</h1>
+    <p>Der Kostentreiber-Check zeigt dir die 5 größten Kostenbereiche deines Betriebs — Ist vs. Ziel, automatischer Status, konkreter Hebel sofort sichtbar.</p>
   </div>
   <div class="step">
-    <h2><span class="step-num">2</span> Fragen ehrlich beantworten</h2>
-    <p>Für jeden Bereich gibt es konkrete Fragen. Antworte mit Ja, Nein oder Teilweise. Bei Nein oder Teilweise notierst du direkt die Maßnahme.</p>
+    <h2><span class="step-num">1</span> Betrieb, Monat und Datum eintragen</h2>
+    <p>Trage oben Betriebsname, Monat und Datum ein. Das ist deine Referenz für den Monatsvergleich.</p>
     <div class="mockup">
-      <div class="mockup-bar"><span>Schritt 2 — Fragen</span><span class="gold">Personalkosten</span></div>
-      <div class="mockup-inner"><div class="mock-row"><span>Kennst du deinen Personalkostenanteil genau?</span><span class="mock-badge-gold">✅ Ja</span></div><div class="mock-row highlight"><span>Hast du Überstunden im Griff?</span><span class="mock-badge-gold">⚠️ Teilweise</span></div><div class="mock-row"><span>Werden Leerlaufzeiten produktiv genutzt?</span><span class="mock-badge-gold">❌ Nein</span></div><div class="mock-row"><span>Hast du Urlaubsplanung systematisiert?</span><span class="mock-badge-gold">✅ Ja</span></div><div class="mock-textarea" style="margin-top:8px"></div></div>
-    </div>
-    <div class="arrow-hint"><span class="arr">💡</span> Bei jedem Nein steht automatisch ein Einsparpotenzial dahinter. Schreibe auf was du konkret ändern wirst.</div>
-  </div>
-  <div class="step">
-    <h2><span class="step-num">3</span> Gesamtergebnis & Prioritäten ablesen</h2>
-    <p>Das Tool zeigt dir am Ende welche Bereiche das größte Einsparpotenzial haben. Oben stehen die dringendsten Maßnahmen.</p>
-    <div class="mockup">
-      <div class="mockup-bar"><span>Schritt 3 — Ergebnis</span><span class="gold"></span></div>
-      <div class="mockup-inner"><div class="mock-result">
-        <div class="mock-result-num">4</div>
-        <div class="mock-result-label">Kostentreiber identifiziert</div>
-        <div class="mock-result-type">⚠️ Handlungsbedarf in 2 Bereichen</div>
-      </div><div class="mock-row highlight"><span>🔴 Personalkosten — Überstunden optimieren</span><span class="mock-badge-gold">Priorität 1</span></div><div class="mock-row"><span>🔴 Energie — Kühlgeräte checken</span><span class="mock-badge-gold">Priorität 2</span></div><div class="mock-row"><span>🟡 Einkauf — Lieferant B verhandeln</span><span class="mock-badge-gold">Priorität 3</span></div><div class="mock-row"><span>🟢 Marketing — bereits optimiert</span><span class="mock-badge-gold">✓</span></div></div>
-    </div>
-    <div class="arrow-hint"><span class="arr">💡</span> <strong>Fange mit Priorität 1 an.</strong> Nicht alles auf einmal — eine Maßnahme pro Woche umgesetzt bringt mehr als 10 Maßnahmen die nie fertig werden.</div>
-  </div>
-  <div class="step">
-    <h2><span class="step-num">4</span> Aktionsplan erstellen & Speichern</h2>
-    <p>Trage für jede Maßnahme ein bis wann du sie umsetzt und wer verantwortlich ist. Dann Speichern.</p>
-    <div class="mockup">
-      <div class="mockup-bar"><span>Schritt 4 — Aktionsplan</span><span class="gold"></span></div>
-      <div class="mockup-inner"><div class="mock-actions">
-        <div class="mock-btn mock-btn-save">💾 Speichern</div>
-        <div class="mock-btn mock-btn-print">🖨️ Drucken / PDF</div>
-        <div class="mock-btn mock-btn-reset">↺ Neu starten</div>
-      </div><div class="mock-row"><span>Überstunden-Regelung einführen</span><span class="mock-badge-gold">bis Fr. ✓</span></div><div class="mock-row"><span>Kühlgeräte-Check beauftragen</span><span class="mock-badge-gold">nächste Woche</span></div><div class="mock-row highlight"><span>Lieferant B anrufen</span><span class="mock-badge-gold">diese Woche</span></div></div>
+      <div class="mockup-bar"><span class="gold">GASTRO-OS</span><span>Modul · Tool</span></div>
+      <div class="mockup-inner"><div class="mock-section"><div class="mock-section-head">GASTRO-OS | Kostentreiber-Check &nbsp;·&nbsp; Die 5 größten Kostenbereiche im Check</div>
+  <div class="mock-field-row" style="grid-template-columns:1fr 1fr 1fr">
+    <div class="mock-field"><label>Betrieb</label><div class="mock-input"></div></div>
+    <div class="mock-field"><label>Monat</label><div class="mock-input"></div></div>
+    <div class="mock-field"><label>Datum</label><div class="mock-input"></div></div>
+  </div></div></div>
     </div>
     
   </div>
+  <div class="step">
+    <h2><span class="step-num">2</span> Die 5 Kostenbereiche durchgehen</h2>
+    <p>Gehe die 5 Bereiche der Reihe nach durch. Jeder Bereich zeigt das konkrete Problem und den Hebel. Trage den Umsatz und den Ist-Wert (€) ein — % und Status erscheinen automatisch.</p>
+    <div class="mockup">
+      <div class="mockup-bar"><span class="gold">GASTRO-OS</span><span>Modul · Tool</span></div>
+      <div class="mockup-inner"><div class="mock-section"><div class="mock-section-head">01 · Wareneinsatz &amp; Lebensmittelverschwendung</div>
+  <div style="font-size:11px;color:#8090a8;margin-bottom:8px">Problem: Zu hoher Einkauf, Verderb, fehlerhafte Portionen. &nbsp;|&nbsp; Hebel: Einkaufs-Check (Modul 3).</div>
+  <div class="mock-field-row" style="grid-template-columns:1fr 1fr 1fr 1fr">
+    <div class="mock-field"><label>Umsatz diesen Monat (€)</label><div class="mock-input"></div></div>
+    <div class="mock-field"><label>Wareneinsatz (€)</label><div class="mock-input"></div></div>
+    <div class="mock-field"><label>% vom Umsatz</label><span style="font-size:14px;font-weight:700;color:#a03030">— Ist-Wert</span></div>
+    <div class="mock-field" style="border-color:#d4a800"><label>Zielwert: &lt; 30%</label><span style="font-size:11px;color:#856404">⚠️ Prüfen</span></div>
+  </div>
+  <div class="mock-field-row" style="grid-template-columns:1fr 1fr">
+    <div class="mock-field"><label>Meine Maßnahme</label><div class="mock-input"></div></div>
+    <div class="mock-field"><label>Bis wann</label><div class="mock-input"></div></div>
+  </div></div>
+  <div class="mock-section" style="margin-top:8px"><div class="mock-section-head">02 · Personalkosten &amp; Dienstplan</div>
+  <div style="font-size:11px;color:#8090a8;margin-bottom:8px">Problem: Zu viele Mitarbeiter in schwachen Zeiten, Überstunden.</div>
+  <div class="mock-field-row" style="grid-template-columns:1fr 1fr 1fr 1fr">
+    <div class="mock-field"><label>Personalkosten (€)</label><div class="mock-input"></div></div>
+    <div class="mock-field"><label>% vom Umsatz</label><span style="font-size:14px;font-weight:700;color:#1a6030">—</span></div>
+    <div class="mock-field" style="border-color:#4aaa60"><label>Zielwert: &lt; 35%</label><span style="font-size:11px;color:#1a6030">✅ OK</span></div>
+    <div class="mock-field"><label>Bis wann</label><div class="mock-input"></div></div>
+  </div></div></div>
+    </div>
+    <div class="highlight">💡 Alle 5 Bereiche: 01 Wareneinsatz · 02 Personal · 03 Energie · 04 Miete & Nebenkosten · 05 Sonstiges</div>
+  </div>
+  <div class="step">
+    <h2><span class="step-num">3</span> Gesamtauswertung ablesen</h2>
+    <p>Am Ende erscheint die Gesamtauswertung: Ist vs. Ziel für alle 5 Kostenbereiche auf einen Blick — mit Ampel-Status und dem größten Hebel.</p>
+    <div class="mockup">
+      <div class="mockup-bar"><span class="gold">GASTRO-OS</span><span>Modul · Tool</span></div>
+      <div class="mockup-inner"><div class="mock-result">
+  <div style="font-family:Georgia,serif;font-size:13px;color:#d4af37;margin-bottom:10px">📊 Gesamtauswertung — Wo liegt dein größter Hebel?</div>
+  <table class="mock-table">
+    <tr><th>Kostentreiber</th><th>Ist %</th><th>Ziel %</th><th>Status</th></tr>
+    <tr><td>Wareneinsatz</td><td style="color:#a03030;font-weight:700">33%</td><td>30%</td><td><span class="mock-badge">⚠️ Hebel!</span></td></tr>
+    <tr><td>Personal</td><td style="color:#1a6030;font-weight:700">32%</td><td>35%</td><td><span class="mock-badge-gold">✅ OK</span></td></tr>
+    <tr><td>Energie</td><td style="color:#856404;font-weight:700">6%</td><td>5%</td><td><span class="mock-badge">⚠️ Prüfen</span></td></tr>
+  </table></div></div>
+    </div>
+    <div class="highlight">💡 💾 Speichern — monatlich wiederholen und mit dem Vormonat vergleichen.</div>
+  </div>
+
   <div class="nav-row">
-    <a href="modul4-uebersicht.html" class="nav-btn secondary">← Modul 4 Übersicht</a>
-    <a href="modul4-kostentreiber.html" class="nav-btn">📊 Zur Kostentreiber Checkliste →</a>
+    <a href="dashboard.html" class="nav-btn secondary">← Dashboard</a>
+    <a href="modul4-kostentreiber.html" class="nav-btn">→ Zum Kostentreiber-Check →</a>
   </div>
   <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
 </div>

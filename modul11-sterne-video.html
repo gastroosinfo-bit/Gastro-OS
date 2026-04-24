@@ -68,82 +68,72 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 .footer-main strong{color:#d4af37}</style>
 </head>
 <body>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-(function(){
-  document.addEventListener('contextmenu',function(e){e.preventDefault();});
-  document.addEventListener('keydown',function(e){
-    if(e.ctrlKey&&['s','u','p','a'].includes(e.key.toLowerCase()))e.preventDefault();
-    if(e.key==='F12')e.preventDefault();
-  });
-  const sb=supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3');
-  (async function(){
-    const{data:{session}}=await sb.auth.getSession();
-    if(!session){window.location.href='login.html';return;}
-    const{data:p}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
-    if(p&&(!p.is_active||p.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
-  })();
-})();
-</script>
-<div class="header">
-  <div class="brand">GASTRO-OS</div>
-  <a href="dashboard.html" class="btn-back">← Zurück zum Dashboard</a>
-</div>
+<div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html" class="btn-back">← Zurück zum Dashboard</a></div>
 <div class="gold-bar"></div>
 <div class="wrap">
   <div class="hero">
     <div class="tag">Modul 11 · Anleitung</div>
     <h1>📸 So nutzt du das Sterne-Level System</h1>
-    <p>Das Sterne-Level System zeigt dir auf einen Blick wo du als Gastro-Unternehmer heute stehst — in 4 Bereichen, bewertet mit Sternen. Einmal pro Quartal, 30 Minuten.</p>
+    <p>Das Sterne-Level System bewertet dich in 4 Bereichen mit je 3 Aussagen — 12 Bewertungen, Gesamtscore, und dein wichtigster nächster Schritt pro Bereich.</p>
   </div>
-  
   <div class="step">
-    <h2><span class="step-num">1</span> Bereich für Bereich bewerten</h2>
-    <p>Das System hat 4 Bereiche: Finanzen, Struktur, Team und Lebensqualität. Für jede Aussage wählst du 0–3 Sterne.</p>
+    <h2><span class="step-num">1</span> Bereiche & Aussagen bewerten</h2>
+    <p>Das Sterne-Level System hat 4 Bereiche mit je 3 Aussagen — insgesamt 12. Für jede Aussage wählst du eine von 4 Optionen: ☆☆☆ Noch nicht / ★☆☆ Anfänger / ★★☆ Gut / ★★★ Profi.</p>
     <div class="mockup">
-      <div class="mockup-bar"><span>Schritt 1 — Bewertung</span><span class="gold"></span></div>
-      <div class="mockup-inner"><div class="mock-row"><span>☆☆☆ – Noch nicht angefangen</span></div><div class="mock-row"><span>★☆☆ – Anfänger — erste Schritte gemacht</span></div><div class="mock-row highlight"><span>★★☆ – Gut — läuft aber noch Luft nach oben</span></div><div class="mock-row"><span>★★★ – Profi — läuft zuverlässig ohne dich</span></div></div>
+      <div class="mockup-bar"><span class="gold">GASTRO-OS</span><span>Modul · Tool</span></div>
+      <div class="mockup-inner"><div class="mock-section"><div class="mock-section-head">BEREICH 1 — FINANZEN &amp; ZAHLEN</div>
+  <div class="mock-row" style="flex-direction:column;align-items:flex-start;gap:6px">
+    <div style="font-size:12px;font-weight:600;color:#1a2a4a">Ich kenne meinen Wareneinsatz</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap">
+      <span style="border:1px solid #d0c8b0;padding:5px 10px;border-radius:5px;font-size:11px">☆☆☆ – Noch nicht</span>
+      <span style="border:1px solid #d0c8b0;padding:5px 10px;border-radius:5px;font-size:11px">★☆☆ – Anfänger</span>
+      <span style="background:#1a2a4a;color:#d4af37;padding:5px 10px;border-radius:5px;font-size:11px;font-weight:700;border:1px solid #d4af37">★★☆ – Gut</span>
+      <span style="border:1px solid #d0c8b0;padding:5px 10px;border-radius:5px;font-size:11px">★★★ – Profi</span>
     </div>
-    <div class="arrow-hint"><span class="arr">💡</span> Wähle die Bewertung die heute zutrifft — nicht die die du dir wünschst.</div>
   </div>
-  <div class="step">
-    <h2><span class="step-num">2</span> Alle 12 Aussagen bewerten</h2>
-    <p>Jeder Bereich hat 3 Aussagen — insgesamt 12. Für jede wählst du deine Sterne-Bewertung aus dem Dropdown.</p>
-    <div class="mockup">
-      <div class="mockup-bar"><span>Schritt 2 — Bereich 1: Finanzen</span><span class="gold"></span></div>
-      <div class="mockup-inner"><div class="mock-row highlight"><span>Ich kenne meinen Wareneinsatz</span><span class="mock-badge-gold">★★☆ Gut</span></div><div class="mock-row"><span>Ich kontrolliere Kosten monatlich</span><span class="mock-badge-gold">★☆☆ Anfänger</span></div><div class="mock-row"><span>Ich habe einen Gewinnplan</span><span class="mock-badge-gold">☆☆☆ Noch nicht</span></div><div class="mock-textarea" style="margin-top:8px"></div></div>
+  <div class="mock-row" style="flex-direction:column;align-items:flex-start;gap:6px;margin-top:8px">
+    <div style="font-size:12px;font-weight:600;color:#1a2a4a">Ich kontrolliere meine Kosten monatlich</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap">
+      <span style="border:1px solid #d0c8b0;padding:5px 10px;border-radius:5px;font-size:11px">☆☆☆ – Noch nicht</span>
+      <span style="background:#1a2a4a;color:#d4af37;padding:5px 10px;border-radius:5px;font-size:11px;font-weight:700;border:1px solid #d4af37">★☆☆ – Anfänger</span>
+      <span style="border:1px solid #d0c8b0;padding:5px 10px;border-radius:5px;font-size:11px">★★☆ – Gut</span>
+      <span style="border:1px solid #d0c8b0;padding:5px 10px;border-radius:5px;font-size:11px">★★★ – Profi</span>
     </div>
-    <div class="arrow-hint"><span class="arr">💡</span> Nutze das Notizfeld unter jedem Bereich für konkrete Maßnahmen.</div>
+  </div></div>
+  <div class="mock-section" style="margin-top:8px"><div class="mock-section-head">BEREICH 2 — STRUKTUR &amp; PROZESSE &nbsp; (Auszug)</div>
+  <div class="mock-row" style="flex-direction:column;align-items:flex-start;gap:6px">
+    <div style="font-size:12px;font-weight:600;color:#1a2a4a">Ich habe schriftliche Prozesse (SOPs)</div>
+    <div style="display:flex;gap:6px">
+      <span style="background:#1a2a4a;color:#d4af37;padding:5px 10px;border-radius:5px;font-size:11px;font-weight:700;border:1px solid #d4af37">☆☆☆ – Noch nicht</span>
+      <span style="border:1px solid #d0c8b0;padding:5px 10px;border-radius:5px;font-size:11px">★☆☆ – Anfänger</span>
+    </div>
+  </div></div></div>
+    </div>
+    <div class="highlight">💡 Wähle die Bewertung die HEUTE zutrifft — nicht die die du dir wünschst.</div>
   </div>
   <div class="step">
-    <h2><span class="step-num">3</span> Gesamtergebnis ablesen</h2>
-    <p>Das System berechnet dein aktuelles Level automatisch — von Starter bis GASTRO-OS Profi.</p>
+    <h2><span class="step-num">2</span> Gesamtscore ablesen</h2>
+    <p>Nach allen 12 Aussagen erscheint dein Gesamt-Sterne-Level mit Bewertung pro Bereich. Der schwächste Bereich zeigt wo dein größtes Wachstumspotenzial liegt.</p>
     <div class="mockup">
-      <div class="mockup-bar"><span>Schritt 3 — Level</span><span class="gold"></span></div>
+      <div class="mockup-bar"><span class="gold">GASTRO-OS</span><span>Modul · Tool</span></div>
       <div class="mockup-inner"><div class="mock-result">
-        <div class="mock-result-num">⭐⭐⭐⭐⭐☆☆☆☆☆☆☆</div>
-        <div class="mock-result-label">Dein aktuelles Level</div>
-        <div class="mock-result-type">⭐⭐ Auf dem Weg — du wächst!</div>
-      </div><div class="mock-row"><span>Finanzen</span><span class="mock-badge-gold">★★☆ Fortgeschritten</span></div><div class="mock-row highlight"><span>Struktur</span><span class="mock-badge-gold">★☆☆ Anfänger</span></div><div class="mock-row"><span>Team</span><span class="mock-badge-gold">★★☆ Gut</span></div><div class="mock-row"><span>Lebensqualität</span><span class="mock-badge-gold">☆☆☆ Noch nicht</span></div></div>
+  <div class="mock-result-num">★★☆ <span style="font-size:14px">Gut</span></div>
+  <div class="mock-result-label">Dein Gesamt-Sterne-Level</div>
+  <div style="margin-top:12px">
+  <table class="mock-table">
+    <tr><th>Bereich</th><th>Dein Level</th><th>Nächster Schritt</th></tr>
+    <tr><td>Finanzen &amp; Zahlen</td><td style="color:#d4af37;font-weight:700">★★☆ Gut</td><td style="font-size:10px;color:#a0b0c8">Gewinn-Plan erstellen</td></tr>
+    <tr><td>Struktur &amp; Prozesse</td><td style="color:#a03030;font-weight:700">★☆☆ Anfänger</td><td style="font-size:10px;color:#a0b0c8">SOP für Schicht erstellen</td></tr>
+    <tr><td>Team &amp; Führung</td><td style="color:#d4af37;font-weight:700">★★☆ Gut</td><td style="font-size:10px;color:#a0b0c8">Schichtleiter definieren</td></tr>
+    <tr><td>Lebensqualität</td><td style="color:#a03030;font-weight:700">★☆☆ Anfänger</td><td style="font-size:10px;color:#a0b0c8">Freien Tag einplanen</td></tr>
+  </table></div></div></div>
     </div>
-    <div class="arrow-hint"><span class="arr">💡</span> <strong>Der Bereich mit den wenigsten Sternen ist dein nächster Fokus.</strong></div>
+    <div class="highlight">💡 Führe den Check alle 90 Tage durch — so siehst du deine Entwicklung als Unternehmer.</div>
   </div>
-  <div class="step">
-    <h2><span class="step-num">4</span> Speichern & in 90 Tagen wiederholen</h2>
-    <p>Speichere dein aktuelles Level. In 90 Tagen machst du die Bewertung erneut und siehst deinen Fortschritt.</p>
-    <div class="mockup">
-      <div class="mockup-bar"><span>Schritt 4 — Speichern</span><span class="gold"></span></div>
-      <div class="mockup-inner"><div class="mock-actions">
-        <div class="mock-btn mock-btn-save">💾 Speichern</div>
-        <div class="mock-btn mock-btn-print">🖨️ Drucken / PDF</div>
-        <div class="mock-btn mock-btn-reset">↺ Neu starten</div>
-      </div><div class="mock-row"><span>Aktuelles Level: ⭐⭐ Auf dem Weg</span><span class="mock-badge-gold">gespeichert ✓</span></div><div class="mock-row highlight"><span>Fokus nächste 90 Tage: Struktur</span><span class="mock-badge-gold">★☆☆ → ★★☆</span></div><div class="mock-row"><span>Nächste Bewertung</span><span class="mock-badge-gold">in 90 Tagen</span></div></div>
-    </div>
-    
-  </div>
+
   <div class="nav-row">
-    <a href="modul11-uebersicht.html" class="nav-btn secondary">← Modul 11 Übersicht</a>
-    <a href="modul11-sterne.html" class="nav-btn">📊 Zum Sterne-Level System →</a>
+    <a href="dashboard.html" class="nav-btn secondary">← Dashboard</a>
+    <a href="modul11-sterne.html" class="nav-btn">→ Zum Sterne-Level System →</a>
   </div>
   <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
 </div>
