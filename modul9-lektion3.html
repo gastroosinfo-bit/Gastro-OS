@@ -3,111 +3,58 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lektion 3 – Social Media ohne Stress</title>
+<title>GASTRO-OS – Modul 9 | Lektion 3</title>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
 .header{background:#1a2a4a;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
 .brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
-.btn-back { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
-.btn-back:hover { border-color:#d4af37; color:#d4af37; }
+.btn-back-modul{background:#d4af37;color:#1a2a4a;border:none;padding:9px 20px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.2s;letter-spacing:0.3px}
+.btn-back-modul:hover{background:#c8a030;color:#1a2a4a}
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
-.main { max-width:780px; margin:40px auto; padding:0 24px 60px; }
-.modul-badge { display:inline-block; background:#1a2a4a; color:#d4af37; font-size:11px; font-weight:700; letter-spacing:2px; padding:4px 14px; border-radius:4px; margin-bottom:12px; }
-h1 { font-family:Georgia,serif; font-size:26px; color:#1a2a4a; margin-bottom:24px; }
-.card { background:#fff; border:1px solid #e8dfc8; border-radius:10px; padding:28px 32px; margin-bottom:24px; box-shadow:0 2px 8px rgba(0,0,0,0.04); }
-.welcome { font-size:14px; color:#8090a8; font-style:italic; margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid #f0ece4; }
-h2 { font-family:Georgia,serif; font-size:20px; color:#1a2a4a; margin:28px 0 16px; padding-bottom:10px; border-bottom:2px solid #d4af37; }
-h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; margin:20px 0 10px; }
-p { font-size:14px; line-height:1.8; color:#3a4a6a; margin-bottom:12px; }
-p:last-child { margin-bottom:0; }
-.gold-divider { height:2px; background:linear-gradient(90deg,#d4af37,transparent); margin:28px 0; }
-.task-box { background:#faf6ec; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; margin-top:24px; }
-.task-box strong { color:#1a2a4a; display:block; margin-bottom:8px; font-size:13px; }
-.task-box p { font-size:13px; color:#3a4a6a; }
-.hint-link { background:#f0f4ff; border:1px solid #c0ccee; border-radius:8px; padding:14px 18px; margin-top:20px; font-size:13px; color:#1a2a4a; }
-.hint-link a { color:#d4af37; font-weight:600; text-decoration:none; }
-.kit-box { background:#1a2a4a; border-radius:10px; padding:24px 28px; margin-top:24px; }
-.kit-box h3 { color:#d4af37; font-family:Georgia,serif; font-size:17px; margin-bottom:16px; border-bottom:1px solid rgba(212,175,55,0.3); padding-bottom:10px; }
-.kit-box a { display:block; color:#f5f0e8; font-size:14px; text-decoration:none; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.08); transition:color 0.2s; }
-.kit-box a:last-child { border-bottom:none; }
-.kit-box a:hover { color:#d4af37; }
-.footer { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
-.footer strong { color:#d4af37; }
-.lektion-hero {
-  background: #1a2a4a;
-  border-radius: 12px;
-  padding: 28px 32px;
-  margin-bottom: 28px;
-  border: 2px solid #d4af37;
-}
-.lektion-hero .lektion-tag {
-  font-size: 11px;
-  color: #d4af37;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  font-weight: 600;
-  margin-bottom: 10px;
-}
-.lektion-hero h1 {
-  font-family: Georgia, serif;
-  font-size: 26px;
-  color: #fff;
-  margin-bottom: 12px;
-  font-weight: normal;
-  line-height: 1.3;
-}
-.lektion-hero .lektion-intro-text {
-  font-size: 14px;
-  color: #a0b0c8;
-  line-height: 1.7;
-  margin-bottom: 0;
-}
-
-.btn-back-modul {
-  background: #d4af37;
-  color: #1a2a4a;
-  border: none;
-  padding: 9px 20px;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-block;
-  transition: all 0.2s;
-  letter-spacing: 0.3px;
-}
-.btn-back-modul:hover { background: #c8a030; color: #1a2a4a; }
-
+.wrap { max-width:720px; margin:40px auto; padding:0 24px 60px; }
+.lbl { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:8px; }
+h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:10px; line-height:1.3; }
+.lektion-hero { background:#1a2a4a; border-radius:12px; padding:28px 32px; margin-bottom:28px; border:2px solid #d4af37; }
+.lektion-hero .lektion-tag { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:10px; }
+.lektion-hero h1 { font-family:Georgia,serif; font-size:26px; color:#fff; margin-bottom:0; font-weight:normal; line-height:1.3; }
+.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:20px 0 32px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:normal; margin:36px 0 14px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
+h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:24px 0 10px; }
+p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
+ul, ol { margin:12px 0 16px 20px; }
+li { font-size:15px; line-height:1.8; color:#2a3a54; margin-bottom:6px; }
+.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin-top:24px; }
+.aufgabe-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
+.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; }
+.highlight { background:#fff8e8; border-left:3px solid #d4af37; padding:14px 18px; margin:20px 0; font-size:14px; color:#5a4000; line-height:1.7; }
+.nav-row { display:flex; gap:12px; justify-content:space-between; margin-top:40px; }
+.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:12px 24px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none; transition:all 0.2s; }
+.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
+.nav-btn.secondary { background:transparent; border:1px solid rgba(26,42,74,0.3); color:#1a2a4a; }
+.nav-btn.secondary:hover { background:#1a2a4a; color:#d4af37; }
+.footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-lbl strong { color:#d4af37; }
+.footer-main { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-main strong { color:#d4af37; }
+@media (max-width:600px) { .wrap{padding:0 16px 40px} h1{font-size:22px} h2{font-size:17px} }
 </style>
 </head>
 <body>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 (function(){
-  // Rechtsklick & Tastenkürzel sperren
-  document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
-  document.addEventListener('keydown', function(e){
-    if (e.ctrlKey && ['s','u','p','a'].includes(e.key.toLowerCase())) e.preventDefault();
-    if (e.key === 'F12') e.preventDefault();
+  document.addEventListener('contextmenu',function(e){e.preventDefault();});
+  document.addEventListener('keydown',function(e){
+    if(e.ctrlKey&&['s','u','p','a'].includes(e.key.toLowerCase()))e.preventDefault();
+    if(e.key==='F12')e.preventDefault();
   });
-
-  // Supabase Auth Check
-  const sb = supabase.createClient(
-    'https://hchlganbgjeciwhwaisj.supabase.co',
-    'sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3'
-  );
+  const sb=supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3');
   (async function(){
-    const { data:{ session } } = await sb.auth.getSession();
-    if (!session) { window.location.href = 'login.html'; return; }
-    const { data: profile } = await sb.from('profiles')
-      .select('is_active,subscription_status')
-      .eq('id', session.user.id).maybeSingle();
-    if (profile && (!profile.is_active || profile.subscription_status !== 'active')) {
-      await sb.auth.signOut();
-      window.location.href = 'login.html';
-    }
+    const{data:{session}}=await sb.auth.getSession();
+    if(!session){window.location.href='login.html';return;}
+    const{data:profile}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
+    if(profile&&(!profile.is_active||profile.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
   })();
 })();
 </script>
@@ -116,22 +63,16 @@ p:last-child { margin-bottom:0; }
   <a href="modul9-uebersicht.html" class="btn-back-modul">← Zurück zu Modul 9</a>
 </div>
 <div class="gold-bar"></div>
-<div class="main">
-  <div class="modul-badge">MODUL 9 · LEKTION 3</div>
+
+<div class="wrap">
+  <div class="lbl">Modul 9 · Lektion 3</div>
   <div class="lektion-hero">
     <div class="lektion-tag">Modul 9 · Lektion 3</div>
     <h1>Social Media ohne Stress</h1>
   </div>
+  <div class="intro"></div>
 
-  <div class="card">
-    <p class="welcome">Willkommen in Lektion 3</p>
-    <p>In Lektion 2 haben wir uns angeschaut warum Bewertungen das wichtigste Vertrauenssignal in der lokalen Gastronomie sind, wie du aktiv mehr Bewertungen bekommst und wie du auf positive und negative Bewertungen professionell antwortest. Du hast deinen ersten QR Code erstellt, auf offene Bewertungen geantwortet und die ersten aktiven Bewertungsanfragen gestellt.</p>
-    <p>Jetzt kommen wir zu einem Thema das viele Gastronomen gleichzeitig fasziniert und überfordert. Social Media. Die einen schwören darauf. Die anderen haben schon dreimal damit angefangen und dreimal wieder aufgehört. Und die meisten irgendwo dazwischen posten sporadisch, unregelmäßig und ohne klaren Plan, und fragen sich danach warum es nichts bringt.</p>
-    <p>In Lektion 3 räumen wir mit den wichtigsten Missverständnissen über Social Media in der Gastronomie auf. Wir schauen uns an was wirklich funktioniert, was du weglassen kannst ohne etwas zu verpassen, und wie du ein einfaches System aufbaust das Social Media von einer Stresserquelle in ein nützliches Werkzeug verwandelt.</p>
-  </div>
-
-  <div class="card">
-    <h2>Kapitel 1: Was Social Media in der Gastronomie wirklich leistet</h2>
+<h2>Kapitel 1: Was Social Media in der Gastronomie wirklich leistet</h2>
     <h3>Das ehrliche Bild</h3>
     <p>Es gibt eine Erwartung die viele Gastronomen an Social Media haben wenn sie anfangen. Sie posten schöne Fotos, sammeln Follower und irgendwann kommen die neuen Gäste von selbst. Das ist ein schönes Bild. Und es stimmt in sehr seltenen Fällen.</p>
     <p>Die Realität ist nüchterner. Social Media in der Gastronomie bringt selten direkt neue Gäste, zumindest nicht in der Anfangsphase und nicht ohne eine sehr aktive, konsistente und strategische Nutzung. Was es bringt ist etwas anderes aber trotzdem Wertvolles. Es stärkt die Bindung zu bestehenden Gästen. Es gibt deinem Betrieb ein Gesicht und eine Persönlichkeit. Und es kann als Bestätigung funktionieren wenn jemand über eine andere Quelle auf dich aufmerksam geworden ist und nachschaut wer du bist.</p>
@@ -224,6 +165,38 @@ p:last-child { margin-bottom:0; }
   <div class="gold-divider"></div>
   <p style="text-align:center; font-size:12px; color:#8090a8; letter-spacing:1px;">GASTRO-OS | System · Strategie · Erfolg</p>
 </div>
-<div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+<div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg
+
+  
+  <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
+</div>
+<div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+<script>
+(function(){
+  // Rechtsklick & Tastenkürzel sperren
+  document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
+  document.addEventListener('keydown', function(e){
+    if (e.ctrlKey && ['s','u','p','a'].includes(e.key.toLowerCase())) e.preventDefault();
+    if (e.key === 'F12') e.preventDefault();
+  });
+
+  // Supabase Auth Check
+  const sb = supabase.createClient(
+    'https://hchlganbgjeciwhwaisj.supabase.co',
+    'sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3'
+  );
+  (async function(){
+    const { data:{ session } } = await sb.auth.getSession();
+    if (!session) { window.location.href = 'login.html'; return; }
+    const { data: profile } = await sb.from('profiles')
+      .select('is_active,subscription_status')
+      .eq('id', session.user.id).maybeSingle();
+    if (profile && (!profile.is_active || profile.subscription_status !== 'active')) {
+      await sb.auth.signOut();
+      window.location.href = 'login.html';
+    }
+  })();
+})();
+</script>
 </body>
 </html>
