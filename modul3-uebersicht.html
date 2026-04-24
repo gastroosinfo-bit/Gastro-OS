@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>GASTRO-OS – Modul 3 | Übersicht</title><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f0e8;color:#1a2a4a;min-height:100vh}.header{background:#1a2a4a;padding:22px 40px;text-align:center}.brand{font-family:Georgia,serif;font-size:22px;color:#d4af37;letter-spacing:4px;font-weight:normal}.modul-label{font-size:11px;color:#a0b0c8;letter-spacing:3px;text-transform:uppercase;margin-top:4px}.gold-bar{height:3px;background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a)}.main{max-width:820px;margin:36px auto;padding:0 24px 60px}h1{font-family:Georgia,serif;font-size:28px;color:#1a2a4a;margin-bottom:8px}.gold-rule{width:56px;height:2px;background:#d4af37;margin:10px 0 20px}.intro{font-size:15px;color:#2a3a5a;line-height:1.8;margin-bottom:28px}.hinweis{background:#fff8e8;border:1.5px solid #d4af37;border-radius:8px;padding:16px 20px;margin:24px 0;font-size:14px;color:#5a4000;line-height:1.7}.content-grid{display:flex;flex-direction:column;gap:10px}.content-item{background:#fff;border-radius:8px;border:1px solid #e8dfc8;padding:16px 20px;display:flex;align-items:center;gap:14px;text-decoration:none;color:#1a2a4a;transition:border-color .15s}.content-item:hover{border-color:#d4af37}.item-icon{font-size:22px;flex-shrink:0}.item-title{font-weight:600;font-size:14px}.item-sub{font-size:12px;color:#8090a8;margin-top:2px}.arrow{margin-left:auto;color:#d4af37;font-weight:700}.back-link{display:block;text-align:center;margin-top:20px;font-size:12px;color:#8090a8;text-decoration:none}.footer{background:#1a2a4a;margin-top:48px;padding:14px 40px;text-align:center;font-size:11px;color:#8090a8}.footer strong{color:#d4af37}.modul-header {
+<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>GASTRO-OS – Modul 3 | Übersicht</title><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f0e8;color:#1a2a4a;min-height:100vh}.header{background:#1a2a4a;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}.brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}.modul-label{font-size:11px;color:#a0b0c8;letter-spacing:3px;text-transform:uppercase;margin-top:4px}.gold-bar{height:3px;background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a)}.main{max-width:820px;margin:36px auto;padding:0 24px 60px}h1{font-family:Georgia,serif;font-size:28px;color:#1a2a4a;margin-bottom:8px}.gold-rule{width:56px;height:2px;background:#d4af37;margin:10px 0 20px}.intro{font-size:15px;color:#2a3a5a;line-height:1.8;margin-bottom:28px}.hinweis{background:#fff8e8;border:1.5px solid #d4af37;border-radius:8px;padding:16px 20px;margin:24px 0;font-size:14px;color:#5a4000;line-height:1.7}.content-grid{display:flex;flex-direction:column;gap:10px}.content-item{background:#fff;border-radius:8px;border:1px solid #e8dfc8;padding:16px 20px;display:flex;align-items:center;gap:14px;text-decoration:none;color:#1a2a4a;transition:border-color .15s}.content-item:hover{border-color:#d4af37}.item-icon{font-size:22px;flex-shrink:0}.item-title{font-weight:600;font-size:14px}.item-sub{font-size:12px;color:#8090a8;margin-top:2px}.arrow{margin-left:auto;color:#d4af37;font-weight:700}.back-link{display:block;text-align:center;margin-top:20px;font-size:12px;color:#8090a8;text-decoration:none}.footer{background:#1a2a4a;margin-top:48px;padding:14px 40px;text-align:center;font-size:11px;color:#8090a8}.footer strong{color:#d4af37}.modul-header {
   background: #1a2a4a;
   border-radius: 12px;
   padding: 28px 32px;
@@ -25,6 +25,23 @@
   line-height: 1.7;
   margin-bottom: 0;
 }
+
+.btn-back-modul {
+  background: #d4af37;
+  color: #1a2a4a;
+  border: none;
+  padding: 9px 20px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.2s;
+  letter-spacing: 0.3px;
+}
+.btn-back-modul:hover { background: #c8a030; color: #1a2a4a; }
+
 </style></head><body>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -54,11 +71,17 @@
   })();
 })();
 </script>
-<div class="header"><div class="brand">GASTRO-OS</div><div class="modul-label">Modul 3 &nbsp;·&nbsp; Übersicht</div></div>
+<div class="header">
+  <div class="brand">GASTRO-OS</div>
+  <a href="modul3-uebersicht.html" class="btn-back-modul">← Zurück zu Modul 3</a>
+</div>
 <div class="gold-bar"></div>
 <div class="main">
   <div class="modul-header">
     <div class="nummer">Modul 3</div>
+    <h1>Einkauf & Wareneinsatz</h1>
+    <p>Wer 5% am Wareneinsatz spart erhöht seinen Gewinn oft um das Doppelte. Hier optimierst du deinen Einkauf systematisch.</p>
+  </div>
     <h1>Einkauf & Wareneinsatz</h1>
     <p>Deine Karte steht. Jetzt geht es darum was du dafür bezahlst — und wie du deinen Wareneinsatz dauerhaft kontrollierst.</p>
   </div>
