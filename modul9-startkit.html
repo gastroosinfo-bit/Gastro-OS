@@ -95,12 +95,7 @@ h2 { font-family:Georgia,serif; font-size:17px; color:#1a2a4a; margin-bottom:16p
 </div>
 <div class="gold-bar"></div>
 <div class="main">
-  <div class="action-row">
-    <button class="btn-save" onclick="saveData()">💾 Speichern</button>
-    <button class="btn-print" onclick="window.print()">🖨️ Drucken / PDF</button>
-    <button class="btn-reset" onclick="resetData()">↺ Neu starten</button>
-    <span class="save-msg" id="save-msg">✓ Gespeichert</span>
-  </div>
+  
   <div class="modul-badge">MODUL 9 · STARTER KIT</div>
   <h1>🛒 Social Media Starter Kit</h1>
 
@@ -169,15 +164,5 @@ h2 { font-family:Georgia,serif; font-size:17px; color:#1a2a4a; margin-bottom:16p
   <p style="text-align:center; font-size:12px; color:#8090a8; letter-spacing:1px;">GASTRO-OS | System · Strategie · Erfolg</p>
 </div>
 <div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
-
-<script>
-function saveData() {
-  document.getElementById('save-msg').style.display = 'inline';
-  setTimeout(() => { document.getElementById('save-msg').style.display = 'none'; }, 2000);
-}
-function resetData() { 
-  if(confirm('Starter Kit zurücksetzen?')) location.reload();
-}
-</script>
 </body>
 </html>
