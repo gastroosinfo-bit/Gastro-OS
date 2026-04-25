@@ -25,9 +25,6 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 .btn-reset:hover{background:#f0ece0;color:#1a2a4a;border-color:#1a2a4a}
 .action-row{display:flex;gap:10px;margin-bottom:28px;flex-wrap:wrap;align-items:center;padding:16px 0;border-bottom:2px solid #e8dfc8}
 .save-msg{font-size:13px;color:#4a8a4a;align-self:center;display:none}
-.btn-save { background:#1a2a4a; color:#d4af37; } .btn-save:hover { background:#d4af37; color:#1a2a4a; }
-.btn-print { background:#fff; color:#1a2a4a; border:1px solid #e8dfc8; } .btn-print:hover { border-color:#1a2a4a; }
-.btn-reset { background:#fff; color:#a03030; border:1px solid #d06060; } .btn-reset:hover { background:#fdf0f0; }
 .save-msg { font-size:12px; color:#4aaa60; display:none; }
 .wrap { max-width:920px; margin:16px auto 48px; padding:0 24px; }
 .card { background:#fff; border:1px solid #e8dfc8; border-radius:10px; margin-bottom:16px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.04); }
@@ -158,9 +155,9 @@ function buildTrack(){
   });
 }
 function buildKat(){
-  const tb=document.getElementById('kat-body');
+  let tb=document.getElementById('kat-body');
   KATS.forEach((kat,i)=>{
-    const tr=document.createElement('tr');
+    let tr=document.createElement('tr');
     tr.innerHTML=`<td style="font-weight:600;min-width:200px">${kat}</td>
       <td><input class="ni" id="kv-${i}" type="number" min="0" step="1" placeholder="0" oninput="recalcKat(${i})"></td>
       <td><input class="ni" id="ke-${i}" type="number" min="0" step="1" placeholder="0" oninput="recalcKat(${i})"></td>
@@ -183,9 +180,9 @@ function recalcRow(i){
   recalcAll();
 }
 function recalcKat(i){
-  const v=parseFloat(document.getElementById(`kv-${i}`)?.value)||0;
-  const e=parseFloat(document.getElementById(`ke-${i}`)?.value)||0;
-  const qt=v>0?e/v*100:null;
+  let v=parseFloat(document.getElementById(`kv-${i}`)?.value)||0;
+  let e=parseFloat(document.getElementById(`ke-${i}`)?.value)||0;
+  let qt=v>0?e/v*100:null;
   const el=document.getElementById(`kq-${i}`);
   if(qt!==null){el.textContent=fmt(qt)+' %';el.className='cc '+qClass(qt);}else{el.textContent='—';el.className='cc';}
 }
@@ -200,7 +197,7 @@ function recalcAll(){
   const q=tv>0?te/tv*100:null, b=tg>0?tu/tg:null, zl=parseFloat(document.getElementById('ziel-bon')?.value)||0;
   const qe=document.getElementById('res-quote');
   if(q!==null){qe.textContent=fmt(q)+' %';qe.style.color=q>=30?'#90ff90':q>=20?'#d4af37':'#ff9090';}else{qe.textContent='—';qe.style.color='#d4af37';}
-  const be=document.getElementById('res-bon'), bd=document.getElementById('res-bon-delta');
+  let be=document.getElementById('res-bon'), bd=document.getElementById('res-bon-delta');
   if(b!==null){be.textContent=fmt(b,2)+' €';be.style.color=(!zl||b>=zl)?'#90ff90':'#ff9090';if(zl){const d=b-zl;bd.textContent=(d>=0?'+':'')+fmt(d,2)+'€ vs. Ziel';bd.style.color=d>=0?'#4aaa60':'#ff9090';}}else{be.textContent='—';be.style.color='#d4af37';}
   document.getElementById('res-versuche').textContent=tv||'—';
   document.getElementById('res-erfolge').textContent=te||'—';
