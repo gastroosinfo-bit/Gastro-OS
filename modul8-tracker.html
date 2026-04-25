@@ -8,7 +8,7 @@
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
-.site-header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.header{background:#1a2a4a;padding:14px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
 .brand { font-family:Georgia,serif; font-size:18px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
 .back-btn { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; text-decoration:none; transition:all 0.2s; }
 .back-btn:hover { border-color:#d4af37; color:#d4af37; }
@@ -66,13 +66,15 @@ table.tbl td { padding:7px 10px; border-bottom:1px solid #f0ece4; vertical-align
 </style>
 </head>
 <body>
-<div class="site-header"><div class="brand">GASTRO-OS</div><a href="dashboard.html#modul-8" class="btn-back-modul">← Zurück zum Dashboard</a></div>
+<div class="header">
+  <div class="brand">GASTRO-OS</div>
+  <a href="dashboard.html#modul-8" class="btn-back-modul">← Zurück zum Dashboard</a>
+</div>
 <div class="gold-bar"></div>
 <div class="action-row">
-  <div class="tool-info"><h2>📊 Upselling Tracker</h2><p>Modul 8 · Umsatz smart steigern — täglich tracken, wöchentlich auswerten</p></div>
   <button class="btn-save" onclick="saveData()">💾 Speichern</button>
-  <button class="btn-print" onclick="window.print()">🖨️ Drucken</button>
-  <button class="btn-reset" onclick="resetAll()">🔄 Neu starten</button>
+  <button class="btn-print" onclick="window.print()">🖨️ Drucken / PDF</button>
+  <button class="btn-reset" onclick="resetAll()">↺ Neu starten</button>
   <span class="save-msg" id="save-msg">✓ Gespeichert</span>
 </div>
 <div class="wrap">
