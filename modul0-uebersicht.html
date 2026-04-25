@@ -4,21 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GASTRO-OS – Modul 0 | Übersicht</title>
-<style>
-* {margin:0;padding:0;box-sizing:border-box}
+<style>* {margin:0;padding:0;box-sizing:border-box}
 body {font-family:'Segoe UI',Arial,sans-serif;background:#f5f0e8;color:#1a2a4a;min-height:100vh}
 .header{background:#1a2a4a;padding:14px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
 .brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
-.btn-back-modul{background:#d4af37;color:#1a2a4a;border:none;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.2s;letter-spacing:0.3px;box-shadow:0 2px 6px rgba(212,175,55,0.3)}
+.btn-back-modul{background:#d4af37;color:#1a2a4a;border:none;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.2s;box-shadow:0 2px 6px rgba(212,175,55,0.3)}
 .btn-back-modul:hover{background:#c8a030;color:#1a2a4a}
 .gold-bar{height:3px;background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a)}
 .main{max-width:820px;margin:36px auto;padding:0 24px 60px}
-.modul-header{background:#1a2a4a;border-radius:12px;padding:28px 32px;margin-bottom:28px;border:2px solid #d4af37}
+.modul-header{background:#1a2a4a;border-radius:12px;padding:28px 32px;margin-bottom:24px;border:2px solid #d4af37}
 .modul-header .nummer{font-size:12px;color:#d4af37;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;font-weight:600}
 .modul-header h1{font-family:Georgia,serif;font-size:26px;color:#fff;margin-bottom:12px;font-weight:normal}
 .modul-header p{font-size:14px;color:#a0b0c8;line-height:1.7;margin-bottom:0}
-.hinweis{background:#fff8e8;border:1.5px solid #d4af37;border-radius:8px;padding:16px 20px;margin:0 0 20px;font-size:14px;color:#5a4000;line-height:1.7}
-.content-grid{display:flex;flex-direction:column;gap:10px}
+.intro-box{background:#fff;border:1px solid #e8dfc8;border-radius:10px;padding:18px 22px;margin-bottom:20px;font-size:15px;color:#3a4a6a;line-height:1.8}
+.section-title{font-size:12px;color:#d4af37;letter-spacing:2px;text-transform:uppercase;font-weight:700;margin:24px 0 12px}
+.content-grid{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
 .content-item{background:#fff;border-radius:8px;border:1px solid #e8dfc8;padding:16px 20px;display:flex;align-items:center;gap:14px;text-decoration:none;color:#1a2a4a;transition:border-color .15s}
 .content-item:hover{border-color:#d4af37;background:#fffdf8}
 .item-icon{font-size:22px;flex-shrink:0}
@@ -26,35 +26,51 @@ body {font-family:'Segoe UI',Arial,sans-serif;background:#f5f0e8;color:#1a2a4a;m
 .item-title{font-weight:600;font-size:14px;margin-bottom:2px}
 .item-sub{font-size:12px;color:#8090a8}
 .arrow{color:#d4af37;font-weight:700;font-size:16px;flex-shrink:0}
+.tipp-box{background:#fff8e8;border:1.5px solid #d4af37;border-radius:8px;padding:16px 20px;margin:20px 0;font-size:14px;color:#5a4000;line-height:1.7}
+.symbol-list{display:flex;flex-direction:column;gap:8px;margin-bottom:20px}
+.symbol-row{display:flex;align-items:flex-start;gap:14px;background:#fff;border:1px solid #e8dfc8;border-radius:8px;padding:12px 16px;font-size:13px;color:#3a4a6a;line-height:1.6}
+.sym{font-size:20px;flex-shrink:0;margin-top:1px}
+.hinweis{background:#fff8e8;border:1.5px solid #d4af37;border-radius:8px;padding:16px 20px;margin:20px 0;font-size:14px;color:#5a4000;line-height:1.7}
 .footer{background:#1a2a4a;margin-top:48px;padding:14px 40px;text-align:center;font-size:11px;color:#8090a8;letter-spacing:1px}
-.footer strong{color:#d4af37}
-
-.intro-card{background:#fff;border:1px solid #e8dfc8;border-radius:10px;padding:18px 22px;margin-bottom:20px;font-size:15px;color:#3a4a6a;line-height:1.8}
-.section-label { font-size:12px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:700; margin:24px 0 12px; }
-.tipp-box { background:#fff8e8; border:1.5px solid #d4af37; border-radius:8px; padding:16px 20px; margin:20px 0; font-size:14px; color:#5a4000; line-height:1.7; }
-.symbol-intro { font-size:14px; color:#3a4a6a; margin-bottom:14px; line-height:1.7; }
-.symbol-list { display:flex; flex-direction:column; gap:10px; margin-bottom:24px; }
-.symbol-row { display:flex; align-items:flex-start; gap:14px; background:#fff; border:1px solid #e8dfc8; border-radius:8px; padding:12px 16px; font-size:13px; color:#3a4a6a; line-height:1.6; }
-.sym { font-size:20px; flex-shrink:0; margin-top:1px; }
-</style>
+.footer strong{color:#d4af37}</style>
 </head>
 <body>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 (function(){
   document.addEventListener('contextmenu',function(e){e.preventDefault();});
-  document.a<div class="main">
+  document.addEventListener('keydown',function(e){
+    if(e.ctrlKey&&['s','u','p','a'].includes(e.key.toLowerCase()))e.preventDefault();
+    if(e.key==='F12')e.preventDefault();
+  });
+  const sb=supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3');
+  (async function(){
+    const{data:{session}}=await sb.auth.getSession();
+    if(!session){window.location.href='login.html';return;}
+    const{data:p}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
+    if(p&&(!p.is_active||p.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
+  })();
+})();
+</script>
+<div class="header">
+  <div class="brand">GASTRO-OS</div>
+  <a href="dashboard.html" class="btn-back-modul">← Zurück zum Dashboard</a>
+</div>
+<div class="gold-bar"></div>
+
+<div class="main">
+
   <div class="modul-header">
     <div class="nummer">Modul 0</div>
     <h1>Das Gastro OS Prinzip</h1>
     <p>Du hast den ersten Schritt gemacht — und das zählt.</p>
   </div>
 
-  <div class="intro-card">
+  <div class="intro-box">
     <p>In diesem Modul legst du das Fundament für alles was folgt. Kein Werkzeug, keine Strategie, kein System funktioniert ohne die richtige Grundlage. Genau die bekommst du hier.</p>
   </div>
 
-  <div class="section-label">Was dich in diesem Modul erwartet</div>
+  <div class="section-title">Was dich in diesem Modul erwartet</div>
   <div class="content-grid">
     <a href="modul0-ankervideo.html" class="content-item">
       <span class="item-icon">🎬</span>
@@ -110,8 +126,8 @@ body {font-family:'Segoe UI',Arial,sans-serif;background:#f5f0e8;color:#1a2a4a;m
     <strong>Ein Tipp zur Reflexionsaufgabe.</strong> Füll sie heute aus und speichere deine Antworten. Nach drei Monaten, nach sechs Monaten und nach einem Jahr schau sie dir noch einmal an. Du wirst sehen wie sich dein Blick auf deinen Betrieb verändert hat. Was damals ein Problem war ist vielleicht heute gelöst. Was damals unklar war ist heute selbstverständlich. Diese Entwicklung sichtbar zu machen ist einer der wertvollsten Momente in Gastro OS.
   </div>
 
-  <div class="section-label">So liest du die Symbole in Gastro OS</div>
-  <div class="symbol-intro">Bevor du startest, kurz ein Blick auf die Symbole die dich durch den gesamten Kurs begleiten. Jedes Symbol steht für einen bestimmten Inhaltstyp. So weißt du auf einen Blick was dich erwartet bevor du einen Tab öffnest.</div>
+  <div class="section-title">So liest du die Symbole in Gastro OS</div>
+  <p style="font-size:14px;color:#3a4a6a;margin-bottom:14px;line-height:1.7">Bevor du startest, kurz ein Blick auf die Symbole die dich durch den gesamten Kurs begleiten. Jedes Symbol steht für einen bestimmten Inhaltstyp. So weißt du auf einen Blick was dich erwartet bevor du einen Tab öffnest.</p>
   <div class="symbol-list">
     <div class="symbol-row"><span class="sym">🎬</span><div><strong>Video</strong> — Schau das Video bevor du weiterliest. Es gibt dir den Rahmen für alles was folgt.</div></div>
     <div class="symbol-row"><span class="sym">📖</span><div><strong>Lektion</strong> — Dein Hauptlerninhalt. Lies ihn in Ruhe durch und mach die Aufgaben am Ende jedes Kapitels.</div></div>
@@ -127,32 +143,6 @@ body {font-family:'Segoe UI',Arial,sans-serif;background:#f5f0e8;color:#1a2a4a;m
   <div class="hinweis">💡 <strong>So gehst du vor:</strong> Arbeite die Lektionen der Reihe nach durch. Überspringe nichts. Jede Lektion baut auf der vorherigen auf. Die Reflexionsaufgabe am Ende ist Pflicht, nicht optional. Sie ist dein persönlicher Startpunkt für die nächsten zwölf Monate. Viel Erfolg. Du machst das.</div>
 
 </div>
- <span class="item-icon">📖</span>
-    <div class="item-text">
-      <div class="item-title">Lektion 3 — Dein erster Schritt</div>
-      <div class="item-sub">Wo fängst du an — konkret und heute</div>
-    </div>
-    <span class="arrow">→</span>
-  </a>
-  <a href="modul0-mindmap.html" class="content-item">
-    <span class="item-icon">🗺️</span>
-    <div class="item-text">
-      <div class="item-title">Mindmap — Systemübersicht</div>
-      <div class="item-sub">Das gesamte GASTRO-OS auf einen Blick</div>
-    </div>
-    <span class="arrow">→</span>
-  </a>
-  <a href="modul0-reflexion.html" class="content-item">
-    <span class="item-icon">✍️</span>
-    <div class="item-text">
-      <div class="item-title">Reflexion — Wo stehst du heute?</div>
-      <div class="item-sub">Deine ehrliche Standortbestimmung</div>
-    </div>
-    <span class="arrow">→</span>
-  </a>
-  </div>
-</div>
-
 <div class="gold-bar"></div>
 <div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
 </body>
