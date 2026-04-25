@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GASTRO-OS – Modul 11 | Lektion 2</title>
+<title>GASTRO-OS – Modul 11 · Lektion 2</title>
 <style>
+
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
 .header{background:#1a2a4a;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
@@ -38,6 +39,9 @@ li { font-size:15px; line-height:1.8; color:#2a3a54; margin-bottom:6px; }
 .footer-main { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-main strong { color:#d4af37; }
 @media (max-width:600px) { .wrap{padding:0 16px 40px} h1{font-size:22px} h2{font-size:17px} }
+
+.btn-back-modul{background:#d4af37;color:#1a2a4a;border:none;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.2s;box-shadow:0 2px 6px rgba(212,175,55,0.3)}
+.btn-back-modul:hover{background:#c8a030;color:#1a2a4a}
 </style>
 </head>
 <body>
@@ -53,14 +57,14 @@ li { font-size:15px; line-height:1.8; color:#2a3a54; margin-bottom:6px; }
   (async function(){
     const{data:{session}}=await sb.auth.getSession();
     if(!session){window.location.href='login.html';return;}
-    const{data:profile}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
-    if(profile&&(!profile.is_active||profile.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
+    const{data:p}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
+    if(p&&(!p.is_active||p.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
   })();
 })();
 </script>
 <div class="header">
   <div class="brand">GASTRO-OS</div>
-  <a href="dashboard.html#modul-11" class="btn-back-modul">← Zurück zum Dashboard</a>
+  <a href="dashboard.html" class="btn-back-modul">← Zurück zum Dashboard</a>
 </div>
 <div class="gold-bar"></div>
 
@@ -70,43 +74,34 @@ li { font-size:15px; line-height:1.8; color:#2a3a54; margin-bottom:6px; }
     <div class="lektion-tag">Modul 11 · Lektion 2</div>
     <h1>Zeit für Familie und Freizeit</h1>
   </div>
-  <div class="intro">Willkommen in Lektion 2 In Lektion 1 haben wir uns angeschaut was Dauerstress in der Gastronomie wirklich ist, wie er entsteht und welche drei Hebel ihn direkt reduzieren. Du hast einen konkreten ersten Schritt gewählt und aufgeschrieben. Das war keine kleine Sache. Die meisten Gastronomen denken ja</div>
+  <div class="intro">In Lektion 1 haben wir uns angeschaut was Dauerstress wirklich ist und welche drei Hebel ihn direkt reduzieren. Jetzt gehen wir tiefer: Weniger Stress im Betrieb ist nur die halbe Gleichung. Die andere Hälfte ist mehr Leben außerhalb des Betriebs. Zeit für die Menschen die dir wichtig sind. Zeit für dich.</div>
 
 
+  <h2>Kapitel 1 — Warum Zeit für Familie und Freizeit kein Luxus ist</h2>
+  <p>Es gibt eine Rechnung die die meisten Gastronomen nie wirklich aufmachen. Nicht die BWA — die persönliche Rechnung. Wie viele Abende hast du in den letzten drei Monaten zu Hause gegessen? Wie viele Wochenenden warst du wirklich frei? Wie viele Schulveranstaltungen deiner Kinder hast du verpasst?</p>
+  <p>Die meisten Gastronomen würden sagen dass Familie und Gesundheit wichtiger sind als der Betrieb. Aber ihr Kalender erzählt eine andere Geschichte. Und der Kalender lügt nicht.</p>
+  <div class="highlight">Freizeit ist keine Verschwendung. Ein Gastronom der regelmäßig erholt und ausgeruht ist trifft bessere Entscheidungen. Er ist kreativer, geduldiger mit dem Team, aufmerksamer für die Gäste. Das ist kein weicher Faktor — das ist ein wirtschaftlicher Vorteil.</div>
+  <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 1</div><p>Schreib auf was dir außerhalb des Betriebs wirklich wichtig ist. Dein Partner, deine Kinder, deine Gesundheit, ein Hobby. Schreib drei Dinge auf — und daneben wann du das letzte Mal wirklich Zeit dafür hattest.</p></div>
+
+  <h2>Kapitel 2 — Wie du Zeit aktiv schaffst statt hoffst dass sie übrig bleibt</h2>
+  <p>Es gibt einen Irrtum der fast alle Gastronomen teilen: dass Zeit übrig bleibt wenn alle Aufgaben erledigt sind. Dieser Moment kommt nicht — von selbst. In einem Gastronomiebetrieb gibt es immer etwas zu tun. Persönliche Zeit entsteht nicht durch Warten. Sie entsteht durch Entscheidung.</p>
+  <p>Die wirksamste Methode: Blockieren. Im Kalender. Konkret. Unverrückbar.</p>
+  <ul>
+    <li>Nicht "ich versuche dienstags früher zu gehen" — sondern "dienstags gehe ich um 17 Uhr"</li>
+    <li>Nicht "ich versuche mehr Zeit mit den Kindern" — sondern "samstags 14–18 Uhr: kein Telefon"</li>
+    <li>Urlaub jetzt in den Kalender — nicht irgendwann</li>
+  </ul>
+  <div class="highlight">Urlaub ist in der Gastronomie ein besonders sensibles Thema. Ein Betrieb der keinen Urlaub des Chefs zulässt ist ein Betrieb der noch nicht bereit ist — der die Prozesse und den Schichtleiter noch nicht hat. Und der einzige Weg das zu ändern ist es zu probieren.</div>
+  <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 2</div><p>Öffne jetzt deinen Kalender und blockiere drei Dinge: Einen Abend in der nächsten Woche, einen freien Tag im nächsten Monat, deinen nächsten Urlaub. Schreib für jeden Block auf wer den Betrieb in dieser Zeit übernimmt — konkrete Namen, konkrete Verantwortlichkeiten.</p></div>
 
   <div class="nav-row">
     <a href="modul11-lektion1.html" class="nav-btn secondary">← Lektion 1</a>
-    <a href="modul11-lektion3.html" class="nav-btn">Weiter zu Lektion 3 →</a>
+    <a href="modul11-lektion3.html" class="nav-btn">Lektion 3 →</a>
   </div>
+
+
   <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
 </div>
 <div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
-<script>
-(function(){
-  // Rechtsklick & Tastenkürzel sperren
-  document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
-  document.addEventListener('keydown', function(e){
-    if (e.ctrlKey && ['s','u','p','a'].includes(e.key.toLowerCase())) e.preventDefault();
-    if (e.key === 'F12') e.preventDefault();
-  });
-
-  // Supabase Auth Check
-  const sb = supabase.createClient(
-    'https://hchlganbgjeciwhwaisj.supabase.co',
-    'sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3'
-  );
-  (async function(){
-    const { data:{ session } } = await sb.auth.getSession();
-    if (!session) { window.location.href = 'login.html'; return; }
-    const { data: profile } = await sb.from('profiles')
-      .select('is_active,subscription_status')
-      .eq('id', session.user.id).maybeSingle();
-    if (profile && (!profile.is_active || profile.subscription_status !== 'active')) {
-      await sb.auth.signOut();
-      window.location.href = 'login.html';
-    }
-  })();
-})();
-</script>
 </body>
 </html>

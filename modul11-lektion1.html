@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GASTRO-OS – Modul 11 | Lektion 1</title>
+<title>GASTRO-OS – Modul 11 · Lektion 1</title>
 <style>
+
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
 .header{background:#1a2a4a;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
@@ -38,6 +39,9 @@ li { font-size:15px; line-height:1.8; color:#2a3a54; margin-bottom:6px; }
 .footer-main { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-main strong { color:#d4af37; }
 @media (max-width:600px) { .wrap{padding:0 16px 40px} h1{font-size:22px} h2{font-size:17px} }
+
+.btn-back-modul{background:#d4af37;color:#1a2a4a;border:none;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.2s;box-shadow:0 2px 6px rgba(212,175,55,0.3)}
+.btn-back-modul:hover{background:#c8a030;color:#1a2a4a}
 </style>
 </head>
 <body>
@@ -53,14 +57,14 @@ li { font-size:15px; line-height:1.8; color:#2a3a54; margin-bottom:6px; }
   (async function(){
     const{data:{session}}=await sb.auth.getSession();
     if(!session){window.location.href='login.html';return;}
-    const{data:profile}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
-    if(profile&&(!profile.is_active||profile.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
+    const{data:p}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
+    if(p&&(!p.is_active||p.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
   })();
 })();
 </script>
 <div class="header">
   <div class="brand">GASTRO-OS</div>
-  <a href="dashboard.html#modul-11" class="btn-back-modul">← Zurück zum Dashboard</a>
+  <a href="dashboard.html" class="btn-back-modul">← Zurück zum Dashboard</a>
 </div>
 <div class="gold-bar"></div>
 
@@ -70,43 +74,40 @@ li { font-size:15px; line-height:1.8; color:#2a3a54; margin-bottom:6px; }
     <div class="lektion-tag">Modul 11 · Lektion 1</div>
     <h1>Raus aus dem Dauerstress</h1>
   </div>
-  <div class="intro">Willkommen in Lektion 1 In Modul 10 haben wir uns angeschaut wie Wachstum in der Gastronomie wirklich funktioniert, welche Voraussetzungen erfüllt sein müssen bevor eine Expansion Sinn macht und wie du mit dem Standort Analyse Tool fundierte Entscheidungen triffst. Du weißt jetzt wo du stehst und wa</div>
+  <div class="intro">In Modul 10 haben wir uns angeschaut wie Wachstum in der Gastronomie wirklich funktioniert. Modul 11 ist anders als alle Module davor. Es geht nicht um Zahlen, nicht um Prozesse, nicht um Systeme. Es geht um dich. Um deine Zeit. Um deine Energie. Um die Frage ob der Betrieb den du aufgebaut hast dir das Leben gibt das du dir vorgestellt hast.</div>
 
 
+  <h2>Kapitel 1 — Was Dauerstress in der Gastronomie wirklich ist</h2>
+  <p>Es gibt in der Gastronomie eine stille Vereinbarung die niemand explizit getroffen hat aber fast alle leben: Stress ist normal. Erschöpfung ist normal. Keine Zeit haben ist normal. Diese Vereinbarung ist giftig — nicht weil Einsatz falsch wäre, sondern weil sie Dauerstress als Qualitätsmerkmal definiert.</p>
+  <p>Dauerstress in der Gastronomie hat selten eine einzige Ursache:</p>
+  <ul>
+    <li>Ständige Erreichbarkeit — das Telefon klingelt immer</li>
+    <li>Fehlendes strategisches Arbeiten AM Betrieb statt nur darin</li>
+    <li>Das Gefühl der Unersetzlichkeit — ohne dich bricht alles zusammen</li>
+    <li>Echte Erholung fehlt vollständig</li>
+  </ul>
+  <div class="highlight">Dauerstress in der Gastronomie ist kein Zeichen von Hingabe. Er ist ein Zeichen von fehlender Struktur. Wer täglich im Stress ist hat keine Zeit Strukturen aufzubauen die den Stress reduzieren. Das ist der Kreislauf. Und er ist nicht unausweichlich.</div>
+  <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 1</div><p>Schreib jetzt ehrlich auf wie viele Stunden du in einer normalen Woche wirklich arbeitest — inklusive Telefonate abends, Nachrichten am Wochenende, Gedanken an den Betrieb. Und wann du das letzte Mal wirklich abgeschaltet hast. Diese zwei Zahlen zeigen dir wo du heute stehst.</p></div>
+
+  <h2>Kapitel 2 — Der Weg raus aus dem Dauerstress</h2>
+  <p>Viele Gastronomen denken: wenn ich erst mal Urlaub habe, wird es besser. Das stimmt für kurze Zeit. Dann kommen sie zurück und alles ist wieder wie vorher. Urlaub ist kein Lösung für strukturellen Dauerstress. Die Lösung ist Strukturveränderung.</p>
+  <p>Die drei Hebel zur Stressreduktion:</p>
+  <ol>
+    <li><strong>Delegation</strong> — Was gibst du diese Woche konkret ab? Nicht theoretisch — konkret.</li>
+    <li><strong>Grenzen setzen</strong> — Wann bist du erreichbar und wann nicht? Kommuniziert und eingehalten.</li>
+    <li><strong>Planung</strong> — Unternehmer-Zeit aus Modul 5 ist nicht nur Betriebsführung — sie ist Lebensqualität.</li>
+  </ol>
+  <div class="highlight">Wer zwei Stunden investiert um eine SOP zu schreiben die täglich zehn Minuten spart, hat diese zwei Stunden nach zwölf Tagen wieder. Das ist der Unterschied zwischen reaktiver Erschöpfung und proaktiver Entlastung.</div>
+  <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 2</div><p>Wähle jetzt einen der drei Hebel aus — Delegation, Grenzen setzen oder Planung. Nicht alle drei auf einmal. Einen. Und schreib auf was du in den nächsten sieben Tagen konkret tust. Mit Datum. Mit Namen wenn nötig.</p></div>
 
   <div class="nav-row">
-    <a href="modul11-ankervideo.html" class="nav-btn secondary">← Ankervideo</a>
-    <a href="modul11-lektion2.html" class="nav-btn">Weiter zu Lektion 2 →</a>
+    <a href="modul11-uebersicht.html" class="nav-btn secondary">← Zurück zur Übersicht</a>
+    <a href="modul11-lektion2.html" class="nav-btn">Lektion 2 →</a>
   </div>
+
+
   <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
 </div>
 <div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
-<script>
-(function(){
-  // Rechtsklick & Tastenkürzel sperren
-  document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
-  document.addEventListener('keydown', function(e){
-    if (e.ctrlKey && ['s','u','p','a'].includes(e.key.toLowerCase())) e.preventDefault();
-    if (e.key === 'F12') e.preventDefault();
-  });
-
-  // Supabase Auth Check
-  const sb = supabase.createClient(
-    'https://hchlganbgjeciwhwaisj.supabase.co',
-    'sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3'
-  );
-  (async function(){
-    const { data:{ session } } = await sb.auth.getSession();
-    if (!session) { window.location.href = 'login.html'; return; }
-    const { data: profile } = await sb.from('profiles')
-      .select('is_active,subscription_status')
-      .eq('id', session.user.id).maybeSingle();
-    if (profile && (!profile.is_active || profile.subscription_status !== 'active')) {
-      await sb.auth.signOut();
-      window.location.href = 'login.html';
-    }
-  })();
-})();
-</script>
 </body>
 </html>

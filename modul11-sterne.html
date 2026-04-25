@@ -71,31 +71,7 @@ li{font-size:15px;line-height:1.8;color:#2a3a54;margin-bottom:6px}
 </style>
 </head>
 <body>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
-async function saveToSupabase(toolName, data) {
-  try {
-    const { data: { session } } = await sb.auth.getSession();
-    if (!session) return;
-    await sb.from('user_tool_data').upsert({
-      user_id: session.user.id,
-      tool_name: toolName,
-      data: data,
-      updated_at: new Date().toISOString()
-    }, { onConflict: 'user_id,tool_name' });
-  } catch(e) { console.log('Save error:', e); }
-}
-
-async function loadFromSupabase(toolName) {
-  try {
-    const { data: { session } } = await sb.auth.getSession();
-    if (!session) return null;
-    const { data } = await sb.from('user_tool_data')
-      .select('data').eq('user_id', session.user.id)
-      .eq('tool_name', toolName).maybeSingle();
-    return data ? data.data : null;
-  } catch(e) { return null; }
-}
-</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 (function(){
   document.addEventListener('contextmenu',function(e){e.preventDefault();});
@@ -299,8 +275,6 @@ function saveData() {
   msg.textContent = '✓ Gespeichert';
   msg.style.display = 'inline';
   setTimeout(() => msg.style.display='none', 2000);
-
-  saveToSupabase("modul11_sterne", data);
 }
 
 function resetData() {
