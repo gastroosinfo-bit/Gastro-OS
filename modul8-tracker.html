@@ -17,13 +17,14 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 .tool-info { flex:1; }
 .tool-info h2 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; }
 .tool-info p { font-size:12px; color:#8090a8; margin-top:2px; }
-.btn-t { border:none; padding:9px 16px; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer; transition:all 0.2s; }
-
-.btn-t.btn-save:hover { background:#d4af37; color:#1a2a4a; }
-
-.btn-t.btn-print:hover { background:#d4af37; color:#1a2a4a; }
-
-.btn-t.btn-reset:hover { background:#f0ece0; color:#1a2a4a; border-color:#1a2a4a; }
+.btn-save{background:#1a2a4a;color:#d4af37;border:none;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s}
+.btn-save:hover{background:#d4af37;color:#1a2a4a}
+.btn-print{background:#a09060;color:#fff;border:none;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s}
+.btn-print:hover{background:#d4af37;color:#1a2a4a}
+.btn-reset{background:transparent;border:1.5px solid #c0b090;color:#8070a0;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s}
+.btn-reset:hover{background:#f0ece0;color:#1a2a4a;border-color:#1a2a4a}
+.action-row{display:flex;gap:10px;margin-bottom:28px;flex-wrap:wrap;align-items:center;padding:16px 0;border-bottom:2px solid #e8dfc8}
+.save-msg{font-size:13px;color:#4a8a4a;align-self:center;display:none}
 .btn-save { background:#1a2a4a; color:#d4af37; } .btn-save:hover { background:#d4af37; color:#1a2a4a; }
 .btn-print { background:#fff; color:#1a2a4a; border:1px solid #e8dfc8; } .btn-print:hover { border-color:#1a2a4a; }
 .btn-reset { background:#fff; color:#a03030; border:1px solid #d06060; } .btn-reset:hover { background:#fdf0f0; }
@@ -67,11 +68,11 @@ table.tbl td { padding:7px 10px; border-bottom:1px solid #f0ece4; vertical-align
 <body>
 <div class="site-header"><div class="brand">GASTRO-OS</div><a href="dashboard.html#modul-8" class="btn-back-modul">← Zurück zum Dashboard</a></div>
 <div class="gold-bar"></div>
-<div class="toolbar">
+<div class="action-row">
   <div class="tool-info"><h2>📊 Upselling Tracker</h2><p>Modul 8 · Umsatz smart steigern — täglich tracken, wöchentlich auswerten</p></div>
-  <button class="btn-t btn-save" onclick="saveData()">💾 Speichern</button>
-  <button class="btn-t btn-print" onclick="window.print()">🖨️ Drucken</button>
-  <button class="btn-t btn-reset" onclick="resetAll()">🔄 Neu starten</button>
+  <button class="btn-save" onclick="saveData()">💾 Speichern</button>
+  <button class="btn-print" onclick="window.print()">🖨️ Drucken</button>
+  <button class="btn-reset" onclick="resetAll()">🔄 Neu starten</button>
   <span class="save-msg" id="save-msg">✓ Gespeichert</span>
 </div>
 <div class="wrap">
