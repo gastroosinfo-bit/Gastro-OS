@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GASTRO-OS – Modul 10 | Lektion 2</title>
+<title>GASTRO-OS – Modul 10 · Lektion 2</title>
 <style>
+
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
 .header{background:#1a2a4a;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
@@ -38,6 +39,9 @@ li { font-size:15px; line-height:1.8; color:#2a3a54; margin-bottom:6px; }
 .footer-main { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-main strong { color:#d4af37; }
 @media (max-width:600px) { .wrap{padding:0 16px 40px} h1{font-size:22px} h2{font-size:17px} }
+
+.btn-back-modul{background:#d4af37;color:#1a2a4a;border:none;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.2s;box-shadow:0 2px 6px rgba(212,175,55,0.3)}
+.btn-back-modul:hover{background:#c8a030;color:#1a2a4a}
 </style>
 </head>
 <body>
@@ -53,14 +57,14 @@ li { font-size:15px; line-height:1.8; color:#2a3a54; margin-bottom:6px; }
   (async function(){
     const{data:{session}}=await sb.auth.getSession();
     if(!session){window.location.href='login.html';return;}
-    const{data:profile}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
-    if(profile&&(!profile.is_active||profile.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
+    const{data:p}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
+    if(p&&(!p.is_active||p.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
   })();
 })();
 </script>
 <div class="header">
   <div class="brand">GASTRO-OS</div>
-  <a href="dashboard.html#modul-10" class="btn-back-modul">← Zurück zum Dashboard</a>
+  <a href="dashboard.html" class="btn-back-modul">← Zurück zum Dashboard</a>
 </div>
 <div class="gold-bar"></div>
 
@@ -70,43 +74,43 @@ li { font-size:15px; line-height:1.8; color:#2a3a54; margin-bottom:6px; }
     <div class="lektion-tag">Modul 10 · Lektion 2</div>
     <h1>Wann ist Wachstum sinnvoll</h1>
   </div>
-  <div class="intro">Willkommen in Lektion 2 In Lektion 1 haben wir uns angeschaut warum so viele Expansionen in der Gastronomie scheitern, welche fünf Fehler immer wieder gemacht werden und was ein stabiles Fundament wirklich bedeutet. Du hast die sechs Fundament Fragen beantwortet und weißt jetzt wo du heute stehst un</div>
+  <div class="intro">In Lektion 1 haben wir uns angeschaut warum so viele Expansionen in der Gastronomie scheitern und was ein stabiles Fundament wirklich bedeutet. Jetzt gehen wir einen Schritt weiter: Wann ist Wachstum nicht nur möglich — sondern wirklich sinnvoll? Das sind zwei verschiedene Dinge.</div>
 
 
+  <h2>Kapitel 1 — Die Signale die zeigen dass Wachstum Sinn macht</h2>
+  <p>Es gibt zwei Arten von Wachstumsentscheidungen. Die eine kommt aus Stärke — der Betrieb läuft stabil, das Team ist stark, die Zahlen stimmen. Die andere kommt aus Druck — der Standort ist zu klein, ein Mitbewerber eröffnet nebenan. Wachstum aus Stärke hat eine deutlich höhere Erfolgswahrscheinlichkeit.</p>
+  <p>Die sieben Signale für Wachstumsbereitschaft:</p>
+  <ol>
+    <li>Konstante Profitabilität über mindestens zwölf Monate</li>
+    <li>Ein funktionierendes System ohne den Chef</li>
+    <li>Ausreichend Kapital und Kreditwürdigkeit — mit Puffer</li>
+    <li>Ein starkes Team mit Führungspotenzial</li>
+    <li>Ein klares und übertragbares Konzept</li>
+    <li>Eine klare Chance — ein konkreter Standort mit echtem Potenzial</li>
+    <li>Persönliche Klarheit — du weißt warum du wachsen willst</li>
+  </ol>
+  <div class="highlight">Wenn 5 oder mehr der sieben Signale zutreffen ist dein Fundament stark genug um konkret über Wachstum nachzudenken. Wenn weniger als 3 zutreffen ist der Fokus klar: Fundament stärken.</div>
+  <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 1</div><p>Geh durch die sieben Signale und bewerte jedes auf einer Skala von 1–10. Addiere die Werte. Über 56 = starke Wachstumsbereitschaft. 35–56 = gute Ansätze mit Baustellen. Unter 35 = Fundament stärken zuerst.</p></div>
+
+  <h2>Kapitel 2 — Welche Wachstumsform zu dir passt</h2>
+  <p>Wachstum in der Gastronomie bedeutet nicht automatisch einen zweiten Standort. Es gibt fünf Formen:</p>
+  <ol>
+    <li><strong>Erweiterung am bestehenden Standort</strong> — die risikoärmste Form. Mehr Sitzplätze, Außenbereich, erweitertes Angebot.</li>
+    <li><strong>Catering und externe Dienstleistungen</strong> — nutzt die bestehende Küche ohne zweiten Standort.</li>
+    <li><strong>Lieferservice und digitale Kanäle</strong> — wichtig: Provisionen ehrlich kalkulieren.</li>
+    <li><strong>Zweiter Standort</strong> — ambitionierteste und risikoreichste Form, aber größtes Potenzial.</li>
+    <li><strong>Franchise</strong> — für Betriebe mit klar dokumentiertem, replizierb arem Konzept.</li>
+  </ol>
+  <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 2</div><p>Schreib auf welche Wachstumsform für deinen Betrieb in den nächsten 12 Monaten realistisch und sinnvoll wäre. Nicht die ambitionierteste — die realistischste. Und was die drei wichtigsten Voraussetzungen sind die du noch erfüllen musst.</p></div>
 
   <div class="nav-row">
     <a href="modul10-lektion1.html" class="nav-btn secondary">← Lektion 1</a>
-    <a href="modul10-lektion3.html" class="nav-btn">Weiter zu Lektion 3 →</a>
+    <a href="modul10-lektion3.html" class="nav-btn">Lektion 3 →</a>
   </div>
+
+
   <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
 </div>
 <div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
-<script>
-(function(){
-  // Rechtsklick & Tastenkürzel sperren
-  document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
-  document.addEventListener('keydown', function(e){
-    if (e.ctrlKey && ['s','u','p','a'].includes(e.key.toLowerCase())) e.preventDefault();
-    if (e.key === 'F12') e.preventDefault();
-  });
-
-  // Supabase Auth Check
-  const sb = supabase.createClient(
-    'https://hchlganbgjeciwhwaisj.supabase.co',
-    'sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3'
-  );
-  (async function(){
-    const { data:{ session } } = await sb.auth.getSession();
-    if (!session) { window.location.href = 'login.html'; return; }
-    const { data: profile } = await sb.from('profiles')
-      .select('is_active,subscription_status')
-      .eq('id', session.user.id).maybeSingle();
-    if (profile && (!profile.is_active || profile.subscription_status !== 'active')) {
-      await sb.auth.signOut();
-      window.location.href = 'login.html';
-    }
-  })();
-})();
-</script>
 </body>
 </html>

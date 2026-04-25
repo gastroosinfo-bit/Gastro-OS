@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GASTRO-OS – Modul 10 | Lektion 4</title>
+<title>GASTRO-OS – Modul 10 · Lektion 4</title>
 <style>
+
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
 .header{background:#1a2a4a;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
@@ -38,6 +39,9 @@ li { font-size:15px; line-height:1.8; color:#2a3a54; margin-bottom:6px; }
 .footer-main { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-main strong { color:#d4af37; }
 @media (max-width:600px) { .wrap{padding:0 16px 40px} h1{font-size:22px} h2{font-size:17px} }
+
+.btn-back-modul{background:#d4af37;color:#1a2a4a;border:none;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.2s;box-shadow:0 2px 6px rgba(212,175,55,0.3)}
+.btn-back-modul:hover{background:#c8a030;color:#1a2a4a}
 </style>
 </head>
 <body>
@@ -53,14 +57,14 @@ li { font-size:15px; line-height:1.8; color:#2a3a54; margin-bottom:6px; }
   (async function(){
     const{data:{session}}=await sb.auth.getSession();
     if(!session){window.location.href='login.html';return;}
-    const{data:profile}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
-    if(profile&&(!profile.is_active||profile.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
+    const{data:p}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
+    if(p&&(!p.is_active||p.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
   })();
 })();
 </script>
 <div class="header">
   <div class="brand">GASTRO-OS</div>
-  <a href="dashboard.html#modul-10" class="btn-back-modul">← Zurück zum Dashboard</a>
+  <a href="dashboard.html" class="btn-back-modul">← Zurück zum Dashboard</a>
 </div>
 <div class="gold-bar"></div>
 
@@ -70,43 +74,41 @@ li { font-size:15px; line-height:1.8; color:#2a3a54; margin-bottom:6px; }
     <div class="lektion-tag">Modul 10 · Lektion 4</div>
     <h1>Vom Plan zur Umsetzung</h1>
   </div>
-  <div class="intro">Willkommen in Lektion 4 In Lektion 3 haben wir uns angeschaut wie du den richtigen Standort findest und bewertest, wie du eine Führungskraft für den zweiten Standort aufbaust und wie du die Qualität am ersten Standort während der Expansion sicherst. Du weißt jetzt was strukturierte Expansion bedeute</div>
+  <div class="intro">In Lektion 3 haben wir uns angeschaut wie du den richtigen Standort findest und bewertest und wie du ein neues Team aufbaust. In Lektion 4 bringen wir alles zusammen: Wie sieht ein realistischer Expansionsplan aus? Und wie beantwortest du die wichtigste Frage — bist du wirklich bereit?</div>
 
 
+  <h2>Kapitel 1 — Der Expansionsplan Schritt für Schritt</h2>
+  <p>Es gibt viele Gastronomen die eine Expansionsidee haben. Einen konkreten Expansionsplan haben deutlich weniger. Und genau das ist der Unterschied zwischen einem Traum und einer umsetzbaren Strategie.</p>
+  <p>Die sechs Phasen einer strukturierten Expansion:</p>
+  <ol>
+    <li><strong>Fundament-Phase</strong> — Prüfe ob dein Fundament stabil genug ist. Dauert so lange wie nötig.</li>
+    <li><strong>Analyse-Phase</strong> — Analysiere Standorte mit dem Standort Analyse Tool. Ende: konkrete Standortentscheidung.</li>
+    <li><strong>Planungsphase</strong> — Umbau, Einrichtung, Personal, Marketing, Budget. Typisch: 2–4 Monate.</li>
+    <li><strong>Aufbauphase</strong> — Umbau, Personalsuche, Einarbeitung der Führungskraft. Ende: Eröffnung.</li>
+    <li><strong>Einführungsphase</strong> — Die ersten 6 Monate. Kritischster Zeitraum. Mehr Präsenz am neuen Standort.</li>
+    <li><strong>Stabilisierungsphase</strong> — Beide Standorte laufen stabil. Ausgangspunkt für alles weitere.</li>
+  </ol>
+  <div class="highlight">Plane mit Puffern. Wenn du denkst eine Phase dauert 3 Monate, plane 4. Wenn der Umbau 80.000€ kostet, plane 100.000€. Diese Puffer sind keine Verschwendung — sie sind Sicherheit.</div>
+  <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 1</div><p>Schreib jetzt deinen persönlichen Expansionsplan auf. In welcher Phase bist du heute? Was ist der nächste konkrete Schritt? Ein Plan auf Papier ist besser als der perfekteste Plan im Kopf.</p></div>
+
+  <h2>Kapitel 2 — Die finale Entscheidung: Bereit oder noch nicht</h2>
+  <p>Es gibt drei mögliche ehrliche Antworten auf die Frage ob du bereit bist:</p>
+  <ol>
+    <li><strong>Ja, ich bin bereit</strong> — Fast alle Fundament-Fragen lassen sich mit Ja beantworten. Das Kapital ist vorhanden. Die Führungskraft ist identifiziert. Ein konkreter Standort ist in Sicht. Dann ist jetzt der richtige Zeitpunkt.</li>
+    <li><strong>Noch nicht — aber in 6–12 Monaten</strong> — Du weißt was noch fehlt und hast einen klaren Fahrplan. Das Fundament ist gut aber noch nicht stark genug. Diese Antwort ist die häufigste und die gesündeste.</li>
+    <li><strong>Noch nicht — das Fundament muss erst aufgebaut werden</strong> — Prozesse dokumentieren, Team entwickeln, Zahlen stabilisieren, Kapital aufbauen. Das ist die Arbeit der nächsten 1–2 Jahre.</li>
+  </ol>
+  <div class="highlight">Wachstum ist kein Selbstzweck. Das Ziel ist ein Betrieb der dir die Freiheit gibt die du dir wünschst. Manchmal ist ein stabiler profitabler einzelner Standort der bessere Weg als ein schnell gewachsenes Unternehmen das dich rund um die Uhr fordert.</div>
+  <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 2</div><p>Beantworte jetzt ehrlich und schriftlich die finale Frage: Bist du bereit? Ja — noch nicht in 6–12 Monaten — oder noch nicht das Fundament muss erst aufgebaut werden? Schreib die Antwort auf und daneben was der nächste konkrete Schritt ist.</p></div>
 
   <div class="nav-row">
     <a href="modul10-lektion3.html" class="nav-btn secondary">← Lektion 3</a>
-    <a href="modul10-fehlerreport.html" class="nav-btn">Weiter zum Fehler Report →</a>
+    <a href="modul10-tool.html" class="nav-btn">Zum Standort Analyse Tool →</a>
   </div>
+
+
   <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
 </div>
 <div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
-<script>
-(function(){
-  // Rechtsklick & Tastenkürzel sperren
-  document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
-  document.addEventListener('keydown', function(e){
-    if (e.ctrlKey && ['s','u','p','a'].includes(e.key.toLowerCase())) e.preventDefault();
-    if (e.key === 'F12') e.preventDefault();
-  });
-
-  // Supabase Auth Check
-  const sb = supabase.createClient(
-    'https://hchlganbgjeciwhwaisj.supabase.co',
-    'sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3'
-  );
-  (async function(){
-    const { data:{ session } } = await sb.auth.getSession();
-    if (!session) { window.location.href = 'login.html'; return; }
-    const { data: profile } = await sb.from('profiles')
-      .select('is_active,subscription_status')
-      .eq('id', session.user.id).maybeSingle();
-    if (profile && (!profile.is_active || profile.subscription_status !== 'active')) {
-      await sb.auth.signOut();
-      window.location.href = 'login.html';
-    }
-  })();
-})();
-</script>
 </body>
 </html>

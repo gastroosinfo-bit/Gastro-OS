@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GASTRO-OS – Modul 10 | Lektion 3</title>
+<title>GASTRO-OS – Modul 10 · Lektion 3</title>
 <style>
+
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
 .header{background:#1a2a4a;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
@@ -38,6 +39,9 @@ li { font-size:15px; line-height:1.8; color:#2a3a54; margin-bottom:6px; }
 .footer-main { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-main strong { color:#d4af37; }
 @media (max-width:600px) { .wrap{padding:0 16px 40px} h1{font-size:22px} h2{font-size:17px} }
+
+.btn-back-modul{background:#d4af37;color:#1a2a4a;border:none;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.2s;box-shadow:0 2px 6px rgba(212,175,55,0.3)}
+.btn-back-modul:hover{background:#c8a030;color:#1a2a4a}
 </style>
 </head>
 <body>
@@ -53,14 +57,14 @@ li { font-size:15px; line-height:1.8; color:#2a3a54; margin-bottom:6px; }
   (async function(){
     const{data:{session}}=await sb.auth.getSession();
     if(!session){window.location.href='login.html';return;}
-    const{data:profile}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
-    if(profile&&(!profile.is_active||profile.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
+    const{data:p}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
+    if(p&&(!p.is_active||p.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
   })();
 })();
 </script>
 <div class="header">
   <div class="brand">GASTRO-OS</div>
-  <a href="dashboard.html#modul-10" class="btn-back-modul">← Zurück zum Dashboard</a>
+  <a href="dashboard.html" class="btn-back-modul">← Zurück zum Dashboard</a>
 </div>
 <div class="gold-bar"></div>
 
@@ -70,43 +74,36 @@ li { font-size:15px; line-height:1.8; color:#2a3a54; margin-bottom:6px; }
     <div class="lektion-tag">Modul 10 · Lektion 3</div>
     <h1>Expansion mit System</h1>
   </div>
-  <div class="intro">Willkommen in Lektion 3 In Lektion 2 haben wir uns angeschaut welche sieben Signale zeigen dass ein Betrieb wirklich bereit für Wachstum ist und welche Wachstumsformen es gibt. Du hast bewertet wie stark dein Fundament heute ist und welche Wachstumsform für deinen Betrieb in den nächsten zwölf Monat</div>
+  <div class="intro">In Lektion 2 haben wir uns angeschaut welche sieben Signale zeigen dass ein Betrieb wirklich bereit für Wachstum ist. Jetzt gehen wir in die Umsetzung: Wie sieht eine strukturierte Expansion konkret aus? Wie findest und bewertest du den richtigen Standort? Und wie sicherst du die Qualität am ersten Standort während du am zweiten aufbaust?</div>
 
 
+  <h2>Kapitel 1 — Den richtigen Standort finden und bewerten</h2>
+  <p>In der Gastronomie gilt seit Jahrzehnten: Die drei wichtigsten Faktoren für den Erfolg eines Restaurants sind Lage, Lage und Lage. Ein mittelmäßiges Konzept an einem perfekten Standort kann erfolgreich sein. Ein perfektes Konzept am falschen Standort scheitert fast immer.</p>
+  <p>Die fünf Dimensionen der Standortanalyse:</p>
+  <ol>
+    <li><strong>Laufkundschaft</strong> — Frequenz, Zeiten, Zielgruppe</li>
+    <li><strong>Konkurrenz</strong> — direkte Mitbewerber, Lücken, Differenzierung</li>
+    <li><strong>Wirtschaftliche Rahmenbedingungen</strong> — Miete max. 8–10% des Umsatzes</li>
+    <li><strong>Erreichbarkeit</strong> — ÖPNV, Parkplätze, Lieferantenlogistik</li>
+    <li><strong>Lokales Umfeld</strong> — Kaufkraft, Ankernutzer, Entwicklung des Viertels</li>
+  </ol>
+  <div class="highlight">Lass den Mietvertrag immer von einem Anwalt prüfen bevor du unterschreibst. Die Kosten sind gering im Vergleich zu dem Schaden den ein ungünstiger Mietvertrag über Jahre verursachen kann.</div>
+  <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 1</div><p>Wenn du einen konkreten Standort in Betracht ziehst: Besuche ihn mindestens dreimal zu verschiedenen Zeiten und Wochentagen. Beobachte Laufkundschaft, Konkurrenz und Umfeld. Dann öffne das Standort Analyse Tool und bewerte systematisch.</p></div>
+
+  <h2>Kapitel 2 — Ein neues Team aufbauen und Qualität sichern</h2>
+  <p>Die größte Herausforderung bei der Expansion ist nicht die Finanzierung, nicht die Standortwahl — es sind Menschen. Ein neues Team das nach denselben Standards arbeitet wie dein bestehendes. Und gleichzeitig die Qualität am ersten Standort sichern.</p>
+  <p>Die wichtigste Entscheidung bei einer Expansion ist die Führungskraft am neuen Standort. Idealer weise kommt sie aus deinem bestehenden Team — jemand der deine Werte kennt, deine Prozesse versteht und deine Kultur lebt. Der Schichtleiter aus Modul 6 ist oft der beste Kandidat.</p>
+  <div class="highlight">Die SOPs aus Modul 5 und die Rollenbeschreibungen aus Modul 6 sind die Grundlage für die Einarbeitung am neuen Standort. Sie machen das Wissen das sonst in deinem Kopf ist übertragbar und lernbar.</div>
+  <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 2</div><p>Schreib auf wer in deinem Team das Potenzial hat die Führungsrolle am zweiten Standort zu übernehmen. Wenn niemand in Frage kommt — was müsste diese Person mitbringen? Und welche deiner SOPs sind bereits so dokumentiert dass sie für ein neues Team übertragbar wären?</p></div>
 
   <div class="nav-row">
     <a href="modul10-lektion2.html" class="nav-btn secondary">← Lektion 2</a>
-    <a href="modul10-lektion4.html" class="nav-btn">Weiter zu Lektion 4 →</a>
+    <a href="modul10-lektion4.html" class="nav-btn">Lektion 4 →</a>
   </div>
+
+
   <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
 </div>
 <div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
-<script>
-(function(){
-  // Rechtsklick & Tastenkürzel sperren
-  document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
-  document.addEventListener('keydown', function(e){
-    if (e.ctrlKey && ['s','u','p','a'].includes(e.key.toLowerCase())) e.preventDefault();
-    if (e.key === 'F12') e.preventDefault();
-  });
-
-  // Supabase Auth Check
-  const sb = supabase.createClient(
-    'https://hchlganbgjeciwhwaisj.supabase.co',
-    'sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3'
-  );
-  (async function(){
-    const { data:{ session } } = await sb.auth.getSession();
-    if (!session) { window.location.href = 'login.html'; return; }
-    const { data: profile } = await sb.from('profiles')
-      .select('is_active,subscription_status')
-      .eq('id', session.user.id).maybeSingle();
-    if (profile && (!profile.is_active || profile.subscription_status !== 'active')) {
-      await sb.auth.signOut();
-      window.location.href = 'login.html';
-    }
-  })();
-})();
-</script>
 </body>
 </html>

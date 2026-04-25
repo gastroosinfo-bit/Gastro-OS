@@ -28,6 +28,14 @@ body {font-family:'Segoe UI',Arial,sans-serif;background:#f5f0e8;color:#1a2a4a;m
 .arrow{color:#d4af37;font-weight:700;font-size:16px;flex-shrink:0}
 .footer{background:#1a2a4a;margin-top:48px;padding:14px 40px;text-align:center;font-size:11px;color:#8090a8;letter-spacing:1px}
 .footer strong{color:#d4af37}
+
+.intro-card { background:#fff; border:1px solid #e8dfc8; border-radius:10px; padding:18px 22px; margin-bottom:24px; font-size:15px; color:#3a4a6a; line-height:1.8; }
+.section-label { font-size:12px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:700; margin:24px 0 12px; }
+.tipp-box { background:#fff8e8; border:1.5px solid #d4af37; border-radius:8px; padding:16px 20px; margin:20px 0; font-size:14px; color:#5a4000; line-height:1.7; }
+.symbol-intro { font-size:14px; color:#3a4a6a; margin-bottom:14px; line-height:1.7; }
+.symbol-list { display:flex; flex-direction:column; gap:10px; margin-bottom:24px; }
+.symbol-row { display:flex; align-items:flex-start; gap:14px; background:#fff; border:1px solid #e8dfc8; border-radius:8px; padding:12px 16px; font-size:13px; color:#3a4a6a; line-height:1.6; }
+.sym { font-size:20px; flex-shrink:0; margin-top:1px; }
 </style>
 </head>
 <body>
@@ -35,61 +43,91 @@ body {font-family:'Segoe UI',Arial,sans-serif;background:#f5f0e8;color:#1a2a4a;m
 <script>
 (function(){
   document.addEventListener('contextmenu',function(e){e.preventDefault();});
-  document.addEventListener('keydown',function(e){
-    if(e.ctrlKey&&['s','u','p','a'].includes(e.key.toLowerCase()))e.preventDefault();
-    if(e.key==='F12')e.preventDefault();
-  });
-  const sb=supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3');
-  (async function(){
-    const{data:{session}}=await sb.auth.getSession();
-    if(!session){window.location.href='login.html';return;}
-    const{data:p}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
-    if(p&&(!p.is_active||p.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
-  })();
-})();
-</script>
-<div class="header">
-  <div class="brand">GASTRO-OS</div>
-  <a href="dashboard.html#modul-0" class="btn-back-modul">← Zurück zum Dashboard</a>
-</div>
-<div class="gold-bar"></div>
-
-<div class="main">
+  document.a<div class="main">
   <div class="modul-header">
     <div class="nummer">Modul 0</div>
-    <h1>Das GASTRO-OS Prinzip</h1>
-    <p>Hier legst du das Fundament. Kein Werkzeug, keine Strategie funktioniert ohne die richtige Grundlage.</p>
+    <h1>Das Gastro OS Prinzip</h1>
+    <p>Du hast den ersten Schritt gemacht — und das zählt.</p>
   </div>
 
-  <div class="hinweis">💡 <strong>So gehst du vor:</strong> Arbeite die Lektionen in Ruhe durch. Modul 0 legt das Fundament für alles was folgt.</div>
+  <div class="intro-card">
+    <p>In diesem Modul legst du das Fundament für alles was folgt. Kein Werkzeug, keine Strategie, kein System funktioniert ohne die richtige Grundlage. Genau die bekommst du hier.</p>
+  </div>
 
+  <div class="section-label">Was dich in diesem Modul erwartet</div>
   <div class="content-grid">
-  <a href="modul0-ankervideo.html" class="content-item">
-    <span class="item-icon">🎬</span>
-    <div class="item-text">
-      <div class="item-title">Ankervideo — Starte hier</div>
-      <div class="item-sub">Das GASTRO-OS Prinzip in 10 Minuten</div>
-    </div>
-    <span class="arrow">→</span>
-  </a>
-  <a href="modul0-lektion1.html" class="content-item">
-    <span class="item-icon">📖</span>
-    <div class="item-text">
-      <div class="item-title">Lektion 1 — Das Unternehmer-Mindset</div>
-      <div class="item-sub">Warum Gastronomen im Hamsterrad stecken</div>
-    </div>
-    <span class="arrow">→</span>
-  </a>
-  <a href="modul0-lektion2.html" class="content-item">
-    <span class="item-icon">📖</span>
-    <div class="item-text">
-      <div class="item-title">Lektion 2 — Das GASTRO-OS System</div>
-      <div class="item-sub">Überblick über alle 12 Module</div>
-    </div>
-    <span class="arrow">→</span>
-  </a>
-  <a href="modul0-lektion3.html" class="content-item">
-    <span class="item-icon">📖</span>
+    <a href="modul0-ankervideo.html" class="content-item">
+      <span class="item-icon">🎬</span>
+      <div class="item-text">
+        <div class="item-title">Ankervideo — Starte hier</div>
+        <div class="item-sub">Schau das Video bevor du weiterliest</div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+    <a href="modul0-lektion1.html" class="content-item">
+      <span class="item-icon">📖</span>
+      <div class="item-text">
+        <div class="item-title">Lektion 1 — Warum Umsatz dich nicht rettet</div>
+        <div class="item-sub">Der wichtigste Irrtum in der Gastronomie</div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+    <a href="modul0-lektion2.html" class="content-item">
+      <span class="item-icon">📖</span>
+      <div class="item-text">
+        <div class="item-title">Lektion 2 — Das Gastro OS Prinzip</div>
+        <div class="item-sub">Das System das alles verändert</div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+    <a href="modul0-lektion3.html" class="content-item">
+      <span class="item-icon">📖</span>
+      <div class="item-text">
+        <div class="item-title">Lektion 3 — Wo stehst du heute</div>
+        <div class="item-sub">Dein ehrlicher Ausgangspunkt</div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+    <a href="modul0-mindmap.html" class="content-item">
+      <span class="item-icon">📋</span>
+      <div class="item-text">
+        <div class="item-title">Mindmap — Das Gastro OS Prinzip</div>
+        <div class="item-sub">Das gesamte System auf einen Blick</div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+    <a href="modul0-reflexion.html" class="content-item">
+      <span class="item-icon">✅</span>
+      <div class="item-text">
+        <div class="item-title">Reflexionsaufgabe — Dein erster ehrlicher Blick auf deinen Betrieb</div>
+        <div class="item-sub">Pflicht, nicht optional — dein persönlicher Startpunkt</div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+  </div>
+
+  <div class="tipp-box">
+    <strong>Ein Tipp zur Reflexionsaufgabe.</strong> Füll sie heute aus und speichere deine Antworten. Nach drei Monaten, nach sechs Monaten und nach einem Jahr schau sie dir noch einmal an. Du wirst sehen wie sich dein Blick auf deinen Betrieb verändert hat. Was damals ein Problem war ist vielleicht heute gelöst. Was damals unklar war ist heute selbstverständlich. Diese Entwicklung sichtbar zu machen ist einer der wertvollsten Momente in Gastro OS.
+  </div>
+
+  <div class="section-label">So liest du die Symbole in Gastro OS</div>
+  <div class="symbol-intro">Bevor du startest, kurz ein Blick auf die Symbole die dich durch den gesamten Kurs begleiten. Jedes Symbol steht für einen bestimmten Inhaltstyp. So weißt du auf einen Blick was dich erwartet bevor du einen Tab öffnest.</div>
+  <div class="symbol-list">
+    <div class="symbol-row"><span class="sym">🎬</span><div><strong>Video</strong> — Schau das Video bevor du weiterliest. Es gibt dir den Rahmen für alles was folgt.</div></div>
+    <div class="symbol-row"><span class="sym">📖</span><div><strong>Lektion</strong> — Dein Hauptlerninhalt. Lies ihn in Ruhe durch und mach die Aufgaben am Ende jedes Kapitels.</div></div>
+    <div class="symbol-row"><span class="sym">🎙</span><div><strong>Podcast Küchenfunk</strong> — Dein Audio Begleiter. Perfekt für unterwegs, im Auto oder vor dem Service.</div></div>
+    <div class="symbol-row"><span class="sym">📸</span><div><strong>Screenshot Anleitung</strong> — Zeigt dir Schritt für Schritt wie du ein Tool ausfüllst und nutzt.</div></div>
+    <div class="symbol-row"><span class="sym">📊</span><div><strong>Tool</strong> — Dein praktisches Werkzeug. Öffnen, ausfüllen, anwenden. Manche Tools haben mehrere Sheets. Arbeite sie immer der Reihe nach durch.</div></div>
+    <div class="symbol-row"><span class="sym">📋</span><div><strong>Mindmap</strong> — Eine Zusammenfassung des Moduls oder wichtige Hinweise.</div></div>
+    <div class="symbol-row"><span class="sym">🎯</span><div><strong>Quiz</strong> — Teste dein Wissen am Ende jedes Moduls. Dauert keine 5 Minuten.</div></div>
+    <div class="symbol-row"><span class="sym">🛒</span><div><strong>Shop</strong> — Zusätzliche Produkte die dir den Alltag erleichtern und Zeit sparen.</div></div>
+    <div class="symbol-row"><span class="sym">⚠️</span><div><strong>Wichtiger Hinweis</strong> — Unbedingt lesen bevor du weitermachst.</div></div>
+  </div>
+
+  <div class="hinweis">💡 <strong>So gehst du vor:</strong> Arbeite die Lektionen der Reihe nach durch. Überspringe nichts. Jede Lektion baut auf der vorherigen auf. Die Reflexionsaufgabe am Ende ist Pflicht, nicht optional. Sie ist dein persönlicher Startpunkt für die nächsten zwölf Monate. Viel Erfolg. Du machst das.</div>
+
+</div>
+ <span class="item-icon">📖</span>
     <div class="item-text">
       <div class="item-title">Lektion 3 — Dein erster Schritt</div>
       <div class="item-sub">Wo fängst du an — konkret und heute</div>

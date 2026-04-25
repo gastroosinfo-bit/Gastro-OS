@@ -97,10 +97,15 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 .btn-submit {
   background:#1a2a4a; color:#d4af37;
   border:none; padding:14px 40px; border-radius:8px;
-  font-size:14px; font-weight:700; cursor:pointer;
+  font-size:14px; font-weight:700; cursor:not-allowed;
   transition:all 0.2s; letter-spacing:0.5px;
   opacity:0.4; pointer-events:none;
 }
+.btn-submit.ready {
+  opacity:1; pointer-events:auto; cursor:pointer;
+  background:#d4af37; color:#1a2a4a;
+}
+.btn-submit.ready:hover { background:#c8a030; }
 .btn-submit.ready { opacity:1; pointer-events:auto; }
 .btn-submit.ready:hover { background:#d4af37; color:#1a2a4a; }
 
@@ -431,10 +436,7 @@ function getResult(score) {
   }
 }
 
-async 
-function saveData() { submitReflexion(); }
-function resetData() { resetReflexion(); }
-function submitReflexion() {
+async function submitReflexion() {
   if (Object.keys(answers).length < 5) return;
 
   const total = Object.values(answers).reduce((a, b) => a + b, 0);

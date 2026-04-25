@@ -28,6 +28,9 @@ body {font-family:'Segoe UI',Arial,sans-serif;background:#f5f0e8;color:#1a2a4a;m
 .arrow{color:#d4af37;font-weight:700;font-size:16px;flex-shrink:0}
 .footer{background:#1a2a4a;margin-top:48px;padding:14px 40px;text-align:center;font-size:11px;color:#8090a8;letter-spacing:1px}
 .footer strong{color:#d4af37}
+
+.intro-card { background:#fff; border:1px solid #e8dfc8; border-radius:10px; padding:18px 22px; margin-bottom:24px; font-size:15px; color:#3a4a6a; line-height:1.8; }
+.section-label { font-size:12px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:700; margin:24px 0 12px; }
 </style>
 </head>
 <body>
@@ -44,91 +47,97 @@ body {font-family:'Segoe UI',Arial,sans-serif;background:#f5f0e8;color:#1a2a4a;m
     const{data:{session}}=await sb.auth.getSession();
     if(!session){window.location.href='login.html';return;}
     const{data:p}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
-    if(p&&(!p.is_active||p.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
-  })();
-})();
-</script>
-<div class="header">
-  <div class="brand">GASTRO-OS</div>
-  <a href="dashboard.html#modul-1" class="btn-back-modul">← Zurück zum Dashboard</a>
-</div>
-<div class="gold-bar"></div>
-
-<div class="main">
+    if(p&&(!p.is_active|<div class="main">
   <div class="modul-header">
     <div class="nummer">Modul 1</div>
-    <h1>Unternehmer-Denken & Gewinn-Fokus</h1>
-    <p>Der Unterschied zwischen einem Selbstständigen und einem Unternehmer verändert alles.</p>
+    <h1>Unternehmer-Denken &amp; Gewinn-Fokus</h1>
+    <p>Du hast Modul 0 abgeschlossen — du weißt jetzt wo du stehst. Jetzt geht es darum wie du denkst.</p>
   </div>
 
-  <div class="hinweis">💡 <strong>So gehst du vor:</strong> Starte mit dem Ankervideo. Dann die Lektionen. Am Ende der Unternehmer-Score.</div>
+  <div class="intro-card">
+    <p>Denn bevor wir über Zahlen, Prozesse oder Marketing sprechen, müssen wir über etwas Grundlegenderes sprechen: deinen Blick auf dein eigenes Business. Wie du es siehst. Wie du Entscheidungen triffst. Und warum der Unterschied zwischen einem Selbstständigen und einem Unternehmer alles verändert.</p>
+  </div>
 
+  <div class="section-label">Was dich in diesem Modul erwartet</div>
   <div class="content-grid">
-  <a href="modul1-ankervideo.html" class="content-item">
-    <span class="item-icon">🎬</span>
-    <div class="item-text">
-      <div class="item-title">Ankervideo — Starte hier</div>
-      <div class="item-sub">Vom Selbstständigen zum Unternehmer</div>
-    </div>
-    <span class="arrow">→</span>
-  </a>
-  <a href="modul1-lektion1.html" class="content-item">
-    <span class="item-icon">📖</span>
-    <div class="item-text">
-      <div class="item-title">Lektion 1 — Vom Selbstständigen zum Unternehmer</div>
-      <div class="item-sub">Die Psychologie der Erschöpfung</div>
-    </div>
-    <span class="arrow">→</span>
-  </a>
-  <a href="modul1-lektion2.html" class="content-item">
-    <span class="item-icon">📖</span>
-    <div class="item-text">
-      <div class="item-title">Lektion 2 — Gewinn-Fokus</div>
-      <div class="item-sub">Warum Umsatz lügt</div>
-    </div>
-    <span class="arrow">→</span>
-  </a>
-  <a href="modul1-lektion3.html" class="content-item">
-    <span class="item-icon">📖</span>
-    <div class="item-text">
-      <div class="item-title">Lektion 3 — Deine Zahlen kennen</div>
-      <div class="item-sub">Die 3 wichtigsten Kennzahlen</div>
-    </div>
-    <span class="arrow">→</span>
-  </a>
-  <a href="modul1-lektion4.html" class="content-item">
-    <span class="item-icon">📖</span>
-    <div class="item-text">
-      <div class="item-title">Lektion 4 — Dein System aufbauen</div>
-      <div class="item-sub">Die ersten konkreten Schritte</div>
-    </div>
-    <span class="arrow">→</span>
-  </a>
-  <a href="modul1-podcast.html" class="content-item">
-    <span class="item-icon">🎙️</span>
-    <div class="item-text">
-      <div class="item-title">Küchenfunk #1 — Unternehmer-Denken</div>
-      <div class="item-sub">Für unterwegs — einfach zuhören</div>
-    </div>
-    <span class="arrow">→</span>
-  </a>
-  <a href="modul1-score-video.html" class="content-item">
-    <span class="item-icon">📸</span>
-    <div class="item-text">
-      <div class="item-title">So nutzt du den Unternehmer-Score</div>
-      <div class="item-sub">Erklärvideo in unter 1 Minute</div>
-    </div>
-    <span class="arrow">→</span>
-  </a>
-  <a href="modul1-score.html" class="content-item">
-    <span class="item-icon">📊</span>
-    <div class="item-text">
-      <div class="item-title">Unternehmer-Score — Wo stehst du?</div>
-      <div class="item-sub">Dein persönlicher Status-Check</div>
-    </div>
-    <span class="arrow">→</span>
-  </a>
-  <a href="modul1-quiz.html" class="content-item">
+    <a href="modul1-ankervideo.html" class="content-item">
+      <span class="item-icon">🎬</span>
+      <div class="item-text">
+        <div class="item-title">Ankervideo — Starte hier</div>
+        <div class="item-sub">Schau das Video bevor du weiterliest</div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+    <a href="modul1-lektion1.html" class="content-item">
+      <span class="item-icon">📖</span>
+      <div class="item-text">
+        <div class="item-title">Lektion 1 — Vom Selbstständigen zum Unternehmer</div>
+        <div class="item-sub">Der Unterschied der alles verändert</div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+    <a href="modul1-lektion2.html" class="content-item">
+      <span class="item-icon">📖</span>
+      <div class="item-text">
+        <div class="item-title">Lektion 2 — Warum Gewinn kein Zufall ist</div>
+        <div class="item-sub">Das System hinter profitablen Betrieben</div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+    <a href="modul1-lektion3.html" class="content-item">
+      <span class="item-icon">📖</span>
+      <div class="item-text">
+        <div class="item-title">Lektion 3 — Die vier wichtigsten Kennzahlen</div>
+        <div class="item-sub">Was du wirklich wissen musst</div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+    <a href="modul1-lektion4.html" class="content-item">
+      <span class="item-icon">📖</span>
+      <div class="item-text">
+        <div class="item-title">Lektion 4 — Fallstudie &amp; 30-Tage-Schlachtplan</div>
+        <div class="item-sub">Von der Theorie in die Praxis</div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+    <a href="modul1-podcast.html" class="content-item">
+      <span class="item-icon">🎙</span>
+      <div class="item-text">
+        <div class="item-title">Podcast — Küchenfunk Modul 1</div>
+        <div class="item-sub">Für unterwegs — einfach zuhören</div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+    <a href="modul1-score-video.html" class="content-item">
+      <span class="item-icon">📸</span>
+      <div class="item-text">
+        <div class="item-title">So nutzt du den Unternehmer-Score</div>
+        <div class="item-sub">Schritt für Schritt Anleitung</div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+    <a href="modul1-score.html" class="content-item">
+      <span class="item-icon">📊</span>
+      <div class="item-text">
+        <div class="item-title">Unternehmer-Score</div>
+        <div class="item-sub">Wo stehst du heute — schwarz auf weiß</div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+    <a href="modul1-quiz.html" class="content-item">
+      <span class="item-icon">🎯</span>
+      <div class="item-text">
+        <div class="item-title">Quiz — Teste dein Wissen aus Modul 1</div>
+        <div class="item-sub">Dauert keine 5 Minuten</div>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+  </div>
+
+  <div class="hinweis">💡 <strong>So gehst du vor:</strong> Arbeite die Lektionen der Reihe nach durch. Überspringe nichts — jede Lektion baut auf der vorherigen auf. Der Unternehmer-Score am Ende zeigt dir schwarz auf weiß wo du heute stehst — und wo die größten Hebel für deine Entwicklung liegen. Viel Erfolg! 💪</div>
+
+</div>
+ <a href="modul1-quiz.html" class="content-item">
     <span class="item-icon">🎯</span>
     <div class="item-text">
       <div class="item-title">Quiz — Teste dein Wissen</div>

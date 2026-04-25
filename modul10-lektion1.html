@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GASTRO-OS – Modul 10 | Lektion 1</title>
+<title>GASTRO-OS – Modul 10 · Lektion 1</title>
 <style>
+
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
 .header{background:#1a2a4a;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
@@ -38,6 +39,9 @@ li { font-size:15px; line-height:1.8; color:#2a3a54; margin-bottom:6px; }
 .footer-main { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-main strong { color:#d4af37; }
 @media (max-width:600px) { .wrap{padding:0 16px 40px} h1{font-size:22px} h2{font-size:17px} }
+
+.btn-back-modul{background:#d4af37;color:#1a2a4a;border:none;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.2s;box-shadow:0 2px 6px rgba(212,175,55,0.3)}
+.btn-back-modul:hover{background:#c8a030;color:#1a2a4a}
 </style>
 </head>
 <body>
@@ -53,14 +57,14 @@ li { font-size:15px; line-height:1.8; color:#2a3a54; margin-bottom:6px; }
   (async function(){
     const{data:{session}}=await sb.auth.getSession();
     if(!session){window.location.href='login.html';return;}
-    const{data:profile}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
-    if(profile&&(!profile.is_active||profile.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
+    const{data:p}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
+    if(p&&(!p.is_active||p.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
   })();
 })();
 </script>
 <div class="header">
   <div class="brand">GASTRO-OS</div>
-  <a href="dashboard.html#modul-10" class="btn-back-modul">← Zurück zum Dashboard</a>
+  <a href="dashboard.html" class="btn-back-modul">← Zurück zum Dashboard</a>
 </div>
 <div class="gold-bar"></div>
 
@@ -70,43 +74,38 @@ li { font-size:15px; line-height:1.8; color:#2a3a54; margin-bottom:6px; }
     <div class="lektion-tag">Modul 10 · Lektion 1</div>
     <h1>Ist dein Fundament stabil genug?</h1>
   </div>
-  <div class="intro">Willkommen in Lektion 1 In Modul 9 haben wir uns angeschaut wie du mit Google, Bewertungen und einem einfachen wöchentlichen System dauerhafte lokale Sichtbarkeit aufbaust. Du hast deinen ersten Marketing Aktionsplan geschrieben und weißt jetzt wie du mit minimalem Aufwand maximal sichtbar bist. Jet</div>
+  <div class="intro">In Modul 9 haben wir uns angeschaut wie du mit Google, Bewertungen und einem einfachen wöchentlichen System dauerhafte lokale Sichtbarkeit aufbaust. Jetzt kommen wir zu einem Thema das viele Gastronomen beschäftigt sobald der erste Betrieb wirklich läuft: Wachstum. Aber bevor wir über Wachstum sprechen, müssen wir über das Fundament sprechen. Denn Wachstum ohne stabiles Fundament ist nicht Wachstum — es ist Risiko.</div>
 
 
+  <h2>Kapitel 1 — Warum so viele Expansionen scheitern</h2>
+  <p>Es gibt einen Moment den viele erfolgreiche Gastronomen kennen. Der erste Betrieb läuft gut. Die Gäste kommen, die Bewertungen sind positiv, das Team funktioniert. Und dann kommt der Gedanke: Wenn das hier funktioniert, funktioniert es auch woanders. Warum nicht expandieren?</p>
+  <p>Das ist ein verlockender Gedanke. Und er ist gefährlich wenn er nicht kritisch hinterfragt wird. Denn was oft übersehen wird: Ein Betrieb der gut läuft weil du jeden Tag dabei bist ist kein skalierbarer Betrieb. Es ist ein Betrieb der funktioniert weil du funktionierst.</p>
+  <div class="highlight">Die fünf häufigsten Fehler bei Expansionen: Zu früh expandieren · Kapital unterschätzen · Falsche Standortwahl · System nicht dokumentiert · Managementaufwand unterschätzt</div>
+  <p>Hinter jedem dieser fünf Fehler steckt dasselbe Grundproblem: Das Fundament war nicht stabil genug. Nicht die Idee war falsch — das Timing war falsch. Und das ist gleichzeitig die gute Nachricht. Denn Fundamente lassen sich aufbauen.</p>
+  <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 1</div><p>Schreib jetzt ehrlich auf welche der fünf Fehler du heute an deinem Betrieb erkennen würdest wenn du expandieren wolltest. Diese ehrliche Bestandsaufnahme ist der erste Schritt zu einem Fundament das Wachstum trägt.</p></div>
+
+  <h2>Kapitel 2 — Die Voraussetzungen für stabiles Wachstum</h2>
+  <p>Es gibt sechs Fragen die du dir stellen musst bevor du ernsthaft über Wachstum nachdenkst. Nicht als Checkliste die abgehakt wird — als ehrliche Reflexion die dir zeigt wo du heute stehst.</p>
+  <ol>
+    <li>Läuft mein Betrieb auch ohne mich — praktisch, nicht theoretisch?</li>
+    <li>Sind meine Prozesse dokumentiert und übertragbar?</li>
+    <li>Sind meine Zahlen stabil und transparent — über mindestens zwölf Monate?</li>
+    <li>Habe ich eine Führungskraft die meinen ersten Standort ohne mich führen kann?</li>
+    <li>Habe ich ausreichend Kapital — komfortabel ausreichend, mit Puffer?</li>
+    <li>Habe ich den richtigen Standort analysiert und bewertet — mit echten Daten?</li>
+  </ol>
+  <p>Wenn du feststellst dass zwei oder drei dieser Fragen noch kein Ja bekommen, ist das kein Grund zur Entmutigung. Es ist ein Fahrplan. Jede Frage die noch kein Ja bekommt zeigt dir was als nächstes zu tun ist.</p>
+  <div class="highlight">Wachstum muss nicht zweiter Standort bedeuten. Catering, erweitertes Angebot am bestehenden Standort, Lieferservice oder Franchise — es gibt viele Formen die weniger riskant und oft genauso profitabel sind.</div>
+  <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 2</div><p>Beantworte jetzt die sechs Fundament-Fragen ehrlich und schriftlich. Für welche kannst du heute Ja sagen? Für welche noch nicht? Schreib für jede Frage die noch kein Ja bekommt auf was konkret getan werden muss. Das ist dein persönlicher Wachstums-Fahrplan.</p></div>
 
   <div class="nav-row">
-    <a href="modul10-ankervideo.html" class="nav-btn secondary">← Ankervideo</a>
-    <a href="modul10-lektion2.html" class="nav-btn">Weiter zu Lektion 2 →</a>
+    <a href="modul10-uebersicht.html" class="nav-btn secondary">← Zurück zur Übersicht</a>
+    <a href="modul10-lektion2.html" class="nav-btn">Lektion 2 →</a>
   </div>
+
+
   <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
 </div>
 <div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
-<script>
-(function(){
-  // Rechtsklick & Tastenkürzel sperren
-  document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
-  document.addEventListener('keydown', function(e){
-    if (e.ctrlKey && ['s','u','p','a'].includes(e.key.toLowerCase())) e.preventDefault();
-    if (e.key === 'F12') e.preventDefault();
-  });
-
-  // Supabase Auth Check
-  const sb = supabase.createClient(
-    'https://hchlganbgjeciwhwaisj.supabase.co',
-    'sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3'
-  );
-  (async function(){
-    const { data:{ session } } = await sb.auth.getSession();
-    if (!session) { window.location.href = 'login.html'; return; }
-    const { data: profile } = await sb.from('profiles')
-      .select('is_active,subscription_status')
-      .eq('id', session.user.id).maybeSingle();
-    if (profile && (!profile.is_active || profile.subscription_status !== 'active')) {
-      await sb.auth.signOut();
-      window.location.href = 'login.html';
-    }
-  })();
-})();
-</script>
 </body>
 </html>
