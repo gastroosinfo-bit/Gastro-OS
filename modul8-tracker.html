@@ -8,9 +8,9 @@
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
-.header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.site-header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
 .brand { font-family:Georgia,serif; font-size:18px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
-.btn-back-modul { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; text-decoration:none; transition:all 0.2s; }
+.back-btn { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; text-decoration:none; transition:all 0.2s; }
 .back-btn:hover { border-color:#d4af37; color:#d4af37; }
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
 .toolbar { max-width:920px; margin:18px auto 0; padding:0 24px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
@@ -54,14 +54,14 @@ table.tbl td { padding:7px 10px; border-bottom:1px solid #f0ece4; vertical-align
 .foot-bar { font-size:11px; color:#8090a8; text-align:center; padding:10px; border:1px solid #e8dfc8; border-radius:6px; background:#fff; }
 .site-footer { background:#1a2a4a; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 @media print { .site-header,.toolbar,.gold-bar,.site-footer { display:none !important; } .wrap { margin:0; padding:0; } body { background:#fff; } }
+.btn-back-modul{background:#d4af37;color:#1a2a4a;border:none;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.2s;box-shadow:0 2px 6px rgba(212,175,55,0.3)}
+.btn-back-modul:hover{background:#c8a030;color:#1a2a4a}
 </style>
 </head>
 <body>
-<div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html#modul-8" class="btn-back-modul">← Zurück zum Dashboard</a></div>
-  </div>
+<div class="site-header"><div class="brand">GASTRO-OS</div><a href="dashboard.html#modul-8" class="btn-back-modul">← Zurück zum Dashboard</a></div>
 <div class="gold-bar"></div>
 <div class="toolbar">
-  <div class="action-row" style="margin-bottom:0;padding-bottom:0;border:none">
   <div class="tool-info"><h2>📊 Upselling Tracker</h2><p>Modul 8 · Umsatz smart steigern — täglich tracken, wöchentlich auswerten</p></div>
   <button class="btn-t btn-save" onclick="saveData()">💾 Speichern</button>
   <button class="btn-t btn-print" onclick="window.print()">🖨️ Drucken</button>
