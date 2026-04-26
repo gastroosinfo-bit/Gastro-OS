@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Lektion 2 — Die richtige Stellenanzeige | GASTRO-OS</title><style>* { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
 .header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
@@ -9,46 +8,78 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
 .wrap { max-width:720px; margin:40px auto; padding:0 24px 60px; }
 .lbl { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:8px; }
-h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:10px; line-height:1.3; }
-.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:20px 0 32px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:16px; line-height:1.3; }
+.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:0 0 24px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+.lern-box { background:#1a2a4a; border-radius:8px; padding:16px 20px; margin:0 0 28px; }
+.lern-box-title { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.lern-box ul { list-style:none; padding:0; margin:0; }
+.lern-box li { font-size:13px; color:#a0b0c8; padding:4px 0 4px 20px; position:relative; line-height:1.6; }
+.lern-box li::before { content:'✓'; position:absolute; left:0; color:#d4af37; font-weight:700; }
 h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:normal; margin:36px 0 14px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
-h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:24px 0 10px; }
+h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:22px 0 10px; }
+h4 { font-size:15px; color:#1a2a4a; font-weight:700; margin:18px 0 8px; }
 p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
-.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin-top:24px; }
+.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin:24px 0; }
 .aufgabe-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
-.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; }
+.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; line-height:1.7; }
+.beispiel { background:#fff; border:1px solid #e8dfc8; border-left:4px solid #3a7ad4; border-radius:0 8px 8px 0; padding:16px 20px; margin:20px 0; }
+.beispiel-lbl { font-size:11px; color:#3a7ad4; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
+.beispiel p { font-size:14px; color:#2a3a54; margin-bottom:8px; line-height:1.75; }
+.beispiel p:last-child { margin-bottom:0; }
+.rechnung { background:#f0f4f8; border-radius:5px; padding:10px 14px; font-family:monospace; font-size:13px; color:#1a2a4a; margin:8px 0; line-height:1.6; }
+.tipp-box { background:#e4f5e8; border:1px solid #4aaa60; border-radius:8px; padding:14px 18px; margin:18px 0; }
+.tipp-box p { font-size:14px; color:#1a6030; margin-bottom:0; line-height:1.7; }
+.nav-row { display:flex; gap:12px; justify-content:space-between; margin:40px 0 0; }
+.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:11px 20px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; transition:all 0.2s; }
+.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
+.nav-btn.secondary { background:#fff; color:#1a2a4a; border:1px solid #e8dfc8; }
+.nav-btn.secondary:hover { border-color:#d4af37; }
+.fazit { background:#fdf9ee; border:2px solid #d4af37; border-radius:8px; padding:18px 22px; margin:32px 0 0; }
+.fazit-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.fazit ul { list-style:none; padding:0; margin:0; }
+.fazit li { font-size:14px; color:#2a3a54; padding:6px 0 6px 22px; position:relative; line-height:1.65; border-bottom:1px solid #e8dfc8; }
+.fazit li:last-child { border-bottom:none; }
+.fazit li::before { content:'→'; position:absolute; left:0; color:#d4af37; font-weight:700; }
+.checkliste { background:#fff; border:1px solid #e8dfc8; border-radius:8px; padding:16px 20px; margin:20px 0 0; }
+.checkliste-lbl { font-size:11px; color:#1a2a4a; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.checkliste ul { list-style:none; padding:0; margin:0; }
+.checkliste li { font-size:14px; color:#2a3a54; padding:7px 0 7px 28px; position:relative; border-bottom:1px solid #f0ece4; line-height:1.55; }
+.checkliste li:last-child { border-bottom:none; }
+.checkliste li::before { content:'☐'; position:absolute; left:0; color:#d4af37; font-size:16px; line-height:1.2; }
 .footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-lbl strong { color:#d4af37; }
-.footer-main { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-main { background:#1a2a4a; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-main strong { color:#d4af37; }</style></head>
-<body><div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html#modul-12" class="btn-back">← Zurück zum Dashboard</a></div>
-<div class="gold-bar"></div><div class="wrap">
-  <div class="lbl">Modul 12 · Lektion 2</div><h1>Die richtige Stellenanzeige</h1>
-  <div class="intro">In Lektion 1 haben wir uns angeschaut warum gute Mitarbeiter wirklich gehen. Wir haben gesehen dass die Gründe selten das Geld sind sondern fast immer mit Führung, Klarheit und Wertschätzung zusammenhängen. In dieser Lektion geht es um den ersten Schritt beim Finden neuer Mitarbeiter. Die Stellenanzeige. Denn bevor du jemanden führen, entwickeln oder halten kannst, musst du erst die richtigen Menschen in deinen Betrieb bekommen. Und das beginnt mit dem was du schreibst bevor du jemanden kennst.</div>
+<body>
+<div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html#modul-12" class="btn-back">← Zurück zum Dashboard</a></div>
+<div class="gold-bar"></div>
+<div class="wrap">
+  <div class="lbl">Modul 12 · Lektion 2</div>
+  <h1>Die richtige Stellenanzeige</h1>
+  <div class="intro">In Lektion 1 hast du verstanden warum gute Mitarbeiter gehen. Jetzt gehen wir einen Schritt früher: Wie findest du die richtigen Menschen überhaupt? Die Stellenanzeige ist dein erstes Vorstellungsgespräch — in dieser Lektion lernst du wie du sie so schreibst dass sie wirklich funktioniert.</div>
+  <div class="lern-box"><div class="lern-box-title">📚 Was du in dieser Lektion lernst</div><ul><li>Warum die meisten Gastro-Stellenanzeigen unsichtbar sind</li><li>Was eine Stellenanzeige leisten muss: filtern und verkaufen</li><li>Den 6-Schritte-Aufbau der funktioniert</li><li>Auf welchen Kanälen du die besten Ergebnisse erzielst</li></ul></div>
 
-  <h2>Kapitel 1 — Warum die meisten Stellenanzeigen nicht funktionieren</h2>
-  <p>Öffne eine beliebige Jobbörse und such nach Servicekraft oder Koch in deiner Stadt. Was siehst du? Dutzende Anzeigen die alle gleich klingen. Wir suchen eine motivierte, teamfähige und belastbare Servicekraft für unser renommiertes Restaurant. Wir bieten ein angenehmes Arbeitsklima und leistungsgerechte Vergütung. Das ist keine Stellenanzeige. Das ist eine Auflistung von Selbstverständlichkeiten. Teamfähigkeit ist keine Besonderheit. Ein angenehmes Arbeitsklima ist kein Angebot.</p>
-  <p>Das ist der Denkfehler. Denn die meisten Stellenanzeigen in der Gastronomie sind nicht für den Bewerber geschrieben. Sie sind für den Chef geschrieben. Sie beschreiben was der Chef braucht. Nicht was der Bewerber gewinnt. Und deshalb bekommst du entweder keine Bewerbungen oder die falschen.</p>
-  <h3>Was eine gute Stellenanzeige wirklich leistet</h3>
-  <p>Eine gute Stellenanzeige tut drei Dinge gleichzeitig. Erstens filtert sie. Sie spricht genau die Menschen an die du wirklich willst. Und schreckt gleichzeitig die ab die nicht zu dir passen. Zweitens verkauft sie. Sie macht deinen Betrieb attraktiv. Nicht mit leeren Versprechen. Sondern mit konkreten Aussagen. Drittens spricht sie den Menschen an. Nicht die Funktion. Den Menschen dahinter.</p>
-  <h3>Die häufigsten Fehler</h3>
-  <p>Zu allgemein: Wir suchen eine motivierte Servicekraft sagt nichts. Wer genau suchst du? Zu fordernd: Manche Anzeigen lesen sich wie eine Wunschliste ohne Ende. Das schreckt ab. Kein echtes Angebot: Was bekommst du wenn du bei mir arbeitest? Nicht als abstrakte Formulierung. Sondern konkret. Kein Charakter: Stellenanzeigen ohne Persönlichkeit sind unsichtbar.</p>
-  <div class="aufgabe"><div class="aufgabe-lbl">Aufgabe Kapitel 1</div><p>Ruf dir die letzte Stellenanzeige in Erinnerung die du geschrieben oder veröffentlicht hast. Welche der genannten Fehler erkennst du darin? Schreib sie auf. In Kapitel 2 wirst du sie korrigieren.</p></div>
-
-  <h2>Kapitel 2 — So baust du eine Stellenanzeige die wirklich funktioniert</h2>
-  <h3>1. Eine Überschrift die neugierig macht</h3>
-  <p>Nicht Servicekraft gesucht. Sondern etwas das zeigt was den Job besonders macht. Zum Beispiel: Wir suchen jemanden der unsere Stammgäste so kennt wie wir sie kennen. Oder: Koch mit Leidenschaft gesucht, der auch mal mitdenkt. Die Überschrift ist das Erste was der Bewerber sieht. Wenn sie ihn nicht anspricht liest er nicht weiter.</p>
-  <h3>2. Ein kurzer ehrlicher Einstieg</h3>
-  <p>Beschreibe deinen Betrieb in drei bis vier Sätzen. Nicht was du dir wünschst zu sein. Sondern was du wirklich bist. Wie groß ist das Team? Was ist das Konzept? Was macht den Betrieb aus? Das ist konkret. Das hat Charakter. Das schafft ein Bild.</p>
-  <h3>3. Was du anbietest — bevor du forderst</h3>
-  <p>Das ist der wichtigste strukturelle Wechsel den du vornehmen kannst. In den meisten Anzeigen kommt zuerst was du willst. Dreh das um. Was bekommt der Bewerber wenn er zu dir kommt? Konkret und ehrlich. Fixe Arbeitszeiten mit zwei festen freien Tagen. Dienstplan immer zwei Wochen im Voraus. Faire Bezahlung. Regelmäßige Gespräche und echtes Feedback. Das sind echte Angebote.</p>
-  <h3>4. Was du erwartest — klar und realistisch</h3>
-  <p>Formuliere es als Beschreibung der Person die du suchst, nicht als Anforderungsliste. Statt: Wir erwarten drei Jahre Erfahrung. Besser: Du hast schon in der Gastronomie gearbeitet und weißt wie ein langer Abend sich anfühlt. Du bleibst ruhig wenn es voll wird. Das spricht einen Menschen an. Keine Funktion.</p>
-  <h3>5. Ein klarer nächster Schritt</h3>
-  <p>Was soll der Bewerber tun? Mach es einfach. Eine kurze Nachricht reicht um zu starten. Oder noch einfacher: Ruf uns an. Wir erzählen dir in zehn Minuten wie wir arbeiten. Je niedriger die Hürde desto mehr Reaktionen bekommst du.</p>
-  <h3>6. Wo du die Anzeige veröffentlichst</h3>
-  <p>Indeed und Stepstone sind die bekanntesten Jobbörsen. Instagram und Facebook funktionieren oft besser als viele denken — besonders wenn du eine lokale Community hast. Lokale Facebook-Gruppen für Gastronomiejobs. Deine eigene Website mit einer einfachen Karriereseite. Und Stammgäste und Netzwerk — Mundpropaganda ist in der Gastronomie nach wie vor einer der stärksten Kanäle.</p>
-  <div class="aufgabe"><div class="aufgabe-lbl">Aufgabe Kapitel 2</div><p>Schreib jetzt eine neue Stellenanzeige für eine offene oder zukünftige Stelle in deinem Betrieb. Nutze die Struktur aus diesem Kapitel: Überschrift, Einstieg, Angebot, Erwartung, nächster Schritt. Maximal eine Seite. Zeig sie jemandem dem du vertraust und frag was er über deinen Betrieb denkt nachdem er sie gelesen hat.</p></div>
+<h2>Kapitel 1 — Warum Anzeigen scheitern</h2>
+<h3>Die 4 häufigsten Fehler</h3>
+<p>Fehler 1 — Generisch: 'Wir suchen einen motivierten Mitarbeiter der gerne im Team arbeitet.' Das beschreibt jeden — und zieht niemanden an. Fehler 2 — Anforderungen zuerst: Die Anzeige beginnt mit allem was der Bewerber mitbringen soll — nicht damit was er bekommt. Fehler 3 — Keine Persönlichkeit: Die Anzeige klingt wie jede andere. Nichts verrät was deinen Betrieb besonders macht. Fehler 4 — Hohe Bewerbungshürde: Der Bewerber muss einen formellen Lebenslauf schicken, Anschreiben, Zeugnisse. Das schreckt ab — besonders gute Kandidaten die nicht aktiv suchen.</p>
+<h3>Was eine gute Anzeige leisten muss</h3>
+<p>Erstens: Filtern — die falschen Kandidaten abhalten. Zweitens: Verkaufen — die richtigen Kandidaten begeistern. Drittens: Ansprechen — in der Sprache die deine Zielgruppe spricht.</p>
+<div class="beispiel"><div class="beispiel-lbl">📊 Rechenbeispiel aus der Praxis</div><p>Vergleich: generische vs. charakterstarke Stellenanzeige.</p><p>Generisch: 'Gesucht: Koch/Köchin für unser Restaurant. Erfahrung erforderlich. Bewerbung mit Lebenslauf an...'</p><p>Charakterstark: 'Du kochst leidenschaftlich und willst in einem Team arbeiten das sich gegenseitig den Rücken freit? Wir sind ein Familienbetrieb mit 15 Jahren Geschichte in [Stadt]. Wir bieten: Keine Teildienste, fester freier Tag, gelebtes Miteinander. Was wir brauchen: Erfahrung in der Küche und Lust auf echte Teamarbeit.'</p><div class="rechnung">Anzeige 2 bekommt 3× so viele qualifizierte Bewerbungen wie Anzeige 1 — bei gleichem Budget.</div></div>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 1</div><p>Hol dir deine letzte Stellenanzeige heraus. Prüfe sie auf die 4 Fehler: Ist sie generisch? Beginnt sie mit Anforderungen? Hat sie Persönlichkeit? Ist die Hürde niedrig? Was änderst du sofort?</p></div>
+<h2>Kapitel 2 — Der 6-Schritte-Aufbau</h2>
+<h3>Schritt für Schritt zur wirksamen Anzeige</h3>
+<p>Schritt 1 — Headline: Eine Zeile die neugierig macht. Nicht 'Koch gesucht' sondern 'Wer kocht bei uns — und warum das anders ist.'</p>
+<p>Schritt 2 — Einstieg: Was macht deinen Betrieb besonders? 2-3 Sätze über das wirklich Besondere.</p>
+<p>Schritt 3 — Was du bietest: Erst was der Kandidat bekommt. Konkret. Gehalt, Arbeitszeiten, Team, Entwicklung.</p>
+<p>Schritt 4 — Was du erwartest: Dann was du brauchst. Kurz und konkret.</p>
+<p>Schritt 5 — Persönlichkeit zeigen: Ein echter Satz über euer Team oder eure Arbeitsweise.</p>
+<p>Schritt 6 — Einfacher nächster Schritt: Kurze Nachricht reicht. Kein formeller Lebenslauf. Telefon. WhatsApp. Niedrige Hürde.</p>
+<div class="tipp-box"><p>💡 <strong>Profi-Tipp:</strong> Lass die fertige Anzeige von jemandem lesen der deinen Betrieb nicht kennt. Frage: Was denkst du nach dem Lesen über diesen Betrieb? Was macht ihn besonders? Wenn die Antwort vage ist — nochmal überarbeiten.</p></div>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 2</div><p>Schreibe jetzt deine neue Stellenanzeige nach dem 6-Schritte-Aufbau. Dann: Lass sie von jemandem lesen. Was ist der erste Eindruck? Veröffentliche sie auf Indeed + deinem Social-Media-Kanal + lokaler Facebook-Gruppe.</p></div>
+<div class="nav-row"><a href="modul12-lektion1.html" class="nav-btn secondary">← Lektion 1</a><a href="modul12-lektion3.html" class="nav-btn">Lektion 3 →</a></div>
+<div class="fazit"><div class="fazit-lbl">🎯 Das Wichtigste auf einen Blick</div><ul><li>Anzeige = erstes Vorstellungsgespräch. Erster Eindruck entscheidet.</li><li>Zuerst was du bietest — dann was du erwartest. Diese Reihenfolge verdoppelt Reaktionen.</li><li>6 Schritte: Headline · Einstieg · Angebot · Erwartung · Persönlichkeit · Einfacher nächster Schritt.</li><li>Niedrige Bewerbungshürde = mehr Reaktionen = mehr Auswahl = besserer Mitarbeiter.</li></ul></div>
+<div class="checkliste"><div class="checkliste-lbl">✅ Sofort-Checkliste — Das kannst du heute noch tun</div><ul><li>Alte Stellenanzeige auf 4 Fehler prüfen</li><li>Neue Anzeige nach 6-Schritten schreiben</li><li>Anzeige von jemandem lesen lassen: Erster Eindruck?</li><li>Auf Indeed + Social Media + lokale Facebook-Gruppe veröffentlichen</li></ul></div>
   <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
-</div><div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+</div>
+<div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
 </body></html>

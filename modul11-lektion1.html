@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Lektion 1 — Raus aus dem Dauerstress | GASTRO-OS</title><style>* { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
 .header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
@@ -9,53 +8,79 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
 .wrap { max-width:720px; margin:40px auto; padding:0 24px 60px; }
 .lbl { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:8px; }
-h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:10px; line-height:1.3; }
-.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:20px 0 32px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:16px; line-height:1.3; }
+.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:0 0 24px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+.lern-box { background:#1a2a4a; border-radius:8px; padding:16px 20px; margin:0 0 28px; }
+.lern-box-title { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.lern-box ul { list-style:none; padding:0; margin:0; }
+.lern-box li { font-size:13px; color:#a0b0c8; padding:4px 0 4px 20px; position:relative; line-height:1.6; }
+.lern-box li::before { content:'✓'; position:absolute; left:0; color:#d4af37; font-weight:700; }
 h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:normal; margin:36px 0 14px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
-h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:24px 0 10px; }
+h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:22px 0 10px; }
+h4 { font-size:15px; color:#1a2a4a; font-weight:700; margin:18px 0 8px; }
 p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
-.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin-top:24px; }
+.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin:24px 0; }
 .aufgabe-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
-.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; }
-.next-step { background:#fff; border:2px solid #d4af37; border-radius:8px; padding:20px 24px; margin-top:36px; }
-.next-step-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
-.next-step p { font-size:14px; color:#3a4a6a; margin-bottom:0; }
+.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; line-height:1.7; }
+.beispiel { background:#fff; border:1px solid #e8dfc8; border-left:4px solid #3a7ad4; border-radius:0 8px 8px 0; padding:16px 20px; margin:20px 0; }
+.beispiel-lbl { font-size:11px; color:#3a7ad4; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
+.beispiel p { font-size:14px; color:#2a3a54; margin-bottom:8px; line-height:1.75; }
+.beispiel p:last-child { margin-bottom:0; }
+.rechnung { background:#f0f4f8; border-radius:5px; padding:10px 14px; font-family:monospace; font-size:13px; color:#1a2a4a; margin:8px 0; line-height:1.6; }
+.tipp-box { background:#e4f5e8; border:1px solid #4aaa60; border-radius:8px; padding:14px 18px; margin:18px 0; }
+.tipp-box p { font-size:14px; color:#1a6030; margin-bottom:0; line-height:1.7; }
+.nav-row { display:flex; gap:12px; justify-content:space-between; margin:40px 0 0; }
+.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:11px 20px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; transition:all 0.2s; }
+.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
+.nav-btn.secondary { background:#fff; color:#1a2a4a; border:1px solid #e8dfc8; }
+.nav-btn.secondary:hover { border-color:#d4af37; }
+.fazit { background:#fdf9ee; border:2px solid #d4af37; border-radius:8px; padding:18px 22px; margin:32px 0 0; }
+.fazit-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.fazit ul { list-style:none; padding:0; margin:0; }
+.fazit li { font-size:14px; color:#2a3a54; padding:6px 0 6px 22px; position:relative; line-height:1.65; border-bottom:1px solid #e8dfc8; }
+.fazit li:last-child { border-bottom:none; }
+.fazit li::before { content:'→'; position:absolute; left:0; color:#d4af37; font-weight:700; }
+.checkliste { background:#fff; border:1px solid #e8dfc8; border-radius:8px; padding:16px 20px; margin:20px 0 0; }
+.checkliste-lbl { font-size:11px; color:#1a2a4a; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.checkliste ul { list-style:none; padding:0; margin:0; }
+.checkliste li { font-size:14px; color:#2a3a54; padding:7px 0 7px 28px; position:relative; border-bottom:1px solid #f0ece4; line-height:1.55; }
+.checkliste li:last-child { border-bottom:none; }
+.checkliste li::before { content:'☐'; position:absolute; left:0; color:#d4af37; font-size:16px; line-height:1.2; }
 .footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-lbl strong { color:#d4af37; }
-.footer-main { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-main { background:#1a2a4a; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-main strong { color:#d4af37; }</style></head>
-<body><div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html#modul-11" class="btn-back">← Zurück zum Dashboard</a></div>
-<div class="gold-bar"></div><div class="wrap">
-  <div class="lbl">Modul 11 · Lektion 1</div><h1>Raus aus dem Dauerstress</h1>
-  <div class="intro">In Modul 10 haben wir uns angeschaut wie Wachstum in der Gastronomie wirklich funktioniert, welche Voraussetzungen erfüllt sein müssen bevor eine Expansion Sinn macht und wie du mit dem Standort-Analyse-Tool fundierte Entscheidungen triffst. Modul 11 ist anders als alle Module davor. Es geht nicht um Zahlen, nicht um Prozesse, nicht um Systeme. Es geht um dich. Um deine Zeit. Um deine Energie. Um die Frage ob der Betrieb den du aufgebaut hast dir das Leben gibt das du dir vorgestellt hast als du angefangen hast.</div>
+<body>
+<div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html#modul-11" class="btn-back">← Zurück zum Dashboard</a></div>
+<div class="gold-bar"></div>
+<div class="wrap">
+  <div class="lbl">Modul 11 · Lektion 1</div>
+  <h1>Raus aus dem Dauerstress</h1>
+  <div class="intro">Du hast mit Gastro-OS in 10 Modulen deinen Betrieb systematisch aufgebaut. In Modul 11 kommt die persönlichste Frage: Wie geht es dir dabei? Dauerstress ist in der Gastronomie so normal dass er unsichtbar wird. In dieser Lektion schauen wir ehrlich hin.</div>
+  <div class="lern-box"><div class="lern-box-title">📚 Was du in dieser Lektion lernst</div><ul><li>Was Dauerstress ist — und dass er kein Zeichen von Qualität ist</li><li>Die 4 Faktoren die Dauerstress in der Gastronomie erzeugen</li><li>Was Dauerstress langfristig mit dir macht</li><li>Den ersten konkreten Schritt raus aus dem Stress-Kreislauf</li></ul></div>
 
-  <h2>Kapitel 1: Was Dauerstress in der Gastronomie wirklich ist</h2>
-  <h3>Der Normalzustand der kein Normalzustand sein sollte</h3>
-  <p>Es gibt in der Gastronomie eine stille Vereinbarung die niemand explizit getroffen hat aber fast alle leben. Stress ist normal. Erschöpfung ist normal. Keine Zeit haben ist normal. Wer nicht mindestens sechs Tage pro Woche im Betrieb ist, arbeitet nicht hart genug. Wer Urlaub macht, riskiert dass alles auseinanderfällt. Wer früh nach Hause geht, ist kein richtiger Gastronom.</p>
-  <p>Diese Vereinbarung ist giftig. Nicht weil Einsatz falsch wäre. Sondern weil sie Dauerstress als Qualitätsmerkmal definiert. Als Beweis dass man es ernst meint. Und weil sie verhindert dass jemand fragt ob es auch anders gehen könnte.</p>
-  <p>Dauerstress in der Gastronomie ist kein Zeichen von Hingabe. Er ist ein Zeichen von fehlender Struktur. Wer täglich im Stress ist, hat keine Zeit Strukturen aufzubauen die den Stress reduzieren. Wer keine Strukturen hat, ist täglich im Stress. Das ist der Kreislauf. Und er ist nicht unausweichlich.</p>
-  <h3>Wie Dauerstress entsteht</h3>
-  <p>Dauerstress in der Gastronomie hat selten eine einzige Ursache. Er ist das Ergebnis mehrerer Faktoren die sich gegenseitig verstärken.</p>
-  <p>Der erste Faktor ist die ständige Erreichbarkeit. Das Telefon klingelt immer. Mitarbeiter schreiben zu jeder Tages- und Nachtzeit. Lieferanten rufen an. Gäste hinterlassen Kommentare die sofortige Reaktion zu erfordern scheinen. Wer keine klaren Grenzen gesetzt hat wann er erreichbar ist und wann nicht, ist nie wirklich weg.</p>
-  <p>Der zweite Faktor ist das Fehlen von Unternehmer-Zeit. Wer nie Zeit hat an seinem Betrieb zu arbeiten, arbeitet immer nur darin. Das bedeutet täglich dieselben Probleme lösen, täglich dieselben Fragen beantworten, täglich denselben Ablauf wiederholen ohne dass sich grundlegend etwas verändert.</p>
-  <p>Der dritte Faktor ist das Gefühl der Unersetzlichkeit. Wenn du glaubst dass ohne dich alles zusammenbricht, kannst du nicht loslassen. Du gehst nicht früher weil du weißt dass dann irgendetwas schief läuft. Dieses Gefühl ist in manchen Betrieben berechtigt. In den meisten ist es das Ergebnis fehlender Delegation und fehlender Prozesse.</p>
-  <p>Der vierte Faktor ist das Fehlen von Erholung. Echte Erholung. Nicht der Abend auf dem Sofa mit dem Telefon in der Hand. Sondern Zeit in der der Kopf wirklich abschaltet. Zeit in der du nicht an den Betrieb denkst, nicht erreichbar bist, nicht funktionierst sondern einfach lebst.</p>
-  <h3>Was Dauerstress mit dir macht</h3>
-  <p>Die körperlichen und psychischen Auswirkungen von dauerhaftem Stress sind gut dokumentiert. Schlafprobleme, Konzentrationsschwäche, Reizbarkeit, geschwächtes Immunsystem. Aber es gibt eine Auswirkung die weniger offensichtlich ist und langfristig genauso teuer. Dauerstress zerstört die Freude. Die Freude an der Arbeit, an den Gästen, an dem was du geschaffen hast. Was als Leidenschaft begonnen hat wird zur Last.</p>
-  <p>Das ist kein unausweichliches Schicksal. Es ist das Ergebnis einer Situation die verändert werden kann. Aber nur wenn die Veränderung aktiv angegangen wird. Nicht irgendwann wenn es ruhiger wird. Denn es wird nicht ruhiger von selbst. Es wird ruhiger wenn du aktiv dafür sorgst dass es ruhiger wird.</p>
-  <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 1</div><p>Schreib jetzt ehrlich auf wie viele Stunden du in einer normalen Woche wirklich arbeitest — inklusive Telefonate abends, Nachrichten am Wochenende, Gedanken an den Betrieb die dich auch im Urlaub nicht loslassen. Und schreib daneben auf wann du das letzte Mal wirklich abgeschaltet hast. Nicht körperlich weg warst. Wirklich abgeschaltet.</p></div>
-
-  <h2>Kapitel 2: Der Weg raus aus dem Dauerstress</h2>
-  <h3>Warum Urlaub allein nicht reicht</h3>
-  <p>Viele Gastronomen denken wenn ich erst mal Urlaub habe, wird es besser. Das stimmt für kurze Zeit. Und dann kommen sie zurück und alles ist wieder wie vorher. Die Nachrichten haben sich angesammelt. Die Probleme warten. Die Erschöpfung kehrt schnell zurück weil die Strukturen die sie erzeugt haben sich nicht verändert haben.</p>
-  <p>Urlaub ist wichtig. Aber Urlaub ist keine Lösung für strukturellen Dauerstress. Die Lösung ist Strukturveränderung. Wer zwei Stunden investiert um eine SOP zu schreiben die täglich zehn Minuten spart, hat diese zwei Stunden nach zwölf Tagen wieder. Danach spart er täglich. Das ist der Unterschied zwischen reaktiver Erschöpfung und proaktiver Entlastung.</p>
-  <h3>Die drei Hebel zur Stressreduktion</h3>
-  <p>Der erste Hebel ist Delegation. Was gibst du diese Woche konkret ab. Jede Aufgabe die du delegierst ist Zeit die du zurückbekommst.</p>
-  <p>Der zweite Hebel ist Grenzen setzen. Wann bist du erreichbar und wann nicht. Nicht ungefähr. Konkret. Diese Grenze muss kommuniziert werden — dem Team, den Lieferanten, den Stammgästen wenn nötig. Und sie muss eingehalten werden. Auch wenn es am Anfang schwer fällt.</p>
-  <p>Der dritte Hebel ist Planung. Wer seinen Tag und seine Woche plant hat mehr Kontrolle über seine Zeit. Wer nicht plant, wird von dem gefüllt was andere an ihn herantragen. Die Unternehmer-Zeit aus Modul 5 ist nicht nur ein Werkzeug für bessere Betriebsführung. Sie ist ein Werkzeug für mehr Lebensqualität.</p>
-  <h3>Was sich verändert wenn der Stress weniger wird</h3>
-  <p>Es gibt eine Veränderung die fast alle Gastronomen beschreiben die aktiv an ihrer Stressreduktion gearbeitet haben. Nicht nur dass sie weniger erschöpft sind. Sondern dass sie wieder Freude an ihrem Betrieb haben. Die Freude die am Anfang da war, als die Idee noch frisch war und die Begeisterung größer als die Erschöpfung. Diese Freude kommt zurück wenn der Stress nachlässt. Und mit der Freude kommt Kreativität. Neue Ideen für das Angebot. Neue Energie für das Team.</p>
-  <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 2</div><p>Wähle jetzt einen der drei Hebel aus. Delegation, Grenzen setzen oder Planung. Nicht alle drei auf einmal. Einen. Und schreib auf was du in den nächsten sieben Tagen konkret tust um diesen Hebel zu nutzen. Konkret. Mit Datum. Mit Namen wenn nötig.</p></div>
+<h2>Kapitel 1 — Dauerstress erkennen</h2>
+<h3>Was normal ist — und was nicht sein muss</h3>
+<p>Die meisten Gastronomen haben so lange unter Dauerstress gearbeitet dass er sich normal anfühlt. 70-Stunden-Wochen. Kein richtiger Urlaub seit Jahren. Am freien Tag gedanklich im Betrieb. Nachts über Probleme nachdenken. Das wird als 'Leidenschaft' bezeichnet — aber es ist Erschöpfung.</p>
+<p>Dauerstress ist nicht Engagement. Dauerstress ist das Signal dass das System nicht funktioniert. Wer ständig kämpft um alles am Laufen zu halten, kämpft gegen fehlende Systeme — nicht für seinen Betrieb.</p>
+<h3>Die 4 Stressfaktoren</h3>
+<p>Faktor 1 — Permanente Erreichbarkeit: Das Telefon ist immer an. Nachrichten werden auch abends beantwortet. Es gibt keine echte Grenze zwischen Arbeit und Privatem.</p>
+<p>Faktor 2 — Fehlende Unternehmer-Zeit: Keine Zeit um AM Betrieb zu arbeiten weil man ständig IM Betrieb gebraucht wird. Das erzeugt das Gefühl auf der Stelle zu treten.</p>
+<p>Faktor 3 — Unersetzlichkeitsgefühl: Niemand kann das so gut wie ich. Ich muss bei allem dabei sein. Das ist gleichzeitig Überzeugung und Falle.</p>
+<p>Faktor 4 — Fehlende Erholung: Urlaub wird verschoben oder verkürzt. Freie Tage werden halb gearbeitet. Der Körper kommt nie wirklich runter.</p>
+<div class="beispiel"><div class="beispiel-lbl">📊 Rechenbeispiel aus der Praxis</div><p>Zeitrechnung eines Gastronomen ohne Struktur.</p><p>Arbeitszeit: 70h/Woche plus mentale Präsenz am freien Tag (geschätzte 2h). Effektiv: 72h/Woche.</p><p>Nettoeinkommen: 2.800 €/Monat. Effektiver Stundenlohn: 2.800 ÷ 312h (72h × 4,33 Wochen) = 8,97 €/h.</p><div class="rechnung">Mit Struktur (Schichtleiter, SOPs, Grenzen): 52h/Woche. Gleiche Arbeit, weniger Aufwand. 2.800 ÷ 225h = 12,44 €/h. Plus: 20h mehr Leben pro Woche = 1.040 Stunden/Jahr.</div></div>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 1</div><p>Fülle den Stressfaktor-Check aus: Welche der 4 Faktoren treffen auf dich zu? Bewerte jeden auf einer Skala 1-5 (1=kaum vorhanden, 5=täglich stark). Welcher Score? Was ist dein größter Stressfaktor?</p></div>
+<h2>Kapitel 2 — Aus dem Kreislauf aussteigen</h2>
+<h3>Warum der Kreislauf sich von selbst dreht</h3>
+<p>Dauerstress erzeugt kurzfristiges Denken. Kurzfristiges Denken verhindert Systeme. Fehlende Systeme erzeugen mehr Stress. Das ist der Kreislauf. Wer mittendrin ist, sieht ihn oft nicht mehr. Es braucht einen bewussten Schritt heraus.</p>
+<h3>Der erste Schritt: eine Grenze</h3>
+<p>Nicht zwanzig Maßnahmen gleichzeitig. Eine Grenze. Konkret und umsetzbar. Telefon ab 21 Uhr stumm — für eine Woche testen. Oder: Ein fixer freier Abend pro Woche der unverrückbar ist. Oder: Mittagspause ohne Betriebsthemen, jeden Tag.</p>
+<div class="tipp-box"><p>💡 <strong>Profi-Tipp:</strong> Starte diese Woche mit dem kleinsten möglichen Schritt: Schalte das Betriebstelefon jeden Abend um 21 Uhr stumm — für 7 Tage. Beobachte was passiert. In 95% der Fälle: nichts Schlimmes. Aber du schläfst besser. Das ist dein erster Beweis dass Grenzen funktionieren.</p></div>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 2</div><p>Definiere jetzt eine konkrete Grenze die du diese Woche einführst. Nicht drei — eine. Was ist es? Ab wann gilt sie? Was passiert wenn sie überschritten wird? Schreib sie auf und teile sie mit deinem Team.</p></div>
+<div class="nav-row"><span></span><a href="modul11-lektion2.html" class="nav-btn">Lektion 2 →</a></div>
+<div class="fazit"><div class="fazit-lbl">🎯 Das Wichtigste auf einen Blick</div><ul><li>Dauerstress ist kein Engagement — er ist das Signal dass das System fehlt.</li><li>4 Faktoren: Erreichbarkeit · fehlende Unternehmerzeit · Unersetzlichkeit · fehlende Erholung.</li><li>Der Kreislauf dreht sich von selbst — aussteigen braucht einen bewussten Schritt.</li><li>Eine Grenze diese Woche einführen — nicht zwanzig.</li></ul></div>
+<div class="checkliste"><div class="checkliste-lbl">✅ Sofort-Checkliste — Das kannst du heute noch tun</div><ul><li>Stressfaktor-Check ausfüllen: welche 4 Faktoren, wie stark?</li><li>Eine konkrete Grenze definieren und aufschreiben</li><li>Grenze mit Team kommunizieren</li><li>7 Tage testen: Telefon ab 21 Uhr stumm</li></ul></div>
   <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
-</div><div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+</div>
+<div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
 </body></html>

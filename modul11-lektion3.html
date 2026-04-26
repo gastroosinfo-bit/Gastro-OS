@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Lektion 3 — Dein Unternehmer-Rhythmus | GASTRO-OS</title><style>* { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
 .header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
@@ -9,46 +8,76 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
 .wrap { max-width:720px; margin:40px auto; padding:0 24px 60px; }
 .lbl { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:8px; }
-h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:10px; line-height:1.3; }
-.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:20px 0 32px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:16px; line-height:1.3; }
+.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:0 0 24px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+.lern-box { background:#1a2a4a; border-radius:8px; padding:16px 20px; margin:0 0 28px; }
+.lern-box-title { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.lern-box ul { list-style:none; padding:0; margin:0; }
+.lern-box li { font-size:13px; color:#a0b0c8; padding:4px 0 4px 20px; position:relative; line-height:1.6; }
+.lern-box li::before { content:'✓'; position:absolute; left:0; color:#d4af37; font-weight:700; }
 h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:normal; margin:36px 0 14px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
-h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:24px 0 10px; }
+h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:22px 0 10px; }
+h4 { font-size:15px; color:#1a2a4a; font-weight:700; margin:18px 0 8px; }
 p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
-.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin-top:24px; }
+.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin:24px 0; }
 .aufgabe-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
-.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; }
-.next-step { background:#fff; border:2px solid #d4af37; border-radius:8px; padding:20px 24px; margin-top:36px; }
-.next-step-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
-.next-step p { font-size:14px; color:#3a4a6a; margin-bottom:0; }
+.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; line-height:1.7; }
+.beispiel { background:#fff; border:1px solid #e8dfc8; border-left:4px solid #3a7ad4; border-radius:0 8px 8px 0; padding:16px 20px; margin:20px 0; }
+.beispiel-lbl { font-size:11px; color:#3a7ad4; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
+.beispiel p { font-size:14px; color:#2a3a54; margin-bottom:8px; line-height:1.75; }
+.beispiel p:last-child { margin-bottom:0; }
+.rechnung { background:#f0f4f8; border-radius:5px; padding:10px 14px; font-family:monospace; font-size:13px; color:#1a2a4a; margin:8px 0; line-height:1.6; }
+.tipp-box { background:#e4f5e8; border:1px solid #4aaa60; border-radius:8px; padding:14px 18px; margin:18px 0; }
+.tipp-box p { font-size:14px; color:#1a6030; margin-bottom:0; line-height:1.7; }
+.nav-row { display:flex; gap:12px; justify-content:space-between; margin:40px 0 0; }
+.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:11px 20px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; transition:all 0.2s; }
+.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
+.nav-btn.secondary { background:#fff; color:#1a2a4a; border:1px solid #e8dfc8; }
+.nav-btn.secondary:hover { border-color:#d4af37; }
+.fazit { background:#fdf9ee; border:2px solid #d4af37; border-radius:8px; padding:18px 22px; margin:32px 0 0; }
+.fazit-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.fazit ul { list-style:none; padding:0; margin:0; }
+.fazit li { font-size:14px; color:#2a3a54; padding:6px 0 6px 22px; position:relative; line-height:1.65; border-bottom:1px solid #e8dfc8; }
+.fazit li:last-child { border-bottom:none; }
+.fazit li::before { content:'→'; position:absolute; left:0; color:#d4af37; font-weight:700; }
+.checkliste { background:#fff; border:1px solid #e8dfc8; border-radius:8px; padding:16px 20px; margin:20px 0 0; }
+.checkliste-lbl { font-size:11px; color:#1a2a4a; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.checkliste ul { list-style:none; padding:0; margin:0; }
+.checkliste li { font-size:14px; color:#2a3a54; padding:7px 0 7px 28px; position:relative; border-bottom:1px solid #f0ece4; line-height:1.55; }
+.checkliste li:last-child { border-bottom:none; }
+.checkliste li::before { content:'☐'; position:absolute; left:0; color:#d4af37; font-size:16px; line-height:1.2; }
 .footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-lbl strong { color:#d4af37; }
-.footer-main { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-main { background:#1a2a4a; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-main strong { color:#d4af37; }</style></head>
-<body><div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html#modul-11" class="btn-back">← Zurück zum Dashboard</a></div>
-<div class="gold-bar"></div><div class="wrap">
-  <div class="lbl">Modul 11 · Lektion 3</div><h1>Dein Unternehmer-Rhythmus</h1>
-  <div class="intro">In Lektion 2 haben wir uns angeschaut warum Zeit für Familie und Freizeit kein Luxus ist sondern eine Investition, und wie du diese Zeit aktiv schaffst statt darauf zu warten dass sie übrig bleibt. Du hast drei konkrete Blöcke in deinen Kalender eingetragen. Jetzt kommen wir zum Kern von Modul 11. Denn einzelne freie Abende und ein Urlaub im Jahr reichen nicht. Was wirklich verändert ist ein Rhythmus. Eine Wochenstruktur die dauerhaft funktioniert. Die Betrieb und Leben in Balance bringt. In Lektion 3 bauen wir diesen Rhythmus auf.</div>
+<body>
+<div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html#modul-11" class="btn-back">← Zurück zum Dashboard</a></div>
+<div class="gold-bar"></div>
+<div class="wrap">
+  <div class="lbl">Modul 11 · Lektion 3</div>
+  <h1>Dein Unternehmer-Rhythmus</h1>
+  <div class="intro">In Lektion 1 hast du Stress erkannt, in Lektion 2 persönliche Zeit geschaffen. Jetzt bauen wir alles zu einem Rhythmus zusammen — einer strukturierten Woche die Betrieb, Unternehmer-Aufgaben und persönliches Leben verbindet.</div>
+  <div class="lern-box"><div class="lern-box-title">📚 Was du in dieser Lektion lernst</div><ul><li>Was ein Unternehmer-Rhythmus ist und warum er dauerhafter wirkt als Vorsätze</li><li>Die 4 Säulen des Rhythmus: Betrieb · Unternehmerzeit · Persönlich · Erholung</li><li>Vom Idealbild zur ersten umsetzbaren Version</li><li>Den Rhythmus gegen den Alltag schützen</li></ul></div>
 
-  <h2>Kapitel 1: Was ein Unternehmer-Rhythmus ist und warum er alles verändert</h2>
-  <h3>Der Unterschied zwischen Routine und Rhythmus</h3>
-  <p>Es gibt einen Unterschied zwischen Routine und Rhythmus der wichtig ist. Eine Routine ist eine Gewohnheit. Sie passiert weil sie immer so gemacht wurde. Manchmal gut, manchmal schlecht, meistens unreflektiert. Ein Rhythmus ist bewusst gestaltet. Er hat eine Logik. Er dient einem Ziel. Er verbindet die verschiedenen Bereiche des Lebens so dass sie sich gegenseitig stärken statt konkurrieren.</p>
-  <p>Ein Gastronom mit einem guten Rhythmus weiß wann er als Unternehmer arbeitet und wann als Gastronom. Er weiß wann er erreichbar ist und wann nicht. Er weiß wann er Familie hat und wann er sich erholt. Das klingt nach Luxus. Es ist die Grundlage für nachhaltige Leistungsfähigkeit. Denn wer keinen Rhythmus hat, verbrennt sich aus. Früher oder später.</p>
-  <h3>Die vier Säulen des Unternehmer-Rhythmus</h3>
-  <p>Die erste Säule ist die Unternehmer-Zeit. Zwei bis drei Mal pro Woche, morgens, bevor der Betrieb beginnt. In dieser Zeit arbeitest du an deinem Betrieb statt darin. Sie ist nicht nur Betriebsführung. Sie ist die Zeit in der du als Unternehmer denkst statt als Angestellter reagierst. Das gibt dir Kontrolle. Und Kontrolle reduziert Stress.</p>
-  <p>Die zweite Säule ist die Führungszeit. Täglich, aber begrenzt. Team-Briefing, Mitarbeiter-Feedback, Qualitätskontrolle. Klar strukturiert, zeitlich begrenzt, delegiert wo möglich.</p>
-  <p>Die dritte Säule ist die persönliche Zeit. Mindestens ein Abend pro Woche. Mindestens ein freier Tag pro Woche wenn möglich. Urlaub mindestens einmal pro Jahr. Diese Zeit ist nicht verhandelbar. Sie steht im Kalender bevor alles andere geplant wird.</p>
-  <p>Die vierte Säule ist die Erholungszeit. Das ist mehr als Freizeit. Es ist die bewusste Zeit in der du abschaltest. Bewegung, Schlaf, Hobbys, Natur. Was auch immer dich wirklich erholt. Diese Zeit macht alle anderen Säulen möglich.</p>
-  <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 1</div><p>Schreib jetzt auf wie deine ideale Woche aussehen würde wenn du sie frei gestalten könntest. Wann wärst du im Betrieb, wann hättest du Unternehmer-Zeit, wann persönliche Zeit, wann Erholungszeit. Nicht realistisch im Sinne von was heute möglich ist. Ideal im Sinne von was du dir wünschst. Dieses Bild ist dein Ziel.</p></div>
-
-  <h2>Kapitel 2: Deinen Rhythmus aufbauen und schützen</h2>
-  <h3>Vom Idealbild zur ersten Version</h3>
-  <p>Das Idealbild deiner Woche ist wahrscheinlich nicht sofort umsetzbar. Vielleicht nicht zu 100 Prozent. Das ist in Ordnung. Der Weg zum Unternehmer-Rhythmus ist kein Sprung. Er ist ein schrittweiser Aufbau. Du nimmst dein Idealbild und fragst dich was davon du in den nächsten vier Wochen umsetzen kannst. Nicht alles. Einen Schritt. Den wichtigsten.</p>
-  <h3>Was deinen Rhythmus gefährdet</h3>
-  <p>Es gibt drei Dinge die einen aufgebauten Rhythmus am häufigsten gefährden. Das erste ist der stressige Monat. In diesen Phasen wird der Rhythmus als erstes geopfert. Die Lösung ist eine Minimalversion zu definieren die auch in schwierigen Phasen gilt. Das zweite ist das schlechte Gewissen. Wenn du früher gehst, kommt das Gefühl dass du mehr tun könntest. Dieses Gefühl ist kein Zeichen dass du falsch liegst. Es ist das Zeichen einer alten Gewohnheit die sich nicht so leicht verabschiedet. Das dritte ist das Team das den Rhythmus nicht respektiert. Die Lösung ist Klarheit und Konsequenz.</p>
-  <h3>Die Monats-Reflexion als Rhythmus-Instrument</h3>
-  <p>Am Ende jedes Monats nimmst du dir 20 Minuten für die Monats-Reflexion. Sie ist nicht nur ein Rückblick auf den Betrieb. Sie ist ein Rückblick auf dich als Unternehmer und als Mensch. Wie war dieser Monat. Habe ich meinen Rhythmus eingehalten. Was hat gut funktioniert. Was hat den Rhythmus gestört. Was mache ich nächsten Monat anders.</p>
-  <div class="next-step"><div class="next-step-lbl">Deine Tools</div><p>Die Monats-Reflexion findest du im Tab 📊 Monats-Reflexion. Das Sterne-Level-System findest du im Tab 📊 Sterne-Level-System.</p></div>
-  <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 2</div><p>Nimm dir jetzt dein Idealbild aus Kapitel 1 und schreib auf welchen einen Schritt du in den nächsten sieben Tagen umsetzt. Konkret, mit Datum, mit Namen wenn nötig. Und schreib auf was deine Minimal-Version des Rhythmus ist die du auch in stressigen Monaten nicht unterschreiten wirst.</p></div>
+<h2>Kapitel 1 — Was ein Rhythmus ist</h2>
+<h3>Rhythmus vs. Routine</h3>
+<p>Eine Routine passiert von selbst — durch Gewohnheit, durch Trägheit. Ein Rhythmus ist bewusst gestaltet. Er entsteht durch Entscheidung welche Blöcke in deiner Woche unverrückbar sind — und welche flexibel bleiben können.</p>
+<p>Der Unternehmer-Rhythmus hat 4 Säulen: Betriebszeit (IM Betrieb), Unternehmerzeit (AM Betrieb), persönliche Zeit und Erholung. Keine dieser Säulen ist optional. Wer eine dauerhaft weglässt, bricht irgendwann ein.</p>
+<h3>Die ideale Woche</h3>
+<p>Betrieb: 40-50 Stunden (nicht 70+). Unternehmerzeit: 2-3 Stunden. Persönliche Zeit: Mindestens 1 ganzer freier Tag + 2-3 Abende. Erholung: 7-8 Stunden Schlaf, körperliche Bewegung, Abschalten.</p>
+<div class="beispiel"><div class="beispiel-lbl">📊 Rechenbeispiel aus der Praxis</div><p>Gastronom nach 12 Monaten mit bewusstem Rhythmus.</p><p>Vorher: 72h/Woche, 0 freie Abende, letzter Urlaub: 2 Jahre her.</p><p>Nach 12 Monaten: 52h/Woche, 2 freie Abende/Woche, 3 Wochen Urlaub, WE von 37% auf 31%.</p><div class="rechnung">Die 20h weniger Arbeit wurden durch bessere Systeme und Delegation ermöglicht. Der Betrieb hat sich verbessert — nicht trotz weniger Stunden, sondern weil die verbleibenden Stunden qualitativ besser genutzt wurden.</div></div>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 1</div><p>Schreibe deine ideale Woche auf: Wann Betrieb? Wann Unternehmerzeit? Wann persönlich? Wann Erholung? Das muss nicht sofort die Realität sein — aber es ist dein Ziel. Dann: Was ist der erste Schritt dorthin?</p></div>
+<h2>Kapitel 2 — Den Rhythmus schützen</h2>
+<h3>Warum Rhythmen zusammenbrechen</h3>
+<p>Der Alltag ist stärker als gute Vorsätze. Eine Woche klappt es — dann ist Hochbetrieb und alles fliegt aus dem Fenster. Dann war es 3 Wochen schlimm und man fängt wieder von vorne an. Das ist nicht Schwäche — das ist Normal. Der Unterschied zu denen die es dauerhaft schaffen: Sie haben eine Minimal-Version ihres Rhythmus.</p>
+<h3>Die Minimal-Version</h3>
+<p>Was ist das absolute Minimum das du in keiner Woche unterschreitest — auch im Dezember nicht, auch wenn Personal krank ist? Vielleicht: Ein Abend pro Woche komplett frei. Telefon ab 22 Uhr stumm. 30 Minuten Unternehmerzeit montags. Das ist die Minimal-Version. Sie ist nicht ideal — aber sie hält den Rhythmus am Leben.</p>
+<div class="tipp-box"><p>💡 <strong>Profi-Tipp:</strong> Schreib deinen Rhythmus auf einen Zettel und hänge ihn an deinen Badezimmerspiegel. Jeden Morgen kurz anschauen: Was passiert heute? Stimmt das mit meinem Rhythmus überein? Diese 10 Sekunden verhindern dass der Alltag deinen Rhythmus unmerklich überschreibt.</p></div>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 2</div><p>Definiere deine Minimal-Version des Rhythmus: Was gilt in jeder Woche — auch in schwierigen? Schreib es auf. Das ist dein Sicherheitsnetz. Dann: Was ist die erste Woche in der du diesen Minimal-Rhythmus komplett einhältst?</p></div>
+<div class="nav-row"><a href="modul11-lektion2.html" class="nav-btn secondary">← Lektion 2</a><a href="modul11-lektion4.html" class="nav-btn">Lektion 4 →</a></div>
+<div class="fazit"><div class="fazit-lbl">🎯 Das Wichtigste auf einen Blick</div><ul><li>Rhythmus ist bewusst gestaltet — Routine passiert einfach so.</li><li>4 Säulen: Betrieb · Unternehmerzeit · Persönlich · Erholung. Keine ist optional.</li><li>Minimal-Version: Was gilt auch in schwierigen Wochen? Das schützt den Rhythmus.</li><li>Ideale Woche aufschreiben — dann schrittweise hinarbeiten.</li></ul></div>
+<div class="checkliste"><div class="checkliste-lbl">✅ Sofort-Checkliste — Das kannst du heute noch tun</div><ul><li>Ideale Woche aufschreiben: alle 4 Säulen verteilt</li><li>Minimal-Version definieren: was gilt in jeder Woche?</li><li>Rhythmus auf Zettel schreiben und sichtbar aufhängen</li><li>Erste Woche mit Minimal-Rhythmus konkret planen</li></ul></div>
   <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
-</div><div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+</div>
+<div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
 </body></html>

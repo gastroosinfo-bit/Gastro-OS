@@ -1,6 +1,5 @@
-<!DOCTYPE html>
-<html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lektion 1 — Warum gute Leute gehen | GASTRO-OS</title><style>* { margin:0; padding:0; box-sizing:border-box; }
+<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Lektion 1 — Warum gute Mitarbeiter gehen | GASTRO-OS</title><style>* { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
 .header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
 .brand { font-family:Georgia,serif; font-size:18px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
@@ -9,52 +8,79 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
 .wrap { max-width:720px; margin:40px auto; padding:0 24px 60px; }
 .lbl { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:8px; }
-h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:10px; line-height:1.3; }
-.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:20px 0 32px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:16px; line-height:1.3; }
+.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:0 0 24px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+.lern-box { background:#1a2a4a; border-radius:8px; padding:16px 20px; margin:0 0 28px; }
+.lern-box-title { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.lern-box ul { list-style:none; padding:0; margin:0; }
+.lern-box li { font-size:13px; color:#a0b0c8; padding:4px 0 4px 20px; position:relative; line-height:1.6; }
+.lern-box li::before { content:'✓'; position:absolute; left:0; color:#d4af37; font-weight:700; }
 h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:normal; margin:36px 0 14px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
-h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:24px 0 10px; }
+h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:22px 0 10px; }
+h4 { font-size:15px; color:#1a2a4a; font-weight:700; margin:18px 0 8px; }
 p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
-.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin-top:24px; }
+.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin:24px 0; }
 .aufgabe-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
-.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; }
+.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; line-height:1.7; }
+.beispiel { background:#fff; border:1px solid #e8dfc8; border-left:4px solid #3a7ad4; border-radius:0 8px 8px 0; padding:16px 20px; margin:20px 0; }
+.beispiel-lbl { font-size:11px; color:#3a7ad4; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
+.beispiel p { font-size:14px; color:#2a3a54; margin-bottom:8px; line-height:1.75; }
+.beispiel p:last-child { margin-bottom:0; }
+.rechnung { background:#f0f4f8; border-radius:5px; padding:10px 14px; font-family:monospace; font-size:13px; color:#1a2a4a; margin:8px 0; line-height:1.6; }
+.tipp-box { background:#e4f5e8; border:1px solid #4aaa60; border-radius:8px; padding:14px 18px; margin:18px 0; }
+.tipp-box p { font-size:14px; color:#1a6030; margin-bottom:0; line-height:1.7; }
+.nav-row { display:flex; gap:12px; justify-content:space-between; margin:40px 0 0; }
+.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:11px 20px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; transition:all 0.2s; }
+.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
+.nav-btn.secondary { background:#fff; color:#1a2a4a; border:1px solid #e8dfc8; }
+.nav-btn.secondary:hover { border-color:#d4af37; }
+.fazit { background:#fdf9ee; border:2px solid #d4af37; border-radius:8px; padding:18px 22px; margin:32px 0 0; }
+.fazit-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.fazit ul { list-style:none; padding:0; margin:0; }
+.fazit li { font-size:14px; color:#2a3a54; padding:6px 0 6px 22px; position:relative; line-height:1.65; border-bottom:1px solid #e8dfc8; }
+.fazit li:last-child { border-bottom:none; }
+.fazit li::before { content:'→'; position:absolute; left:0; color:#d4af37; font-weight:700; }
+.checkliste { background:#fff; border:1px solid #e8dfc8; border-radius:8px; padding:16px 20px; margin:20px 0 0; }
+.checkliste-lbl { font-size:11px; color:#1a2a4a; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.checkliste ul { list-style:none; padding:0; margin:0; }
+.checkliste li { font-size:14px; color:#2a3a54; padding:7px 0 7px 28px; position:relative; border-bottom:1px solid #f0ece4; line-height:1.55; }
+.checkliste li:last-child { border-bottom:none; }
+.checkliste li::before { content:'☐'; position:absolute; left:0; color:#d4af37; font-size:16px; line-height:1.2; }
 .footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-lbl strong { color:#d4af37; }
-.footer-main { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-main { background:#1a2a4a; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-main strong { color:#d4af37; }</style></head>
-<body><div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html#modul-12" class="btn-back">← Zurück zum Dashboard</a></div>
-<div class="gold-bar"></div><div class="wrap">
-  <div class="lbl">Modul 12 · Lektion 1</div><h1>Warum gute Leute gehen</h1>
-  <div class="intro">Im Ankervideo haben wir gesehen warum Mitarbeiter finden und halten kein Glücksspiel sein muss. Sondern eine Frage des Systems. In dieser Lektion schauen wir uns an warum gute Mitarbeiter wirklich gehen. Nicht was sie beim Abschiedsgespräch sagen. Sondern was wirklich dahintersteckt. Denn wer die Ursachen nicht kennt, kann das Problem nicht lösen. Und wer das Problem nicht löst, sucht für immer.</div>
+<body>
+<div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html#modul-12" class="btn-back">← Zurück zum Dashboard</a></div>
+<div class="gold-bar"></div>
+<div class="wrap">
+  <div class="lbl">Modul 12 · Lektion 1</div>
+  <h1>Warum gute Mitarbeiter gehen</h1>
+  <div class="intro">Modul 12 ist das letzte Modul von Gastro-OS. Es schließt den Kreis: Dein Betrieb läuft systematisch, du hast persönlichen Rhythmus — jetzt geht es darum das Team aufzubauen das alles trägt. In dieser Lektion schauen wir auf die unbequeme Wahrheit: Warum gehen gute Leute wirklich?</div>
+  <div class="lern-box"><div class="lern-box-title">📚 Was du in dieser Lektion lernst</div><ul><li>Die 6 echten Gründe warum gute Mitarbeiter gehen</li><li>Was Fluktuation wirklich kostet — in Euro berechnet</li><li>Konkrete Sofortmaßnahmen die direkt wirken</li><li>Den ersten Schritt zur dauerhaften Mitarbeiterbindung</li></ul></div>
 
-  <h2>Kapitel 1 — Die wahren Gründe</h2>
-  <p>Die meisten Gastronomen glauben gute Mitarbeiter gehen wegen des Geldes. Manchmal stimmt das. Aber meistens nicht.</p>
-  <p>Wenn du ehrlich bist, kennst du das Gefühl. Jemand kündigt. Du bist überrascht. Du hast nichts kommen sehen. Vielleicht fragst du nach dem Grund. Die Antwort ist höflich und vage. Mehr Geld woanders. Eine bessere Stelle. Persönliche Gründe. Aber das ist selten die ganze Wahrheit.</p>
-  <p>Studien aus dem Bereich Personalführung zeigen immer wieder dasselbe Bild. Menschen verlassen keine Betriebe. Sie verlassen Situationen. Situationen in denen sie sich nicht gesehen fühlen. Situationen in denen sie nicht wissen was von ihnen erwartet wird. Situationen in denen sie das Gefühl haben dass es morgen genauso aussieht wie heute und übermorgen auch.</p>
-  <p>Und diese Situationen entstehen nicht weil Gastronomen schlechte Menschen sind. Sie entstehen weil der Alltag so voll ist dass für Führung kaum Zeit bleibt. Aber es ist auch teuer. Denn jeder Mitarbeiter der geht kostet dich Zeit, Energie und Geld. Experten schätzen dass der Verlust eines guten Mitarbeiters zwischen einem halben und einem ganzen Jahresgehalt kostet wenn man alles zusammenrechnet.</p>
-  <h3>Kein Gefühl von Wertschätzung</h3>
-  <p>Wer jeden Tag kommt, arbeitet und geht ohne dass es jemand bemerkt, sucht irgendwann einen Ort wo es jemand bemerkt. Wertschätzung bedeutet nicht Lob für jede Kleinigkeit. Es bedeutet dass jemand sieht was du tust. Dass jemand bemerkt wenn du einen guten Abend hattest. In der Gastronomie wird das oft vernachlässigt. Nicht aus Böswilligkeit. Sondern weil es im Trubel des Alltags untergeht.</p>
-  <h3>Keine klaren Erwartungen</h3>
-  <p>Wenn niemand weiß was wirklich von ihm erwartet wird, entsteht Unsicherheit. Und Unsicherheit macht müde. Wer jeden Tag rät ob er das Richtige tut, ob er zu viel oder zu wenig macht, ob der Chef zufrieden oder unzufrieden ist, der zieht sich irgendwann zurück. Erst innerlich. Dann wirklich. Klare Erwartungen sind kein Zeichen von Misstrauen. Sie sind ein Zeichen von Respekt.</p>
-  <h3>Kein Entwicklungsgefühl</h3>
-  <p>Menschen wollen wachsen. Das gilt auch für Servicekräfte, Köche und Aushilfen. Wer das Gefühl hat in drei Jahren noch genau dasselbe zu tun wie heute, fängt an sich umzuschauen. Das bedeutet nicht dass du jedem Mitarbeiter eine Karriereleiter bauen musst. Aber kleine Entwicklungsschritte machen einen großen Unterschied. Mehr Verantwortung übernehmen. Eine neue Aufgabe lernen. Als Schichtleiter einspringen.</p>
-  <h3>Schlechte oder fehlende Führung</h3>
-  <p>Das ist der häufigste Grund. Und der am wenigsten genannte. Fehlende Führung bedeutet nicht dass du ein schlechter Mensch bist. Es bedeutet dass Führung im Alltag nicht stattfindet. Kein regelmäßiges Feedback. Keine klaren Ansagen. Keine Gespräche. Nur Reaktion wenn etwas schiefläuft.</p>
-  <h3>Keine Work-Life-Balance</h3>
-  <p>Gastronomie ist ein hartes Geschäft. Das wissen deine Mitarbeiter wenn sie anfangen. Aber es gibt einen Unterschied zwischen harter Arbeit und dauerhafter Überlastung. Wer nie planbar frei hat, wer Dienstpläne kurzfristig geändert bekommt, wer immer einspringen muss, wird irgendwann nicht mehr können.</p>
-  <div class="aufgabe"><div class="aufgabe-lbl">Aufgabe Kapitel 1</div><p>Nimm dir fünf Minuten. Denk an die letzte Person die deinen Betrieb verlassen hat. Welcher der genannten Gründe trifft am ehesten zu? Schreib es auf. Ehrlich, ohne Ausreden. Das ist der erste Schritt zur Veränderung.</p></div>
-
-  <h2>Kapitel 2 — Was du ab sofort anders machen kannst</h2>
-  <h3>Sichtbare Wertschätzung als Gewohnheit</h3>
-  <p>Wertschätzung ist kein Gefühl das du haben musst. Es ist ein Verhalten das du zeigen kannst. Jeden Tag. Auch wenn du müde bist. Ein kurzes Danke nach einem guten Service. Eine persönliche Rückmeldung wenn jemand etwas besonders gut gemacht hat. Ein ehrliches Interesse daran wie es deinen Mitarbeitern geht. Das kostet nichts. Und es verändert die Atmosphäre in deinem Betrieb.</p>
-  <h3>Klare Erwartungen schriftlich festhalten</h3>
-  <p>Was erwartest du von deinen Mitarbeitern konkret? Nicht als vages Gefühl. Sondern als klare Aussage. Wer macht was. Bis wann. In welcher Qualität. Schreib für jede Position in deinem Betrieb eine kurze Rollenbeschreibung. Eine halbe Seite reicht. Das ist eine der wirkungsvollsten Maßnahmen die du als Gastronom ergreifen kannst. Und sie kostet dich einen Nachmittag.</p>
-  <h3>Regelmäßige Gespräche als festen Rhythmus etablieren</h3>
-  <p>Nicht nur wenn etwas schiefläuft. Sondern als regelmäßiger Rhythmus. Einmal im Monat, zehn bis fünfzehn Minuten, ein ehrliches Gespräch mit jedem Mitarbeiter. Was läuft gut? Was läuft nicht so gut? Was brauchst du von mir? Diese Gespräche haben zwei Wirkungen. Erstens erfährst du was wirklich in deinem Betrieb passiert. Zweitens signalisierst du deinen Mitarbeitern dass sie zählen.</p>
-  <h3>Entwicklung aktiv ermöglichen</h3>
-  <p>Schau dir dein Team an. Wer hat Potenzial das noch nicht genutzt wird? Kleine Schritte der Entwicklung halten Menschen in deinem Betrieb. Weil sie das Gefühl haben vorwärtszugehen. Und dieses Gefühl ist unbezahlbar.</p>
-  <h3>Planbare Freizeit ermöglichen</h3>
-  <p>Du kannst nicht immer perfekte Arbeitszeiten garantieren. Aber du kannst Planbarkeit schaffen. Dienstpläne die zwei Wochen im Voraus feststehen. Freie Tage die eingehalten werden. Kurzfristige Änderungen die die Ausnahme sind und nicht die Regel. Das ist für viele Mitarbeiter wichtiger als ein höheres Gehalt.</p>
-  <div class="aufgabe"><div class="aufgabe-lbl">Aufgabe Kapitel 2</div><p>Wähle eine der genannten Maßnahmen aus. Nur eine. Die die du am einfachsten sofort umsetzen kannst. Schreib auf was du konkret tun wirst. Und bis wann. Dann tu es. Nicht alle auf einmal. Eine. Konsequent.</p></div>
+<h2>Kapitel 1 — Die echten Gründe</h2>
+<h3>Was Mitarbeiter wirklich bewegt zu gehen</h3>
+<p>Wenn Mitarbeiter kündigen sagen sie selten den wahren Grund. Das Abschlussgespräch ist höflich und unspezifisch. 'Neue Herausforderung', 'bessere Möglichkeiten', 'private Gründe'. Die echten Gründe liegen tiefer.</p>
+<h3>Die 6 echten Gründe</h3>
+<p>Grund 1 — Keine Wertschätzung: Das Gefühl dass gute Arbeit nicht gesehen wird. Das Lob kommt nie. Probleme werden sofort angesprochen — gute Leistung nicht.</p>
+<p>Grund 2 — Fehlende Erwartungsklarheit: Niemand weiß genau was von ihm erwartet wird. Standards schwanken je nach Cheflaune.</p>
+<p>Grund 3 — Kein Entwicklungsgefühl: Das Gefühl auf der Stelle zu treten. Keine Perspektive, keine Lernmöglichkeit, keine Verantwortungsentwicklung.</p>
+<p>Grund 4 — Schlechte Führung: Der Chef reagiert unpredictabel, ist in stressigen Momenten aggressiv oder ignoriert das Team. Man weiß nie was man bekommt.</p>
+<p>Grund 5 — Schlechtes Team-Klima: Konflikte die nicht gelöst werden. Bevorzugung einzelner. Tratsch und Misstrauen.</p>
+<p>Grund 6 — Work-Life-Imbalance: Dienstplan ändert sich kurzfristig. Private Termine können nicht geplant werden. Dauerhafte Überstunden ohne Ausgleich.</p>
+<div class="beispiel"><div class="beispiel-lbl">📊 Rechenbeispiel aus der Praxis</div><p>Restaurant, 8 Mitarbeiter, 35% jährliche Fluktuation = 2-3 neue Mitarbeiter/Jahr.</p><p>Kosten pro Neueinstellung: Anzeige 300 € + Einarbeitungszeit (15h Führungskraft × 40 €) 600 € + Fehlerkosten 800 € + Produktivitätsverlust 400 € = 2.100 €.</p><div class="rechnung">2,5 neue × 2.100 = 5.250 €/Jahr durch Fluktuation. Mit Führungssystem: Fluktuation auf 10% → 0,8 × 2.100 = 1.680 €/Jahr. Einsparung: 3.570 €/Jahr — durch Führungsverhalten.</div></div>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 1</div><p>Mache eine ehrliche Analyse: Welche der 6 Gründe könnten in deinem Betrieb eine Rolle spielen? Bewerte jeden auf Skala 1-5. Welcher ist am stärksten ausgeprägt? Das ist deine Priorität.</p></div>
+<h2>Kapitel 2 — Sofortmaßnahmen</h2>
+<h3>Was du heute noch tun kannst</h3>
+<p>Wertschätzung sofort: Heute noch einem Mitarbeiter konkret und spezifisch danken. Nicht 'war gut' — sondern 'dein Umgang mit dem schwierigen Gast an Tisch 4 war wirklich professionell. Das hat mir imponiert.'</p>
+<p>Erwartungsklarheit sofort: Einen Aspekt der Erwartungen die unklar sind, heute klären. Was bedeutet 'pünktlich' konkret? Was ist die Qualitätserwartung für die Mise en Place?</p>
+<div class="tipp-box"><p>💡 <strong>Profi-Tipp:</strong> Die eine Frage die du jedem Mitarbeiter stellen kannst und die sofort Bindung schafft: 'Was würde deine Arbeit hier besser machen?' Dann zuhören. Dann möglichst mindestens eine Antwort umsetzen. Das zeigt: Ich bin gehört worden. Das verändert alles.</p></div>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 2</div><p>Führe diese Woche mit jedem Mitarbeiter ein 10-Minuten-Gespräch: 'Was würde deine Arbeit hier besser machen?' Notiere die Antworten. Wähle mindestens eine Maßnahme pro Mitarbeiter die du in den nächsten 4 Wochen umsetzt.</p></div>
+<div class="nav-row"><span></span><a href="modul12-lektion2.html" class="nav-btn">Lektion 2 →</a></div>
+<div class="fazit"><div class="fazit-lbl">🎯 Das Wichtigste auf einen Blick</div><ul><li>6 echte Gründe: Wertschätzung · Klarheit · Entwicklung · Führung · Klima · Work-Life.</li><li>Fluktuation kostet 2.000-5.000 € pro Mitarbeiter — Führungsarbeit ist günstiger.</li><li>Wertschätzung sofort: konkret, spezifisch, heute.</li><li>Die eine Frage: 'Was würde deine Arbeit hier besser machen?'</li></ul></div>
+<div class="checkliste"><div class="checkliste-lbl">✅ Sofort-Checkliste — Das kannst du heute noch tun</div><ul><li>6 Gründe bewerten: welcher ist am stärksten ausgeprägt?</li><li>Heute: einem Mitarbeiter konkret und spezifisch danken</li><li>10-Minuten-Gespräch mit jedem Mitarbeiter diese Woche planen</li><li>Mindestens eine Verbesserungsmaßnahme pro Mitarbeiter festlegen</li></ul></div>
   <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
-</div><div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+</div>
+<div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
 </body></html>

@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Lektion 4 — Vom Plan zur Umsetzung | GASTRO-OS</title><style>* { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
 .header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
@@ -9,43 +8,79 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
 .wrap { max-width:720px; margin:40px auto; padding:0 24px 60px; }
 .lbl { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:8px; }
-h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:10px; line-height:1.3; }
-.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:20px 0 32px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:16px; line-height:1.3; }
+.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:0 0 24px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+.lern-box { background:#1a2a4a; border-radius:8px; padding:16px 20px; margin:0 0 28px; }
+.lern-box-title { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.lern-box ul { list-style:none; padding:0; margin:0; }
+.lern-box li { font-size:13px; color:#a0b0c8; padding:4px 0 4px 20px; position:relative; line-height:1.6; }
+.lern-box li::before { content:'✓'; position:absolute; left:0; color:#d4af37; font-weight:700; }
 h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:normal; margin:36px 0 14px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
-h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:24px 0 10px; }
+h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:22px 0 10px; }
+h4 { font-size:15px; color:#1a2a4a; font-weight:700; margin:18px 0 8px; }
 p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
-.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin-top:24px; }
+.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin:24px 0; }
 .aufgabe-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
-.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; }
+.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; line-height:1.7; }
+.beispiel { background:#fff; border:1px solid #e8dfc8; border-left:4px solid #3a7ad4; border-radius:0 8px 8px 0; padding:16px 20px; margin:20px 0; }
+.beispiel-lbl { font-size:11px; color:#3a7ad4; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
+.beispiel p { font-size:14px; color:#2a3a54; margin-bottom:8px; line-height:1.75; }
+.beispiel p:last-child { margin-bottom:0; }
+.rechnung { background:#f0f4f8; border-radius:5px; padding:10px 14px; font-family:monospace; font-size:13px; color:#1a2a4a; margin:8px 0; line-height:1.6; }
+.tipp-box { background:#e4f5e8; border:1px solid #4aaa60; border-radius:8px; padding:14px 18px; margin:18px 0; }
+.tipp-box p { font-size:14px; color:#1a6030; margin-bottom:0; line-height:1.7; }
+.nav-row { display:flex; gap:12px; justify-content:space-between; margin:40px 0 0; }
+.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:11px 20px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; transition:all 0.2s; }
+.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
+.nav-btn.secondary { background:#fff; color:#1a2a4a; border:1px solid #e8dfc8; }
+.nav-btn.secondary:hover { border-color:#d4af37; }
+.fazit { background:#fdf9ee; border:2px solid #d4af37; border-radius:8px; padding:18px 22px; margin:32px 0 0; }
+.fazit-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.fazit ul { list-style:none; padding:0; margin:0; }
+.fazit li { font-size:14px; color:#2a3a54; padding:6px 0 6px 22px; position:relative; line-height:1.65; border-bottom:1px solid #e8dfc8; }
+.fazit li:last-child { border-bottom:none; }
+.fazit li::before { content:'→'; position:absolute; left:0; color:#d4af37; font-weight:700; }
+.checkliste { background:#fff; border:1px solid #e8dfc8; border-radius:8px; padding:16px 20px; margin:20px 0 0; }
+.checkliste-lbl { font-size:11px; color:#1a2a4a; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.checkliste ul { list-style:none; padding:0; margin:0; }
+.checkliste li { font-size:14px; color:#2a3a54; padding:7px 0 7px 28px; position:relative; border-bottom:1px solid #f0ece4; line-height:1.55; }
+.checkliste li:last-child { border-bottom:none; }
+.checkliste li::before { content:'☐'; position:absolute; left:0; color:#d4af37; font-size:16px; line-height:1.2; }
 .footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-lbl strong { color:#d4af37; }
-.footer-main { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-main { background:#1a2a4a; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-main strong { color:#d4af37; }</style></head>
-<body><div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html#modul-12" class="btn-back">← Zurück zum Dashboard</a></div>
-<div class="gold-bar"></div><div class="wrap">
-  <div class="lbl">Modul 12 · Lektion 4</div><h1>Vom Plan zur Umsetzung</h1>
-  <div class="intro">In Lektion 3 haben wir gesehen wie ein strukturiertes Onboarding aussieht und warum die ersten Wochen alles entscheiden. In dieser Lektion bringen wir alles zusammen. Wir schauen uns an wie du aus dem Wissen der letzten drei Lektionen einen konkreten Plan machst. Einen Plan den du nicht in der Schublade verschwinden lässt. Sondern einen der wirklich umgesetzt wird. Denn das ist die entscheidende Frage. Nicht ob du weißt was zu tun ist. Sondern ob du es tust.</div>
+<body>
+<div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html#modul-12" class="btn-back">← Zurück zum Dashboard</a></div>
+<div class="gold-bar"></div>
+<div class="wrap">
+  <div class="lbl">Modul 12 · Lektion 4</div>
+  <h1>Vom Plan zur Umsetzung</h1>
+  <div class="intro">Das ist die letzte Lektion von Gastro-OS. Du hast alle 12 Module durchgearbeitet — von Zahlen über Systeme, Team, Marketing bis zu Lebensqualität und Recruiting. In dieser abschließenden Lektion geht es um das Einzige was zählt: Umsetzung.</div>
+  <div class="lern-box"><div class="lern-box-title">📚 Was du in dieser Lektion lernst</div><ul><li>Warum Wissen ohne Umsetzung nichts verändert</li><li>Den 30-Tage-Recruiting-Plan umsetzen</li><li>Recruiting als dauerhaftes System etablieren</li><li>Was nach Gastro-OS kommt — und wie du weitermachst</li></ul></div>
 
-  <h2>Kapitel 1 — Vom Wissen zur Gewohnheit</h2>
-  <p>Du hast in diesem Modul viel gelernt. Warum gute Mitarbeiter gehen. Wie du Stellenanzeigen schreibst die wirklich funktionieren. Wie ein Onboarding aussieht das Mitarbeiter hält. Das ist wertvolles Wissen. Aber Wissen allein verändert nichts.</p>
-  <h3>Der Unterschied zwischen Wissen und Handeln</h3>
-  <p>Stell dir zwei Gastronomen vor. Beide haben dieses Modul durchgearbeitet. Der erste schließt den Laptop und denkt: Das war gut. Das setze ich bald um. Der zweite öffnet seinen Kalender und trägt drei Termine ein. Ersten: Montag in zwei Wochen, dreißig Minuten, Stellenanzeige neu schreiben. Zweiten: Mittwoch, zwanzig Minuten, Onboarding-Plan erstellen. Dritten: Freitag, zehn Minuten, Team fragen wer als Pate geeignet wäre. Drei Kalendereinträge. Das ist der Unterschied zwischen Wissen und Handeln.</p>
-  <h3>Warum kleine Schritte größer wirken als große Pläne</h3>
-  <p>Wer alles auf einmal ändern will ändert am Ende nichts. Kleine Schritte funktionieren besser. Nicht weil sie weniger ambitioniert sind. Sondern weil sie tatsächlich umgesetzt werden. Weil sie nicht überfordern. Weil sie Erfolgserlebnisse schaffen. Und Erfolgserlebnisse motivieren zum nächsten Schritt.</p>
-  <div class="aufgabe"><div class="aufgabe-lbl">Aufgabe Kapitel 1</div><p>Schreib jetzt, in diesem Moment, die eine Sache auf die du aus diesem Modul als erstes umsetzt. Nicht drei. Nicht fünf. Eine. Und schreib daneben bis wann du sie umsetzt. Heute, diese Woche oder spätestens nächste Woche. Kein späteres Datum. Dinge die kein konkretes Datum haben passieren nicht.</p></div>
-
-  <h2>Kapitel 2 — Dein 30-Tage-Recruiting-Plan</h2>
-  <h3>Woche 1 — Analyse und Grundlagen</h3>
-  <p>In der ersten Woche schaust du dir an wo du gerade stehst. Wie ist deine aktuelle Mitarbeitersituation? Wie lange bleiben deine Mitarbeiter im Durchschnitt? Sprich mit deinen aktuellen Mitarbeitern. Einzeln. Kurze Gespräche. Wie geht es dir? Was läuft gut? Was könnten wir besser machen? Hör zu ohne sofort zu antworten oder zu rechtfertigen. Diese Gespräche geben dir Information die du nicht aus Zahlen ablesen kannst. Ergebnis Woche 1: Du weißt wo die größten Lücken in deiner Mitarbeitersituation sind.</p>
-  <h3>Woche 2 — Stellenanzeige und Recruiting vorbereiten</h3>
-  <p>Schreib eine neue Stellenanzeige nach dem Aufbau aus Lektion 2. Lass sie von jemandem außerhalb deines Betriebs lesen. Dann veröffentliche sie — nicht perfektionieren, veröffentlichen. Schau dir außerdem an was du auf deinen Social-Media-Kanälen über das Arbeiten in deinem Betrieb kommunizierst. Ergebnis Woche 2: Deine Stellenanzeige ist veröffentlicht.</p>
-  <h3>Woche 3 — Onboarding-Struktur aufbauen</h3>
-  <p>Schreib einen einfachen Onboarding-Plan. Tag 1, Woche 1, Monat 1. Entscheide wer in deinem Team als Pate für neue Mitarbeiter geeignet ist und sprich diese Person an. Erstelle eine einfache Checkliste für den ersten Tag. Ergebnis Woche 3: Du hast ein Onboarding-System das beim nächsten neuen Mitarbeiter sofort einsetzbar ist.</p>
-  <h3>Woche 4 — Feedbackgespräche einführen</h3>
-  <p>Plane für jeden deiner Mitarbeiter ein kurzes Gespräch in den nächsten vier Wochen. Zehn bis fünfzehn Minuten. Was läuft gut? Was könnte besser laufen? Was brauchst du von mir? Trag diese Gespräche in den Kalender ein. Heute. Nicht später. Ergebnis Woche 4: Du hast mit jedem Mitarbeiter gesprochen und einen regelmäßigen Gesprächsrhythmus eingeplant.</p>
-  <h3>Nach den 30 Tagen</h3>
-  <p>Nach einem Monat schaust du zurück. Was hast du umgesetzt? Was hat sich verändert? Und dann planst du die nächsten dreißig Tage. Mitarbeiter finden und halten ist kein einmaliges Projekt. Es ist eine dauerhafte Aufgabe. Aber sie wird mit jedem Monat leichter wenn du ein System dafür hast.</p>
-  <div class="aufgabe"><div class="aufgabe-lbl">Aufgabe Kapitel 2</div><p>Öffne deinen Kalender. Trag jetzt drei Termine für die nächsten vier Wochen ein. Einen für die Stellenanzeige. Einen für den Onboarding-Plan. Einen für das erste Mitarbeitergespräch. Drei Termine. Heute noch. Das ist dein Start.</p></div>
+<h2>Kapitel 1 — Der 30-Tage-Recruiting-Plan</h2>
+<h3>Woche 1: Analyse</h3>
+<p>6 Fluktuations-Gründe bewerten. Mit jedem Mitarbeiter 10-Minuten-Gespräch führen. Aktuellen Onboarding-Prozess aufschreiben. Was fehlt am meisten?</p>
+<h3>Woche 2: Stellenanzeige</h3>
+<p>Neue Stellenanzeige nach 6-Schritten schreiben. Gegenlesen lassen. Auf allen relevanten Kanälen veröffentlichen.</p>
+<h3>Woche 3: Onboarding-Plan</h3>
+<p>Onboarding-Plan für Tag 1, Woche 1, Monat 1 erstellen. Paten für zukünftige neue Mitarbeiter benennen. Feedback-Rhythmus festlegen.</p>
+<h3>Woche 4: Feedback-Routine</h3>
+<p>Monatliches Feedback-Gespräch mit jedem Mitarbeiter als festen Termin einrichten. Wertschätzungs-Routine etablieren: 1 spezifisches Lob täglich.</p>
+<div class="beispiel"><div class="beispiel-lbl">📊 Rechenbeispiel aus der Praxis</div><p>Restaurant nach 90 Tagen konsequentem Recruiting-System.</p><p>Vorher: Fluktuation 35%, Onboarding: kein System, Anzeigen: generisch.</p><p>Nach 90 Tagen: neue Anzeige bringt 5× mehr qualifizierte Bewerbungen, Onboarding läuft strukturiert, Frühfluktuation auf 8%.</p><div class="rechnung">Statt 3 neuen Mitarbeitern/Jahr: 0,8 neue/Jahr. Einsparung: 2,2 × 2.100 = 4.620 €/Jahr. Plus: bessere Teamqualität, weniger Stress, höhere Gästezufriedenheit.</div></div>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 1</div><p>Schreibe deinen 30-Tage-Recruiting-Plan konkret auf: Was passiert in Woche 1, 2, 3, 4? Mit wem? Bis wann? Welche Kennzahl misst du nach 30 Tagen als Erfolgsindikator?</p></div>
+<h2>Kapitel 2 — Gastro-OS als Dauersystem</h2>
+<h3>Was nach dem letzten Modul kommt</h3>
+<p>Du hast jetzt alle 12 Module von Gastro-OS durchgearbeitet. Das ist der Anfang — nicht das Ende. Die Module bleiben. Die Tools bleiben. Die monatliche Reflexion bleibt. Was sich verändert: Du wirst in 6 Monaten andere Fragen haben. Dann kehrst du zu den relevanten Modulen zurück — mit mehr Erfahrung und anderen Ergebnissen.</p>
+<h3>Die 3 Säulen die dauerhaft halten</h3>
+<p>Säule 1 — Monatliche Zahlen-Kontrolle: BWA, WE%, Break-Even, Ø Bon. 60 Minuten pro Monat die alles sichtbar halten. Säule 2 — Wöchentliche Team-Führung: Briefing, Feedback, Wertschätzung. 30 Minuten pro Woche die das Team halten. Säule 3 — Quartalsweise Strategie: Was läuft? Was will ich verändern? Was ist das nächste Quartalsziel? 2 Stunden pro Quartal die Richtung geben.</p>
+<div class="tipp-box"><p>💡 <strong>Profi-Tipp:</strong> Das einzige was wirklich zählt: Bewegst du dich in die richtige Richtung? Nicht Perfektion. Nicht alle 12 Module gleichzeitig perfekt. Jeden Monat einen kleinen Schritt besser — das ist nach 12 Monaten ein anderer Betrieb und ein anderes Leben.</p></div>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 2</div><p>Schreibe jetzt deinen persönlichen Weiterführungs-Plan: Was sind deine 3 Prioritäten für die nächsten 3 Monate? Welches Modul oder Tool willst du vertiefen? Wann ist deine nächste monatliche Reflexion? Das ist der Anfang von allem was folgt.</p></div>
+<div class="nav-row"><a href="modul12-lektion3.html" class="nav-btn secondary">← Lektion 3</a></div>
+<div class="fazit"><div class="fazit-lbl">🎯 Das Wichtigste auf einen Blick</div><ul><li>Recruiting-System: Analyse → Anzeige → Onboarding → Feedback-Routine.</li><li>3 Säulen die dauerhaft halten: monatliche Zahlen · wöchentliche Führung · quartalsweise Strategie.</li><li>Gastro-OS endet nicht — es ist ein System das mit dir wächst.</li><li>Was zählt: Richtung, nicht Perfektion. Jeden Monat einen Schritt besser.</li></ul></div>
+<div class="checkliste"><div class="checkliste-lbl">✅ Sofort-Checkliste — Das kannst du heute noch tun</div><ul><li>30-Tage-Recruiting-Plan konkret aufschreiben</li><li>3 Prioritäten für die nächsten 3 Monate festlegen</li><li>Nächste monatliche Reflexion im Kalender eintragen</li><li>Herzlichen Glückwunsch — du hast Gastro-OS abgeschlossen! 🎉</li></ul></div>
   <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
-</div><div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+</div>
+<div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
 </body></html>

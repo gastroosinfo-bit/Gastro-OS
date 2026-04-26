@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Lektion 4 — Vom Plan zur Umsetzung | GASTRO-OS</title><style>* { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
 .header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
@@ -9,50 +8,83 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
 .wrap { max-width:720px; margin:40px auto; padding:0 24px 60px; }
 .lbl { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:8px; }
-h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:10px; line-height:1.3; }
-.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:20px 0 32px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:16px; line-height:1.3; }
+.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:0 0 24px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+.lern-box { background:#1a2a4a; border-radius:8px; padding:16px 20px; margin:0 0 28px; }
+.lern-box-title { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.lern-box ul { list-style:none; padding:0; margin:0; }
+.lern-box li { font-size:13px; color:#a0b0c8; padding:4px 0 4px 20px; position:relative; line-height:1.6; }
+.lern-box li::before { content:'✓'; position:absolute; left:0; color:#d4af37; font-weight:700; }
 h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:normal; margin:36px 0 14px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
-h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:24px 0 10px; }
+h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:22px 0 10px; }
+h4 { font-size:15px; color:#1a2a4a; font-weight:700; margin:18px 0 8px; }
 p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
-.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin-top:24px; }
+.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin:24px 0; }
 .aufgabe-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
-.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; }
-.next-step { background:#fff; border:2px solid #d4af37; border-radius:8px; padding:20px 24px; margin-top:36px; }
-.next-step-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
-.next-step p { font-size:14px; color:#3a4a6a; margin-bottom:0; }
+.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; line-height:1.7; }
+.beispiel { background:#fff; border:1px solid #e8dfc8; border-left:4px solid #3a7ad4; border-radius:0 8px 8px 0; padding:16px 20px; margin:20px 0; }
+.beispiel-lbl { font-size:11px; color:#3a7ad4; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
+.beispiel p { font-size:14px; color:#2a3a54; margin-bottom:8px; line-height:1.75; }
+.beispiel p:last-child { margin-bottom:0; }
+.rechnung { background:#f0f4f8; border-radius:5px; padding:10px 14px; font-family:monospace; font-size:13px; color:#1a2a4a; margin:8px 0; line-height:1.6; }
+.tipp-box { background:#e4f5e8; border:1px solid #4aaa60; border-radius:8px; padding:14px 18px; margin:18px 0; }
+.tipp-box p { font-size:14px; color:#1a6030; margin-bottom:0; line-height:1.7; }
+.nav-row { display:flex; gap:12px; justify-content:space-between; margin:40px 0 0; }
+.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:11px 20px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; transition:all 0.2s; }
+.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
+.nav-btn.secondary { background:#fff; color:#1a2a4a; border:1px solid #e8dfc8; }
+.nav-btn.secondary:hover { border-color:#d4af37; }
+.fazit { background:#fdf9ee; border:2px solid #d4af37; border-radius:8px; padding:18px 22px; margin:32px 0 0; }
+.fazit-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.fazit ul { list-style:none; padding:0; margin:0; }
+.fazit li { font-size:14px; color:#2a3a54; padding:6px 0 6px 22px; position:relative; line-height:1.65; border-bottom:1px solid #e8dfc8; }
+.fazit li:last-child { border-bottom:none; }
+.fazit li::before { content:'→'; position:absolute; left:0; color:#d4af37; font-weight:700; }
+.checkliste { background:#fff; border:1px solid #e8dfc8; border-radius:8px; padding:16px 20px; margin:20px 0 0; }
+.checkliste-lbl { font-size:11px; color:#1a2a4a; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.checkliste ul { list-style:none; padding:0; margin:0; }
+.checkliste li { font-size:14px; color:#2a3a54; padding:7px 0 7px 28px; position:relative; border-bottom:1px solid #f0ece4; line-height:1.55; }
+.checkliste li:last-child { border-bottom:none; }
+.checkliste li::before { content:'☐'; position:absolute; left:0; color:#d4af37; font-size:16px; line-height:1.2; }
 .footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-lbl strong { color:#d4af37; }
-.footer-main { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-main { background:#1a2a4a; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-main strong { color:#d4af37; }</style></head>
-<body><div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html#modul-10" class="btn-back">← Zurück zum Dashboard</a></div>
-<div class="gold-bar"></div><div class="wrap">
-  <div class="lbl">Modul 10 · Lektion 4</div><h1>Vom Plan zur Umsetzung</h1>
-  <div class="intro">In Lektion 3 haben wir uns angeschaut wie du den richtigen Standort findest und bewertest, wie du eine Führungskraft für den zweiten Standort aufbaust und wie du die Qualität am ersten Standort während der Expansion sicherst. Du weißt jetzt was strukturierte Expansion bedeutet und welche Schritte konkret nötig sind. In Lektion 4 bringen wir alles zusammen. Wir schauen uns an wie ein realistischer Expansionsplan aussieht, welche Meilensteine du setzen solltest und wie du die wichtigste Frage aller beantwortest. Bin ich wirklich bereit. Oder brauche ich noch Zeit.</div>
+<body>
+<div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html#modul-10" class="btn-back">← Zurück zum Dashboard</a></div>
+<div class="gold-bar"></div>
+<div class="wrap">
+  <div class="lbl">Modul 10 · Lektion 4</div>
+  <h1>Vom Plan zur Umsetzung</h1>
+  <div class="intro">In den letzten drei Lektionen hast du Fundament geprüft, Bereitschaft bewertet und Expansion geplant. In dieser abschließenden Lektion geht es um die Umsetzung: Wie sieht ein realistischer 6-Phasen-Plan aus — und was ist der nächste konkrete Schritt für dich?</div>
+  <div class="lern-box"><div class="lern-box-title">📚 Was du in dieser Lektion lernst</div><ul><li>Den 6-Phasen-Expansionsplan kennen</li><li>Warum zu früh expandieren teurer ist als zu spät</li><li>Die 3 ehrlichen Antworten auf 'Bin ich bereit?'</li><li>Deinen persönlichen nächsten Schritt definieren</li></ul></div>
 
-  <h2>Kapitel 1: Der Expansionsplan — Schritt für Schritt</h2>
-  <h3>Die sechs Phasen einer strukturierten Expansion</h3>
-  <p>Eine strukturierte Expansion in der Gastronomie läuft in sechs Phasen ab. Jede Phase hat klare Ziele, klare Aufgaben und einen klaren Zeitrahmen.</p>
-  <p>Phase 1 ist die Fundament-Phase. Du prüfst ob dein Fundament stabil genug ist. Du beantwortest die sechs Fundament-Fragen aus Lektion 1 ehrlich. Du identifizierst was noch fehlt und baust es auf. Diese Phase dauert so lange wie sie braucht. Manchmal drei Monate. Manchmal zwei Jahre.</p>
-  <p>Phase 2 ist die Analyse-Phase. Du analysierst konkrete Standorte mit dem Standort-Analyse-Tool. Du bewertest verschiedene Optionen. Du vergleichst Mietkonditionen. Du sprichst mit deinem Steuerberater über die finanzielle Machbarkeit. Diese Phase endet mit einer konkreten Standortentscheidung.</p>
-  <p>Phase 3 ist die Planungsphase. Der Standort ist gefunden, der Mietvertrag ist geprüft. Jetzt wird geplant. Umbaumaßnahmen, Einrichtung, Personalplan, Eröffnungsmarketing, Budgetplanung.</p>
-  <p>Phase 4 ist die Aufbauphase. Der zweite Standort wird aufgebaut. Umbau, Einrichtung, Gerätebeschaffung. Parallel dazu beginnt die Personalsuche und die Einarbeitung der Führungskraft.</p>
-  <p>Phase 5 ist die Einführungsphase. Die ersten sechs Monate nach der Eröffnung. Der kritischste Zeitraum. Du bist deutlich mehr am zweiten Standort präsent als danach.</p>
-  <p>Phase 6 ist die Stabilisierungsphase. Beide Standorte laufen stabil. Du hast Systeme aufgebaut die dir ermöglichen beide Standorte aus der Vogelperspektive zu führen statt täglich in beiden operativ tätig zu sein.</p>
-  <h3>Zeitplanung und Meilensteine</h3>
-  <p>Realistische Zeitrahmen sind wichtig weil Expansionen in der Gastronomie fast immer länger dauern als geplant. Plane deshalb mit Puffern. Wenn du denkst eine Phase dauert drei Monate, plane vier. Wenn du denkst der Umbau kostet 80.000 Euro, plane 100.000. Diese Puffer sind keine Verschwendung. Sie sind Sicherheit.</p>
-  <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 1</div><p>Schreib jetzt deinen persönlichen Expansionsplan auf. In welcher Phase bist du heute. Was ist der nächste konkrete Schritt. Wann willst du Phase 2 beginnen. Und was muss bis dahin noch erledigt sein. Dieser Plan muss nicht perfekt sein. Er muss konkret sein.</p></div>
-
-  <h2>Kapitel 2: Die finale Entscheidung — Bereit oder noch nicht</h2>
-  <h3>Die drei möglichen Antworten</h3>
-  <p>Es gibt drei mögliche ehrliche Antworten auf die Frage ob du bereit bist.</p>
-  <p>Die erste Antwort lautet ja, ich bin bereit. Alle oder fast alle der sechs Fundament-Fragen aus Lektion 1 können mit ja beantwortet werden. Die sieben Signale aus Lektion 2 treffen zu. Das Kapital ist vorhanden. Die Führungskraft ist identifiziert. Ein konkreter Standort mit echtem Potenzial ist in Sicht. Dann ist jetzt der richtige Zeitpunkt. Nicht irgendwann. Jetzt.</p>
-  <p>Die zweite Antwort lautet noch nicht, aber in sechs bis zwölf Monaten. Du weißt was noch fehlt. Du hast einen klaren Fahrplan was in den nächsten Monaten getan werden muss. Das ist die häufigste und die gesündeste Antwort.</p>
-  <p>Die dritte Antwort lautet noch nicht, das Fundament muss erst aufgebaut werden. Das bedeutet nicht dass Wachstum kein Thema ist. Es bedeutet dass die Arbeit der nächsten ein bis zwei Jahre klar ist. Fundament stärken. Prozesse dokumentieren. Team entwickeln. Zahlen stabilisieren. Kapital aufbauen.</p>
-  <h3>Was Wachstum wirklich bedeutet</h3>
-  <p>Am Ende von Modul 10 ist es wichtig einen Schritt zurückzutreten und die größere Perspektive zu sehen. Wachstum ist kein Selbstzweck. Es ist ein Mittel zu einem Ziel. Das Ziel ist ein Betrieb der dir die Freiheit gibt die du dir wünschst. Finanzielle Freiheit. Zeitliche Freiheit. Die Freiheit deinen Betrieb nach deinen Werten zu führen.</p>
-  <p>Manchmal ist ein stabiler profitabler einzelner Standort der bessere Weg zu dieser Freiheit als ein schnell gewachsenes Unternehmen mit mehreren Standorten das dich rund um die Uhr fordert. Wachstum sollte immer die Frage beantworten, bringt mich das näher zu der Freiheit die ich mir wünsche. Wenn ja, dann wachse. Wenn nicht, dann optimiere was du hast.</p>
-  <div class="next-step"><div class="next-step-lbl">Dein nächster Schritt</div><p>Öffne jetzt das Standort-Analyse-Tool und füll es für deinen nächsten potenziellen Standort aus. Oder füll es aus um zu verstehen warum dein aktueller Standort so stark ist wie er ist. Beides ist wertvoll.</p></div>
-  <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 2</div><p>Beantworte jetzt ehrlich und schriftlich die finale Frage. Bist du bereit. Ja, noch nicht in sechs bis zwölf Monaten, oder noch nicht — das Fundament muss erst aufgebaut werden. Schreib die Antwort auf und schreib daneben was der nächste konkrete Schritt ist.</p></div>
+<h2>Kapitel 1 — Der 6-Phasen-Expansionsplan</h2>
+<h3>Phase 1 — Fundament (3-6 Monate)</h3>
+<p>Alle 6 Fundament-Fragen mit 8+/10 beantwortet. Führungskraft für zweiten Standort entwickelt. Konzept vollständig dokumentiert. Kapitalreserve aufgebaut.</p>
+<h3>Phase 2 — Analyse (2-3 Monate)</h3>
+<p>Standorte analysieren. Markt prüfen. Businessplan mit realistischen Zahlen erstellen. Finanzierung klären.</p>
+<h3>Phase 3 — Planung (2 Monate)</h3>
+<p>Mietvertrag verhandeln. Umbauplanung. Personal-Recruiting für zweiten Standort. SOPs auf zweiten Standort übertragen.</p>
+<h3>Phase 4 — Aufbau (2-3 Monate)</h3>
+<p>Umbau und Einrichtung. Team einarbeiten. Soft Opening mit eingeschränktem Betrieb. Fehler in sicherem Rahmen machen.</p>
+<h3>Phase 5 — Eröffnung</h3>
+<p>Vollbetrieb starten. Wöchentliche KPI-Reviews beider Standorte. Intensives Coaching der Führungskraft.</p>
+<h3>Phase 6 — Stabilisierung (6-12 Monate)</h3>
+<p>Beide Standorte auf Zielniveau bringen. Systeme anpassen. Nächste Wachstumsform evaluieren.</p>
+<div class="beispiel"><div class="beispiel-lbl">📊 Rechenbeispiel aus der Praxis</div><p>Gesamtdauer für eine solide Expansion: 12-18 Monate Vorbereitung + Aufbau.</p><p>Anlaufverluste realistisch: Monat 1-3 zweiter Standort: ca. -15.000 bis -25.000 €.</p><div class="rechnung">Wer 6 Monate Monatsumsatz als Reserve hat (z.B. 6 × 30.000 = 180.000 €) übersteht die Anlaufphase komfortabel.</div><p>Wer mit 50.000 € Reserve startet und Anlaufverluste unterschätzt, ist nach 3 Monaten in der Krise.</p></div>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 1</div><p>In welcher Phase bist du heute? Schreib es auf. Was ist der nächste konkrete Schritt? Was passiert in den nächsten 3 Monaten? Mit wem? Bis wann? Das ist dein Expansions-Fahrplan.</p></div>
+<h2>Kapitel 2 — Dein ehrlicher nächster Schritt</h2>
+<h3>Drei mögliche Antworten</h3>
+<p>Antwort 1 — Ja, jetzt: Alle 7 Signale stark, Fundament solide, Kapital vorhanden, Führungskraft entwickelt. Dann: Plan umsetzen.</p>
+<p>Antwort 2 — Noch nicht (6-12 Monate): 1-2 Signale schwach aber verbesserbar. Konkrete Maßnahmen festlegen, dann neu bewerten.</p>
+<p>Antwort 3 — Fundament zuerst: Score unter 35, mehrere fundamentale Lücken. Erst Modul-Inhalte konsequent umsetzen, dann Expansion in Betracht ziehen.</p>
+<div class="tipp-box"><p>💡 <strong>Profi-Tipp:</strong> Die beste Expansion ist die die nie scheitert — nicht die die am schnellsten startet. Wer ein Jahr länger wartet und dann mit solider Basis startet, ist nach 3 Jahren weiter als wer zu früh gestartet und wieder neu aufgebaut hat.</p></div>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 2</div><p>Welche der 3 Antworten trifft auf dich zu? Schreib sie auf. Dann: Was ist der erste konkrete Schritt aus dieser Antwort heraus? Was machst du in den nächsten 7 Tagen?</p></div>
+<div class="nav-row"><a href="modul10-lektion3.html" class="nav-btn secondary">← Lektion 3</a></div>
+<div class="fazit"><div class="fazit-lbl">🎯 Das Wichtigste auf einen Blick</div><ul><li>6 Phasen: Fundament → Analyse → Planung → Aufbau → Eröffnung → Stabilisierung.</li><li>12-18 Monate Gesamtdauer für eine solide Expansion ist realistisch.</li><li>Zu früh expandieren kostet mehr als die Möglichkeit die durch Warten entsteht.</li><li>Ein stabiler profitabler Einzelbetrieb ist oft besser als ein hektisches Mehrstandort-System.</li></ul></div>
+<div class="checkliste"><div class="checkliste-lbl">✅ Sofort-Checkliste — Das kannst du heute noch tun</div><ul><li>In welcher Expansionsphase bin ich? Schriftlich festhalten.</li><li>Nächsten konkreten Schritt definieren: Was genau, bis wann?</li><li>3 Antworten prüfen: Ja jetzt / Noch nicht / Fundament zuerst</li><li>Modul 11 starten: Lebensqualität und Rhythmus</li></ul></div>
   <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
-</div><div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+</div>
+<div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
 </body></html>

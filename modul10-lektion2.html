@@ -1,6 +1,5 @@
-<!DOCTYPE html>
-<html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lektion 2 — Wann ist Wachstum sinnvoll | GASTRO-OS</title><style>* { margin:0; padding:0; box-sizing:border-box; }
+<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Lektion 2 — Wann ist Wachstum sinnvoll? | GASTRO-OS</title><style>* { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
 .header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
 .brand { font-family:Georgia,serif; font-size:18px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
@@ -9,57 +8,83 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
 .wrap { max-width:720px; margin:40px auto; padding:0 24px 60px; }
 .lbl { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:8px; }
-h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:10px; line-height:1.3; }
-.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:20px 0 32px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:16px; line-height:1.3; }
+.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:0 0 24px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+.lern-box { background:#1a2a4a; border-radius:8px; padding:16px 20px; margin:0 0 28px; }
+.lern-box-title { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.lern-box ul { list-style:none; padding:0; margin:0; }
+.lern-box li { font-size:13px; color:#a0b0c8; padding:4px 0 4px 20px; position:relative; line-height:1.6; }
+.lern-box li::before { content:'✓'; position:absolute; left:0; color:#d4af37; font-weight:700; }
 h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:normal; margin:36px 0 14px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
-h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:24px 0 10px; }
+h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:22px 0 10px; }
+h4 { font-size:15px; color:#1a2a4a; font-weight:700; margin:18px 0 8px; }
 p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
-.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin-top:24px; }
+.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin:24px 0; }
 .aufgabe-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
-.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; }
-.next-step { background:#fff; border:2px solid #d4af37; border-radius:8px; padding:20px 24px; margin-top:36px; }
-.next-step-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
-.next-step p { font-size:14px; color:#3a4a6a; margin-bottom:0; }
+.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; line-height:1.7; }
+.beispiel { background:#fff; border:1px solid #e8dfc8; border-left:4px solid #3a7ad4; border-radius:0 8px 8px 0; padding:16px 20px; margin:20px 0; }
+.beispiel-lbl { font-size:11px; color:#3a7ad4; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
+.beispiel p { font-size:14px; color:#2a3a54; margin-bottom:8px; line-height:1.75; }
+.beispiel p:last-child { margin-bottom:0; }
+.rechnung { background:#f0f4f8; border-radius:5px; padding:10px 14px; font-family:monospace; font-size:13px; color:#1a2a4a; margin:8px 0; line-height:1.6; }
+.tipp-box { background:#e4f5e8; border:1px solid #4aaa60; border-radius:8px; padding:14px 18px; margin:18px 0; }
+.tipp-box p { font-size:14px; color:#1a6030; margin-bottom:0; line-height:1.7; }
+.nav-row { display:flex; gap:12px; justify-content:space-between; margin:40px 0 0; }
+.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:11px 20px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; transition:all 0.2s; }
+.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
+.nav-btn.secondary { background:#fff; color:#1a2a4a; border:1px solid #e8dfc8; }
+.nav-btn.secondary:hover { border-color:#d4af37; }
+.fazit { background:#fdf9ee; border:2px solid #d4af37; border-radius:8px; padding:18px 22px; margin:32px 0 0; }
+.fazit-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.fazit ul { list-style:none; padding:0; margin:0; }
+.fazit li { font-size:14px; color:#2a3a54; padding:6px 0 6px 22px; position:relative; line-height:1.65; border-bottom:1px solid #e8dfc8; }
+.fazit li:last-child { border-bottom:none; }
+.fazit li::before { content:'→'; position:absolute; left:0; color:#d4af37; font-weight:700; }
+.checkliste { background:#fff; border:1px solid #e8dfc8; border-radius:8px; padding:16px 20px; margin:20px 0 0; }
+.checkliste-lbl { font-size:11px; color:#1a2a4a; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.checkliste ul { list-style:none; padding:0; margin:0; }
+.checkliste li { font-size:14px; color:#2a3a54; padding:7px 0 7px 28px; position:relative; border-bottom:1px solid #f0ece4; line-height:1.55; }
+.checkliste li:last-child { border-bottom:none; }
+.checkliste li::before { content:'☐'; position:absolute; left:0; color:#d4af37; font-size:16px; line-height:1.2; }
 .footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-lbl strong { color:#d4af37; }
-.footer-main { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-main { background:#1a2a4a; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-main strong { color:#d4af37; }</style></head>
-<body><div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html#modul-10" class="btn-back">← Zurück zum Dashboard</a></div>
-<div class="gold-bar"></div><div class="wrap">
-  <div class="lbl">Modul 10 · Lektion 2</div><h1>Wann ist Wachstum sinnvoll</h1>
-  <div class="intro">In Lektion 1 haben wir uns angeschaut warum so viele Expansionen in der Gastronomie scheitern, welche fünf Fehler immer wieder gemacht werden und was ein stabiles Fundament wirklich bedeutet. Du hast die sechs Fundament-Fragen beantwortet und weißt jetzt wo du heute stehst und was noch fehlt. Jetzt gehen wir einen Schritt weiter. Denn die Frage ist nicht nur ob das Fundament stabil genug ist. Die Frage ist auch wann Wachstum wirklich Sinn macht. Nicht wenn es möglich ist. Wenn es sinnvoll ist. Das sind zwei verschiedene Dinge.</div>
+<body>
+<div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html#modul-10" class="btn-back">← Zurück zum Dashboard</a></div>
+<div class="gold-bar"></div>
+<div class="wrap">
+  <div class="lbl">Modul 10 · Lektion 2</div>
+  <h1>Wann ist Wachstum sinnvoll?</h1>
+  <div class="intro">Du hast in Lektion 1 die Fundament-Fragen beantwortet. Jetzt gehen wir einen Schritt weiter: Woran erkennst du konkret ob dein Betrieb bereit für Wachstum ist? Welche 7 Signale zeigen dir grünes Licht — und welche bedeuten noch warten?</div>
+  <div class="lern-box"><div class="lern-box-title">📚 Was du in dieser Lektion lernst</div><ul><li>Die 7 Signale die zeigen dass dein Betrieb wirklich bereit ist</li><li>Wachstum aus Stärke vs. Wachstum aus Druck</li><li>Welche Wachstumsform zu deiner Situation passt</li><li>Die richtige Entscheidung auf Basis echter Daten treffen</li></ul></div>
 
-  <h2>Kapitel 1: Die Signale die zeigen dass Wachstum Sinn macht</h2>
-  <h3>Wachstum aus Stärke nicht aus Druck</h3>
-  <p>Es gibt zwei Arten von Wachstumsentscheidungen in der Gastronomie. Die eine kommt aus Stärke. Der Betrieb läuft stabil, das Team ist stark, die Zahlen stimmen, die Prozesse funktionieren ohne den Chef und es gibt eine klare Chance die ergriffen werden kann. Die andere kommt aus Druck. Der aktuelle Standort ist zu klein, die Miete wird teurer, ein Mitbewerber eröffnet nebenan, oder der Unternehmer will einfach mehr ohne genau zu wissen warum.</p>
-  <p>Wachstum aus Stärke hat eine deutlich höhere Erfolgswahrscheinlichkeit als Wachstum aus Druck. Nicht weil die äußeren Umstände besser wären. Sondern weil das Fundament stärker ist und weil die Entscheidung auf echten Daten basiert statt auf Emotionen.</p>
-  <h3>Die sieben Signale für Wachstumsbereitschaft</h3>
-  <p>Es gibt sieben konkrete Signale die zeigen dass ein Gastronomiebetrieb bereit für Wachstum ist. Nicht alle sieben müssen gleichzeitig zutreffen. Aber je mehr zutreffen, desto stärker das Fundament für eine Expansion.</p>
-  <p>Das erste Signal ist konstante Profitabilität. Nicht ein guter Monat. Nicht ein gutes Quartal. Konstante Profitabilität über mindestens zwölf aufeinanderfolgende Monate. Wareneinsatz unter Kontrolle, Personalkosten im Rahmen, Marge stabil. Wer diese Konstanz nicht hat, hat kein stabiles Fundament für Wachstum.</p>
-  <p>Das zweite Signal ist ein funktionierendes System ohne den Chef. Der Betrieb läuft auch wenn du nicht da bist. Der Schichtleiter trifft Entscheidungen. Das Team arbeitet nach dokumentierten Prozessen. Die Qualität bleibt konstant. Wenn das zutrifft, ist der erste Standort nicht mehr von deiner ständigen Anwesenheit abhängig. Das ist die Grundvoraussetzung für alles weitere.</p>
-  <p>Das dritte Signal ist ausreichend Kapital und Kreditwürdigkeit. Eine Expansion kostet Geld. Einrichtung, Umbau, Personal, Marketing, Anlaufverluste. Wer nicht ausreichend Eigenkapital hat oder keine Möglichkeit hat Fremdkapital zu vernünftigen Konditionen aufzunehmen, sollte noch nicht expandieren.</p>
-  <p>Das vierte Signal ist ein starkes Team mit Führungspotenzial. Nicht nur ein gutes Team am bestehenden Standort. Sondern ein Team aus dem eine Führungskraft für den neuen Standort hervorgehen kann.</p>
-  <p>Das fünfte Signal ist ein klares und übertragbares Konzept. Was macht deinen Betrieb aus. Was ist dein Alleinstellungsmerkmal. Und ist dieses Alleinstellungsmerkmal übertragbar auf einen anderen Standort. Wenn das Besondere an deinem Betrieb du selbst bist — deine Persönlichkeit, deine tägliche Präsenz, dein persönlicher Stil — dann ist das Konzept nicht ohne dich übertragbar. Wenn es ein Konzept ist das durch Prozesse, Standards und Schulung replizierbar ist, dann ja.</p>
-  <p>Das sechste Signal ist eine klare Chance. Ein konkreter Standort der wirklich Potenzial hat. Eine Marktlücke die sichtbar ist. Eine Gelegenheit die sich nicht wiederholt und die zu deinem Konzept passt. Wachstum ohne konkrete Chance ist Wachstum ins Ungefähre. Und das ist selten erfolgreich.</p>
-  <p>Das siebte Signal ist persönliche Klarheit. Du weißt warum du wachsen willst. Nicht weil andere es auch tun. Nicht weil es sich gut anhört. Sondern weil du eine klare Vision hast was du mit dem zweiten Standort erreichen willst, wie er in dein langfristiges Bild passt und was er für dein Leben und deinen Betrieb bedeutet.</p>
-  <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 1</div><p>Geh jetzt durch die sieben Signale und bewerte jedes auf einer Skala von 1 bis 10. 1 bedeutet dieses Signal trifft überhaupt nicht zu. 10 bedeutet es trifft vollständig zu. Addiere die Werte. Ein Gesamtwert über 56 zeigt starke Wachstumsbereitschaft. Zwischen 35 und 56 zeigt gute Ansätze mit konkreten Baustellen. Unter 35 zeigt dass das Fundament noch deutlich gestärkt werden muss. Schreib auf welche zwei Signale bei dir am schwächsten sind. Das sind deine nächsten Baustellen.</p></div>
-
-  <h2>Kapitel 2: Welche Wachstumsform zu dir passt</h2>
-  <h3>Die verschiedenen Formen von Wachstum</h3>
-  <p>Wachstum in der Gastronomie bedeutet nicht automatisch einen zweiten Standort. Es gibt viele Formen von Wachstum die unterschiedliche Voraussetzungen haben, unterschiedliche Risiken tragen und unterschiedliche Erträge bringen.</p>
-  <h3>Wachstumsform 1 — Erweiterung am bestehenden Standort</h3>
-  <p>Die risikoärmste Form von Wachstum ist die Erweiterung am bestehenden Standort. Mehr Sitzplätze, ein Außenbereich, ein erweitertes Angebot, längere Öffnungszeiten, ein neues Konzept innerhalb des bestehenden Betriebs. Diese Form nutzt die bestehende Infrastruktur, das bestehende Team und die bestehende Stammkundschaft. Die Anlaufkosten sind geringer als bei einem neuen Standort. Das Risiko ist deutlich überschaubarer.</p>
-  <h3>Wachstumsform 2 — Catering und externe Dienstleistungen</h3>
-  <p>Catering ist eine Form von Wachstum die die bestehende Küche und das bestehende Know-how nutzt ohne einen zweiten festen Standort zu erfordern. Firmenevents, Hochzeiten, private Feiern, Messen. Catering hat besondere Vorteile. Es generiert Umsatz in Zeiten in denen die Küche sonst wenig ausgelastet ist. Es braucht keine zusätzlichen Mietkosten.</p>
-  <h3>Wachstumsform 3 — Lieferservice und digitale Kanäle</h3>
-  <p>Ein Lieferservice ist eine weitere Form von Wachstum die die bestehende Küche nutzt und den Umsatz außerhalb der normalen Öffnungszeiten steigert. Wichtig beim Lieferservice ist die ehrliche Kalkulation. Die Provisionen der großen Plattformen können die Marge erheblich belasten. Wer einen Lieferservice aufbaut, muss die Zahlen im Voraus durchrechnen.</p>
-  <h3>Wachstumsform 4 — Zweiter Standort</h3>
-  <p>Der zweite Standort ist die ambitionierteste und risikoreichste Form von Wachstum. Er erfordert das stärkste Fundament, das meiste Kapital und die klarste strategische Planung. Aber er bietet auch das größte Wachstumspotenzial. Ein zweiter profitabler Standort kann den Gesamtumsatz und den Gesamtgewinn deutlich steigern. Er baut eine Marke auf. Und er schafft eine Infrastruktur die weitere Expansion ermöglicht.</p>
-  <h3>Wachstumsform 5 — Franchise</h3>
-  <p>Franchise ist für Betriebe mit einem sehr klar definierten, dokumentierten und replizierbaren Konzept eine interessante Wachstumsform. Der Franchisenehmer zahlt eine Lizenzgebühr und trägt die Investitionskosten. Du wächst ohne eigenes Kapital zu riskieren. Aber Franchise funktioniert nur wenn das Konzept so klar dokumentiert ist dass ein fremder Unternehmer danach arbeiten kann.</p>
-  <h3>Wie du die richtige Wachstumsform für deinen Betrieb findest</h3>
-  <p>Die richtige Wachstumsform hängt von drei Faktoren ab. Erstens von deinem Fundament. Wie stark sind deine Prozesse, dein Team, deine Zahlen. Zweitens von deinen Ressourcen. Wie viel Kapital, Zeit und Energie hast du für Wachstum zur Verfügung. Drittens von deiner Vision. Was willst du in fünf Jahren mit deinem Betrieb erreicht haben.</p>
-  <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 2</div><p>Schreib jetzt auf welche Wachstumsform für deinen Betrieb in den nächsten zwölf Monaten realistisch und sinnvoll wäre. Nicht die ambitionierteste Form. Die realistischste. Und schreib auf was die drei wichtigsten Voraussetzungen sind die du dafür noch erfüllen musst. Das ist dein Wachstums-Fahrplan für die nächsten zwölf Monate.</p></div>
+<h2>Kapitel 1 — Die 7 Bereitschafts-Signale</h2>
+<h3>Signal 1 — Stabile Profitabilität</h3>
+<p>Dein Betrieb war in den letzten 12 Monaten konstant profitabel — nicht nur in guten Monaten. Wenn Gewinn nur in der Hochsaison entsteht und im Winter Verluste gemacht werden, ist das kein stabiles Fundament für Wachstum.</p>
+<h3>Signal 2 — Betrieb läuft ohne dich</h3>
+<p>Der Betrieb funktioniert eine Woche ohne dich — ohne dass Qualität leidet. Wenn das heute nicht der Fall ist, ist Wachstum verfrüht.</p>
+<h3>Signal 3 — Ausreichend Kapital</h3>
+<p>Du hast genug Eigenkapital um Anlaufverluste des neuen Standorts zu überbrücken — ohne den ersten Standort zu gefährden. Faustregel: mindestens 6 Monatsumsätze des neuen Standorts als Reserve.</p>
+<h3>Signal 4 — Führungskraft verfügbar</h3>
+<p>Du hast eine Person die den neuen Standort leiten kann — oder du kannst sie entwickeln bevor du eröffnest. Ohne diese Person ist jede Expansion zum Scheitern verurteilt.</p>
+<h3>Signal 5 — Konzept ist dokumentiert und übertragbar</h3>
+<p>SOPs, Rezepte, Qualitätsstandards — alles ist dokumentiert und kann von einem anderen Team umgesetzt werden. Was in deinem Kopf ist, ist nicht skalierbar.</p>
+<h3>Signal 6 — Nachfrage ist vorhanden</h3>
+<p>Es gibt echte Nachfrage für deinen Standort — nicht nur Hoffnung. Wartelisten, Events die ausgebucht sind, Gäste die fragen ob du bald expandierst.</p>
+<h3>Signal 7 — Du willst es wirklich</h3>
+<p>Nicht weil andere fragen ob du expandierst. Nicht wegen Status. Sondern weil du klar siehst wie Wachstum deinem eigentlichen Ziel dient.</p>
+<div class="beispiel"><div class="beispiel-lbl">📊 Rechenbeispiel aus der Praxis</div><p>Signal-Check: Gastronominnen Julia, 3 Jahre im Betrieb.</p><p>Signale 1-4: je 8-9 von 10 Punkten. Signal 5 (Konzept-Übertragbarkeit): 5 von 10 — noch zu abhängig von ihr persönlich.</p><div class="rechnung">Gesamtscore: 56/70. Empfehlung: Wachstum grundsätzlich möglich. Aber zuerst 3 Monate Konzept-Dokumentation vervollständigen.</div><p>Dann: Expansion mit deutlich höherer Erfolgswahrscheinlichkeit.</p></div>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 1</div><p>Bewerte jeden der 7 Signale auf einer Skala von 1-10. Addiere alle Punkte. Über 56: grundsätzlich bereit. 35-56: Baustellen vorhanden. Unter 35: Fundament zuerst. Welche 2 Signale sind am schwächsten?</p></div>
+<h2>Kapitel 2 — Wachstum aus Stärke</h2>
+<h3>Der Unterschied ist entscheidend</h3>
+<p>Wachstum aus Stärke: Der erste Standort läuft, das System funktioniert, Kapital ist vorhanden, die Führungskraft ist entwickelt. Das ist der richtige Zeitpunkt. Wachstum aus Druck: Der erste Standort läuft nicht richtig, aber man hofft dass ein zweiter Standort die Probleme löst. Das ist der falsche Zeitpunkt — und das Rezept für doppelten Stress.</p>
+<div class="tipp-box"><p>💡 <strong>Profi-Tipp:</strong> Wachstum aus Stärke hat eine Erfolgswahrscheinlichkeit von über 60%. Wachstum aus Druck hat eine Erfolgswahrscheinlichkeit von unter 20%. Die Vorbereitung entscheidet — nicht das Konzept.</p></div>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 2</div><p>Ehrliche Selbsteinschätzung: Ist mein Wachstumswunsch aus Stärke oder aus Druck getrieben? Schreib beides auf — was spricht für Stärke, was für Druck? Die Antwort zeigt dir ob jetzt der richtige Zeitpunkt ist.</p></div>
+<div class="nav-row"><a href="modul10-lektion1.html" class="nav-btn secondary">← Lektion 1</a><a href="modul10-lektion3.html" class="nav-btn">Lektion 3 →</a></div>
+<div class="fazit"><div class="fazit-lbl">🎯 Das Wichtigste auf einen Blick</div><ul><li>7 Bereitschafts-Signale: ehrlich bewerten — nicht schönreden.</li><li>Score über 56: grundsätzlich bereit. Unter 35: Fundament zuerst.</li><li>Wachstum aus Stärke: 60%+ Erfolgswahrscheinlichkeit. Aus Druck: unter 20%.</li><li>Die 2 schwächsten Signale sind deine nächsten Aufgaben.</li></ul></div>
+<div class="checkliste"><div class="checkliste-lbl">✅ Sofort-Checkliste — Das kannst du heute noch tun</div><ul><li>7 Signale auf Skala 1-10 bewerten und Gesamtscore berechnen</li><li>2 schwächste Signale identifizieren und Verbesserungsplan erstellen</li><li>Wachstum aus Stärke oder Druck? Ehrlich schriftlich beantworten</li><li>Wachstumsform für die nächsten 12 Monate festlegen</li></ul></div>
   <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
-</div><div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+</div>
+<div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
 </body></html>

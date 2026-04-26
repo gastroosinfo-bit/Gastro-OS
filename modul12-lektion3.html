@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Lektion 3 — Onboarding mit System | GASTRO-OS</title><style>* { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
 .header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
@@ -9,43 +8,76 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
 .wrap { max-width:720px; margin:40px auto; padding:0 24px 60px; }
 .lbl { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:8px; }
-h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:10px; line-height:1.3; }
-.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:20px 0 32px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:16px; line-height:1.3; }
+.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:0 0 24px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+.lern-box { background:#1a2a4a; border-radius:8px; padding:16px 20px; margin:0 0 28px; }
+.lern-box-title { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.lern-box ul { list-style:none; padding:0; margin:0; }
+.lern-box li { font-size:13px; color:#a0b0c8; padding:4px 0 4px 20px; position:relative; line-height:1.6; }
+.lern-box li::before { content:'✓'; position:absolute; left:0; color:#d4af37; font-weight:700; }
 h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:normal; margin:36px 0 14px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
-h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:24px 0 10px; }
+h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:22px 0 10px; }
+h4 { font-size:15px; color:#1a2a4a; font-weight:700; margin:18px 0 8px; }
 p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
-.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin-top:24px; }
+.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin:24px 0; }
 .aufgabe-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
-.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; }
+.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; line-height:1.7; }
+.beispiel { background:#fff; border:1px solid #e8dfc8; border-left:4px solid #3a7ad4; border-radius:0 8px 8px 0; padding:16px 20px; margin:20px 0; }
+.beispiel-lbl { font-size:11px; color:#3a7ad4; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
+.beispiel p { font-size:14px; color:#2a3a54; margin-bottom:8px; line-height:1.75; }
+.beispiel p:last-child { margin-bottom:0; }
+.rechnung { background:#f0f4f8; border-radius:5px; padding:10px 14px; font-family:monospace; font-size:13px; color:#1a2a4a; margin:8px 0; line-height:1.6; }
+.tipp-box { background:#e4f5e8; border:1px solid #4aaa60; border-radius:8px; padding:14px 18px; margin:18px 0; }
+.tipp-box p { font-size:14px; color:#1a6030; margin-bottom:0; line-height:1.7; }
+.nav-row { display:flex; gap:12px; justify-content:space-between; margin:40px 0 0; }
+.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:11px 20px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; transition:all 0.2s; }
+.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
+.nav-btn.secondary { background:#fff; color:#1a2a4a; border:1px solid #e8dfc8; }
+.nav-btn.secondary:hover { border-color:#d4af37; }
+.fazit { background:#fdf9ee; border:2px solid #d4af37; border-radius:8px; padding:18px 22px; margin:32px 0 0; }
+.fazit-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.fazit ul { list-style:none; padding:0; margin:0; }
+.fazit li { font-size:14px; color:#2a3a54; padding:6px 0 6px 22px; position:relative; line-height:1.65; border-bottom:1px solid #e8dfc8; }
+.fazit li:last-child { border-bottom:none; }
+.fazit li::before { content:'→'; position:absolute; left:0; color:#d4af37; font-weight:700; }
+.checkliste { background:#fff; border:1px solid #e8dfc8; border-radius:8px; padding:16px 20px; margin:20px 0 0; }
+.checkliste-lbl { font-size:11px; color:#1a2a4a; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.checkliste ul { list-style:none; padding:0; margin:0; }
+.checkliste li { font-size:14px; color:#2a3a54; padding:7px 0 7px 28px; position:relative; border-bottom:1px solid #f0ece4; line-height:1.55; }
+.checkliste li:last-child { border-bottom:none; }
+.checkliste li::before { content:'☐'; position:absolute; left:0; color:#d4af37; font-size:16px; line-height:1.2; }
 .footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-lbl strong { color:#d4af37; }
-.footer-main { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-main { background:#1a2a4a; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-main strong { color:#d4af37; }</style></head>
-<body><div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html#modul-12" class="btn-back">← Zurück zum Dashboard</a></div>
-<div class="gold-bar"></div><div class="wrap">
-  <div class="lbl">Modul 12 · Lektion 3</div><h1>Onboarding mit System</h1>
-  <div class="intro">In Lektion 2 haben wir gesehen wie du eine Stellenanzeige schreibst die die richtigen Menschen anspricht. Eine Anzeige die Charakter hat, konkrete Angebote macht und den Bewerber als Menschen anspricht statt als Funktion. In dieser Lektion geht es um den nächsten Schritt. Der neue Mitarbeiter ist da. Er hat unterschrieben. Er kommt am Montag. Was passiert jetzt? Für die meisten Betriebe lautet die ehrliche Antwort: Nicht viel. Das ist kein Onboarding. Das ist Zufall. Und Zufall kostet dich Mitarbeiter, Zeit und Geld.</div>
+<body>
+<div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html#modul-12" class="btn-back">← Zurück zum Dashboard</a></div>
+<div class="gold-bar"></div>
+<div class="wrap">
+  <div class="lbl">Modul 12 · Lektion 3</div>
+  <h1>Onboarding mit System</h1>
+  <div class="intro">Du hast die richtige Person gefunden. Jetzt entscheiden die ersten Wochen ob sie bleibt oder nach 2 Monaten wieder geht. In dieser Lektion lernst du wie ein strukturiertes Onboarding funktioniert — und warum es die günstigste Investition in Mitarbeiterbindung ist.</div>
+  <div class="lern-box"><div class="lern-box-title">📚 Was du in dieser Lektion lernst</div><ul><li>Warum die ersten Wochen über Bleiben oder Gehen entscheiden</li><li>Was ein gutes Onboarding leistet</li><li>Tag 1, Woche 1, Monat 1 konkret planen</li><li>Den Paten als günstigstes Onboarding-Werkzeug einsetzen</li></ul></div>
 
-  <h2>Kapitel 1 — Warum die ersten Wochen alles entscheiden</h2>
-  <p>Die ersten Wochen in einem neuen Job sind prägend. Studien aus der Personalforschung zeigen dass Mitarbeiter die eine strukturierte Einarbeitung erleben deutlich länger im Betrieb bleiben als solche die sich selbst überlassen werden. Der Grund ist einfach. In den ersten Wochen entscheidet ein neuer Mitarbeiter ob er bleiben will. Nicht bewusst. Aber sein Gefühl sammelt Eindrücke. Bin ich willkommen hier? Weiß jemand was er von mir erwartet? Gehöre ich dazu?</p>
-  <h3>Was ein gutes Onboarding leistet</h3>
-  <p>Ein strukturiertes Onboarding gibt dem neuen Mitarbeiter Sicherheit — er weiß was ihn erwartet und wer für ihn zuständig ist. Es zeigt dass du professionell bist und schafft Vertrauen. Es spart Zeit auf lange Sicht weil der Mitarbeiter schneller selbstständig arbeitet. Und es erhöht die Wahrscheinlichkeit dass der Mitarbeiter bleibt.</p>
-  <h3>Die häufigsten Onboarding-Fehler</h3>
-  <p>Kein Plan: Der Neue kommt und es ist nicht klar wer sich um ihn kümmert. Das ist der häufigste Fehler. Zu viel auf einmal: Sie überhäufen den Neuen in den ersten Tagen mit Informationen. Was überfordert wird vergessen. Kein fester Ansprechpartner: Wenn die Antwort alle lautet ist die Antwort niemand. Kein Feedback in der Probezeit: Regelmäßige kurze Feedbackgespräche helfen Probleme früh anzusprechen. Kein echtes Willkommen: Der erste Eindruck zählt.</p>
-  <div class="aufgabe"><div class="aufgabe-lbl">Aufgabe Kapitel 1</div><p>Denk an deinen letzten neuen Mitarbeiter. Wie war sein erster Tag? Wer hat ihn begrüßt? Was hat er in der ersten Woche gelernt? War ein Plan vorhanden? Schreib auf was gut war und was du beim nächsten Mal anders machen würdest.</p></div>
-
-  <h2>Kapitel 2 — Dein Onboarding-Plan in der Praxis</h2>
-  <h3>Vor dem ersten Tag</h3>
-  <p>Onboarding beginnt nicht am ersten Arbeitstag. Es beginnt in dem Moment in dem der Vertrag unterschrieben ist. Schicke dem neuen Mitarbeiter eine kurze Nachricht: Willkommen im Team. Wir freuen uns auf dich. Hier ist was du für deinen ersten Tag wissen musst. Das ist eine kleine Geste — aber sie sagt: Du bist schon Teil des Teams bevor du deinen ersten Schritt in den Betrieb gemacht hast.</p>
-  <h3>Der erste Tag</h3>
-  <p>Der erste Tag hat ein einziges Ziel: Der neue Mitarbeiter soll das Gefühl haben willkommen zu sein. Begrüße ihn persönlich. Auch wenn du wenig Zeit hast — fünf Minuten reichen. Stelle ihn dem Team vor. Zeig ihm das Wichtigste. Gib ihm am Ende des ersten Tages fünf Minuten Feedback: Wie war der Tag? Was hat gut geklappt? Was war unklar?</p>
-  <h3>Die erste Woche</h3>
-  <p>In der ersten Woche lernt der neue Mitarbeiter die Grundlagen. Plane täglich eine kurze Runde ein. Zehn Minuten am Ende der Schicht. Was war heute gut? Was war schwierig? Was brauchst du morgen? Diese täglichen Gespräche verhindern dass sich kleine Unsicherheiten zu großen Problemen aufbauen.</p>
-  <h3>Die ersten dreißig Tage</h3>
-  <p>Nach der ersten Woche weitet sich der Lernbereich aus. Plant nach zwei Wochen ein längeres Gespräch — fünfzehn bis zwanzig Minuten. Wie läuft es? Was läuft gut? Was ist noch unklar? Am Ende des ersten Monats macht es Sinn eine erste ehrliche Zwischenbilanz zu ziehen und diese dem Mitarbeiter mitzuteilen.</p>
-  <h3>Der Pate oder Mentor</h3>
-  <p>Eine der wirkungsvollsten Maßnahmen im Onboarding ist ein fester Ansprechpartner für den neuen Mitarbeiter. Nicht du als Chef. Sondern ein erfahrener Kollege der diese Aufgabe bewusst übernimmt. Wähle den Paten sorgfältig aus. Es sollte jemand sein der gerne erklärt, der geduldig ist und der deinen Betrieb gut kennt und positiv über ihn spricht.</p>
-  <div class="aufgabe"><div class="aufgabe-lbl">Aufgabe Kapitel 2</div><p>Erstelle einen einfachen Onboarding-Plan für deinen Betrieb. Tag 1, Woche 1, Monat 1. Was passiert wann? Wer ist zuständig? Was soll der neue Mitarbeiter bis wann können? Eine Seite reicht. Der Plan muss nicht perfekt sein. Er muss existieren.</p></div>
+<h2>Kapitel 1 — Warum Onboarding entscheidet</h2>
+<h3>Was in den ersten Wochen passiert</h3>
+<p>Ein neuer Mitarbeiter entscheidet in den ersten 2-4 Wochen ob er langfristig bleiben will. Nicht bewusst — aber er formt eine Meinung: Bin ich willkommen? Weiß ich was ich tun soll? Gehöre ich dazu? Wenn diese Fragen negativ beantwortet werden, ist der Gedanke an einen Wechsel schon gesetzt — auch wenn er noch 3 Monate bleibt.</p>
+<p>Was in den meisten Betrieben passiert: Der neue Mitarbeiter kommt. Jemand zeigt ihm kurz wo alles ist. Dann wird er ins kalte Wasser geworfen. Was passiert im ersten Monat wird dem Zufall überlassen.</p>
+<div class="beispiel"><div class="beispiel-lbl">📊 Rechenbeispiel aus der Praxis</div><p>Studie: Mitarbeiter mit strukturiertem Onboarding bleiben im Schnitt 2 Jahre länger.</p><p>Restaurant ohne Onboarding: 1 von 3 neuen Mitarbeitern verlässt den Betrieb in den ersten 60 Tagen.</p><p>Kosten dieser frühen Kündigung: 2.100 € Einarbeitungskosten weg + erneute Suche 2.100 € = 4.200 € für dieselbe Stelle.</p><div class="rechnung">Mit Onboarding-System (2h einmalige Erstellung): Frühfluktuation von 33% auf unter 10%. Bei 4 neuen/Jahr: 1,6 frühe Kündigungen verhindert = 6.720 €/Jahr gespart.</div></div>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 1</div><p>Beschreibe deinen aktuellen Onboarding-Prozess schriftlich. Was passiert an Tag 1? Woche 1? Monat 1? Wenn die Antwort vage oder 'das ergibt sich' ist — dann hast du keinen Prozess. Genau das ändern wir jetzt.</p></div>
+<h2>Kapitel 2 — Der Onboarding-Plan</h2>
+<h3>Tag 1 — Willkommen sein</h3>
+<p>Ziel: Der neue Mitarbeiter soll das Gefühl haben erwartet zu werden. Konkret: Namenssschild liegt bereit. Schrank mit eigenem Platz vorhanden. Kollege wird vorgestellt. Rundgang durch den Betrieb. Mittagessen gemeinsam. Fragen: Was brauchst du um gut starten zu können?</p>
+<h3>Woche 1 — Orientierung</h3>
+<p>SOPs für seine Kernaufgaben durchgehen. Mit Paten (erfahrenem Kollegen) zusammenarbeiten. Am Ende der Woche: 10-Minuten-Check-in. Wie läuft es? Was ist noch unklar?</p>
+<h3>Monat 1 — Eigenständigkeit aufbauen</h3>
+<p>Schrittweise mehr Verantwortung. Wöchentliche kurze Feedback-Gespräche (10 min). Am Ende von Monat 1: formales Gespräch. Was läuft gut? Was ist noch schwierig? Was sind die nächsten Ziele?</p>
+<div class="tipp-box"><p>💡 <strong>Profi-Tipp:</strong> Schreib den Onboarding-Plan jetzt — bevor du den nächsten Mitarbeiter brauchst. Unter Druck entsteht kein guter Plan. In Ruhe entsteht ein System das dauerhaft funktioniert.</p></div>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 2</div><p>Erstelle deinen Onboarding-Plan: Was passiert an Tag 1 (stündlich)? Was in Woche 1? Was in Monat 1? Wer ist der Pate? Wann finden die Check-in-Gespräche statt? Das ist dein System — für jeden neuen Mitarbeiter.</p></div>
+<div class="nav-row"><a href="modul12-lektion2.html" class="nav-btn secondary">← Lektion 2</a><a href="modul12-lektion4.html" class="nav-btn">Lektion 4 →</a></div>
+<div class="fazit"><div class="fazit-lbl">🎯 Das Wichtigste auf einen Blick</div><ul><li>Die ersten 2-4 Wochen entscheiden ob jemand langfristig bleibt.</li><li>Strukturiertes Onboarding: Frühfluktuation von 33% auf unter 10%.</li><li>Tag 1: Willkommen sein. Woche 1: Orientierung. Monat 1: Eigenständigkeit.</li><li>Der Pate: günstigstes und wirksamtes Onboarding-Werkzeug.</li></ul></div>
+<div class="checkliste"><div class="checkliste-lbl">✅ Sofort-Checkliste — Das kannst du heute noch tun</div><ul><li>Aktuellen Onboarding-Prozess schriftlich beschreiben — ehrlich</li><li>Onboarding-Plan erstellen: Tag 1 · Woche 1 · Monat 1</li><li>Paten für nächsten neuen Mitarbeiter benennen</li><li>Check-in-Termine im Plan festlegen</li></ul></div>
   <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
-</div><div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+</div>
+<div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
 </body></html>
