@@ -1,183 +1,83 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GASTRO-OS – Modul 6 | Lektion 2</title>
-<style>
-* { margin:0; padding:0; box-sizing:border-box; }
+<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Lektion 2 — Den Schichtleiter entwickeln | GASTRO-OS</title><style>* { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
-.header{background:#1a2a4a;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
-.brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
-.btn-back-modul{background:#d4af37;color:#1a2a4a;border:none;padding:9px 20px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.2s;letter-spacing:0.3px}
-.btn-back-modul:hover{background:#c8a030;color:#1a2a4a}
+.header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:18px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.btn-back { background:#d4af37; color:#1a2a4a; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.btn-back:hover { background:#c8a030; }
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
 .wrap { max-width:720px; margin:40px auto; padding:0 24px 60px; }
 .lbl { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:8px; }
-h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:10px; line-height:1.3; }
-.lektion-hero { background:#1a2a4a; border-radius:12px; padding:28px 32px; margin-bottom:28px; border:2px solid #d4af37; }
-.lektion-hero .lektion-tag { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:10px; }
-.lektion-hero h1 { font-family:Georgia,serif; font-size:26px; color:#fff; margin-bottom:0; font-weight:normal; line-height:1.3; }
-.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:20px 0 32px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
-h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:normal; margin:36px 0 14px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
-h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:24px 0 10px; }
-p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
-ul, ol { margin:12px 0 16px 20px; }
-li { font-size:15px; line-height:1.8; color:#2a3a54; margin-bottom:6px; }
-.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin-top:24px; }
-.aufgabe-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
-.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; }
-.highlight { background:#fff8e8; border-left:3px solid #d4af37; padding:14px 18px; margin:20px 0; font-size:14px; color:#5a4000; line-height:1.7; }
-.nav-row { display:flex; gap:12px; justify-content:space-between; margin-top:40px; }
-.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:12px 24px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none; transition:all 0.2s; }
-.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
-.nav-btn.secondary { background:transparent; border:1px solid rgba(26,42,74,0.3); color:#1a2a4a; }
-.nav-btn.secondary:hover { background:#1a2a4a; color:#d4af37; }
-.footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
-.footer-lbl strong { color:#d4af37; }
-.footer-main { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
-.footer-main strong { color:#d4af37; }
-@media (max-width:600px) { .wrap{padding:0 16px 40px} h1{font-size:22px} h2{font-size:17px} }
-
-.lern-box { background:#1a2a4a; border-radius:8px; padding:18px 22px; margin:0 0 28px; }
+h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:16px; line-height:1.3; }
+.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:0 0 24px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+.lern-box { background:#1a2a4a; border-radius:8px; padding:16px 20px; margin:0 0 28px; }
 .lern-box-title { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
 .lern-box ul { list-style:none; padding:0; margin:0; }
-.lern-box ul li { font-size:13px; color:#a0b0c8; padding:4px 0 4px 20px; position:relative; line-height:1.6; }
-.lern-box ul li::before { content:'✓'; position:absolute; left:0; color:#d4af37; font-weight:700; }
+.lern-box li { font-size:13px; color:#a0b0c8; padding:4px 0 4px 20px; position:relative; line-height:1.6; }
+.lern-box li::before { content:'✓'; position:absolute; left:0; color:#d4af37; font-weight:700; }
+h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:normal; margin:36px 0 14px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
+h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:22px 0 10px; }
+h4 { font-size:15px; color:#1a2a4a; font-weight:700; margin:18px 0 8px; }
+p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
+.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin:24px 0; }
+.aufgabe-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
+.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; line-height:1.7; }
 .beispiel { background:#fff; border:1px solid #e8dfc8; border-left:4px solid #3a7ad4; border-radius:0 8px 8px 0; padding:16px 20px; margin:20px 0; }
 .beispiel-lbl { font-size:11px; color:#3a7ad4; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
 .beispiel p { font-size:14px; color:#2a3a54; margin-bottom:8px; line-height:1.75; }
 .beispiel p:last-child { margin-bottom:0; }
-.beispiel .rechnung { background:#f0f4f8; border-radius:5px; padding:10px 14px; font-family:monospace; font-size:13px; color:#1a2a4a; margin:8px 0; }
-.fazit { background:#fdf9ee; border:2px solid #d4af37; border-radius:8px; padding:18px 22px; margin-top:36px; }
+.rechnung { background:#f0f4f8; border-radius:5px; padding:10px 14px; font-family:monospace; font-size:13px; color:#1a2a4a; margin:8px 0; line-height:1.6; }
+.tipp-box { background:#e4f5e8; border:1px solid #4aaa60; border-radius:8px; padding:14px 18px; margin:18px 0; }
+.tipp-box p { font-size:14px; color:#1a6030; margin-bottom:0; line-height:1.7; }
+.nav-row { display:flex; gap:12px; justify-content:space-between; margin:40px 0 0; }
+.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:11px 20px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; transition:all 0.2s; }
+.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
+.nav-btn.secondary { background:#fff; color:#1a2a4a; border:1px solid #e8dfc8; }
+.nav-btn.secondary:hover { border-color:#d4af37; }
+.fazit { background:#fdf9ee; border:2px solid #d4af37; border-radius:8px; padding:18px 22px; margin:32px 0 0; }
 .fazit-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
 .fazit ul { list-style:none; padding:0; margin:0; }
-.fazit ul li { font-size:14px; color:#2a3a54; padding:5px 0 5px 22px; position:relative; line-height:1.65; border-bottom:1px solid #e8dfc8; }
-.fazit ul li:last-child { border-bottom:none; }
-.fazit ul li::before { content:'→'; position:absolute; left:0; color:#d4af37; font-weight:700; }
-.tipp-box { background:#e4f5e8; border:1px solid #4aaa60; border-radius:8px; padding:14px 18px; margin:16px 0; }
-.tipp-box p { font-size:14px; color:#1a6030; margin-bottom:0; line-height:1.7; }
-.checkliste { background:#fff; border:1px solid #e8dfc8; border-radius:8px; padding:16px 20px; margin:20px 0; }
+.fazit li { font-size:14px; color:#2a3a54; padding:6px 0 6px 22px; position:relative; line-height:1.65; border-bottom:1px solid #e8dfc8; }
+.fazit li:last-child { border-bottom:none; }
+.fazit li::before { content:'→'; position:absolute; left:0; color:#d4af37; font-weight:700; }
+.checkliste { background:#fff; border:1px solid #e8dfc8; border-radius:8px; padding:16px 20px; margin:20px 0 0; }
 .checkliste-lbl { font-size:11px; color:#1a2a4a; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
 .checkliste ul { list-style:none; padding:0; margin:0; }
-.checkliste ul li { font-size:14px; color:#2a3a54; padding:6px 0 6px 28px; position:relative; border-bottom:1px solid #f0ece4; }
-.checkliste ul li:last-child { border-bottom:none; }
-.checkliste ul li::before { content:'☐'; position:absolute; left:0; color:#d4af37; font-size:16px; line-height:1; }
-</style>
-</head>
+.checkliste li { font-size:14px; color:#2a3a54; padding:7px 0 7px 28px; position:relative; border-bottom:1px solid #f0ece4; line-height:1.55; }
+.checkliste li:last-child { border-bottom:none; }
+.checkliste li::before { content:'☐'; position:absolute; left:0; color:#d4af37; font-size:16px; line-height:1.2; }
+.footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-lbl strong { color:#d4af37; }
+.footer-main { background:#1a2a4a; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-main strong { color:#d4af37; }</style></head>
 <body>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-(function(){
-  document.addEventListener('contextmenu',function(e){e.preventDefault();});
-  document.addEventListener('keydown',function(e){
-    if(e.ctrlKey&&['s','u','p','a'].includes(e.key.toLowerCase()))e.preventDefault();
-    if(e.key==='F12')e.preventDefault();
-  });
-  const sb=supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3');
-  (async function(){
-    const{data:{session}}=await sb.auth.getSession();
-    if(!session){window.location.href='login.html';return;}
-    const{data:profile}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
-    if(profile&&(!profile.is_active||profile.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
-  })();
-})();
-</script>
-<div class="header">
-  <div class="brand">GASTRO-OS</div>
-  <a href="dashboard.html#modul-6" class="btn-back-modul">← Zurück zum Dashboard</a>
-</div>
+<div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html#modul-6" class="btn-back">← Zurück zum Dashboard</a></div>
 <div class="gold-bar"></div>
-
 <div class="wrap">
   <div class="lbl">Modul 6 · Lektion 2</div>
-  <div class="lektion-hero">
-    <div class="lektion-tag">Modul 6 · Lektion 2</div>
-    <h1>Lektion 2 — Rollen definieren</h1>
-  </div>
-  <div class="intro"></div>
+  <h1>Den Schichtleiter entwickeln</h1>
+  <div class="intro">In Modul 5 hast du einen Schichtleiter-Kandidaten identifiziert. In dieser Lektion geht es darum ihn wirklich zur Führungskraft zu entwickeln — mit einem konkreten Plan, klaren Erwartungen und dem richtigen Maß an Vertrauen.</div>
+  <div class="lern-box"><div class="lern-box-title">📚 Was du in dieser Lektion lernst</div><ul><li>Den richtigen Schichtleiter-Kandidaten erkennen und auswählen</li><li>Einen strukturierten Entwicklungsplan erstellen</li><li>Klare Zuständigkeiten und Grenzen festlegen</li><li>Die Übergabe von Verantwortung schrittweise gestalten</li></ul></div>
 
-<h2>Kapitel 1 — Alle Aufgaben sichtbar machen</h2>
-
-    <h3>Warum du zuerst alles aufschreiben musst</h3>
-    <p>Bevor du Rollen definieren kannst, musst du wissen was in deinem Betrieb täglich wirklich anfällt. Die meisten Gastronomen haben diese Liste nie gemacht. Sie wissen intuitiv was zu tun ist — aber dieses Wissen existiert nur in ihrem Kopf. Was nur in deinem Kopf existiert, kann kein Mitarbeiter kennen. Was kein Mitarbeiter kennt, kann er nicht übernehmen. Was er nicht übernimmt, machst du selbst.</p>
-
-    <h3>So erstellst du deine Aufgabenliste</h3>
-    <p>Nimm dir 30 Minuten und einen leeren Block. Schreib alles auf was in deinem Betrieb gemacht werden muss: Öffnung und Schließung, Mise en Place, Bestellungen aufgeben, Lager kontrollieren, Reinigung, Gästebegrüßung, Reservierungen verwalten, Reklamationen bearbeiten, Kasse abrechnen, Dienstplan erstellen, neue Mitarbeiter einarbeiten, Lieferanten empfangen, Qualitätskontrolle, Hygienechecks, Abrechnungen vorbereiten, Mitarbeiter briefen.</p>
-    <p>Wenn du denkst du bist fertig, geh noch einmal durch einen typischen Tag. Morgens wenn du aufmachst, vor dem Mittagsservice, während des Services, danach, am Abend. Was machst du selbst ohne darüber nachzudenken. Ergänze alles was fehlt.</p>
-
-    <h3>Aufgaben nach Bereichen sortieren</h3>
-    <p>Typische Bereiche sind Service, Küche, Bar, Reinigung, Verwaltung und Führung. Sortiere die Aufgaben nach Bereichen. Das gibt dir Übersicht und zeigt dir wo die meisten Aufgaben liegen und wo die größten Lücken in deiner aktuellen Struktur sind.</p>
-
-    <h3>Was diese Liste über deinen Betrieb verrät</h3>
-    <p>Markiere alle Aufgaben auf deiner Liste die du selbst regelmäßig machst, obwohl theoretisch jemand anderes dafür zuständig sein könnte. Diese markierten Aufgaben sind dein Delegationspotenzial. Für viele Gastronomen ist dieser Moment der größte Augenöffner im ganzen Modul — nicht weil sie nicht gewusst hätten dass viel an ihnen hängt, sondern weil sie zum ersten Mal schwarz auf weiß sehen wie viel es wirklich ist.</p>
-
-    <div class="task-box">
-      <strong>🎯 Aufgabe Kapitel 1</strong>
-      <p>Schreib jetzt deine vollständige Aufgabenliste. Nimm dir 30 Minuten. Sortiere die Aufgaben nach Bereichen. Markiere am Ende alle Aufgaben die aktuell bei dir landen obwohl sie jemand anderes übernehmen könnte.</p>
-    </div>
-  </div>
-
-  <div class="chapter">
-    <h2>Kapitel 2 — Rollen zuweisen und Rollenbeschreibungen schreiben</h2>
-
-    <h3>Von der Aufgabenliste zur Rollenstruktur</h3>
-    <p>Du weist jede Aufgabe einer konkreten Rolle zu — nicht einem Namen, sondern einer Rolle. Nicht Maria macht die Tagesöffnung, sondern der Schichtverantwortliche macht die Tagesöffnung. Der Unterschied ist entscheidend: Rollen bleiben bestehen wenn Mitarbeiter wechseln. Namen nicht. Wer Aufgaben an Rollen bindet, hat eine Struktur die unabhängig von einzelnen Personen funktioniert.</p>
-
-    <h3>Die Rollenbeschreibung schreiben</h3>
-    <p>Für jede Rolle schreibst du eine kurze Beschreibung. Eine Seite. Maximal. Sie hat drei Teile:</p>
-    <p><strong>Konkrete Aufgaben:</strong> Der Servicemitarbeiter ist zuständig für die Begrüßung der Gäste in seinem Bereich, die vollständige Tischvorbereitung vor dem Service, die Bestellaufnahme, die korrekte Abrechnung am Ende der Schicht und die ordentliche Übergabe an den nächsten Mitarbeiter. So konkret muss es sein.</p>
-    <p><strong>Entscheidungskompetenz:</strong> Was darf diese Rolle selbst entscheiden, und was nicht. Schreib konkrete Beispiele auf. Der Servicemitarbeiter darf einem unzufriedenen Gast ein Getränk oder ein Dessert gratis anbieten. Er darf keine Rechnungen stornieren und keine Rabatte über zehn Prozent gewähren ohne Rücksprache mit dem Schichtverantwortlichen. Je konkreter die Entscheidungsregeln, desto seltener wirst du gerufen.</p>
-    <p><strong>Verantwortlichkeit:</strong> Wofür ist diese Rolle verantwortlich wenn etwas schiefläuft. Das klingt streng — es ist Klarheit. Wenn klar ist wofür jemand verantwortlich ist, ist auch klar wofür er nicht verantwortlich ist. Das nimmt Druck weg, nicht erhöht ihn.</p>
-
-    <h3>Rollenbeschreibungen übergeben und besprechen</h3>
-    <p>Wenn du die Rollenbeschreibungen geschrieben hast, übergibst du sie deinen Mitarbeitern. Nicht einfach hinlegen — kurz besprechen. Fünf Minuten pro Person. Eine Rollenbeschreibung die besprochen wurde wirkt. Eine die in der Schublade verschwindet nicht. Überprüfe die Rollenbeschreibungen alle drei Monate — sie sind kein starres Regelwerk sondern ein lebendiges Dokument das mit deinem Betrieb wächst.</p>
-
-    <div class="highlight">
-      Nach den ersten Rollenbeschreibungen passiert in fast jedem Betrieb dasselbe: Die Fragen die täglich an dich gestellt werden werden weniger. Dein Team arbeitet nicht plötzlich besser weil die Menschen besser geworden wären. Es arbeitet besser weil es jetzt einen klaren Rahmen hat.
-    </div>
-
-    <div class="task-box">
-      <strong>🎯 Aufgabe Kapitel 2</strong>
-      <p>Schreib jetzt die erste Rollenbeschreibung für die Rolle in deinem Betrieb die am häufigsten unklar ist oder die meisten offenen Fragen produziert. Eine Seite. Aufgaben, Entscheidungskompetenz, Verantwortlichkeit. Nimm dir 30 Minuten. Gib sie danach dem betreffenden Mitarbeiter und besprich sie in fünf Minuten.</p>
-    </div>
-  </div>
-
-  <div class="nav-row">
-    <a href="modul6-lektion1.html" class="nav-btn secondary">← Lektion 1</a>
-    <a href="modul6-lektion3.html" class="nav-btn">Lektion 3 →</a>
-  </div>
-<div class="fazit"><div class="fazit-lbl">🎯 Das Wichtigste auf einen Blick</div><ul><li>Der Schichtleiter ist die wichtigste Investition in deine persönliche Freiheit.</li><li>Verantwortung schrittweise übergeben: erst beobachten, dann mitmachen, dann selbst führen.</li><li>Klare Grenzen: Was entscheidet er selbst? Wann ruft er dich an?</li><li>Ein guter Schichtleiter verdient seinen Bonus in der ersten Woche zurück.</li></ul></div>
-<div class="checkliste"><div class="checkliste-lbl">✅ Sofort-Checkliste — Das kannst du heute noch tun</div><ul><li>Den besten Kandidaten für Schichtleiter identifizieren</li><li>Erstes Gespräch: Interesse, Bereitschaft, Erwartungen klären</li><li>Kompetenzliste erstellen: Was muss der Schichtleiter können?</li><li>Einarbeitungsplan für 8 Wochen festlegen</li><li>Erste eigenständige Schicht begleiten und Feedback geben</li></ul></div>
+<h2>Kapitel 1 — Den richtigen Kandidaten finden</h2>
+<h3>Was einen guten Schichtleiter ausmacht</h3>
+<p>Der beste Koch ist nicht automatisch der beste Schichtleiter. Führungsqualitäten und Fachkompetenz sind verschiedene Dinge. Was du suchst: Jemand der ruhig bleibt wenn es stressig wird. Der das Team motiviert statt es zu frustrieren. Der Probleme löst statt sie eskalieren zu lassen. Der Verantwortung will — nicht meidet.</p>
+<p>Diese Eigenschaften erkennst du nicht im Bewerbungsgespräch. Du erkennst sie in schwierigen Momenten: Wer übernimmt wenn es eng wird? Wer beruhigt Kollegen wenn Gäste schwierig sind? Wer denkt mit statt nur auszuführen? Das ist dein Schichtleiter.</p>
+<h3>Das erste Gespräch</h3>
+<p>Bevor du jemandem die Rolle anbietest: Kläre ob die Person es will. Nicht jeder erfahrene Mitarbeiter will mehr Verantwortung. Frage direkt: 'Ich sehe Potenzial in dir als Schichtleiter. Wärst du daran interessiert?' Dann: Erkläre was die Rolle konkret bedeutet. Was ändert sich? Was bleibt gleich? Welche Verantwortung kommt dazu?</p>
+<div class="beispiel"><div class="beispiel-lbl">📊 Rechenbeispiel aus der Praxis</div><p>Restaurant ohne funktionierenden Schichtleiter: Chef muss durchschnittlich 3× pro Abend einspringen.</p><p>3 Eingriffe × 20 min = 60 min Chef-Zeit pro Abend die er nicht im Betrieb sein sollte.</p><div class="rechnung">60 min × 200 Abende = 200 Stunden/Jahr. Dazu: Chef kann nicht wirklich abschalten.</div><p>Mit Schichtleiter: 0-1 Eingriffe pro Abend. 200 Stunden zurückgewonnen. Lebensqualität messbar besser.</p></div>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 1</div><p>Führe das erste Schichtleiter-Gespräch diese Woche. Bereite dich vor: Wen fragst du? Was sagst du konkret? Was bietest du an (Verantwortung, ggf. Gehaltsanpassung)? Schreib die Kernpunkte des Gesprächs auf.</p></div>
+<h2>Kapitel 2 — Entwicklungsplan und Übergabe</h2>
+<h3>8-Wochen-Entwicklungsplan</h3>
+<p>Woche 1-2: Schichtleiter begleitet dich bei allen Entscheidungen und lernt deine Denkmuster. Woche 3-4: Er übernimmt erste Schichten selbstständig, du bist anwesend aber greifst nicht ein. Woche 5-6: Vollständig eigenverantwortliche Schichten, du bist telefonisch erreichbar. Woche 7-8: Normale Eigenverantwortung, Eingriff nur bei wirklichen Ausnahmen.</p>
+<h3>Was der Schichtleiter entscheiden darf</h3>
+<p>Klar definieren: Was entscheidet er ohne Rückfrage? (z.B. alle Service-Probleme, kleinere Reklamationen, Team-Einteilung im Schicht-Verlauf) Was eskaliert er? (z.B. größere Beschwerden, Unfälle, Lieferprobleme) Diese Klarheit gibt ihm Sicherheit und dir Freiheit.</p>
+<div class="tipp-box"><p>💡 <strong>Profi-Tipp:</strong> Mach nach den ersten 4 Wochen ein ausführliches Feedback-Gespräch (30 Minuten). Was läuft gut? Was ist noch unsicher? Was braucht er noch? Dieses Gespräch zeigt dem Schichtleiter dass du seine Entwicklung ernst nimmst — das ist der größte Motivator.</p></div>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 2</div><p>Erstelle den konkreten 8-Wochen-Plan für deinen Schichtleiter: Was passiert in welcher Woche? Welche Kompetenzen werden wann übergeben? Wann ist der erste komplett eigenverantwortliche Abend?</p></div>
+<div class="nav-row"><a href="modul6-lektion1.html" class="nav-btn secondary">← Lektion 1</a><a href="modul6-lektion3.html" class="nav-btn">Lektion 3 →</a></div>
+<div class="fazit"><div class="fazit-lbl">🎯 Das Wichtigste auf einen Blick</div><ul><li>Der beste Schachtleiter: ruhig unter Druck, lösungsorientiert, will Verantwortung.</li><li>8-Wochen-Entwicklungsplan: schrittweise Übergabe mit klarem Feedback.</li><li>Klare Grenzen: Was entscheidet er selbst? Wann ruft er an?</li><li>200h/Jahr zurückgewonnen durch funktionierenden Schichtleiter — messbar in Lebensqualität.</li></ul></div>
+<div class="checkliste"><div class="checkliste-lbl">✅ Sofort-Checkliste — Das kannst du heute noch tun</div><ul><li>Schichtleiter-Kandidaten identifiziert und erstes Gespräch geführt</li><li>8-Wochen-Entwicklungsplan konkret erstellt</li><li>Liste: Was entscheidet er selbst / Was eskaliert er?</li><li>Feedback-Termin nach Woche 4 im Kalender eingetragen</li></ul></div>
   <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
 </div>
 <div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
-<script>
-(function(){
-  // Rechtsklick & Tastenkürzel sperren
-  document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
-  document.addEventListener('keydown', function(e){
-    if (e.ctrlKey && ['s','u','p','a'].includes(e.key.toLowerCase())) e.preventDefault();
-    if (e.key === 'F12') e.preventDefault();
-  });
-
-  // Supabase Auth Check
-  const sb = supabase.createClient(
-    'https://hchlganbgjeciwhwaisj.supabase.co',
-    'sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3'
-  );
-  (async function(){
-    const { data:{ session } } = await sb.auth.getSession();
-    if (!session) { window.location.href = 'login.html'; return; }
-    const { data: profile } = await sb.from('profiles')
-      .select('is_active,subscription_status')
-      .eq('id', session.user.id).maybeSingle();
-    if (profile && (!profile.is_active || profile.subscription_status !== 'active')) {
-      await sb.auth.signOut();
-      window.location.href = 'login.html';
-    }
-  })();
-})();
-</script>
-</body>
-</html>
+</body></html>

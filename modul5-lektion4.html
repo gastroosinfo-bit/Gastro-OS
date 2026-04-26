@@ -1,232 +1,82 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GASTRO-OS – Modul 5 | Lektion 4</title>
-<style>
-* { margin:0; padding:0; box-sizing:border-box; }
+<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Lektion 4 — Qualitätssicherung als System | GASTRO-OS</title><style>* { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
-.header{background:#1a2a4a;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
-.brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
-.btn-back-modul{background:#d4af37;color:#1a2a4a;border:none;padding:9px 20px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.2s;letter-spacing:0.3px}
-.btn-back-modul:hover{background:#c8a030;color:#1a2a4a}
+.header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:18px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.btn-back { background:#d4af37; color:#1a2a4a; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.btn-back:hover { background:#c8a030; }
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
 .wrap { max-width:720px; margin:40px auto; padding:0 24px 60px; }
 .lbl { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:8px; }
-h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:10px; line-height:1.3; }
-.lektion-hero { background:#1a2a4a; border-radius:12px; padding:28px 32px; margin-bottom:28px; border:2px solid #d4af37; }
-.lektion-hero .lektion-tag { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:10px; }
-.lektion-hero h1 { font-family:Georgia,serif; font-size:26px; color:#fff; margin-bottom:0; font-weight:normal; line-height:1.3; }
-.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:20px 0 32px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
-h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:normal; margin:36px 0 14px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
-h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:24px 0 10px; }
-p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
-ul, ol { margin:12px 0 16px 20px; }
-li { font-size:15px; line-height:1.8; color:#2a3a54; margin-bottom:6px; }
-.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin-top:24px; }
-.aufgabe-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
-.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; }
-.highlight { background:#fff8e8; border-left:3px solid #d4af37; padding:14px 18px; margin:20px 0; font-size:14px; color:#5a4000; line-height:1.7; }
-.nav-row { display:flex; gap:12px; justify-content:space-between; margin-top:40px; }
-.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:12px 24px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none; transition:all 0.2s; }
-.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
-.nav-btn.secondary { background:transparent; border:1px solid rgba(26,42,74,0.3); color:#1a2a4a; }
-.nav-btn.secondary:hover { background:#1a2a4a; color:#d4af37; }
-.footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
-.footer-lbl strong { color:#d4af37; }
-.footer-main { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
-.footer-main strong { color:#d4af37; }
-@media (max-width:600px) { .wrap{padding:0 16px 40px} h1{font-size:22px} h2{font-size:17px} }
-
-.lern-box { background:#1a2a4a; border-radius:8px; padding:18px 22px; margin:0 0 28px; }
+h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:16px; line-height:1.3; }
+.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:0 0 24px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+.lern-box { background:#1a2a4a; border-radius:8px; padding:16px 20px; margin:0 0 28px; }
 .lern-box-title { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
 .lern-box ul { list-style:none; padding:0; margin:0; }
-.lern-box ul li { font-size:13px; color:#a0b0c8; padding:4px 0 4px 20px; position:relative; line-height:1.6; }
-.lern-box ul li::before { content:'✓'; position:absolute; left:0; color:#d4af37; font-weight:700; }
+.lern-box li { font-size:13px; color:#a0b0c8; padding:4px 0 4px 20px; position:relative; line-height:1.6; }
+.lern-box li::before { content:'✓'; position:absolute; left:0; color:#d4af37; font-weight:700; }
+h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:normal; margin:36px 0 14px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
+h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:22px 0 10px; }
+h4 { font-size:15px; color:#1a2a4a; font-weight:700; margin:18px 0 8px; }
+p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
+.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin:24px 0; }
+.aufgabe-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
+.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; line-height:1.7; }
 .beispiel { background:#fff; border:1px solid #e8dfc8; border-left:4px solid #3a7ad4; border-radius:0 8px 8px 0; padding:16px 20px; margin:20px 0; }
 .beispiel-lbl { font-size:11px; color:#3a7ad4; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
 .beispiel p { font-size:14px; color:#2a3a54; margin-bottom:8px; line-height:1.75; }
 .beispiel p:last-child { margin-bottom:0; }
-.beispiel .rechnung { background:#f0f4f8; border-radius:5px; padding:10px 14px; font-family:monospace; font-size:13px; color:#1a2a4a; margin:8px 0; }
-.fazit { background:#fdf9ee; border:2px solid #d4af37; border-radius:8px; padding:18px 22px; margin-top:36px; }
+.rechnung { background:#f0f4f8; border-radius:5px; padding:10px 14px; font-family:monospace; font-size:13px; color:#1a2a4a; margin:8px 0; line-height:1.6; }
+.tipp-box { background:#e4f5e8; border:1px solid #4aaa60; border-radius:8px; padding:14px 18px; margin:18px 0; }
+.tipp-box p { font-size:14px; color:#1a6030; margin-bottom:0; line-height:1.7; }
+.nav-row { display:flex; gap:12px; justify-content:space-between; margin:40px 0 0; }
+.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:11px 20px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; transition:all 0.2s; }
+.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
+.nav-btn.secondary { background:#fff; color:#1a2a4a; border:1px solid #e8dfc8; }
+.nav-btn.secondary:hover { border-color:#d4af37; }
+.fazit { background:#fdf9ee; border:2px solid #d4af37; border-radius:8px; padding:18px 22px; margin:32px 0 0; }
 .fazit-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
 .fazit ul { list-style:none; padding:0; margin:0; }
-.fazit ul li { font-size:14px; color:#2a3a54; padding:5px 0 5px 22px; position:relative; line-height:1.65; border-bottom:1px solid #e8dfc8; }
-.fazit ul li:last-child { border-bottom:none; }
-.fazit ul li::before { content:'→'; position:absolute; left:0; color:#d4af37; font-weight:700; }
-.tipp-box { background:#e4f5e8; border:1px solid #4aaa60; border-radius:8px; padding:14px 18px; margin:16px 0; }
-.tipp-box p { font-size:14px; color:#1a6030; margin-bottom:0; line-height:1.7; }
-.checkliste { background:#fff; border:1px solid #e8dfc8; border-radius:8px; padding:16px 20px; margin:20px 0; }
+.fazit li { font-size:14px; color:#2a3a54; padding:6px 0 6px 22px; position:relative; line-height:1.65; border-bottom:1px solid #e8dfc8; }
+.fazit li:last-child { border-bottom:none; }
+.fazit li::before { content:'→'; position:absolute; left:0; color:#d4af37; font-weight:700; }
+.checkliste { background:#fff; border:1px solid #e8dfc8; border-radius:8px; padding:16px 20px; margin:20px 0 0; }
 .checkliste-lbl { font-size:11px; color:#1a2a4a; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
 .checkliste ul { list-style:none; padding:0; margin:0; }
-.checkliste ul li { font-size:14px; color:#2a3a54; padding:6px 0 6px 28px; position:relative; border-bottom:1px solid #f0ece4; }
-.checkliste ul li:last-child { border-bottom:none; }
-.checkliste ul li::before { content:'☐'; position:absolute; left:0; color:#d4af37; font-size:16px; line-height:1; }
-</style>
-</head>
+.checkliste li { font-size:14px; color:#2a3a54; padding:7px 0 7px 28px; position:relative; border-bottom:1px solid #f0ece4; line-height:1.55; }
+.checkliste li:last-child { border-bottom:none; }
+.checkliste li::before { content:'☐'; position:absolute; left:0; color:#d4af37; font-size:16px; line-height:1.2; }
+.footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-lbl strong { color:#d4af37; }
+.footer-main { background:#1a2a4a; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-main strong { color:#d4af37; }</style></head>
 <body>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-(function(){
-  document.addEventListener('contextmenu',function(e){e.preventDefault();});
-  document.addEventListener('keydown',function(e){
-    if(e.ctrlKey&&['s','u','p','a'].includes(e.key.toLowerCase()))e.preventDefault();
-    if(e.key==='F12')e.preventDefault();
-  });
-  const sb=supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3');
-  (async function(){
-    const{data:{session}}=await sb.auth.getSession();
-    if(!session){window.location.href='login.html';return;}
-    const{data:profile}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
-    if(profile&&(!profile.is_active||profile.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
-  })();
-})();
-</script>
-<div class="header">
-  <div class="brand">GASTRO-OS</div>
-  <a href="dashboard.html#modul-5" class="btn-back-modul">← Zurück zum Dashboard</a>
-</div>
+<div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html#modul-5" class="btn-back">← Zurück zum Dashboard</a></div>
 <div class="gold-bar"></div>
-
 <div class="wrap">
   <div class="lbl">Modul 5 · Lektion 4</div>
-  <div class="lektion-hero">
-    <div class="lektion-tag">Modul 5 · Lektion 4</div>
-    <h1>Lektion 4 — Fallbeispiel und 30-Tage-Aktionsplan</h1>
-  </div>
-  <div class="intro"></div>
+  <h1>Qualitätssicherung als System</h1>
+  <div class="intro">Du hast SOPs, Unternehmer-Zeit und Delegation eingeführt. In dieser letzten Lektion von Modul 5 geht es um das Bindeglied: Qualitätssicherung. Wie stellst du sicher dass die Standards auch dann eingehalten werden wenn du nicht dabei bist?</div>
+  <div class="lern-box"><div class="lern-box-title">📚 Was du in dieser Lektion lernst</div><ul><li>Was Qualitätssicherung in der Gastronomie konkret bedeutet</li><li>Einfache Kontroll-Mechanismen die ohne großen Aufwand funktionieren</li><li>Wie du Gäste-Feedback als Qualitäts-Indikator nutzt</li><li>Deinen 30-Tage-Plan für Modul 5 abschließen</li></ul></div>
 
-<h2>Kapitel 1 — Warum Pläne scheitern — und wie deiner es nicht tut</h2>
-
-    <h3>Die häufigste Falle nach einem Kursmodul</h3>
-    <p>Es gibt einen Moment den fast jeder kennt der einen Kurs macht. Den Moment direkt nach einer starken Lektion. Man ist motiviert. Man sieht klar was zu tun ist. Und dann passiert das Leben. Der nächste Dienst kommt. Eine Woche später ist alles noch genauso wie vorher. Das ist keine Schwäche. Das ist menschlich. Und es hat einen klaren Grund. Motivation allein verändert nichts. Was verändert ist ein konkreter Plan mit konkreten Schritten die klein genug sind um tatsächlich umgesetzt zu werden.</p>
-
-    <h3>Was den Unterschied macht</h3>
-    <div class="three-things">
-      <div class="thing-item">
-        <div class="thing-num">1</div>
-        <div class="thing-content">
-          <h4>Konkretheit</h4>
-          <p>Ein Plan der sagt „ich werde mehr delegieren" ist kein Plan. Ein Plan der sagt „ich delegiere am Dienstag die Tagesöffnung an Maria" ist ein Plan. Schreib nicht was du tun willst — schreib wer was wann tut.</p>
-        </div>
-      </div>
-      <div class="thing-item">
-        <div class="thing-num">2</div>
-        <div class="thing-content">
-          <h4>Verbindlichkeit</h4>
-          <p>Sag jemandem in deinem Team was du diese Woche änderst. Nicht als Ankündigung, sondern als Information. Das allein erhöht die Wahrscheinlichkeit dass du es tatsächlich tust.</p>
-        </div>
-      </div>
-      <div class="thing-item">
-        <div class="thing-num">3</div>
-        <div class="thing-content">
-          <h4>Toleranz für Unvollständigkeit</h4>
-          <p>Die meisten Pläne scheitern nicht weil sie falsch waren. Sie scheitern weil nach dem ersten Rückschlag aufgegeben wird. Was zählt ist nicht ob du jede Woche perfekt umsetzt — was zählt ist ob du nach einem schlechten Tag trotzdem weitermachst.</p>
-        </div>
-      </div>
-    </div>
-
-    <h3>Bevor du anfängst — drei Dinge die feststehen müssen</h3>
-    <p><strong>Erstens</strong> deine drei Abläufe für die ersten SOPs. Die hast du in Lektion 2 identifiziert. Wenn nicht: nimm dir jetzt fünf Minuten. Tagesöffnung, Einarbeitung und Reklamationsumgang sind ein guter Ausgangspunkt.</p>
-    <p><strong>Zweitens</strong> deine zwei Unternehmer-Morgende. Die hast du in Lektion 3 im Wochenplaner blockiert. Wenn nicht: öffne den Wochenplaner jetzt und trag sie ein bevor du weiterliest.</p>
-    <p><strong>Drittens</strong> einen ehrlichen Blick auf dein Team. Wer in deinem Team ist zuverlässig genug um eine erste Aufgabe komplett übernehmen zu können? Diese Person wird in Woche 4 dein erster Delegations-Partner.</p>
-
-    <div class="task-box">
-      <strong>🎯 Aufgabe Kapitel 1</strong>
-      <p>Schreib jetzt auf: welche drei Abläufe du in den ersten 30 Tagen mit SOPs belegen wirst, welche zwei Morgende deine Unternehmer-Zeit sind, und welchen Mitarbeiter du in Woche 4 für die erste Delegation wählen wirst. Drei konkrete Antworten — das ist die Grundlage für alles was folgt.</p>
-    </div>
-  </div>
-
-  <div class="chapter">
-    <h2>Kapitel 2 — Dein 30-Tage-Aktionsplan Woche für Woche</h2>
-
-    <div class="wochen-grid">
-      <div class="woche-card">
-        <h4>📋 Woche 1 — Analyse</h4>
-        <p>Liste mindestens zehn Abläufe auf die dich täglich am meisten Zeit kosten. Nicht drei, nicht fünf. Zehn. Wähle daraus die drei die am häufigsten passieren und am meisten Zeit, Geld oder Nerven kosten.</p>
-        <p>Schau dir deine aktuelle Wochenstruktur an. Wie viele Stunden bist du im Betrieb. Wie viele davon sind wirklich Unternehmer-Zeit.</p>
-        <div class="result">→ Du weißt wo dein Ausgangspunkt liegt</div>
-      </div>
-      <div class="woche-card">
-        <h4>✍️ Woche 2 — Erste SOP</h4>
-        <p>30 Minuten in deiner Unternehmer-Zeit. Tagesöffnung aufschreiben. Kein Überarbeiten. Fertig ist besser als perfekt.</p>
-        <p>Danach: einem Mitarbeiter geben und ihn die Öffnung alleine danach durchführen lassen. Beobachte. Greife nicht ein. Ergänze danach was gefehlt hat.</p>
-        <div class="result">→ Erste funktionierende SOP im Betrieb</div>
-      </div>
-      <div class="woche-card">
-        <h4>🔄 Woche 3 — Wochenplaner &amp; zweite SOP</h4>
-        <p>Unternehmer-Morgende konsequent durchhalten — auch wenn der Alltag testet ob du es ernst meinst. Halte die Zeit. Fünf Tage. Das ist alles was du in Woche 3 beweisen musst.</p>
-        <p>Zweite SOP schreiben: Einarbeitung neuer Mitarbeiter. Drei Tage, Schritt für Schritt.</p>
-        <div class="result">→ Rhythmus etabliert, zweite SOP fertig</div>
-      </div>
-      <div class="woche-card">
-        <h4>🤝 Woche 4 — Delegation</h4>
-        <p>Eine Aufgabe komplett an einen Mitarbeiter delegieren. Nicht halb. Nicht mit ständiger Kontrolle. Du übergibst, erklärst einmal und lässt los. Korrigiere das Ergebnis danach — nicht währenddessen.</p>
-        <p>Dritte SOP: Reklamations-Umgang. Klare Entscheidungsregeln für dein Team.</p>
-        <div class="result">→ Erste echte Delegation + drei SOPs fertig</div>
-      </div>
-    </div>
-
-    <h3>Was nach 30 Tagen passiert</h3>
-    <p>Nach 30 Tagen hast du drei SOPs die wirklich genutzt werden. Du hast einen Wochenrhythmus mit festen Unternehmer-Zeiten. Du hast eine Aufgabe erfolgreich delegiert. Und du hast begonnen deinen Betrieb als System zu bauen statt als Einmannshow zu betreiben.</p>
-    <p>Das ist kein fertiges System. Es ist das Fundament eines Systems. Wer die ersten 30 Tage durchhält hält auch die nächsten durch. Weil er spürt was sich verändert. Weil die Fragen weniger werden. Weil das Team selbständiger arbeitet.</p>
-
-    <div class="highlight">
-      Was jetzt kommt ist Wiederholung. Drei weitere SOPs. Noch eine Delegation. Noch ein Bereich der ein System bekommt. Monat für Monat wird dein Betrieb unabhängiger von deiner ständigen Anwesenheit. Nicht von heute auf morgen. Aber konsequent. Und das ist genug.
-    </div>
-
-    <div class="hint-box">
-      🎬 Schau dir jetzt das Fallbeispiel-Video an. Sandra zeigt dir wie sie ihren Betrieb in sechs Wochen von einer Einmannshow in ein funktionierendes System verwandelt hat. Du findest das Video im Tab 🎬 Fallbeispiel Sandra.<br><br>
-      👉 Öffne deinen Wochenplaner. Er führt dich durch deine ersten vier Wochen. Du findest ihn im Tab 📊 Wochenplaner.
-    </div>
-
-    <div class="task-box">
-      <strong>🎯 Aufgabe Kapitel 2</strong>
-      <p>Schreib deinen persönlichen 30-Tage-Plan auf. Konkret. Woche 1: was analysierst du genau. Woche 2: welche SOP schreibst du und wer testet sie. Woche 3: welche zwei Morgende hältst du durch und welche zweite SOP schreibst du. Woche 4: welche Aufgabe delegierst du an wen. Je konkreter dein Plan desto höher die Chance dass du ihn umsetzt.</p>
-    </div>
-  </div>
-
-  <div class="abschluss">
-    <h3>Geh jetzt in den Wochenplaner</h3>
-    <p>Füll Woche 1 aus. Heute. Nicht morgen. <strong style="color:#d4af37;">Heute.</strong></p>
-  </div>
-
-  <div class="nav-row">
-    <a href="modul5-lektion3.html" class="nav-btn secondary">← Lektion 3</a>
-    <a href="modul5-fallbeispiel-video.html" class="nav-btn">Fallbeispiel Sandra →</a>
-  </div>
-<div class="fazit"><div class="fazit-lbl">🎯 Das Wichtigste auf einen Blick</div><ul><li>Qualität ist kein Zufall — sie ist das Ergebnis dokumentierter Standards.</li><li>Qualitätskontrolle = regelmäßig prüfen ob die SOPs eingehalten werden.</li><li>Gästefeedback ist Gold: Es zeigt was wirklich wichtig ist.</li><li>Kontinuierliche Verbesserung: Jeden Monat 1 Prozess verbessern = 12 Verbesserungen pro Jahr.</li></ul></div>
-<div class="checkliste"><div class="checkliste-lbl">✅ Sofort-Checkliste — Das kannst du heute noch tun</div><ul><li>5 SOPs für die kritischsten Prozesse geschrieben</li><li>Schichtleiter für Qualitätskontrolle verantwortlich gemacht</li><li>Wöchentliches 10-Minuten-Qualitäts-Meeting eingeführt</li><li>Gästefeedback systematisch ausgewertet (Google, direktes Feedback)</li><li>Monatliche Selbst-Bewertung: Wo sind wir besser als letzten Monat?</li></ul></div>
+<h2>Kapitel 1 — Qualität ohne ständige Kontrolle</h2>
+<h3>Warum Kontrolle kein Misstrauen ist</h3>
+<p>Qualitätssicherung klingt nach Kontrolle. Und Kontrolle fühlt sich für viele nach Misstrauen an. Das ist ein Missverständnis. Qualitätssicherung ist das systematische Prüfen ob Standards eingehalten werden — nicht weil du dem Team misstraust, sondern weil Standards ohne Prüfung schleichend verwässern.</p>
+<p>Ein Standard der nie überprüft wird, ist nach 3 Monaten kein Standard mehr. Das passiert unbewusst, ohne böse Absicht. Menschen optimieren für das was gemessen wird. Wenn Portionsgrößen nie gewogen werden, schleicht sich Variation ein. Wenn Reinigungsstandards nie gecheckt werden, werden sie laxer.</p>
+<h3>Einfache Kontroll-Mechanismen</h3>
+<p>Checklisten: Tägliche Öffnungs- und Schließchecklisten die der Schichtleiter abhakt. Sichtprüfung: 10 Minuten Rundgang täglich — Sauberkeit, Ordnung, Mise en Place. Stichproben: Gelegentlich eine Portion wiegen oder eine Reinigungsaufgabe prüfen. Nicht täglich — das wäre Mikromanagement. Aber regelmäßig genug dass das Team weiß: Standards werden gecheckt.</p>
+<div class="beispiel"><div class="beispiel-lbl">📊 Rechenbeispiel aus der Praxis</div><p>Restaurant ohne Qualitätssicherungs-System: Standards verwässern in 3 Monaten messbar.</p><p>WE steigt um 2% durch größere Portionen. Reinigungsqualität sinkt, erste Beschwerden.</p><div class="rechnung">2% WE bei 35.000 € Umsatz = 700 €/Monat = 8.400 €/Jahr unbemerkt verloren.</div><p>Mit monatlichem QS-Check (2h/Monat): WE stabil, Beschwerden-Rate niedrig, Gäste-Zufriedenheit konstant.</p></div>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 1</div><p>Erstelle jetzt eine tägliche Schicht-Checkliste für deinen Schichtleiter: Was wird vor dem Service geprüft? Während des Service? Nach dem Service? Maximal 10 Punkte — dann wird sie auch genutzt.</p></div>
+<h2>Kapitel 2 — Gäste-Feedback als Qualitäts-Spiegel</h2>
+<h3>Dein wertvollstes Feedback kommt von deinen Gästen</h3>
+<p>Gäste sagen dir was du selbst nicht mehr siehst. Wer täglich im Betrieb ist, hat Betriebsblindheit. Was für dich normal ist, fällt einem Gast auf. Google-Bewertungen, direkte Kommentare, der Gast der beim Bezahlen zögernd 'war okay' sagt — das sind alles Qualitäts-Signale.</p>
+<p>Richte ein einfaches System ein: Jeden Montag 15 Minuten Google-Bewertungen der letzten Woche lesen. Muster erkennen: Was wird mehrfach gelobt? Was mehrfach kritisiert? Was gelobt wird, weitermachen. Was kritisiert wird, konkret ansprechen und in SOP einarbeiten.</p>
+<div class="tipp-box"><p>💡 <strong>Profi-Tipp:</strong> Bitte dein Team aktiv um Hinweise wenn Gäste sich beschweren oder unzufrieden wirken — auch wenn sie es nicht direkt sagen. Ein Mitarbeiter der beobachtet dass ein Gast kaum isst und sagt 'Das Steak war etwas zäh' ist wertvolles Feedback. Schaffe eine Kultur wo solche Rückmeldungen willkommen sind.</p></div>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 2</div><p>Lies jetzt alle Google-Bewertungen der letzten 3 Monate durch. Was wird am häufigsten gelobt? Was am häufigsten kritisiert? Schreib beides auf und leite daraus eine konkrete Verbesserungsmaßnahme ab.</p></div>
+<div class="nav-row"><a href="modul5-lektion3.html" class="nav-btn secondary">← Lektion 3</a></div>
+<div class="fazit"><div class="fazit-lbl">🎯 Das Wichtigste auf einen Blick</div><ul><li>Qualitätssicherung = regelmäßig prüfen ob Standards eingehalten werden.</li><li>Checklisten + Stichproben + Gäste-Feedback = das einfachste QS-System.</li><li>Standards ohne Prüfung verwässern innerhalb von Monaten — unbewusst und schleichend.</li><li>Gäste-Feedback ist dein wertvollster Qualitäts-Spiegel — nutze ihn wöchentlich.</li></ul></div>
+<div class="checkliste"><div class="checkliste-lbl">✅ Sofort-Checkliste — Das kannst du heute noch tun</div><ul><li>Tägliche Schicht-Checkliste für Schichtleiter erstellen (max. 10 Punkte)</li><li>Google-Bewertungen der letzten 3 Monate analysieren</li><li>Muster identifizieren: was wird gelobt, was kritisiert?</li><li>Modul 6 starten: Führung und Mitarbeiter</li></ul></div>
   <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
 </div>
 <div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
-<script>
-(function(){
-  // Rechtsklick & Tastenkürzel sperren
-  document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
-  document.addEventListener('keydown', function(e){
-    if (e.ctrlKey && ['s','u','p','a'].includes(e.key.toLowerCase())) e.preventDefault();
-    if (e.key === 'F12') e.preventDefault();
-  });
-
-  // Supabase Auth Check
-  const sb = supabase.createClient(
-    'https://hchlganbgjeciwhwaisj.supabase.co',
-    'sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3'
-  );
-  (async function(){
-    const { data:{ session } } = await sb.auth.getSession();
-    if (!session) { window.location.href = 'login.html'; return; }
-    const { data: profile } = await sb.from('profiles')
-      .select('is_active,subscription_status')
-      .eq('id', session.user.id).maybeSingle();
-    if (profile && (!profile.is_active || profile.subscription_status !== 'active')) {
-      await sb.auth.signOut();
-      window.location.href = 'login.html';
-    }
-  })();
-})();
-</script>
-</body>
-</html>
+</body></html>

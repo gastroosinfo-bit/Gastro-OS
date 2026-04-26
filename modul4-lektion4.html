@@ -1,219 +1,83 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GASTRO-OS – Modul 4 | Lektion 4</title>
-<style>
-* { margin:0; padding:0; box-sizing:border-box; }
+<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Lektion 4 — Finanzplanung und Liquidität | GASTRO-OS</title><style>* { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
-.header{background:#1a2a4a;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
-.brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
-.btn-back-modul{background:#d4af37;color:#1a2a4a;border:none;padding:9px 20px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.2s;letter-spacing:0.3px}
-.btn-back-modul:hover{background:#c8a030;color:#1a2a4a}
+.header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:18px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.btn-back { background:#d4af37; color:#1a2a4a; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.btn-back:hover { background:#c8a030; }
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
 .wrap { max-width:720px; margin:40px auto; padding:0 24px 60px; }
 .lbl { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:8px; }
-h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:10px; line-height:1.3; }
-.lektion-hero { background:#1a2a4a; border-radius:12px; padding:28px 32px; margin-bottom:28px; border:2px solid #d4af37; }
-.lektion-hero .lektion-tag { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:10px; }
-.lektion-hero h1 { font-family:Georgia,serif; font-size:26px; color:#fff; margin-bottom:0; font-weight:normal; line-height:1.3; }
-.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:20px 0 32px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
-h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:normal; margin:36px 0 14px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
-h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:24px 0 10px; }
-p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
-ul, ol { margin:12px 0 16px 20px; }
-li { font-size:15px; line-height:1.8; color:#2a3a54; margin-bottom:6px; }
-.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin-top:24px; }
-.aufgabe-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
-.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; }
-.highlight { background:#fff8e8; border-left:3px solid #d4af37; padding:14px 18px; margin:20px 0; font-size:14px; color:#5a4000; line-height:1.7; }
-.nav-row { display:flex; gap:12px; justify-content:space-between; margin-top:40px; }
-.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:12px 24px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none; transition:all 0.2s; }
-.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
-.nav-btn.secondary { background:transparent; border:1px solid rgba(26,42,74,0.3); color:#1a2a4a; }
-.nav-btn.secondary:hover { background:#1a2a4a; color:#d4af37; }
-.footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
-.footer-lbl strong { color:#d4af37; }
-.footer-main { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
-.footer-main strong { color:#d4af37; }
-@media (max-width:600px) { .wrap{padding:0 16px 40px} h1{font-size:22px} h2{font-size:17px} }
-
-.lern-box { background:#1a2a4a; border-radius:8px; padding:18px 22px; margin:0 0 28px; }
+h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:16px; line-height:1.3; }
+.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:0 0 24px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+.lern-box { background:#1a2a4a; border-radius:8px; padding:16px 20px; margin:0 0 28px; }
 .lern-box-title { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
 .lern-box ul { list-style:none; padding:0; margin:0; }
-.lern-box ul li { font-size:13px; color:#a0b0c8; padding:4px 0 4px 20px; position:relative; line-height:1.6; }
-.lern-box ul li::before { content:'✓'; position:absolute; left:0; color:#d4af37; font-weight:700; }
+.lern-box li { font-size:13px; color:#a0b0c8; padding:4px 0 4px 20px; position:relative; line-height:1.6; }
+.lern-box li::before { content:'✓'; position:absolute; left:0; color:#d4af37; font-weight:700; }
+h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:normal; margin:36px 0 14px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
+h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:22px 0 10px; }
+h4 { font-size:15px; color:#1a2a4a; font-weight:700; margin:18px 0 8px; }
+p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
+.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin:24px 0; }
+.aufgabe-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
+.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; line-height:1.7; }
 .beispiel { background:#fff; border:1px solid #e8dfc8; border-left:4px solid #3a7ad4; border-radius:0 8px 8px 0; padding:16px 20px; margin:20px 0; }
 .beispiel-lbl { font-size:11px; color:#3a7ad4; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
 .beispiel p { font-size:14px; color:#2a3a54; margin-bottom:8px; line-height:1.75; }
 .beispiel p:last-child { margin-bottom:0; }
-.beispiel .rechnung { background:#f0f4f8; border-radius:5px; padding:10px 14px; font-family:monospace; font-size:13px; color:#1a2a4a; margin:8px 0; }
-.fazit { background:#fdf9ee; border:2px solid #d4af37; border-radius:8px; padding:18px 22px; margin-top:36px; }
+.rechnung { background:#f0f4f8; border-radius:5px; padding:10px 14px; font-family:monospace; font-size:13px; color:#1a2a4a; margin:8px 0; line-height:1.6; }
+.tipp-box { background:#e4f5e8; border:1px solid #4aaa60; border-radius:8px; padding:14px 18px; margin:18px 0; }
+.tipp-box p { font-size:14px; color:#1a6030; margin-bottom:0; line-height:1.7; }
+.nav-row { display:flex; gap:12px; justify-content:space-between; margin:40px 0 0; }
+.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:11px 20px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; transition:all 0.2s; }
+.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
+.nav-btn.secondary { background:#fff; color:#1a2a4a; border:1px solid #e8dfc8; }
+.nav-btn.secondary:hover { border-color:#d4af37; }
+.fazit { background:#fdf9ee; border:2px solid #d4af37; border-radius:8px; padding:18px 22px; margin:32px 0 0; }
 .fazit-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
 .fazit ul { list-style:none; padding:0; margin:0; }
-.fazit ul li { font-size:14px; color:#2a3a54; padding:5px 0 5px 22px; position:relative; line-height:1.65; border-bottom:1px solid #e8dfc8; }
-.fazit ul li:last-child { border-bottom:none; }
-.fazit ul li::before { content:'→'; position:absolute; left:0; color:#d4af37; font-weight:700; }
-.tipp-box { background:#e4f5e8; border:1px solid #4aaa60; border-radius:8px; padding:14px 18px; margin:16px 0; }
-.tipp-box p { font-size:14px; color:#1a6030; margin-bottom:0; line-height:1.7; }
-.checkliste { background:#fff; border:1px solid #e8dfc8; border-radius:8px; padding:16px 20px; margin:20px 0; }
+.fazit li { font-size:14px; color:#2a3a54; padding:6px 0 6px 22px; position:relative; line-height:1.65; border-bottom:1px solid #e8dfc8; }
+.fazit li:last-child { border-bottom:none; }
+.fazit li::before { content:'→'; position:absolute; left:0; color:#d4af37; font-weight:700; }
+.checkliste { background:#fff; border:1px solid #e8dfc8; border-radius:8px; padding:16px 20px; margin:20px 0 0; }
 .checkliste-lbl { font-size:11px; color:#1a2a4a; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
 .checkliste ul { list-style:none; padding:0; margin:0; }
-.checkliste ul li { font-size:14px; color:#2a3a54; padding:6px 0 6px 28px; position:relative; border-bottom:1px solid #f0ece4; }
-.checkliste ul li:last-child { border-bottom:none; }
-.checkliste ul li::before { content:'☐'; position:absolute; left:0; color:#d4af37; font-size:16px; line-height:1; }
-</style>
-</head>
+.checkliste li { font-size:14px; color:#2a3a54; padding:7px 0 7px 28px; position:relative; border-bottom:1px solid #f0ece4; line-height:1.55; }
+.checkliste li:last-child { border-bottom:none; }
+.checkliste li::before { content:'☐'; position:absolute; left:0; color:#d4af37; font-size:16px; line-height:1.2; }
+.footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-lbl strong { color:#d4af37; }
+.footer-main { background:#1a2a4a; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-main strong { color:#d4af37; }</style></head>
 <body>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-(function(){
-  document.addEventListener('contextmenu',function(e){e.preventDefault();});
-  document.addEventListener('keydown',function(e){
-    if(e.ctrlKey&&['s','u','p','a'].includes(e.key.toLowerCase()))e.preventDefault();
-    if(e.key==='F12')e.preventDefault();
-  });
-  const sb=supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3');
-  (async function(){
-    const{data:{session}}=await sb.auth.getSession();
-    if(!session){window.location.href='login.html';return;}
-    const{data:profile}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
-    if(profile&&(!profile.is_active||profile.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
-  })();
-})();
-</script>
-<div class="header">
-  <div class="brand">GASTRO-OS</div>
-  <a href="dashboard.html#modul-4" class="btn-back-modul">← Zurück zum Dashboard</a>
-</div>
+<div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html#modul-4" class="btn-back">← Zurück zum Dashboard</a></div>
 <div class="gold-bar"></div>
-
 <div class="wrap">
   <div class="lbl">Modul 4 · Lektion 4</div>
-  <div class="lektion-hero">
-    <div class="lektion-tag">Modul 4 · Lektion 4</div>
-    <h1>Lektion 4 — Fallbeispiel &amp; Aktionsplan</h1>
-  </div>
-  <div class="intro"></div>
+  <h1>Finanzplanung und Liquidität</h1>
+  <div class="intro">In den ersten drei Lektionen hast du BWA, Break-Even und Kostentreiber kennengelernt. In dieser letzten Lektion schauen wir auf das Gesamtbild: Wie planst du deine Finanzen voraus? Wie stellst du sicher dass du immer liquide bleibst? Und wie investierst du klug?</div>
+  <div class="lern-box"><div class="lern-box-title">📚 Was du in dieser Lektion lernst</div><ul><li>Was Liquidität bedeutet und warum sie wichtiger ist als Gewinn</li><li>Einen einfachen Finanzplan für 12 Monate erstellen</li><li>Wie du Investitionen richtig bewertest</li><li>Deinen persönlichen 30-Tage-Finanzplan abschließen</li></ul></div>
 
-<h2>Kapitel 1 — Fallbeispiel: Mario erkennt wo 1.800 Euro im Monat verschwinden</h2>
-    <p>Das Folgende ist ein zusammengesetztes Beispiel aus typischen Mustern die wir in Gastronomiebetrieben regelmäßig beobachten. Namen und Details sind fiktiv, aber die Zahlen sind real.</p>
-
-    <div class="fallbeispiel">
-      <h4>Ausgangssituation</h4>
-      <p>Mario betreibt ein italienisches Restaurant mit 60.000 Euro Jahresumsatz, also rund 5.000 Euro pro Monat. Er zahlt sich selbst wenig und weiß nicht warum am Ende nichts übrig bleibt. Der Betrieb läuft, die Gäste kommen, die Bewertungen sind gut. Aber das Konto wächst nicht.</p>
-      <p>Auf Anraten seines Steuerberaters schaut er sich seine BWA der letzten drei Monate wirklich an. Nicht nur die letzte Zeile. Alle fünf Schlüsselzeilen.</p>
-    </div>
-
-    <div class="fallbeispiel">
-      <h4>Was Mario findet</h4>
-      <p>Sein Wareneinsatz liegt bei 38 Prozent. Das Ziel liegt unter 30 Prozent. Die Differenz von 8 Prozentpunkten bedeutet bei 5.000 Euro Monatsumsatz rund 400 Euro zu viel pro Monat. Monat für Monat. Ohne dass es jemand bemerkt hat.</p>
-      <p>Dazu kommen Liefergebühren einer Plattform mit 22 Prozent Provision. Mario macht über diese Plattform monatlich etwa 2.700 Euro Umsatz. Das sind 594 Euro Provision jeden Monat die direkt an die Plattform fließen. Er hatte das nie so konkret ausgerechnet.</p>
-      <p>Zusammen sind das fast 1.000 Euro pro Monat die still und leise verschwinden.</p>
-      <p>Bei weiterer Analyse entdeckt er noch einen dritten Kostentreiber: Seine Energiekosten sind im Vergleich zum Vorjahr um 18 Prozent gestiegen. Ein alter Kühlschrank der seit Jahren mehr Strom verbraucht als er sollte — und niemand hat es bemerkt weil die Jahresabrechnung nie mit dem Vorjahr verglichen wurde.</p>
-    </div>
-
-    <div class="fallbeispiel">
-      <h4>Was Mario ändert</h4>
-      <p>Mario kündigt die Plattform nicht sofort. Stattdessen erhöht er die Preise dort um 18 Prozent um die Provision teilweise zu kompensieren. Gleichzeitig baut er eine eigene WhatsApp-Gruppe für Stammkunden auf mit direkter Bestellmöglichkeit — ohne Provision.</p>
-      <p>Er standardisiert seine fünf meistverkauften Gerichte mit klaren Portionsgrößen. Jeder Koch weiß jetzt genau wie viel von was auf den Teller kommt. Der wöchentliche Einkaufs-Check aus Modul 3 wird zur festen Routine.</p>
-      <p>Der alte Kühlschrank wird durch ein effizientes Modell ersetzt. Die Investition liegt bei 1.400 Euro. Bei den eingesparten Energiekosten rechnet sie sich in unter einem Jahr.</p>
-    </div>
-
-    <div class="ergebnis-box">
-      <h4>🎉 Das Ergebnis nach 3 Monaten</h4>
-      <p>✅ Wareneinsatz sinkt von 38 auf 31 Prozent.</p>
-      <p>✅ Direktbestellungen steigen auf 35 Prozent der früheren Plattform-Bestellungen.</p>
-      <p>✅ Energiekosten sinken um 22 Prozent im Vergleich zum Vorjahr.</p>
-      <p><strong>Mario hat 1.800 Euro mehr pro Monat</strong> — ohne einen Cent mehr Umsatz, ohne neue Marketingmaßnahmen, ohne einen neuen Mitarbeiter. Nur durch das Verstehen und Kontrollieren seiner eigenen Zahlen.</p>
-    </div>
-
-    <div class="highlight">
-      Das Geld war die ganze Zeit da. Es ist nur an den falschen Stellen versickert. Zahlen zu kennen verändert nichts. Zahlen zu verstehen und darauf zu reagieren verändert alles.
-    </div>
-
-    <div class="task-box">
-      <strong>🎯 Aufgabe Kapitel 1</strong>
-      <p>Lies das Fallbeispiel nochmal und markiere die Stelle die dich am meisten anspricht. Erkennst du einen dieser Kostentreiber in deinem eigenen Betrieb? Schreib ihn auf. Das ist dein Startpunkt.</p>
-    </div>
-  </div>
-
-  <div class="chapter">
-    <h2>Kapitel 2 — Dein 30-Tage-Aktionsplan</h2>
-    <p>Wissen ohne Umsetzung ist Unterhaltung. Dieser Plan gibt dir für jeden der nächsten vier Wochen einen konkreten Fokus. Ein Schritt pro Woche. Nicht mehr.</p>
-
-    <div class="wochen-grid">
-      <div class="woche-card">
-        <h4>📋 Woche 1 — BWA anfordern und analysieren</h4>
-        <p>Fordere die BWA der letzten drei Monate von deinem Steuerberater an. Berechne für jeden Monat die fünf Schlüsselwerte in Prozent. Schreib sie nebeneinander. Siehst du einen Trend?</p>
-        <div class="result">→ Du weißt wo dein Betrieb heute steht</div>
-      </div>
-      <div class="woche-card">
-        <h4>📊 Woche 2 — Break-Even berechnen</h4>
-        <p>Berechne deinen Break-Even-Punkt. Wie weit ist dein tatsächlicher Monatsumsatz vom Break-Even entfernt? Was würde passieren wenn dein Umsatz einen Monat lang 20 Prozent unter dem aktuellen Wert liegt?</p>
-        <div class="result">→ Du kennst deine finanzielle Untergrenze</div>
-      </div>
-      <div class="woche-card">
-        <h4>🔍 Woche 3 — Kostentreiber identifizieren</h4>
-        <p>Fülle die Kostentreiber-Checkliste aus. Identifiziere die zwei größten Kostentreiber in deinem Betrieb. Lege für jeden eine konkrete Maßnahme fest — mit einem klaren Datum bis wann du sie umsetzt.</p>
-        <div class="result">→ Du weißt wo die größten Hebel liegen</div>
-      </div>
-      <div class="woche-card">
-        <h4>🔄 Woche 4 — Kontroll-Rhythmus einrichten</h4>
-        <p>Richte deinen monatlichen Kontroll-Rhythmus ein. Kalender-Erinnerungen für den wöchentlichen Check, die monatliche BWA-Auswertung und den quartalsweisen Lieferanten-Check. Setze die erste Maßnahme aus Woche 3 um.</p>
-        <div class="result">→ Du hast ein System das dauerhaft läuft</div>
-      </div>
-    </div>
-
-    <div class="hint-box">👉 Den Gewinn-Rechner findest du im Tab 📊 Gewinn-Rechner<br>👉 Die Kostentreiber-Checkliste findest du im Tab 📊 Kostentreiber-Checkliste</div>
-
-    <div class="task-box">
-      <strong>🎯 Aufgabe Kapitel 2</strong>
-      <p>Trag alle vier Wochen-Aufgaben jetzt in deinen Kalender ein. Konkrete Termine, konkrete Uhrzeiten. Und ruf heute noch deinen Steuerberater an um die BWA der letzten drei Monate anzufordern. Das ist der erste Schritt.</p>
-    </div>
-  </div>
-
-  <div class="abschluss">
-    <h3>Dein nächster Schritt</h3>
-    <p>Du hast Modul 4 durchgearbeitet. Du weißt jetzt wie du Fixkosten von variablen Kosten unterscheidest, wie du deinen Break-Even berechnest, wie du eine BWA liest und wo die fünf größten Kostentreiber in deinem Betrieb lauern.<br><br>Jetzt ist es Zeit das Wissen in deinen Betrieb zu bringen. Nicht nächste Woche. <strong style="color:#d4af37;">Heute.</strong></p>
-  </div>
-
-  <div class="nav-row">
-    <a href="modul4-lektion3.html" class="nav-btn secondary">← Lektion 3</a>
-    <a href="modul4-gewinn-anleitung.html" class="nav-btn">Gewinn-Rechner Anleitung →</a>
-  </div>
-<div class="fazit"><div class="fazit-lbl">🎯 Das Wichtigste auf einen Blick</div><ul><li>Liquidität ist wichtiger als Gewinn — wer keine Liquidität hat, hat bald keinen Gewinn.</li><li>Plane 2 Monatsumsätze als eiserne Reserve. Darunter: Alarmzustand.</li><li>Investitionen: Payback-Zeit berechnen. Unter 3 Jahren: fast immer sinnvoll.</li><li>Der Finanzplan ist kein Buch — er ist ein Steuerrad. Nutze ihn monatlich.</li></ul></div>
-<div class="checkliste"><div class="checkliste-lbl">✅ Sofort-Checkliste — Das kannst du heute noch tun</div><ul><li>Aktuellen Kontostand und Liquiditätspuffer notieren</li><li>Alle fälligen Zahlungen der nächsten 3 Monate auflisten</li><li>Umsatzprognose für die nächsten 3 Monate realistisch schätzen</li><li>Liquiditäts-Check: Reicht das Geld für alle Verpflichtungen?</li><li>Einen festen monatlichen Finanz-Termin (60 min) im Kalender blockieren</li></ul></div>
+<h2>Kapitel 1 — Liquidität: der wichtigste Schutz</h2>
+<h3>Warum Liquidität wichtiger ist als Gewinn</h3>
+<p>Ein Betrieb kann profitabel sein und trotzdem Insolvenz anmelden — wenn er zum falschen Zeitpunkt nicht zahlen kann. Liquidität bedeutet: Die richtigen Mittel zur richtigen Zeit verfügbar. Nicht irgendwann. Jetzt, wenn Löhne fällig sind, wenn der Steuerberater rechnet, wenn eine Maschine ausfällt.</p>
+<p>Die goldene Regel: Halte immer mindestens 1-2 Monatsumsätze als Liquiditätsreserve. Das klingt viel. Es ist das Minimum. Alles darunter ist existenzielles Risiko.</p>
+<h3>Der einfache 12-Monats-Finanzplan</h3>
+<p>Schritt 1: Liste alle fixen monatlichen Ausgaben auf (Miete, Personal, Versicherungen). Schritt 2: Schätze deinen Monatsumsatz für jeden der nächsten 12 Monate — realistisch, nicht optimistisch. Schritt 3: Berechne monatlich: Einnahmen minus Ausgaben = Liquiditätsveränderung. Schritt 4: Prüfe welche Monate unter der Sicherheitslinie liegen. Das sind deine Risiko-Monate.</p>
+<div class="beispiel"><div class="beispiel-lbl">📊 Rechenbeispiel aus der Praxis</div><p>Gasthaus, typisches Muster: Umsatz-Tal Januar/Februar, Peak Dezember.</p><p>Januar: Umsatz 24.000 €, Fixkosten 22.000 € → Liquidität: +2.000 € (sehr knapp).</p><p>Dezember: Umsatz 55.000 €, Fixkosten 28.000 € → Liquidität: +27.000 €.</p><div class="rechnung">Wer im Dezember nicht spart, hat im Januar ein ernstes Problem. Der Finanzplan zeigt das im November — nicht im Januar wenn es zu spät ist.</div></div>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 1</div><p>Erstelle jetzt deinen 12-Monats-Finanzplan: Schreibe für jeden Monat deinen geschätzten Umsatz und alle Fixkosten auf. Wo ist das Liquiditäts-Minimum? Was musst du zurücklegen?</p></div>
+<h2>Kapitel 2 — Investitionen klug bewerten</h2>
+<h3>Die Payback-Rechnung</h3>
+<p>Vor jeder Investition: Wann habe ich das investierte Geld zurück? Investition durch jährliche Einsparung oder Mehrertrag = Payback-Zeit in Jahren. Unter 3 Jahre: fast immer sinnvoll. 3-5 Jahre: prüfen. Über 5 Jahre: kritisch hinterfragen.</p>
+<h3>Was Investitionen klug macht</h3>
+<p>Energiesparende Geräte mit unter 3 Jahren Payback: kaufen. Neues Kassensystem das Analyse ermöglicht: kaufen wenn der Nutzen klar ist. Umbau der 'schön wäre': warten bis Liquidität stabil ist.</p>
+<div class="tipp-box"><p>💡 <strong>Profi-Tipp:</strong> Die wichtigste Investition die du tätigen kannst kostet nichts: Zeit. 3 Stunden pro Woche AM Betrieb — an Systemen, Zahlen, Strategie. Diese Zeit hat einen ROI der jede andere Investition übersteigt.</p></div>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 2</div><p>Schreibe alle geplanten Investitionen der nächsten 12 Monate auf. Berechne für jede die Payback-Zeit. Streiche alle die über 5 Jahre liegen — außer es gibt einen zwingenden Grund. Was bleibt auf der Liste?</p></div>
+<div class="nav-row"><a href="modul4-lektion3.html" class="nav-btn secondary">← Lektion 3</a></div>
+<div class="fazit"><div class="fazit-lbl">🎯 Das Wichtigste auf einen Blick</div><ul><li>Liquidität ist wichtiger als Gewinn — wer nicht zahlen kann, hat kein Unternehmen mehr.</li><li>Reserve: immer 1-2 Monatsumsätze liquide halten.</li><li>12-Monats-Finanzplan: zeigt Risiko-Monate bevor sie eintreten.</li><li>Investitions-Check: Payback unter 3 Jahre = kaufen. Über 5 Jahre = kritisch prüfen.</li></ul></div>
+<div class="checkliste"><div class="checkliste-lbl">✅ Sofort-Checkliste — Das kannst du heute noch tun</div><ul><li>12-Monats-Finanzplan erstellen: Umsatzprognose + Fixkosten</li><li>Aktuellen Kontostand und Liquiditätsreserve notieren</li><li>Geplante Investitionen auf Payback-Zeit prüfen</li><li>Modul 5 starten: SOPs und Prozesse</li></ul></div>
   <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
 </div>
 <div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
-<script>
-(function(){
-  // Rechtsklick & Tastenkürzel sperren
-  document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
-  document.addEventListener('keydown', function(e){
-    if (e.ctrlKey && ['s','u','p','a'].includes(e.key.toLowerCase())) e.preventDefault();
-    if (e.key === 'F12') e.preventDefault();
-  });
-
-  // Supabase Auth Check
-  const sb = supabase.createClient(
-    'https://hchlganbgjeciwhwaisj.supabase.co',
-    'sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3'
-  );
-  (async function(){
-    const { data:{ session } } = await sb.auth.getSession();
-    if (!session) { window.location.href = 'login.html'; return; }
-    const { data: profile } = await sb.from('profiles')
-      .select('is_active,subscription_status')
-      .eq('id', session.user.id).maybeSingle();
-    if (profile && (!profile.is_active || profile.subscription_status !== 'active')) {
-      await sb.auth.signOut();
-      window.location.href = 'login.html';
-    }
-  })();
-})();
-</script>
-</body>
-</html>
+</body></html>

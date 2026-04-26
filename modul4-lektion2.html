@@ -1,188 +1,81 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GASTRO-OS – Modul 4 | Lektion 2</title>
-<style>
-* { margin:0; padding:0; box-sizing:border-box; }
+<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Lektion 2 — Break-Even kennen und steuern | GASTRO-OS</title><style>* { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
-.header{background:#1a2a4a;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
-.brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
-.btn-back-modul{background:#d4af37;color:#1a2a4a;border:none;padding:9px 20px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.2s;letter-spacing:0.3px}
-.btn-back-modul:hover{background:#c8a030;color:#1a2a4a}
+.header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:18px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.btn-back { background:#d4af37; color:#1a2a4a; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.btn-back:hover { background:#c8a030; }
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
 .wrap { max-width:720px; margin:40px auto; padding:0 24px 60px; }
 .lbl { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:8px; }
-h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:10px; line-height:1.3; }
-.lektion-hero { background:#1a2a4a; border-radius:12px; padding:28px 32px; margin-bottom:28px; border:2px solid #d4af37; }
-.lektion-hero .lektion-tag { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:10px; }
-.lektion-hero h1 { font-family:Georgia,serif; font-size:26px; color:#fff; margin-bottom:0; font-weight:normal; line-height:1.3; }
-.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:20px 0 32px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
-h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:normal; margin:36px 0 14px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
-h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:24px 0 10px; }
-p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
-ul, ol { margin:12px 0 16px 20px; }
-li { font-size:15px; line-height:1.8; color:#2a3a54; margin-bottom:6px; }
-.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin-top:24px; }
-.aufgabe-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
-.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; }
-.highlight { background:#fff8e8; border-left:3px solid #d4af37; padding:14px 18px; margin:20px 0; font-size:14px; color:#5a4000; line-height:1.7; }
-.nav-row { display:flex; gap:12px; justify-content:space-between; margin-top:40px; }
-.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:12px 24px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none; transition:all 0.2s; }
-.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
-.nav-btn.secondary { background:transparent; border:1px solid rgba(26,42,74,0.3); color:#1a2a4a; }
-.nav-btn.secondary:hover { background:#1a2a4a; color:#d4af37; }
-.footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
-.footer-lbl strong { color:#d4af37; }
-.footer-main { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
-.footer-main strong { color:#d4af37; }
-@media (max-width:600px) { .wrap{padding:0 16px 40px} h1{font-size:22px} h2{font-size:17px} }
-
-.lern-box { background:#1a2a4a; border-radius:8px; padding:18px 22px; margin:0 0 28px; }
+h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:16px; line-height:1.3; }
+.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:0 0 24px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+.lern-box { background:#1a2a4a; border-radius:8px; padding:16px 20px; margin:0 0 28px; }
 .lern-box-title { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
 .lern-box ul { list-style:none; padding:0; margin:0; }
-.lern-box ul li { font-size:13px; color:#a0b0c8; padding:4px 0 4px 20px; position:relative; line-height:1.6; }
-.lern-box ul li::before { content:'✓'; position:absolute; left:0; color:#d4af37; font-weight:700; }
+.lern-box li { font-size:13px; color:#a0b0c8; padding:4px 0 4px 20px; position:relative; line-height:1.6; }
+.lern-box li::before { content:'✓'; position:absolute; left:0; color:#d4af37; font-weight:700; }
+h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:normal; margin:36px 0 14px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
+h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:22px 0 10px; }
+h4 { font-size:15px; color:#1a2a4a; font-weight:700; margin:18px 0 8px; }
+p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
+.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin:24px 0; }
+.aufgabe-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
+.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; line-height:1.7; }
 .beispiel { background:#fff; border:1px solid #e8dfc8; border-left:4px solid #3a7ad4; border-radius:0 8px 8px 0; padding:16px 20px; margin:20px 0; }
 .beispiel-lbl { font-size:11px; color:#3a7ad4; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
 .beispiel p { font-size:14px; color:#2a3a54; margin-bottom:8px; line-height:1.75; }
 .beispiel p:last-child { margin-bottom:0; }
-.beispiel .rechnung { background:#f0f4f8; border-radius:5px; padding:10px 14px; font-family:monospace; font-size:13px; color:#1a2a4a; margin:8px 0; }
-.fazit { background:#fdf9ee; border:2px solid #d4af37; border-radius:8px; padding:18px 22px; margin-top:36px; }
+.rechnung { background:#f0f4f8; border-radius:5px; padding:10px 14px; font-family:monospace; font-size:13px; color:#1a2a4a; margin:8px 0; line-height:1.6; }
+.tipp-box { background:#e4f5e8; border:1px solid #4aaa60; border-radius:8px; padding:14px 18px; margin:18px 0; }
+.tipp-box p { font-size:14px; color:#1a6030; margin-bottom:0; line-height:1.7; }
+.nav-row { display:flex; gap:12px; justify-content:space-between; margin:40px 0 0; }
+.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:11px 20px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; transition:all 0.2s; }
+.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
+.nav-btn.secondary { background:#fff; color:#1a2a4a; border:1px solid #e8dfc8; }
+.nav-btn.secondary:hover { border-color:#d4af37; }
+.fazit { background:#fdf9ee; border:2px solid #d4af37; border-radius:8px; padding:18px 22px; margin:32px 0 0; }
 .fazit-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
 .fazit ul { list-style:none; padding:0; margin:0; }
-.fazit ul li { font-size:14px; color:#2a3a54; padding:5px 0 5px 22px; position:relative; line-height:1.65; border-bottom:1px solid #e8dfc8; }
-.fazit ul li:last-child { border-bottom:none; }
-.fazit ul li::before { content:'→'; position:absolute; left:0; color:#d4af37; font-weight:700; }
-.tipp-box { background:#e4f5e8; border:1px solid #4aaa60; border-radius:8px; padding:14px 18px; margin:16px 0; }
-.tipp-box p { font-size:14px; color:#1a6030; margin-bottom:0; line-height:1.7; }
-.checkliste { background:#fff; border:1px solid #e8dfc8; border-radius:8px; padding:16px 20px; margin:20px 0; }
+.fazit li { font-size:14px; color:#2a3a54; padding:6px 0 6px 22px; position:relative; line-height:1.65; border-bottom:1px solid #e8dfc8; }
+.fazit li:last-child { border-bottom:none; }
+.fazit li::before { content:'→'; position:absolute; left:0; color:#d4af37; font-weight:700; }
+.checkliste { background:#fff; border:1px solid #e8dfc8; border-radius:8px; padding:16px 20px; margin:20px 0 0; }
 .checkliste-lbl { font-size:11px; color:#1a2a4a; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
 .checkliste ul { list-style:none; padding:0; margin:0; }
-.checkliste ul li { font-size:14px; color:#2a3a54; padding:6px 0 6px 28px; position:relative; border-bottom:1px solid #f0ece4; }
-.checkliste ul li:last-child { border-bottom:none; }
-.checkliste ul li::before { content:'☐'; position:absolute; left:0; color:#d4af37; font-size:16px; line-height:1; }
-</style>
-</head>
+.checkliste li { font-size:14px; color:#2a3a54; padding:7px 0 7px 28px; position:relative; border-bottom:1px solid #f0ece4; line-height:1.55; }
+.checkliste li:last-child { border-bottom:none; }
+.checkliste li::before { content:'☐'; position:absolute; left:0; color:#d4af37; font-size:16px; line-height:1.2; }
+.footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-lbl strong { color:#d4af37; }
+.footer-main { background:#1a2a4a; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-main strong { color:#d4af37; }</style></head>
 <body>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-(function(){
-  document.addEventListener('contextmenu',function(e){e.preventDefault();});
-  document.addEventListener('keydown',function(e){
-    if(e.ctrlKey&&['s','u','p','a'].includes(e.key.toLowerCase()))e.preventDefault();
-    if(e.key==='F12')e.preventDefault();
-  });
-  const sb=supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3');
-  (async function(){
-    const{data:{session}}=await sb.auth.getSession();
-    if(!session){window.location.href='login.html';return;}
-    const{data:profile}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
-    if(profile&&(!profile.is_active||profile.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
-  })();
-})();
-</script>
-<div class="header">
-  <div class="brand">GASTRO-OS</div>
-  <a href="dashboard.html#modul-4" class="btn-back-modul">← Zurück zum Dashboard</a>
-</div>
+<div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html#modul-4" class="btn-back">← Zurück zum Dashboard</a></div>
 <div class="gold-bar"></div>
-
 <div class="wrap">
   <div class="lbl">Modul 4 · Lektion 2</div>
-  <div class="lektion-hero">
-    <div class="lektion-tag">Modul 4 · Lektion 2</div>
-    <h1>Lektion 2 — Die BWA richtig lesen</h1>
-  </div>
-  <div class="intro"></div>
+  <h1>Break-Even kennen und steuern</h1>
+  <div class="intro">Der Break-Even ist der Umsatz ab dem du aufhörst Verlust zu machen. Wer ihn nicht kennt, weiß nicht ob ein schlechter Monat noch im grünen Bereich ist oder schon problematisch. In dieser Lektion berechnest du deinen Break-Even — und lernst wie du ihn aktiv senkst.</div>
+  <div class="lern-box"><div class="lern-box-title">📚 Was du in dieser Lektion lernst</div><ul><li>Was der Break-Even ist und warum er überlebenswichtig ist</li><li>Break-Even in 10 Minuten berechnen</li><li>Den Unterschied zwischen Fixkosten und variablen Kosten kennen</li><li>Konkrete Wege deinen Break-Even zu senken</li></ul></div>
 
-<h2>Kapitel 1 — Was ist die BWA und warum ist sie so wichtig?</h2>
-    <p>Die Betriebswirtschaftliche Auswertung, kurz BWA, ist dein monatlicher Finanzspiegel. Sie zeigt dir auf einer oder zwei Seiten wie dein Betrieb wirtschaftlich dasteht. Umsatz, Kosten, Ergebnis — alles auf einen Blick.</p>
-    <p>Die meisten Gastronomen machen einen teuren Fehler: Sie schauen nur auf die letzte Zeile, den Gewinn oder Verlust. Alles andere überfliegen sie. Das ist so als würdest du beim Autofahren nur auf den Tacho schauen und alle anderen Instrumente ignorieren. Du weißt wie schnell du fährst aber nicht ob der Motor überhitzt, ob der Tank leer wird oder ob die Bremsen versagen.</p>
-    <p>Die BWA richtig zu lesen bedeutet nicht stundenlang Zahlen zu wälzen. Es bedeutet fünf Schlüsselzeilen zu kennen und zu verstehen was sie dir sagen.</p>
-
-    <h3>Die 5 wichtigsten Zeilen in deiner BWA</h3>
-    <table class="bwa-table">
-      <tr><th>Zeile</th><th>Was sie zeigt</th><th>Zielwert</th></tr>
-      <tr><td><strong>1 · Nettoumsatz</strong></td><td>Dein echter Umsatz ohne MwSt. Alle anderen Prozentwerte beziehen sich auf diese Zahl. Sie ist dein Referenzwert.</td><td class="ziel">Referenz</td></tr>
-      <tr><td><strong>2 · Wareneinsatz</strong></td><td>Was du für Lebensmittel und Getränke ausgegeben hast.</td><td class="ziel">&lt; 30%</td></tr>
-      <tr><td><strong>3 · Personalkosten</strong></td><td>Löhne, Gehälter und alle Lohnnebenkosten. Oft der größte Kostenblock.</td><td class="ziel">&lt; 35%</td></tr>
-      <tr><td><strong>4 · Betriebskosten</strong></td><td>Miete, Strom, Versicherungen und alles zum laufenden Betrieb.</td><td class="ziel">&lt; 20%</td></tr>
-      <tr><td><strong>5 · Betriebsergebnis</strong></td><td>Was wirklich übrig bleibt nach allen Kosten.</td><td class="ziel">&gt; 10% · unter 5% = Warnsignal</td></tr>
-    </table>
-
-    <h3>Was diese Zahlen zusammen bedeuten</h3>
-    <p>Wenn du Wareneinsatz, Personalkosten und Betriebskosten addierst solltest du unter 85% des Nettoumsatzes kommen. Was übrig bleibt ist dein Betriebsergebnis. Wenn du über 85% liegst bleibt weniger als 15% für Steuern, Rücklagen und deinen eigenen Lohn. Das ist zu wenig.</p>
-
-    <div class="hint-box">👉 Den Screenshot-Guide mit echten Beispiel-BWAs und farbigen Markierungen findest du im Tab 📸 Screenshot Guide BWA</div>
-
-    <div class="task-box">
-      <strong>🎯 Aufgabe Kapitel 1</strong>
-      <p>Hol dir deine BWA der letzten drei Monate. Markiere die fünf Schlüsselzeilen. Berechne jeden Wert als Prozentsatz des Nettoumsatzes. Schreib die Zahlen nebeneinander. Siehst du einen Trend? Steigt der Wareneinsatz? Sinkt das Betriebsergebnis?</p>
-    </div>
-  </div>
-
-  <div class="chapter">
-    <h2>Kapitel 2 — Die BWA als Steuerungsinstrument</h2>
-    <p>Eine BWA die du einmal im Monat kurz anschaust ist gut. Eine BWA die du wirklich verstehst und aktiv zur Steuerung deines Betriebs nutzt ist Gold wert.</p>
-
-    <h3>Was du monatlich prüfen solltest</h3>
-    <p>Ist der Wareneinsatz-Prozentsatz gestiegen? Wenn ja: Einkauf und Portionen prüfen. Hat sich etwas im Angebot geändert? Gibt es saisonale Einflüsse?</p>
-    <p>Sind die Personalkosten im Verhältnis zum Umsatz gestiegen? Schau dir den Dienstplan an. Gab es mehr Überstunden als geplant? Wurden Schichten nicht optimal besetzt?</p>
-    <p>Gibt es ungewöhnliche Kostenpositionen die letzten Monat nicht da waren? Eine unerwartete Reparatur, eine Nachzahlung, eine neue Ausgabe die sich schleichend eingeschlichen hat?</p>
-    <p>Wie entwickelt sich das Betriebsergebnis im Vergleich zu den Vormonaten? Ein einmaliger schlechter Monat ist normal. Drei schlechte Monate hintereinander sind ein Muster das du verstehen musst.</p>
-    <p>Liegt dein Break-Even im grünen Bereich oder hast du ihn diesen Monat nicht erreicht?</p>
-
-    <h3>Die BWA im Vergleich zum Vorjahr</h3>
-    <p>Noch wertvoller als der Vergleich zum Vormonat ist der Vergleich zum selben Monat im Vorjahr. Die Gastronomie hat starke saisonale Schwankungen. Ein schwacher Januar ist normal. Aber wenn dein Januar dieses Jahr schwächer ist als letztes Jahr und du keinen Grund dafür siehst ist das ein Signal das Handlungsbedarf anzeigt.</p>
-    <p>Bitte deinen Steuerberater die BWA immer mit dem Vorjahresvergleich zu schicken. Die meisten Buchhaltungsprogramme können das automatisch ausgeben.</p>
-
-    <h3>Was tun wenn die Zahlen schlecht sind?</h3>
-    <p>Viele Gastronomen schieben die BWA beiseite wenn die Zahlen nicht gut sind. Das ist menschlich aber kontraproduktiv. Schlechte Zahlen sind keine Bedrohung — sie sind Information. Und Information ist der erste Schritt zur Verbesserung.</p>
-    <p>Wenn dein Wareneinsatz zu hoch ist weißt du wo du ansetzen musst. Wenn deine Personalkosten zu hoch sind kannst du den Dienstplan analysieren. Wenn das Betriebsergebnis negativ ist kannst du die Kostentreiber suchen. Jede Abweichung hat eine Ursache. Und jede Ursache hat eine Lösung.</p>
-
-    <div class="task-box">
-      <strong>🎯 Aufgabe Kapitel 2</strong>
-      <p>Vergleiche deine BWA des letzten Monats mit demselben Monat im Vorjahr. Was hat sich verändert? Was ist besser geworden? Was ist schlechter? Schreib drei konkrete Beobachtungen auf. Das sind deine Gesprächspunkte beim nächsten Termin mit deinem Steuerberater.</p>
-    </div>
-  </div>
-
-  <div class="nav-row">
-    <a href="modul4-lektion1.html" class="nav-btn secondary">← Lektion 1</a>
-    <a href="modul4-lektion3.html" class="nav-btn">Lektion 3 →</a>
-  </div>
-<div class="fazit"><div class="fazit-lbl">🎯 Das Wichtigste auf einen Blick</div><ul><li>Break-Even = der Umsatz ab dem du keinen Verlust mehr machst.</li><li>Jeder Euro über Break-Even ist Gewinn. Jeder Euro darunter ist Verlust.</li><li>Break-Even senken = Fixkosten reduzieren oder variable Quote verbessern.</li><li>Kenne deinen Break-Even so gut wie deinen Namen.</li></ul></div>
-<div class="checkliste"><div class="checkliste-lbl">✅ Sofort-Checkliste — Das kannst du heute noch tun</div><ul><li>Alle Fixkosten auflisten und summieren</li><li>Variable Kostenquote berechnen (WE + variab. Personal + Sonstiges)</li><li>Break-Even = Fixkosten ÷ (1 - variable Quote) berechnen</li><li>Break-Even durch täglichen Mindestumsatz ausdrücken</li><li>Prüfen: Wie viele Tage im Monat wird der Break-Even unterschritten?</li></ul></div>
+<h2>Kapitel 1 — Der Break-Even als Sicherheitsnetz</h2>
+<h3>Was der Break-Even dir sagt</h3>
+<p>Der Break-Even ist der Umsatz bei dem du weder Gewinn noch Verlust machst. Jeder Euro Umsatz über diesem Wert ist Gewinn. Jeder Euro darunter ist Verlust. Wer seinen Break-Even kennt, weiß bei jedem Tagesumsatz sofort: Bin ich heute im Plus oder im Minus?</p>
+<h3>Die Berechnung</h3>
+<p>Schritt 1: Alle Fixkosten pro Monat aufaddieren. Fixkosten sind alle Kosten die unabhängig vom Umsatz entstehen: Miete, feste Personalkosten, Versicherungen, Leasing, Internet, Buchhaltung. Schritt 2: Variable Kostenquote bestimmen. Das sind Kosten die mit dem Umsatz steigen: Wareneinsatz, variable Personalkosten, Verpackung. Schritt 3: Break-Even = Fixkosten geteilt durch (1 minus variable Kostenquote).</p>
+<div class="beispiel"><div class="beispiel-lbl">📊 Rechenbeispiel aus der Praxis</div><p>Bistro 40 Plätze. Fixkosten/Monat: Miete 2.800 € + Personal fix 5.800 € + Versicherungen 350 € + Leasing 280 € + Sonstiges 570 € = 9.800 €.</p><p>Variable Kosten: WE 30% + variable Personal 5% + Sonstiges 3% = 38%.</p><div class="rechnung">Break-Even = 9.800 ÷ (1 - 0,38) = 9.800 ÷ 0,62 = 15.807 €/Monat.</div><p>Bei 25 Öffnungstagen: 15.807 ÷ 25 = 632 €/Tag Mindestumsatz. Jeden Tag darunter: Verlust.</p></div>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 1</div><p>Berechne deinen Break-Even jetzt. Liste alle Fixkosten auf. Berechne deine variable Kostenquote (WE% + variable Personalquote + Sonstiges%). Dann: Break-Even = Fixkosten ÷ (1 - variable Quote). Schreibe das Ergebnis als Tagesumsatz.</p></div>
+<h2>Kapitel 2 — Break-Even aktiv senken</h2>
+<h3>Zwei Wege zum niedrigeren Break-Even</h3>
+<p>Weg 1: Fixkosten senken. Jede Fixkostenreduktion senkt direkt den Break-Even. Mietverhandlung, Versicherungsvergleich, Energie-Fixvertrag optimieren. Aber Vorsicht: Nicht an Qualität sparen die den Umsatz gefährdet.</p>
+<p>Weg 2: Variable Kostenquote verbessern. Niedrigerer Wareneinsatz % bedeutet mehr vom Umsatz bleibt nach variablen Kosten übrig. Bei gleichen Fixkosten sinkt der Break-Even automatisch wenn du die variable Quote senkst.</p>
+<div class="tipp-box"><p>💡 <strong>Profi-Tipp:</strong> Rechne dir aus was 1% weniger Wareneinsatz für deinen Break-Even bedeutet. Oft ist es der motivierendste Moment für konsequenten Einkauf. Wer sieht dass 1% WE-Senkung den Break-Even um 500 €/Monat senkt, nimmt den Einkaufs-Check ernst.</p></div>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 2</div><p>Identifiziere eine Fixkostenposition die du in den nächsten 3 Monaten reduzieren könntest. Wann hast du zuletzt Versicherungen, Energie-Tarif oder Leasing-Konditionen verglichen? Das ist dein Startpunkt.</p></div>
+<div class="nav-row"><a href="modul4-lektion1.html" class="nav-btn secondary">← Lektion 1</a><a href="modul4-lektion3.html" class="nav-btn">Lektion 3 →</a></div>
+<div class="fazit"><div class="fazit-lbl">🎯 Das Wichtigste auf einen Blick</div><ul><li>Break-Even = Fixkosten ÷ (1 - variable Kostenquote). Das Fundament deiner Finanzplanung.</li><li>Kenne deinen Break-Even als Tagesumsatz — dann weißt du täglich wo du stehst.</li><li>Break-Even senken: Fixkosten runter ODER variable Quote verbessern.</li><li>1% weniger WE bei 30.000 € Umsatz senkt den Break-Even um ca. 480 €/Monat.</li></ul></div>
+<div class="checkliste"><div class="checkliste-lbl">✅ Sofort-Checkliste — Das kannst du heute noch tun</div><ul><li>Alle Fixkosten auflisten und summieren</li><li>Variable Kostenquote berechnen (WE% + variab. Kosten)</li><li>Break-Even als Monatsbetrag und Tagesumsatz berechnen</li><li>1 Fixkostenposition identifizieren die du überprüfst</li></ul></div>
   <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
 </div>
 <div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
-<script>
-(function(){
-  // Rechtsklick & Tastenkürzel sperren
-  document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
-  document.addEventListener('keydown', function(e){
-    if (e.ctrlKey && ['s','u','p','a'].includes(e.key.toLowerCase())) e.preventDefault();
-    if (e.key === 'F12') e.preventDefault();
-  });
-
-  // Supabase Auth Check
-  const sb = supabase.createClient(
-    'https://hchlganbgjeciwhwaisj.supabase.co',
-    'sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3'
-  );
-  (async function(){
-    const { data:{ session } } = await sb.auth.getSession();
-    if (!session) { window.location.href = 'login.html'; return; }
-    const { data: profile } = await sb.from('profiles')
-      .select('is_active,subscription_status')
-      .eq('id', session.user.id).maybeSingle();
-    if (profile && (!profile.is_active || profile.subscription_status !== 'active')) {
-      await sb.auth.signOut();
-      window.location.href = 'login.html';
-    }
-  })();
-})();
-</script>
-</body>
-</html>
+</body></html>
