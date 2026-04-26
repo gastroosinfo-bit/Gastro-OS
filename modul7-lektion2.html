@@ -1,157 +1,82 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GASTRO-OS – Modul 7 | Lektion 2</title>
-<style>
-* { margin:0; padding:0; box-sizing:border-box; }
+<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Lektion 2 — Energiekosten systematisch senken | GASTRO-OS</title><style>* { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
-.header{background:#1a2a4a;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
-.brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
-.btn-back-modul{background:#d4af37;color:#1a2a4a;border:none;padding:9px 20px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.2s;letter-spacing:0.3px}
-.btn-back-modul:hover{background:#c8a030;color:#1a2a4a}
+.header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:18px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.btn-back { background:#d4af37; color:#1a2a4a; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.btn-back:hover { background:#c8a030; }
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
 .wrap { max-width:720px; margin:40px auto; padding:0 24px 60px; }
 .lbl { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:8px; }
-h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:10px; line-height:1.3; }
-.lektion-hero { background:#1a2a4a; border-radius:12px; padding:28px 32px; margin-bottom:28px; border:2px solid #d4af37; }
-.lektion-hero .lektion-tag { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:10px; }
-.lektion-hero h1 { font-family:Georgia,serif; font-size:26px; color:#fff; margin-bottom:0; font-weight:normal; line-height:1.3; }
-.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:20px 0 32px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:16px; line-height:1.3; }
+.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:0 0 24px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+.lern-box { background:#1a2a4a; border-radius:8px; padding:16px 20px; margin:0 0 28px; }
+.lern-box-title { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.lern-box ul { list-style:none; padding:0; margin:0; }
+.lern-box li { font-size:13px; color:#a0b0c8; padding:4px 0 4px 20px; position:relative; line-height:1.6; }
+.lern-box li::before { content:'✓'; position:absolute; left:0; color:#d4af37; font-weight:700; }
 h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:normal; margin:36px 0 14px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
-h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:24px 0 10px; }
+h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:22px 0 10px; }
+h4 { font-size:15px; color:#1a2a4a; font-weight:700; margin:18px 0 8px; }
 p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
-ul, ol { margin:12px 0 16px 20px; }
-li { font-size:15px; line-height:1.8; color:#2a3a54; margin-bottom:6px; }
-.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin-top:24px; }
+.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin:24px 0; }
 .aufgabe-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
-.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; }
-.highlight { background:#fff8e8; border-left:3px solid #d4af37; padding:14px 18px; margin:20px 0; font-size:14px; color:#5a4000; line-height:1.7; }
-.nav-row { display:flex; gap:12px; justify-content:space-between; margin-top:40px; }
-.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:12px 24px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none; transition:all 0.2s; }
+.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; line-height:1.7; }
+.beispiel { background:#fff; border:1px solid #e8dfc8; border-left:4px solid #3a7ad4; border-radius:0 8px 8px 0; padding:16px 20px; margin:20px 0; }
+.beispiel-lbl { font-size:11px; color:#3a7ad4; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
+.beispiel p { font-size:14px; color:#2a3a54; margin-bottom:8px; line-height:1.75; }
+.beispiel p:last-child { margin-bottom:0; }
+.rechnung { background:#f0f4f8; border-radius:5px; padding:10px 14px; font-family:monospace; font-size:13px; color:#1a2a4a; margin:8px 0; line-height:1.6; }
+.tipp-box { background:#e4f5e8; border:1px solid #4aaa60; border-radius:8px; padding:14px 18px; margin:18px 0; }
+.tipp-box p { font-size:14px; color:#1a6030; margin-bottom:0; line-height:1.7; }
+.nav-row { display:flex; gap:12px; justify-content:space-between; margin:40px 0 0; }
+.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:11px 20px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; transition:all 0.2s; }
 .nav-btn:hover { background:#d4af37; color:#1a2a4a; }
-.nav-btn.secondary { background:transparent; border:1px solid rgba(26,42,74,0.3); color:#1a2a4a; }
-.nav-btn.secondary:hover { background:#1a2a4a; color:#d4af37; }
+.nav-btn.secondary { background:#fff; color:#1a2a4a; border:1px solid #e8dfc8; }
+.nav-btn.secondary:hover { border-color:#d4af37; }
+.fazit { background:#fdf9ee; border:2px solid #d4af37; border-radius:8px; padding:18px 22px; margin:32px 0 0; }
+.fazit-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.fazit ul { list-style:none; padding:0; margin:0; }
+.fazit li { font-size:14px; color:#2a3a54; padding:6px 0 6px 22px; position:relative; line-height:1.65; border-bottom:1px solid #e8dfc8; }
+.fazit li:last-child { border-bottom:none; }
+.fazit li::before { content:'→'; position:absolute; left:0; color:#d4af37; font-weight:700; }
+.checkliste { background:#fff; border:1px solid #e8dfc8; border-radius:8px; padding:16px 20px; margin:20px 0 0; }
+.checkliste-lbl { font-size:11px; color:#1a2a4a; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.checkliste ul { list-style:none; padding:0; margin:0; }
+.checkliste li { font-size:14px; color:#2a3a54; padding:7px 0 7px 28px; position:relative; border-bottom:1px solid #f0ece4; line-height:1.55; }
+.checkliste li:last-child { border-bottom:none; }
+.checkliste li::before { content:'☐'; position:absolute; left:0; color:#d4af37; font-size:16px; line-height:1.2; }
 .footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-lbl strong { color:#d4af37; }
-.footer-main { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
-.footer-main strong { color:#d4af37; }
-@media (max-width:600px) { .wrap{padding:0 16px 40px} h1{font-size:22px} h2{font-size:17px} }
-</style>
-</head>
+.footer-main { background:#1a2a4a; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-main strong { color:#d4af37; }</style></head>
 <body>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-(function(){
-  document.addEventListener('contextmenu',function(e){e.preventDefault();});
-  document.addEventListener('keydown',function(e){
-    if(e.ctrlKey&&['s','u','p','a'].includes(e.key.toLowerCase()))e.preventDefault();
-    if(e.key==='F12')e.preventDefault();
-  });
-  const sb=supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3');
-  (async function(){
-    const{data:{session}}=await sb.auth.getSession();
-    if(!session){window.location.href='login.html';return;}
-    const{data:profile}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
-    if(profile&&(!profile.is_active||profile.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
-  })();
-})();
-</script>
-<div class="header">
-  <div class="brand">GASTRO-OS</div>
-  <a href="dashboard.html#modul-7" class="btn-back-modul">← Zurück zum Dashboard</a>
-</div>
+<div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html#modul-7" class="btn-back">← Zurück zum Dashboard</a></div>
 <div class="gold-bar"></div>
-
 <div class="wrap">
   <div class="lbl">Modul 7 · Lektion 2</div>
-  <div class="lektion-hero">
-    <div class="lektion-tag">Modul 7 · Lektion 2</div>
-    <h1>Energie und Kühlung im Griff</h1>
-  </div>
-  <div class="intro">In Lektion 1 haben wir uns angeschaut warum Kostenkontrolle so vielen Gastronomen schwerfällt, was versteckte Kostenvernichter sind und wo sie in einem typischen Betrieb lauern. Du hast deinen Betrieb mit neuen Augen betrachtet und aufgeschrieben was läuft obwohl es nicht laufen muss. Das war der erste Schritt. Jetzt gehen wir in die ersten zwei konkreten Bereiche. Energie und Kühlung. Beide sind </div>
+  <h1>Energiekosten systematisch senken</h1>
+  <div class="intro">Nach dem Kostenscan weißt du wo Energie vergeudet wird. In dieser Lektion gehen wir konkret vor: Welche Maßnahmen senken deine Energiekosten sofort? Und welche Investitionen rechnen sich wann?</div>
+  <div class="lern-box"><div class="lern-box-title">📚 Was du in dieser Lektion lernst</div><ul><li>Wo Energiekosten in der Gastronomie wirklich entstehen</li><li>Sofortmaßnahmen die ohne Investition funktionieren</li><li>Welche Geräte-Investitionen sich wann lohnen</li><li>Den monatlichen Energie-Check als Routine einführen</li></ul></div>
 
-<h2>Kapitel 1: Energie — der schlafende Kostenfresser</h2>
-  <h3>Warum Strom und Gas so selten kontrolliert werden</h3>
-  <p>Strom und Gas gehören in der Gastronomie zu den größten Kostenpositionen nach Personal und Wareneinsatz. Und gleichzeitig zu den am wenigsten aktiv kontrollierten. Der Grund dafür ist einfach. Die Rechnung kommt einmal im Monat, wird bezahlt und verschwindet im Ordner. Was dahinter steckt, welche Geräte wirklich Kosten treiben und wann sie das tun, bleibt unsichtbar.</p>
-  <p>Das ist ein teures Missverständnis. Denn Energiekosten sind keine fixen Größen die man akzeptieren muss. Sie sind variable Kosten die sich durch bewusstes Management deutlich beeinflussen lassen. Nicht durch Verzicht. Sondern durch Kontrolle.</p>
-  <p>Ein gewerblicher Kühlschrank der zehn Jahre alt ist, verbraucht bis zu dreimal so viel Strom wie ein modernes Gerät mit vergleichbarer Kapazität. Eine Fritteuse die nach dem Mittagsservice unnötig auf Temperatur gehalten wird, kostet täglich Geld ohne einen einzigen Gast zu bedienen. Beleuchtung die in leeren Räumen brennt, Heizung die läuft obwohl die Terrassentür offen steht, Warmwasserboiler die rund um die Uhr auf Temperatur gehalten werden obwohl sie nur zu bestimmten Zeiten gebraucht werden. Das sind keine Kleinigkeiten. Das sind über das Jahr gerechnet hunderte, manchmal tausende Euro.</p>
-
-  <h3>Strom richtig verstehen</h3>
-  <p>Die meisten Gastronomen wissen nicht wie viel Strom einzelne Geräte tatsächlich verbrauchen. Das ist verständlich. Der Verbrauch ist unsichtbar. Er zeigt sich erst auf der Rechnung, und dort als Gesamtbetrag, nicht aufgeschlüsselt nach Gerät.</p>
-  <p>Ein einfaches Strommessgerät ändert das. Es kostet wenige Euro in jedem Baumarkt, wird zwischen Steckdose und Gerät gesteckt und zeigt innerhalb weniger Stunden oder Tage den tatsächlichen Verbrauch an. Diese Information ist Gold wert wenn es darum geht zu entscheiden welche Geräte wirklich Kosten treiben und wo eine Investition in ein moderneres Gerät sich langfristig rechnet.</p>
-  <p>Darüber hinaus lohnt es sich den Stromtarif regelmäßig zu überprüfen. Gewerbliche Stromtarife variieren erheblich. Und viele Gastronomen zahlen seit Jahren denselben Tarif obwohl günstigere Optionen verfügbar wären. Ein Vergleich kostet eine Stunde und kann monatlich dreistellige Beträge einsparen. Nicht durch weniger Verbrauch. Sondern durch einen besseren Preis pro Kilowattstunde.</p>
-
-  <h3>Gas und Wärme in der Küche</h3>
-  <p>In der Küche ist Gas nach dem Personal oft der größte Einzelkostenfaktor. Und er hat eine Eigenart die ihn besonders teuer macht. Gas verbraucht sich nicht nur wenn gekocht wird. Es verbraucht sich auch wenn Geräte auf Temperatur gehalten werden ohne dass sie genutzt werden.</p>
-  <p>Hier lohnt sich ein kritischer Blick auf die Nutzungszeiten. Wann werden die Herde wirklich gebraucht? Wann laufen sie auf Temperatur ohne dass gekocht wird? Gibt es Möglichkeiten die Aufheizzeiten besser zu koordinieren durch einen klaren Küchenplan der festlegt wann welches Gerät gestartet wird?</p>
-  <p>Ein konkretes Beispiel. Wenn der Frittierkorb erst um 17 Uhr wirklich gebraucht wird, warum läuft die Fritteuse dann seit 14 Uhr? Die Antwort ist meistens, weil es immer so gemacht wurde. Nicht weil es notwendig ist. Eine klare Regel wann welches Gerät gestartet wird, kommuniziert und umgesetzt als fester Bestandteil des Tagesablaufs, kann hier schnell spürbare Ergebnisse bringen.</p>
-
-  <h3>Beleuchtung und die kleinen Verbraucher</h3>
-  <p>Beleuchtung ist in der Gastronomie selten der größte Kostenfaktor. Aber sie ist einer der einfachsten zu optimieren. LED-Beleuchtung verbraucht bis zu 80 Prozent weniger Strom als ältere Leuchtmittel. Wenn dein Betrieb noch mit älteren Lampen ausgestattet ist, lohnt sich die Umrüstung. Die Investition amortisiert sich in den meisten Fällen innerhalb von ein bis zwei Jahren.</p>
-  <p>Dazu kommen einfache Verhaltensregeln die keine Investition erfordern. Licht in leeren Räumen ausschalten. Terrassenbeleuchtung zeitgesteuert betreiben. Küchenbeleuchtung in ruhigen Phasen reduzieren. Diese Dinge klingen selbstverständlich. In vielen Betrieben werden sie trotzdem nicht konsequent umgesetzt, weil niemand dafür verantwortlich ist. Das ist eine Aufgabe für deine SOPs aus Modul 5. Wer schaltet wann was aus. Aufgeschrieben, bekannt, verbindlich.</p>
-  <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 1</div><p>Schreib jetzt eine Liste aller wärme- und stromintensiven Geräte in deinem Betrieb. Schreib daneben wann sie täglich gestartet werden und wann sie wirklich gebraucht werden. Markiere alle Geräte bei denen ein Unterschied zwischen Startzeit und tatsächlichem Bedarf existiert. Das sind deine ersten konkreten Einsparpotenziale. Und schreib auf wann du deinen Stromtarif zuletzt überprüft hast.</p></div>
-
-  <h2>Kapitel 2: Kühlung — teuer, unsichtbar, wartungsintensiv</h2>
-  <h3>Warum Kühlgeräte so wichtig und so unterschätzt sind</h3>
-  <p>Kühlgeräte laufen rund um die Uhr. 24 Stunden am Tag, 365 Tage im Jahr. Das ist ihr Job. Und weil sie immer laufen und nie auffallen solange sie funktionieren, werden sie selten aktiv gemanagt.</p>
-  <p>Das ist ein Fehler der in zwei Richtungen teuer wird. Erstens durch unnötig hohen Energieverbrauch. Verschmutzte Kondensatoren lassen Kühlgeräte bis zu 30 Prozent mehr Strom verbrauchen als nötig. Türdichtungen die nicht mehr richtig schließen, Kühlräume die zu voll beladen sind, Geräte die zu nah an Wärmequellen stehen wie Herde oder Backöfen, all das kostet täglich Energie ohne jeden Mehrwert.</p>
-  <p>Zweitens durch Lebensmittelverluste. Wenn die Kühlkette nicht stimmt, verderben Waren schneller als nötig. Jede weggeworfene Zutat ist doppelt verlorenes Geld. Einmal beim Einkauf, einmal als verpasster Umsatz. Und das Schlimmste daran ist dass dieser Verlust oft gar nicht als solcher wahrgenommen wird. Er gehört zum Alltag. Er ist Teil der Routine geworden.</p>
-
-  <h3>Temperaturkontrolle als echtes Instrument</h3>
-  <p>Viele Gastronomen prüfen die Kühltemperaturen nur wenn sie müssen, zum Beispiel bei einer Hygienekontrolle. Dabei ist regelmäßige Temperaturkontrolle nicht nur eine Pflicht. Sie ist ein echtes Instrument zur Kostenkontrolle.</p>
-  <p>Zu warme Kühlung bedeutet schneller verderbende Ware und damit höhere Verluste. Zu kalte Kühlung, besonders bei Salaten, frischen Kräutern und empfindlichen Produkten, bedeutet Frostschäden und ebenfalls Verluste. Die ideale Kühltemperatur für verschiedene Warengruppen zu kennen und täglich zu kontrollieren ist eine der einfachsten Maßnahmen die sowohl Qualität als auch Haltbarkeit der Produkte verbessert.</p>
-  <p>Kühlschränke und Kühlräume sollten täglich auf die korrekte Temperatur geprüft werden. Nicht weil es Vorschrift ist. Sondern weil jede Abweichung Geld kostet. Ein einfaches Temperaturprotokoll, ein Blatt Papier an der Kühlraumtür mit Datum, Uhrzeit und gemessener Temperatur, reicht für den Anfang. Es kostet zwei Minuten pro Tag und macht Probleme sichtbar bevor sie zu Verlusten werden.</p>
-
-  <h3>Kühlraum-Organisation als Kostenfaktor</h3>
-  <p>Ein zu voll beladener Kühlraum arbeitet ineffizient. Die Kaltluft kann nicht zirkulieren, das Gerät muss mehr arbeiten, der Stromverbrauch steigt. Das ist Physik, keine Meinung.</p>
-  <p>Eine klare Organisation des Kühlraums mit festen Plätzen für feste Warengruppen hat deshalb gleich mehrere Vorteile. Weniger Energieverbrauch weil die Luft zirkulieren kann. Schnellere Entnahme im Service weil jeder weiß wo was ist. Bessere Übersicht über den tatsächlichen Warenbestand weil Lücken sofort auffallen.</p>
-  <p>Letzteres ist besonders wichtig. Wer seinen Kühlraum kennt, kauft nicht doppelt ein. Wer seinen Kühlraum kennt, sieht rechtzeitig was als nächstes verbraucht werden muss. Das reduziert Verluste direkt und damit unmittelbar die Kosten.</p>
-  <p>Eine einfache Regel für die Kühlraum-Organisation. First In First Out. Was zuerst geliefert wurde, wird zuerst verbraucht. Neue Ware kommt nach hinten, ältere Ware kommt nach vorne. Diese Regel ist in vielen Betrieben bekannt aber nicht konsequent umgesetzt. Eine SOP für die Warenannahme und Einlagerung ändert das.</p>
-
-  <h3>Wartung als Investition nicht als Kostenfaktor</h3>
-  <p>Viele Gastronomen sehen Wartung als Kostenfaktor. Das ist der falsche Blickwinkel. Wartung ist eine Investition die sich direkt in niedrigeren Betriebskosten niederschlägt.</p>
-  <p>Verschmutzte Kondensatoren reinigen lassen kostet wenig. Der Effekt auf den Stromverbrauch ist sofort messbar. Türdichtungen prüfen und bei Bedarf ersetzen kostet wenig. Der Effekt auf Kühlleistung und Lebensmittelhaltbarkeit ist direkt spürbar. Regelmäßige Wartungsintervalle für alle Kühlgeräte festlegen und einhalten bedeutet dass teure Reparaturen oder gar Totalausfälle seltener auftreten.</p>
-  <p>Ein Kühlraumausfall mitten in der Saison kann Tausende Euro kosten. An Lebensmittelverlusten, an Notfallreparaturen, an entgangenem Umsatz. Eine jährliche Wartung kostet einen Bruchteil davon und verhindert genau dieses Szenario.</p>
-  <p>Führe einen monatlichen Kühlcheck ein. Dichtungen prüfen. Temperaturen dokumentieren. Kondensatoren auf Verschmutzung prüfen. Kühlraum auf Ordnung und Auslastung prüfen. Das dauert 20 Minuten und ist einer der günstigsten Checks den du in deinem Betrieb regelmäßig machen kannst.</p>
-
-  <h3>Alte Geräte als stille Kostentreiber</h3>
-  <p>Ein letzter Punkt der in vielen Betrieben unterschätzt wird. Alte Kühlgeräte. Ein Kühlschrank der zehn oder fünfzehn Jahre alt ist, erfüllt seinen Job. Er kühlt. Aber er kühlt mit einem Energieverbrauch der weit über dem moderner Geräte liegt. Manchmal doppelt so viel. Manchmal dreifach.</p>
-  <p>Die Frage ob sich eine Neuanschaffung lohnt, lässt sich mit einer einfachen Rechnung beantworten. Wie viel Strom verbraucht das alte Gerät pro Jahr in Kilowattstunden multipliziert mit dem Strompreis. Wie viel würde ein modernes Gerät verbrauchen. Die Differenz zeigt wie lange die Amortisationszeit einer Neuinvestition ist.</p>
-  <p>In vielen Fällen ist ein moderner Ersatz innerhalb von drei bis fünf Jahren durch die Energieeinsparung finanziert. Dazu kommen niedrigere Wartungskosten und weniger Ausfallrisiko. Das ist keine Ausgabe. Das ist eine Investition mit messbarem Return.</p>
-  <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 2</div><p>Führe noch diese Woche einen ersten Kühlcheck durch. Prüfe alle Türdichtungen auf Dichtheit indem du ein Blatt Papier in die Tür legst und prüfst ob es Widerstand hat. Messe die Temperaturen in allen Kühlgeräten und dokumentiere sie. Schau dir den Füllstand deines Kühlraums an und überprüfe ob die Kaltluft zirkulieren kann. Und schreib auf wann deine Kühlgeräte zuletzt gewartet wurden. Diese vier Punkte zeigen dir in 30 Minuten wo der größte Handlungsbedarf liegt.</p></div>
-
-
+<h2>Kapitel 1 — Energie-Sofortmaßnahmen</h2>
+<h3>Was sofort ohne Kosten funktioniert</h3>
+<p>'Alles aus'-Protokoll: Eine Liste aller Geräte mit ihren Ausschalt-Zeitpunkten. Wann geht die Fritteuse an? Wann aus? Wann der Backofen? Wann die Kaffeemaschine? Diese Liste wird als SOP aushängend und täglich abgehakt. Kosten: 0 Euro. Einsparung: 5-15% Energiekosten.</p>
+<p>Kühlraum-Disziplin: Türen geschlossen halten, nicht länger als nötig öffnen. Kühlraum nicht mit heißen Produkten beladen. Kondenswasser-Abtau-Zyklen nicht manuell unterbrechen. Klingt trivial — ist messbar.</p>
+<h3>Schnell-Check: Türdichtungen</h3>
+<p>Stecke ein Blatt Papier in die Kühlschrankoder Kühlraumtür und ziehe es heraus. Gibt es Widerstand? Gut — die Dichtung ist dicht. Kein Widerstand? Die Dichtung ist undicht — der Kühlschrank verbraucht 20-40% mehr Energie. Eine neue Dichtung kostet 30-80 Euro. Amortisation: unter einem Monat.</p>
+<div class="beispiel"><div class="beispiel-lbl">📊 Rechenbeispiel aus der Praxis</div><p>Restaurant, 80 kWh/Tag Stromverbrauch, 0,35 €/kWh.</p><p>Monatliche Stromkosten: 80 × 30 × 0,35 = 840 €/Monat.</p><p>Maßnahmen: Fritteuse 2h früher aus (−1,5 kWh/Tag), LED-Umrüstung (−6 kWh/Tag), Kühlraum-Dichtung repariert (−4 kWh/Tag).</p><div class="rechnung">Einsparung: 11,5 kWh/Tag × 0,35 × 300 = 1.207 €/Jahr. LED-Investition: 350 €. Dichtung: 60 €. Gesamt-ROI: über 12× im ersten Jahr.</div></div>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 1</div><p>Führe heute den Dichtungs-Test an allen Kühlgeräten durch. Erstelle das 'Alles aus'-Protokoll für deinen Betrieb: Welches Gerät wird wann eingeschaltet? Wann ausgeschaltet? Hänge es als SOP aus.</p></div>
+<h2>Kapitel 2 — Investitions-Entscheidungen bei Geräten</h2>
+<h3>Wann sich neue Geräte lohnen</h3>
+<p>Faustregel: Wenn ein Gerät älter als 8 Jahre ist, lohnt sich ein Vergleich mit neueren Modellen fast immer. Energieeffizienz-Klassen haben sich verbessert. Ein neuer A++-Kühlschrank verbraucht oft 60% weniger als ein 10 Jahre altes Gerät.</p>
+<p>Vor jeder Geräte-Investition: Jährliche Einsparung berechnen × Payback-Zeit. Unter 3 Jahre: kaufen. 3-5 Jahre: sorgfältig prüfen. Über 5 Jahre: warten.</p>
+<div class="tipp-box"><p>💡 <strong>Profi-Tipp:</strong> Nutze die Energieberatung deiner regionalen Handwerkskammer oder des lokalen Energieversorgers — oft kostenlos. Sie scannen deinen Betrieb auf Einsparpotenziale und zeigen dir welche Investitionen wirklich Sinn machen. Das spart Zeit und Fehlentscheidungen.</p></div>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 2</div><p>Liste alle Geräte in deinem Betrieb auf die älter als 8 Jahre sind. Recherchiere für das älteste und energieintensivste den Verbrauch eines aktuellen Vergleichsgeräts. Rechne die Payback-Zeit aus. Lohnt sich die Investition?</p></div>
+<div class="nav-row"><a href="modul7-lektion1.html" class="nav-btn secondary">← Lektion 1</a><a href="modul7-lektion3.html" class="nav-btn">Lektion 3 →</a></div>
+<div class="fazit"><div class="fazit-lbl">🎯 Das Wichtigste auf einen Blick</div><ul><li>'Alles aus'-Protokoll: kostenlose SOP die 5-15% Energiekosten spart.</li><li>Dichtungs-Test: 2 Minuten, 30-80 € Reparatur, Amortisation unter einem Monat.</li><li>Geräte über 8 Jahre: Vergleich mit neueren lohnt sich fast immer.</li><li>Payback unter 3 Jahre: kaufen. Über 5 Jahre: warten.</li></ul></div>
+<div class="checkliste"><div class="checkliste-lbl">✅ Sofort-Checkliste — Das kannst du heute noch tun</div><ul><li>Dichtungs-Test an allen Kühlgeräten durchführen</li><li>'Alles aus'-Protokoll erstellen und als SOP aushängen</li><li>Alle Geräte über 8 Jahre auflisten</li><li>Kosten-Analyse Tool öffnen und Energiekosten eintragen</li></ul></div>
   <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
 </div>
 <div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
-<script>
-(function(){
-  // Rechtsklick & Tastenkürzel sperren
-  document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
-  document.addEventListener('keydown', function(e){
-    if (e.ctrlKey && ['s','u','p','a'].includes(e.key.toLowerCase())) e.preventDefault();
-    if (e.key === 'F12') e.preventDefault();
-  });
-
-  // Supabase Auth Check
-  const sb = supabase.createClient(
-    'https://hchlganbgjeciwhwaisj.supabase.co',
-    'sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3'
-  );
-  (async function(){
-    const { data:{ session } } = await sb.auth.getSession();
-    if (!session) { window.location.href = 'login.html'; return; }
-    const { data: profile } = await sb.from('profiles')
-      .select('is_active,subscription_status')
-      .eq('id', session.user.id).maybeSingle();
-    if (profile && (!profile.is_active || profile.subscription_status !== 'active')) {
-      await sb.auth.signOut();
-      window.location.href = 'login.html';
-    }
-  })();
-})();
-</script>
-</body>
-</html>
+</body></html>

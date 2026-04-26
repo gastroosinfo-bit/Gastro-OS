@@ -1,202 +1,83 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GASTRO-OS – Modul 8 | Lektion 2</title>
-<style>
-* { margin:0; padding:0; box-sizing:border-box; }
+<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Lektion 2 — Das Team für aktives Verkaufen begeistern | GASTRO-OS</title><style>* { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
-.header{background:#1a2a4a;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
-.brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
-.btn-back-modul{background:#d4af37;color:#1a2a4a;border:none;padding:9px 20px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.2s;letter-spacing:0.3px}
-.btn-back-modul:hover{background:#c8a030;color:#1a2a4a}
+.header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:18px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.btn-back { background:#d4af37; color:#1a2a4a; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.btn-back:hover { background:#c8a030; }
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
 .wrap { max-width:720px; margin:40px auto; padding:0 24px 60px; }
 .lbl { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:8px; }
-h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:10px; line-height:1.3; }
-.lektion-hero { background:#1a2a4a; border-radius:12px; padding:28px 32px; margin-bottom:28px; border:2px solid #d4af37; }
-.lektion-hero .lektion-tag { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:10px; }
-.lektion-hero h1 { font-family:Georgia,serif; font-size:26px; color:#fff; margin-bottom:0; font-weight:normal; line-height:1.3; }
-.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:20px 0 32px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:16px; line-height:1.3; }
+.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:0 0 24px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+.lern-box { background:#1a2a4a; border-radius:8px; padding:16px 20px; margin:0 0 28px; }
+.lern-box-title { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.lern-box ul { list-style:none; padding:0; margin:0; }
+.lern-box li { font-size:13px; color:#a0b0c8; padding:4px 0 4px 20px; position:relative; line-height:1.6; }
+.lern-box li::before { content:'✓'; position:absolute; left:0; color:#d4af37; font-weight:700; }
 h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:normal; margin:36px 0 14px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
-h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:24px 0 10px; }
+h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:22px 0 10px; }
+h4 { font-size:15px; color:#1a2a4a; font-weight:700; margin:18px 0 8px; }
 p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
-ul, ol { margin:12px 0 16px 20px; }
-li { font-size:15px; line-height:1.8; color:#2a3a54; margin-bottom:6px; }
-.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin-top:24px; }
+.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin:24px 0; }
 .aufgabe-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
-.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; }
-.highlight { background:#fff8e8; border-left:3px solid #d4af37; padding:14px 18px; margin:20px 0; font-size:14px; color:#5a4000; line-height:1.7; }
-.nav-row { display:flex; gap:12px; justify-content:space-between; margin-top:40px; }
-.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:12px 24px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none; transition:all 0.2s; }
+.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; line-height:1.7; }
+.beispiel { background:#fff; border:1px solid #e8dfc8; border-left:4px solid #3a7ad4; border-radius:0 8px 8px 0; padding:16px 20px; margin:20px 0; }
+.beispiel-lbl { font-size:11px; color:#3a7ad4; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
+.beispiel p { font-size:14px; color:#2a3a54; margin-bottom:8px; line-height:1.75; }
+.beispiel p:last-child { margin-bottom:0; }
+.rechnung { background:#f0f4f8; border-radius:5px; padding:10px 14px; font-family:monospace; font-size:13px; color:#1a2a4a; margin:8px 0; line-height:1.6; }
+.tipp-box { background:#e4f5e8; border:1px solid #4aaa60; border-radius:8px; padding:14px 18px; margin:18px 0; }
+.tipp-box p { font-size:14px; color:#1a6030; margin-bottom:0; line-height:1.7; }
+.nav-row { display:flex; gap:12px; justify-content:space-between; margin:40px 0 0; }
+.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:11px 20px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; transition:all 0.2s; }
 .nav-btn:hover { background:#d4af37; color:#1a2a4a; }
-.nav-btn.secondary { background:transparent; border:1px solid rgba(26,42,74,0.3); color:#1a2a4a; }
-.nav-btn.secondary:hover { background:#1a2a4a; color:#d4af37; }
+.nav-btn.secondary { background:#fff; color:#1a2a4a; border:1px solid #e8dfc8; }
+.nav-btn.secondary:hover { border-color:#d4af37; }
+.fazit { background:#fdf9ee; border:2px solid #d4af37; border-radius:8px; padding:18px 22px; margin:32px 0 0; }
+.fazit-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.fazit ul { list-style:none; padding:0; margin:0; }
+.fazit li { font-size:14px; color:#2a3a54; padding:6px 0 6px 22px; position:relative; line-height:1.65; border-bottom:1px solid #e8dfc8; }
+.fazit li:last-child { border-bottom:none; }
+.fazit li::before { content:'→'; position:absolute; left:0; color:#d4af37; font-weight:700; }
+.checkliste { background:#fff; border:1px solid #e8dfc8; border-radius:8px; padding:16px 20px; margin:20px 0 0; }
+.checkliste-lbl { font-size:11px; color:#1a2a4a; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.checkliste ul { list-style:none; padding:0; margin:0; }
+.checkliste li { font-size:14px; color:#2a3a54; padding:7px 0 7px 28px; position:relative; border-bottom:1px solid #f0ece4; line-height:1.55; }
+.checkliste li:last-child { border-bottom:none; }
+.checkliste li::before { content:'☐'; position:absolute; left:0; color:#d4af37; font-size:16px; line-height:1.2; }
 .footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-lbl strong { color:#d4af37; }
-.footer-main { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
-.footer-main strong { color:#d4af37; }
-@media (max-width:600px) { .wrap{padding:0 16px 40px} h1{font-size:22px} h2{font-size:17px} }
-</style>
-</head>
+.footer-main { background:#1a2a4a; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-main strong { color:#d4af37; }</style></head>
 <body>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-(function(){
-  document.addEventListener('contextmenu',function(e){e.preventDefault();});
-  document.addEventListener('keydown',function(e){
-    if(e.ctrlKey&&['s','u','p','a'].includes(e.key.toLowerCase()))e.preventDefault();
-    if(e.key==='F12')e.preventDefault();
-  });
-  const sb=supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3');
-  (async function(){
-    const{data:{session}}=await sb.auth.getSession();
-    if(!session){window.location.href='login.html';return;}
-    const{data:profile}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
-    if(profile&&(!profile.is_active||profile.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
-  })();
-})();
-</script>
-<div class="header">
-  <div class="brand">GASTRO-OS</div>
-  <a href="dashboard.html#modul-8" class="btn-back-modul">← Zurück zum Dashboard</a>
-</div>
+<div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html#modul-8" class="btn-back">← Zurück zum Dashboard</a></div>
 <div class="gold-bar"></div>
-
 <div class="wrap">
   <div class="lbl">Modul 8 · Lektion 2</div>
-  <div class="lektion-hero">
-    <div class="lektion-tag">Modul 8 · Lektion 2</div>
-    <h1>Verkaufspsychologie</h1>
-  </div>
-  <div class="intro">In Lektion 1 hast du verstanden was Upselling ist und warum es funktioniert. Jetzt gehen wir in die Praxis: die konkreten Sätze und Formulierungen die deinen Bon erhöhen — ohne dass es sich nach Verkauf anfühlt.</div>
+  <h1>Das Team für aktives Verkaufen begeistern</h1>
+  <div class="intro">Gute Upselling-Formulierungen nützen nichts wenn das Team sie nicht anwendet. In dieser Lektion lernst du wie du dein Team für aktives Verkaufen motivierst — ohne Druck, ohne Quoten, mit echter Begeisterung.</div>
+  <div class="lern-box"><div class="lern-box-title">📚 Was du in dieser Lektion lernst</div><ul><li>Warum Teams ohne Training nicht aktiv verkaufen</li><li>Wie du in 10 Minuten ein effektives Upselling-Briefing machst</li><li>Upselling sichtbar und messbar machen</li><li>Erfolge feiern ohne Druck aufzubauen</li></ul></div>
 
-<h2>Kapitel 1: Wie Gäste wirklich Entscheidungen treffen</h2>
-
-    <h3>Der Mythos des rationalen Gastes</h3>
-  <p>Es gibt einen Mythos der in der Gastronomie weit verbreitet ist. Der Gast weiß was er will. Er kommt rein, schaut die Karte an, entscheidet rational was ihm am besten gefällt und bestellt dann genau das. Der Servicemitarbeiter hat dabei wenig Einfluss. Der Gast hat seinen Plan und zieht ihn durch.</p>
-  <p>Das stimmt nicht. Und die Verhaltenspsychologie der letzten Jahrzehnte hat das sehr klar gezeigt. Menschen treffen die meisten Entscheidungen nicht rational. Sie treffen sie emotional, intuitiv und stark beeinflusst durch den Kontext in dem sie sich befinden. Und danach rationalisieren sie ihre Entscheidung im Nachhinein als hätte sie von Anfang an Sinn ergeben.</p>
-  <p>Das gilt besonders in der Gastronomie. Ein Gast der ein Restaurant betritt, ist in einem emotionalen Zustand. Er ist entspannt oder gestresst, hungrig oder nur leicht hungrig, alleine oder in Gesellschaft, in Feierlaune oder nach einem langen Arbeitstag. All das beeinflusst was er bestellt. Und all das lässt sich durch die richtige Umgebung, die richtige Kommunikation und die richtigen Empfehlungen beeinflussen.</p>
-  <p>Das ist keine Manipulation. Das ist das Verständnis davon wie Menschen funktionieren. Und dieses Verständnis zu nutzen um dem Gast ein besseres Erlebnis zu verschaffen ist genau das was gute Gastronomen von durchschnittlichen unterscheidet.</p>
-
-  <h3>Der erste Eindruck entscheidet mehr als die Karte</h3>
-  <p>Bevor ein Gast auch nur einen Blick auf die Speisekarte geworfen hat, hat er bereits unbewusst entschieden wie viel er ungefähr ausgeben wird. Nicht bewusst. Nicht als konkreten Betrag. Aber als Gefühl. Ist das ein besonderer Abend oder ein normaler. Ist das ein Ort an dem man sich etwas gönnt oder einer an dem man schnell und günstig isst.</p>
-  <p>Dieses Gefühl entsteht in den ersten 30 Sekunden nach dem Betreten des Restaurants. Durch die Atmosphäre, die Beleuchtung, die Musik, den Empfang. Durch den ersten Kontakt mit dem Servicepersonal. Durch die Art wie die Tische gedeckt sind.</p>
-  <p>Ein warmer persönlicher Empfang, ein kurzes ehrliches Gespräch beim Hinführen zum Tisch, eine Atmosphäre die signalisiert hier bist du willkommen, all das erhöht die Bereitschaft des Gastes mehr auszugeben bevor er auch nur eine Bestellung aufgegeben hat.</p>
-  <p>Das klingt nach weichen Faktoren. Es sind harte wirtschaftliche Hebel. Denn ein Gast der sich wohlfühlt bestellt mehr, bleibt länger und kommt wieder. Ein Gast der sich unwohl fühlt bestellt das Günstigste, geht früh und kommt vielleicht nicht mehr.</p>
-
-  <h3>Der Anker Effekt — warum Preiswahrnehmung relativ ist</h3>
-  <p>Eine der wichtigsten Erkenntnisse der Verhaltenspsychologie für die Gastronomie ist der Anker Effekt. Menschen beurteilen Preise nicht in absoluten Zahlen. Sie beurteilen sie relativ zu einem Referenzpunkt, dem sogenannten Anker.</p>
-  <p>Was bedeutet das konkret? Wenn das teuerste Gericht auf deiner Karte 38 Euro kostet, wirkt ein Gericht für 24 Euro günstig. Wenn das teuerste Gericht 22 Euro kostet, wirkt dasselbe Gericht für 24 Euro teuer.</p>
-  <p>Das teuerste Gericht auf der Karte wird selten bestellt. Aber es hat eine wichtige Funktion. Es setzt den Anker. Es definiert den Rahmen in dem alle anderen Preise wahrgenommen werden. Ein gut platziertes Premium Gericht macht alle anderen Gerichte attraktiver und günstiger erscheinen ohne dass sich an den Preisen selbst etwas geändert hat.</p>
-  <p>Dasselbe gilt für Getränke. Eine Flasche Wein für 65 Euro auf der Karte macht eine Flasche für 35 Euro zu einem vernünftigen mittleren Angebot. Ohne die teure Flasche wäre die 35 Euro Flasche die teure Option gewesen.</p>
-  <p>Schau dir deine Karte an. Gibt es einen klaren Anker? Gibt es ein Premium Gericht oder ein Premium Getränk das diesen Rahmen setzt? Wenn nicht, fehlt dir eines der wirkungsvollsten psychologischen Werkzeuge das eine Speisekarte haben kann.</p>
-
-  <h3>Die Macht der Beschreibung — Worte die Hunger machen</h3>
-  <p>Es gibt einen Grund warum manche Gerichte auf einer Karte häufiger bestellt werden als andere, auch wenn der Preis ähnlich ist. Nicht weil das Gericht besser ist. Sondern weil es besser beschrieben ist.</p>
-  <p>Studien aus der Restaurantpsychologie zeigen dass beschreibende Bezeichnungen den Umsatz eines Gerichts um bis zu 27 Prozent steigern können. Ein Gericht das als hausgemachte Rindsroulade mit zartem Rotkohl und cremigem Kartoffelpüree beschrieben wird, wird deutlich häufiger bestellt als dasselbe Gericht das einfach als Rindsroulade mit Beilagen auf der Karte steht.</p>
-  <p>Worte wie hausgemacht, frisch, cremig, zart, knusprig, regional, saisonal erzeugen Bilder im Kopf des Gastes. Und Bilder erzeugen Appetit. Und Appetit erzeugt Bestellungen.</p>
-  <p>Schau dir deine Karte an. Sind deine Gerichte so beschrieben dass sie Appetit machen? Oder sind es schlichte Auflistungen von Zutaten? Das ist eine der einfachsten und günstigsten Veränderungen die du an deiner Karte vornehmen kannst. Keine neuen Gerichte. Keine Preisänderungen. Nur bessere Beschreibungen.</p>
-
-  <h3>Soziale Bewährtheit — was andere bestellen beeinflusst die Entscheidung</h3>
-  <p>Menschen orientieren sich an anderen Menschen wenn sie unsicher sind. Das ist ein tief verwurzelter menschlicher Instinkt. In der Gastronomie bedeutet das, dass der Hinweis was andere Gäste bestellen einen direkten Einfluss auf die eigene Bestellung hat.</p>
-  <p>Wenn ein Servicemitarbeiter sagt das Wildragout ist heute unser meistbestelltes Gericht, nutzt er das Prinzip der sozialen Bewährtheit. Der Gast denkt, wenn so viele andere das bestellen muss es gut sein. Das ist keine Lüge wenn es stimmt. Und es erhöht die Wahrscheinlichkeit dass der Gast genau dieses Gericht bestellt.</p>
-  <p>Dasselbe gilt für Empfehlungen auf der Karte. Ein kleines Symbol oder der Hinweis Empfehlung des Hauses neben einem Gericht erhöht dessen Bestellrate signifikant. Nicht weil der Gast dem Symbol blind vertraut. Sondern weil es ihm Orientierung gibt in einer Situation in der er unsicher ist was er wählen soll.</p>
-
-    <div class="task-box">
-      <strong>Deine Aufgabe für Kapitel 1:</strong>
-      <p>Schau dir deine Speisekarte mit den Augen der Verkaufspsychologie an. Gibt es einen klaren Anker, also ein Premium Gericht das den Preisrahmen setzt? Sind deine Gerichte appetitlich beschrieben oder schlicht aufgelistet? Gibt es Hinweise auf meistbestellte oder empfohlene Gerichte? Schreib auf was du als erstes ändern würdest und warum. Das sind deine ersten konkreten Maßnahmen für eine Karte die verkauft.</p>
-    </div>
-  </div>
-
-  <!-- KAPITEL 2 -->
-  <div class="card">
-    <h2>Kapitel 2: Die Psychologie des Gesprächs im Service</h2>
-
-    <h3>Warum der Moment der Bestellung alles entscheidet</h3>
-  <p>Die Speisekarte ist wichtig. Aber sie ist nicht der einzige Ort wo Kaufentscheidungen getroffen werden. Der wichtigste Moment ist der direkte Kontakt zwischen Servicemitarbeiter und Gast. Die Bestellaufnahme, der Moment nach dem Hinsetzen, die kurze Interaktion nach dem Hauptgang.</p>
-  <p>In diesen Momenten passiert mehr als Informationsaustausch. Es entsteht eine Beziehung. Kurz, flüchtig, aber real. Und diese Beziehung hat einen direkten Einfluss darauf wie viel der Gast ausgibt.</p>
-  <p>Ein Gast der einen Servicemitarbeiter als kompetent, sympathisch und aufmerksam wahrnimmt, folgt dessen Empfehlungen. Nicht weil er unkritisch ist. Sondern weil er Vertrauen aufgebaut hat. Vertrauen ist das unsichtbare Fundament jedes erfolgreichen Upsellings.</p>
-  <p>Und Vertrauen entsteht nicht durch Verkaufstechniken. Es entsteht durch echtes Interesse. Durch kurze ehrliche Aussagen die zeigen dass der Servicemitarbeiter wirklich weiß wovon er spricht. Durch Empfehlungen die nicht nach Skript klingen sondern nach persönlicher Überzeugung.</p>
-
-  <h3>Die drei Momente für erfolgreiche Empfehlungen</h3>
-  <p>Es gibt drei Momente im Ablauf eines Restaurantbesuchs in denen Empfehlungen besonders wirksam sind. Außerhalb dieser Momente wirken dieselben Empfehlungen oft aufdringlich oder fehl am Platz.</p>
-  <p>Der erste Moment ist die Begrüßung und die erste Getränkebestellung. Bevor der Gast die Karte aufschlägt ist er am offensten für Empfehlungen. Ein kurzer Hinweis auf einen saisonalen Aperitif, ein besonderes Tagesgericht oder ein aktuelles Highlight fühlt sich in diesem Moment wie ein freundlicher Tipp an. Nicht wie ein Verkaufsversuch.</p>
-  <p>Der zweite Moment ist die Bestellaufnahme. Nachdem der Gast seine Wahl getroffen hat, öffnet sich ein kurzes Fenster für eine weiterführende Empfehlung. Zum Wein der gut zum Gericht passt. Zur Vorspeise die sich hervorragend als Ergänzung eignet. Zur Beilage die heute besonders frisch ist. Dieser Moment dauert oft nur 30 Sekunden. Aber er ist Gold wert wenn er richtig genutzt wird.</p>
-  <p>Der dritte Moment ist nach dem Hauptgang. Wenn die Teller abgeräumt werden und der Gast entspannt und satt zurücklehnt, ist er am empfänglichsten für ein Dessert oder einen Digestif. Ein kurzer persönlicher Hinweis in diesem Moment, ehrlich und ohne Druck, erzielt eine deutlich höhere Erfolgsquote als jeder Hinweis auf der Karte.</p>
-
-  <h3>Wie Empfehlungen formuliert werden die wirken</h3>
-  <p>Es gibt einen fundamentalen Unterschied zwischen Empfehlungen die wirken und Empfehlungen die nicht wirken. Er liegt nicht im Inhalt. Er liegt in der Formulierung.</p>
-  <p>Empfehlungen die nicht wirken klingen nach Skript. Darf es noch ein Dessert sein. Möchten Sie vielleicht noch einen Wein dazu. Kann ich Ihnen noch etwas bringen. Diese Sätze sind harmlos. Aber sie erzeugen keine Reaktion weil sie keine Bilder erzeugen. Sie sind Fragen die mit Nein beantwortet werden können und meistens auch werden.</p>
-  <p>Empfehlungen die wirken sind persönlich, konkret und ehrlich. Unser Crème brûlée ist heute wirklich außergewöhnlich gut, die Küche hat heute Morgen eine neue Charge gemacht. Zum Rumpsteak empfehle ich Ihnen unseren argentinischen Malbec, die Kombination ist wirklich bemerkenswert. Wir haben gerade einen saisonalen Holunderblüten Aperitif der perfekt zu diesem Abend passt.</p>
-  <p>Diese Formulierungen funktionieren aus drei Gründen. Erstens sind sie konkret. Sie nennen ein spezifisches Produkt und einen spezifischen Grund. Zweitens sind sie persönlich. Sie klingen nach der Meinung eines Menschen, nicht nach einem auswendig gelernten Text. Drittens erzeugen sie Bilder. Der Gast kann sich vorstellen wie es schmeckt.</p>
-
-  <h3>Die Kraft des Nein akzeptierens</h3>
-  <p>Ein wichtiger Aspekt erfolgreicher Empfehlungen der oft übersehen wird. Der Gast muss das Gefühl haben dass sein Nein akzeptiert wird ohne dass die Atmosphäre darunter leidet.</p>
-  <p>Ein Servicemitarbeiter der nach einem abgelehnten Dessert sichtlich enttäuscht wirkt oder insistiert, zerstört das Vertrauen das er aufgebaut hat. Ein Servicemitarbeiter der ein Nein mit einem freundlichen kein Problem, melden Sie sich wenn Sie noch etwas möchten begleitet, stärkt das Vertrauen.</p>
-  <p>Denn das Ziel ist nicht die einzelne Bestellung. Das Ziel ist ein Gast der so zufrieden ist dass er wiederkommt und beim nächsten Besuch wieder offen für Empfehlungen ist. Kurzfristiger Druck zerstört langfristige Beziehungen. Langfristige Beziehungen sind der eigentliche Umsatzhebel in der Gastronomie.</p>
-
-  <h3>Körpersprache und Tonalität</h3>
-  <p>Verkaufspsychologie im Service ist nicht nur eine Frage der Worte. Körpersprache und Tonalität haben mindestens genauso großen Einfluss auf die Wirkung einer Empfehlung.</p>
-  <p>Ein Servicemitarbeiter der eine Empfehlung ausspricht während er schon halb abgewandt ist, wirkt desinteressiert. Ein Servicemitarbeiter der kurz innehalten, Augenkontakt herstellt und die Empfehlung mit echter Begeisterung ausspricht, wirkt überzeugend.</p>
-  <p>Echte Begeisterung ist das Schlüsselwort. Kein aufgesetztes Lächeln, keine theatralische Begeisterung die unecht klingt. Sondern echte Überzeugung davon dass das empfohlene Produkt gut ist. Und echte Überzeugung entsteht nur wenn der Servicemitarbeiter das Produkt kennt und selbst davon überzeugt ist.</p>
-  <p>Das hat eine direkte Konsequenz für die Praxis. Servicemitarbeiter müssen die Gerichte kennen die sie empfehlen. Nicht aus der Beschreibung auf der Karte. Aus eigener Erfahrung oder zumindest aus einem ehrlichen Gespräch mit der Küche über das was heute besonders gut ist.</p>
-  <p>Ein kurzes tägliches Briefing vor dem Service in dem die Küche dem Servicepersonal erklärt was heute frisch ist, was besonders empfehlenswert ist und was eventuell zur Neige geht, ist eine der einfachsten Maßnahmen mit dem größten Effekt auf die Qualität der Empfehlungen.</p>
-
-  <h3>Personalisierung als stärkster Hebel</h3>
-  <p>Der wirkungsvollste Aspekt der Verkaufspsychologie im Service ist gleichzeitig der einfachste und der am häufigsten vernachlässigte. Personalisierung.</p>
-  <p>Ein Gast der das Gefühl hat dass die Empfehlung speziell für ihn gemacht wurde, folgt ihr mit deutlich höherer Wahrscheinlichkeit als ein Gast der eine standardisierte Empfehlung erhält.</p>
-  <p>Personalisierung braucht keine komplizierte Technologie. Sie braucht Aufmerksamkeit. Kommt der Gast mit Kindern, ist eine andere Empfehlung sinnvoll als bei einem Geschäftsessen. Sitzt ein Paar bei Kerzenlicht, passt eine andere Atmosphäre als bei einer Geburtstagsgruppe. Hat der Gast beim letzten Besuch das Steak bestellt, ist eine Empfehlung zum gleichen Thema naheliegender als eine zufällige.</p>
-  <p>Servicemitarbeiter die aufmerksam sind und ihre Empfehlungen an den Kontext des Gastes anpassen, sind die wirkungsvollsten Upseller die ein Betrieb haben kann. Nicht weil sie besonders gute Verkäufer sind. Sondern weil sie echte Gastgeber sind. Und echter Gastgeist ist die überzeugendste Verkaufsstrategie die es gibt.</p>
-
-    <div class="task-box">
-      <strong>Deine Aufgabe für Kapitel 2:</strong>
-      <p>Wähle drei konkrete Empfehlungen aus die dein Serviceteam ab dieser Woche aktiv machen soll. Eine für den Moment der Begrüßung, eine für die Bestellaufnahme und eine nach dem Hauptgang. Schreib für jede Empfehlung einen konkreten Formulierungsvorschlag auf. Nicht als Skript das auswendig gelernt wird. Als Orientierung die zeigt wie eine gute Empfehlung klingt. Besprich diese drei Empfehlungen beim nächsten Team Briefing. Und halte im Upselling Tracker fest wie oft sie in der ersten Woche gemacht werden und wie oft sie angenommen werden.</p>
-    </div>
-
-    <div class="tracker-hint">
-      👉 Den <strong>Upselling Tracker</strong> findest du im Tab <a href="modul8-tracker.html" >📊 Upselling Tracker</a>.
-    </div>
-  </div>
-
-  <div class="gold-divider"></div>
-  <p style="text-align:center; font-size:12px; color:#8090a8; letter-spacing:1px;">GASTRO-OS | System · Strategie · Erfolg</p>
-</div>
-
-<div class="footer">
-  <strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg
-
-
+<h2>Kapitel 1 — Das Team briefen</h2>
+<h3>Warum Servicemitarbeiter nicht von selbst verkaufen</h3>
+<p>Die meisten Servicemitarbeiter verkaufen nicht aktiv — nicht weil sie es nicht wollen, sondern weil niemand ihnen gezeigt hat wie. Sie haben Angst den Gast zu nerven. Sie wissen nicht welche Formulierungen funktionieren. Und sie wurden noch nie dafür gelobt wenn es geklappt hat.</p>
+<p>Die Lösung ist kein Druck und keine Umsatzziele — die erzeugen Stress und schlechte Stimmung. Die Lösung ist Vorbereitung und Sichtbarkeit: Jeder weiß wie es geht. Jeder sieht wenn es funktioniert. Jeder bekommt Anerkennung wenn er es gut macht.</p>
+<h3>Das 10-Minuten-Upselling-Briefing</h3>
+<p>Einmal pro Woche, 10 Minuten vor dem Service. Schritt 1 (3 min): Was empfehlen wir heute konkret? Welches Gericht, welcher Wein, welches Dessert? Schritt 2 (3 min): Formulierung gemeinsam üben — nicht beschreiben, sondern durchspielen. Schritt 3 (4 min): Was lief letzte Woche gut? Was können wir diese Woche besser machen? Das war's. Mehr braucht es nicht.</p>
+<div class="beispiel"><div class="beispiel-lbl">📊 Rechenbeispiel aus der Praxis</div><p>Restaurant vor und nach Upselling-Einführung.</p><p>Vorher: Ø Bon 22 €. Kein aktives Empfehlen. Dessert-Verkauf 8% der Gäste.</p><p>Nach 4 Wochen wöchentlichem 10-Minuten-Briefing: Ø Bon 26,40 €. Dessert-Verkauf 23% der Gäste.</p><div class="rechnung">Bon-Steigerung: 4,40 € × 180 Gäste/Tag × 25 Tage = 19.800 €/Monat mehr Umsatz. Mehrgewinn: ca. 13.860 €/Monat. Aufwand: 10 min/Woche Team-Briefing.</div></div>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 1</div><p>Plane das erste Upselling-Briefing für diese Woche: Wann genau (Tag, Uhrzeit)? Was wird empfohlen? Welche Formulierung wird geübt? Schreib es auf — und führe es durch.</p></div>
+<h2>Kapitel 2 — Upselling sichtbar machen</h2>
+<h3>Was gemessen wird, wird verbessert</h3>
+<p>Mache den Ø Bon täglich sichtbar — aus der Kasse auslesen, auf ein Board schreiben. Nicht um Druck zu erzeugen, sondern weil Menschen die ihre Zahlen sehen, diese verbessern wollen. Das ist Psychologie, kein Management-Trick.</p>
+<h3>Erfolge richtig feiern</h3>
+<p>Wenn der Ø Bon an einem Abend besonders hoch ist: Ansprechen. 'Heute Abend hatten wir einen Bon von 28 Euro — das ist unser bisher bestes Ergebnis. Was habt ihr anders gemacht?' Diese Frage stärkt das Team und zeigt was funktioniert.</p>
+<div class="tipp-box"><p>💡 <strong>Profi-Tipp:</strong> Führe ein kleines Upselling-Board in der Küche ein: Aktueller Wochen-Ø-Bon. Bisher bester Abend. Empfehlung der Woche. Das Board kostet nichts und macht Upselling zur täglichen Selbstverständlichkeit.</p></div>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 2</div><p>Richte das Upselling-Board ein: Wo hängst du es auf? Was zeigst du darauf? Lese ab morgen täglich den Ø Bon aus der Kasse aus und trag ihn ein. Nach einer Woche: Was zeigt die Entwicklung?</p></div>
+<div class="nav-row"><a href="modul8-lektion1.html" class="nav-btn secondary">← Lektion 1</a><a href="modul8-lektion3.html" class="nav-btn">Lektion 3 →</a></div>
+<div class="fazit"><div class="fazit-lbl">🎯 Das Wichtigste auf einen Blick</div><ul><li>10-Minuten-Briefing vor dem Service: das wirksamste Upselling-Training.</li><li>Kein Druck, keine Quoten — Sichtbarkeit und Anerkennung funktionieren besser.</li><li>Ø Bon täglich sichtbar machen: was das Team sieht, verbessert es.</li><li>Erfolge konkret benennen: 'Was habt ihr heute anders gemacht?'</li></ul></div>
+<div class="checkliste"><div class="checkliste-lbl">✅ Sofort-Checkliste — Das kannst du heute noch tun</div><ul><li>Erstes Upselling-Briefing planen und durchführen</li><li>Ø Bon ab morgen täglich aus der Kasse notieren</li><li>Upselling-Board einrichten: Ort, Inhalt, Verantwortlicher</li><li>Wöchentlichen Briefing-Termin im Kalender festlegen</li></ul></div>
   <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
 </div>
 <div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
-<script>
-(function(){
-  // Rechtsklick & Tastenkürzel sperren
-  document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
-  document.addEventListener('keydown', function(e){
-    if (e.ctrlKey && ['s','u','p','a'].includes(e.key.toLowerCase())) e.preventDefault();
-    if (e.key === 'F12') e.preventDefault();
-  });
-
-  // Supabase Auth Check
-  const sb = supabase.createClient(
-    'https://hchlganbgjeciwhwaisj.supabase.co',
-    'sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3'
-  );
-  (async function(){
-    const { data:{ session } } = await sb.auth.getSession();
-    if (!session) { window.location.href = 'login.html'; return; }
-    const { data: profile } = await sb.from('profiles')
-      .select('is_active,subscription_status')
-      .eq('id', session.user.id).maybeSingle();
-    if (profile && (!profile.is_active || profile.subscription_status !== 'active')) {
-      await sb.auth.signOut();
-      window.location.href = 'login.html';
-    }
-  })();
-})();
-</script>
-</body>
-</html>
+</body></html>

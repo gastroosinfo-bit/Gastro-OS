@@ -1,179 +1,84 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GASTRO-OS – Modul 9 | Lektion 1</title>
-<style>
-* { margin:0; padding:0; box-sizing:border-box; }
+<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Lektion 1 — Lokales Marketing für Restaurants | GASTRO-OS</title><style>* { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
-.header{background:#1a2a4a;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
-.brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
-.btn-back-modul{background:#d4af37;color:#1a2a4a;border:none;padding:9px 20px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.2s;letter-spacing:0.3px}
-.btn-back-modul:hover{background:#c8a030;color:#1a2a4a}
+.header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:18px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.btn-back { background:#d4af37; color:#1a2a4a; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.btn-back:hover { background:#c8a030; }
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
 .wrap { max-width:720px; margin:40px auto; padding:0 24px 60px; }
 .lbl { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:8px; }
-h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:10px; line-height:1.3; }
-.lektion-hero { background:#1a2a4a; border-radius:12px; padding:28px 32px; margin-bottom:28px; border:2px solid #d4af37; }
-.lektion-hero .lektion-tag { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:10px; }
-.lektion-hero h1 { font-family:Georgia,serif; font-size:26px; color:#fff; margin-bottom:0; font-weight:normal; line-height:1.3; }
-.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:20px 0 32px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:16px; line-height:1.3; }
+.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:0 0 24px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+.lern-box { background:#1a2a4a; border-radius:8px; padding:16px 20px; margin:0 0 28px; }
+.lern-box-title { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.lern-box ul { list-style:none; padding:0; margin:0; }
+.lern-box li { font-size:13px; color:#a0b0c8; padding:4px 0 4px 20px; position:relative; line-height:1.6; }
+.lern-box li::before { content:'✓'; position:absolute; left:0; color:#d4af37; font-weight:700; }
 h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:normal; margin:36px 0 14px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
-h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:24px 0 10px; }
+h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:22px 0 10px; }
+h4 { font-size:15px; color:#1a2a4a; font-weight:700; margin:18px 0 8px; }
 p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
-ul, ol { margin:12px 0 16px 20px; }
-li { font-size:15px; line-height:1.8; color:#2a3a54; margin-bottom:6px; }
-.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin-top:24px; }
+.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin:24px 0; }
 .aufgabe-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
-.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; }
-.highlight { background:#fff8e8; border-left:3px solid #d4af37; padding:14px 18px; margin:20px 0; font-size:14px; color:#5a4000; line-height:1.7; }
-.nav-row { display:flex; gap:12px; justify-content:space-between; margin-top:40px; }
-.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:12px 24px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none; transition:all 0.2s; }
+.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; line-height:1.7; }
+.beispiel { background:#fff; border:1px solid #e8dfc8; border-left:4px solid #3a7ad4; border-radius:0 8px 8px 0; padding:16px 20px; margin:20px 0; }
+.beispiel-lbl { font-size:11px; color:#3a7ad4; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
+.beispiel p { font-size:14px; color:#2a3a54; margin-bottom:8px; line-height:1.75; }
+.beispiel p:last-child { margin-bottom:0; }
+.rechnung { background:#f0f4f8; border-radius:5px; padding:10px 14px; font-family:monospace; font-size:13px; color:#1a2a4a; margin:8px 0; line-height:1.6; }
+.tipp-box { background:#e4f5e8; border:1px solid #4aaa60; border-radius:8px; padding:14px 18px; margin:18px 0; }
+.tipp-box p { font-size:14px; color:#1a6030; margin-bottom:0; line-height:1.7; }
+.nav-row { display:flex; gap:12px; justify-content:space-between; margin:40px 0 0; }
+.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:11px 20px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; transition:all 0.2s; }
 .nav-btn:hover { background:#d4af37; color:#1a2a4a; }
-.nav-btn.secondary { background:transparent; border:1px solid rgba(26,42,74,0.3); color:#1a2a4a; }
-.nav-btn.secondary:hover { background:#1a2a4a; color:#d4af37; }
+.nav-btn.secondary { background:#fff; color:#1a2a4a; border:1px solid #e8dfc8; }
+.nav-btn.secondary:hover { border-color:#d4af37; }
+.fazit { background:#fdf9ee; border:2px solid #d4af37; border-radius:8px; padding:18px 22px; margin:32px 0 0; }
+.fazit-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.fazit ul { list-style:none; padding:0; margin:0; }
+.fazit li { font-size:14px; color:#2a3a54; padding:6px 0 6px 22px; position:relative; line-height:1.65; border-bottom:1px solid #e8dfc8; }
+.fazit li:last-child { border-bottom:none; }
+.fazit li::before { content:'→'; position:absolute; left:0; color:#d4af37; font-weight:700; }
+.checkliste { background:#fff; border:1px solid #e8dfc8; border-radius:8px; padding:16px 20px; margin:20px 0 0; }
+.checkliste-lbl { font-size:11px; color:#1a2a4a; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.checkliste ul { list-style:none; padding:0; margin:0; }
+.checkliste li { font-size:14px; color:#2a3a54; padding:7px 0 7px 28px; position:relative; border-bottom:1px solid #f0ece4; line-height:1.55; }
+.checkliste li:last-child { border-bottom:none; }
+.checkliste li::before { content:'☐'; position:absolute; left:0; color:#d4af37; font-size:16px; line-height:1.2; }
 .footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-lbl strong { color:#d4af37; }
-.footer-main { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
-.footer-main strong { color:#d4af37; }
-@media (max-width:600px) { .wrap{padding:0 16px 40px} h1{font-size:22px} h2{font-size:17px} }
-</style>
-</head>
+.footer-main { background:#1a2a4a; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-main strong { color:#d4af37; }</style></head>
 <body>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-(function(){
-  document.addEventListener('contextmenu',function(e){e.preventDefault();});
-  document.addEventListener('keydown',function(e){
-    if(e.ctrlKey&&['s','u','p','a'].includes(e.key.toLowerCase()))e.preventDefault();
-    if(e.key==='F12')e.preventDefault();
-  });
-  const sb=supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3');
-  (async function(){
-    const{data:{session}}=await sb.auth.getSession();
-    if(!session){window.location.href='login.html';return;}
-    const{data:profile}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
-    if(profile&&(!profile.is_active||profile.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
-  })();
-})();
-</script>
-<div class="header">
-  <div class="brand">GASTRO-OS</div>
-  <a href="dashboard.html#modul-9" class="btn-back-modul">← Zurück zum Dashboard</a>
-</div>
+<div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html#modul-9" class="btn-back">← Zurück zum Dashboard</a></div>
 <div class="gold-bar"></div>
-
 <div class="wrap">
   <div class="lbl">Modul 9 · Lektion 1</div>
-  <div class="lektion-hero">
-    <div class="lektion-tag">Modul 9 · Lektion 1</div>
-    <h1>Google vs. Instagram</h1>
-  </div>
-  <div class="intro">In diesem Modul geht es um Sichtbarkeit. Nicht um kompliziertes Marketing — sondern um einfache, wirksame Methoden die du mit 15 Minuten pro Woche umsetzen kannst. Lektion 1 beginnt mit der wichtigsten Grundsatzentscheidung: Google oder Instagram — wo lohnt sich deine Energie wirklich?</div>
+  <h1>Lokales Marketing für Restaurants</h1>
+  <div class="intro">In Modul 8 hast du gelernt wie du mehr Umsatz pro bestehendem Gast erzielst. Jetzt geht es um neue Gäste: Wie machst du deinen Betrieb sichtbar — ohne großes Budget, ohne Agentur, ohne stundenlanges Social-Media-Chaos?</div>
+  <div class="lern-box"><div class="lern-box-title">📚 Was du in dieser Lektion lernst</div><ul><li>Warum lokales Marketing für Restaurants anders funktioniert</li><li>Welche 3 Kanäle wirklich wichtig sind — und welche nicht</li><li>Warum Google wichtiger ist als Instagram</li><li>Den 15-Minuten-Marketing-Plan erstellen</li></ul></div>
 
-<h2>Kapitel 1: Wie Gäste heute Restaurants finden</h2>
-    <h3>Die Wahrheit über die Gastsuche</h3>
-  <p>Stell dir vor ein Gast überlegt am Freitagabend wohin er zum Essen gehen soll. Er hat keine feste Idee. Er weiß nur dass er heute Abend ausgehen möchte, irgendwo in der Nähe, mit gutem Essen und einer angenehmen Atmosphäre.</p>
-  <p>Was macht er? Er greift zum Smartphone. Er tippt Restaurant in der Nähe oder Italienisch Dortmund oder gutes Steak in meine Stadt in Google ein. Google zeigt ihm eine Karte mit Restaurants, Bewertungen, Öffnungszeiten und Fotos. Er schaut sich zwei oder drei Optionen an, liest die Bewertungen, schaut auf die Sterne und entscheidet sich.</p>
-  <p>Das passiert täglich. Millionen Mal. Nicht nur in Großstädten. In jeder Stadt, in jedem Ort, bei jedem Gastronomiebetrieb.</p>
-  <p>Und genau an dieser Stelle entscheidet sich ob du in diesem Moment sichtbar bist oder nicht. Ob dein Betrieb in den Ergebnissen auftaucht, ob er gut bewertet ist, ob die Informationen korrekt und einladend sind. Das ist der Moment der zählt. Nicht dein letzter Instagram Post. Nicht die schöne Story die du gestern gepostet hast. Dieser Moment bei Google.</p>
-
-  <h3>Warum Google für Gastronomen wichtiger ist als jeder andere Kanal</h3>
-  <p>Google ist für die Gastronomie aus einem einzigen Grund der wichtigste Kanal. Weil es der Kanal ist den Menschen nutzen wenn sie aktiv nach einem Restaurant suchen. Nicht wenn sie scrollen. Nicht wenn sie sich inspirieren lassen. Wenn sie eine konkrete Kaufabsicht haben.</p>
-  <p>Das ist der entscheidende Unterschied. Jemand der auf Instagram scrollt und dein Foto sieht, denkt vielleicht dass es lecker aussieht. Vielleicht. Und dann scrollt er weiter. Die Wahrscheinlichkeit dass dieser Moment in eine Reservierung oder einen Besuch umgewandelt wird, ist gering.</p>
-  <p>Jemand der bei Google Restaurant in der Nähe eintippt, will heute oder in den nächsten Tagen essen gehen. Er hat eine konkrete Absicht. Er sucht aktiv. Und wenn dein Betrieb in diesem Moment sichtbar ist, gut bewertet und mit korrekten Informationen ausgestattet, ist die Wahrscheinlichkeit eines Besuchs enorm hoch.</p>
-  <p>Das ist der Unterschied zwischen passiver Sichtbarkeit und aktiver Kaufabsicht. Google bedient aktive Kaufabsichten. Instagram bedient passives Interesse. Für die meisten Gastronomen ist aktive Kaufabsicht wertvoller.</p>
-
-  <h3>Was Google My Business wirklich ist und warum es so wichtig ist</h3>
-  <p>Google My Business, heute Google Unternehmensprofil genannt, ist das wichtigste kostenlose Marketing Werkzeug das ein Gastronom haben kann. Es ist das Profil das erscheint wenn jemand nach deinem Restaurant sucht oder wenn du in den lokalen Suchergebnissen auftauchst.</p>
-  <p>Es zeigt deinen Namen, deine Adresse, deine Öffnungszeiten, deine Telefonnummer, deine Website, deine Bewertungen, deine Fotos und eine Karte mit deinem Standort. All das auf einen Blick, ohne dass der Nutzer auf irgendeine andere Website gehen muss.</p>
-  <p>Wenn dieses Profil nicht existiert, nicht aktuell ist oder schlecht ausgefüllt ist, verlierst du täglich Gäste die dich eigentlich hätten finden können. Nicht weil dein Essen schlecht ist. Sondern weil die Information fehlt die sie brauchen um zu dir zu kommen.</p>
-  <p>Wenn dieses Profil vollständig, aktuell und mit guten Fotos und positiven Bewertungen ausgestattet ist, bringt es dir täglich neue Gäste ohne dass du aktiv etwas dafür tun musst. Es arbeitet für dich, rund um die Uhr, ohne Kosten.</p>
-  <p>Das ist das Fundament deiner lokalen Sichtbarkeit. Nicht Instagram. Nicht Facebook. Nicht TikTok. Google My Business.</p>
-
-  <h3>Die drei Elemente eines starken Google Profils</h3>
-  <p>Ein starkes Google Unternehmensprofil hat drei Elemente die über Sichtbarkeit und Eindruck entscheiden.</p>
-  <p>Das erste Element sind vollständige und aktuelle Informationen. Name, Adresse, Telefonnummer, Öffnungszeiten, Website. Alles muss korrekt sein. Öffnungszeiten die nicht stimmen kosten Gäste. Ein Gast der extra kommt und geschlossen vorfindet, kommt selten wieder und hinterlässt oft eine schlechte Bewertung.</p>
-  <p>Das zweite Element sind Fotos. Fotos sind in der Gastronomie das wichtigste visuelle Verkaufselement auf Google. Nicht Stockfotos. Echte Fotos von deinem Betrieb, deinen Gerichten, deiner Atmosphäre. Hochwertig, einladend, authentisch. Restaurants mit guten Fotos werden häufiger angeklickt als Restaurants ohne oder mit schlechten Fotos. Das ist keine Meinung. Das sind Daten.</p>
-  <p>Das dritte Element sind Bewertungen. Bewertungen sind in der lokalen Gastronomie das wichtigste Vertrauenssignal. Gäste vertrauen anderen Gästen. Ein Restaurant mit 4,7 Sternen und 200 Bewertungen wird einem Restaurant mit 3,9 Sternen und 15 Bewertungen fast immer vorgezogen, unabhängig davon wie gut das Essen wirklich ist. Wie du Bewertungen aktiv steigern kannst schauen wir uns in Lektion 2 genau an.</p>
-
-    <div class="task-box">
-      <strong>Deine Aufgabe für Kapitel 1:</strong>
-      <p>Öffne jetzt dein Google Unternehmensprofil und prüfe es kritisch. Sind alle Informationen korrekt und aktuell. Sind die Öffnungszeiten stimmt. Gibt es genug Fotos und sind sie einladend. Wie viele Bewertungen hast du und wie ist dein Durchschnitt. Schreib auf was du als erstes verbessern würdest. Das ist dein Ausgangspunkt für Modul 9.</p>
-    </div>
-  </div>
-
-  <div class="card">
-    <h2>Kapitel 2: Was Instagram kann und was nicht</h2>
-    <h3>Die Rolle von Instagram in der Gastronomie</h3>
-  <p>Instagram ist schön. Es ist visuell, es ist kreativ und es macht Spaß wenn man den richtigen Dreh hat. Und ja, es gibt Restaurants die über Instagram tatsächlich neue Gäste gewinnen. Meist sind das Betriebe in Großstädten, mit einem jungen Publikum, einem besonders fotogenen Konzept oder einer sehr aktiven Community.</p>
-  <p>Aber für die Mehrheit der Gastronomiebetriebe in Deutschland gilt eine andere Realität. Instagram kostet Zeit, Energie und manchmal auch Geld für Fotos oder Werbeanzeigen. Und der direkte Effekt auf die Gästezahlen ist schwer messbar und oft kleiner als erhofft.</p>
-  <p>Das bedeutet nicht dass Instagram wertlos ist. Es bedeutet dass Instagram in der richtigen Perspektive gesehen werden muss. Als ergänzender Kanal. Nicht als Hauptkanal. Nicht als das Ding das du unbedingt machen musst um sichtbar zu sein.</p>
-
-  <h3>Was Instagram wirklich leistet</h3>
-  <p>Instagram leistet in der Gastronomie drei Dinge gut. Erstens stärkt es das Bild deines Betriebs bei Menschen die dich bereits kennen. Stammgäste die dir folgen, werden durch regelmäßige Posts an dich erinnert. Sie sehen neues auf der Karte, besondere Abende, saisonale Gerichte. Das ist wertvoll für die Stammkundenbindung.</p>
-  <p>Zweitens kann Instagram als visuelles Portfolio funktionieren. Wenn jemand nach einer Empfehlung bei dir gegessen hat und nachschaut wer du bist, findet er auf Instagram einen ersten Eindruck. Gute Fotos, eine authentische Persönlichkeit, eine klare Atmosphäre. Das bestätigt die Entscheidung oder weckt Neugier.</p>
-  <p>Drittens kann Instagram für besondere Events und Aktionen funktionieren. Ein Weihnachtsmenü, ein besonderer Abend, eine neue saisonale Karte. Solche Inhalte haben auf Instagram oft eine höhere Reichweite als normale Posts weil sie konkret und zeitlich begrenzt sind.</p>
-
-  <h3>Was Instagram nicht leistet</h3>
-  <p>Instagram ersetzt Google nicht. Es ersetzt keine Bewertungen. Und es bringt selten die Gäste die du dir erhoffst wenn du einfach schöne Fotos postest ohne eine klare Strategie dahinter.</p>
-  <p>Der häufigste Fehler den Gastronomen auf Instagram machen ist folgender. Sie posten regelmäßig, investieren Zeit in schöne Fotos und warten darauf dass neue Gäste kommen. Aber die Verbindung zwischen einem Instagram Post und einem tatsächlichen Besuch ist lang und unsicher. Jemand sieht den Post, findet ihn schön, vergisst ihn wieder, denkt irgendwann mal daran wenn er in der Nähe ist, kommt vielleicht.</p>
-  <p>Das ist kein verlässlicher Kanal für neue Gäste. Das ist Glückssache.</p>
-
-  <h3>Die richtige Balance zwischen Google und Instagram</h3>
-  <p>Die richtige Strategie für die meisten Gastronomen ist klar. Google zuerst, Instagram ergänzend.</p>
-  <p>Google My Business vollständig und aktuell halten. Bewertungen aktiv steigern. Fotos regelmäßig aktualisieren. Das kostet zusammen weniger Zeit als ein wöchentlicher Instagram Post und bringt mehr nachweisbare Gäste.</p>
-  <p>Instagram als ergänzenden Kanal nutzen wenn Zeit und Energie vorhanden sind. Nicht als Pflicht. Als Möglichkeit. Und mit klarem Fokus auf die drei Dinge die Instagram wirklich leistet. Stammkundenbindung, visuelles Portfolio und besondere Aktionen.</p>
-  <p>Wer diese Balance findet, hat ein Marketing System das funktioniert ohne ihn zu überlasten. Und das ist das Ziel von Modul 9. Nicht das perfekte Social Media Profil. Sondern ein einfaches nachhaltiges System das dir regelmäßig neue Gäste bringt.</p>
-
-  <h3>Tripadvisor, Yelp und andere Plattformen</h3>
-  <p>Ein kurzer Blick auf weitere Plattformen die in der Gastronomie eine Rolle spielen. Tripadvisor ist besonders relevant für Betriebe in touristischen Lagen oder Städten mit viel Tourismus. Wer viele Touristen als Gäste hat, sollte sein Tripadvisor Profil genauso ernst nehmen wie sein Google Profil.</p>
-  <p>Yelp ist in Deutschland weniger relevant als in den USA, hat aber in einigen Städten eine aktive Community. Ein vollständiges Profil schadet nicht, sollte aber nicht priorisiert werden wenn Zeit begrenzt ist.</p>
-  <p>Reservierungsplattformen wie OpenTable oder TheFork haben eine eigene Logik. Sie bringen Gäste die aktiv nach Reservierungsmöglichkeiten suchen. Für Betriebe die Reservierungen als wichtigen Bestandteil ihres Geschäfts sehen, können sie sinnvoll sein. Die Provision die sie nehmen muss dabei aber immer in die Kalkulation einbezogen werden.</p>
-  <p>Die Grundregel gilt für alle Plattformen. Vollständige korrekte Informationen und aktive Bewertungspflege sind überall wichtiger als häufige neue Inhalte.</p>
-
-    <div class="task-box">
-      <strong>Deine Aufgabe für Kapitel 2:</strong>
-      <p>Schreib jetzt auf welche digitalen Kanäle du aktuell nutzt und wie viel Zeit du pro Woche dafür aufwendest. Google, Instagram, Facebook, Tripadvisor, andere. Und schreib daneben ob du weißt wie viele neue Gäste jeder dieser Kanäle dir tatsächlich bringt. Diese ehrliche Bestandsaufnahme zeigt dir ob du deine Zeit in die richtigen Kanäle investierst. Sie ist die Grundlage für den Marketing Aktionsplan den du in Lektion 4 ausfüllst.</p>
-    </div>
-  </div>
-
-  <div class="gold-divider"></div>
-  <p style="text-align:center; font-size:12px; color:#8090a8; letter-spacing:1px;">GASTRO-OS | System · Strategie · Erfolg</p>
-</div>
-<div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg
-
-
+<h2>Kapitel 1 — Die richtigen Kanäle wählen</h2>
+<h3>Nicht alles gleichzeitig — das Richtige konsequent</h3>
+<p>Marketing für Restaurants funktioniert nicht wie Marketing für Online-Shops. Deine Gäste sind lokal. Sie suchen spontan oder planen kurzfristig. Sie vertrauen Empfehlungen mehr als Werbung. Das bedeutet: Die richtigen Kanäle sind Google, Bewertungen und lokale Sichtbarkeit — nicht TikTok und nicht bezahlte Werbung.</p>
+<h3>Kanal 1 — Google My Business</h3>
+<p>82% der Gäste suchen vor dem Restaurantbesuch online. 64% entscheiden sich aufgrund von Google-Bewertungen. Wenn dein Google My Business Profil unvollständig, veraltet oder mit falschen Öffnungszeiten befüllt ist, verlierst du täglich Gäste an Wettbewerber die einfach ein besseres Profil haben.</p>
+<h3>Kanal 2 — Bewertungen</h3>
+<p>Eine Erhöhung von 4,2 auf 4,6 Sterne bei Google führt messbar zu mehr Walk-in-Gästen. Nicht weil Gäste alle Bewertungen lesen — sondern weil die Durchschnittszahl sofort sichtbar ist und unbewusst Vertrauen schafft.</p>
+<h3>Kanal 3 — Ein Social-Media-Kanal</h3>
+<p>Nicht fünf. Einen. Instagram oder Facebook — je nachdem wo deine Zielgruppe ist. Konsequent 3 Posts pro Woche schlagen chaotische 10 Posts in einer Woche und dann Stille.</p>
+<div class="beispiel"><div class="beispiel-lbl">📊 Rechenbeispiel aus der Praxis</div><p>Zwei Restaurants, gleiche Lage, ähnliches Konzept.</p><p>Restaurant A: 4,2 Sterne, 38 Bewertungen, veraltete Fotos, Öffnungszeiten fehlen.</p><p>Restaurant B: 4,6 Sterne, 195 Bewertungen, aktuelle Fotos, vollständiges Profil.</p><div class="rechnung">Restaurant B hat 40% mehr Walk-in-Gäste. Bei Ø 28 € Bon × 20 mehr Gäste/Tag = 560 €/Tag = 16.800 €/Monat — nur durch ein gepflegtes Google-Profil.</div></div>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 1</div><p>Öffne dein Google My Business Profil. Prüfe: Sind Öffnungszeiten aktuell? Sind Fotos gut und aktuell? Sind alle Informationen vollständig? Korrigiere alles was nicht stimmt — heute, in dieser Stunde.</p></div>
+<h2>Kapitel 2 — Dein 15-Minuten-Marketing-Plan</h2>
+<h3>Weniger ist mehr — konsequent</h3>
+<p>Dein Marketing-Plan passt auf eine halbe Seite: Was postest du wann auf welchem Kanal? Wie oft fragst du aktiv nach Bewertungen? Was läuft automatisch (Google-Profil, gepflegte Karte) und was brauchst du aktiv zu tun?</p>
+<div class="tipp-box"><p>💡 <strong>Profi-Tipp:</strong> Fotografiere jeden Dienstag 5 Fotos bei guter Küchenlicht-Situation. Diese reichen für die ganze Woche Social Media. Batching spart 80% der Zeit — und die Qualität ist besser als tägliches Herumfotografieren zwischen Servicemomente.</p></div>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 2</div><p>Erstelle deinen 15-Minuten-Marketing-Plan: Was machst du täglich (0 min), wöchentlich (15 min) und monatlich (30 min)? Schreib es auf eine halbe Seite. Das ist dein Marketing-System.</p></div>
+<div class="nav-row"><span></span><a href="modul9-lektion2.html" class="nav-btn">Lektion 2 →</a></div>
+<div class="fazit"><div class="fazit-lbl">🎯 Das Wichtigste auf einen Blick</div><ul><li>Google My Business ist dein wichtigstes Marketing-Werkzeug — kostenlos und wirkungsvoll.</li><li>3 Kanäle: Google · Bewertungen · 1 Social-Media-Kanal. Nicht mehr.</li><li>4,6 Sterne mit 100+ Bewertungen = deutlich mehr Laufkundschaft ohne Werbebudget.</li><li>15-Minuten-Marketing-Plan: Was täglich/wöchentlich/monatlich — auf einer halben Seite.</li></ul></div>
+<div class="checkliste"><div class="checkliste-lbl">✅ Sofort-Checkliste — Das kannst du heute noch tun</div><ul><li>Google My Business vollständig ausfüllen und aktualisieren</li><li>Aktuelle Bewertungsanzahl und Ø-Stern notieren als Startwert</li><li>Einen Social-Media-Kanal wählen: Instagram oder Facebook</li><li>15-Minuten-Marketing-Plan auf einer halben Seite schreiben</li></ul></div>
   <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
 </div>
 <div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
-<script>
-(function(){
-  // Rechtsklick & Tastenkürzel sperren
-  document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
-  document.addEventListener('keydown', function(e){
-    if (e.ctrlKey && ['s','u','p','a'].includes(e.key.toLowerCase())) e.preventDefault();
-    if (e.key === 'F12') e.preventDefault();
-  });
-
-  // Supabase Auth Check
-  const sb = supabase.createClient(
-    'https://hchlganbgjeciwhwaisj.supabase.co',
-    'sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3'
-  );
-  (async function(){
-    const { data:{ session } } = await sb.auth.getSession();
-    if (!session) { window.location.href = 'login.html'; return; }
-    const { data: profile } = await sb.from('profiles')
-      .select('is_active,subscription_status')
-      .eq('id', session.user.id).maybeSingle();
-    if (profile && (!profile.is_active || profile.subscription_status !== 'active')) {
-      await sb.auth.signOut();
-      window.location.href = 'login.html';
-    }
-  })();
-})();
-</script>
-</body>
-</html>
+</body></html>

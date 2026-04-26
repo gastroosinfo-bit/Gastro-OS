@@ -1,176 +1,83 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GASTRO-OS – Modul 7 | Lektion 3</title>
-<style>
-* { margin:0; padding:0; box-sizing:border-box; }
+<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Lektion 3 — Verschwendung systematisch reduzieren | GASTRO-OS</title><style>* { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
-.header{background:#1a2a4a;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
-.brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
-.btn-back-modul{background:#d4af37;color:#1a2a4a;border:none;padding:9px 20px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.2s;letter-spacing:0.3px}
-.btn-back-modul:hover{background:#c8a030;color:#1a2a4a}
+.header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:18px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.btn-back { background:#d4af37; color:#1a2a4a; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.btn-back:hover { background:#c8a030; }
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
 .wrap { max-width:720px; margin:40px auto; padding:0 24px 60px; }
 .lbl { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:8px; }
-h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:10px; line-height:1.3; }
-.lektion-hero { background:#1a2a4a; border-radius:12px; padding:28px 32px; margin-bottom:28px; border:2px solid #d4af37; }
-.lektion-hero .lektion-tag { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:10px; }
-.lektion-hero h1 { font-family:Georgia,serif; font-size:26px; color:#fff; margin-bottom:0; font-weight:normal; line-height:1.3; }
-.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:20px 0 32px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:16px; line-height:1.3; }
+.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:0 0 24px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+.lern-box { background:#1a2a4a; border-radius:8px; padding:16px 20px; margin:0 0 28px; }
+.lern-box-title { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.lern-box ul { list-style:none; padding:0; margin:0; }
+.lern-box li { font-size:13px; color:#a0b0c8; padding:4px 0 4px 20px; position:relative; line-height:1.6; }
+.lern-box li::before { content:'✓'; position:absolute; left:0; color:#d4af37; font-weight:700; }
 h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:normal; margin:36px 0 14px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
-h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:24px 0 10px; }
+h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:22px 0 10px; }
+h4 { font-size:15px; color:#1a2a4a; font-weight:700; margin:18px 0 8px; }
 p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
-ul, ol { margin:12px 0 16px 20px; }
-li { font-size:15px; line-height:1.8; color:#2a3a54; margin-bottom:6px; }
-.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin-top:24px; }
+.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin:24px 0; }
 .aufgabe-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
-.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; }
-.highlight { background:#fff8e8; border-left:3px solid #d4af37; padding:14px 18px; margin:20px 0; font-size:14px; color:#5a4000; line-height:1.7; }
-.nav-row { display:flex; gap:12px; justify-content:space-between; margin-top:40px; }
-.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:12px 24px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none; transition:all 0.2s; }
+.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; line-height:1.7; }
+.beispiel { background:#fff; border:1px solid #e8dfc8; border-left:4px solid #3a7ad4; border-radius:0 8px 8px 0; padding:16px 20px; margin:20px 0; }
+.beispiel-lbl { font-size:11px; color:#3a7ad4; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
+.beispiel p { font-size:14px; color:#2a3a54; margin-bottom:8px; line-height:1.75; }
+.beispiel p:last-child { margin-bottom:0; }
+.rechnung { background:#f0f4f8; border-radius:5px; padding:10px 14px; font-family:monospace; font-size:13px; color:#1a2a4a; margin:8px 0; line-height:1.6; }
+.tipp-box { background:#e4f5e8; border:1px solid #4aaa60; border-radius:8px; padding:14px 18px; margin:18px 0; }
+.tipp-box p { font-size:14px; color:#1a6030; margin-bottom:0; line-height:1.7; }
+.nav-row { display:flex; gap:12px; justify-content:space-between; margin:40px 0 0; }
+.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:11px 20px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; transition:all 0.2s; }
 .nav-btn:hover { background:#d4af37; color:#1a2a4a; }
-.nav-btn.secondary { background:transparent; border:1px solid rgba(26,42,74,0.3); color:#1a2a4a; }
-.nav-btn.secondary:hover { background:#1a2a4a; color:#d4af37; }
+.nav-btn.secondary { background:#fff; color:#1a2a4a; border:1px solid #e8dfc8; }
+.nav-btn.secondary:hover { border-color:#d4af37; }
+.fazit { background:#fdf9ee; border:2px solid #d4af37; border-radius:8px; padding:18px 22px; margin:32px 0 0; }
+.fazit-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.fazit ul { list-style:none; padding:0; margin:0; }
+.fazit li { font-size:14px; color:#2a3a54; padding:6px 0 6px 22px; position:relative; line-height:1.65; border-bottom:1px solid #e8dfc8; }
+.fazit li:last-child { border-bottom:none; }
+.fazit li::before { content:'→'; position:absolute; left:0; color:#d4af37; font-weight:700; }
+.checkliste { background:#fff; border:1px solid #e8dfc8; border-radius:8px; padding:16px 20px; margin:20px 0 0; }
+.checkliste-lbl { font-size:11px; color:#1a2a4a; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.checkliste ul { list-style:none; padding:0; margin:0; }
+.checkliste li { font-size:14px; color:#2a3a54; padding:7px 0 7px 28px; position:relative; border-bottom:1px solid #f0ece4; line-height:1.55; }
+.checkliste li:last-child { border-bottom:none; }
+.checkliste li::before { content:'☐'; position:absolute; left:0; color:#d4af37; font-size:16px; line-height:1.2; }
 .footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-lbl strong { color:#d4af37; }
-.footer-main { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
-.footer-main strong { color:#d4af37; }
-@media (max-width:600px) { .wrap{padding:0 16px 40px} h1{font-size:22px} h2{font-size:17px} }
-</style>
-</head>
+.footer-main { background:#1a2a4a; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-main strong { color:#d4af37; }</style></head>
 <body>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-(function(){
-  document.addEventListener('contextmenu',function(e){e.preventDefault();});
-  document.addEventListener('keydown',function(e){
-    if(e.ctrlKey&&['s','u','p','a'].includes(e.key.toLowerCase()))e.preventDefault();
-    if(e.key==='F12')e.preventDefault();
-  });
-  const sb=supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3');
-  (async function(){
-    const{data:{session}}=await sb.auth.getSession();
-    if(!session){window.location.href='login.html';return;}
-    const{data:profile}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
-    if(profile&&(!profile.is_active||profile.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
-  })();
-})();
-</script>
-<div class="header">
-  <div class="brand">GASTRO-OS</div>
-  <a href="dashboard.html#modul-7" class="btn-back-modul">← Zurück zum Dashboard</a>
-</div>
+<div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html#modul-7" class="btn-back">← Zurück zum Dashboard</a></div>
 <div class="gold-bar"></div>
-
 <div class="wrap">
   <div class="lbl">Modul 7 · Lektion 3</div>
-  <div class="lektion-hero">
-    <div class="lektion-tag">Modul 7 · Lektion 3</div>
-    <h1>Verschwendung stoppen</h1>
-  </div>
-  <div class="intro">In Lektion 2 haben wir uns angeschaut wo Energiekosten wirklich entstehen und wie du deine Kühlgeräte so managst dass sie effizient arbeiten ohne unnötig Geld zu verbrennen. Du hast deinen ersten Kühlcheck durchgeführt, deine Gerätelaufzeiten analysiert und weißt jetzt wo die ersten konkreten Einsparpotenziale in deinem Betrieb liegen. Jetzt kommen wir zum dritten großen Bereich der versteckten Ko</div>
+  <h1>Verschwendung systematisch reduzieren</h1>
+  <div class="intro">Verschwendung ist der einzige Kostentreiber der sofort und ohne Investition reduziert werden kann. In dieser Lektion lernst du die konkrete Methode: Wie du Verschwendung sichtbar machst, misst und dauerhaft reduzierst.</div>
+  <div class="lern-box"><div class="lern-box-title">📚 Was du in dieser Lektion lernst</div><ul><li>Wo die größten Verschwendungsquellen in der Gastronomie liegen</li><li>Die Warenabgangsliste als tägliches Werkzeug nutzen</li><li>Einkaufsmengen auf Basis echter Verbrauchsdaten optimieren</li><li>Eine Null-Verschwendungs-Kultur im Team aufbauen</li></ul></div>
 
-<h2>Kapitel 1: Wo Verschwendung wirklich entsteht</h2>
-  <h3>Die drei größten Verschwendungsquellen</h3>
-  <p>Verschwendung in der Gastronomie entsteht selten durch einen einzelnen großen Fehler. Sie entsteht durch viele kleine tägliche Gewohnheiten die niemand mehr hinterfragt. Gewohnheiten die sich eingeschlichen haben weil sie einmal sinnvoll waren, oder weil sie einfach nie in Frage gestellt wurden.</p>
-  <p>Es gibt drei Bereiche in denen Verschwendung in der Gastronomie am häufigsten und am teuersten entsteht. Alle drei lassen sich mit einfachen Maßnahmen deutlich reduzieren. Nicht auf null, das ist unrealistisch. Aber auf ein Niveau das spürbar weniger Geld im Müll landen lässt.</p>
-
-  <h3>Überproduktion — zu viel vorbereiten aus Angst zu wenig zu haben</h3>
-  <p>Überproduktion ist in der Gastronomie weit verbreitet. Und sie ist menschlich. Niemand möchte einem Gast sagen dass ein Gericht nicht mehr verfügbar ist. Niemand möchte mitten im Service ohne Mise en Place dastehen. Also wird zu viel produziert, zu viel vorbereitet, zu viel eingekauft.</p>
-  <p>Das Ergebnis ist vorhersehbar. Volle Mülleimer am Abend. Ein Wareneinsatz der deutlich über dem Optimum liegt. Und ein Küchenchef der am nächsten Morgen wieder genauso viel vorbereitet weil er ja nicht weiß ob heute mehr Betrieb kommt.</p>
-  <p>Überproduktion ist keine Frage des guten Willens. Sie ist eine Frage fehlender Daten. Wer nicht weiß wie viel er durchschnittlich von einem Gericht verkauft, bereitet auf Basis von Gefühl vor. Und Gefühl liegt meistens zu hoch, weil das Risiko von zu wenig sich schlechter anfühlt als das Risiko von zu viel.</p>
-  <p>Die Lösung ist nicht weniger vorzubereiten. Die Lösung ist besser zu wissen wie viel man braucht. Dazu braucht es keine komplizierte Software. Eine einfache Tabelle die täglich festhält wie viele Portionen von jedem Gericht verkauft wurden, zeigt nach zwei Wochen klare Muster. Und Muster lassen sich für die Planung nutzen.</p>
-  <p>Wenn du weißt dass du am Dienstag durchschnittlich 12 Portionen Tagessuppe verkaufst, bereitest du 14 vor. Nicht 25. Das ist der Unterschied. Und er summiert sich über das Jahr zu echten Beträgen.</p>
-
-  <h3>Portionsinkonsistenz — wenn jeder Koch anders portioniert</h3>
-  <p>Portionsinkonsistenz ist ein unterschätzter Kostenfaktor der in zwei Richtungen schadet. Erstens schwankt der Wareneinsatz wenn verschiedene Mitarbeiter unterschiedlich große Portionen ausgeben. Eine Portion die zehn Gramm zu schwer ist klingt nach wenig. Bei 50 Portionen am Tag sind das 500 Gramm Mehrverbrauch täglich. 15 Kilogramm im Monat. Je nach Produkt können das schnell dreistellige Beträge sein.</p>
-  <p>Zweitens schwankt die Gästezufriedenheit. Ein Stammgast der beim letzten Besuch eine großzügige Portion bekommen hat und heute eine kleinere erhält, bemerkt das. Er bewertet das als Qualitätsverlust, auch wenn beides innerhalb der normalen Schwankung liegt.</p>
-  <p>Klare Portionsstandards lösen beide Probleme gleichzeitig. Nicht als Kontrollinstrument das Misstrauen signalisiert. Sondern als Qualitätswerkzeug das Konsistenz sichert. Eine einfache Portionsliste in der Küche, ergänzt durch kleine Hilfsmittel wie Portionslöffel, Waagenmarkierungen oder Schöpfkellen in standardisierten Größen, bringt hier schnell Stabilität.</p>
-  <p>Der erste Schritt ist die Bestandsaufnahme. Welche Gerichte haben aktuell keinen definierten Portionsstandard? Das sind die Kandidaten für die erste Portionsliste. Nicht alle auf einmal. Fang mit den drei Gerichten an die am häufigsten verkauft werden. Dort ist der Effekt am größten.</p>
-
-  <h3>Fehlende Resteverwertung — was gestern übrig blieb landet heute im Müll</h3>
-  <p>Resteverwertung ist in vielen Betrieben eine Ausnahme statt ein Standard. Was am Abend übrig bleibt wird weggeworfen weil es keine klare Regel gibt wie es weiterverwendet werden kann. Und weil die Müdigkeit am Ende eines langen Arbeitstages kreative Lösungen verhindert.</p>
-  <p>Das ist verständlich. Und es ist teuer.</p>
-  <p>Was gestern vorbereitet wurde und heute nicht mehr serviert werden kann, ist doppelt verlorenes Geld. Der Einkaufspreis ist verloren. Und der mögliche Umsatz ist verloren. Beides zusammen macht Resteverwertung zu einem der effektivsten Hebel für bessere Margen, wenn sie systematisch angegangen wird.</p>
-  <p>Systematisch bedeutet nicht täglich neu zu improvisieren was mit den Resten passiert. Systematisch bedeutet eine klare Regel zu haben bevor die Reste entstehen. Was kann als Tagesangebot verwertet werden. Was kann als Mitarbeiterverpflegung genutzt werden. Was kann eingefroren werden. Was muss tatsächlich entsorgt werden.</p>
-  <p>Diese Fragen einmal zu beantworten und als Standard festzulegen verändert die Kultur in der Küche. Reste werden nicht mehr als Problem gesehen sondern als Ressource. Und eine Küche die Ressourcen bewusst nutzt, hat am Ende des Monats bessere Zahlen.</p>
-
-  <h3>Fehlende Dokumentation — was nicht gemessen wird nicht verbessert</h3>
-  <p>Es gibt einen Grundsatz der für fast alle Bereiche der Kostenkontrolle gilt. Was nicht gemessen wird, wird nicht verbessert. Das gilt besonders für Verschwendung.</p>
-  <p>Solange niemand aufschreibt was täglich weggeworfen wird, bleibt Verschwendung eine diffuse Ahnung. Man weiß irgendwie dass zu viel weggeworfen wird. Aber man weiß nicht was, wie viel und warum. Und ohne diese Information lässt sich nichts gezielt verändern.</p>
-  <p>Eine einfache Warenabgangsliste schafft hier sofort Klarheit. Was wird täglich weggeworfen. Wie viel ungefähr. Und warum. War es verdorben. War es zu viel vorbereitet. Wurde eine falsche Bestellung aufgegeben. Hat ein Gast etwas zurückgeschickt.</p>
-  <p>Diese Liste muss nicht kompliziert sein. Ein Blatt Papier in der Küche, ausgefüllt am Ende jedes Tages, reicht für den Anfang. Nach zwei Wochen zeigen sich Muster. Und Muster lassen sich lösen. Vielleicht wird jeden Dienstag zu viel Suppe vorbereitet. Vielleicht verdirbt ein bestimmtes Produkt regelmäßig weil es zu früh bestellt wird. Vielleicht geht ein Gericht besonders oft zurück weil die Portion zu groß ist.</p>
-  <p>All das ist lösbar. Aber nur wenn es sichtbar ist.</p>
-  <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 1</div><p>Starte diese Woche eine einfache Warenabgangsliste in deiner Küche. Datum, Produkt, Menge, Grund. Nicht mehr. Führ sie sieben Tage durch. Schau dir am Ende der Woche an was am häufigsten weggeworfen wurde und warum. Schreib die drei größten Posten auf. Das sind deine ersten konkreten Ansatzpunkte für Kapitel 2.</p></div>
-  <div class="hinweis"><p>⚠️ <strong>Wichtiger Hinweis:</strong> Stelle sicher dass deine HACCP-Dokumentation aktuell ist. Temperaturkontrollen, Reinigungspläne und Lagerdokumentation sind keine Empfehlung – sie sind gesetzlich vorgeschrieben. Wende dich im Zweifel an dein zuständiges Gesundheitsamt.</p></div>
-
-  <h2>Kapitel 2: Verschwendung systematisch reduzieren</h2>
-  <h3>Warum Systeme wichtiger sind als guter Wille</h3>
-  <p>Es gibt eine Wahrheit über Verschwendung in der Gastronomie die viele Gastronomen kennen aber selten aussprechen. Guter Wille allein ändert nichts. Du kannst deinem Team sagen bitte weniger wegwerfen. Du kannst an die Kosten appellieren. Du kannst mit gutem Beispiel vorangehen.</p>
-  <p>Und nach zwei Wochen ist alles wieder wie vorher.</p>
-  <p>Nicht weil das Team es nicht will. Sondern weil ohne System jeder Tag von vorne anfängt. Jede Schicht trifft dieselben Entscheidungen neu. Wieviel vorbereiten. Was mit den Resten machen. Wie groß portionieren. Ohne klare Antworten auf diese Fragen entstehen immer wieder dieselben Muster.</p>
-  <p>Systeme ändern das. Ein System gibt klare Antworten auf wiederkehrende Fragen. Einmal definiert, immer gültig. Und das ist der Unterschied zwischen einem Betrieb der Verschwendung gelegentlich thematisiert und einem der sie dauerhaft reduziert.</p>
-
-  <h3>Bestellmengen auf Basis von Daten statt Gefühl</h3>
-  <p>Der erste Hebel für systematische Verschwendungsreduktion ist die Bestellung. Was zu viel eingekauft wird, muss irgendwo hin. Meistens in den Müll.</p>
-  <p>Bestellmengen auf Basis von Gefühl sind in der Gastronomie weit verbreitet. Der erfahrene Koch weiß ungefähr wie viel er braucht. Manchmal stimmt das. Manchmal liegt er daneben. Und wenn er daneben liegt, entstehen entweder Engpässe die den Service stören, oder Überschüsse die entsorgt werden müssen.</p>
-  <p>Bestellmengen auf Basis von Daten sind zuverlässiger. Nicht perfekt. Aber deutlich zuverlässiger. Die Grundlage dafür ist eine einfache Verbrauchsaufzeichnung. Wie viel wurde von welchem Produkt in der letzten Woche tatsächlich verbraucht. Diese Zahl ist die Basis für die nächste Bestellung. Ergänzt um einen kleinen Puffer für Unvorhergesehenes. Aber eben einen kleinen, nicht einen großzügigen.</p>
-
-  <h3>Portionsstandards einführen und leben</h3>
-  <p>Der zweite Hebel ist die Portionskontrolle. Klare Portionsstandards sind eine der einfachsten Maßnahmen die sofort wirken. Und eine der am häufigsten vernachlässigten.</p>
-  <p>Der Grund ist kulturell. In der Gastronomie gilt Großzügigkeit oft als Tugend. Der Koch der großzügig portioniert gilt als jemand der die Gäste wertschätzt. Das stimmt in gewissem Maße. Aber unkontrollierte Großzügigkeit ist eine versteckte Subvention die du alleine bezahlst.</p>
-  <p>Klare Portionsstandards lösen diesen Konflikt nicht durch Geiz. Sondern durch Konsistenz. Wenn die Portion definiert ist und diese Portion gut und befriedigend ist, können alle damit zufrieden sein. Der Gast bekommt was er erwartet. Das Team hat Klarheit. Und du hast Kontrolle über deinen Wareneinsatz.</p>
-  <p>Die praktische Umsetzung beginnt mit einer Portionsliste für die häufigsten Gerichte. Gewicht oder Volumen pro Portion. Hilfsmittel die die Einhaltung erleichtern. Und eine kurze Einführung für das Küchenteam die erklärt warum Portionskonsistenz Qualität bedeutet und nicht Sparmaßnahme.</p>
-
-  <h3>Resteverwertung als festen Standard etablieren</h3>
-  <p>Der dritte Hebel ist die systematische Resteverwertung. Nicht als tägliche Improvisation. Sondern als fester Standard der klar regelt was mit Überschüssen passiert.</p>
-  <p>Dafür braucht es drei Dinge. Erstens eine klare Liste welche Produkte und Gerichte sich für Tagesangebote oder Mitarbeiterverpflegung eignen. Diese Liste wird einmal erstellt und regelmäßig aktualisiert. Zweitens eine klare Regel wann Reste eingefroren werden können und was beim Einfrieren zu beachten ist. Hygiene, Haltbarkeit, Kennzeichnung. Drittens eine klare Grenze wann etwas tatsächlich entsorgt werden muss. Diese Grenze sollte großzügig aber realistisch sein. Lebensmittelsicherheit geht immer vor.</p>
-  <p>Mit diesen drei Elementen hat das Küchenteam klare Antworten auf die tägliche Frage was machen wir mit dem was übrig ist. Keine Improvisation, keine Entscheidungen am Ende eines langen Tages unter Müdigkeit. Nur Systeme die greifen.</p>
-
-  <h3>Die Kultur der Ressourcenachtsamkeit</h3>
-  <p>Verschwendung zu reduzieren ist am Ende keine technische Frage. Es ist eine kulturelle Frage. Wie geht dein Team mit Lebensmitteln um? Wird Verschwendung als normal akzeptiert oder als Problem das gelöst werden soll?</p>
-  <p>Kultur entsteht nicht durch Appelle. Sie entsteht durch Vorbilder und durch Systeme. Wenn du als Chef Lebensmittel achtsam behandelst, überträgt sich das. Wenn Systeme existieren die Ressourcenachtsamkeit unterstützen, wird sie zur Gewohnheit.</p>
-  <p>Ein konkreter Schritt in diese Richtung ist das wöchentliche Kurzgespräch in der Küche. Fünf Minuten. Was haben wir diese Woche weggeworfen. Was könnte weniger werden. Was hat gut funktioniert. Nicht als Kontrolle. Als gemeinsame Reflexion.</p>
-  <p>Diese fünf Minuten signalisieren dem Team dass das Thema ernst genommen wird. Und sie erzeugen im Laufe der Zeit eine kollektive Aufmerksamkeit für Verschwendung die kein Appell jemals erzeugen würde.</p>
-
-  <h3>Technologie als Unterstützung</h3>
-  <p>Abschließend ein kurzer Blick auf technologische Unterstützung die in der modernen Gastronomie zunehmend verfügbar ist. Es gibt inzwischen einfache Apps und digitale Tools die bei der Warenabgangsdokumentation, der Verbrauchsaufzeichnung und der Bestellmengenoptimierung helfen können.</p>
-  <p>Diese Tools sind kein Ersatz für ein grundlegendes Bewusstsein für Verschwendung. Aber sie können ein bestehendes System deutlich effizienter machen. Wenn du dich für digitale Unterstützung interessierst, schau dir zunächst an was dein bestehendes Kassensystem bereits kann. Viele moderne Kassensysteme haben integrierte Auswertungsfunktionen die für die Verbrauchsanalyse genutzt werden können. Oft ohne zusätzliche Kosten.</p>
-  <p>Für den Anfang gilt aber, fang mit dem einfachsten System an das funktioniert. Eine Liste auf Papier die täglich ausgefüllt wird ist besser als eine komplizierte Software die niemand nutzt.</p>
-  <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 2</div><p>Wähle jetzt einen der drei Hebel aus Kapitel 2 aus. Bestellmengen auf Datenbasis, Portionsstandards oder systematische Resteverwertung. Nicht alle drei auf einmal. Einen. Schreib auf wie du ihn in deinem Betrieb in den nächsten zwei Wochen einführst. Wer ist dafür verantwortlich. Was genau wird gemacht. Wann fängt es an. Und woran erkennst du nach zwei Wochen ob es funktioniert.</p></div>
-
-
+<h2>Kapitel 1 — Verschwendung messen</h2>
+<h3>Was typischerweise verschwendet wird</h3>
+<p>Lebensmittelverschwendung in deutschen Restaurants: durchschnittlich 25-35% des eingekauften Volumens landet nicht beim Gast. Das klingt abstrakt. Bei einem monatlichen Wareneinsatz von 10.000 Euro bedeutet das 2.500-3.500 Euro pro Monat für Produkte die niemand gegessen hat.</p>
+<p>Die Ursachen sind immer dieselben: Zu viel eingekauft, zu viel vorbereitet, falsch gelagert, falsch portioniert, abgelaufen. Jede dieser Ursachen hat eine konkrete Lösung — aber zuerst muss die Ursache bekannt sein.</p>
+<h3>Die Warenabgangsliste</h3>
+<p>Das einfachste und wirksamste Werkzeug gegen Verschwendung: eine Liste neben dem Müllbehälter. Jedes Mal wenn etwas weggeworfen wird: Datum, Produkt, Menge, Ursache (verdorben / zu viel vorbereitet / Portionsfehler / Reklamation). Das ist alles.</p>
+<p>Nach 2-3 Wochen zeigen sich Muster. Immer dienstags zu viel Suppe. Jeden Abend Salat der nicht verkauft wird. Frische Kräuter die Mittwoch verderben weil zu viel montags bestellt. Diese Muster zu kennen ist der erste Schritt zur Veränderung.</p>
+<div class="beispiel"><div class="beispiel-lbl">📊 Rechenbeispiel aus der Praxis</div><p>2 Wochen Warenabgangsliste in einem Café ausgewertet.</p><p>Häufigste Posten: Salat täglich Ø 280g, Suppe dienstags Ø 1,4 kg, Croissants nach 14 Uhr täglich 3-5 Stück.</p><div class="rechnung">Salat: 280g × 25 Tage × 4 €/kg = 28 €/Monat. Suppe: 1,4 kg × 4 × 3 €/kg = 16,80 €/Monat. Croissants: 4 × 25 × 1,20 € = 120 €/Monat.</div><p>Gesamte vermeidbare Verschwendung: 164,80 €/Monat = 1.977 €/Jahr. Aus einer Notizliste neben dem Müll.</p></div>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 1</div><p>Starte die Warenabgangsliste ab morgen. Hänge sie neben den Hauptmüllbehälter. Briefe das Team in 3 Sätzen: Was, warum, wie. Nach 2 Wochen: gemeinsam auswerten und die 3 größten Posten angehen.</p></div>
+<h2>Kapitel 2 — Mengen optimieren und Kultur aufbauen</h2>
+<h3>Einkauf auf Verbrauchsdaten stützen</h3>
+<p>Wenn die Warenabgangsliste zeigt dass jeden Dienstag zu viel Suppe vorbereitet wird, ist die Lösung einfach: Dienstags weniger vorbereiten. Was banal klingt, passiert ohne die Daten nie — weil die Gewohnheit stärker ist als die Vermutung.</p>
+<p>Nach 4-6 Wochen Warenabgangsliste hast du echte Verbrauchsdaten. Diese werden direkt in die Einkaufsplanung eingearbeitet. Ergebnis: Du kaufst was du wirklich brauchst — nicht was sich 'sicherheitshalber' gut anfühlt.</p>
+<div class="tipp-box"><p>💡 <strong>Profi-Tipp:</strong> Mache Verschwendungsreduktion zum Team-Thema — nicht als Sparmaßnahme sondern als Qualitätsmerkmal. 'Was wir nicht verschwenden können wir für bessere Zutaten nutzen.' Diese Formulierung schafft Ownership statt Widerstand.</p></div>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 2</div><p>Schreibe nach 2 Wochen Warenabgangsliste die 3 größten Verschwendungsposten auf. Was ist die Ursache bei jedem? Was ist die konkrete Lösung? Setze eine davon noch in dieser Woche um.</p></div>
+<div class="nav-row"><a href="modul7-lektion2.html" class="nav-btn secondary">← Lektion 2</a><a href="modul7-lektion4.html" class="nav-btn">Lektion 4 →</a></div>
+<div class="fazit"><div class="fazit-lbl">🎯 Das Wichtigste auf einen Blick</div><ul><li>25-35% des eingekauften Volumens landet nicht beim Gast — das ist veränderbar.</li><li>Warenabgangsliste: neben dem Müll, täglich, zeigt Muster in 2 Wochen.</li><li>Verbrauchsdaten aus der Liste direkt in die Einkaufsplanung einarbeiten.</li><li>Verschwendung als Qualitätsthema kommunizieren schafft Team-Ownership.</li></ul></div>
+<div class="checkliste"><div class="checkliste-lbl">✅ Sofort-Checkliste — Das kannst du heute noch tun</div><ul><li>Warenabgangsliste ausdrucken und neben Müllbehälter hängen</li><li>Team in 3 Sätzen briefen: Was, warum, wie</li><li>Nach 2 Wochen: gemeinsam auswerten, 3 Hauptposten identifizieren</li><li>Ersten Anpassung in der Einkaufsplanung umsetzen</li></ul></div>
   <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
 </div>
 <div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
-<script>
-(function(){
-  // Rechtsklick & Tastenkürzel sperren
-  document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
-  document.addEventListener('keydown', function(e){
-    if (e.ctrlKey && ['s','u','p','a'].includes(e.key.toLowerCase())) e.preventDefault();
-    if (e.key === 'F12') e.preventDefault();
-  });
-
-  // Supabase Auth Check
-  const sb = supabase.createClient(
-    'https://hchlganbgjeciwhwaisj.supabase.co',
-    'sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3'
-  );
-  (async function(){
-    const { data:{ session } } = await sb.auth.getSession();
-    if (!session) { window.location.href = 'login.html'; return; }
-    const { data: profile } = await sb.from('profiles')
-      .select('is_active,subscription_status')
-      .eq('id', session.user.id).maybeSingle();
-    if (profile && (!profile.is_active || profile.subscription_status !== 'active')) {
-      await sb.auth.signOut();
-      window.location.href = 'login.html';
-    }
-  })();
-})();
-</script>
-</body>
-</html>
+</body></html>

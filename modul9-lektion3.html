@@ -1,202 +1,80 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GASTRO-OS – Modul 9 | Lektion 3</title>
-<style>
-* { margin:0; padding:0; box-sizing:border-box; }
+<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Lektion 3 — Social Media effizient betreiben | GASTRO-OS</title><style>* { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
-.header{background:#1a2a4a;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
-.brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
-.btn-back-modul{background:#d4af37;color:#1a2a4a;border:none;padding:9px 20px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.2s;letter-spacing:0.3px}
-.btn-back-modul:hover{background:#c8a030;color:#1a2a4a}
+.header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:18px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.btn-back { background:#d4af37; color:#1a2a4a; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.btn-back:hover { background:#c8a030; }
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
 .wrap { max-width:720px; margin:40px auto; padding:0 24px 60px; }
 .lbl { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:8px; }
-h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:10px; line-height:1.3; }
-.lektion-hero { background:#1a2a4a; border-radius:12px; padding:28px 32px; margin-bottom:28px; border:2px solid #d4af37; }
-.lektion-hero .lektion-tag { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:10px; }
-.lektion-hero h1 { font-family:Georgia,serif; font-size:26px; color:#fff; margin-bottom:0; font-weight:normal; line-height:1.3; }
-.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:20px 0 32px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:16px; line-height:1.3; }
+.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:0 0 24px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+.lern-box { background:#1a2a4a; border-radius:8px; padding:16px 20px; margin:0 0 28px; }
+.lern-box-title { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.lern-box ul { list-style:none; padding:0; margin:0; }
+.lern-box li { font-size:13px; color:#a0b0c8; padding:4px 0 4px 20px; position:relative; line-height:1.6; }
+.lern-box li::before { content:'✓'; position:absolute; left:0; color:#d4af37; font-weight:700; }
 h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:normal; margin:36px 0 14px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
-h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:24px 0 10px; }
+h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:22px 0 10px; }
+h4 { font-size:15px; color:#1a2a4a; font-weight:700; margin:18px 0 8px; }
 p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
-ul, ol { margin:12px 0 16px 20px; }
-li { font-size:15px; line-height:1.8; color:#2a3a54; margin-bottom:6px; }
-.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin-top:24px; }
+.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin:24px 0; }
 .aufgabe-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
-.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; }
-.highlight { background:#fff8e8; border-left:3px solid #d4af37; padding:14px 18px; margin:20px 0; font-size:14px; color:#5a4000; line-height:1.7; }
-.nav-row { display:flex; gap:12px; justify-content:space-between; margin-top:40px; }
-.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:12px 24px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none; transition:all 0.2s; }
+.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; line-height:1.7; }
+.beispiel { background:#fff; border:1px solid #e8dfc8; border-left:4px solid #3a7ad4; border-radius:0 8px 8px 0; padding:16px 20px; margin:20px 0; }
+.beispiel-lbl { font-size:11px; color:#3a7ad4; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
+.beispiel p { font-size:14px; color:#2a3a54; margin-bottom:8px; line-height:1.75; }
+.beispiel p:last-child { margin-bottom:0; }
+.rechnung { background:#f0f4f8; border-radius:5px; padding:10px 14px; font-family:monospace; font-size:13px; color:#1a2a4a; margin:8px 0; line-height:1.6; }
+.tipp-box { background:#e4f5e8; border:1px solid #4aaa60; border-radius:8px; padding:14px 18px; margin:18px 0; }
+.tipp-box p { font-size:14px; color:#1a6030; margin-bottom:0; line-height:1.7; }
+.nav-row { display:flex; gap:12px; justify-content:space-between; margin:40px 0 0; }
+.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:11px 20px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; transition:all 0.2s; }
 .nav-btn:hover { background:#d4af37; color:#1a2a4a; }
-.nav-btn.secondary { background:transparent; border:1px solid rgba(26,42,74,0.3); color:#1a2a4a; }
-.nav-btn.secondary:hover { background:#1a2a4a; color:#d4af37; }
+.nav-btn.secondary { background:#fff; color:#1a2a4a; border:1px solid #e8dfc8; }
+.nav-btn.secondary:hover { border-color:#d4af37; }
+.fazit { background:#fdf9ee; border:2px solid #d4af37; border-radius:8px; padding:18px 22px; margin:32px 0 0; }
+.fazit-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.fazit ul { list-style:none; padding:0; margin:0; }
+.fazit li { font-size:14px; color:#2a3a54; padding:6px 0 6px 22px; position:relative; line-height:1.65; border-bottom:1px solid #e8dfc8; }
+.fazit li:last-child { border-bottom:none; }
+.fazit li::before { content:'→'; position:absolute; left:0; color:#d4af37; font-weight:700; }
+.checkliste { background:#fff; border:1px solid #e8dfc8; border-radius:8px; padding:16px 20px; margin:20px 0 0; }
+.checkliste-lbl { font-size:11px; color:#1a2a4a; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.checkliste ul { list-style:none; padding:0; margin:0; }
+.checkliste li { font-size:14px; color:#2a3a54; padding:7px 0 7px 28px; position:relative; border-bottom:1px solid #f0ece4; line-height:1.55; }
+.checkliste li:last-child { border-bottom:none; }
+.checkliste li::before { content:'☐'; position:absolute; left:0; color:#d4af37; font-size:16px; line-height:1.2; }
 .footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-lbl strong { color:#d4af37; }
-.footer-main { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
-.footer-main strong { color:#d4af37; }
-@media (max-width:600px) { .wrap{padding:0 16px 40px} h1{font-size:22px} h2{font-size:17px} }
-</style>
-</head>
+.footer-main { background:#1a2a4a; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-main strong { color:#d4af37; }</style></head>
 <body>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-(function(){
-  document.addEventListener('contextmenu',function(e){e.preventDefault();});
-  document.addEventListener('keydown',function(e){
-    if(e.ctrlKey&&['s','u','p','a'].includes(e.key.toLowerCase()))e.preventDefault();
-    if(e.key==='F12')e.preventDefault();
-  });
-  const sb=supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3');
-  (async function(){
-    const{data:{session}}=await sb.auth.getSession();
-    if(!session){window.location.href='login.html';return;}
-    const{data:profile}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
-    if(profile&&(!profile.is_active||profile.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
-  })();
-})();
-</script>
-<div class="header">
-  <div class="brand">GASTRO-OS</div>
-  <a href="dashboard.html#modul-9" class="btn-back-modul">← Zurück zum Dashboard</a>
-</div>
+<div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html#modul-9" class="btn-back">← Zurück zum Dashboard</a></div>
 <div class="gold-bar"></div>
-
 <div class="wrap">
   <div class="lbl">Modul 9 · Lektion 3</div>
-  <div class="lektion-hero">
-    <div class="lektion-tag">Modul 9 · Lektion 3</div>
-    <h1>Social Media ohne Stress</h1>
-  </div>
-  <div class="intro">In Lektion 2 hast du gelernt wie du Bewertungen systematisch sammelst und nutzt. Jetzt gehen wir zu Instagram und Social Media — aber nicht so wie du es vielleicht kennst. Sondern mit einem System das 15 Minuten pro Woche braucht und wirklich funktioniert.</div>
+  <h1>Social Media effizient betreiben</h1>
+  <div class="intro">Du hast Google optimiert und ein Bewertungs-System aufgebaut. Jetzt kommt Social Media — aber richtig. Nicht täglich chaotisch posten. Sondern einmal pro Woche 15 Minuten investieren und die ganze Woche bespielt haben.</div>
+  <div class="lern-box"><div class="lern-box-title">📚 Was du in dieser Lektion lernst</div><ul><li>Welche Plattform für dein Restaurant die richtige ist</li><li>Content-Strategie die wirklich für Restaurants funktioniert</li><li>Den Monatsplan in 30 Minuten erstellen</li><li>Konsistenz als entscheidenden Erfolgsfaktor verstehen</li></ul></div>
 
-<h2>Kapitel 1: Was Social Media in der Gastronomie wirklich leistet</h2>
-    <h3>Das ehrliche Bild</h3>
-  <p>Es gibt eine Erwartung die viele Gastronomen an Social Media haben wenn sie anfangen. Sie posten schöne Fotos, sammeln Follower und irgendwann kommen die neuen Gäste von selbst. Das ist ein schönes Bild. Und es stimmt in sehr seltenen Fällen.</p>
-  <p>Die Realität ist nüchterner. Social Media in der Gastronomie bringt selten direkt neue Gäste, zumindest nicht in der Anfangsphase und nicht ohne eine sehr aktive, konsistente und strategische Nutzung. Was es bringt ist etwas anderes aber trotzdem Wertvolles. Es stärkt die Bindung zu bestehenden Gästen. Es gibt deinem Betrieb ein Gesicht und eine Persönlichkeit. Und es kann als Bestätigung funktionieren wenn jemand über eine andere Quelle auf dich aufmerksam geworden ist und nachschaut wer du bist.</p>
-  <p>Das ist nicht nichts. Aber es ist auch nicht das Allheilmittel das manche Social Media Gurus versprechen. Und wer das versteht, kann Social Media mit realistischen Erwartungen nutzen. Ohne Enttäuschung wenn der nächste Post keine Buchungswelle auslöst. Und ohne schlechtes Gewissen wenn mal eine Woche nichts gepostet wird.</p>
-
-  <h3>Was auf Social Media in der Gastronomie wirklich funktioniert</h3>
-  <p>Es gibt Inhalte die auf Social Media in der Gastronomie konstant gut funktionieren. Nicht weil sie besonders kreativ oder aufwendig wären. Sondern weil sie das zeigen wofür Menschen Gastronomiebetrieben auf Social Media folgen.</p>
-  <p>Authentische Einblicke hinter die Kulissen. Nicht das perfekte Tellerfoto das aussieht wie aus einem Hochglanzmagazin. Sondern der Moment in dem die Küche morgens die frischen Zutaten auspackst. Der kurze Blick auf das Mise en Place kurz vor dem Service. Das Team beim Aufbau für einen besonderen Abend. Diese Inhalte erzeugen Nähe. Sie zeigen dass hinter deinem Betrieb echte Menschen stecken die mit Leidenschaft arbeiten. Und Nähe erzeugt Loyalität.</p>
-  <p>Saisonale und tagesaktuelle Inhalte. Was ist heute frisch. Was steht diese Woche auf der Karte. Welches Gericht ist gerade besonders gut weil die Zutat auf dem Höhepunkt ihrer Saison ist. Diese Inhalte sind schnell erstellt, relevant und zeigen Kompetenz. Ein kurzes Foto mit einem ehrlichen Satz dazu ist oft wirkungsvoller als ein aufwendig inszenierter Post.</p>
-  <p>Menschen und Persönlichkeit. Dein Team, deine Geschichte, deine Werte. Warum hast du diesen Betrieb. Was treibt dich an. Was macht dich anders als das Restaurant drei Straßen weiter. Menschen folgen Menschen. Nicht Betrieben. Wenn du dich und dein Team zeigst, entsteht eine Verbindung die über das Essen hinausgeht.</p>
-  <p>Besondere Anlässe und Events. Ein Weihnachtsmenü, ein Weinabend, ein Live Musik Abend, eine neue saisonale Karte. Solche Inhalte haben auf Social Media eine deutlich höhere Reichweite und erzeugen konkrete Handlungen. Menschen speichern den Post, teilen ihn mit Freunden oder schreiben direkt an um zu reservieren.</p>
-
-  <h3>Was du weglassen kannst</h3>
-  <p>Genauso wichtig wie zu wissen was funktioniert ist zu wissen was du weglassen kannst. Denn Zeit ist in der Gastronomie das knappste Gut. Und Zeit die in Social Media investiert wird ist Zeit die woanders fehlt.</p>
-  <p>Perfekt inszenierte Tellerfotos die stundenlange Vorbereitung brauchen. Wenn du nicht fotografisch begabt bist oder kein Budget für einen Fotografen hast, können aufwendige Inszenierungen mehr Zeit kosten als sie wert sind. Ein ehrliches natürliches Foto eines frisch zubereiteten Gerichts auf einem schönen Teller ist oft wirkungsvoller als eine stundenlange Fotosession.</p>
-  <p>Tägliches Posten um des Postens willen. Qualität schlägt Quantität. Drei wirklich gute Posts pro Woche die echte Einblicke geben und eine Persönlichkeit zeigen, sind wertvoller als tägliche nichtssagende Posts. Und sie sind deutlich weniger stressig zu produzieren.</p>
-  <p>Reels und Videos wenn du keine Zeit oder Lust dazu hast. Videos haben auf Instagram und anderen Plattformen oft mehr Reichweite als Fotos. Aber sie sind auch aufwendiger. Wenn Videos dich stressen, lass es. Ein guter konsistenter Foto Feed mit echter Persönlichkeit schlägt einen sporadischen Reels Versuch der aufgehört wird nach drei Videos.</p>
-
-  <h3>Die Plattformen im Überblick</h3>
-  <p>Instagram ist für die meisten Gastronomiebetriebe die relevanteste Social Media Plattform in Deutschland. Das Publikum ist breit, die visuellen Möglichkeiten passen gut zur Gastronomie und die Nutzung ist hoch. Wenn du nur eine Plattform aktiv bespielst, ist Instagram die richtige Wahl.</p>
-  <p>Facebook ist besonders relevant für eine ältere Zielgruppe ab 40 Jahren und für lokale Gruppen und Communities. Wenn dein Betrieb ein Restaurant ist das stark auf Stammkunden und lokale Gäste setzt, kann Facebook sinnvoll sein. Viele lokale Facebook Gruppen sind aktiv und können organische Reichweite für lokale Betriebe bringen.</p>
-  <p>TikTok hat eine junge Zielgruppe und eine hohe organische Reichweite für neue Accounts. Wenn dein Betrieb ein junges Publikum anspricht und du Spaß an Videos hast, kann TikTok interessant sein. Wenn nicht, ist es für die meisten traditionellen Gastronomiebetriebe kein prioritärer Kanal.</p>
-  <p>Pinterest ist für die Gastronomie ein unterschätzter Kanal. Besonders für Rezepte, Tischdekoration und saisonale Inspirationen hat Pinterest eine treue und kaufbereite Nutzergruppe. Wenn du Inhalte produzierst die sich dafür eignen, lohnt sich ein Blick.</p>
-
-    <div class="task-box">
-      <strong>Deine Aufgabe für Kapitel 1:</strong>
-      <p>Schreib jetzt auf welche Social Media Plattformen du aktuell nutzt und wie zufrieden du mit dem Ergebnis bist. Und schreib auf welche Inhalte aus der Liste oben du in deinem Betrieb produzieren könntest ohne großen Aufwand. Nicht was du theoretisch tun könntest. Was du wirklich realistisch diese Woche umsetzen kannst. Das ist dein Social Media Ausgangspunkt.</p>
-    </div>
-  </div>
-
-  <div class="card">
-    <h2>Kapitel 2: Der 15 Minuten Marketing Plan</h2>
-    <h3>Warum Konsistenz wichtiger ist als Perfektion</h3>
-  <p>Das größte Problem mit Social Media in der Gastronomie ist nicht fehlendes Talent oder fehlendes Budget. Es ist fehlende Konsistenz. Betriebe die sporadisch posten wenn gerade Zeit ist und dann wieder wochenlang nichts, bauen keine Reichweite auf und keine Verbindung zu ihrem Publikum.</p>
-  <p>Konsistenz schlägt Perfektion. Drei ehrliche authentische Posts pro Woche die regelmäßig kommen, bauen mehr Reichweite und mehr Verbindung auf als ein perfekter Post alle drei Wochen. Das Publikum lernt wann es von dir hören kann. Der Algorithmus belohnt Regelmäßigkeit. Und du entwickelst eine Routine die Social Media von einer Aufgabe zu einer Gewohnheit macht.</p>
-  <p>Das Werkzeug dafür ist der 15 Minuten Marketing Plan. Nicht 15 Minuten pro Post. 15 Minuten pro Woche in denen du planst was du diese Woche postest und wann. Das klingt wenig. Es reicht.</p>
-
-  <h3>So funktioniert der 15 Minuten Plan</h3>
-  <p>Der 15 Minuten Marketing Plan wird einmal pro Woche ausgefüllt. Am besten in deiner Unternehmer Zeit aus Modul 5. Montagmorgen, bevor die Woche richtig beginnt.</p>
-  <p>In diesen 15 Minuten beantwortest du drei Fragen.</p>
-  <p>Erstens was passiert diese Woche in meinem Betrieb das postingwürdig ist. Neues Tagesgericht, besonderes Event, frische Saisonware, ein Teammoment der sich anbietet. Schreib drei Punkte auf. Nicht mehr. Drei reichen für eine Woche.</p>
-  <p>Zweitens wann poste ich was. Weise jedem der drei Punkte einen Tag und eine Uhrzeit zu. Nicht irgendwann. Konkret. Dienstag um 11 Uhr, Donnerstag um 17 Uhr, Samstag um 12 Uhr. Diese Konkretheit ist entscheidend. Was keinen festen Termin hat, passiert nicht.</p>
-  <p>Drittens was ist diese Woche mein Marketing Schwerpunkt. Geht es um Bewertungen steigern, um einen besonderen Event, um ein neues Gericht oder einfach um Stammkundenbindung. Dieser Fokus gibt der Woche eine Richtung und verhindert planloses Posten.</p>
-  <p>Das war es. 15 Minuten. Und du weißt genau was du diese Woche auf Social Media tust, wann du es tust und warum.</p>
-
-  <h3>Content Ideen die immer funktionieren</h3>
-  <p>Es gibt eine Herausforderung die viele Gastronomen beim Thema Social Media benennen. Mir fällt nichts ein was ich posten könnte. Das ist ein Missverständnis. In einem Gastronomiebetrieb passiert täglich so viel Postingwürdiges dass das Problem nicht die fehlenden Ideen ist. Es ist das fehlende Bewusstsein dafür was interessant sein könnte.</p>
-  <p>Das Tagesgericht oder die Tagesempfehlung. Ein kurzes Foto und ein ehrlicher Satz warum dieses Gericht heute besonders gut ist. Dauert zwei Minuten. Erzeugt Interesse und manchmal direkte Reservierungen.</p>
-  <p>Ein Einblick in die Warenlieferung. Frische Zutaten die morgens ankommen sind visuell ansprechend und zeigen Qualität. Ein kurzes Foto der frischen Lieferung mit einem Kommentar was heute damit gekocht wird, zeigt Leidenschaft und Handwerk.</p>
-  <p>Ein Teammoment. Das Team beim Mise en Place, beim Aufbau, beim kurzen Lachen in der Pause. Menschen folgen Menschen. Und ein authentischer Teammoment erzeugt mehr Nähe als jedes perfekte Tellerfoto.</p>
-  <p>Ein Blick hinter die Kulissen. Die Küche beim Aufbau vor dem Service, das Mise en Place kurz bevor es losgeht, das frisch gedeckte Restaurant bevor die ersten Gäste kommen. Diese Momente sind authentisch, interessant und zeigen den Aufwand der hinter einem guten Abend steckt.</p>
-  <p>Ein saisonaler Hinweis. Was ist gerade Saison. Was kommt neu auf die Karte. Warum ist dieser Monat besonders für deine Küche. Saisonale Inhalte haben immer Relevanz und zeigen Kompetenz.</p>
-  <p>Eine persönliche Geschichte. Warum hast du diesen Betrieb. Was bedeutet dir dein Handwerk. Was hat dich zu dem gemacht der du als Gastronom bist. Diese Inhalte sind selten aber wirkungsvoll wenn sie authentisch sind.</p>
-
-  <h3>Fotos ohne Profi Equipment</h3>
-  <p>Ein häufiges Missverständnis ist dass gute Social Media Fotos professionelles Equipment brauchen. Das stimmt nicht. Ein modernes Smartphone macht Fotos die für Social Media mehr als ausreichend sind. Was den Unterschied macht ist nicht das Gerät. Es ist das Licht.</p>
-  <p>Natürliches Tageslicht ist der beste Freund des Gastronomen auf Social Media. Ein Gericht fotografiert am Fenster bei Tageslicht sieht deutlich besser aus als dasselbe Gericht unter Kunstlicht. Wenn möglich, fotografiere Gerichte und Einblicke bei Tageslicht oder zumindest bei guter heller Beleuchtung.</p>
-  <p>Dazu kommen ein paar einfache Regeln. Das Gericht mittig oder nach der Drittel Regel platzieren. Hintergrund möglichst aufgeräumt und neutral. Keine Filter die das Foto unnatürlich aussehen lassen. Und immer aus der Perspektive fotografieren die das Gericht am besten zeigt, meist leicht von oben oder auf Augenhöhe des Gerichts.</p>
-  <p>Das war es. Keine Profiausrüstung, kein langer Kurs. Tageslicht, aufgeräumter Hintergrund, richtige Perspektive. Wer diese drei Dinge beachtet, macht Fotos die auf Social Media funktionieren.</p>
-
-  <h3>Wann und wie oft posten</h3>
-  <p>Die Frage nach der optimalen Posting Frequenz und den besten Zeiten wird in der Social Media Welt oft zu kompliziert gemacht. Die ehrliche Antwort für Gastronomiebetriebe lautet: Drei Mal pro Woche ist gut. Zwei Mal ist ok. Einmal ist besser als nichts. Täglich ist nur sinnvoll wenn du die Qualität halten kannst.</p>
-  <p>Die besten Zeiten für Posts in der Gastronomie sind erfahrungsgemäß die Mittagszeit zwischen 11 und 13 Uhr wenn Menschen an Essen denken, der frühe Abend zwischen 17 und 19 Uhr wenn Gäste überlegen wo sie hingehen und der Samstagvormittag wenn Menschen Wochenpläne machen.</p>
-  <p>Das sind Richtwerte keine Gesetze. Was wirklich die besten Zeiten für dein spezifisches Publikum sind, zeigen dir die Insights deines Instagram Accounts nach einigen Wochen. Nutze diese Daten sobald du sie hast um deine Posting Zeiten anzupassen.</p>
-
-    <div class="task-box">
-      <strong>Deine Aufgabe für Kapitel 2:</strong>
-      <p>Füll jetzt deinen ersten 15 Minuten Marketing Plan aus. Was postest du diese Woche. An welchen drei Tagen und zu welcher Uhrzeit. Und was ist dein Marketing Schwerpunkt diese Woche. Schreib es auf. Konkret. Und dann tue es. Nicht perfekt. Einfach anfangen.</p>
-    </div>
-
-    <div class="hint-link">
-      👉 Den <strong>15 Minuten Marketingplan</strong> findest du im Tab <a href="modul9-marketingplan.html" >📊 15 Minuten Marketingplan</a>
-    </div>
-
-    <div class="kit-box">
-      <h3>🛒 Dein Social Media Starter Kit</h3>
-  <p style="color:#a0b0c8; font-size:13px; margin-bottom:16px;">Wenn du tiefer einsteigen möchtest und sofort loslegen willst ohne alles selbst von Grund auf zu erstellen, haben wir passend zu dieser Lektion fünf fertige Werkzeuge für dich zusammengestellt.</p>
-      <a href="https://payhip.com/b/5YhMu">👉 30 Tage Instagram Content Plan für Restaurants — Dein kompletter Monatsplan</a>
-      <a href="https://payhip.com/b/2hm4B">👉 50 Viral Hooks für Gastronomie — Die besten Einstiege für Posts die wirklich gelesen werden</a>
-      <a href="https://payhip.com/b/G9SIQ">👉 365 Content Ideen für Restaurants und Cafés — Nie wieder ratlos vor dem leeren Bildschirm</a>
-      <a href="https://payhip.com/b/hPsT3">👉 20 fertige Instagram Captions für Speisekarten Posts</a>
-      <a href="https://payhip.com/b/R0rde">👉 30 Instagram Stories Gastro Story Vorlagen</a>
-    </div>
-
-    <div class="hint-link" style="margin-top:20px;">
-      👉 Den <strong>Marketing Aktionsplan</strong> für dein nächstes Quartal findest du im Tab <a href="modul9-aktionsplan.html" >📊 Marketing Aktionsplan</a>
-    </div>
-  </div>
-
-  <div class="gold-divider"></div>
-  <p style="text-align:center; font-size:12px; color:#8090a8; letter-spacing:1px;">GASTRO-OS | System · Strategie · Erfolg</p>
-</div>
-<div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg
-
-
+<h2>Kapitel 1 — Die richtige Plattform wählen</h2>
+<h3>Instagram oder Facebook — nicht beides</h3>
+<p>Die häufigste Social-Media-Falle: Auf 4 Plattformen gleichzeitig aktiv sein wollen und auf keiner wirklich präsent sein. Wähle eine. Instagram ist besser für Betriebe mit jüngerer Zielgruppe und visuell attraktiven Gerichten. Facebook ist besser für Betriebe mit Stammgast-Orientierung und älterer Zielgruppe. Wo sind deine Gäste? Dort bist du.</p>
+<h3>Was du postest: die 3-1-1-Regel</h3>
+<p>Von jeweils 5 Posts: 3 Gerichte/Produkte (das was du verkaufst), 1 Team/Behind-the-Scenes (Authentizität), 1 Angebot/Special/Event (direkter Call-to-Action). Diese Mischung hält den Kanal interessant ohne aufdringlich zu wirken.</p>
+<div class="beispiel"><div class="beispiel-lbl">📊 Rechenbeispiel aus der Praxis</div><p>Vergleich: Restaurant A vs. Restaurant B auf Instagram, beide 1 Jahr aktiv.</p><p>Restaurant A: 3 Posts/Woche konsequent, 3-1-1-Mischung, echte Fotos. 1.240 Follower nach 12 Monaten.</p><p>Restaurant B: chaotisch — mal 8 Posts in einer Woche, dann 3 Wochen Stille. 210 Follower nach 12 Monaten.</p><div class="rechnung">Nicht die Anzahl der Posts entscheidet — die Konsequenz. Restaurant A: messbar mehr Direktreservierungen über Instagram.</div></div>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 1</div><p>Entscheide heute: Instagram oder Facebook? Erstelle dann den Monatsplan für den nächsten Monat auf einer DIN-A4-Seite: Was wird wann gepostet? 3 Posts/Woche, 3-1-1-Mischung.</p></div>
+<h2>Kapitel 2 — Effizienter Content-Workflow</h2>
+<h3>Batching: einmal pro Woche alles vorbereiten</h3>
+<p>Statt täglich zu fotografieren und zu schreiben: einmal pro Woche 45 Minuten. 5 Fotos machen (bei guten Lichtverhältnissen), 5 Texte schreiben, alle 5 für die Woche vorplanen. Viele Tools (Instagram, Facebook) erlauben direkte Vorplanung.</p>
+<div class="tipp-box"><p>💡 <strong>Profi-Tipp:</strong> Der beste Fotografie-Zeitpunkt in der Küche: zwischen 10 und 12 Uhr wenn natürliches Tageslicht vorhanden ist und die Küche noch ruhig ist. Kein Filter nötig — natürliches Licht macht Speisen automatisch appetitlich.</p></div>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 2</div><p>Plane deinen wöchentlichen Content-Workflow: Wann fotografierst du? Wann schreibst du die Texte? Wann planst du vor? Trage alles als wiederkehrende Termine ein — einmal einrichten, dauerhaft sparen.</p></div>
+<div class="nav-row"><a href="modul9-lektion2.html" class="nav-btn secondary">← Lektion 2</a><a href="modul9-lektion4.html" class="nav-btn">Lektion 4 →</a></div>
+<div class="fazit"><div class="fazit-lbl">🎯 Das Wichtigste auf einen Blick</div><ul><li>Einen Kanal konsequent schlägt vier Kanäle chaotisch — immer.</li><li>3-1-1-Regel: 3 Gerichte · 1 Team · 1 Angebot pro 5 Posts.</li><li>Batching: 45 Minuten einmal pro Woche deckt die ganze Woche.</li><li>Konsequenz über 3 Monate bringt mehr als Aktivismus über 2 Wochen.</li></ul></div>
+<div class="checkliste"><div class="checkliste-lbl">✅ Sofort-Checkliste — Das kannst du heute noch tun</div><ul><li>Plattform-Entscheidung treffen: Instagram oder Facebook</li><li>Monatsplan erstellen: Was wird wann gepostet?</li><li>Wöchentlichen Content-Termin (45 min) im Kalender eintragen</li><li>Ersten Post sofort erstellen und veröffentlichen</li></ul></div>
   <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
 </div>
 <div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
-<script>
-(function(){
-  // Rechtsklick & Tastenkürzel sperren
-  document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
-  document.addEventListener('keydown', function(e){
-    if (e.ctrlKey && ['s','u','p','a'].includes(e.key.toLowerCase())) e.preventDefault();
-    if (e.key === 'F12') e.preventDefault();
-  });
-
-  // Supabase Auth Check
-  const sb = supabase.createClient(
-    'https://hchlganbgjeciwhwaisj.supabase.co',
-    'sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3'
-  );
-  (async function(){
-    const { data:{ session } } = await sb.auth.getSession();
-    if (!session) { window.location.href = 'login.html'; return; }
-    const { data: profile } = await sb.from('profiles')
-      .select('is_active,subscription_status')
-      .eq('id', session.user.id).maybeSingle();
-    if (profile && (!profile.is_active || profile.subscription_status !== 'active')) {
-      await sb.auth.signOut();
-      window.location.href = 'login.html';
-    }
-  })();
-})();
-</script>
-</body>
-</html>
+</body></html>

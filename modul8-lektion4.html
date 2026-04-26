@@ -1,204 +1,86 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GASTRO-OS – Modul 8 | Lektion 4</title>
-<style>
-* { margin:0; padding:0; box-sizing:border-box; }
+<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Lektion 4 — Upselling als dauerhaftes System | GASTRO-OS</title><style>* { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
-.header{background:#1a2a4a;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
-.brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
-.btn-back-modul{background:#d4af37;color:#1a2a4a;border:none;padding:9px 20px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.2s;letter-spacing:0.3px}
-.btn-back-modul:hover{background:#c8a030;color:#1a2a4a}
+.header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:18px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.btn-back { background:#d4af37; color:#1a2a4a; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.btn-back:hover { background:#c8a030; }
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
 .wrap { max-width:720px; margin:40px auto; padding:0 24px 60px; }
 .lbl { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:8px; }
-h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:10px; line-height:1.3; }
-.lektion-hero { background:#1a2a4a; border-radius:12px; padding:28px 32px; margin-bottom:28px; border:2px solid #d4af37; }
-.lektion-hero .lektion-tag { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:10px; }
-.lektion-hero h1 { font-family:Georgia,serif; font-size:26px; color:#fff; margin-bottom:0; font-weight:normal; line-height:1.3; }
-.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:20px 0 32px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:16px; line-height:1.3; }
+.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:0 0 24px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+.lern-box { background:#1a2a4a; border-radius:8px; padding:16px 20px; margin:0 0 28px; }
+.lern-box-title { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.lern-box ul { list-style:none; padding:0; margin:0; }
+.lern-box li { font-size:13px; color:#a0b0c8; padding:4px 0 4px 20px; position:relative; line-height:1.6; }
+.lern-box li::before { content:'✓'; position:absolute; left:0; color:#d4af37; font-weight:700; }
 h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:normal; margin:36px 0 14px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
-h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:24px 0 10px; }
+h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:22px 0 10px; }
+h4 { font-size:15px; color:#1a2a4a; font-weight:700; margin:18px 0 8px; }
 p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
-ul, ol { margin:12px 0 16px 20px; }
-li { font-size:15px; line-height:1.8; color:#2a3a54; margin-bottom:6px; }
-.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin-top:24px; }
+.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin:24px 0; }
 .aufgabe-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
-.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; }
-.highlight { background:#fff8e8; border-left:3px solid #d4af37; padding:14px 18px; margin:20px 0; font-size:14px; color:#5a4000; line-height:1.7; }
-.nav-row { display:flex; gap:12px; justify-content:space-between; margin-top:40px; }
-.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:12px 24px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none; transition:all 0.2s; }
+.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; line-height:1.7; }
+.beispiel { background:#fff; border:1px solid #e8dfc8; border-left:4px solid #3a7ad4; border-radius:0 8px 8px 0; padding:16px 20px; margin:20px 0; }
+.beispiel-lbl { font-size:11px; color:#3a7ad4; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
+.beispiel p { font-size:14px; color:#2a3a54; margin-bottom:8px; line-height:1.75; }
+.beispiel p:last-child { margin-bottom:0; }
+.rechnung { background:#f0f4f8; border-radius:5px; padding:10px 14px; font-family:monospace; font-size:13px; color:#1a2a4a; margin:8px 0; line-height:1.6; }
+.tipp-box { background:#e4f5e8; border:1px solid #4aaa60; border-radius:8px; padding:14px 18px; margin:18px 0; }
+.tipp-box p { font-size:14px; color:#1a6030; margin-bottom:0; line-height:1.7; }
+.nav-row { display:flex; gap:12px; justify-content:space-between; margin:40px 0 0; }
+.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:11px 20px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; transition:all 0.2s; }
 .nav-btn:hover { background:#d4af37; color:#1a2a4a; }
-.nav-btn.secondary { background:transparent; border:1px solid rgba(26,42,74,0.3); color:#1a2a4a; }
-.nav-btn.secondary:hover { background:#1a2a4a; color:#d4af37; }
+.nav-btn.secondary { background:#fff; color:#1a2a4a; border:1px solid #e8dfc8; }
+.nav-btn.secondary:hover { border-color:#d4af37; }
+.fazit { background:#fdf9ee; border:2px solid #d4af37; border-radius:8px; padding:18px 22px; margin:32px 0 0; }
+.fazit-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.fazit ul { list-style:none; padding:0; margin:0; }
+.fazit li { font-size:14px; color:#2a3a54; padding:6px 0 6px 22px; position:relative; line-height:1.65; border-bottom:1px solid #e8dfc8; }
+.fazit li:last-child { border-bottom:none; }
+.fazit li::before { content:'→'; position:absolute; left:0; color:#d4af37; font-weight:700; }
+.checkliste { background:#fff; border:1px solid #e8dfc8; border-radius:8px; padding:16px 20px; margin:20px 0 0; }
+.checkliste-lbl { font-size:11px; color:#1a2a4a; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.checkliste ul { list-style:none; padding:0; margin:0; }
+.checkliste li { font-size:14px; color:#2a3a54; padding:7px 0 7px 28px; position:relative; border-bottom:1px solid #f0ece4; line-height:1.55; }
+.checkliste li:last-child { border-bottom:none; }
+.checkliste li::before { content:'☐'; position:absolute; left:0; color:#d4af37; font-size:16px; line-height:1.2; }
 .footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-lbl strong { color:#d4af37; }
-.footer-main { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
-.footer-main strong { color:#d4af37; }
-@media (max-width:600px) { .wrap{padding:0 16px 40px} h1{font-size:22px} h2{font-size:17px} }
-</style>
-</head>
+.footer-main { background:#1a2a4a; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-main strong { color:#d4af37; }</style></head>
 <body>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-(function(){
-  document.addEventListener('contextmenu',function(e){e.preventDefault();});
-  document.addEventListener('keydown',function(e){
-    if(e.ctrlKey&&['s','u','p','a'].includes(e.key.toLowerCase()))e.preventDefault();
-    if(e.key==='F12')e.preventDefault();
-  });
-  const sb=supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3');
-  (async function(){
-    const{data:{session}}=await sb.auth.getSession();
-    if(!session){window.location.href='login.html';return;}
-    const{data:profile}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
-    if(profile&&(!profile.is_active||profile.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
-  })();
-})();
-</script>
-<div class="header">
-  <div class="brand">GASTRO-OS</div>
-  <a href="dashboard.html#modul-8" class="btn-back-modul">← Zurück zum Dashboard</a>
-</div>
+<div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html#modul-8" class="btn-back">← Zurück zum Dashboard</a></div>
 <div class="gold-bar"></div>
-
 <div class="wrap">
   <div class="lbl">Modul 8 · Lektion 4</div>
-  <div class="lektion-hero">
-    <div class="lektion-tag">Modul 8 · Lektion 4</div>
-    <h1>Umsetzung und Aktionsplan</h1>
-  </div>
-  <div class="intro">Du hast jetzt das gesamte Upselling-Handwerk aus Modul 8. In Lektion 4 bringen wir alles zusammen: Wie schulst du dein Team — und wie machst du Upselling zur Routine die sich von selbst trägt?</div>
+  <h1>Upselling als dauerhaftes System</h1>
+  <div class="intro">In den ersten drei Lektionen hast du alle Werkzeuge für mehr Umsatz pro Gast kennengelernt. In dieser abschließenden Lektion geht es darum Upselling als dauerhaftes System zu etablieren — nicht als einmalige Aktion.</div>
+  <div class="lern-box"><div class="lern-box-title">📚 Was du in dieser Lektion lernst</div><ul><li>Wie du Upselling in den täglichen Betriebsablauf integrierst</li><li>Den 30-Tage-Upselling-Plan konkret umsetzen</li><li>Messbare Ergebnisse in 4 Wochen erzielen</li><li>Upselling zur dauerhaften Teamgewohnheit machen</li></ul></div>
 
-<h2>Kapitel 1: Die drei Sätze die deinen Bon sofort erhöhen</h2>
-
-    <h3>Warum drei Sätze reichen</h3>
-  <p>Es gibt eine Versuchung wenn man sich mit Verkaufspsychologie beschäftigt. Man will alles auf einmal umsetzen. Den Anker Effekt auf der Karte. Die perfekte Beschreibung jedes Gerichts. Das tägliche Briefing. Den Upselling Tracker. Das Team Training.</p>
-  <p>Das ist richtig und wichtig. Aber es braucht Zeit. Und während du alles aufbaust, läuft der Betrieb weiter. Gäste kommen täglich. Bons werden täglich abgerechnet.</p>
-  <p>Deshalb gibt es in Lektion 4 drei konkrete Sätze die dein Servicepersonal ab morgen verwenden kann. Ohne großes Training. Ohne Vorbereitung. Einfach in den Alltag einbauen und sofort einen Effekt sehen.</p>
-
-  <h3>Satz 1 — Der Aperitif Satz</h3>
-    <div class="quote-box">
-      <span class="label">SATZ 1 · BEIM ERSTEN KONTAKT AM TISCH</span>
-      Darf ich Ihnen zum Einstieg unseren heutigen Aperitif empfehlen? Wir haben gerade einen saisonalen Holunderblüten Spritz der wirklich außergewöhnlich frisch ist.
-    </div>
-    <p>Dieser Satz wird beim ersten Kontakt am Tisch gesprochen, bevor die Karte aufgeschlagen wird. Er ist konkret, er nennt ein spezifisches Produkt und er erzeugt ein Bild. Und er kommt in dem Moment in dem der Gast am offensten für Empfehlungen ist.</p>
-  <p>Natürlich muss der konkrete Aperitif an deinen Betrieb angepasst werden. Das Prinzip bleibt. Ein spezifisches Getränk, ein konkreter beschreibender Zusatz, zum richtigen Zeitpunkt.</p>
-
-  <h3>Satz 2 — Der Wein Satz</h3>
-    <div class="quote-box">
-      <span class="label">SATZ 2 · NACH DER BESTELLAUFNAHME</span>
-      Zum Rumpsteak empfehle ich Ihnen unseren argentinischen Malbec. Die Kombination ist wirklich außergewöhnlich gut, die Küche schwört darauf.
-    </div>
-    <p>Dieser Satz wird nach der Bestellaufnahme des Hauptgerichts gesprochen. Er ist persönlich, er zeigt Kompetenz und er nutzt das Prinzip der sozialen Bewährtheit. Auch hier gilt, der konkrete Wein und das konkrete Gericht müssen an deinen Betrieb angepasst werden. Das Prinzip bleibt.</p>
-
-  <h3>Satz 3 — Der Dessert Satz</h3>
-    <div class="quote-box">
-      <span class="label">SATZ 3 · NACH DEM HAUPTGANG</span>
-      Bevor ich die Karte bringe, kurz vorab. Unsere Schokoladenmousse ist heute wirklich besonders, die Küche hat sie heute Morgen frisch zubereitet. Wenn Sie noch Platz haben lohnt es sich.
-    </div>
-    <p>Dieser Satz wird beim Abräumen der Hauptgangsteller gesprochen, bevor die Dessertkarte gebracht wird. Er ist informell, er klingt nach einem persönlichen Tipp und er gibt dem Gast das Gefühl dass er eine Information bekommt die nicht jeder bekommt.</p>
-  <p>Diese drei Sätze, konsequent angewendet, können den Durchschnittsbon in der ersten Woche bereits messbar verändern. Nicht dramatisch. Aber spürbar. Und das ist der Anfang.</p>
-
-    <div class="task-box">
-      <strong>Deine Aufgabe für Kapitel 1:</strong>
-      <p>Schreib jetzt die drei Sätze für deinen konkreten Betrieb auf. Welcher Aperitif, welcher Wein zu welchem Gericht, welches Dessert. Konkret und ehrlich. Zeig sie beim nächsten Briefing dem Team. Und bitte jeden Servicemitarbeiter diese Woche mindestens zweimal pro Schicht jeden der drei Sätze anzuwenden.</p>
-    </div>
-  </div>
-
-  <!-- KAPITEL 2 -->
-  <div class="card">
-    <h2>Kapitel 2: Dein 30 Tage Aktionsplan für Upselling</h2>
-
-    <h3>Was in 30 Tagen möglich ist</h3>
-  <p>30 Tage sind in der Gastronomie eine Menge Zeit wenn sie bewusst genutzt werden. In 30 Tagen kannst du eine neue Gewohnheit im Team verankern, deinen Durchschnittsbon messbar steigern und ein System aufbauen das auch dann weiterläuft wenn du nicht dabei bist.</p>
-  <p>Das klingt nach viel. Es ist machbar. Wenn du einen klaren Plan hast und ihn konsequent umsetzt. Nicht perfekt. Konsequent. Das ist der Unterschied.</p>
-  <p>Bevor du startest drei Dinge die feststehen sollten. Erstens dein aktueller Durchschnittsbon als Ausgangswert. Zweitens die drei Upselling Sätze aus Kapitel 1 die dein Team ab dieser Woche anwendet. Und drittens der Upselling Tracker der ab Tag 1 geführt wird.</p>
-
-    <div class="week-box">
-      <div class="week-title">🗓 Woche 1 — Messen und erste Sätze einführen</div>
-      <p style="font-size:13px;">In der ersten Woche passieren zwei Dinge gleichzeitig. Du startest den Upselling Tracker und du führst die drei Upselling Sätze ein.</p>
-  <p style="font-size:13px;">Der Tracker wird täglich geführt. Durchschnittsbon, welche Empfehlungen gemacht wurden, wie oft sie angenommen wurden. Nicht kompliziert. Aber täglich. Denn ohne Ausgangswert gibt es keinen Fortschritt zu messen.</p>
-  <p style="font-size:13px;">Die drei Upselling Sätze werden beim ersten Briefing der Woche eingeführt. Nicht als Pflicht. Als Werkzeug. Du erklärst warum sie funktionieren, du zeigst wie sie klingen und du bittest das Team sie diese Woche auszuprobieren. Kein Druck. Aber eine klare Erwartung.</p>
-  <p style="font-size:13px; margin-bottom:0;">Am Ende der Woche wertest du den Tracker kurz aus. Was hat funktioniert. Was nicht. Welcher Satz wurde am häufigsten genutzt. Welcher am seltensten. Diese Auswertung dauert zehn Minuten und ist die Grundlage für Woche 2.</p>
-    </div>
-
-    <div class="week-box">
-      <div class="week-title">🗓 Woche 2 — Speisekarte anpassen</div>
-      <p style="font-size:13px;">In der zweiten Woche nimmst du dir deine Speisekarte vor. Mit den Augen der Verkaufspsychologie aus Lektion 2.</p>
-  <p style="font-size:13px;">Gibt es einen klaren Anker. Sind die Gerichte appetitlich beschrieben. Gibt es Hinweise auf empfohlene oder meistbestellte Gerichte. Schreib auf was du ändern würdest. Nicht alles auf einmal. Fang mit den drei Gerichten an die am häufigsten bestellt werden. Bessere Beschreibungen für diese drei Gerichte kosten eine Stunde und können die Bestellrate sofort beeinflussen.</p>
-  <p style="font-size:13px; margin-bottom:0;">Führe außerdem in dieser Woche das erste strukturierte Upselling Briefing durch. Fünf Minuten vor dem Service. Die Küche erklärt was heute besonders gut ist. Der Schichtleiter definiert den Upselling Schwerpunkt des Tages. Das Team geht mit klaren Empfehlungen in den Service.</p>
-    </div>
-
-    <div class="week-box">
-      <div class="week-title">🗓 Woche 3 — Team Training und Tracker Auswertung</div>
-      <p style="font-size:13px;">In der dritten Woche führst du das erste strukturierte Team Training zum Thema Upselling durch. Nicht ein mehrstündiges Seminar. 20 Minuten in einer ruhigen Phase. Du gehst die drei Upselling Sätze durch, du erklärst das Prinzip dahinter und du machst eine kurze Rollenspiel Runde in der jeder Mitarbeiter einmal eine Empfehlung formuliert.</p>
-  <p style="font-size:13px;">Diese 20 Minuten haben einen überproportional großen Effekt weil sie das Thema aus dem Briefing in die Praxis überführen. Mitarbeiter die eine Empfehlung einmal laut ausgesprochen haben tun sich beim nächsten Mal deutlich leichter.</p>
-  <p style="font-size:13px; margin-bottom:0;">Werte außerdem den Tracker der letzten zwei Wochen aus. Hat sich der Durchschnittsbon verändert. Welche Empfehlungen hatten die höchste Annahmequote. Was soll in Woche 4 verstärkt werden. Diese Auswertung besprichst du kurz mit dem Team. Nicht als Kontrolle. Als gemeinsame Reflexion.</p>
-    </div>
-
-    <div class="week-box">
-      <div class="week-title">🗓 Woche 4 — Routinen verankern und Ergebnisse feiern</div>
-      <p style="font-size:13px;">In der vierten Woche verankerst du alles was in den ersten drei Wochen funktioniert hat als feste Routine. Das tägliche Briefing wird zur Gewohnheit. Der Tracker wird täglich geführt. Die Upselling Schwerpunkte werden wöchentlich definiert.</p>
-  <p style="font-size:13px;">Und dann passiert etwas das oft unterschätzt wird. Du teilst die Ergebnisse mit dem Team. Konkret. Unser Durchschnittsbon ist in den letzten vier Wochen von 22 auf 24,50 Euro gestiegen. Das sind 200 Euro mehr pro Tag. Danke an euch alle.</p>
-  <p style="font-size:13px; margin-bottom:0;">Diese kurze Rückmeldung ist mächtiger als jede weitere Schulung. Sie zeigt dem Team dass ihre Arbeit einen messbaren Unterschied macht. Und das ist der stärkste Motivator den es gibt.</p>
-    </div>
-
-    <h3>Was nach 30 Tagen passiert</h3>
-  <p>Nach 30 Tagen hast du einen messbaren Ausgangswert und einen messbaren Fortschritt. Du hast ein Team das Upselling als Teil seines Services versteht und praktiziert. Du hast eine Speisekarte die besser verkauft. Und du hast ein System aus Briefing, Tracker und regelmäßiger Auswertung das Upselling dauerhaft am Leben hält.</p>
-  <p>Das ist nicht das Ende. Es ist der Anfang einer Kultur. Einer Kultur in der guter Service und wirtschaftlicher Erfolg keine Gegensätze sind. Sondern dasselbe.</p>
-  <p>Modul 8 ist nicht das Modul in dem du dein Team zu Verkäufern machst. Es ist das Modul in dem du deinem Team zeigst dass echte Gastfreundschaft und ein höherer Bon kein Widerspruch sind. Dass eine gute Empfehlung dem Gast nützt und deinem Betrieb. Gleichzeitig.</p>
-  <p>Das ist der Gedanke mit dem du in Modul 9 weitermachst.</p>
-
-    <div class="task-box">
-      <strong>Deine Aufgabe für Kapitel 2:</strong>
-      <p>Schreib deinen persönlichen 30 Tage Plan auf. Woche 1, welche drei Sätze führst du ein und wann startest du den Tracker. Woche 2, welche drei Gerichte auf deiner Karte bekommst du bessere Beschreibungen und wann findet das erste strukturierte Briefing statt. Woche 3, wann findet das Team Training statt und was zeigt dir der Tracker nach zwei Wochen. Woche 4, welche Routinen verankerst du und wie teilst du die Ergebnisse mit dem Team.</p>
-    </div>
-
-    <div class="tracker-hint">
-      👉 Den <strong>Upselling Tracker</strong> findest du im Tab <a href="modul8-tracker.html" >📊 Upselling Tracker</a>.
-    </div>
-  </div>
-
-  <div class="gold-divider"></div>
-  <p style="text-align:center; font-size:12px; color:#8090a8; letter-spacing:1px;">GASTRO-OS | System · Strategie · Erfolg</p>
-</div>
-
-<div class="footer">
-  <strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg
-
-
+<h2>Kapitel 1 — Upselling als Systembestandteil</h2>
+<h3>Vom einmaligen Training zur Gewohnheit</h3>
+<p>Upselling das nach einer Woche wieder einschläft, hat keinen Wert. Was du willst ist eine dauerhafte Gewohnheit im Team die sich selbst trägt. Das erfordert drei Dinge: Regelmäßiges Briefing (wöchentlich, 10 Minuten), tägliche Sichtbarkeit (Ø Bon auf dem Board) und monatliche Auswertung (was hat funktioniert?).</p>
+<h3>Der Upselling-Rhythmus</h3>
+<p>Täglich: Ø Bon aus der Kasse notieren. Wöchentlich: 10-Minuten-Briefing vor Service. Was wird diese Woche empfohlen? Was lief gut? Monatlich: Entwicklung des Ø Bons auswerten. Welche Maßnahmen haben am meisten gebracht? Was wird nächsten Monat getestet?</p>
+<div class="beispiel"><div class="beispiel-lbl">📊 Rechenbeispiel aus der Praxis</div><p>Restaurant nach 3 Monaten konsequentem Upselling-System.</p><p>Monat 1: Ø Bon 22 € → 24,50 € (+11,4%). Monat 2: 24,50 → 26,80 € (+9,4%). Monat 3: 26,80 → 27,90 € (+4,1%).</p><div class="rechnung">Nach 3 Monaten: Bon +26,8% gegenüber Start. Bei 180 Gästen/Tag × 25 Tage: 5,90 € mehr × 4.500 = 26.550 €/Monat Mehreinnahmen.</div><p>Mehrgewinn (nach WE 30%): 18.585 €/Monat. Gesamtmehrgewinn in 3 Monaten: ca. 37.000 €.</p></div>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 1</div><p>Lege jetzt fest: Wer in deinem Team ist verantwortlich für den täglichen Ø-Bon-Eintrag? Wann findet das wöchentliche Briefing statt? Wann ist der monatliche Auswertungstermin? Schreib alles auf — dann läuft das System.</p></div>
+<h2>Kapitel 2 — 30-Tage-Plan Upselling</h2>
+<h3>Woche 1: Basis legen</h3>
+<p>Ø Bon als Startwert notieren. 3 Upselling-Formulierungen festlegen. Erstes Team-Briefing durchführen. Ø Bon täglich tracken.</p>
+<h3>Woche 2: Saisonales Special</h3>
+<p>Saisonales Special entwickeln, kalkulieren und einführen. Im Team vorstellen und aktiv empfehlen lassen.</p>
+<h3>Woche 3: Menü einführen</h3>
+<p>3-Gang-Menü auf die Karte. Team briefen wie es aktiv vorgestellt wird. Annahmequote täglich notieren.</p>
+<h3>Woche 4: Auswerten</h3>
+<p>Neuen Ø Bon berechnen. Mit Startwert vergleichen. Was hat am meisten gebracht? Was als Dauermaßnahme behalten?</p>
+<div class="tipp-box"><p>💡 <strong>Profi-Tipp:</strong> Nach Monat 1 schaust du auf den neuen Ø Bon und vergleichst mit dem Startwert. Diese Zahl ist die stärkste Motivation für das nächste Monat. Teile sie mit dem Team: 'Durch eure Empfehlungen haben wir X Euro mehr verdient.' Das schafft echten Stolz.</p></div>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 2</div><p>Schreibe deinen 30-Tage-Upselling-Plan: Was passiert Woche 1-4? Mit wem? Welche Kennzahl misst du am Ende? Hänge den Plan im Pausenraum auf — sichtbar für das Team.</p></div>
+<div class="nav-row"><a href="modul8-lektion3.html" class="nav-btn secondary">← Lektion 3</a></div>
+<div class="fazit"><div class="fazit-lbl">🎯 Das Wichtigste auf einen Blick</div><ul><li>Upselling-System: täglicher Bon + wöchentliches Briefing + monatliche Auswertung.</li><li>Dauerhafte Gewohnheit braucht 3 Zutaten: Regelmäßigkeit · Sichtbarkeit · Anerkennung.</li><li>3 Monate konsequent = Bon um 25-30% steigerbar.</li><li>Ergebnis mit dem Team teilen: Das schafft Stolz und Motivation für mehr.</li></ul></div>
+<div class="checkliste"><div class="checkliste-lbl">✅ Sofort-Checkliste — Das kannst du heute noch tun</div><ul><li>Verantwortlichkeiten im Upselling-System festlegen</li><li>30-Tage-Plan aufschreiben und aushängen</li><li>Startwert Ø Bon notieren für späteres Vergleichen</li><li>Modul 9 starten: Marketing und Sichtbarkeit</li></ul></div>
   <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
 </div>
 <div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
-<script>
-(function(){
-  // Rechtsklick & Tastenkürzel sperren
-  document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
-  document.addEventListener('keydown', function(e){
-    if (e.ctrlKey && ['s','u','p','a'].includes(e.key.toLowerCase())) e.preventDefault();
-    if (e.key === 'F12') e.preventDefault();
-  });
-
-  // Supabase Auth Check
-  const sb = supabase.createClient(
-    'https://hchlganbgjeciwhwaisj.supabase.co',
-    'sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3'
-  );
-  (async function(){
-    const { data:{ session } } = await sb.auth.getSession();
-    if (!session) { window.location.href = 'login.html'; return; }
-    const { data: profile } = await sb.from('profiles')
-      .select('is_active,subscription_status')
-      .eq('id', session.user.id).maybeSingle();
-    if (profile && (!profile.is_active || profile.subscription_status !== 'active')) {
-      await sb.auth.signOut();
-      window.location.href = 'login.html';
-    }
-  })();
-})();
-</script>
-</body>
-</html>
+</body></html>

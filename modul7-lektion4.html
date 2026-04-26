@@ -1,157 +1,89 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GASTRO-OS – Modul 7 | Lektion 4</title>
-<style>
-* { margin:0; padding:0; box-sizing:border-box; }
+<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Lektion 4 — Prozesse effizienter gestalten | GASTRO-OS</title><style>* { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
-.header{background:#1a2a4a;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
-.brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
-.btn-back-modul{background:#d4af37;color:#1a2a4a;border:none;padding:9px 20px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.2s;letter-spacing:0.3px}
-.btn-back-modul:hover{background:#c8a030;color:#1a2a4a}
+.header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:18px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.btn-back { background:#d4af37; color:#1a2a4a; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.btn-back:hover { background:#c8a030; }
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
 .wrap { max-width:720px; margin:40px auto; padding:0 24px 60px; }
 .lbl { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:8px; }
-h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:10px; line-height:1.3; }
-.lektion-hero { background:#1a2a4a; border-radius:12px; padding:28px 32px; margin-bottom:28px; border:2px solid #d4af37; }
-.lektion-hero .lektion-tag { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:10px; }
-.lektion-hero h1 { font-family:Georgia,serif; font-size:26px; color:#fff; margin-bottom:0; font-weight:normal; line-height:1.3; }
-.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:20px 0 32px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:16px; line-height:1.3; }
+.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:0 0 24px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+.lern-box { background:#1a2a4a; border-radius:8px; padding:16px 20px; margin:0 0 28px; }
+.lern-box-title { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.lern-box ul { list-style:none; padding:0; margin:0; }
+.lern-box li { font-size:13px; color:#a0b0c8; padding:4px 0 4px 20px; position:relative; line-height:1.6; }
+.lern-box li::before { content:'✓'; position:absolute; left:0; color:#d4af37; font-weight:700; }
 h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:normal; margin:36px 0 14px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
-h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:24px 0 10px; }
+h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:22px 0 10px; }
+h4 { font-size:15px; color:#1a2a4a; font-weight:700; margin:18px 0 8px; }
 p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
-ul, ol { margin:12px 0 16px 20px; }
-li { font-size:15px; line-height:1.8; color:#2a3a54; margin-bottom:6px; }
-.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin-top:24px; }
+.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin:24px 0; }
 .aufgabe-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
-.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; }
-.highlight { background:#fff8e8; border-left:3px solid #d4af37; padding:14px 18px; margin:20px 0; font-size:14px; color:#5a4000; line-height:1.7; }
-.nav-row { display:flex; gap:12px; justify-content:space-between; margin-top:40px; }
-.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:12px 24px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none; transition:all 0.2s; }
+.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; line-height:1.7; }
+.beispiel { background:#fff; border:1px solid #e8dfc8; border-left:4px solid #3a7ad4; border-radius:0 8px 8px 0; padding:16px 20px; margin:20px 0; }
+.beispiel-lbl { font-size:11px; color:#3a7ad4; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
+.beispiel p { font-size:14px; color:#2a3a54; margin-bottom:8px; line-height:1.75; }
+.beispiel p:last-child { margin-bottom:0; }
+.rechnung { background:#f0f4f8; border-radius:5px; padding:10px 14px; font-family:monospace; font-size:13px; color:#1a2a4a; margin:8px 0; line-height:1.6; }
+.tipp-box { background:#e4f5e8; border:1px solid #4aaa60; border-radius:8px; padding:14px 18px; margin:18px 0; }
+.tipp-box p { font-size:14px; color:#1a6030; margin-bottom:0; line-height:1.7; }
+.nav-row { display:flex; gap:12px; justify-content:space-between; margin:40px 0 0; }
+.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:11px 20px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; transition:all 0.2s; }
 .nav-btn:hover { background:#d4af37; color:#1a2a4a; }
-.nav-btn.secondary { background:transparent; border:1px solid rgba(26,42,74,0.3); color:#1a2a4a; }
-.nav-btn.secondary:hover { background:#1a2a4a; color:#d4af37; }
+.nav-btn.secondary { background:#fff; color:#1a2a4a; border:1px solid #e8dfc8; }
+.nav-btn.secondary:hover { border-color:#d4af37; }
+.fazit { background:#fdf9ee; border:2px solid #d4af37; border-radius:8px; padding:18px 22px; margin:32px 0 0; }
+.fazit-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.fazit ul { list-style:none; padding:0; margin:0; }
+.fazit li { font-size:14px; color:#2a3a54; padding:6px 0 6px 22px; position:relative; line-height:1.65; border-bottom:1px solid #e8dfc8; }
+.fazit li:last-child { border-bottom:none; }
+.fazit li::before { content:'→'; position:absolute; left:0; color:#d4af37; font-weight:700; }
+.checkliste { background:#fff; border:1px solid #e8dfc8; border-radius:8px; padding:16px 20px; margin:20px 0 0; }
+.checkliste-lbl { font-size:11px; color:#1a2a4a; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.checkliste ul { list-style:none; padding:0; margin:0; }
+.checkliste li { font-size:14px; color:#2a3a54; padding:7px 0 7px 28px; position:relative; border-bottom:1px solid #f0ece4; line-height:1.55; }
+.checkliste li:last-child { border-bottom:none; }
+.checkliste li::before { content:'☐'; position:absolute; left:0; color:#d4af37; font-size:16px; line-height:1.2; }
 .footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-lbl strong { color:#d4af37; }
-.footer-main { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
-.footer-main strong { color:#d4af37; }
-@media (max-width:600px) { .wrap{padding:0 16px 40px} h1{font-size:22px} h2{font-size:17px} }
-</style>
-</head>
+.footer-main { background:#1a2a4a; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-main strong { color:#d4af37; }</style></head>
 <body>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-(function(){
-  document.addEventListener('contextmenu',function(e){e.preventDefault();});
-  document.addEventListener('keydown',function(e){
-    if(e.ctrlKey&&['s','u','p','a'].includes(e.key.toLowerCase()))e.preventDefault();
-    if(e.key==='F12')e.preventDefault();
-  });
-  const sb=supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3');
-  (async function(){
-    const{data:{session}}=await sb.auth.getSession();
-    if(!session){window.location.href='login.html';return;}
-    const{data:profile}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
-    if(profile&&(!profile.is_active||profile.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
-  })();
-})();
-</script>
-<div class="header">
-  <div class="brand">GASTRO-OS</div>
-  <a href="dashboard.html#modul-7" class="btn-back-modul">← Zurück zum Dashboard</a>
-</div>
+<div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html#modul-7" class="btn-back">← Zurück zum Dashboard</a></div>
 <div class="gold-bar"></div>
-
 <div class="wrap">
   <div class="lbl">Modul 7 · Lektion 4</div>
-  <div class="lektion-hero">
-    <div class="lektion-tag">Modul 7 · Lektion 4</div>
-    <h1>Vom Plan zur Umsetzung</h1>
-  </div>
-  <div class="intro">In Lektion 3 haben wir uns angeschaut wo Verschwendung wirklich entsteht, warum guter Wille allein nichts ändert und wie du mit drei konkreten Hebeln, Bestellmengen auf Datenbasis, Portionsstandards und systematischer Resteverwertung, dauerhaft weniger Geld im Müll landen lässt. Du hast einen der drei Hebel ausgewählt und aufgeschrieben wie du ihn in den nächsten zwei Wochen einführst. Das ist meh</div>
+  <h1>Prozesse effizienter gestalten</h1>
+  <div class="intro">Die letzten drei Lektionen haben dir gezeigt wie du Kosten sichtbar machst, Energie sparst und Verschwendung reduzierst. In dieser abschließenden Lektion geht es um Prozess-Effizienz: Wie machst du den Betriebsablauf selbst schneller, smoother und stressfreier?</div>
+  <div class="lern-box"><div class="lern-box-title">📚 Was du in dieser Lektion lernst</div><ul><li>Was Prozess-Ineffizienz kostet und wie sie entsteht</li><li>Wie du ineffiziente Abläufe findest und verbesserst</li><li>Küchen- und Service-Abläufe systematisch optimieren</li><li>Deinen 30-Tage-Effizienz-Plan abschließen</li></ul></div>
 
-<h2>Kapitel 1: Prozesse verschlanken — wo versteckte Zeit versteckte Kosten schafft</h2>
-  <h3>Zeit ist Geld — aber nicht so wie du denkst</h3>
-  <p>In der Gastronomie wird Kosteneffizienz fast immer mit Energie, Ware und Personal in Verbindung gebracht. Das ist richtig. Aber es gibt eine vierte Dimension die mindestens genauso wichtig ist und deutlich seltener beachtet wird. Zeit.</p>
-  <p>Ineffiziente Prozesse kosten täglich Arbeitsstunden die woanders gebraucht werden. Ein schlecht organisiertes Lager bedeutet dass dein Team jeden Tag Minuten damit verbringt Dinge zu suchen. Eine unklare Kommunikation zwischen Küche und Service bedeutet Nachfragen, Fehler und Korrekturen. Ein Dienstplan der nicht auf die tatsächliche Auslastung abgestimmt ist bedeutet bezahlte Stunden ohne entsprechenden Output.</p>
-  <p>Jede dieser Situationen kostet Geld. Nicht als einzelner großer Posten der auf der Rechnung erscheint. Sondern als stille Erosion von Arbeitszeit die sich über Wochen und Monate zu echten Beträgen summiert.</p>
-  <p>Das Besondere an Zeitverschwendung durch ineffiziente Prozesse ist dass sie fast unsichtbar ist. Sie fällt auf keiner Rechnung auf. Sie erscheint in keiner BWA. Sie ist einfach Teil des Alltags geworden. Und genau deshalb wird sie so selten angegangen.</p>
-
-  <h3>Wo Prozessineffizienz in der Gastronomie entsteht</h3>
-  <p>Es gibt vier Bereiche in denen Prozessineffizienz in der Gastronomie besonders häufig vorkommt und besonders teuer ist.</p>
-  <p>Der erste Bereich ist das Lager. Ein unorganisiertes Lager kostet täglich mehr Zeit als die meisten Gastronomen realisieren. Mitarbeiter suchen Produkte. Bestellungen werden doppelt aufgegeben weil niemand genau weiß was noch vorrätig ist. Waren laufen ab weil sie hinten im Regal unsichtbar sind. Eine klare Lagerorganisation mit festen Plätzen für feste Produkte, einer First In First Out Regel und einer einfachen Bestandsliste kostet einmal Zeit zum Aufbauen und spart danach täglich.</p>
-  <p>Der zweite Bereich ist die Kommunikation zwischen Küche und Service. In vielen Betrieben funktioniert diese Kommunikation auf Zuruf. Was verfügbar ist, was nicht mehr verfügbar ist, besondere Gästewünsche, Allergien, Reservierungsdetails. Das alles wird mündlich weitergegeben, manchmal vergessen, manchmal missverstanden. Klare Kommunikationskanäle und feste Übergabemomente, zum Beispiel ein kurzes Briefing vor dem Service, reduzieren Fehler und sparen die Zeit die sonst für Korrekturen draufgeht.</p>
-  <p>Der dritte Bereich ist der Dienstplan. Ein Dienstplan der auf Gewohnheit statt auf Auslastungsdaten basiert, erzeugt regelmäßig entweder zu viel oder zu wenig Personal. Beides ist teuer. Zu viel Personal bedeutet bezahlte Stunden ohne entsprechenden Bedarf. Zu wenig Personal bedeutet Qualitätsverlust und überlastete Mitarbeiter die Fehler machen. Ein Dienstplan der auf echten Auslastungsdaten basiert, also auf dem was in den letzten Wochen wirklich los war, ist präziser und kostengünstiger.</p>
-  <p>Der vierte Bereich ist das Mise en Place. Zu viel Mise en Place kostet doppelt. Einmal die Arbeitszeit für die Vorbereitung. Einmal den Wareneinsatz wenn es nicht verbraucht wird. Zu wenig Mise en Place kostet den Service. Die Balance zu finden erfordert Daten und Erfahrung. Aber sie lohnt sich.</p>
-
-  <h3>Standardisierung als Effizienzwerkzeug</h3>
-  <p>Standardisierte Abläufe sind in der Gastronomie oft noch unterentwickelt. Obwohl sie eines der wirkungsvollsten Werkzeuge für Effizienz und Kostenkontrolle sind. Wenn jeder Handgriff immer gleich ausgeführt wird, von der Warenannahme über das Mise en Place bis zum Abschluss des Abends, entstehen Verlässlichkeit, Geschwindigkeit und Qualitätskonsistenz gleichzeitig.</p>
-  <p>Das klingt nach Monotonie. Es ist das Gegenteil. Ein Team das in standardisierten Abläufen sicher ist, hat im Kopf Kapazität frei für das was wirklich Aufmerksamkeit erfordert. Den Gast. Die Qualität. Das besondere Erlebnis. Standardisierung in den Prozessen schafft Raum für Kreativität im Produkt.</p>
-  <p>Das ist kein Widerspruch. Es ist eine der wichtigsten Erkenntnisse der professionellen Gastronomie. Die besten Restaurants der Welt sind oft auch die mit den präzisesten internen Abläufen. Nicht trotzdem. Deshalb.</p>
-  <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 1</div><p>Plane für diese Woche eine Stunde bewusste Beobachtung in deinem Betrieb. Kein Eingreifen, kein Lösen, nur Beobachten. Schreib alles auf was dir auffällt. Wo wird Zeit verbraucht ohne dass Wert entsteht. Wo entstehen Fehler die vermieden werden könnten. Wo gibt es Kommunikationslücken. Diese Liste ist dein Ausgangspunkt für Prozessoptimierungen die Geld sparen ohne Qualität zu kosten.</p></div>
-
-  <h2>Kapitel 2: Dein 30-Tage-Aktionsplan für Kostenkontrolle und Effizienz</h2>
-  <h3>Warum dieser Plan funktioniert wenn andere scheitern</h3>
-  <p>Du hast in Modul 7 viel gelernt. Energie, Kühlung, Verschwendung, Prozesse. Vier Bereiche mit konkreten Maßnahmen und messbaren Effekten. Und jetzt kommt der Moment der über alles andere entscheidet. Die Umsetzung.</p>
-  <p>Der 30-Tage-Aktionsplan für Modul 7 ist nach demselben Prinzip aufgebaut das sich durch das gesamte Gastro-OS zieht. Ein klarer Fokus pro Woche. Konkrete Aufgaben die am Ende der Woche entweder erledigt sind oder nicht. Kein Spielraum für unklare Antworten.</p>
-
-  <h3>Woche 1 — Sichtbar machen was unsichtbar war</h3>
-  <p>In der ersten Woche geht es darum die Grundlagen zu schaffen. Nicht handeln. Hinschauen. Messen. Dokumentieren.</p>
-  <p>Starte die Warenabgangsliste in der Küche wenn du sie noch nicht führst. Geh durch deinen Betrieb und erstelle die Geräteliste. Führe deinen ersten Kühlcheck durch. Dichtungen, Temperaturen, Auslastung, wann die Geräte zuletzt gewartet wurden. Und plane deine Stunde bewusster Beobachtung.</p>
-  <p>Am Ende von Woche 1 hast du ein klares Bild davon wo in deinem Betrieb die größten Kostenhebel liegen. Das ist mehr als die meisten Gastronomen jemals systematisch erarbeitet haben.</p>
-
-  <h3>Woche 2 — Erste konkrete Maßnahme umsetzen</h3>
-  <p>In der zweiten Woche setzt du die erste konkrete Maßnahme um. Nur eine. Nicht drei, nicht fünf. Eine.</p>
-  <p>Wähle die Maßnahme die auf Basis deiner Erkenntnisse aus Woche 1 den größten Effekt bei geringstem Aufwand hat. Kommuniziere die Maßnahme deinem Team. Nicht als Ansage. Als Erklärung. Warum macht ihr das. Was ändert sich dadurch. Was erwartest du von wem.</p>
-
-  <h3>Woche 3 — Zweite Maßnahme und erste Auswertung</h3>
-  <p>In der dritten Woche führst du eine zweite Maßnahme ein und wertest gleichzeitig die erste aus. Was hat sich in Woche 2 verändert. Hat die Maßnahme funktioniert. Was muss angepasst werden. Diese kurze Auswertung kostet zehn Minuten und ist wichtiger als jede neue Maßnahme.</p>
-  <p>Denn nur wer auswertet lernt. Und nur wer lernt verbessert sich dauerhaft. Führe außerdem in dieser Woche einen Vergleich deines Stromtarifs durch. Eine Stunde Aufwand. Potenziell monatliche Einsparungen im dreistelligen Bereich.</p>
-
-  <h3>Woche 4 — Routinen verankern</h3>
-  <p>In der vierten Woche verankerst du die Maßnahmen aus den ersten drei Wochen als feste Routinen. Das ist der entscheidende Schritt. Denn Maßnahmen die nur eine Woche lang umgesetzt werden, verändern nichts dauerhaft. Routinen schon.</p>
-  <p>Was wird wer wann regelmäßig tun. Die Warenabgangsliste, täglich, wer füllt sie aus. Der Kühlcheck, monatlich, wer führt ihn durch. Die Geräteregel, täglich, wer kontrolliert sie. Portionsstandards, immer, alle in der Küche.</p>
-  <p>Schreib diese Routinen auf. Weise sie konkreten Personen zu. Und trag sie in die SOPs aus Modul 5 ein wenn sie noch nicht dort stehen.</p>
-
-  <h3>Was nach 30 Tagen passiert</h3>
-  <p>Nach 30 Tagen wirst du erste messbare Effekte sehen. Nicht dramatische Veränderungen. Aber spürbare. Der Wareneinsatz geht leicht zurück. Die Energierechnung ist etwas niedriger. Das Team hat weniger Suchzeiten. Die Warenabgangsliste zeigt klare Muster die du für Bestellentscheidungen nutzt.</p>
-  <p>Das ist der Anfang. Nicht das Ende. Kostenkontrolle und Effizienz sind keine Projekte die abgeschlossen werden. Sie sind Haltungen die sich in den Alltag einbetten. Und je länger sie praktiziert werden, desto selbstverständlicher werden sie.</p>
-  <p>Nach 30 Tagen weißt du welche Maßnahmen in deinem Betrieb wirklich funktionieren. Du weißt welche du ausbauen willst. Und du weißt wo als nächstes hinzuschauen ist. Das ist mehr als ein Plan. Das ist der Beginn eines Betriebs der wirklich effizient wirtschaftet.</p>
-  <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 2</div><p>Schreib deinen persönlichen 30-Tage-Plan auf. Konkret. Woche 1, welche drei Grundlagen erarbeitest du genau. Woche 2, welche erste Maßnahme setzt du um und wer im Team ist dafür verantwortlich. Woche 3, welche zweite Maßnahme kommt hinzu und wann wertest du Woche 2 aus. Woche 4, welche Routinen verankerst du und in welchen SOPs stehen sie. Je konkreter dein Plan, desto höher die Wahrscheinlichkeit dass du ihn wirklich umsetzt.</p></div>
-  <div class="next-step"><div class="next-step-lbl">Dein nächster Schritt</div><p>Geh jetzt in den Gastro-Effizienz-Check. Füll ihn aus. Heute. Und wenn du deine gesamte Kostenstruktur auf einen Blick sehen willst, öffne danach das Kosten-Analyse-Tool. Es zeigt dir schwarz auf weiß wo dein Betrieb gerade Geld verliert und wo das größte Einsparpotenzial liegt.</p></div>
-
-
+<h2>Kapitel 1 — Wo Prozesse ineffizient werden</h2>
+<h3>Ineffizienz entsteht durch Wachstum ohne Anpassung</h3>
+<p>Als du den Betrieb eröffnetest, waren die Abläufe auf eine bestimmte Größe ausgelegt. Seitdem hat sich vieles verändert: mehr Mitarbeiter, andere Gerichte, mehr Gäste, neue Geräte. Aber die Abläufe wurden nie angepasst. Das Ergebnis: Wege die unnötig lang sind. Doppelte Arbeit. Wartezeiten die keinen Mehrwert bringen.</p>
+<p>Prozess-Ineffizienz kostet Zeit. Zeit ist in der Gastronomie direkt Geld — weil Mitarbeiter-Stunden die wichtigste Variable-Kosten-Position sind. 30 Minuten täglich die durch bessere Prozesse gespart werden, sind 150 Stunden pro Jahr — mehr als 3 Arbeitswochen.</p>
+<h3>Die 3 häufigsten Ineffizienzen in der Gastronomie</h3>
+<p>1. Wege: Kühlraum, Vorbereitung und Ausgabe sind so angeordnet dass unnötig viele Wege entstehen. Lösung: Arbeitsstationen analysieren, häufig genutzte Dinge näher platzieren.</p>
+<p>2. Doppelte Vorbereitung: Dasselbe wird zweimal gemacht weil die Koordination fehlt. Lösung: Mise-en-Place-SOP mit klarer Aufgabenverteilung.</p>
+<p>3. Unterbrechungen: Der Koch wird während der Vorbereitung ständig für andere Dinge abgerufen. Lösung: Klare Zeitblöcke für Mise-en-Place ohne Unterbrechungen.</p>
+<div class="beispiel"><div class="beispiel-lbl">📊 Rechenbeispiel aus der Praxis</div><p>Service-Analyse: Durchschnittliche Zeit zwischen Bestellung und Gericht: 22 Minuten.</p><p>Engpass gefunden: Warmhaltebereich zu klein, Ausgabe stockt bei mehr als 4 gleichzeitigen Bestellungen.</p><p>Lösung: Mise-en-Place-Station umgestellt, 2 Bain-Marie-Positionen getauscht.</p><div class="rechnung">Nach Umstellung: durchschnittliche Zeit 16 Minuten (−6 min = −27%). Gäste-Zufriedenheit im Feedback messbar besser. Kosten der Umstellung: 2 Stunden Umbau.</div></div>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 1</div><p>Beobachte morgen einen kompletten Service-Ablauf mit dem Fokus auf Wege und Wartezeiten. Wo gibt es Staus? Wo wird etwas doppelt gemacht? Wo entstehen unnötige Wege? Notiere alles — ohne sofort zu lösen.</p></div>
+<h2>Kapitel 2 — Dein 30-Tage-Effizienz-Plan</h2>
+<h3>Woche 1: Kostenscan und Bestandsaufnahme</h3>
+<p>Kostenscan durchführen, Warenabgangsliste starten, 'Alles aus'-Protokoll erstellen. Am Ende der Woche: Was sind die 3 größten Einsparungspotenziale?</p>
+<h3>Woche 2: Energie-Maßnahmen</h3>
+<p>Dichtungs-Test, LED-Prüfung, Gerätealter-Check. Mindestens eine Sofortmaßnahme umsetzen.</p>
+<h3>Woche 3: Verschwendung und Prozesse</h3>
+<p>Warenabgangsliste auswerten. Ersten Einkaufsmengen-Anpassung umsetzen. Einen Prozess identifizieren und verbessern.</p>
+<h3>Woche 4: Messen und Stabilisieren</h3>
+<p>Neuen WE% berechnen. Energiekosten mit Vormonat vergleichen. Was hat sich verändert? Was wird zur dauerhaften Routine?</p>
+<div class="tipp-box"><p>💡 <strong>Profi-Tipp:</strong> Hänge nach jeder verbesserten Kennzahl das Ergebnis sichtbar auf: 'WE% letzten Monat: 37% — diesen Monat: 33%.' Was das Team sieht, versteht es. Was es versteht, schützt es.</p></div>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 2</div><p>Schreibe deinen konkreten 30-Tage-Effizienz-Plan auf: Was passiert in Woche 1, 2, 3, 4? Mit wem? Bis wann? Welche Kennzahl misst du am Ende als Erfolgsindikator?</p></div>
+<div class="nav-row"><a href="modul7-lektion3.html" class="nav-btn secondary">← Lektion 3</a></div>
+<div class="fazit"><div class="fazit-lbl">🎯 Das Wichtigste auf einen Blick</div><ul><li>Prozess-Ineffizienz kostet Zeit — und Zeit ist in der Gastronomie direkt Geld.</li><li>3 häufigste Ineffizienzen: Wege · Doppelarbeit · Unterbrechungen.</li><li>30 Minuten täglich durch bessere Prozesse = 150 Stunden/Jahr zurückgewonnen.</li><li>Ergebnisse sichtbar machen: Was das Team sieht, schützt es.</li></ul></div>
+<div class="checkliste"><div class="checkliste-lbl">✅ Sofort-Checkliste — Das kannst du heute noch tun</div><ul><li>Service-Ablauf morgen beobachten: Wege, Staus, Doppelarbeit notieren</li><li>30-Tage-Effizienz-Plan konkret aufschreiben</li><li>Erste Kennzahl festlegen die nach 30 Tagen gemessen wird</li><li>Modul 8 starten: Upselling und Umsatzsteigerung</li></ul></div>
   <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
 </div>
 <div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
-<script>
-(function(){
-  // Rechtsklick & Tastenkürzel sperren
-  document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
-  document.addEventListener('keydown', function(e){
-    if (e.ctrlKey && ['s','u','p','a'].includes(e.key.toLowerCase())) e.preventDefault();
-    if (e.key === 'F12') e.preventDefault();
-  });
-
-  // Supabase Auth Check
-  const sb = supabase.createClient(
-    'https://hchlganbgjeciwhwaisj.supabase.co',
-    'sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3'
-  );
-  (async function(){
-    const { data:{ session } } = await sb.auth.getSession();
-    if (!session) { window.location.href = 'login.html'; return; }
-    const { data: profile } = await sb.from('profiles')
-      .select('is_active,subscription_status')
-      .eq('id', session.user.id).maybeSingle();
-    if (profile && (!profile.is_active || profile.subscription_status !== 'active')) {
-      await sb.auth.signOut();
-      window.location.href = 'login.html';
-    }
-  })();
-})();
-</script>
-</body>
-</html>
+</body></html>
