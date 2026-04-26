@@ -1,190 +1,89 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GASTRO-OS – Modul 1 | Lektion 3</title>
-<style>
-* { margin:0; padding:0; box-sizing:border-box; }
+<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Lektion 3 — Vision und Ziele die wirklich motivieren | GASTRO-OS</title><style>* { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
-.header{background:#1a2a4a;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
-.brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
-.btn-back-modul{background:#d4af37;color:#1a2a4a;border:none;padding:9px 20px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.2s;letter-spacing:0.3px}
-.btn-back-modul:hover{background:#c8a030;color:#1a2a4a}
+.header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:18px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.btn-back { background:#d4af37; color:#1a2a4a; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.btn-back:hover { background:#c8a030; }
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
 .wrap { max-width:720px; margin:40px auto; padding:0 24px 60px; }
 .lbl { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:8px; }
-h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:10px; line-height:1.3; }
-.lektion-hero { background:#1a2a4a; border-radius:12px; padding:28px 32px; margin-bottom:28px; border:2px solid #d4af37; }
-.lektion-hero .lektion-tag { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:10px; }
-.lektion-hero h1 { font-family:Georgia,serif; font-size:26px; color:#fff; margin-bottom:0; font-weight:normal; line-height:1.3; }
-.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:20px 0 32px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
-h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:normal; margin:36px 0 14px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
-h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:24px 0 10px; }
-p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
-ul, ol { margin:12px 0 16px 20px; }
-li { font-size:15px; line-height:1.8; color:#2a3a54; margin-bottom:6px; }
-.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin-top:24px; }
-.aufgabe-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
-.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; }
-.highlight { background:#fff8e8; border-left:3px solid #d4af37; padding:14px 18px; margin:20px 0; font-size:14px; color:#5a4000; line-height:1.7; }
-.nav-row { display:flex; gap:12px; justify-content:space-between; margin-top:40px; }
-.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:12px 24px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none; transition:all 0.2s; }
-.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
-.nav-btn.secondary { background:transparent; border:1px solid rgba(26,42,74,0.3); color:#1a2a4a; }
-.nav-btn.secondary:hover { background:#1a2a4a; color:#d4af37; }
-.footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
-.footer-lbl strong { color:#d4af37; }
-.footer-main { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
-.footer-main strong { color:#d4af37; }
-@media (max-width:600px) { .wrap{padding:0 16px 40px} h1{font-size:22px} h2{font-size:17px} }
-
-.lern-box { background:#1a2a4a; border-radius:8px; padding:18px 22px; margin:0 0 28px; }
+h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:16px; line-height:1.3; }
+.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:0 0 24px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+.lern-box { background:#1a2a4a; border-radius:8px; padding:16px 20px; margin:0 0 28px; }
 .lern-box-title { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
 .lern-box ul { list-style:none; padding:0; margin:0; }
-.lern-box ul li { font-size:13px; color:#a0b0c8; padding:4px 0 4px 20px; position:relative; line-height:1.6; }
-.lern-box ul li::before { content:'✓'; position:absolute; left:0; color:#d4af37; font-weight:700; }
+.lern-box li { font-size:13px; color:#a0b0c8; padding:4px 0 4px 20px; position:relative; line-height:1.6; }
+.lern-box li::before { content:'✓'; position:absolute; left:0; color:#d4af37; font-weight:700; }
+h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:normal; margin:36px 0 14px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
+h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:22px 0 10px; }
+h4 { font-size:15px; color:#1a2a4a; font-weight:700; margin:18px 0 8px; }
+p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
+.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin:24px 0; }
+.aufgabe-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
+.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; line-height:1.7; }
 .beispiel { background:#fff; border:1px solid #e8dfc8; border-left:4px solid #3a7ad4; border-radius:0 8px 8px 0; padding:16px 20px; margin:20px 0; }
 .beispiel-lbl { font-size:11px; color:#3a7ad4; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
 .beispiel p { font-size:14px; color:#2a3a54; margin-bottom:8px; line-height:1.75; }
 .beispiel p:last-child { margin-bottom:0; }
-.beispiel .rechnung { background:#f0f4f8; border-radius:5px; padding:10px 14px; font-family:monospace; font-size:13px; color:#1a2a4a; margin:8px 0; }
-.fazit { background:#fdf9ee; border:2px solid #d4af37; border-radius:8px; padding:18px 22px; margin-top:36px; }
+.rechnung { background:#f0f4f8; border-radius:5px; padding:10px 14px; font-family:monospace; font-size:13px; color:#1a2a4a; margin:8px 0; line-height:1.6; }
+.tipp-box { background:#e4f5e8; border:1px solid #4aaa60; border-radius:8px; padding:14px 18px; margin:18px 0; }
+.tipp-box p { font-size:14px; color:#1a6030; margin-bottom:0; line-height:1.7; }
+.nav-row { display:flex; gap:12px; justify-content:space-between; margin:40px 0 0; }
+.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:11px 20px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; transition:all 0.2s; }
+.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
+.nav-btn.secondary { background:#fff; color:#1a2a4a; border:1px solid #e8dfc8; }
+.nav-btn.secondary:hover { border-color:#d4af37; }
+.fazit { background:#fdf9ee; border:2px solid #d4af37; border-radius:8px; padding:18px 22px; margin:32px 0 0; }
 .fazit-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
 .fazit ul { list-style:none; padding:0; margin:0; }
-.fazit ul li { font-size:14px; color:#2a3a54; padding:5px 0 5px 22px; position:relative; line-height:1.65; border-bottom:1px solid #e8dfc8; }
-.fazit ul li:last-child { border-bottom:none; }
-.fazit ul li::before { content:'→'; position:absolute; left:0; color:#d4af37; font-weight:700; }
-.tipp-box { background:#e4f5e8; border:1px solid #4aaa60; border-radius:8px; padding:14px 18px; margin:16px 0; }
-.tipp-box p { font-size:14px; color:#1a6030; margin-bottom:0; line-height:1.7; }
-.checkliste { background:#fff; border:1px solid #e8dfc8; border-radius:8px; padding:16px 20px; margin:16px 0; }
+.fazit li { font-size:14px; color:#2a3a54; padding:6px 0 6px 22px; position:relative; line-height:1.65; border-bottom:1px solid #e8dfc8; }
+.fazit li:last-child { border-bottom:none; }
+.fazit li::before { content:'→'; position:absolute; left:0; color:#d4af37; font-weight:700; }
+.checkliste { background:#fff; border:1px solid #e8dfc8; border-radius:8px; padding:16px 20px; margin:20px 0 0; }
 .checkliste-lbl { font-size:11px; color:#1a2a4a; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
 .checkliste ul { list-style:none; padding:0; margin:0; }
-.checkliste ul li { font-size:14px; color:#2a3a54; padding:6px 0 6px 28px; position:relative; border-bottom:1px solid #f0ece4; }
-.checkliste ul li:last-child { border-bottom:none; }
-.checkliste ul li::before { content:'☐'; position:absolute; left:0; color:#d4af37; font-size:16px; line-height:1; }
-</style>
-</head>
+.checkliste li { font-size:14px; color:#2a3a54; padding:7px 0 7px 28px; position:relative; border-bottom:1px solid #f0ece4; line-height:1.55; }
+.checkliste li:last-child { border-bottom:none; }
+.checkliste li::before { content:'☐'; position:absolute; left:0; color:#d4af37; font-size:16px; line-height:1.2; }
+.footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-lbl strong { color:#d4af37; }
+.footer-main { background:#1a2a4a; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-main strong { color:#d4af37; }</style></head>
 <body>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-(function(){
-  document.addEventListener('contextmenu',function(e){e.preventDefault();});
-  document.addEventListener('keydown',function(e){
-    if(e.ctrlKey&&['s','u','p','a'].includes(e.key.toLowerCase()))e.preventDefault();
-    if(e.key==='F12')e.preventDefault();
-  });
-  const sb=supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3');
-  (async function(){
-    const{data:{session}}=await sb.auth.getSession();
-    if(!session){window.location.href='login.html';return;}
-    const{data:profile}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
-    if(profile&&(!profile.is_active||profile.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
-  })();
-})();
-</script>
-<div class="header">
-  <div class="brand">GASTRO-OS</div>
-  <a href="dashboard.html#modul-1" class="btn-back-modul">← Zurück zum Dashboard</a>
-</div>
+<div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html#modul-1" class="btn-back">← Zurück zum Dashboard</a></div>
 <div class="gold-bar"></div>
-
 <div class="wrap">
   <div class="lbl">Modul 1 · Lektion 3</div>
-  <div class="lektion-hero">
-    <div class="lektion-tag">Modul 1 · Lektion 3</div>
-    <h1>Gewinn-Fokus &amp; die vier Säulen</h1>
-  </div>
-  <div class="intro">Du weißt jetzt wie du denkst und wie du arbeitest. Du weißt was Ersetzbarkeit bedeutet und warum sie dein Ziel ist. Jetzt gehen wir einen Schritt weiter — zu den Zahlen. Und zu dem System das deinen Betrieb trägt.</div>
+  <h1>Vision und Ziele die wirklich motivieren</h1>
+  <div class="intro">In Lektion 2 hast du die 5 wichtigsten Kennzahlen kennengelernt und weißt jetzt wo du zahlenmäßig stehst. Jetzt geht es um die Frage wohin du willst. Nicht als vager Wunsch — sondern als konkretes Bild das dich täglich antreibt.</div>
+  <div class="lern-box"><div class="lern-box-title">📚 Was du in dieser Lektion lernst</div><ul><li>Den Unterschied zwischen Wunsch und echtem Ziel verstehen</li><li>Eine Vision entwickeln die konkret und motivierend ist</li><li>SMART-Ziele für deinen Betrieb setzen</li><li>Deinen persönlichen 12-Monats-Plan schreiben</li></ul></div>
 
-<h2>Kapitel 1 — Gewinn-Fokus vs. Umsatz-Eitelkeit</h2>
-  <p>In der Gastronomiebranche gibt es eine Kennzahl über die fast alle sprechen — und eine über die zu wenige nachdenken. Die eine ist der Umsatz. Die andere ist der Gewinn. Diese beiden Zahlen haben nichts miteinander zu tun — außer dass sie beide auf deiner Gewinn-und-Verlust-Rechnung stehen.</p>
-
-  <h3>Die Umsatz-Lüge</h3>
-  <p>Ein voller Saal ist schön. Er signalisiert Beliebtheit, erzeugt Atmosphäre und gibt dem Inhaber das Gefühl dass es läuft. Aber er sagt nichts darüber aus ob am Ende des Monats Geld übrig bleibt.</p>
-  <p>Es gibt Betriebe die 80.000 Euro Umsatz im Monat machen und trotzdem keinen Gewinn erzielen. Und es gibt kleinere Betriebe die 30.000 Euro Umsatz machen und davon komfortabel leben.</p>
-  <p>Der Unterschied liegt nicht im Umsatz. Er liegt in den Strukturen dahinter. Im Wareneinsatz. In den Personalkosten. In den Fixkosten die jeden Monat laufen egal ob es regnet oder die Terrasse voll ist. Wer ausschließlich auf Umsatz schaut navigiert mit geschlossenen Augen.</p>
-
-  <h3>Die Leakage-Analyse — Wo versickert dein Geld?</h3>
-  <p>In fast jedem Gastronomiebetrieb gibt es drei oder vier Stellen an denen Geld verlorengeht ohne dass es jemand bemerkt. Diese stillen Verlustquellen nennen wir Leakage — das Versickern von Ertrag durch strukturelle Schwachstellen.</p>
-  <p>Die häufigsten Quellen in der Praxis sind:</p>
-  <p>Ein Wareneinsatz der nie systematisch kontrolliert wurde und schleichend gestiegen ist. Personalkosten die durch ineffiziente Dienstpläne unnötig hoch sind. Gerichte auf der Karte die selten bestellt werden aber hohe Lagerkosten verursachen. Lieferantenkonditionen die seit Jahren nicht neu verhandelt wurden. Stille Verträge für Software, Lizenzen oder Services die längst nicht mehr genutzt werden.</p>
-  <p>Die Leakage-Analyse ist kein einmaliges Projekt. Sie ist eine Haltung. Die Haltung deinen Betrieb regelmäßig auf solche Lecks zu untersuchen — und sie systematisch zu schließen.</p>
-
-  <h3>Profit First — Die Formel umkehren</h3>
-  <p>Die klassische betriebswirtschaftliche Formel lautet: Umsatz minus Kosten gleich Gewinn. In dieser Logik ist der Gewinn das was übrig bleibt. Er ist das Ergebnis aller anderen Entscheidungen. Und weil er das Ergebnis ist wird er in schlechten Monaten zuerst geopfert.</p>
-  <p>Das Profit-First-Prinzip dreht diese Formel um:</p>
-  <p>Umsatz minus Gewinn gleich Kosten.</p>
-  <p>Du bestimmst zuerst wie viel Gewinn du brauchst und dir nimmst — und dann werden die Kosten so gestaltet dass sie mit dem Rest auskommen. Der Gewinn wird nicht erhofft. Er wird zuerst gesichert.</p>
-  <p>Diese Umkehrung klingt simpel. Sie verändert alles.</p>
-
-  <div class="aufgabe">
-    <div class="aufgabe-label">Deine Aufgabe für Kapitel 1</div>
-    <p>Schau dir deine letzte Monatsabrechnung an. Was ist nach allen Kosten wirklich übrig geblieben? Und wo vermutest du die größten Leakage-Stellen in deinem Betrieb? Schreib drei konkrete Vermutungen auf.</p>
-  </div>
-<div class="lern-box"><div class="lern-box-title">📚 Was du in dieser Lektion lernst</div><ul><li>Was eine Vision für deinen Betrieb bedeutet und warum sie unverzichtbar ist</li><li>Wie du klare Ziele setzt die wirklich motivieren</li><li>Den Unterschied zwischen Ziel und Wunsch verstehen</li><li>Deinen persönlichen Erfolgsplan für die nächsten 12 Monate erstellen</li></ul></div>
-
-  <h2>Kapitel 2 — Die vier Säulen deines Gastro-Systems</h2>
-  <p>Ein Gastronomiebetrieb der ohne seinen Inhaber funktioniert steht nicht auf Talent oder Glück. Er steht auf vier klar definierten Säulen. Das sind die konkreten Bereiche in denen du im Verlauf dieses Systems arbeiten wirst.</p>
-
-  <h3>Säule 1 — Produkt-Exzellenz</h3>
-  <p>Konstante Qualität ist das Fundament jedes erfolgreichen Gastronomiebetriebs. Nicht die beste Qualität — sondern die konstanteste. Gäste kommen wieder weil sie wissen was sie erwartet. Enttäuschung entsteht nicht durch Mittelmäßigkeit sondern durch Inkonstanz.</p>
-  <p>Produkt-Exzellenz ohne die permanente Anwesenheit des Küchenchefs zu sichern bedeutet: Rezepturen müssen dokumentiert sein. Qualitätsstandards müssen messbar sein. Und es braucht ein System zur Kontrolle das nicht die Person des Chefs erfordert sondern in Prozessen und Checklisten verankert ist.</p>
-
-  <h3>Säule 2 — Service-Struktur</h3>
-  <p>Ein exzellenter Gästekontakt ist kein Zufall. Er ist das Ergebnis klarer Strukturen und eines einheitlichen Auftretens das von jedem Mitarbeiter im Team reproduziert werden kann — unabhängig davon ob es der erfahrene Serviceleiter oder der neue Aushilfe ist.</p>
-  <p>Service-Struktur bedeutet: Es gibt ein klares Begrüßungsprotokoll. Es gibt definierte Empfehlungsmomente im Serviceablauf. Es gibt eine Standardisierung der häufigsten Gästesituationen — Beschwerden, Sonderwünsche, Weinempfehlung. Nicht als starres Skript das roboterhaft klingt — sondern als Leitplanken innerhalb derer Persönlichkeit stattfinden kann.</p>
-
-  <h3>Säule 3 — Finanz-Kontrolle</h3>
-  <p>Die meisten Gastronomen schauen einmal im Monat auf ihre Zahlen — wenn überhaupt. Das ist zu spät. Finanz-Kontrolle im Sinne dieses Systems bedeutet: ein wöchentlicher strukturierter Blick auf eine Handvoll Kennzahlen die dir innerhalb von 15 Minuten sagen ob dein Betrieb auf Kurs ist.</p>
-  <p>Wareneinsatz dieser Woche. Personalstunden im Verhältnis zum Umsatz. Offene Rechnungen. Kassenstand. Diese Zahlen sind der Rückspiegel — sie zeigen wo du warst. Daneben brauchst du die Windschutzscheibe: die geplanten Umsätze der nächsten Wochen, bevorstehende Ausgaben, Reservierungsquote. Wer beide Perspektiven regelmäßig nutzt wird selten überrascht.</p>
-
-  <h3>Säule 4 — Mitarbeiter-Autonomie</h3>
-  <p>Menschen die nur Befehle ausführen sind teuer — im wörtlichen und übertragenen Sinn. Sie kosten Managementaufwand, sie entwickeln keine Loyalität, und sie verlassen den Betrieb sobald sich eine bessere Möglichkeit bietet.</p>
-  <p>Menschen die mitdenken sind das Gegenteil: Sie entwickeln Eigenverantwortung, lösen Probleme selbst, und bleiben — weil sie sich als Teil von etwas fühlen nicht nur als Arbeitskraft.</p>
-  <p>Mitarbeiter-Autonomie aufzubauen ist keine Frage von Motivationsreden. Es ist eine Frage von Struktur, Vertrauen und klaren Verantwortlichkeiten. Wer für was zuständig ist. Wer welche Entscheidungen allein treffen darf. Und welche Fehler erlaubt sind — weil aus ihnen gelernt wird.</p>
-
-  <div class="aufgabe">
-    <div class="aufgabe-label">Deine Aufgabe für Kapitel 2</div>
-    <p>Bewerte die vier Säulen ehrlich auf einer Skala von 1 bis 5. Wo stehst du heute? Welche Säule ist deine stärkste — und welche deine schwächste? Das ist dein persönlicher Fahrplan für den Rest des Kurses.</p>
-  </div>
-
-  <div class="lektion-footer">
-    <div class="lektion-footer-brand"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
-  </div>
-</div>
-
-  
-<div class="fazit"><div class="fazit-lbl">🎯 Das Wichtigste auf einen Blick</div><ul><li>Ein Ziel ohne Datum ist ein Traum. Ein Datum ohne Plan ist eine Hoffnung.</li><li>SMART-Ziele: Spezifisch, Messbar, Attraktiv, Realistisch, Terminiert.</li><li>Dein 12-Monats-Ziel bricht sich herunter: Was muss ich jeden Monat tun?</li><li>Vision gibt Richtung. Zahlen zeigen ob du auf dem richtigen Weg bist.</li></ul></div>
+<h2>Kapitel 1 — Was ein echtes Ziel von einem Wunsch unterscheidet</h2>
+<h3>Warum Gastronomen selten klare Ziele haben</h3>
+<p>Wenn du Gastronomen fragst was ihr Ziel für den nächsten Monat ist, bekommst du oft Antworten wie: Ich will dass es besser läuft. Oder: Ich will mehr verdienen. Oder: Ich will weniger Stress. Das sind Wünsche. Keine Ziele. Wünsche haben kein Datum, keine Metrik, keinen konkreten Plan.</p>
+<p>Ein echtes Ziel klingt so: In den nächsten 3 Monaten senke ich meinen Wareneinsatz von 36% auf 30%. Ich messe ihn wöchentlich mit dem Einkaufs-Check. Konkret. Messbar. Mit Datum. Das ist ein Ziel.</p>
+<h3>Die SMART-Formel für Gastronomen</h3>
+<p>Spezifisch: Was genau soll sich verändern? Nicht 'mehr Gewinn' sondern 'Gewinn von 3% auf 8% steigern'.</p>
+<p>Messbar: Wie erkennst du dass du es erreicht hast? Welche Zahl zeigt es?</p>
+<p>Attraktiv: Warum ist dieses Ziel für dich persönlich wichtig? Was ändert sich in deinem Leben wenn du es erreichst?</p>
+<p>Realistisch: Ist es mit deinen aktuellen Ressourcen erreichbar? Zu leicht bringt keine Energie. Zu schwer frustriert.</p>
+<p>Terminiert: Bis wann genau? Ohne Datum kein Ziel.</p>
+<div class="beispiel"><div class="beispiel-lbl">📊 Rechenbeispiel aus der Praxis</div><p>Zwei Gastronomen starten mit demselben Problem: Gewinn 3%.</p><p>Anna's Ziel: 'In 12 Monaten Wareneinsatz auf 28%, Personalkosten auf 33%, Gewinn auf 10%. Messbar monatlich mit BWA.'</p><p>Bernd's Ziel: 'Ich will halt mehr verdienen und weniger arbeiten.'</p><div class="rechnung">Nach 12 Monaten. Anna: WE 30%, Gewinn 7% (Fortschritt messbar, nächster Schritt klar). Bernd: keine Veränderung — weil kein Maßstab existierte.</div></div>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 1</div><p>Schreib jetzt dein wichtigstes Ziel für die nächsten 12 Monate — SMART formuliert. Eine Zahl die sich verändern soll, ein Datum bis wann, eine konkrete Maßnahme wie. Schreib es auf eine Karteikarte.</p></div>
+<h2>Kapitel 2 — Deine Vision als Unternehmer</h2>
+<h3>Was du wirklich willst</h3>
+<p>Hinter jedem Ziel steckt eine tiefere Frage: Was willst du wirklich mit deinem Betrieb erreichen? Nicht was du anderen gegenüber sagst. Was du wirklich willst. Finanzielle Sicherheit? Einen Betrieb der ohne dich läuft? Zeit für deine Familie? Ein zweiter Standort? Einen Betrieb den du mit Stolz übergeben kannst?</p>
+<p>Diese Vision ist wichtig weil sie entscheidet was du priori sierst wenn der Alltag voll ist. Wer finanzielle Sicherheit als Ziel hat, investiert in Systeme die Kosten senken. Wer einen selbstständig laufenden Betrieb will, investiert in Teamaufbau und Schichtleiter. Die Vision gibt Richtung.</p>
+<h3>Dein 12-Monats-Bild</h3>
+<p>Stell dir vor du stehst in genau 12 Monaten in deinem Betrieb. Was ist anders? Was läuft ohne dich? Welche Zahl hat sich am meisten verändert? Wie viele Stunden arbeitest du pro Woche? Wie oft hast du in den letzten 3 Monaten wirklich abgeschaltet?</p>
+<p>Dieses Bild ist deine Vision. Und Gastro-OS ist der Weg dorthin — Modul für Modul, Lektion für Lektion.</p>
+<div class="tipp-box"><p>💡 <strong>Profi-Tipp:</strong> Schreib dein 12-Monats-Ziel auf eine Karteikarte und steck sie in deine Brieftasche oder hänge sie an den Spiegel. Lies sie jeden Morgen. Was du täglich im Kopf hast, setzt du um. Was du vergisst, passiert nicht.</p></div>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 2</div><p>Schreib dein 12-Monats-Bild auf: Was ist anders in genau einem Jahr? Welche 3 konkreten Zahlen haben sich verändert? Wie viele Stunden arbeitest du weniger? Was machst du mit dieser Zeit?</p></div>
+<div class="nav-row"><a href="modul1-lektion2.html" class="nav-btn secondary">← Lektion 2</a><a href="modul1-lektion4.html" class="nav-btn">Lektion 4 →</a></div>
+<div class="fazit"><div class="fazit-lbl">🎯 Das Wichtigste auf einen Blick</div><ul><li>Ein Ziel ohne Datum ist ein Wunsch. Ein Datum ohne Plan ist eine Hoffnung.</li><li>SMART-Formel: Spezifisch · Messbar · Attraktiv · Realistisch · Terminiert.</li><li>Dein 12-Monats-Bild bricht sich herunter: Was muss ich jeden Monat konkret tun?</li><li>Vision gibt Richtung. Zahlen zeigen ob du auf dem richtigen Weg bist.</li></ul></div>
+<div class="checkliste"><div class="checkliste-lbl">✅ Sofort-Checkliste — Das kannst du heute noch tun</div><ul><li>Wichtigstes Ziel SMART formulieren und aufschreiben</li><li>Karteikarte schreiben: 12-Monats-Ziel mit konkreten Zahlen</li><li>12-Monats-Bild aufschreiben: Was ist in einem Jahr anders?</li><li>Nächste Meilensteine definieren: Was muss in 3 Monaten erreicht sein?</li></ul></div>
   <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
 </div>
 <div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
-<script>
-(function(){
-  // Rechtsklick & Tastenkürzel sperren
-  document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
-  document.addEventListener('keydown', function(e){
-    if (e.ctrlKey && ['s','u','p','a'].includes(e.key.toLowerCase())) e.preventDefault();
-    if (e.key === 'F12') e.preventDefault();
-  });
-
-  // Supabase Auth Check
-  const sb = supabase.createClient(
-    'https://hchlganbgjeciwhwaisj.supabase.co',
-    'sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3'
-  );
-  (async function(){
-    const { data:{ session } } = await sb.auth.getSession();
-    if (!session) { window.location.href = 'login.html'; return; }
-    const { data: profile } = await sb.from('profiles')
-      .select('is_active,subscription_status')
-      .eq('id', session.user.id).maybeSingle();
-    if (profile && (!profile.is_active || profile.subscription_status !== 'active')) {
-      await sb.auth.signOut();
-      window.location.href = 'login.html';
-    }
-  })();
-})();
-</script>
-</body>
-</html>
+</body></html>

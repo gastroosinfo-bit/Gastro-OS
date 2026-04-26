@@ -3,94 +3,67 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GASTRO-OS – Modul 0 | Lektion 2</title>
-<style>
-* { margin:0; padding:0; box-sizing:border-box; }
+<title>Lektion 2 — Wie Gastro-OS funktioniert | GASTRO-OS</title>
+<style>* { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
-.header{background:#1a2a4a;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
-.brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
-.btn-back-modul{background:#d4af37;color:#1a2a4a;border:none;padding:9px 20px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.2s;letter-spacing:0.3px}
-.btn-back-modul:hover{background:#c8a030;color:#1a2a4a}
+.header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:18px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.btn-back { background:#d4af37; color:#1a2a4a; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.btn-back:hover { background:#c8a030; }
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
 .wrap { max-width:720px; margin:40px auto; padding:0 24px 60px; }
 .lbl { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:8px; }
-h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:10px; line-height:1.3; }
-.lektion-hero { background:#1a2a4a; border-radius:12px; padding:28px 32px; margin-bottom:28px; border:2px solid #d4af37; }
-.lektion-hero .lektion-tag { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:10px; }
-.lektion-hero h1 { font-family:Georgia,serif; font-size:26px; color:#fff; margin-bottom:0; font-weight:normal; line-height:1.3; }
-.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:20px 0 32px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
-h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:normal; margin:36px 0 14px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
-h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:24px 0 10px; }
-p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
-ul, ol { margin:12px 0 16px 20px; }
-li { font-size:15px; line-height:1.8; color:#2a3a54; margin-bottom:6px; }
-.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin-top:24px; }
-.aufgabe-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
-.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; }
-.highlight { background:#fff8e8; border-left:3px solid #d4af37; padding:14px 18px; margin:20px 0; font-size:14px; color:#5a4000; line-height:1.7; }
-.nav-row { display:flex; gap:12px; justify-content:space-between; margin-top:40px; }
-.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:12px 24px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none; transition:all 0.2s; }
-.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
-.nav-btn.secondary { background:transparent; border:1px solid rgba(26,42,74,0.3); color:#1a2a4a; }
-.nav-btn.secondary:hover { background:#1a2a4a; color:#d4af37; }
-.footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
-.footer-lbl strong { color:#d4af37; }
-.footer-main { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
-.footer-main strong { color:#d4af37; }
-@media (max-width:600px) { .wrap{padding:0 16px 40px} h1{font-size:22px} h2{font-size:17px} }
-
-.lern-box { background:#1a2a4a; border-radius:8px; padding:18px 22px; margin:0 0 28px; }
+h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:16px; line-height:1.3; }
+.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:0 0 24px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+.lern-box { background:#1a2a4a; border-radius:8px; padding:16px 20px; margin:0 0 28px; }
 .lern-box-title { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
 .lern-box ul { list-style:none; padding:0; margin:0; }
-.lern-box ul li { font-size:13px; color:#a0b0c8; padding:4px 0 4px 20px; position:relative; line-height:1.6; }
-.lern-box ul li::before { content:'✓'; position:absolute; left:0; color:#d4af37; font-weight:700; }
+.lern-box li { font-size:13px; color:#a0b0c8; padding:4px 0 4px 20px; position:relative; line-height:1.6; }
+.lern-box li::before { content:'✓'; position:absolute; left:0; color:#d4af37; font-weight:700; }
+h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:normal; margin:36px 0 14px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
+h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:22px 0 10px; }
+h4 { font-size:15px; color:#1a2a4a; font-weight:700; margin:18px 0 8px; }
+p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
+.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin:24px 0; }
+.aufgabe-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
+.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; line-height:1.7; }
 .beispiel { background:#fff; border:1px solid #e8dfc8; border-left:4px solid #3a7ad4; border-radius:0 8px 8px 0; padding:16px 20px; margin:20px 0; }
 .beispiel-lbl { font-size:11px; color:#3a7ad4; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
 .beispiel p { font-size:14px; color:#2a3a54; margin-bottom:8px; line-height:1.75; }
 .beispiel p:last-child { margin-bottom:0; }
-.beispiel .rechnung { background:#f0f4f8; border-radius:5px; padding:10px 14px; font-family:monospace; font-size:13px; color:#1a2a4a; margin:8px 0; }
-.fazit { background:#fdf9ee; border:2px solid #d4af37; border-radius:8px; padding:18px 22px; margin-top:36px; }
+.rechnung { background:#f0f4f8; border-radius:5px; padding:10px 14px; font-family:monospace; font-size:13px; color:#1a2a4a; margin:8px 0; line-height:1.6; }
+.tipp-box { background:#e4f5e8; border:1px solid #4aaa60; border-radius:8px; padding:14px 18px; margin:18px 0; }
+.tipp-box p { font-size:14px; color:#1a6030; margin-bottom:0; line-height:1.7; }
+.nav-row { display:flex; gap:12px; justify-content:space-between; margin:40px 0 0; }
+.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:11px 20px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; transition:all 0.2s; }
+.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
+.nav-btn.secondary { background:#fff; color:#1a2a4a; border:1px solid #e8dfc8; }
+.nav-btn.secondary:hover { border-color:#d4af37; }
+.fazit { background:#fdf9ee; border:2px solid #d4af37; border-radius:8px; padding:18px 22px; margin:32px 0 0; }
 .fazit-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
 .fazit ul { list-style:none; padding:0; margin:0; }
-.fazit ul li { font-size:14px; color:#2a3a54; padding:5px 0 5px 22px; position:relative; line-height:1.65; border-bottom:1px solid #e8dfc8; }
-.fazit ul li:last-child { border-bottom:none; }
-.fazit ul li::before { content:'→'; position:absolute; left:0; color:#d4af37; font-weight:700; }
-.tipp-box { background:#e4f5e8; border:1px solid #4aaa60; border-radius:8px; padding:14px 18px; margin:16px 0; }
-.tipp-box p { font-size:14px; color:#1a6030; margin-bottom:0; line-height:1.7; }
-</style>
+.fazit li { font-size:14px; color:#2a3a54; padding:6px 0 6px 22px; position:relative; line-height:1.65; border-bottom:1px solid #e8dfc8; }
+.fazit li:last-child { border-bottom:none; }
+.fazit li::before { content:'→'; position:absolute; left:0; color:#d4af37; font-weight:700; }
+.checkliste { background:#fff; border:1px solid #e8dfc8; border-radius:8px; padding:16px 20px; margin:20px 0 0; }
+.checkliste-lbl { font-size:11px; color:#1a2a4a; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.checkliste ul { list-style:none; padding:0; margin:0; }
+.checkliste li { font-size:14px; color:#2a3a54; padding:7px 0 7px 28px; position:relative; border-bottom:1px solid #f0ece4; line-height:1.55; }
+.checkliste li:last-child { border-bottom:none; }
+.checkliste li::before { content:'☐'; position:absolute; left:0; color:#d4af37; font-size:16px; line-height:1.2; }
+.footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-lbl strong { color:#d4af37; }
+.footer-main { background:#1a2a4a; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-main strong { color:#d4af37; }</style>
 </head>
 <body>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-(function(){
-  document.addEventListener('contextmenu',function(e){e.preventDefault();});
-  document.addEventListener('keydown',function(e){
-    if(e.ctrlKey&&['s','u','p','a'].includes(e.key.toLowerCase()))e.preventDefault();
-    if(e.key==='F12')e.preventDefault();
-  });
-  const sb=supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3');
-  (async function(){
-    const{data:{session}}=await sb.auth.getSession();
-    if(!session){window.location.href='login.html';return;}
-    const{data:profile}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
-    if(profile&&(!profile.is_active||profile.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
-  })();
-})();
-</script>
-<div class="header">
-  <div class="brand">GASTRO-OS</div>
-  <a href="dashboard.html#modul-0" class="btn-back-modul">← Zurück zum Dashboard</a>
-</div>
+<div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html#modul-0" class="btn-back">← Zurück zum Dashboard</a></div>
 <div class="gold-bar"></div>
-
 <div class="wrap">
   <div class="lbl">Modul 0 · Lektion 2</div>
-  <div class="lektion-hero">
-    <div class="lektion-tag">Modul 0 · Lektion 2</div>
-    <h1>Das Gastro-OS Prinzip</h1>
-  </div>
-  <div class="intro">In Lektion 1 haben wir über die Umsatzfalle gesprochen — und warum Gewinn wichtiger ist als Umsatz. Jetzt kommen wir zum Kern von allem. Zu dem Prinzip das diesen ganzen Kurs trägt. Lies diese Lektion besonders aufmerksam — sie ist die Grundlage für jede einzelne Entscheidung die du in den nächsten Monaten treffen wirst.</div>
-
+  <h1>Wie Gastro-OS funktioniert</h1>
+  <div class="intro">In Lektion 1 hast du erkannt wo du heute stehst. Jetzt schauen wir uns an wie Gastro-OS als System aufgebaut ist, wie die Module zusammenhängen und wie du das System optimal für deinen Betrieb nutzt.</div>
+  <div class="lern-box"><div class="lern-box-title">📚 Was du in dieser Lektion lernst</div><ul><li>Den Aufbau von Gastro-OS und die Logik der 13 Module verstehen</li><li>Wie Wissen, Tools und Reflexion zusammenwirken</li><li>Welche Einstellung den Unterschied zwischen Ergebnis und Frustration macht</li><li>Deinen persönlichen Durcharbeitsplan erstellen</li></ul></div>
 <h2>Struktur ist nicht das Gegenteil von Freiheit</h2>
   <p>Wenn Gastronomen das Wort Struktur hören, denken viele an Bürokratie. An starre Regeln. An den Verlust von Spontaneität und Kreativität — den Dingen die viele überhaupt erst in diese Branche gebracht haben.</p>
   <p>Das ist ein Missverständnis das wir von Anfang an ausräumen müssen.</p>
@@ -123,38 +96,14 @@ li { font-size:15px; line-height:1.8; color:#2a3a54; margin-bottom:6px; }
   </div>
 
 </div>
-
-  
-<div class="fazit"><div class="fazit-lbl">🎯 Das Wichtigste auf einen Blick</div><ul><li>Ein System ist eine Aufgabe die einmal definiert wird und danach immer gleich läuft.</li><li>Die 5 Kern-Systeme: Einkauf, Personal, Qualität, Finanzen, Marketing.</li><li>Fang mit dem System an das dir heute die meiste Zeit stiehlt.</li><li>Ein schlechtes System ist besser als kein System — du kannst es verbessern.</li></ul></div>
+<div class="beispiel"><div class="beispiel-lbl">📊 Rechenbeispiel aus der Praxis</div><p>Zwei Gastronomen starten Gastro-OS am selben Tag.</p><p>Gastronom A: liest die Lektionen, nickt zustimmend, schließt den Laptop. Macht weiter wie bisher.</p><p>Gastronom B: liest die Lektionen, setzt nach jeder Einheit EINE konkrete Maßnahme um. Führt die Tools wöchentlich.</p><div class="rechnung">Nach 12 Monaten. Gastronom A: kein Unterschied. Gastronom B: WE 8% niedriger, 1 freier Tag mehr pro Woche, Mitarbeiterfluktuation halbiert. Differenz zwischen ihnen: nicht Wissen — Umsetzung.</div></div>
+<div class="tipp-box"><p>💡 <strong>Profi-Tipp:</strong> Das 'Ein-Sache-Prinzip': Nimm aus jeder Lektion genau eine Sache mit und setze sie in den nächsten 7 Tagen um. Nicht drei Sachen. Eine. Konsequent umgesetzt schlägt zehn halb begonnene.</p></div>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe für Lektion 2</div><p>Erstelle deinen persönlichen Durcharbeitsplan: Wie viele Module pro Woche? Wann ist deine feste Gastro-OS-Zeit? Schreib es auf und trag es in den Kalender ein — heute noch.</p></div>
+<div class="nav-row"><a href="modul0-lektion1.html" class="nav-btn secondary">← Lektion 1</a><a href="modul0-lektion3.html" class="nav-btn">Lektion 3 →</a></div>
+<div class="fazit"><div class="fazit-lbl">🎯 Das Wichtigste auf einen Blick</div><ul><li>Gastro-OS ist kein Kurs — es ist ein Betriebssystem das mit dir wächst.</li><li>Die Module bauen aufeinander auf: Zahlen → Einkauf → Prozesse → Team → Marketing → Wachstum.</li><li>Wissen ohne Umsetzung verändert nichts. Eine Maßnahme pro Lektion reicht.</li><li>Perfektionismus ist der größte Feind des Fortschritts — fang heute an.</li></ul></div>
+<div class="checkliste"><div class="checkliste-lbl">✅ Sofort-Checkliste — Das kannst du heute noch tun</div><ul><li>Festen Gastro-OS-Termin pro Woche im Kalender eintragen</li><li>Entscheiden: Welches Modul nach Modul 0? (Empfehlung: Modul 1 → Modul 2 → ...)</li><li>Ergebnis aus Lektion 1 (Zeittagebuch) mit jemandem besprechen</li><li>Ersten konkreten Schritt aus Lektion 1 noch diese Woche umsetzen</li></ul></div>
   <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
 </div>
 <div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
-<script>
-(function(){
-  // Rechtsklick & Tastenkürzel sperren
-  document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
-  document.addEventListener('keydown', function(e){
-    if (e.ctrlKey && ['s','u','p','a'].includes(e.key.toLowerCase())) e.preventDefault();
-    if (e.key === 'F12') e.preventDefault();
-  });
-
-  // Supabase Auth Check
-  const sb = supabase.createClient(
-    'https://hchlganbgjeciwhwaisj.supabase.co',
-    'sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3'
-  );
-  (async function(){
-    const { data:{ session } } = await sb.auth.getSession();
-    if (!session) { window.location.href = 'login.html'; return; }
-    const { data: profile } = await sb.from('profiles')
-      .select('is_active,subscription_status')
-      .eq('id', session.user.id).maybeSingle();
-    if (profile && (!profile.is_active || profile.subscription_status !== 'active')) {
-      await sb.auth.signOut();
-      window.location.href = 'login.html';
-    }
-  })();
-})();
-</script>
 </body>
 </html>

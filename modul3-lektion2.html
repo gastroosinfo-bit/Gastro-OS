@@ -1,164 +1,85 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GASTRO-OS – Modul 3 | Lektion 2</title>
-<style>
-* { margin:0; padding:0; box-sizing:border-box; }
+<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Lektion 2 — Lieferanten verhandeln und vergleichen | GASTRO-OS</title><style>* { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
-.header{background:#1a2a4a;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
-.brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
-.btn-back-modul{background:#d4af37;color:#1a2a4a;border:none;padding:9px 20px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.2s;letter-spacing:0.3px}
-.btn-back-modul:hover{background:#c8a030;color:#1a2a4a}
+.header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:18px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.btn-back { background:#d4af37; color:#1a2a4a; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.btn-back:hover { background:#c8a030; }
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
 .wrap { max-width:720px; margin:40px auto; padding:0 24px 60px; }
 .lbl { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:8px; }
-h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:10px; line-height:1.3; }
-.lektion-hero { background:#1a2a4a; border-radius:12px; padding:28px 32px; margin-bottom:28px; border:2px solid #d4af37; }
-.lektion-hero .lektion-tag { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:10px; }
-.lektion-hero h1 { font-family:Georgia,serif; font-size:26px; color:#fff; margin-bottom:0; font-weight:normal; line-height:1.3; }
-.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:20px 0 32px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
-h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:normal; margin:36px 0 14px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
-h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:24px 0 10px; }
-p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
-ul, ol { margin:12px 0 16px 20px; }
-li { font-size:15px; line-height:1.8; color:#2a3a54; margin-bottom:6px; }
-.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin-top:24px; }
-.aufgabe-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
-.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; }
-.highlight { background:#fff8e8; border-left:3px solid #d4af37; padding:14px 18px; margin:20px 0; font-size:14px; color:#5a4000; line-height:1.7; }
-.nav-row { display:flex; gap:12px; justify-content:space-between; margin-top:40px; }
-.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:12px 24px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none; transition:all 0.2s; }
-.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
-.nav-btn.secondary { background:transparent; border:1px solid rgba(26,42,74,0.3); color:#1a2a4a; }
-.nav-btn.secondary:hover { background:#1a2a4a; color:#d4af37; }
-.footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
-.footer-lbl strong { color:#d4af37; }
-.footer-main { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
-.footer-main strong { color:#d4af37; }
-@media (max-width:600px) { .wrap{padding:0 16px 40px} h1{font-size:22px} h2{font-size:17px} }
-
-.lern-box { background:#1a2a4a; border-radius:8px; padding:18px 22px; margin:0 0 28px; }
+h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:16px; line-height:1.3; }
+.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:0 0 24px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+.lern-box { background:#1a2a4a; border-radius:8px; padding:16px 20px; margin:0 0 28px; }
 .lern-box-title { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
 .lern-box ul { list-style:none; padding:0; margin:0; }
-.lern-box ul li { font-size:13px; color:#a0b0c8; padding:4px 0 4px 20px; position:relative; line-height:1.6; }
-.lern-box ul li::before { content:'✓'; position:absolute; left:0; color:#d4af37; font-weight:700; }
+.lern-box li { font-size:13px; color:#a0b0c8; padding:4px 0 4px 20px; position:relative; line-height:1.6; }
+.lern-box li::before { content:'✓'; position:absolute; left:0; color:#d4af37; font-weight:700; }
+h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:normal; margin:36px 0 14px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
+h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:22px 0 10px; }
+h4 { font-size:15px; color:#1a2a4a; font-weight:700; margin:18px 0 8px; }
+p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
+.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin:24px 0; }
+.aufgabe-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
+.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; line-height:1.7; }
 .beispiel { background:#fff; border:1px solid #e8dfc8; border-left:4px solid #3a7ad4; border-radius:0 8px 8px 0; padding:16px 20px; margin:20px 0; }
 .beispiel-lbl { font-size:11px; color:#3a7ad4; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
 .beispiel p { font-size:14px; color:#2a3a54; margin-bottom:8px; line-height:1.75; }
 .beispiel p:last-child { margin-bottom:0; }
-.beispiel .rechnung { background:#f0f4f8; border-radius:5px; padding:10px 14px; font-family:monospace; font-size:13px; color:#1a2a4a; margin:8px 0; }
-.fazit { background:#fdf9ee; border:2px solid #d4af37; border-radius:8px; padding:18px 22px; margin-top:36px; }
+.rechnung { background:#f0f4f8; border-radius:5px; padding:10px 14px; font-family:monospace; font-size:13px; color:#1a2a4a; margin:8px 0; line-height:1.6; }
+.tipp-box { background:#e4f5e8; border:1px solid #4aaa60; border-radius:8px; padding:14px 18px; margin:18px 0; }
+.tipp-box p { font-size:14px; color:#1a6030; margin-bottom:0; line-height:1.7; }
+.nav-row { display:flex; gap:12px; justify-content:space-between; margin:40px 0 0; }
+.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:11px 20px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; transition:all 0.2s; }
+.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
+.nav-btn.secondary { background:#fff; color:#1a2a4a; border:1px solid #e8dfc8; }
+.nav-btn.secondary:hover { border-color:#d4af37; }
+.fazit { background:#fdf9ee; border:2px solid #d4af37; border-radius:8px; padding:18px 22px; margin:32px 0 0; }
 .fazit-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
 .fazit ul { list-style:none; padding:0; margin:0; }
-.fazit ul li { font-size:14px; color:#2a3a54; padding:5px 0 5px 22px; position:relative; line-height:1.65; border-bottom:1px solid #e8dfc8; }
-.fazit ul li:last-child { border-bottom:none; }
-.fazit ul li::before { content:'→'; position:absolute; left:0; color:#d4af37; font-weight:700; }
-.tipp-box { background:#e4f5e8; border:1px solid #4aaa60; border-radius:8px; padding:14px 18px; margin:16px 0; }
-.tipp-box p { font-size:14px; color:#1a6030; margin-bottom:0; line-height:1.7; }
-.checkliste { background:#fff; border:1px solid #e8dfc8; border-radius:8px; padding:16px 20px; margin:20px 0; }
+.fazit li { font-size:14px; color:#2a3a54; padding:6px 0 6px 22px; position:relative; line-height:1.65; border-bottom:1px solid #e8dfc8; }
+.fazit li:last-child { border-bottom:none; }
+.fazit li::before { content:'→'; position:absolute; left:0; color:#d4af37; font-weight:700; }
+.checkliste { background:#fff; border:1px solid #e8dfc8; border-radius:8px; padding:16px 20px; margin:20px 0 0; }
 .checkliste-lbl { font-size:11px; color:#1a2a4a; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
 .checkliste ul { list-style:none; padding:0; margin:0; }
-.checkliste ul li { font-size:14px; color:#2a3a54; padding:6px 0 6px 28px; position:relative; border-bottom:1px solid #f0ece4; }
-.checkliste ul li:last-child { border-bottom:none; }
-.checkliste ul li::before { content:'☐'; position:absolute; left:0; color:#d4af37; font-size:16px; line-height:1; }
-</style>
-</head>
+.checkliste li { font-size:14px; color:#2a3a54; padding:7px 0 7px 28px; position:relative; border-bottom:1px solid #f0ece4; line-height:1.55; }
+.checkliste li:last-child { border-bottom:none; }
+.checkliste li::before { content:'☐'; position:absolute; left:0; color:#d4af37; font-size:16px; line-height:1.2; }
+.footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-lbl strong { color:#d4af37; }
+.footer-main { background:#1a2a4a; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-main strong { color:#d4af37; }</style></head>
 <body>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-(function(){
-  document.addEventListener('contextmenu',function(e){e.preventDefault();});
-  document.addEventListener('keydown',function(e){
-    if(e.ctrlKey&&['s','u','p','a'].includes(e.key.toLowerCase()))e.preventDefault();
-    if(e.key==='F12')e.preventDefault();
-  });
-  const sb=supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3');
-  (async function(){
-    const{data:{session}}=await sb.auth.getSession();
-    if(!session){window.location.href='login.html';return;}
-    const{data:profile}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
-    if(profile&&(!profile.is_active||profile.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
-  })();
-})();
-</script>
-<div class="header">
-  <div class="brand">GASTRO-OS</div>
-  <a href="dashboard.html#modul-3" class="btn-back-modul">← Zurück zum Dashboard</a>
-</div>
+<div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html#modul-3" class="btn-back">← Zurück zum Dashboard</a></div>
 <div class="gold-bar"></div>
-
 <div class="wrap">
   <div class="lbl">Modul 3 · Lektion 2</div>
-  <div class="lektion-hero">
-    <div class="lektion-tag">Modul 3 · Lektion 2</div>
-    <h1>Verhandeln mit Lieferanten</h1>
-  </div>
-  <div class="intro">In Lektion 1 hast du verstanden was der Wareneinsatz bedeutet und wie du deinen Einkauf systematisch planst. Jetzt gehen wir einen Schritt weiter. In dieser Lektion lernst du wie du mit Lieferanten verhandelst und dabei bessere Konditionen bekommst ohne die Beziehung zu gefährden.</div>
+  <h1>Lieferanten verhandeln und vergleichen</h1>
+  <div class="intro">In Lektion 1 hast du verstanden was der Wareneinsatz bedeutet und wie du deinen Einkauf planst. Jetzt gehen wir einen Schritt weiter: Wer liefert dir was zu welchem Preis — und wie holst du mehr heraus. Fast jeder Lieferant hat Verhandlungsspielraum. Die meisten Gastronomen nutzen ihn nie.</div>
+  <div class="lern-box"><div class="lern-box-title">📚 Was du in dieser Lektion lernst</div><ul><li>Wie Lieferantenverhandlungen wirklich funktionieren</li><li>Welche Argumente in der Verhandlung wirken</li><li>Wie du Vergleichsangebote strategisch einsetzt</li><li>Den ersten Verhandlungserfolg noch diese Woche erzielen</li></ul></div>
 
-<h2>Kapitel 1 — Warum die meisten Gastronomen zu viel zahlen</h2>
-  <p>Lieferanten sind Profis im Verkaufen. Sie kennen ihre Margen, ihre Spielräume und ihre Strategien. Die meisten Gastronomen hingegen kaufen einfach zum angebotenen Preis, weil sie keine Zeit haben, weil sie die Beziehung nicht gefährden wollen oder weil sie nicht wissen dass Verhandeln normal ist.</p>
-  <p>Die Wahrheit: Fast jeder Lieferant hat Spielraum. Wer nicht fragt bekommt diesen Spielraum nicht.</p>
-  <h3>Die Grundregeln der Lieferantenverhandlung</h3>
-  <p>Vorbereitung schlägt Talent: Kenne deine aktuellen Konditionen und die der Konkurrenz.</p>
-  <p>Verhandle nie unter Druck: Nicht wenn du gerade dringend Ware brauchst.</p>
-  <p>Baue auf Zahlen auf: Zeige was du im Monat abnimmst und was du dir vorstellen könntest abzunehmen.</p>
-  <p>Nutze Alternativen als Hebel: Ein Gegenangebot eines anderen Lieferanten ist dein stärkstes Argument.</p>
-  <p>Verhandle über mehr als den Preis: Zahlungsziele, Lieferfrequenz, Mindestmengen und Exklusivpreise sind alles Verhandlungsmasse.</p>
-  <h3>Das Verhandlungsgespräch — so geht es konkret</h3>
-  <p>Das Gespräch mit einem Lieferanten ist kein Konflikt. Es ist ein geschäftliches Gespräch zwischen zwei Partnern. Behandle es so.</p>
-  <p>So könnte dein Einstieg klingen:</p>
-  <p>"Wir arbeiten jetzt seit zwei Jahren zusammen und ich bin grundsätzlich sehr zufrieden. Ich möchte diese Partnerschaft ausbauen, aber dafür brauche ich bessere Konditionen beim Rindfleisch. Was ist möglich?"</p>
-  <p>Wichtig: Stelle eine konkrete Forderung. Nicht "können wir etwas machen?" sondern "ich brauche 8% auf die aktuellen Rindfleischpreise". Wer konkret fragt bekommt konkrete Antworten.</p>
-<div class="beispiel"><div class="beispiel-lbl">📊 Rechenbeispiel aus der Praxis</div><p>Praxisbeispiel Verhandlung: Stammlieferant Fleisch, Jahresumsatz ca. 24.000 €.</p><p>Aktueller Preis Rindfleisch: 18,50 €/kg. Vergleichsangebot eingeholt: 16,80 €/kg.</p><div class="rechnung"> Monatlicher Einkauf Rindfleisch: ca. 80 kg. Aktuell: 80 × 18,50 = 1.480 €/Monat.</div><p>Nach Verhandlung auf 17,50 €/kg: 80 × 17,50 = 1.400 €/Monat. Einsparung: 80 €/Monat = 960 €/Jahr — ein Telefonat.</p></div>
-  <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 1</div><p>Schreib jetzt den Namen deines wichtigsten Lieferanten auf. Was zahlst du aktuell für deine drei teuersten Einkaufspositionen? Das sind deine Verhandlungspunkte für das nächste Gespräch.</p></div>
-<div class="lern-box"><div class="lern-box-title">📚 Was du in dieser Lektion lernst</div><ul><li>Warum die meisten Gastronomen bei Lieferanten zu viel zahlen</li><li>Die Grundregeln der Lieferantenverhandlung</li><li>Wie du Vergleichsangebote strategisch einsetzt</li><li>Den ersten Verhandlungserfolg in dieser Woche erzielen</li></ul></div>
-
-  <h2>Kapitel 2 — Mehrere Lieferanten als Druckmittel</h2>
-  <p>Du musst nicht wechseln, aber du musst den Eindruck erwecken dass du es kannst. Der einfachste Weg: Hol dir regelmäßig Vergleichsangebote auch wenn du sie nicht direkt nutzt. Allein die Tatsache dass du vergleichst verändert die Dynamik in jedem Gespräch.</p>
-  <h3>Warum Vergleichsangebote so wichtig sind</h3>
-  <p>Ein Lieferant der weiß dass du nur bei ihm kaufst hat keinen Grund dir bessere Konditionen anzubieten. Ein Lieferant der weiß dass du Alternativen hast und diese auch nutzt wird sich mehr Mühe geben.</p>
-  <p>Das bedeutet nicht dass du ständig wechseln musst. Langjährige Lieferantenbeziehungen haben echten Wert: Zuverlässigkeit, Flexibilität bei kurzfristigen Bestellungen, Kulanz bei Problemen. Aber dieser Wert darf kein Grund sein zu viel zu zahlen.</p>
-  <h3>So holst du Vergleichsangebote ein</h3>
-  <p>Ruf zwei oder drei alternative Lieferanten an und bitte um ein Angebot für deine wichtigsten Produkte. Du musst nicht wechseln. Du brauchst nur Zahlen. Diese Zahlen sind dein stärkstes Argument im nächsten Gespräch mit deinem Stammlieferanten.</p>
-  <h3>So bringst du das Vergleichsangebot ins Gespräch</h3>
-  <p>"Ich habe ein Angebot von einem anderen Lieferanten bekommen. Der Preis liegt 10% unter deinem aktuellen Preis. Ich würde lieber bei dir bleiben, aber ich brauche dafür eine Anpassung."</p>
-  <p>Sachlich. Konkret. Ohne Druck. So funktioniert es.</p>
-<div class="tipp-box"><p>💡 <strong>Profi-Tipp:</strong> Verhandle immer am Anfang eines neuen Jahres oder Quartals — nicht wenn du dringend Ware brauchst. Dein Verhandlungsposition ist am stärksten wenn der Lieferant weiß dass du nicht unter Druck bist.</p></div>
-  <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 2</div><p>Identifiziere zwei alternative Lieferanten für deine wichtigste Einkaufsposition. Ruf diese Woche an und bitte um ein Vergleichsangebot. Du musst es nicht nutzen, aber du brauchst es.</p></div>
-
-  
-<div class="fazit"><div class="fazit-lbl">🎯 Das Wichtigste auf einen Blick</div><ul><li>Fast jeder Lieferant hat 5-15% Verhandlungsspielraum — nutze ihn.</li><li>Vorbereitung: Aktuelle Preise kennen + 2 Vergleichsangebote in der Hand haben.</li><li>Konkret fragen: Nicht 'können wir was machen?' sondern 'ich brauche 8% auf Rindfleisch'.</li><li>Verhandle über mehr als Preis: Zahlungsziel, Mindestmengen, Lieferfrequenz.</li></ul></div>
+<h2>Kapitel 1 — Warum du verhandeln kannst und solltest</h2>
+<h3>Lieferanten sind Profis im Verkaufen</h3>
+<p>Lieferanten kennen ihre Margen, ihre Spielräume und ihre Strategien. Die meisten Gastronomen hingegen nehmen den Listenpreis als gegeben hin — weil sie glauben das sei der 'faire Preis', weil sie keine Zeit haben, oder weil sie Angst haben den Lieferanten zu verärgern.</p>
+<p>Diese Zurückhaltung kostet dich jedes Jahr Tausende Euro. Die Realität: Fast jeder Großhandel und jeder Direktlieferant hat einen Verhandlungsspielraum von 5-15%. Das ist keine Ausnahme — das ist Branchenstandard. Der Listenpreis ist der Startpreis — nicht der Endpreis.</p>
+<h3>Was in der Verhandlung wirklich zählt</h3>
+<p>Vorbereitung: Kenne deine aktuellen Preise genau. Hole mindestens ein Vergleichsangebot ein. Das zeigt dem Lieferanten dass du den Markt kennst und ist dein stärkstes Argument.</p>
+<p>Konkretheit: Nicht 'können wir was machen?' sondern 'ich brauche 8% auf Rindfleisch — sonst muss ich wechseln'. Konkrete Forderungen bekommen konkrete Antworten.</p>
+<p>Beziehung und Volumen: Ein treuer Kunde mit vorhersehbarem Volumen ist für jeden Lieferanten wertvoll. Nutze das als Argument: 'Ich bin seit X Jahren Kunde, mein Jahresumsatz bei euch ist Y Euro. Was könnt ihr mir anbieten?'</p>
+<div class="beispiel"><div class="beispiel-lbl">📊 Rechenbeispiel aus der Praxis</div><p>Stammlieferant Fleisch, Jahreseinkauf ca. 22.000 €.</p><p>Aktueller Preis Rindfleisch: 17,80 €/kg. Vergleichsangebot eingeholt: 15,90 €/kg.</p><p>Verhandlung: 'Ich kaufe monatlich ca. 80 kg Rindfleisch bei euch. Ich habe ein Angebot für 15,90 €. Können wir auf 16,50 € kommen?'</p><div class="rechnung">Einigung auf 16,80 €/kg. Einsparung: 1 €/kg × 80 kg × 12 Monate = 960 €/Jahr — aus einem Telefonat.</div></div>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 1</div><p>Identifiziere deinen wichtigsten Lieferanten und deine teuerste Einkaufsposition. Hole bis Ende dieser Woche ein Vergleichsangebot ein. Du brauchst es nicht nutzen — du brauchst es als Argument.</p></div>
+<h2>Kapitel 2 — Über mehr als Preis verhandeln</h2>
+<h3>Konditionen die oft wichtiger sind als der Preis</h3>
+<p>Zahlungsziel: Statt 14 Tage vielleicht 30 Tage — das gibt dir Liquiditätsspielraum der Zinsen spart. Mindestbestellmengen: Kleinere Mindestmengen bedeuten weniger gebundenes Kapital und weniger Verderb. Lieferfrequenz: Mehrmals pro Woche statt einmal — frischere Ware, kleinere Lagermengen.</p>
+<h3>Verhandlungsgespräch vorbereiten</h3>
+<p>Die beste Vorbereitung: Schreibe vor dem Gespräch auf was du willst (Idealpreis, Mindestpreis, Alternative) und was du anbieten kannst (Loyalität, Volumenversprechen, Zahlungsverhalten). Wer vorbereitet ins Gespräch geht, gewinnt.</p>
+<div class="tipp-box"><p>💡 <strong>Profi-Tipp:</strong> Verhandle immer am Anfang eines neuen Jahres oder Quartals — nicht wenn du dringend Ware brauchst. Deine Verhandlungsposition ist am stärksten wenn der Lieferant weiß dass du nicht unter Druck bist.</p></div>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 2</div><p>Identifiziere zwei alternative Lieferanten für deine wichtigste Einkaufsposition. Ruf diese Woche an und bitte um ein Vergleichsangebot. Du musst es nicht nutzen, aber du brauchst es.</p></div>
+<div class="nav-row"><a href="modul3-lektion1.html" class="nav-btn secondary">← Lektion 1</a><a href="modul3-lektion3.html" class="nav-btn">Lektion 3 →</a></div>
+<div class="fazit"><div class="fazit-lbl">🎯 Das Wichtigste auf einen Blick</div><ul><li>Fast jeder Lieferant hat 5-15% Verhandlungsspielraum — nutze ihn.</li><li>Vorbereitung: Aktuelle Preise kennen + Vergleichsangebot in der Hand.</li><li>Konkret fragen: Nicht 'können wir was machen?' sondern 'ich brauche 8% auf X'.</li><li>Verhandle über mehr als Preis: Zahlungsziel · Mindestmengen · Lieferfrequenz.</li></ul></div>
+<div class="checkliste"><div class="checkliste-lbl">✅ Sofort-Checkliste — Das kannst du heute noch tun</div><ul><li>Wichtigste Einkaufsposition und aktuellen Preis notieren</li><li>Bis Ende der Woche 1 Vergleichsangebot einholen</li><li>Verhandlungsgespräch vorbereiten: Ziel, Minimum, Angebot</li><li>Lieferanten-Vergleich Tool öffnen und alle Lieferanten eintragen</li></ul></div>
   <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
 </div>
 <div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
-<script>
-(function(){
-  // Rechtsklick & Tastenkürzel sperren
-  document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
-  document.addEventListener('keydown', function(e){
-    if (e.ctrlKey && ['s','u','p','a'].includes(e.key.toLowerCase())) e.preventDefault();
-    if (e.key === 'F12') e.preventDefault();
-  });
-
-  // Supabase Auth Check
-  const sb = supabase.createClient(
-    'https://hchlganbgjeciwhwaisj.supabase.co',
-    'sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3'
-  );
-  (async function(){
-    const { data:{ session } } = await sb.auth.getSession();
-    if (!session) { window.location.href = 'login.html'; return; }
-    const { data: profile } = await sb.from('profiles')
-      .select('is_active,subscription_status')
-      .eq('id', session.user.id).maybeSingle();
-    if (profile && (!profile.is_active || profile.subscription_status !== 'active')) {
-      await sb.auth.signOut();
-      window.location.href = 'login.html';
-    }
-  })();
-})();
-</script>
-</body>
-</html>
+</body></html>
