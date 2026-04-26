@@ -1,122 +1,54 @@
 <!DOCTYPE html>
-<html lang="de">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GASTRO-OS – Modul 11 · Lektion 3</title>
-<style>
-
-* { margin:0; padding:0; box-sizing:border-box; }
+<html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lektion 3 — Dein Unternehmer-Rhythmus | GASTRO-OS</title><style>* { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
-.header{background:#1a2a4a;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
-.brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
-.btn-back-modul{background:#d4af37;color:#1a2a4a;border:none;padding:9px 20px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.2s;letter-spacing:0.3px}
-.btn-back-modul:hover{background:#c8a030;color:#1a2a4a}
+.header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:18px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.btn-back { background:#d4af37; color:#1a2a4a; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.btn-back:hover { background:#c8a030; }
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
 .wrap { max-width:720px; margin:40px auto; padding:0 24px 60px; }
 .lbl { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:8px; }
 h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:10px; line-height:1.3; }
-.lektion-hero { background:#1a2a4a; border-radius:12px; padding:28px 32px; margin-bottom:28px; border:2px solid #d4af37; }
-.lektion-hero .lektion-tag { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:10px; }
-.lektion-hero h1 { font-family:Georgia,serif; font-size:26px; color:#fff; margin-bottom:0; font-weight:normal; line-height:1.3; }
 .intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:20px 0 32px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
 h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:normal; margin:36px 0 14px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
 h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:24px 0 10px; }
 p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
-ul, ol { margin:12px 0 16px 20px; }
-li { font-size:15px; line-height:1.8; color:#2a3a54; margin-bottom:6px; }
 .aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin-top:24px; }
 .aufgabe-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
 .aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; }
-.highlight { background:#fff8e8; border-left:3px solid #d4af37; padding:14px 18px; margin:20px 0; font-size:14px; color:#5a4000; line-height:1.7; }
-.nav-row { display:flex; gap:12px; justify-content:space-between; margin-top:40px; }
-.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:12px 24px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none; transition:all 0.2s; }
-.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
-.nav-btn.secondary { background:transparent; border:1px solid rgba(26,42,74,0.3); color:#1a2a4a; }
-.nav-btn.secondary:hover { background:#1a2a4a; color:#d4af37; }
+.next-step { background:#fff; border:2px solid #d4af37; border-radius:8px; padding:20px 24px; margin-top:36px; }
+.next-step-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
+.next-step p { font-size:14px; color:#3a4a6a; margin-bottom:0; }
 .footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-lbl strong { color:#d4af37; }
 .footer-main { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
-.footer-main strong { color:#d4af37; }
-@media (max-width:600px) { .wrap{padding:0 16px 40px} h1{font-size:22px} h2{font-size:17px} }
+.footer-main strong { color:#d4af37; }</style></head>
+<body><div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html#modul-11" class="btn-back">← Zurück zum Dashboard</a></div>
+<div class="gold-bar"></div><div class="wrap">
+  <div class="lbl">Modul 11 · Lektion 3</div><h1>Dein Unternehmer-Rhythmus</h1>
+  <div class="intro">In Lektion 2 haben wir uns angeschaut warum Zeit für Familie und Freizeit kein Luxus ist sondern eine Investition, und wie du diese Zeit aktiv schaffst statt darauf zu warten dass sie übrig bleibt. Du hast drei konkrete Blöcke in deinen Kalender eingetragen. Jetzt kommen wir zum Kern von Modul 11. Denn einzelne freie Abende und ein Urlaub im Jahr reichen nicht. Was wirklich verändert ist ein Rhythmus. Eine Wochenstruktur die dauerhaft funktioniert. Die Betrieb und Leben in Balance bringt. In Lektion 3 bauen wir diesen Rhythmus auf.</div>
 
-.btn-back-modul{background:#d4af37;color:#1a2a4a;border:none;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.2s;box-shadow:0 2px 6px rgba(212,175,55,0.3)}
-.btn-back-modul:hover{background:#c8a030;color:#1a2a4a}
-</style>
-</head>
-<body>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-(function(){
-  document.addEventListener('contextmenu',function(e){e.preventDefault();});
-  document.addEventListener('keydown',function(e){
-    if(e.ctrlKey&&['s','u','p','a'].includes(e.key.toLowerCase()))e.preventDefault();
-    if(e.key==='F12')e.preventDefault();
-  });
-  const sb=supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3');
-  (async function(){
-    const{data:{session}}=await sb.auth.getSession();
-    if(!session){window.location.href='login.html';return;}
-    const{data:p}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
-    if(p&&(!p.is_active||p.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
-  })();
-})();
-</script>
-<div class="header">
-  <div class="brand">GASTRO-OS</div>
-  <a href="dashboard.html#modul-11" class="btn-back-modul">← Zurück zum Dashboard</a>
-</div>
-<div class="gold-bar"></div>
-<div class="wrap">
-  <div class="lbl">Modul 11 · Lektion 3</div>
-  <div class="lektion-hero">
-    <div class="lektion-tag">Modul 11 · Lektion 3</div>
-    <h1>Dein Unternehmer-Rhythmus</h1>
-  </div>
-  <div class="intro">In Lektion 2 haben wir uns angeschaut warum Zeit für Familie und Freizeit kein Luxus ist sondern eine Investition, und wie du diese Zeit aktiv schaffst statt darauf zu warten dass sie übrig bleibt. Du hast drei konkrete Blöcke in deinen Kalender eingetragen. Einen Abend, einen freien Tag und deinen nächsten Urlaub. Das ist mehr als die meisten Gastronomen in einem Jahr tun. Jetzt kommen wir zum Kern von Modul 11. Was wirklich verändert ist ein Rhythmus. Eine Wochenstruktur die dauerhaft funktioniert. Die Betrieb und Leben in Balance bringt. Nicht als einmaliges Projekt sondern als dauerhafte Lebensweise.</div>
-  <h2>Kapitel 1 — Was ein Unternehmer-Rhythmus ist und warum er alles verändert</h2>
-
+  <h2>Kapitel 1: Was ein Unternehmer-Rhythmus ist und warum er alles verändert</h2>
   <h3>Der Unterschied zwischen Routine und Rhythmus</h3>
-  <p>Eine Routine ist eine Gewohnheit. Sie passiert weil sie immer so gemacht wurde. Manchmal gut, manchmal schlecht, meistens unreflektiert.</p>
-  <p>Ein Rhythmus ist bewusst gestaltet. Er hat eine Logik. Er dient einem Ziel. Er verbindet die verschiedenen Bereiche des Lebens so dass sie sich gegenseitig stärken statt konkurrieren.</p>
-  <p>Ein Gastronom mit einem guten Rhythmus weiß wann er als Unternehmer arbeitet und wann als Gastronom. Er weiß wann er erreichbar ist und wann nicht. Er weiß wann er Familie hat und wann er sich erholt. Und diese verschiedenen Zeiten respektieren sich gegenseitig.</p>
-
+  <p>Es gibt einen Unterschied zwischen Routine und Rhythmus der wichtig ist. Eine Routine ist eine Gewohnheit. Sie passiert weil sie immer so gemacht wurde. Manchmal gut, manchmal schlecht, meistens unreflektiert. Ein Rhythmus ist bewusst gestaltet. Er hat eine Logik. Er dient einem Ziel. Er verbindet die verschiedenen Bereiche des Lebens so dass sie sich gegenseitig stärken statt konkurrieren.</p>
+  <p>Ein Gastronom mit einem guten Rhythmus weiß wann er als Unternehmer arbeitet und wann als Gastronom. Er weiß wann er erreichbar ist und wann nicht. Er weiß wann er Familie hat und wann er sich erholt. Das klingt nach Luxus. Es ist die Grundlage für nachhaltige Leistungsfähigkeit. Denn wer keinen Rhythmus hat, verbrennt sich aus. Früher oder später.</p>
   <h3>Die vier Säulen des Unternehmer-Rhythmus</h3>
-  <p>Die erste Säule ist die Unternehmer-Zeit. Zwei bis drei Mal pro Woche, morgens, bevor der Betrieb beginnt. In dieser Zeit arbeitest du an deinem Betrieb statt darin. SOPs aktualisieren, Zahlen checken, Strategie planen. Sie ist nicht nur Betriebsführung — sie ist die Zeit in der du als Unternehmer denkst statt als Angestellter reagierst. Das gibt dir Kontrolle. Und Kontrolle reduziert Stress.</p>
+  <p>Die erste Säule ist die Unternehmer-Zeit. Zwei bis drei Mal pro Woche, morgens, bevor der Betrieb beginnt. In dieser Zeit arbeitest du an deinem Betrieb statt darin. Sie ist nicht nur Betriebsführung. Sie ist die Zeit in der du als Unternehmer denkst statt als Angestellter reagierst. Das gibt dir Kontrolle. Und Kontrolle reduziert Stress.</p>
   <p>Die zweite Säule ist die Führungszeit. Täglich, aber begrenzt. Team-Briefing, Mitarbeiter-Feedback, Qualitätskontrolle. Klar strukturiert, zeitlich begrenzt, delegiert wo möglich.</p>
   <p>Die dritte Säule ist die persönliche Zeit. Mindestens ein Abend pro Woche. Mindestens ein freier Tag pro Woche wenn möglich. Urlaub mindestens einmal pro Jahr. Diese Zeit ist nicht verhandelbar. Sie steht im Kalender bevor alles andere geplant wird.</p>
   <p>Die vierte Säule ist die Erholungszeit. Das ist mehr als Freizeit. Es ist die bewusste Zeit in der du abschaltest. Bewegung, Schlaf, Hobbys, Natur. Was auch immer dich wirklich erholt. Diese Zeit macht alle anderen Säulen möglich.</p>
+  <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 1</div><p>Schreib jetzt auf wie deine ideale Woche aussehen würde wenn du sie frei gestalten könntest. Wann wärst du im Betrieb, wann hättest du Unternehmer-Zeit, wann persönliche Zeit, wann Erholungszeit. Nicht realistisch im Sinne von was heute möglich ist. Ideal im Sinne von was du dir wünschst. Dieses Bild ist dein Ziel.</p></div>
 
-  <div class="aufgabe">
-    <div class="aufgabe-lbl">Deine Aufgabe für Kapitel 1</div>
-    <p>Schreib jetzt auf wie deine ideale Woche aussehen würde wenn du sie frei gestalten könntest. Wann wärst du im Betrieb, wann hättest du Unternehmer-Zeit, wann persönliche Zeit, wann Erholungszeit. Nicht realistisch im Sinne von was heute möglich ist. Ideal im Sinne von was du dir wünschst. Dieses Bild ist dein Ziel.</p>
-  </div>
-
-  <h2>Kapitel 2 — Deinen Rhythmus aufbauen und schützen</h2>
-
+  <h2>Kapitel 2: Deinen Rhythmus aufbauen und schützen</h2>
   <h3>Vom Idealbild zur ersten Version</h3>
-  <p>Das Idealbild deiner Woche ist wahrscheinlich nicht sofort umsetzbar. Das ist in Ordnung. Der Weg zum Unternehmer-Rhythmus ist kein Sprung. Er ist ein schrittweiser Aufbau. Du nimmst dein Idealbild und fragst dich was davon du in den nächsten vier Wochen umsetzen kannst. Nicht alles. Einen Schritt. Den wichtigsten.</p>
-
+  <p>Das Idealbild deiner Woche ist wahrscheinlich nicht sofort umsetzbar. Vielleicht nicht zu 100 Prozent. Das ist in Ordnung. Der Weg zum Unternehmer-Rhythmus ist kein Sprung. Er ist ein schrittweiser Aufbau. Du nimmst dein Idealbild und fragst dich was davon du in den nächsten vier Wochen umsetzen kannst. Nicht alles. Einen Schritt. Den wichtigsten.</p>
   <h3>Was deinen Rhythmus gefährdet</h3>
-  <p>Es gibt drei Dinge die einen aufgebauten Rhythmus am häufigsten gefährden. Das erste ist der stressige Monat. Die Lösung ist nicht den Rhythmus perfekt einzuhalten — die Lösung ist eine Minimalversion zu definieren die auch in schwierigen Phasen gilt.</p>
-  <p>Das zweite ist das schlechte Gewissen. Wenn du früher gehst, kommt das Gefühl dass du mehr tun könntest. Dieses schlechte Gewissen ist kein Zeichen dass du falsch liegst. Es ist das Zeichen einer alten Gewohnheit die sich nicht so leicht verabschiedet.</p>
-  <p>Das dritte ist das Team das den Rhythmus nicht respektiert. Die Lösung ist Klarheit und Konsequenz. Wer erreichbar ist wenn ich nicht erreichbar bin. Was als echter Notfall gilt. Diese Regeln einmal klar kommunizieren und dann konsequent anwenden.</p>
-
+  <p>Es gibt drei Dinge die einen aufgebauten Rhythmus am häufigsten gefährden. Das erste ist der stressige Monat. In diesen Phasen wird der Rhythmus als erstes geopfert. Die Lösung ist eine Minimalversion zu definieren die auch in schwierigen Phasen gilt. Das zweite ist das schlechte Gewissen. Wenn du früher gehst, kommt das Gefühl dass du mehr tun könntest. Dieses Gefühl ist kein Zeichen dass du falsch liegst. Es ist das Zeichen einer alten Gewohnheit die sich nicht so leicht verabschiedet. Das dritte ist das Team das den Rhythmus nicht respektiert. Die Lösung ist Klarheit und Konsequenz.</p>
   <h3>Die Monats-Reflexion als Rhythmus-Instrument</h3>
-  <p>Am Ende jedes Monats nimmst du dir 20 Minuten für die Monats-Reflexion. Sie ist nicht nur ein Rückblick auf den Betrieb — sie ist ein Rückblick auf dich als Unternehmer und als Mensch. Wie war dieser Monat. Habe ich meinen Rhythmus eingehalten. Was hat gut funktioniert. Was hat den Rhythmus gestört. Was mache ich nächsten Monat anders.</p>
-
-  <div class="highlight">👉 Die Monats-Reflexion findest du im Tab 📊 Monats-Reflexion.<br>👉 Das Sterne-Level System findest du im Tab 📊 Sterne-Level System.</div>
-
-  <div class="aufgabe">
-    <div class="aufgabe-lbl">Deine Aufgabe für Kapitel 2</div>
-    <p>Nimm dir jetzt dein Idealbild aus Kapitel 1 und schreib auf welchen einen Schritt du in den nächsten sieben Tagen umsetzt. Konkret, mit Datum, mit Namen wenn nötig. Und schreib auf was deine Minimal-Version des Rhythmus ist die du auch in stressigen Monaten nicht unterschreiten wirst.</p>
-  </div>
-  <div class="nav-row">
-    <a href="modul11-lektion2.html" class="nav-btn secondary">← Lektion 2</a>
-    <a href="modul11-lektion4.html" class="nav-btn">Lektion 4 →</a>
-  </div>
+  <p>Am Ende jedes Monats nimmst du dir 20 Minuten für die Monats-Reflexion. Sie ist nicht nur ein Rückblick auf den Betrieb. Sie ist ein Rückblick auf dich als Unternehmer und als Mensch. Wie war dieser Monat. Habe ich meinen Rhythmus eingehalten. Was hat gut funktioniert. Was hat den Rhythmus gestört. Was mache ich nächsten Monat anders.</p>
+  <div class="next-step"><div class="next-step-lbl">Deine Tools</div><p>Die Monats-Reflexion findest du im Tab 📊 Monats-Reflexion. Das Sterne-Level-System findest du im Tab 📊 Sterne-Level-System.</p></div>
+  <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 2</div><p>Nimm dir jetzt dein Idealbild aus Kapitel 1 und schreib auf welchen einen Schritt du in den nächsten sieben Tagen umsetzt. Konkret, mit Datum, mit Namen wenn nötig. Und schreib auf was deine Minimal-Version des Rhythmus ist die du auch in stressigen Monaten nicht unterschreiten wirst.</p></div>
   <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
-</div>
-<div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
-</body>
-</html>
+</div><div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+</body></html>

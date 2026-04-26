@@ -3,107 +3,77 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GASTRO-OS – Modul 10 · Lektion 1</title>
-<style>
-
-* { margin:0; padding:0; box-sizing:border-box; }
+<title>Lektion 1 — Ist dein Fundament stabil genug? | GASTRO-OS</title>
+<style>* { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
-.header{background:#1a2a4a;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
-.brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
-.btn-back-modul{background:#d4af37;color:#1a2a4a;border:none;padding:9px 20px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.2s;letter-spacing:0.3px}
-.btn-back-modul:hover{background:#c8a030;color:#1a2a4a}
+.header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:18px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.btn-back { background:#d4af37; color:#1a2a4a; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.btn-back:hover { background:#c8a030; }
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
 .wrap { max-width:720px; margin:40px auto; padding:0 24px 60px; }
 .lbl { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:8px; }
 h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:10px; line-height:1.3; }
-.lektion-hero { background:#1a2a4a; border-radius:12px; padding:28px 32px; margin-bottom:28px; border:2px solid #d4af37; }
-.lektion-hero .lektion-tag { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:10px; }
-.lektion-hero h1 { font-family:Georgia,serif; font-size:26px; color:#fff; margin-bottom:0; font-weight:normal; line-height:1.3; }
 .intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:20px 0 32px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
 h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:normal; margin:36px 0 14px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
 h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:24px 0 10px; }
 p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
-ul, ol { margin:12px 0 16px 20px; }
-li { font-size:15px; line-height:1.8; color:#2a3a54; margin-bottom:6px; }
 .aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin-top:24px; }
 .aufgabe-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
 .aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; }
-.highlight { background:#fff8e8; border-left:3px solid #d4af37; padding:14px 18px; margin:20px 0; font-size:14px; color:#5a4000; line-height:1.7; }
-.nav-row { display:flex; gap:12px; justify-content:space-between; margin-top:40px; }
-.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:12px 24px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none; transition:all 0.2s; }
-.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
-.nav-btn.secondary { background:transparent; border:1px solid rgba(26,42,74,0.3); color:#1a2a4a; }
-.nav-btn.secondary:hover { background:#1a2a4a; color:#d4af37; }
+.hinweis { background:#e4f5e8; border:1px solid #4aaa60; border-radius:8px; padding:16px 18px; margin:20px 0; }
+.hinweis p { font-size:14px; color:#1a6030; margin-bottom:0; }
 .footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-lbl strong { color:#d4af37; }
 .footer-main { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
-.footer-main strong { color:#d4af37; }
-@media (max-width:600px) { .wrap{padding:0 16px 40px} h1{font-size:22px} h2{font-size:17px} }
-
-.btn-back-modul{background:#d4af37;color:#1a2a4a;border:none;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.2s;box-shadow:0 2px 6px rgba(212,175,55,0.3)}
-.btn-back-modul:hover{background:#c8a030;color:#1a2a4a}
-</style>
+.footer-main strong { color:#d4af37; }</style>
 </head>
 <body>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-(function(){
-  document.addEventListener('contextmenu',function(e){e.preventDefault();});
-  document.addEventListener('keydown',function(e){
-    if(e.ctrlKey&&['s','u','p','a'].includes(e.key.toLowerCase()))e.preventDefault();
-    if(e.key==='F12')e.preventDefault();
-  });
-  const sb=supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3');
-  (async function(){
-    const{data:{session}}=await sb.auth.getSession();
-    if(!session){window.location.href='login.html';return;}
-    const{data:p}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
-    if(p&&(!p.is_active||p.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
-  })();
-})();
-</script>
-<div class="header">
-  <div class="brand">GASTRO-OS</div>
-  <a href="dashboard.html#modul-10" class="btn-back-modul">← Zurück zum Dashboard</a>
-</div>
+<div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html#modul-10" class="btn-back">← Zurück zum Dashboard</a></div>
 <div class="gold-bar"></div>
-
 <div class="wrap">
   <div class="lbl">Modul 10 · Lektion 1</div>
-  <div class="lektion-hero">
-    <div class="lektion-tag">Modul 10 · Lektion 1</div>
-    <h1>Ist dein Fundament stabil genug?</h1>
-  </div>
-  <div class="intro">In Modul 9 haben wir uns angeschaut wie du mit Google, Bewertungen und einem einfachen wöchentlichen System dauerhafte lokale Sichtbarkeit aufbaust. Jetzt kommen wir zu einem Thema das viele Gastronomen beschäftigt sobald der erste Betrieb wirklich läuft: Wachstum. Aber bevor wir über Wachstum sprechen, müssen wir über das Fundament sprechen. Denn Wachstum ohne stabiles Fundament ist nicht Wachstum — es ist Risiko.</div>
+  <h1>Ist dein Fundament stabil genug?</h1>
+  <div class="intro">In Modul 9 haben wir uns angeschaut wie du mit Google, Bewertungen und einem einfachen wöchentlichen System dauerhafte lokale Sichtbarkeit aufbaust. Du hast deinen ersten Marketing-Aktionsplan geschrieben und weißt jetzt wie du mit minimalem Aufwand maximal sichtbar bist. Jetzt kommen wir zu einem Thema das viele Gastronomen beschäftigt sobald der erste Betrieb wirklich läuft. Wachstum. Der zweite Standort. Die Erweiterung. Das neue Konzept. Die Idee die schon lange im Kopf ist und jetzt vielleicht realisierbar wird. Aber bevor wir über Wachstum sprechen, müssen wir über das Fundament sprechen. Denn Wachstum ohne stabiles Fundament ist nicht Wachstum. Es ist Risiko. Und in der Gastronomie ist unkontrolliertes Wachstum einer der häufigsten Wege in die Insolvenz.</div>
 
-  <h2>Kapitel 1 — Warum so viele Expansionen scheitern</h2>
-  <p>Es gibt einen Moment den viele erfolgreiche Gastronomen kennen. Der erste Betrieb läuft gut. Die Gäste kommen, die Bewertungen sind positiv, das Team funktioniert. Und dann kommt der Gedanke: Wenn das hier funktioniert, funktioniert es auch woanders. Warum nicht expandieren?</p>
-  <p>Das ist ein verlockender Gedanke. Und er ist gefährlich wenn er nicht kritisch hinterfragt wird. Denn was oft übersehen wird: Ein Betrieb der gut läuft weil du jeden Tag dabei bist ist kein skalierbarer Betrieb. Es ist ein Betrieb der funktioniert weil du funktionierst.</p>
-  <div class="highlight">Die fünf häufigsten Fehler bei Expansionen: Zu früh expandieren · Kapital unterschätzen · Falsche Standortwahl · System nicht dokumentiert · Managementaufwand unterschätzt</div>
-  <p>Hinter jedem dieser fünf Fehler steckt dasselbe Grundproblem: Das Fundament war nicht stabil genug. Nicht die Idee war falsch — das Timing war falsch. Und das ist gleichzeitig die gute Nachricht. Denn Fundamente lassen sich aufbauen.</p>
-  <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 1</div><p>Schreib jetzt ehrlich auf welche der fünf Fehler du heute an deinem Betrieb erkennen würdest wenn du expandieren wolltest. Diese ehrliche Bestandsaufnahme ist der erste Schritt zu einem Fundament das Wachstum trägt.</p></div>
+  <h2>Kapitel 1: Warum so viele Expansionen scheitern</h2>
+  <h3>Die Illusion des erfolgreichen ersten Standorts</h3>
+  <p>Es gibt einen Moment den viele erfolgreiche Gastronomen kennen. Der erste Betrieb läuft gut. Die Gäste kommen, die Bewertungen sind positiv, das Team funktioniert. Man kommt am Monatsende aus den roten Zahlen heraus und fängt an schwarze Zahlen zu schreiben. Und dann kommt der Gedanke. Wenn das hier funktioniert, funktioniert es auch woanders. Warum nicht expandieren?</p>
+  <p>Das ist ein verlockender Gedanke. Und er ist gefährlich wenn er nicht kritisch hinterfragt wird.</p>
+  <p>Denn was in diesem Moment oft übersehen wird ist folgender Unterschied. Ein Betrieb der gut läuft weil du jeden Tag dabei bist, weil du die Probleme löst bevor sie entstehen, weil du das System im Kopf trägst und in jedem kritischen Moment einspringst, ist kein skalierbarer Betrieb. Es ist ein Betrieb der funktioniert weil du funktionierst.</p>
+  <p>Und wenn du expandierst, kannst du nicht an zwei Orten gleichzeitig sein. Der erste Standort verliert deine ständige Präsenz. Der zweite Standort braucht sie. Und das Ergebnis ist in vielen Fällen dasselbe. Beide Standorte leiden. Die Qualität sinkt. Die Kosten steigen. Und was als Wachstum geplant war, wird zur größten Belastung die du je hattest.</p>
+  <h3>Die häufigsten Fehler bei Expansionen</h3>
+  <p>Es gibt fünf Fehler die bei gescheiterten Gastro-Expansionen immer wieder auftauchen. Alle fünf lassen sich vermeiden wenn man sie kennt und wenn das Fundament wirklich stabil ist.</p>
+  <p>Der erste Fehler ist zu früh expandieren. Bevor die Prozesse am ersten Standort wirklich dokumentiert und übertragbar sind. Bevor das Team selbständig genug ist um ohne ständige Kontrolle zu funktionieren. Bevor die Zahlen konstant genug sind um eine Expansion zu finanzieren ohne den ersten Standort zu gefährden.</p>
+  <p>Der zweite Fehler ist die Unterschätzung des Kapitalbedarfs. Eine Expansion kostet mehr als geplant. Immer. Umbaukosten, Einrichtung, Personalaufbau, Marketing für den neuen Standort, Anlaufverluste in den ersten Monaten. Wer mit zu knappem Puffer expandiert, gerät schnell in Liquiditätsprobleme die beide Standorte gefährden.</p>
+  <p>Der dritte Fehler ist die falsche Standortwahl. Ein Standort der auf den ersten Blick attraktiv wirkt aber bei genauerem Hinsehen die falschen Voraussetzungen hat. Zu wenig Laufkundschaft, zu hohe Miete, zu starke Konkurrenz in der direkten Umgebung, schlechte Erreichbarkeit. Diese Faktoren lassen sich mit dem richtigen Analysewerkzeug im Voraus erkennen. Ohne das Werkzeug basiert die Entscheidung auf Bauchgefühl. Und Bauchgefühl ist bei einer Entscheidung dieser Größenordnung kein ausreichendes Fundament.</p>
+  <p>Der vierte Fehler ist die Übertragung eines nicht dokumentierten Systems. Was am ersten Standort funktioniert, funktioniert am zweiten nur wenn es übertragbar ist. SOPs die existieren, ein Team das trainiert werden kann, Prozesse die auch ohne den Chef funktionieren. Wer expandiert ohne dieses dokumentierte System, baut am zweiten Standort von null auf. Mit denselben Fehlern die am ersten Standort schon gemacht wurden.</p>
+  <p>Der fünfte Fehler ist die Unterschätzung des Managementaufwands. Zwei Standorte zu führen ist nicht doppelt so aufwendig wie einer. Es ist exponentiell aufwendiger. Koordination zwischen Standorten, einheitliche Qualitätssicherung, Personalmanagement für zwei Teams, Lieferantenverhandlungen für zwei Betriebe. Wer dafür keine klare Führungsstruktur aufgebaut hat, wird von der Komplexität überrollt.</p>
+  <h3>Was wirklich schief geht</h3>
+  <p>Hinter jedem dieser fünf Fehler steckt dasselbe Grundproblem. Das Fundament war nicht stabil genug. Nicht die Idee war falsch. Das Timing war falsch. Die Voraussetzungen waren nicht erfüllt.</p>
+  <p>Und das ist gleichzeitig die gute Nachricht. Denn Fundamente lassen sich aufbauen. Prozesse lassen sich dokumentieren. Teams lassen sich entwickeln. Zahlen lassen sich verbessern. Wer die richtigen Voraussetzungen schafft, kann expandieren. Nicht mit Sicherheit dass es klappt, das gibt es nie. Aber mit einer deutlich höheren Wahrscheinlichkeit dass es klappt.</p>
+  <p>Das ist das Ziel von Modul 10. Nicht dich von Wachstum abzuhalten. Sondern sicherzustellen dass du weißt wann du bereit bist. Und wie du dich bereit machst wenn du es noch nicht bist.</p>
+  <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 1</div><p>Schreib jetzt ehrlich auf welche der fünf Fehler du heute an deinem Betrieb erkennen würdest wenn du expandieren wolltest. Nicht was du dir wünschst. Was wirklich der Fall ist. Diese ehrliche Bestandsaufnahme ist der erste Schritt zu einem Fundament das Wachstum trägt.</p></div>
 
-  <h2>Kapitel 2 — Die Voraussetzungen für stabiles Wachstum</h2>
-  <p>Es gibt sechs Fragen die du dir stellen musst bevor du ernsthaft über Wachstum nachdenkst. Nicht als Checkliste die abgehakt wird — als ehrliche Reflexion die dir zeigt wo du heute stehst.</p>
-
-  <ol>
-    <li>Läuft mein Betrieb auch ohne mich — praktisch, nicht theoretisch?</li>
-    <li>Sind meine Prozesse dokumentiert und übertragbar?</li>
-    <li>Sind meine Zahlen stabil und transparent — über mindestens zwölf Monate?</li>
-    <li>Habe ich eine Führungskraft die meinen ersten Standort ohne mich führen kann?</li>
-    <li>Habe ich ausreichend Kapital — komfortabel ausreichend, mit Puffer?</li>
-    <li>Habe ich den richtigen Standort analysiert und bewertet — mit echten Daten?</li>
-  </ol>
-
-  <p>Wenn du feststellst dass zwei oder drei dieser Fragen noch kein Ja bekommen, ist das kein Grund zur Entmutigung. Es ist ein Fahrplan. Jede Frage die noch kein Ja bekommt zeigt dir was als nächstes zu tun ist.</p>
-  <div class="highlight">Wachstum muss nicht zweiter Standort bedeuten. Catering, erweitertes Angebot am bestehenden Standort, Lieferservice oder Franchise — es gibt viele Formen die weniger riskant und oft genauso profitabel sind.</div>
-  <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 2</div><p>Beantworte jetzt die sechs Fundament-Fragen ehrlich und schriftlich. Für welche kannst du heute Ja sagen? Für welche noch nicht? Schreib für jede Frage die noch kein Ja bekommt auf was konkret getan werden muss. Das ist dein persönlicher Wachstums-Fahrplan.</p></div>
-
-  <div class="nav-row">
-    <a href="modul10-uebersicht.html" class="nav-btn secondary">← Zurück zur Übersicht</a>
-    <a href="modul10-lektion2.html" class="nav-btn">Lektion 2 →</a>
-  </div>
-
+  <h2>Kapitel 2: Die Voraussetzungen für stabiles Wachstum</h2>
+  <h3>Die sechs Fundament-Fragen</h3>
+  <p>Es gibt sechs Fragen die du dir stellen musst bevor du ernsthaft über Wachstum nachdenkst. Nicht als Checkliste die abgehakt wird. Als ehrliche Reflexion die dir zeigt wo du heute stehst und was noch fehlt.</p>
+  <p>Die erste Frage lautet, läuft mein Betrieb auch ohne mich. Nicht theoretisch. Praktisch. Kannst du eine Woche weg sein ohne dass der Betrieb leidet. Wenn die Antwort nein ist, ist das Fundament noch nicht stabil genug für Wachstum. Nicht weil du nicht gut genug wärst. Sondern weil ein Betrieb der von einer Person abhängt nicht skalierbar ist.</p>
+  <p>Die zweite Frage lautet, sind meine Prozesse dokumentiert und übertragbar. Die SOPs aus Modul 5, die Rollenbeschreibungen aus Modul 6, die Qualitätsstandards, die Einarbeitungsunterlagen. Sind sie so dokumentiert dass ein neues Team an einem neuen Standort nach denselben Standards arbeiten kann. Wenn nicht, ist das Fundament noch nicht übertragbar.</p>
+  <p>Die dritte Frage lautet, sind meine Zahlen stabil und transparent. Nicht gut in einem guten Monat. Stabil über mindestens zwölf Monate. Wareneinsatz, Personalkosten, Energiekosten, Marge. Wer seine Zahlen nicht kennt, kann nicht beurteilen ob er sich Wachstum leisten kann.</p>
+  <p>Die vierte Frage lautet, habe ich einen Schichtleiter oder eine Führungskraft die meinen ersten Standort ohne mich führen kann. Nicht beaufsichtigen. Führen. Entscheidungen treffen, das Team motivieren, Qualität sichern. Wenn diese Person nicht existiert, ist eine Expansion zu riskant.</p>
+  <p>Die fünfte Frage lautet, habe ich ausreichend Kapital für eine Expansion ohne den ersten Standort zu gefährden. Nicht gerade so ausreichend. Komfortabel ausreichend. Mit einem Puffer für unvorhergesehene Kosten. Denn unvorhergesehene Kosten bei einer Expansion sind keine Ausnahme. Sie sind die Regel.</p>
+  <p>Die sechste Frage lautet, habe ich den richtigen Standort analysiert und bewertet. Nicht mit Bauchgefühl. Mit echten Daten. Laufkundschaft, Miete, Konkurrenz, Erreichbarkeit, Zielgruppe. Das Standort-Analyse-Tool das du in Modul 10 kennenlernst, hilft dir genau dabei.</p>
+  <h3>Was du tun kannst wenn das Fundament noch nicht stabil genug ist</h3>
+  <p>Wenn du die sechs Fragen ehrlich beantwortest und feststellst dass zwei oder drei noch nicht mit ja beantwortet werden können, ist das kein Grund zur Entmutigung. Es ist ein Fahrplan.</p>
+  <p>Jede Frage die noch nicht mit ja beantwortet werden kann, zeigt dir was als nächstes zu tun ist. Prozesse dokumentieren. Einen Schichtleiter aufbauen. Zahlen stabilisieren. Kapital aufbauen. Standorte analysieren.</p>
+  <p>Das sind keine unmöglichen Aufgaben. Das sind die Aufgaben der nächsten sechs bis zwölf Monate. Und wer sie konsequent abarbeitet, steht danach mit einem Fundament da das Wachstum wirklich trägt.</p>
+  <h3>Wachstum muss nicht zweiter Standort bedeuten</h3>
+  <p>Ein letzter Gedanke der in diesem Kapitel wichtig ist. Wachstum in der Gastronomie bedeutet nicht automatisch einen zweiten Standort. Es gibt viele Formen von Wachstum die weniger riskant und oft genauso profitabel sind.</p>
+  <p>Catering ist eine Form von Wachstum die die bestehende Infrastruktur nutzt ohne einen zweiten festen Standort zu erfordern. Wenn deine Küche Kapazitäten hat die außerhalb der Stoßzeiten ungenutzt sind, kann Catering ein sehr profitabler Wachstumsweg sein.</p>
+  <p>Ein erweitertes Angebot am bestehenden Standort ist eine weitere Option. Ein Frühstücksangebot wenn bisher nur Mittag und Abend serviert wird. Ein Lieferservice. Ein Außenbereich der bisher nicht genutzt wurde. Diese Erweiterungen sind risikoarmer als ein neuer Standort und können den Umsatz deutlich steigern.</p>
+  <p>Franchise ist für Betriebe mit einem sehr klar definierten und dokumentierten Konzept eine interessante Option. Hier wächst du ohne eigenes Kapital zu riskieren weil der Franchisenehmer die Investition trägt. Aber Franchise funktioniert nur wenn das System so klar dokumentiert und übertragbar ist dass ein fremder Unternehmer danach arbeiten kann.</p>
+  <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 2</div><p>Beantworte jetzt die sechs Fundament-Fragen ehrlich und schriftlich. Für welche kannst du heute ja sagen. Für welche noch nicht. Und schreib für jede Frage die noch kein ja bekommt auf was konkret getan werden muss damit sie in sechs Monaten mit ja beantwortet werden kann. Das ist dein persönlicher Wachstums-Fahrplan.</p></div>
   <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
 </div>
 <div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>

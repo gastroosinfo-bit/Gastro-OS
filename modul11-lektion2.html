@@ -1,130 +1,56 @@
 <!DOCTYPE html>
-<html lang="de">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GASTRO-OS – Modul 11 · Lektion 2</title>
-<style>
-
-* { margin:0; padding:0; box-sizing:border-box; }
+<html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lektion 2 — Zeit für Familie und Freizeit | GASTRO-OS</title><style>* { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
-.header{background:#1a2a4a;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
-.brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
-.btn-back-modul{background:#d4af37;color:#1a2a4a;border:none;padding:9px 20px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.2s;letter-spacing:0.3px}
-.btn-back-modul:hover{background:#c8a030;color:#1a2a4a}
+.header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:18px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.btn-back { background:#d4af37; color:#1a2a4a; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.btn-back:hover { background:#c8a030; }
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
 .wrap { max-width:720px; margin:40px auto; padding:0 24px 60px; }
 .lbl { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:8px; }
 h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:10px; line-height:1.3; }
-.lektion-hero { background:#1a2a4a; border-radius:12px; padding:28px 32px; margin-bottom:28px; border:2px solid #d4af37; }
-.lektion-hero .lektion-tag { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:10px; }
-.lektion-hero h1 { font-family:Georgia,serif; font-size:26px; color:#fff; margin-bottom:0; font-weight:normal; line-height:1.3; }
 .intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:20px 0 32px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
 h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:normal; margin:36px 0 14px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
 h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:24px 0 10px; }
 p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
-ul, ol { margin:12px 0 16px 20px; }
-li { font-size:15px; line-height:1.8; color:#2a3a54; margin-bottom:6px; }
 .aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin-top:24px; }
 .aufgabe-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
 .aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; }
-.highlight { background:#fff8e8; border-left:3px solid #d4af37; padding:14px 18px; margin:20px 0; font-size:14px; color:#5a4000; line-height:1.7; }
-.nav-row { display:flex; gap:12px; justify-content:space-between; margin-top:40px; }
-.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:12px 24px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none; transition:all 0.2s; }
-.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
-.nav-btn.secondary { background:transparent; border:1px solid rgba(26,42,74,0.3); color:#1a2a4a; }
-.nav-btn.secondary:hover { background:#1a2a4a; color:#d4af37; }
+.next-step { background:#fff; border:2px solid #d4af37; border-radius:8px; padding:20px 24px; margin-top:36px; }
+.next-step-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
+.next-step p { font-size:14px; color:#3a4a6a; margin-bottom:0; }
 .footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-lbl strong { color:#d4af37; }
 .footer-main { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
-.footer-main strong { color:#d4af37; }
-@media (max-width:600px) { .wrap{padding:0 16px 40px} h1{font-size:22px} h2{font-size:17px} }
+.footer-main strong { color:#d4af37; }</style></head>
+<body><div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html#modul-11" class="btn-back">← Zurück zum Dashboard</a></div>
+<div class="gold-bar"></div><div class="wrap">
+  <div class="lbl">Modul 11 · Lektion 2</div><h1>Zeit für Familie und Freizeit</h1>
+  <div class="intro">In Lektion 1 haben wir uns angeschaut was Dauerstress in der Gastronomie wirklich ist, wie er entsteht und welche drei Hebel ihn direkt reduzieren. Du hast einen konkreten ersten Schritt gewählt und aufgeschrieben. Jetzt gehen wir tiefer. Denn weniger Stress im Betrieb ist nur die halbe Gleichung. Die andere Hälfte ist mehr Leben außerhalb des Betriebs. Zeit für die Menschen die dir wichtig sind. Zeit für dich. In Lektion 2 schauen wir uns an wie du diese Zeit aktiv schaffst. Nicht hoffst dass sie irgendwann übrig bleibt. Aktiv schaffst.</div>
 
-.btn-back-modul{background:#d4af37;color:#1a2a4a;border:none;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.2s;box-shadow:0 2px 6px rgba(212,175,55,0.3)}
-.btn-back-modul:hover{background:#c8a030;color:#1a2a4a}
-</style>
-</head>
-<body>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-(function(){
-  document.addEventListener('contextmenu',function(e){e.preventDefault();});
-  document.addEventListener('keydown',function(e){
-    if(e.ctrlKey&&['s','u','p','a'].includes(e.key.toLowerCase()))e.preventDefault();
-    if(e.key==='F12')e.preventDefault();
-  });
-  const sb=supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3');
-  (async function(){
-    const{data:{session}}=await sb.auth.getSession();
-    if(!session){window.location.href='login.html';return;}
-    const{data:p}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
-    if(p&&(!p.is_active||p.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
-  })();
-})();
-</script>
-<div class="header">
-  <div class="brand">GASTRO-OS</div>
-  <a href="dashboard.html#modul-11" class="btn-back-modul">← Zurück zum Dashboard</a>
-</div>
-<div class="gold-bar"></div>
-<div class="wrap">
-  <div class="lbl">Modul 11 · Lektion 2</div>
-  <div class="lektion-hero">
-    <div class="lektion-tag">Modul 11 · Lektion 2</div>
-    <h1>Zeit für Familie und Freizeit</h1>
-  </div>
-  <div class="intro">In Lektion 1 haben wir uns angeschaut was Dauerstress in der Gastronomie wirklich ist, wie er entsteht und welche drei Hebel ihn direkt reduzieren. Du hast einen konkreten ersten Schritt gewählt und aufgeschrieben. Das war keine kleine Sache. Die meisten Gastronomen denken jahrelang darüber nach ohne etwas zu ändern. Jetzt gehen wir tiefer. Denn weniger Stress im Betrieb ist nur die halbe Gleichung. Die andere Hälfte ist mehr Leben außerhalb des Betriebs. Zeit für die Menschen die dir wichtig sind. Zeit für dich. Zeit für Dinge die nichts mit Gastronomie zu tun haben.</div>
-  <h2>Kapitel 1 — Warum Zeit für Familie und Freizeit kein Luxus ist</h2>
-
+  <h2>Kapitel 1: Warum Zeit für Familie und Freizeit kein Luxus ist</h2>
   <h3>Die stille Rechnung die nie aufgemacht wird</h3>
   <p>Es gibt eine Rechnung die die meisten Gastronomen nie wirklich aufmachen. Nicht die BWA, nicht die Wareneinsatz-Kalkulation. Die persönliche Rechnung. Was kostet der Betrieb wirklich. Nicht in Euro. In Zeit.</p>
-  <p>Wie viele Abende hast du in den letzten drei Monaten zu Hause gegessen. Wie viele Wochenenden warst du wirklich frei. Wie viele Schulveranstaltungen deiner Kinder hast du verpasst. Wie viele Geburtstage von Freunden. Wie viele ruhige Abende mit deinem Partner.</p>
-  <p>Diese Rechnung ist unangenehm. Deshalb wird sie selten gemacht. Aber sie ist notwendig. Denn wer nicht weiß was er wirklich aufgibt, kann nicht entscheiden ob der Preis gerechtfertigt ist.</p>
-  <p>Die meisten Gastronomen würden sagen dass Familie und Gesundheit wichtiger sind als der Betrieb. Aber ihr Kalender erzählt eine andere Geschichte. Und der Kalender lügt nicht.</p>
-
+  <p>Wie viele Abende hast du in den letzten drei Monaten zu Hause gegessen. Wie viele Wochenenden warst du wirklich frei. Wie viele Schulveranstaltungen deiner Kinder hast du verpasst. Diese Rechnung ist unangenehm. Deshalb wird sie selten gemacht. Aber sie ist notwendig. Denn wer nicht weiß was er wirklich aufgibt, kann nicht entscheiden ob der Preis gerechtfertigt ist.</p>
   <h3>Was fehlende Zeit mit Beziehungen macht</h3>
-  <p>Beziehungen brauchen Zeit. Nicht gelegentlich. Regelmäßig. Eine Partnerschaft die Monate ohne echte gemeinsame Zeit übersteht, verändert sich. Langsam, unmerklich, aber unaufhaltsam. Die Distanz wächst. Die gemeinsamen Themen werden weniger. Das Verständnis füreinander nimmt ab.</p>
-  <p>Dasselbe gilt für Kinder. Kinder brauchen nicht perfekte Eltern. Sie brauchen anwesende Eltern. Nicht körperlich anwesend während man gedanklich im Betrieb ist. Wirklich anwesend. Das Gespräch beim Abendessen. Das gemeinsame Wochenende. Das Interesse an dem was sie beschäftigt.</p>
-  <p>Diese Momente lassen sich nicht nachholen. Der Kindergeburtstag der verpasst wurde kommt nicht zurück. Das Gespräch das nie stattgefunden hat, fehlt im Fundament der Beziehung.</p>
-
+  <p>Beziehungen brauchen Zeit. Nicht gelegentlich. Regelmäßig. Eine Partnerschaft die Monate ohne echte gemeinsame Zeit übersteht, verändert sich. Langsam, unmerklich, aber unaufhaltsam. Die Distanz wächst. Die gemeinsamen Themen werden weniger.</p>
+  <p>Dasselbe gilt für Kinder. Kinder brauchen nicht perfekte Eltern. Sie brauchen anwesende Eltern. Das Gespräch beim Abendessen. Das gemeinsame Wochenende. Das Interesse an dem was sie beschäftigt. Diese Momente lassen sich nicht nachholen.</p>
   <h3>Freizeit ist keine Verschwendung</h3>
-  <p>Es gibt eine tief verwurzelte Überzeugung in der Gastronomie dass Freizeit Verschwendung ist. Das ist falsch. Nicht nur menschlich falsch. Auch wirtschaftlich falsch.</p>
-  <p>Ein Gastronom der regelmäßig erholt und ausgeruht ist, trifft bessere Entscheidungen. Er ist kreativer, geduldiger mit dem Team, aufmerksamer für die Gäste. Er sieht Probleme früher und löst sie besser. Er hat Energie für strategisches Denken statt nur für operatives Reagieren.</p>
-  <p>Freizeit ist keine Verschwendung. Freizeit ist Investition. In deine Gesundheit, in deine Beziehungen, in deine Leistungsfähigkeit als Unternehmer.</p>
+  <p>Es gibt eine tief verwurzelte Überzeugung in der Gastronomie dass Freizeit Verschwendung ist. Das ist falsch. Nicht nur menschlich falsch. Auch wirtschaftlich falsch. Ein Gastronom der regelmäßig erholt und ausgeruht ist, trifft bessere Entscheidungen. Er ist kreativer, geduldiger mit dem Team, aufmerksamer für die Gäste. Freizeit ist Investition. In deine Gesundheit, in deine Beziehungen, in deine Leistungsfähigkeit als Unternehmer.</p>
+  <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 1</div><p>Schreib jetzt auf was dir außerhalb des Betriebs wirklich wichtig ist. Dein Partner. Deine Kinder. Deine Gesundheit. Deine Freunde. Dein Hobby das du seit Jahren nicht mehr ausübst. Schreib drei Dinge auf. Und schreib daneben wann du das letzte Mal wirklich Zeit dafür hattest.</p></div>
 
-  <div class="aufgabe">
-    <div class="aufgabe-lbl">Deine Aufgabe für Kapitel 1</div>
-    <p>Schreib jetzt auf was dir außerhalb des Betriebs wirklich wichtig ist. Dein Partner. Deine Kinder. Deine Gesundheit. Deine Freunde. Dein Hobby das du seit Jahren nicht mehr ausübst. Schreib drei Dinge auf. Und schreib daneben wann du das letzte Mal wirklich Zeit dafür hattest.</p>
-  </div>
-
-  <h2>Kapitel 2 — Wie du Zeit aktiv schaffst statt hoffst dass sie übrig bleibt</h2>
-
+  <h2>Kapitel 2: Wie du Zeit aktiv schaffst statt hoffst dass sie übrig bleibt</h2>
   <h3>Der größte Irrtum beim Thema Zeit</h3>
-  <p>Es gibt einen Irrtum der fast alle Gastronomen teilen wenn es um persönliche Zeit geht. Den Irrtum dass Zeit übrig bleibt wenn alle Aufgaben erledigt sind. Dass irgendwann der Moment kommt wo der Betrieb läuft, alle Probleme gelöst sind und dann endlich Zeit für Familie und Freizeit da ist.</p>
-  <p>Dieser Moment kommt nicht. Nicht von selbst. Denn in einem Gastronomiebetrieb gibt es immer etwas zu tun. Persönliche Zeit entsteht nicht durch Warten. Sie entsteht durch Entscheidung.</p>
-
+  <p>Es gibt einen Irrtum der fast alle Gastronomen teilen wenn es um persönliche Zeit geht. Den Irrtum dass Zeit übrig bleibt wenn alle Aufgaben erledigt sind. Dass irgendwann der Moment kommt wo der Betrieb läuft, alle Probleme gelöst sind und dann endlich Zeit für Familie und Freizeit da ist. Dieser Moment kommt nicht. Nicht von selbst. Persönliche Zeit entsteht nicht durch Warten. Sie entsteht durch Entscheidung.</p>
   <h3>Persönliche Zeit in den Kalender blockieren</h3>
-  <p>Die wirksamste Methode um persönliche Zeit zu schaffen ist dieselbe die du für deine Unternehmer-Zeit aus Modul 5 kennst. Blockieren. Im Kalender. Konkret. Unverrückbar.</p>
-  <p>Nicht ich versuche dienstags früher zu gehen — sondern dienstags gehe ich um 17 Uhr. Das steht im Kalender. Das Team weiß es. Der Schichtleiter übernimmt. Und ich gehe.</p>
-  <p>Nicht ich versuche mehr Zeit mit den Kindern zu verbringen — sondern samstagnachmittags gehört mir von 14 bis 18 Uhr. Kein Telefon. Keine Nachrichten. Keine Ausnahmen außer echten Notfällen.</p>
-
+  <p>Die wirksamste Methode um persönliche Zeit zu schaffen ist dieselbe die du für deine Unternehmer-Zeit aus Modul 5 kennst. Blockieren. Im Kalender. Konkret. Unverrückbar. Nicht ich versuche dienstags früher zu gehen. Sondern dienstags gehe ich um 17 Uhr. Das steht im Kalender. Das Team weiß es. Der Schichtleiter übernimmt. Und ich gehe.</p>
+  <p>Diese Blöcke müssen nicht groß sein. Ein Abend pro Woche der wirklich dir gehört ist mehr wert als zehn Abende bei denen du körperlich zu Hause aber gedanklich im Betrieb bist.</p>
   <h3>Grenzen kommunizieren und einhalten</h3>
-  <p>Persönliche Zeit zu blockieren ist der erste Schritt. Der zweite Schritt ist diese Grenzen zu kommunizieren und einzuhalten. Denn Grenzen die nicht kommuniziert werden, werden nicht respektiert. Und Grenzen die nicht eingehalten werden, existieren nicht.</p>
-
+  <p>Persönliche Zeit zu blockieren ist der erste Schritt. Der zweite Schritt ist diese Grenzen zu kommunizieren und einzuhalten. Kommunizieren bedeutet dem Team zu sagen wann du erreichbar bist und wann nicht. Was als echter Notfall gilt. Wer die erste Anlaufstelle ist wenn du nicht erreichbar bist. Einhalten bedeutet nicht ans Telefon zu gehen wenn es außerhalb deiner erreichbaren Zeit klingelt.</p>
   <h3>Urlaub als nicht verhandelbare Größe</h3>
-  <p>Urlaub ist in der Gastronomie ein besonders sensibles Thema. Viele Gastronomen haben seit Jahren keinen echten Urlaub gemacht. Der einzige Weg die Überzeugung dass man unentbehrlich ist zu widerlegen, ist es auszuprobieren. Einen Tag. Dann ein Wochenende. Dann eine Woche. Und zu sehen was passiert. Was meistens passiert: Der Betrieb läuft. Nicht perfekt. Aber er läuft.</p>
-  <p>Plant deinen nächsten Urlaub jetzt. Nicht irgendwann. Jetzt.</p>
-
-  <div class="aufgabe">
-    <div class="aufgabe-lbl">Deine Aufgabe für Kapitel 2</div>
-    <p>Öffne jetzt deinen Kalender und blockiere drei Dinge. Erstens einen Abend in der nächsten Woche der wirklich dir oder deiner Familie gehört. Zweitens einen freien Tag im nächsten Monat. Drittens deinen nächsten Urlaub, auch wenn er erst in sechs Monaten ist. Schreib für jeden dieser drei Blöcke auf wer den Betrieb in dieser Zeit übernimmt. Konkrete Namen, konkrete Verantwortlichkeiten.</p>
-  </div>
-  <div class="nav-row">
-    <a href="modul11-lektion1.html" class="nav-btn secondary">← Lektion 1</a>
-    <a href="modul11-lektion3.html" class="nav-btn">Lektion 3 →</a>
-  </div>
+  <p>Ein Betrieb der keinen Urlaub des Chefs zulässt, ist ein Betrieb der noch nicht bereit ist. Der die Prozesse, den Schichtleiter und die Strukturen noch nicht hat die nötig wären. Plane deinen nächsten Urlaub jetzt. Nicht irgendwann. Jetzt. Trag ihn in den Kalender ein. Und behandle ihn wie jeden anderen wichtigen Termin. Nicht als Luxus der gestrichen wird wenn es stressig wird. Als festen Bestandteil deines Jahres.</p>
+  <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 2</div><p>Öffne jetzt deinen Kalender und blockiere drei Dinge. Erstens einen Abend in der nächsten Woche der wirklich dir oder deiner Familie gehört. Zweitens einen freien Tag im nächsten Monat. Drittens deinen nächsten Urlaub — auch wenn er erst in sechs Monaten ist. Schreib für jeden dieser drei Blöcke auf wer den Betrieb in dieser Zeit übernimmt.</p></div>
   <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
-</div>
-<div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
-</body>
-</html>
+</div><div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+</body></html>

@@ -1,160 +1,51 @@
 <!DOCTYPE html>
-<html lang="de">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GASTRO-OS – Modul 12 | Lektion 4</title>
-<style>
-* { margin:0; padding:0; box-sizing:border-box; }
+<html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lektion 4 — Vom Plan zur Umsetzung | GASTRO-OS</title><style>* { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
-.header{background:#1a2a4a;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
-.brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
-.btn-back-modul{background:#d4af37;color:#1a2a4a;border:none;padding:9px 20px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.2s;letter-spacing:0.3px}
-.btn-back-modul:hover{background:#c8a030;color:#1a2a4a}
+.header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:18px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.btn-back { background:#d4af37; color:#1a2a4a; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.btn-back:hover { background:#c8a030; }
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
 .wrap { max-width:720px; margin:40px auto; padding:0 24px 60px; }
 .lbl { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:8px; }
 h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:10px; line-height:1.3; }
-.lektion-hero { background:#1a2a4a; border-radius:12px; padding:28px 32px; margin-bottom:28px; border:2px solid #d4af37; }
-.lektion-hero .lektion-tag { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:10px; }
-.lektion-hero h1 { font-family:Georgia,serif; font-size:26px; color:#fff; margin-bottom:0; font-weight:normal; line-height:1.3; }
 .intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:20px 0 32px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
 h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:normal; margin:36px 0 14px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
 h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:24px 0 10px; }
 p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
-ul, ol { margin:12px 0 16px 20px; }
-li { font-size:15px; line-height:1.8; color:#2a3a54; margin-bottom:6px; }
 .aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin-top:24px; }
 .aufgabe-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
 .aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; }
-.highlight { background:#fff8e8; border-left:3px solid #d4af37; padding:14px 18px; margin:20px 0; font-size:14px; color:#5a4000; line-height:1.7; }
-.nav-row { display:flex; gap:12px; justify-content:space-between; margin-top:40px; }
-.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:12px 24px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none; transition:all 0.2s; }
-.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
-.nav-btn.secondary { background:transparent; border:1px solid rgba(26,42,74,0.3); color:#1a2a4a; }
-.nav-btn.secondary:hover { background:#1a2a4a; color:#d4af37; }
 .footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-lbl strong { color:#d4af37; }
 .footer-main { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
-.footer-main strong { color:#d4af37; }
-@media (max-width:600px) { .wrap{padding:0 16px 40px} h1{font-size:22px} h2{font-size:17px} }
-</style>
-</head>
-<body>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-(function(){
-  document.addEventListener('contextmenu',function(e){e.preventDefault();});
-  document.addEventListener('keydown',function(e){
-    if(e.ctrlKey&&['s','u','p','a'].includes(e.key.toLowerCase()))e.preventDefault();
-    if(e.key==='F12')e.preventDefault();
-  });
-  const sb=supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3');
-  (async function(){
-    const{data:{session}}=await sb.auth.getSession();
-    if(!session){window.location.href='login.html';return;}
-    const{data:profile}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
-    if(profile&&(!profile.is_active||profile.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
-  })();
-})();
-</script>
-<div class="header">
-  <div class="brand">GASTRO-OS</div>
-  <a href="dashboard.html#modul-12" class="btn-back-modul">← Zurück zum Dashboard</a>
-</div>
-<div class="gold-bar"></div>
-
-<div class="wrap">
-  <div class="lbl">Modul 12 · Lektion 4</div>
-  <div class="lektion-hero">
-    <div class="lektion-tag">Modul 12 · Lektion 4</div>
-    <h1>Lektion 4 — Vom Plan zur Umsetzung</h1>
-  </div>
-  <div class="intro">In Lektion 3 haben wir uns angeschaut wie ein Onboarding aufgebaut wird das begeistert statt überfordert. Du weißt jetzt wie du neue Mitarbeiter so einarbeitest dass sie schnell eigenständig werden. In Lektion 4 bringen wir alles zusammen: Wie bindest du Mitarbeiter langfristig. Und wie baust du ein Team auf das auch ohne dich funktioniert.</div>
+.footer-main strong { color:#d4af37; }</style></head>
+<body><div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html#modul-12" class="btn-back">← Zurück zum Dashboard</a></div>
+<div class="gold-bar"></div><div class="wrap">
+  <div class="lbl">Modul 12 · Lektion 4</div><h1>Vom Plan zur Umsetzung</h1>
+  <div class="intro">In Lektion 3 haben wir gesehen wie ein strukturiertes Onboarding aussieht und warum die ersten Wochen alles entscheiden. In dieser Lektion bringen wir alles zusammen. Wir schauen uns an wie du aus dem Wissen der letzten drei Lektionen einen konkreten Plan machst. Einen Plan den du nicht in der Schublade verschwinden lässt. Sondern einen der wirklich umgesetzt wird. Denn das ist die entscheidende Frage. Nicht ob du weißt was zu tun ist. Sondern ob du es tust.</div>
 
   <h2>Kapitel 1 — Vom Wissen zur Gewohnheit</h2>
-  <p>Du hast in diesem Modul viel gelernt. Warum gute Mitarbeiter gehen. Wie du Stellenanzeigen schreibst die wirklich funktionieren. Wie ein Onboarding aussieht das Mitarbeiter hält. Aber Wissen allein verändert nichts.</p>
-  <p>Der Schlüssel heißt nicht mehr Disziplin. Der Schlüssel heißt weniger Entscheidungen. Was du brauchst sind keine Vorsätze. Du brauchst ein System das Maßnahmen automatisch in deinen Alltag einbaut.</p>
-
+  <p>Du hast in diesem Modul viel gelernt. Warum gute Mitarbeiter gehen. Wie du Stellenanzeigen schreibst die wirklich funktionieren. Wie ein Onboarding aussieht das Mitarbeiter hält. Das ist wertvolles Wissen. Aber Wissen allein verändert nichts.</p>
   <h3>Der Unterschied zwischen Wissen und Handeln</h3>
-  <p>Stell dir zwei Gastronomen vor. Beide haben dieses Modul durchgearbeitet. Der erste schließt den Laptop und denkt: Das setze ich bald um. Der zweite öffnet seinen Kalender und trägt drei Termine ein. Drei Kalendereinträge. Das ist der Unterschied zwischen Wissen und Handeln.</p>
+  <p>Stell dir zwei Gastronomen vor. Beide haben dieses Modul durchgearbeitet. Der erste schließt den Laptop und denkt: Das war gut. Das setze ich bald um. Der zweite öffnet seinen Kalender und trägt drei Termine ein. Ersten: Montag in zwei Wochen, dreißig Minuten, Stellenanzeige neu schreiben. Zweiten: Mittwoch, zwanzig Minuten, Onboarding-Plan erstellen. Dritten: Freitag, zehn Minuten, Team fragen wer als Pate geeignet wäre. Drei Kalendereinträge. Das ist der Unterschied zwischen Wissen und Handeln.</p>
+  <h3>Warum kleine Schritte größer wirken als große Pläne</h3>
+  <p>Wer alles auf einmal ändern will ändert am Ende nichts. Kleine Schritte funktionieren besser. Nicht weil sie weniger ambitioniert sind. Sondern weil sie tatsächlich umgesetzt werden. Weil sie nicht überfordern. Weil sie Erfolgserlebnisse schaffen. Und Erfolgserlebnisse motivieren zum nächsten Schritt.</p>
+  <div class="aufgabe"><div class="aufgabe-lbl">Aufgabe Kapitel 1</div><p>Schreib jetzt, in diesem Moment, die eine Sache auf die du aus diesem Modul als erstes umsetzt. Nicht drei. Nicht fünf. Eine. Und schreib daneben bis wann du sie umsetzt. Heute, diese Woche oder spätestens nächste Woche. Kein späteres Datum. Dinge die kein konkretes Datum haben passieren nicht.</p></div>
 
-    <div class="task-box">
-      <strong>🎯 Aufgabe Kapitel 1</strong>
-      <p>Schreib jetzt, in diesem Moment, die eine Sache auf die du aus diesem Modul als erstes umsetzt. Nicht drei. Eine. Und schreib daneben bis wann. Heute, diese Woche oder spätestens nächste Woche. Dinge die kein konkretes Datum haben passieren nicht.</p>
-    </div>
-  
-<h2>Kapitel 2 — Dein 30-Tage-Recruiting-Plan</h2>
-
-    <div class="week-card">
-      <h4>📋 Woche 1 — Analyse und Grundlagen</h4>
-      <p>Wie ist deine aktuelle Mitarbeitersituation? Wie viele Stellen sind offen? Wie lange bleiben deine Mitarbeiter im Durchschnitt? Sprich mit deinen aktuellen Mitarbeitern — einzeln, kurze Gespräche. Hör zu ohne sofort zu antworten.</p>
-      <div class="result">✓ Ergebnis: Du weißt wo die größten Lücken in deiner Mitarbeitersituation sind</div>
-    </div>
-
-    <div class="week-card">
-      <h4>✍️ Woche 2 — Stellenanzeige und Recruiting vorbereiten</h4>
-      <p>Schreib eine neue Stellenanzeige nach dem Aufbau aus Lektion 2. Lass sie von jemandem außerhalb deines Betriebs lesen. Entscheide auf welchen Kanälen du sie veröffentlichst. Und dann: nicht perfektionieren — veröffentlichen.</p>
-      <div class="result">✓ Ergebnis: Deine Stellenanzeige ist veröffentlicht</div>
-    </div>
-
-    <div class="week-card">
-      <h4>🤝 Woche 3 — Onboarding Struktur aufbauen</h4>
-      <p>Schreib einen einfachen Onboarding Plan. Tag 1, Woche 1, Monat 1. Entscheide wer in deinem Team als Pate geeignet ist und sprich diese Person an. Erstelle eine Checkliste für den ersten Tag. Der beste Zeitpunkt dafür ist bevor du jemanden brauchst.</p>
-      <div class="result">✓ Ergebnis: Du hast ein Onboarding System das sofort einsetzbar ist</div>
-    </div>
-
-    <div class="week-card">
-      <h4>💬 Woche 4 — Feedbackgespräche einführen</h4>
-      <p>Plane für jeden deiner Mitarbeiter ein kurzes Gespräch. Zehn bis fünfzehn Minuten. Wie läuft es? Was läuft gut? Was könnte besser laufen? Trag diese Gespräche in den Kalender ein. Heute. Nicht später.</p>
-      <div class="result">✓ Ergebnis: Du hast mit jedem Mitarbeiter gesprochen und einen Gesprächsrhythmus eingeplant</div>
-    </div>
-
-    <div class="hint-box">👉 Den Mitarbeiter Recruiting Plan findest du im Tab 📊 Mitarbeiter Recruiting Plan</div>
-
-    <div class="task-box">
-      <strong>🎯 Aufgabe Kapitel 2</strong>
-      <p>Öffne deinen Kalender. Trag jetzt drei Termine für die nächsten vier Wochen ein. Einen für die Stellenanzeige. Einen für den Onboarding Plan. Einen für das erste Mitarbeitergespräch. Drei Termine. Heute noch.</p>
-    </div>
-  
-
-  <div class="nav-row">
-    <a href="modul12-lektion3.html" class="nav-btn secondary">← Lektion 3</a>
-    <a href="modul12-podcast.html" class="nav-btn">Küchenfunk #6 →</a>
-  </div>
-
-  </div>
-
-</div>
-<div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
-</div>
-<div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
-<script>
-(function(){
-  // Rechtsklick & Tastenkürzel sperren
-  document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
-  document.addEventListener('keydown', function(e){
-    if (e.ctrlKey && ['s','u','p','a'].includes(e.key.toLowerCase())) e.preventDefault();
-    if (e.key === 'F12') e.preventDefault();
-  });
-
-  // Supabase Auth Check
-  const sb = supabase.createClient(
-    'https://hchlganbgjeciwhwaisj.supabase.co',
-    'sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3'
-  );
-  (async function(){
-    const { data:{ session } } = await sb.auth.getSession();
-    if (!session) { window.location.href = 'login.html'; return; }
-    const { data: profile } = await sb.from('profiles')
-      .select('is_active,subscription_status')
-      .eq('id', session.user.id).maybeSingle();
-    if (profile && (!profile.is_active || profile.subscription_status !== 'active')) {
-      await sb.auth.signOut();
-      window.location.href = 'login.html';
-    }
-  })();
-})();
-</script>
-</body>
-</html>
+  <h2>Kapitel 2 — Dein 30-Tage-Recruiting-Plan</h2>
+  <h3>Woche 1 — Analyse und Grundlagen</h3>
+  <p>In der ersten Woche schaust du dir an wo du gerade stehst. Wie ist deine aktuelle Mitarbeitersituation? Wie lange bleiben deine Mitarbeiter im Durchschnitt? Sprich mit deinen aktuellen Mitarbeitern. Einzeln. Kurze Gespräche. Wie geht es dir? Was läuft gut? Was könnten wir besser machen? Hör zu ohne sofort zu antworten oder zu rechtfertigen. Diese Gespräche geben dir Information die du nicht aus Zahlen ablesen kannst. Ergebnis Woche 1: Du weißt wo die größten Lücken in deiner Mitarbeitersituation sind.</p>
+  <h3>Woche 2 — Stellenanzeige und Recruiting vorbereiten</h3>
+  <p>Schreib eine neue Stellenanzeige nach dem Aufbau aus Lektion 2. Lass sie von jemandem außerhalb deines Betriebs lesen. Dann veröffentliche sie — nicht perfektionieren, veröffentlichen. Schau dir außerdem an was du auf deinen Social-Media-Kanälen über das Arbeiten in deinem Betrieb kommunizierst. Ergebnis Woche 2: Deine Stellenanzeige ist veröffentlicht.</p>
+  <h3>Woche 3 — Onboarding-Struktur aufbauen</h3>
+  <p>Schreib einen einfachen Onboarding-Plan. Tag 1, Woche 1, Monat 1. Entscheide wer in deinem Team als Pate für neue Mitarbeiter geeignet ist und sprich diese Person an. Erstelle eine einfache Checkliste für den ersten Tag. Ergebnis Woche 3: Du hast ein Onboarding-System das beim nächsten neuen Mitarbeiter sofort einsetzbar ist.</p>
+  <h3>Woche 4 — Feedbackgespräche einführen</h3>
+  <p>Plane für jeden deiner Mitarbeiter ein kurzes Gespräch in den nächsten vier Wochen. Zehn bis fünfzehn Minuten. Was läuft gut? Was könnte besser laufen? Was brauchst du von mir? Trag diese Gespräche in den Kalender ein. Heute. Nicht später. Ergebnis Woche 4: Du hast mit jedem Mitarbeiter gesprochen und einen regelmäßigen Gesprächsrhythmus eingeplant.</p>
+  <h3>Nach den 30 Tagen</h3>
+  <p>Nach einem Monat schaust du zurück. Was hast du umgesetzt? Was hat sich verändert? Und dann planst du die nächsten dreißig Tage. Mitarbeiter finden und halten ist kein einmaliges Projekt. Es ist eine dauerhafte Aufgabe. Aber sie wird mit jedem Monat leichter wenn du ein System dafür hast.</p>
+  <div class="aufgabe"><div class="aufgabe-lbl">Aufgabe Kapitel 2</div><p>Öffne deinen Kalender. Trag jetzt drei Termine für die nächsten vier Wochen ein. Einen für die Stellenanzeige. Einen für den Onboarding-Plan. Einen für das erste Mitarbeitergespräch. Drei Termine. Heute noch. Das ist dein Start.</p></div>
+  <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
+</div><div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+</body></html>
