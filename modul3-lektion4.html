@@ -38,6 +38,31 @@ li { font-size:15px; line-height:1.8; color:#2a3a54; margin-bottom:6px; }
 .footer-main { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-main strong { color:#d4af37; }
 @media (max-width:600px) { .wrap{padding:0 16px 40px} h1{font-size:22px} h2{font-size:17px} }
+
+.lern-box { background:#1a2a4a; border-radius:8px; padding:18px 22px; margin:0 0 28px; }
+.lern-box-title { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.lern-box ul { list-style:none; padding:0; margin:0; }
+.lern-box ul li { font-size:13px; color:#a0b0c8; padding:4px 0 4px 20px; position:relative; line-height:1.6; }
+.lern-box ul li::before { content:'✓'; position:absolute; left:0; color:#d4af37; font-weight:700; }
+.beispiel { background:#fff; border:1px solid #e8dfc8; border-left:4px solid #3a7ad4; border-radius:0 8px 8px 0; padding:16px 20px; margin:20px 0; }
+.beispiel-lbl { font-size:11px; color:#3a7ad4; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
+.beispiel p { font-size:14px; color:#2a3a54; margin-bottom:8px; line-height:1.75; }
+.beispiel p:last-child { margin-bottom:0; }
+.beispiel .rechnung { background:#f0f4f8; border-radius:5px; padding:10px 14px; font-family:monospace; font-size:13px; color:#1a2a4a; margin:8px 0; }
+.fazit { background:#fdf9ee; border:2px solid #d4af37; border-radius:8px; padding:18px 22px; margin-top:36px; }
+.fazit-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.fazit ul { list-style:none; padding:0; margin:0; }
+.fazit ul li { font-size:14px; color:#2a3a54; padding:5px 0 5px 22px; position:relative; line-height:1.65; border-bottom:1px solid #e8dfc8; }
+.fazit ul li:last-child { border-bottom:none; }
+.fazit ul li::before { content:'→'; position:absolute; left:0; color:#d4af37; font-weight:700; }
+.tipp-box { background:#e4f5e8; border:1px solid #4aaa60; border-radius:8px; padding:14px 18px; margin:16px 0; }
+.tipp-box p { font-size:14px; color:#1a6030; margin-bottom:0; line-height:1.7; }
+.checkliste { background:#fff; border:1px solid #e8dfc8; border-radius:8px; padding:16px 20px; margin:20px 0; }
+.checkliste-lbl { font-size:11px; color:#1a2a4a; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.checkliste ul { list-style:none; padding:0; margin:0; }
+.checkliste ul li { font-size:14px; color:#2a3a54; padding:6px 0 6px 28px; position:relative; border-bottom:1px solid #f0ece4; }
+.checkliste ul li:last-child { border-bottom:none; }
+.checkliste ul li::before { content:'☐'; position:absolute; left:0; color:#d4af37; font-size:16px; line-height:1; }
 </style>
 </head>
 <body>
@@ -75,43 +100,38 @@ li { font-size:15px; line-height:1.8; color:#2a3a54; margin-bottom:6px; }
 <h2>Kapitel 1 — Fallbeispiel aus der Praxis</h2>
   <p>Wie ein Restaurant seinen Wareneinsatz in 8 Wochen von 41% auf 31% senkte.</p>
   <p>Das Folgende ist ein zusammengesetztes Beispiel aus typischen Mustern die wir in Gastronomiebetrieben regelmäßig beobachten. Namen und Details sind fiktiv, aber die Zahlen sind real.</p>
-
   <h3>Ausgangssituation</h3>
   <p>Ein mittelgroßes Restaurant, 80 Sitzplätze, Vollbetrieb Mittagstisch und Abend. Der Wareneinsatz lag bei 41%, seit Jahren. Die Inhaber wussten dass es zu viel war. Sie wussten nicht wo sie anfangen sollten.</p>
   <p>Der monatliche Umsatz lag bei 58.000 Euro. Bei einem Wareneinsatz von 41% bedeutete das monatliche Einkaufskosten von knapp 24.000 Euro. Das Ziel: Wareneinsatz auf 31% senken. Das würde bedeuten die Einkaufskosten auf 18.000 Euro zu reduzieren, also 6.000 Euro pro Monat einzusparen, ohne Umsatzeinbußen.</p>
   <p>Klingt ambitioniert. War es auch. Aber es hat funktioniert.</p>
-
+<div class="beispiel"><div class="beispiel-lbl">📊 Rechenbeispiel aus der Praxis</div><p>Zahlen des Fallbeispiels: Umsatz 58.000 €/Monat. WE-Senkung von 41% auf 31%.</p><p>Vorher: 58.000 × 0,41 = 23.780 €/Monat Wareneinsatz.</p><p>Nachher: 58.000 × 0,31 = 17.980 €/Monat Wareneinsatz.</p><div class="rechnung"> Einsparung: 5.800 €/Monat = 69.600 €/Jahr. Zeitaufwand für Chef: 3h/Woche in der Anlaufphase, danach 30 min/Woche. Stundenlohn der Optimierung: 5.800 € ÷ 12h/Monat = 483 €/h.</div></div>
   <h3>Was sie gemacht haben</h3>
   <p>Woche 1 und 2: Vollständige Bestandsaufnahme aller Lieferanten, aktuellen Preise und Einkaufsmengen. Diese zwei Wochen haben die Inhaber mehr über ihren eigenen Betrieb gelernt als in den drei Jahren davor. Sie haben festgestellt dass sie bei fünf verschiedenen Lieferanten für dasselbe Produkt einkauften, ohne je die Preise zu vergleichen. Sie haben festgestellt dass ein Lieferant die Preise in den letzten 14 Monaten dreimal still erhöht hatte ohne dass es jemand bemerkte. Und sie haben festgestellt dass ihr Lagerbestand an einem durchschnittlichen Montag Waren im Wert von über 4.200 Euro enthielt, von denen etwa 800 Euro in der laufenden Woche mit hoher Wahrscheinlichkeit verderben würden.</p>
   <p>Woche 3: Verhandlung mit den drei wichtigsten Lieferanten, mit Vergleichsangeboten in der Hand. Das Ergebnis: Durchschnittliche Preissenkung von 7,4% auf die wichtigsten Positionen. Kein einziger Lieferant hat die Zusammenarbeit beendet. Zwei haben sogar von sich aus weitere Verbesserungen angeboten um die Beziehung zu festigen.</p>
   <p>Woche 4: Anpassung der Speisekarte. Drei Dog-Gerichte wurden gestrichen. Zwei saisonale Gerichte wurden neu eingeführt mit deutlich besserem Deckungsbeitrag. Die Gäste haben die gestrichenen Gerichte kaum vermisst. Eines davon war jahrelang auf der Karte ohne je mehr als acht Mal pro Monat bestellt zu werden.</p>
   <p>Woche 5 und 6: Einführung des wöchentlichen Einkaufs-Checks als feste Routine. Jeden Dienstagmorgen, 30 Minuten, immer dieselbe Struktur. Bestandsaufnahme, Wochenplanung, Bedarfsermittlung, Preischeck, Bestellung.</p>
   <p>Woche 7 und 8: Schulung des Küchenpersonals zu Portionsgrößen und Lagermanagement. Klare Standards für die fünf meistverkauften Gerichte. Eine Lagerliste die täglich aktualisiert wird. FIFO konsequent eingeführt.</p>
-
   <h3>Das Ergebnis nach 8 Wochen</h3>
   <div class="kennzahlen">
     <p>Wareneinsatz: <span>von 41% auf 31% gesenkt</span></p>
-  <p>Monatlicher Zusatzgewinn: <span>ca. 2.800 Euro bei gleichem Umsatz</span></p>
-  <p>Zeitaufwand in der Anlaufphase: <span>ca. 3 Stunden pro Woche</span></p>
-  <p>Danach: <span>30 Minuten pro Woche für den laufenden Einkaufs-Check</span></p>
-  <p>Qualität: <span>gleich geblieben — keine Gästebewertung verschlechtert</span></p>
+    <p>Monatlicher Zusatzgewinn: <span>ca. 2.800 Euro bei gleichem Umsatz</span></p>
+    <p>Zeitaufwand in der Anlaufphase: <span>ca. 3 Stunden pro Woche</span></p>
+    <p>Danach: <span>30 Minuten pro Woche für den laufenden Einkaufs-Check</span></p>
+    <p>Qualität: <span>gleich geblieben — keine Gästebewertung verschlechtert</span></p>
   </div>
   <h3>Was dieses Beispiel zeigt</h3>
   <p>Es geht nicht darum ein Wunder zu vollbringen. Es geht darum systematisch vorzugehen. Schritt für Schritt, Woche für Woche. Jede der Maßnahmen für sich war überschaubar. Zusammen haben sie in acht Wochen mehr bewirkt als drei Jahre unstrukturiertes Arbeiten.</p>
   <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 1</div><p>Lies das Fallbeispiel noch einmal und markiere die Maßnahme die in deinem Betrieb den größten Unterschied machen würde. Nicht die einfachste, die wirkungsvollste. Das ist dein Startpunkt für die nächsten 30 Tage.</p></div>
+<div class="lern-box"><div class="lern-box-title">📚 Was du in dieser Lektion lernst</div><ul><li>Das Fallbeispiel: Wie ein Restaurant WE von 41% auf 31% senkte</li><li>Deinen persönlichen 30-Tage-Aktionsplan für Einkauf erstellen</li><li>Die 4 Wochen-Strategie für dauerhaft niedrigeren Wareneinsatz</li><li>Erste messbare Ergebnisse in 4 Wochen erzielen</li></ul></div>
 
   <h2>Kapitel 2 — Dein 30-Tage-Aktionsplan</h2>
   <p>Wissen ohne Umsetzung ist Unterhaltung. Dieser Plan gibt dir für jeden der nächsten vier Wochen einen konkreten Fokus. Ein Schritt pro Woche. Nicht mehr.</p>
-
   <h3>Woche 1 — Analyse und Bestandsaufnahme</h3>
   <p>Berechne deinen aktuellen Wareneinsatz in Prozent. Das ist dein Ausgangswert. Erstelle eine vollständige Lieferantenliste mit allen aktuellen Preisen für deine wichtigsten Produkte. Führe eine Bestandsaufnahme deines Lagers durch. Was ist da? Was wird diese Woche verbraucht? Was könnte verderben? Den Einkaufs-Check findest du im entsprechenden Tab im Dashboard.</p>
-
   <h3>Woche 2 — Vergleichen und vorbereiten</h3>
   <p>Fülle den Lieferanten-Vergleich aus. Hole mindestens zwei Vergleichsangebote für deine wichtigsten Einkaufspositionen ein. Identifiziere die drei Lieferanten mit denen sich ein Verhandlungsgespräch am meisten lohnt und bereite dich mit konkreten Zahlen vor. Den Lieferanten-Vergleich findest du im entsprechenden Tab im Dashboard.</p>
-
   <h3>Woche 3 — Verhandeln und anpassen</h3>
   <p>Führe das Verhandlungsgespräch mit deinem wichtigsten Lieferanten. Ziel: mindestens 5 bis 10% auf die wichtigsten Positionen. Schau dir gleichzeitig deine Speisekarte an: Gibt es Dogs die gestrichen werden können? Gibt es saisonale Alternativen die günstiger und besser sind?</p>
-
   <h3>Woche 4 — Routinen einführen</h3>
   <p>Führe den wöchentlichen Einkaufs-Check als feste Routine ein. Leg einen festen Tag und eine feste Uhrzeit fest. Briefe dein Küchenpersonal zu Portionsgrößen und Lagermanagement. Berechne am Ende der Woche deinen neuen Wareneinsatz und vergleiche ihn mit dem Ausgangswert aus Woche 1.</p>
   <div class="aufgabe"><div class="aufgabe-lbl">Deine Aufgabe für Kapitel 2</div><p>Trag jetzt alle vier Wochen-Aufgaben in deinen Kalender ein. Nicht als vage Erinnerung sondern als konkrete Termine mit fester Uhrzeit. Das ist der Unterschied zwischen einem Plan und einer Absicht.</p></div>
@@ -120,7 +140,9 @@ li { font-size:15px; line-height:1.8; color:#2a3a54; margin-bottom:6px; }
     <p>Du hast Modul 3 durchgearbeitet. Jetzt ist es Zeit loszulegen. Nicht nächste Woche. Heute. Berechne deinen aktuellen Wareneinsatz. Öffne den Einkaufs-Check und füll ihn aus. Und schau dir den Lieferanten-Vergleich an damit du vorbereitet ins nächste Gespräch gehst.</p>
   </div>
 
-
+  
+<div class="fazit"><div class="fazit-lbl">🎯 Das Wichtigste auf einen Blick</div><ul><li>Der Einkauf ist nach dem Umsatz der größte Hebel für mehr Gewinn.</li><li>8 Wochen konsequente Umsetzung können den WE um 5-10 Prozentpunkte senken.</li><li>Danach: 30 Minuten pro Woche reichen um das Ergebnis zu halten.</li><li>Was du misst, verbesserst du — track deinen WE % jeden Monat.</li></ul></div>
+<div class="checkliste"><div class="checkliste-lbl">✅ Sofort-Checkliste — Das kannst du heute noch tun</div><ul><li>Woche 1: Aktuellen WE berechnen und als Startwert notieren</li><li>Woche 2: Lieferanten-Vergleich erstellen, 2 Vergleichsangebote einholen</li><li>Woche 3: Erstes Verhandlungsgespräch führen, Karte auf Dogs prüfen</li><li>Woche 4: Wöchentlichen Einkaufs-Check als feste Routine einführen</li><li>Nach 30 Tagen: Neuen WE % berechnen und mit Startwert vergleichen</li></ul></div>
   <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
 </div>
 <div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
