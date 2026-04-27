@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lektion 3 — Dein Betrieb als System denken | GASTRO-OS</title>
+<title>GASTRO-OS – Modul 0 · Lektion 3</title>
 <style>* { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
 .header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
@@ -57,137 +57,86 @@ p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
 .footer-main strong { color:#d4af37; }</style>
 </head>
 <body>
-<div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html#modul-0" class="btn-back">← Zurück zum Dashboard</a></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function(){
+  document.addEventListener('contextmenu',function(e){e.preventDefault();});
+  document.addEventListener('keydown',function(e){
+    if(e.ctrlKey&&['s','u','p','a'].includes(e.key.toLowerCase()))e.preventDefault();
+    if(e.key==='F12')e.preventDefault();
+  });
+  const sb=supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3');
+  (async function(){
+    const{data:{session}}=await sb.auth.getSession();
+    if(!session){window.location.href='login.html';return;}
+    const{data:p}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
+    if(p&&(!p.is_active||p.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
+  })();
+})();
+</script>
+<div class="header">
+  <div class="brand">GASTRO-OS</div>
+  <a href="dashboard.html#modul-0" class="btn-back">← Zurück zum Dashboard</a>
+</div>
 <div class="gold-bar"></div>
 <div class="wrap">
   <div class="lbl">Modul 0 · Lektion 3</div>
-  <h1>Dein Betrieb als System denken</h1>
-  <div class="intro">Die meisten Probleme in der Gastronomie sind keine Zufälle. Sie sind das Ergebnis fehlender Systeme. In dieser Lektion lernst du wie du deinen Betrieb systematisch betrachtest — und wo die größten Hebel liegen.</div>
-  <div class="lern-box"><div class="lern-box-title">📚 Was du in dieser Lektion lernst</div><ul><li>Was ein System in der Gastronomie bedeutet und warum es wichtiger ist als Einsatz</li><li>Die 5 Kern-Systeme die jeder Betrieb braucht</li><li>Wo in deinem Betrieb heute die größten Systemlücken sind</li><li>Wie du mit dem Aufbau beginnst ohne alles auf einmal zu ändern</li></ul></div>
-<h2>Deine ehrliche Bestandsaufnahme</h2>
-  <p>Bevor wir in die einzelnen Module einsteigen, brauchen wir einen ehrlichen Ausgangspunkt. Nicht eine geschönte Version, nicht die Antworten die gut klingen — sondern die Wahrheit über wo du heute wirklich stehst.</p>
-  <p>Das ist manchmal unbequem. Aber es ist notwendig. Denn wer seinen Ausgangspunkt nicht kennt, kann seinen Fortschritt nicht messen. Und wer seinen Fortschritt nicht misst, verliert schnell die Motivation.</p>
+  <h1>Wo stehst du heute</h1>
+  <div class="intro">Bevor du Gastro-OS anwendest brauchst du einen ehrlichen Ausgangspunkt. In dieser Lektion machst du deinen ersten Status-Check — nicht um dich schlecht zu fühlen, sondern um zu wissen wo du anfängst.</div>
+  <div class="lern-box"><div class="lern-box-title">📚 Was du in dieser Lektion lernst</div><ul><li>Den Status-Check für alle fünf Bereiche durchführen</li><li>Deinen persönlichen Score ermitteln und interpretieren</li><li>Daraus die richtigen ersten Prioritäten ableiten</li><li>Einen realistischen 12-Monats-Aktionsplan entwickeln</li></ul></div>
 
-  <h2>Die vier ehrlichen Fragen</h2>
-  <p>Stell dir diese Fragen — und beantworte sie so ehrlich wie möglich:</p>
-  <p><strong>Frage 1 — Deine Zeit:</strong> Wie viele Stunden arbeitest du durchschnittlich pro Woche — wirklich? Nicht die offizielle Version, sondern die echte Zahl inklusive aller Abende, aller Wochenenden, aller Telefonate die du noch schnell beantwortest wenn du eigentlich frei hast.</p>
-  <p>Die meisten Gastronomen kommen bei ehrlicher Zählung auf 60 bis 80 Stunden pro Woche. Manche mehr. Selten weniger. Was ist deine Zahl?</p>
-  <p><strong>Frage 2 — Deine Zahlen:</strong> Kannst du deinen aktuellen Wareneinsatz in Prozent benennen — ohne nachzuschauen? Weißt du welche drei Gerichte auf deiner Karte die höchste Marge haben — und welche drei die niedrigste?</p>
-  <p>Wenn die Antwort Nein ist: Das ist keine Schwäche. Das ist Information. Und genau hier setzt Gastro-OS an.</p>
-  <p><strong>Frage 3 — Deine Freiheit:</strong> Wann warst du das letzte Mal wirklich im Urlaub — also nicht erreichbar, nicht eingeloggt, nicht gedanklich im Betrieb? Und wie lange war das?</p>
-  <p>Für viele Gastronomen liegt die ehrliche Antwort Jahre zurück. Manche haben noch nie einen echten Urlaub gemacht seit sie ihren Betrieb eröffnet haben. Das ist kein Zufall — das ist ein Systemfehler.</p>
-  <p><strong>Frage 4 — Dein Betrieb ohne dich:</strong> Was würde in deinem Betrieb passieren wenn du morgen für zwei Wochen ausfällst?</p>
-  <p>Würde alles weiterlaufen? Würden die richtigen Entscheidungen getroffen? Oder würde ohne dich das Chaos ausbrechen?</p>
-  <p>Die Antwort auf diese Frage zeigt dir klarer als jede Analyse wo du heute wirklich stehst.</p>
+<h2>Kapitel 1 — Der ehrliche Status-Check</h2>
+<h3>Warum ein Ausgangspunkt so wichtig ist</h3>
+<p>Bevor du Gastro-OS anwendest, brauchst du einen ehrlichen Ausgangspunkt. Nicht um dich schlecht zu fühlen — sondern um zu wissen wo du anfängst. Ein Arzt macht zuerst eine Diagnose bevor er behandelt. Ein Gastronom der den Status-Check überspringt, optimiert ohne zu wissen was er optimiert.</p>
+<p>Der Status-Check hat fünf Bereiche. Für jeden Bereich gibst du dir eine Bewertung von 1 bis 5. 1 bedeutet: hier läuft fast nichts strukturiert. 5 bedeutet: dieser Bereich ist gut aufgestellt. Sei ehrlich — es gibt keine falsche Antwort, nur ehrliche und unehrliche.</p>
+<h3>Bereich 1: Zahlen und Controlling</h3>
+<p>Kennst du deinen Wareneinsatz, deine Personalquote und deinen Break-Even-Umsatz? Bekommst du monatlich eine verständliche Auswertung? Kannst du heute sagen was dein Gewinn im letzten Monat war ohne auf den Steuerberater warten zu müssen?</p>
+<p>1 Punkt: Ich kenne keine dieser Zahlen. 3 Punkte: Ich bekomme monatliche Auswertungen und kenne Umsatz und groben Wareneinsatz. 5 Punkte: Ich berechne monatlich alle Kennzahlen und entscheide regelmäßig auf Basis von Daten.</p>
+<h3>Bereich 2: Speisekarte und Angebot</h3>
+<p>Weißt du welche Gerichte deine höchste Marge haben? Ist deine Karte strategisch aufgebaut oder historisch gewachsen? Hast du in den letzten 12 Monaten gezielt Gerichte gestrichen oder angepasst?</p>
+<p>1 Punkt: Ich weiß nicht welche Gerichte profitabel sind. 3 Punkte: Ich kenne meine Bestseller aber nicht ihre genaue Marge. 5 Punkte: Ich führe regelmäßig Menu Engineering durch und passe die Karte strategisch an.</p>
+<h3>Bereich 3: Einkauf und Wareneinsatz</h3>
+<p>Hast du feste Bestellrhythmen? Verhandelst du regelmäßig mit Lieferanten? Gibt es ein Rezeptbuch mit Gramm-genauen Portionsmengen? Führst du Inventur durch?</p>
+<h3>Bereich 4: Struktur und Prozesse</h3>
+<p>Gibt es dokumentierte Abläufe? Kann dein Betrieb einen vollen Abend ohne dich laufen? Haben Mitarbeiter klare Rollen und Entscheidungsbefugnisse?</p>
+<h3>Bereich 5: Marketing und Sichtbarkeit</h3>
+<p>Ist dein Google-Profil aktuell und gepflegt? Sammelst du aktiv Bewertungen? Hast du einen Plan für Social Media der auch tatsächlich läuft?</p>
+<div class="beispiel"><div class="beispiel-lbl">📊 Status-Check Beispiel — Gastronom Markus</div>
+<p>Zahlen: 2 | Speisekarte: 3 | Einkauf: 1 | Struktur: 2 | Marketing: 3<br>
+Gesamt: 11 von 25 Punkten<br><br>
+Ein Jahr später nach Gastro-OS: 19 von 25 Punkten.<br>
+Wareneinsatz gesenkt, Schichtleiter eingestellt, Google-Bewertungen von 4,1 auf 4,6 Sterne.<br>
+<strong>Der Score von 11 war kein Urteil — er war der Startpunkt.</strong></p></div>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 1</div>
+<p>Mach den Status-Check jetzt. Schreib für jeden der 5 Bereiche deine ehrliche Bewertung auf (1–5). Addiere den Gesamtscore. Welcher Bereich hat die niedrigste Bewertung? Das ist dein erster Fokus.</p></div>
 
-  <h2>Was diese Fragen dir zeigen</h2>
-  <p>Diese Fragen haben keine richtigen oder falschen Antworten. Sie haben nur ehrliche oder unehrliche. Und die ehrlichen Antworten zeigen dir genau wo die Arbeit beginnt.</p>
-  <p>Schreib deine Antworten auf — am besten jetzt, bevor du weiterliest. Nicht weil wir sie sehen — sondern weil das Aufschreiben eine Klarheit erzeugt die Gedanken alleine selten liefern.</p>
-  <p>In zwölf Monaten wirst du dieselben Fragen nochmal beantworten. Und du wirst sehen wie weit du gekommen bist.</p>
+<h2>Kapitel 2 — Was der Score dir sagt</h2>
+<h3>Scores interpretieren ohne zu urteilen</h3>
+<p>Ein Score von 8 ist kein Katastrophensignal — er ist Information. Er zeigt dir wo das größte Potenzial liegt. Gastronomen mit niedrigen Scores haben oft das meiste zu gewinnen: kleine Verbesserungen in mehreren Bereichen addieren sich schnell zu spürbarem Unterschied am Monatsende.</p>
+<p>Scores zwischen 5 und 9: Du startest bei den absoluten Grundlagen. Modul 1 ist deine erste Priorität — Zahlen verstehen bevor du alles andere optimierst. Scores zwischen 10 und 15: Du hast Grundlagen aber noch keine Systeme. Identifiziere welcher Bereich dich am meisten kostet und beginne dort. Scores zwischen 16 und 20: Du bist gut aufgestellt. Gastro-OS wird dir helfen die letzten 20% zu heben. Scores über 20: Du bist bereits stark — Modul 10 (Wachstum) ist besonders relevant für dich.</p>
+<h3>Der Score als Kompass über 12 Monate</h3>
+<p>Mach diesen Check jetzt — und dann in 3, 6 und 12 Monaten erneut. Du wirst sehen wie sich die Zahlen verschieben wenn du das System konsequent anwendest. Der Score ist nicht der Maßstab für Erfolg — er ist das Messinstrument für Fortschritt. Und Fortschritt ist das einzige was zählt.</p>
+<div class="beispiel"><div class="beispiel-lbl">📊 12-Monate-Progression — was realistisch möglich ist</div>
+<p>Restaurant Bergblick, Ausgangsscore 10/25:<br>
+Nach 3 Monaten: 14/25 — Zahlen im Griff, erstes Rezeptbuch, Schichtleiter in Ausbildung<br>
+Nach 6 Monaten: 17/25 — Wareneinsatz von 36% auf 31%, Google-Score von 4,0 auf 4,4<br>
+Nach 12 Monaten: 21/25 — Betrieb läuft 4 Abende/Woche ohne Chef, monatlicher Gewinn verdoppelt<br><br>
+<strong>Das ist keine Magie. Das ist konsequente Arbeit mit einem klaren System.</strong></p></div>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 2</div>
+<p>Schreib deinen heutigen Score auf und lege dieses Blatt weg — für 3 Monate. Dann machst du den Check erneut. Der Vergleich zeigt dir genauer als jede andere Methode ob du auf dem richtigen Weg bist.</p></div>
 
-  <h2>Dein Ausgangspunkt ist kein Urteil</h2>
-  <p>Viele Gastronomen fühlen sich unwohl wenn sie diese Fragen ehrlich beantworten. Das Gefühl dass man schon längst weiter sein sollte. Dass andere das besser hinbekommen. Dass man irgendwo versagt hat.</p>
-  <p>Das stimmt nicht.</p>
-  <p>Dein Ausgangspunkt ist kein Urteil über dich als Gastronom oder als Person. Er ist einfach der Punkt von dem aus du startest. Und jeder Weg — egal wie weit er geht — beginnt mit einem ersten ehrlichen Schritt.</p>
-  <p>Du hast diesen Schritt bereits gemacht indem du hier bist.</p>
-
-  <h2>Was als nächstes kommt</h2>
-  <p>In den nächsten zwölf Modulen bekommst du die Werkzeuge um genau das zu verändern was du gerade ehrlich analysiert hast. Schritt für Schritt. Konkret. Umsetzbar.</p>
-  <p>Kein Modul ist Theorie um der Theorie willen. Jedes Modul hat einen direkten Bezug zu deinem Betriebsalltag — und eine klare Aufgabe die du direkt umsetzen kannst.</p>
-  <p>Starte jetzt mit der Reflexionsaufgabe — und dann geht es los mit Modul 1. 😊</p>
-
-  <div class="lektion-footer">
-    <div class="lektion-footer-brand"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
-  </div>
-
-
-<div class="beispiel"><div class="beispiel-lbl">📊 Rechenbeispiel aus der Praxis</div><p>Zwei ähnliche Restaurants, gleiche Lage, ähnliches Konzept.</p><p>Restaurant A (kein System): 4 neue Mitarbeiter pro Jahr wegen Fluktuation, Chef muss täglich einspringen, WE schwankt zwischen 32-41%.</p><p>Restaurant B (System): 0-1 neue Mitarbeiter pro Jahr, Chef kann 2 Wochen Urlaub machen, WE stabil bei 29-31%.</p><div class="rechnung">Einarbeitung neuer Mitarbeiter kostet ca. 3.000 €/Person. Restaurant A: 4 × 3.000 = 12.000 €/Jahr. Restaurant B: 0,5 × 3.000 = 1.500 €/Jahr. Systemdifferenz: 10.500 €/Jahr — nur durch eine niedrigere Fluktuation.</div></div>
-<div class="tipp-box"><p>💡 <strong>Profi-Tipp:</strong> Beginne immer mit dem System das dir heute die meiste Zeit stiehlt. Nicht mit dem das theoretisch am wichtigsten wäre. Was du täglich nervt, kostet dich täglich Energie. Dort hat eine Verbesserung sofortige Wirkung.</p></div>
-<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe für Lektion 3</div><p>Schreib die 5 Kern-Systeme auf (Einkauf, Personal, Qualität, Finanzen, Marketing) und bewerte jedes mit einer Note von 1 bis 5. 1 = läuft auf Zufall, 5 = läuft ohne mich. Deine schwächste Note zeigt dir wo du als erstes ansetzt.</p></div>
-
-<div class="fazit"><div class="fazit-lbl">🎯 Das Wichtigste auf einen Blick</div><ul><li>Ein System ist eine Aufgabe die einmal definiert wird und danach immer gleich läuft.</li><li>Die 5 Kern-Systeme: Einkauf · Personal · Qualität · Finanzen · Marketing.</li><li>Ein schlechtes System ist besser als kein System — du kannst es verbessern.</li><li>Fange mit dem System an das dir heute die meiste Zeit stiehlt.</li></ul></div>
-<div class="checkliste"><div class="checkliste-lbl">✅ Sofort-Checkliste — Das kannst du heute noch tun</div><ul><li>5 Kern-Systeme mit Note 1-5 bewerten</li><li>Das schwächste System identifizieren — das ist dein erster Fokus</li><li>3 Sofortmaßnahmen für das schwächste System aufschreiben</li><li>Modul 1 starten: Zahlen und Unternehmer-Score</li></ul></div>
-  
-<h3>Ehrlichkeit ist der Startpunkt — nicht das Ziel</h3>
-<p>Viele Gastronomen zögern bei dieser Art von Selbstreflexion weil sie fürchten dass die Antworten unangenehm sein könnten. Das ist verständlich. Aber Unannehmlichkeit ist kein Problem — sie ist Information. Wenn du feststellst dass dein Betrieb in einem Bereich weit hinter dem zurückbleibt wo du sein möchtest, weißt du jetzt wo du anfangen musst. Das ist wertvoll — nicht beunruhigend.</p>
-<p>Gastro-OS ist so aufgebaut dass du genau dort ansetzen kannst wo dein größtes Problem liegt. Du musst nicht mit Modul 1 anfangen wenn dein dringlichstes Problem in Modul 6 liegt. Das System ist flexibel — weil dein Betrieb es auch sein muss.</p>
-<h3>Der Unterschied zwischen einem Check und einem Urteil</h3>
-<p>Wenn ein Arzt eine Blutuntersuchung macht und erhöhte Cholesterinwerte findet, ist das kein Urteil über den Patienten. Es ist eine Information die zur Handlung führt. Genauso ist deine Bestandsaufnahme heute kein Urteil über dich als Gastronom. Es ist eine Momentaufnahme die zeigt was als nächstes zu tun ist.</p>
-<p>Es gibt keine schlechten Betriebe in Gastro-OS — nur Betriebe in unterschiedlichen Phasen ihrer Entwicklung. Ein Betrieb der seit 3 Jahren existiert und gerade sein erstes System einführt ist nicht schlechter als einer der seit 10 Jahren läuft. Er ist früher in seiner Entwicklung. Das ist alles.</p>
-<h3>Dein erstes Gespräch mit dir selbst</h3>
-<p>Nimm dir nach dieser Lektion 10 Minuten. Setz dich irgendwo hin wo es ruhig ist. Und beantworte drei Fragen schriftlich. Erstens: Was ist das eine Problem in meinem Betrieb das mir am meisten schlaflose Nächte bereitet? Nicht die Liste aller Probleme — das eine das am schwersten wiegt. Zweitens: Was wäre in meinem Betrieb und in meinem Leben anders wenn dieses Problem gelöst wäre? Wie würde sich das anfühlen? Drittens: Was ist der kleinste mögliche erste Schritt den ich in den nächsten 7 Tagen machen kann um diesem Ziel näher zu kommen?</p>
-<p>Diese drei Fragen verbinden das Problem mit dem Ziel — und das Ziel mit einer konkreten Handlung. Das ist die Grundlage dafür dass sich in den nächsten 12 Monaten wirklich etwas verändert.</p>
-<div class="highlight">Der stärkste Prädiktor für Erfolg mit Gastro-OS ist nicht wo du anfängst — sondern wie konsequent du eine Sache nach der anderen umsetzt. Fertig ist besser als perfekt. Umgesetzt ist besser als geplant.</div>
-</div>
-
-<h2>Der Status-Check in der Tiefe</h2>
-<h3>Bereich 1: Zahlen und Controlling — Was du wirklich prüfen musst</h3>
-<p>Die oberflächliche Frage ist: Kennst du deinen Wareneinsatz? Die tiefere Frage ist: Woher weißt du ihn? Wenn die Antwort lautet "vom Steuerberater einmal im Quartal" — dann weißt du es nicht wirklich. Du weißt was er vor 90 Tagen war. In der Gastronomie können in 90 Tagen erhebliche Veränderungen passieren die du verpasst hast.</p>
-<p>Echtes Zahlen-Controlling bedeutet: Du kannst heute sagen was dein Wareneinsatz im letzten Monat war, was deine Personalquote war und ob du Gewinn oder Verlust gemacht hast — ohne auf den Steuerberater warten zu müssen. Wenn das heute nicht möglich ist, ist das deine wichtigste erste Baustelle.</p>
-<p>Bewertungsskala für diesen Bereich:</p>
-<p><strong>1 Punkt:</strong> Ich kenne keine dieser Zahlen und bekomme sie nur einmal im Jahr beim Jahresabschluss.<br>
-<strong>2 Punkte:</strong> Ich bekomme quartalsweise eine BWA vom Steuerberater, lese sie aber kaum.<br>
-<strong>3 Punkte:</strong> Ich bekomme monatliche Auswertungen und kenne Umsatz und groben Wareneinsatz.<br>
-<strong>4 Punkte:</strong> Ich berechne monatlich Wareneinsatz %, Personalquote und Gewinn und vergleiche mit dem Vormonat.<br>
-<strong>5 Punkte:</strong> Ich habe ein wöchentliches Controlling-Ritual, kenne alle Kennzahlen und entscheide regelmäßig basierend auf Daten.</p>
-
-<h3>Bereich 2: Speisekarte und Angebot — Die versteckten Gewinnkiller</h3>
-<p>Die meisten Gastronomen können sofort sagen welches ihre meistbestellten Gerichte sind. Aber nur wenige können sagen welche Gerichte die höchste Marge haben. Und noch weniger wissen ob diese beiden Listen überhaupt übereinstimmen.</p>
-<p>Ein Gericht das oft bestellt wird aber eine niedrige Marge hat (Plowhorse) bindet Küchenkapazität, erhöht den Wareneinsatz und verdrängt möglicherweise Gerichte mit besserer Marge. Das ist keine Theorie — in vielen Betrieben finanzieren die Stammgäste mit ihren Lieblingsgerichten de facto die Verluste auf anderen Karten-Positionen.</p>
-<p><strong>Test für Bereich 2:</strong> Kannst du für deine 10 meistverkauften Gerichte sofort den Deckungsbeitrag in Euro und die Marge in Prozent nennen? Wenn nein — das ist die Lücke.</p>
-
-<h3>Bereich 3: Einkauf — Wo Geld am lautlosesten verloren geht</h3>
-<p>Einkauf ist in den meisten kleinen Gastrobetrieben der am wenigsten professionalisierte Bereich. Das liegt daran dass schlechter Einkauf keine sofortigen Konsequenzen hat. Wenn der Service schlecht ist beschweren sich Gäste sofort. Wenn der Einkauf schlecht ist, merkt man es erst nach Monaten in den Zahlen — wenn überhaupt.</p>
-<p>Drei Fragen die dir sofort zeigen wo du stehst: Wie oft bestellst du pro Woche? (Mehr als 3× deutet auf reaktiven statt geplanten Einkauf hin.) Wann hast du zuletzt Lieferantenpreise verglichen? (Länger als 6 Monate — du zahlst wahrscheinlich zu viel.) Hast du ein dokumentiertes Rezeptbuch mit Portionsgewichten? (Nein — dein Wareneinsatz schwankt täglich nach dem Tagesgefühl der Köche.)</p>
-
-<h3>Bereich 4: Struktur und Prozesse — Der Test der alles zeigt</h3>
-<p>Es gibt nur einen wirklichen Test für diesen Bereich: Geh zwei Wochen weg. Kein Telefon, keine Nachrichten, keine täglichen Check-ins. Was passiert?</p>
-<p>Wenn du diesen Test nicht machen kannst weil "alles zusammenbrechen würde" — dann weißt du was dein Score in diesem Bereich ist. Nicht weil du schlecht führst. Sondern weil die Systeme noch nicht stabil genug sind um ohne dich zu funktionieren. Das ist der Ausgangspunkt — nicht das Urteil.</p>
-
-<h3>Bereich 5: Marketing und Sichtbarkeit — Die digitale Visitenkarte</h3>
-<p>Geh jetzt zu Google und suche deinen Betrieb. Was siehst du? Wie viele Bewertungen gibt es? Was ist die aktuelle Bewertung? Sind Öffnungszeiten korrekt? Gibt es aktuelle Fotos von Gerichten?</p>
-<p>Das ist dein digitaler erster Eindruck für jeden potenziellen Neugast. Und für viele ist er der einzige Eindruck bevor sie entscheiden ob sie kommen oder zum Mitbewerber gehen. Wenn dieser erste Eindruck nicht stark ist, verlierst du täglich Gäste ohne es zu wissen.</p>
-<div class="beispiel"><div class="beispiel-lbl">📊 Was ein besserer Google-Score bedeutet</div>
-<p>Lokale Restaurants mit 4,5+ Sternen bekommen statistisch 30–40% mehr Klicks als vergleichbare Restaurants mit 4,0–4,2 Sternen. Bei einem Restaurant das monatlich 100 neue Gäste über Google gewinnt wären das 30–40 zusätzliche Gäste pro Monat. Bei einem Durchschnittsbon von 28 Euro: 840–1.120 Euro mehr Umsatz pro Monat — nur durch einen besseren Score.</p></div>
-
-
-<h2>Dein persönlicher Aktionsplan aus der Bestandsaufnahme</h2>
+<h2>Kapitel 3 — Dein persönlicher Aktionsplan</h2>
 <h3>Von Scores zu Prioritäten</h3>
-<p>Wenn du die Bestandsaufnahme gemacht hast, hast du fünf Scores zwischen 1 und 5. Der niedrigste Score zeigt wo dein größtes Potenzial liegt — und damit deine erste Priorität. Aber die Priorität bedeutet nicht dass du alle anderen Bereiche ignorierst. Es bedeutet dass du hier anfängst.</p>
-<p>Eine bewährte Strategie: Fokus auf den schwächsten Bereich bis du ihn auf mindestens 3 Punkte bringst. Dann zum nächstschwächsten. Das gibt dir schneller spürbare Verbesserungen als wenn du in allen fünf Bereichen gleichzeitig ein bisschen machst und nirgends wirklich vorankommst.</p>
+<p>Aus dem Status-Check entstehen konkrete Prioritäten. Fokussiere zuerst auf den schwächsten Bereich bis du ihn auf mindestens 3 Punkte bringst. Dann auf den nächstschwächsten. Das gibt dir schnellere spürbare Verbesserungen als wenn du in allen fünf Bereichen gleichzeitig ein bisschen machst.</p>
+<h3>Was in 12 Monaten realistisch möglich ist</h3>
+<p>Nach 3 Monaten: Kennzahlen bekannt, erste Delegation, Google-Profil aktuell. Nach 6 Monaten: Wareneinsatz um 2–4 Punkte gesenkt, Schichtleiter in Ausbildung, ein freier Tag pro Woche. Nach 12 Monaten: Betrieb läuft eigenständig an 4+ Tagen, Gewinn 1.500–3.500 Euro höher als vorher, echte Urlaubswochen genommen.</p>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 3</div>
+<p>Schreib auf: Was ändert sich in meinem Betrieb und in meinem Leben wenn ich die nächsten 12 Monate konsequent mit Gastro-OS arbeite? Konkret — nicht allgemein. Was verändert sich bei den Zahlen? Beim Team? Bei deiner Zeit? Diese Antwort ist deine Motivation wenn der Alltag wieder drückt.</p></div>
 
-<h3>Was 12 Monate konsequente Arbeit realistisch verändern</h3>
-<p>Keine Versprechungen — nur realistische Einschätzungen basierend auf dem was Gastronomen berichten die Gastro-OS konsequent umgesetzt haben:</p>
-<p>Nach 3 Monaten: Du kennst deine Kennzahlen monatlich. Dein Wareneinsatz ist messbar. Du hast mindestens eine Aufgabe vollständig delegiert. Du hast ein erstes Team-System (wöchentliches Briefing oder Schichtleiter in Ausbildung) eingeführt. Diese Basis ist wertvoll — weil sie Klarheit schafft und Richtung gibt.</p>
-<p>Nach 6 Monaten: Wareneinsatz ist um 2–4 Prozentpunkte gesunken durch Einkaufsoptimierung und Portionsstandards. Dein Schichtleiter übernimmt 2–3 Abende pro Woche eigenständig. Du hast einen freien Tag pro Woche. Google-Bewertungen sind um 0,2–0,4 Sterne gestiegen durch aktives Sammeln.</p>
-<p>Nach 12 Monaten: Wareneinsatz unter 30%. Personalquote unter 35%. Ein eigenständig laufender Betrieb an mindestens 4 Tagen pro Woche. Du hast 3–6 Wochen Urlaub gemacht ohne dass der Betrieb gelitten hat. Dein monatlicher Gewinn ist um 1.500–3.500 Euro höher als vor 12 Monaten.</p>
-<div class="beispiel"><div class="beispiel-lbl">📊 12 Monate Gastro-OS — ein realistisches Szenario</div>
-<p><strong>Ausgangssituation:</strong> Restaurant, 45 Plätze, 32.000 € Monatsumsatz, WE 36%, Personal 39%, Gewinn 1.600 € (5%)<br><br>
-<strong>Nach 12 Monaten:</strong><br>
-Wareneinsatz: 30% (−6 Punkte) → +1.920 €/Monat<br>
-Personalquote: 35% (−4 Punkte) → +1.280 €/Monat<br>
-Durchschnittsbon +2 € × 40 Gäste × 25 Tage → +2.000 €/Monat<br>
-Gesamtverbesserung: +5.200 €/Monat<br>
-<strong>Neuer monatlicher Gewinn: 6.800 € (21,25%) statt 1.600 €</strong><br><br>
-Das ist keine Magie. Das ist Mathematik multipliziert mit Konsequenz.</p></div>
-
-<h3>Die eine Frage die alles zusammenfasst</h3>
-<p>Am Ende dieser Lektion — und am Ende von Modul 0 — steht eine einzige Frage die alles zusammenfasst: <em>Was ändert sich in meinem Betrieb und in meinem Leben wenn ich die nächsten 12 Monate konsequent mit Gastro-OS arbeite?</em></p>
-<p>Schreib die Antwort auf. Nicht allgemein — konkret. Was verändert sich bei den Zahlen? Was verändert sich beim Team? Was verändert sich bei deiner Arbeitszeit? Was verändert sich in deiner Familie weil du mehr Zeit und weniger Stress hast?</p>
-<p>Diese Antwort ist deine Motivation. In Wochen wo die Umsetzung schwer fällt, wo der Alltag wieder alle Zeit auffrisst — dann lies diese Antwort noch einmal. Sie erinnert dich wofür du das alles machst.</p>
-
-
-<h3>Vom Score zum Aktionsplan — konkrete nächste Schritte</h3>
-<p>Du hast jetzt deinen Score. Was machst du damit? Hier ist ein einfacher Aktionsplan der unabhängig von deinem Score funktioniert:</p>
-<p><strong>Wenn dein Score 5–9 ist:</strong> Du startest mit den absoluten Grundlagen. Modul 1 ist dein erster und wichtigster Schritt. Bevor du dir Gedanken über Einkauf oder Marketing machst, musst du deine Zahlen verstehen. Das ist die Basis auf der alles andere aufbaut.</p>
-<p><strong>Wenn dein Score 10–15 ist:</strong> Du hast Grundlagen aber noch keine Systeme. Arbeite Modul 1 durch und dann direkt zu dem Modul das deinen schwächsten Bereich adressiert. Du kannst Fortschritte machen ohne von vorne anzufangen.</p>
-<p><strong>Wenn dein Score 16–20 ist:</strong> Du bist gut aufgestellt aber es gibt spezifische Schwächen. Identifiziere welche Module dir am meisten bringen und konzentriere dich darauf. Du kannst Module die deinen stärken Bereichen entsprechen schneller durcharbeiten.</p>
-<p><strong>Wenn dein Score 21–25 ist:</strong> Du bist bereits stark. Gastro-OS wird dir helfen die letzten 20% zu heben die den Unterschied zwischen gut und exzellent machen. Und es gibt dir die Werkzeuge um über Wachstum nachzudenken — Modul 10 ist dann besonders relevant.</p>
-<p>Unabhängig vom Score: Starte jetzt. Nicht morgen, nicht nach dem Wochenende, nicht wenn es ruhiger wird. Es wird nicht ruhiger von selbst. Der richtige Zeitpunkt für Verbesserung ist immer jetzt.</p>
-
-<div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
-
-<div class="nav-row"><a href="modul0-lektion2.html" class="nav-btn secondary">← Lektion 2</a></div>
+<div class="nav-row"><a href="modul0-lektion2.html" class="nav-btn secondary">← Lektion 2</a><a href="modul0-reflexion.html" class="nav-btn">Reflexionsaufgabe →</a></div>
+<div class="fazit"><div class="fazit-lbl">🎯 Das Wichtigste auf einen Blick</div><ul><li>Status-Check: Bewerbe alle 5 Bereiche ehrlich mit 1–5.</li><li>Niedrigster Score = deine erste Priorität für Modul 1+.</li><li>Score in 3 Monaten erneut machen — der Fortschritt wird dich überraschen.</li><li>Nicht perfekt anfangen. Jetzt anfangen.</li></ul></div>
+<div class="checkliste"><div class="checkliste-lbl">✅ Sofort-Checkliste — Das kannst du heute noch tun</div><ul><li>Status-Check vollständig ausfüllen und Gesamtscore notieren</li><li>Score aufbewahren für den 3-Monats-Vergleich</li><li>Ersten Fokusbereich identifizieren und aufschreiben</li><li>Das passende Gastro-OS Modul für den schwächsten Bereich öffnen</li></ul></div>
+  <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
 </div>
 <div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
 </body>

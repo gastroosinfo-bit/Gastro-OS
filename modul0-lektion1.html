@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lektion 1 — Der Gastronom als System-Architekt | GASTRO-OS</title>
+<title>GASTRO-OS – Modul 0 · Lektion 1</title>
 <style>* { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
 .header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
@@ -57,136 +57,78 @@ p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
 .footer-main strong { color:#d4af37; }</style>
 </head>
 <body>
-<div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html#modul-0" class="btn-back">← Zurück zum Dashboard</a></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function(){
+  document.addEventListener('contextmenu',function(e){e.preventDefault();});
+  document.addEventListener('keydown',function(e){
+    if(e.ctrlKey&&['s','u','p','a'].includes(e.key.toLowerCase()))e.preventDefault();
+    if(e.key==='F12')e.preventDefault();
+  });
+  const sb=supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3');
+  (async function(){
+    const{data:{session}}=await sb.auth.getSession();
+    if(!session){window.location.href='login.html';return;}
+    const{data:p}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
+    if(p&&(!p.is_active||p.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
+  })();
+})();
+</script>
+<div class="header">
+  <div class="brand">GASTRO-OS</div>
+  <a href="dashboard.html#modul-0" class="btn-back">← Zurück zum Dashboard</a>
+</div>
 <div class="gold-bar"></div>
 <div class="wrap">
   <div class="lbl">Modul 0 · Lektion 1</div>
-  <h1>Der Gastronom als System-Architekt</h1>
-  <div class="intro">Du hast das Ankervideo gesehen und weißt jetzt worum es in Gastro-OS geht. Diese erste Lektion ist der ehrlichste Spiegel den du dir als Gastronom vorhalten kannst. Nicht um zu urteilen — sondern um zu verstehen wo du heute wirklich stehst und wohin das System dich bringen kann.</div>
-  <div class="lern-box"><div class="lern-box-title">📚 Was du in dieser Lektion lernst</div><ul><li>Den Unterschied zwischen IM Betrieb und AM Betrieb arbeiten verstehen</li><li>Die Operator-Falle erkennen und deinen eigenen Status-Quo einschätzen</li><li>Warum die meisten Gastronomen täglich kämpfen obwohl sie sich abrackern</li><li>Den ersten konkreten Schritt aus dem reaktiven Modus planen</li></ul></div>
-<h2>Die größte Lüge der Gastronomie</h2>
-  <p>Es gibt eine Überzeugung die sich tief in die Gastronomen-Kultur eingebrannt hat. Sie wird selten laut ausgesprochen — aber sie steckt hinter fast jeder Entscheidung, hinter fast jeder Strategie, hinter fast jedem Gespräch über den Betrieb.</p>
-  <p>Die Überzeugung lautet: Wenn der Umsatz stimmt, stimmt alles.</p>
-  <p>Mehr Gäste, mehr Umsatz, mehr Sicherheit. Das ist die Logik. Und sie klingt so selbstverständlich dass kaum jemand sie hinterfragt.</p>
-  <p>Aber sie ist falsch. Oder genauer gesagt: Sie ist unvollständig. Und diese Unvollständigkeit kostet Gastronomen jedes Jahr Tausende von Euro — manchmal ihre Existenz.</p>
-  <p>Denn Umsatz ohne Struktur ist wie Wasser in einem Sieb. Es kommt rein — und fließt direkt wieder raus. Durch unkontrollierten Wareneinsatz. Durch ineffiziente Personalplanung. Durch Energiekosten die niemand im Blick hat. Durch Verschwendung die sich so tief in den Alltag eingeschlichen hat dass sie niemand mehr als Verschwendung wahrnimmt.</p>
-  <p>Es gibt Restaurants in Deutschland die machen 800.000 Euro Umsatz im Jahr — und am Ende bleibt weniger übrig als bei einem Betrieb mit 400.000 Euro Umsatz der seine Kosten im Griff hat. Mehr Umsatz, mehr Arbeit, mehr Stress — und weniger Gewinn.</p>
-  <p>Das ist keine Ausnahme. Das ist ein Muster. Und dieses Muster hat einen Namen: Umsatzfalle.</p>
+  <h1>Warum Umsatz dich nicht rettet</h1>
+  <div class="intro">Diese erste Lektion ist der ehrlichste Spiegel den du dir als Gastronom vorhalten kannst. Nicht um zu urteilen — sondern um zu verstehen wo du heute wirklich stehst und was du konkret verändern kannst.</div>
+  <div class="lern-box"><div class="lern-box-title">📚 Was du in dieser Lektion lernst</div><ul><li>Den Unterschied zwischen Umsatz und Gewinn konkret verstehen</li><li>Die drei wichtigsten Kennzahlen kennen und berechnen können</li><li>Stille Kosten-Erosion erkennen und verhindern</li><li>Den ersten Zahlen-Check durchführen</li></ul></div>
 
-  <h2>Ein konkretes Beispiel aus der Praxis</h2>
-  <p>Stell dir zwei Gastronomen vor. Beide führen ein Restaurant in einer deutschen Mittelstadt.</p>
-  <p>Marco macht 650.000 Euro Umsatz im Jahr. Er arbeitet sechs Tage die Woche, kennt seine Zahlen kaum, und wundert sich warum am Ende des Monats nie etwas übrig bleibt. Sein Wareneinsatz liegt bei 38%, seine Personalkosten bei 42%. Er lebt vom Umsatz — nicht vom Gewinn.</p>
-  <p>Thomas macht 380.000 Euro Umsatz. Er arbeitet fünf Tage die Woche, kennt seinen Wareneinsatz auf den Prozentpunkt genau, und hat jeden Monat einen klaren Überblick über seine Zahlen. Sein Wareneinsatz liegt bei 28%, seine Personalkosten bei 33%.</p>
-  <p>Am Ende des Jahres verdient Thomas mehr als Marco. Mit fast 300.000 Euro weniger Umsatz.</p>
-  <p>Das ist keine Ausnahme. Das ist das Ergebnis von Struktur gegen Chaos. Von Gewinn-Denken gegen Umsatz-Denken.</p>
+<h2>Kapitel 1 — Die größte Lüge der Gastronomie</h2>
+<h3>Warum Umsatz trügt</h3>
+<p>Es gibt einen Satz den Gastronomen häufig sagen wenn es läuft: <em>Wir sind immer voll.</em> Und dann kommt am Monatsende wenig bis nichts übrig. Wie ist das möglich? Die Antwort liegt in einem Irrtum der tief in der Gastro-Kultur verwurzelt ist: Umsatz wird mit Erfolg gleichgesetzt. Ein volles Restaurant fühlt sich wie Erfolg an — aber ein volles Restaurant das zu hohe Kosten hat, macht trotzdem Verlust.</p>
+<p>Umsatz ist das was reinkommt. Gewinn ist das was bleibt. Nur der Gewinn bezahlt deinen Lebensunterhalt, deine Rücklagen, deine Freiheit. Ein Betrieb mit 80.000 Euro Monatsumsatz und 82.000 Euro Kosten ist kein Erfolg — er ist ein Problem das sich gut anfühlt.</p>
+<h3>Zwei Gastronomen — ein Vergleich</h3>
+<p>Gastronom A macht 40.000 Euro Umsatz im Monat. Kosten: 36.000 Euro. Gewinn: 4.000 Euro. Gastronom B macht 70.000 Euro Umsatz. Kosten: 68.500 Euro. Gewinn: 1.500 Euro. Wer ist erfolgreicher? Nach außen Gastronom B. In Wirklichkeit Gastronom A: mehr Gewinn, weniger Stress, weniger Risiko.</p>
+<div class="highlight">Merksatz: Du führst kein Umsatz-Unternehmen. Du führst ein Gewinn-Unternehmen. Umsatz ist das Mittel — Gewinn ist das Ziel.</div>
 
-  <h2>Was wirklich zählt — Gewinn, nicht Umsatz</h2>
-  <p>Wenn wir bei Gastro-OS über Erfolg sprechen, sprechen wir nicht über Umsatz. Wir sprechen über Gewinn. Über echten Gewinn — nach allen Kosten, nach deinem eigenen Unternehmerlohn, nach Rücklagen für Investitionen und unerwartete Ausgaben.</p>
-  <p>Das klingt selbstverständlich. Aber in der Praxis denken erschreckend viele Gastronomen primär in Umsatzkategorien. Sie wissen was sie eingenommen haben — aber nicht was wirklich übrig geblieben ist. Und was übrig bleibt, wissen sie oft nur einmal im Jahr wenn der Steuerberater die Zahlen vorlegt.</p>
-  <p>Zu diesem Zeitpunkt ist es für Kurskorrekturen oft zu spät.</p>
-  <p>Ein Gastronom der sein Business wirklich versteht, kennt seine wichtigsten Kennzahlen regelmäßig. Nicht täglich — aber monatlich mindestens. Wareneinsatz, Personalkosten, Deckungsbeitrag, Liquidität. Diese Zahlen sind keine Buchhaltungsübung. Sie sind das Steuerungsinstrument seines Betriebs. Wer sie nicht kennt, fährt blind.</p>
-  <p>Der erste Schritt aus der Umsatzfalle ist deshalb nicht mehr Umsatz zu machen — sondern den bestehenden Umsatz besser zu verstehen. Zu wissen was er wirklich einbringt. Und zu wissen wo er verloren geht.</p>
+<h2>Kapitel 2 — Die drei Kennzahlen die alles entscheiden</h2>
+<h3>Kennzahl 1: Wareneinsatz in Prozent</h3>
+<p>Was von deinem Umsatz geht direkt für Lebensmittel und Getränke drauf? Formel: Warenbestand Anfang + Einkäufe im Monat − Warenbestand Ende = tatsächlicher Wareneinsatz. Dividiert durch Nettoumsatz mal 100. Zielwert: unter 30%. Viele Betriebe liegen bei 35–40% und wissen es nicht — weil sie nie gemessen haben.</p>
+<h3>Kennzahl 2: Personalkosten in Prozent</h3>
+<p>Löhne, Gehälter und alle Sozialabgaben als Anteil am Umsatz. Zielwert: unter 35%. Wichtig: Der Arbeitgeberanteil zur Sozialversicherung (ca. 20% des Bruttolohns) muss eingerechnet sein. Ein Koch mit 2.200 Euro Bruttolohn kostet tatsächlich ca. 2.640 Euro. Wer das ignoriert, unterschätzt die Personalkosten systematisch um 15–20%.</p>
+<h3>Kennzahl 3: Gewinnmarge in Prozent</h3>
+<p>Was bleibt nach allen Kosten? Zielwert: mindestens 10–15%. Liegt deine Marge darunter — das ist kein Urteil, das ist ein Startpunkt. Jeder Prozentpunkt Verbesserung bringt bei 35.000 Euro Umsatz 350 Euro mehr Gewinn pro Monat, 4.200 Euro pro Jahr.</p>
+<div class="beispiel"><div class="beispiel-lbl">📊 Was 1 Prozentpunkt bedeutet</div>
+<p>Restaurant mit 35.000 € Monatsumsatz:<br>
+Wareneinsatz von 34% auf 33%: +350 €/Monat = +4.200 €/Jahr<br>
+Personalquote von 37% auf 36%: +350 €/Monat = +4.200 €/Jahr<br>
+Durchschnittsbon +1 € bei 60 Gästen × 25 Tage: +1.500 €/Monat = +18.000 €/Jahr<br><br>
+<strong>Drei 1%-Verbesserungen: +27.600 €/Jahr — aus denselben Gästen, demselben Betrieb.</strong></p></div>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 2</div>
+<p>Schau dir deine letzte BWA oder Kassenabrechnung an. Berechne: Wareneinsatz in %? Personalquote in %? Was bleibt als Gewinn? Schreib diese drei Zahlen auf. Wenn du sie nicht kennst — das ist das erste Problem das wir gemeinsam lösen.</p></div>
 
-  <h2>Was das für dich bedeutet</h2>
-  <p>Bevor du zur nächsten Lektion gehst — stell dir diese eine Frage:</p>
-  <p>Weißt du was in deinem Betrieb nach allen Kosten wirklich übrig bleibt — jeden Monat, auf den Euro genau?</p>
-  <p>Wenn die Antwort Nein ist: Das ist dein Startpunkt. Nicht als Vorwurf — sondern als Information. Denn wer seinen Ausgangspunkt kennt, kann sich verbessern. Wer ihn nicht kennt, dreht sich im Kreis.</p>
-  <p>In den nächsten Lektionen zeigen wir dir Schritt für Schritt wie du diesen Überblick bekommst — und was du damit machst.</p>
-  <p>Weiter zu Lektion 2. 😊</p>
-
-  <div class="lektion-footer">
-    <div class="lektion-footer-brand"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
-  </div>
-
-
-<div class="beispiel"><div class="beispiel-lbl">📊 Rechenbeispiel aus der Praxis</div><p>Mario betreibt ein Restaurant mit 60 Plätzen. Er arbeitet täglich 12 Stunden — Service, Einkauf, Buchführung, Reklamationen.</p><p>Obwohl der Betrieb läuft hat er am Monatsende kaum Gewinn und noch weniger Energie.</p><div class="rechnung">12h/Tag × 25 Tage = 300h/Monat. Davon strategisch AM Betrieb: 0h. Stundenlohn effektiv bei 1.800 € Gewinn: 6 €/h — unter Mindestlohn.</div><p>Was passiert wenn Mario 5h/Woche AM Betrieb arbeitet? 5h × 50 Wochen = 250h/Jahr für Systeme, Prozesse, Strategie. In 12 Monaten: ein anderer Betrieb.</p></div>
-<div class="tipp-box"><p>💡 <strong>Profi-Tipp:</strong> Führe eine Woche lang ein Zeittagebuch. Schreib jede halbe Stunde auf was du getan hast. Am Ende siehst du schwarz auf weiß wofür deine Zeit wirklich draufgeht — und was davon wirklich Chef-Aufgaben sind.</p></div>
-<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe für Lektion 1</div><p>Schreib jetzt auf: Wie viele Stunden arbeitest du pro Woche? Wie viele davon AM Betrieb (strategisch) und wie viele IM Betrieb (operativ)? Diese ehrliche Bestandsaufnahme ist dein Startpunkt.</p></div>
-
-<div class="fazit"><div class="fazit-lbl">🎯 Das Wichtigste auf einen Blick</div><ul><li>Operator = funktioniert im Betrieb. Unternehmer = baut Systeme die ohne ihn funktionieren.</li><li>Die Operator-Falle entsteht schleichend — jeder fängt als Operator an. Der Unterschied ist ob man bleibt.</li><li>AM Betrieb arbeiten bedeutet: Systeme bauen, dokumentieren, delegieren, strategisch denken.</li><li>Ziel am Ende von Gastro-OS: Der Betrieb läuft eine Woche ohne dich — ohne Qualitätsverlust.</li></ul></div>
-<div class="checkliste"><div class="checkliste-lbl">✅ Sofort-Checkliste — Das kannst du heute noch tun</div><ul><li>Zeittagebuch für eine Woche starten: Was machst du wann?</li><li>Berechnen: Wie viele Stunden bist du pro Woche wirklich im Betrieb?</li><li>Notieren: Welche 3 Aufgaben könntest du sofort an jemanden abgeben?</li><li>Unternehmer-Score Tool öffnen und ersten Selbst-Check machen</li></ul></div>
-</div>
-
-<h2>Die Psychologie des Umsatz-Denkens</h2>
-<h3>Warum das Gehirn Umsatz mit Erfolg verwechselt</h3>
-<p>Es gibt einen tief verwurzelten psychologischen Mechanismus der erklärt warum Gastronomen Umsatz mit Erfolg gleichsetzen: Sichtbarkeit. Ein volles Restaurant ist sichtbar. Hohe Umsatzzahlen auf dem Kassensystem sind sichtbar. Gewinn hingegen ist unsichtbar — er zeigt sich erst am Monatsende wenn die Energie für Freude schon verflogen ist.</p>
-<p>Das Gehirn bewertet was es unmittelbar wahrnimmt. Und im Gastrobetrieb ist Umsatz das was man täglich sieht, hört und fühlt. Die Kasse klingelt. Das Restaurant ist voll. Der Abend war "gut". Diese Signale täuschen — weil sie nichts über den Gewinn aussagen.</p>
-<h3>Das stille Erosionsproblem</h3>
-<p>Die gefährlichste Form von betrieblichem Misserfolg ist die stille Erosion. Nicht der dramatische Einbruch sondern das langsame Auffressen der Marge durch schleichend steigende Kosten, uninflationierte Preise und wachsenden Wareneinsatz. Viele Gastronomen die heute in ernsten Schwierigkeiten stecken hatten vor 3 Jahren noch gute Zahlen — aber nichts gemessen und nichts angepasst.</p>
-<p>Ein Beispiel: Wareneinsatz steigt jährlich um 1,5 Prozentpunkte weil Einkaufspreise steigen aber Speisekartenpreise nicht angepasst werden. Nach 4 Jahren: 6 Prozentpunkte mehr Wareneinsatz. Bei 35.000 Euro Monatsumsatz bedeutet das 2.100 Euro weniger Gewinn pro Monat — 25.200 Euro pro Jahr die still verschwunden sind.</p>
-
-<h2>Drei Zahlen die alles verändern — in der Praxis</h2>
-<h3>Wareneinsatz: die präzise Berechnung</h3>
-<p>Viele Gastronomen schätzen ihren Wareneinsatz — was zu systematischen Fehlern führt. Die korrekte Berechnung:</p>
-<p><strong>Warenbestand Anfang des Monats + Einkäufe im Monat − Warenbestand Ende des Monats = tatsächlicher Wareneinsatz.</strong></p>
-<p>Wer nur die Einkaufsrechnungen addiert ohne den Bestandsveränderungen zu berücksichtigen, misst nicht den Verbrauch — er misst den Einkauf. Bei schwankenden Lagerbeständen kann das zu Abweichungen von 3 bis 8 Prozentpunkten führen. Das ist der Unterschied zwischen 28% und 36% Wareneinsatz — und damit oft der Unterschied zwischen Gewinn und Verlust.</p>
-<div class="beispiel"><div class="beispiel-lbl">📊 Wareneinsatz korrekt berechnen</div>
-<p>Restaurant Mitte, 50 Plätze:<br>
-Warenbestand 1. Oktober: 4.200 Euro<br>
-Einkäufe Oktober: 11.800 Euro<br>
-Warenbestand 31. Oktober: 3.900 Euro<br>
-Tatsächlicher Wareneinsatz: 4.200 + 11.800 − 3.900 = <strong>12.100 Euro</strong><br>
-Nettoumsatz Oktober: 38.500 Euro<br>
-Wareneinsatz in %: 12.100 ÷ 38.500 × 100 = <strong>31,4%</strong><br><br>
-Hätte der Inhaber nur die Einkaufsrechnungen addiert (11.800 Euro), wäre er auf 30,6% gekommen — und hätte gedacht er liegt fast im Ziel. Der tatsächliche Wert ist 0,8 Prozentpunkte höher — 308 Euro Unterschied im Monat, 3.696 Euro im Jahr.</p></div>
-
-<h3>Personalkosten: was wirklich zählt</h3>
-<p>Der häufigste Fehler beim Berechnen der Personalquote: nur Bruttolöhne einzurechnen. Die vollständigen Personalkosten umfassen Bruttolöhne und -gehälter, Arbeitgeberanteile zur Sozialversicherung (ca. 20% des Bruttolohns), Berufsgenossenschaftsbeiträge, Kosten für Personalessen, und Kosten für Arbeitskleidung wenn du sie stellst.</p>
-<p>In der Praxis bedeutet das: ein Mitarbeiter mit 2.200 Euro Bruttolohn kostet dich tatsächlich ca. 2.640 Euro pro Monat wenn du den Arbeitgeberanteil einrechnest. Bei 8 Mitarbeitern macht das 3.520 Euro Unterschied zwischen dem was auf den Lohnzetteln steht und dem was du wirklich zahlst. Diese Differenz in deiner Personalquoten-Berechnung zu ignorieren führt zu einer systematischen Unterschätzung der Personalkosten um 3 bis 4 Prozentpunkte.</p>
-
-<h3>Was 1% Verbesserung in der Praxis bedeutet</h3>
-<div class="beispiel"><div class="beispiel-lbl">📊 Der 1%-Effekt über alle Kennzahlen</div>
-<p>Basis: Restaurant mit 40.000 Euro Monatsumsatz<br><br>
-<strong>Wareneinsatz von 34% auf 33%:</strong> +400 Euro/Monat = +4.800 Euro/Jahr<br>
-<strong>Personalquote von 37% auf 36%:</strong> +400 Euro/Monat = +4.800 Euro/Jahr<br>
-<strong>Durchschnittsbon +1 Euro bei 60 Gästen/Tag × 25 Tage:</strong> +1.500 Euro/Monat = +18.000 Euro/Jahr<br><br>
-<strong>Gesamt aus drei 1%-Verbesserungen: +10.100 Euro Gewinn/Monat, +27.600 Euro/Jahr</strong><br><br>
-Das ist keine Utopie — das ist Mathematik. Und diese drei Verbesserungen sind in 6 bis 12 Monaten mit Gastro-OS realistisch erreichbar.</p></div>
-
-
-<h2>Von der Theorie zur gelebten Praxis</h2>
-<h3>Was wirklich passiert wenn Gastronomen ihre Zahlen kennen</h3>
-<p>Es gibt einen Moment der bei fast allen Gastronomen gleich beschrieben wird die zum ersten Mal systematisch mit ihren Kennzahlen arbeiten: den Schock der Klarheit. Nicht weil die Zahlen immer schlecht sind — sondern weil sie erstmals sehen was wirklich passiert statt was sie vermuten oder hoffen.</p>
-<p>Ein Inhaber eines gut laufenden Bistros in einer deutschen Mittelstadt beschrieb es so: "Ich dachte wir machen gut 8% Gewinnmarge. Als ich die Zahlen wirklich durchgerechnet hatte waren es 3,2%. Der Unterschied waren Personalkosten die ich falsch berechnet hatte weil ich die Arbeitgeberanteile nicht einbezogen hatte — und ein Wareneinsatz der höher lag als ich dachte weil ich Verderb nicht in die Rechnung einbezogen hatte."</p>
-<p>Dieser Schock ist kein schlechtes Zeichen. Er ist der erste echte Schritt zur Verbesserung. Wer nicht weiß wo er wirklich steht, kann nicht gezielt vorwärtsgehen.</p>
-<h3>Die drei häufigsten Irrtümer über Gewinn in der Gastronomie</h3>
-<p><strong>Irrtum 1: "Wir haben guten Umsatz, also läuft es gut."</strong> Umsatz ist der schlechteste Indikator für den Erfolg eines Gastronomiebetriebs. Ein Restaurant das 80.000 Euro Umsatz macht aber 82.000 Euro Kosten hat, verliert 2.000 Euro pro Monat — und es fühlt sich gut an weil immer etwas zu tun ist.</p>
-<p><strong>Irrtum 2: "Ich weiß ungefähr was ich verdiene."</strong> Ungefähr reicht nicht. Ein Gastronom der seinen Wareneinsatz auf 30% schätzt aber tatsächlich 36% hat, verliert bei 35.000 Euro Monatsumsatz 2.100 Euro pro Monat die er nicht verlieren müsste. Auf das Jahr gerechnet: 25.200 Euro. Das ist kein kleines Schätzen — das ist ein strukturelles Problem.</p>
-<p><strong>Irrtum 3: "Mehr Umsatz löst das Problem."</strong> Mehr Umsatz löst kein Kostenproblem. Wenn du bei 30.000 Euro Umsatz Verlust machst und auf 40.000 Euro wächst, machst du mehr Verlust — weil variable Kosten mitwachsen. Das einzige was hilft ist die Kostenstruktur zu verbessern. Mehr Umsatz danach macht dann wirklich mehr Gewinn.</p>
-<div class="beispiel"><div class="beispiel-lbl">📊 Mehr Umsatz ohne Verbesserung der Kostenstruktur</div>
-<p><strong>Situation A — 30.000 Euro Umsatz, 34% WE, 38% Personal, 15% Fixkosten:</strong><br>
-Wareneinsatz: 10.200 € | Personal: 11.400 € | Fixkosten: 4.500 € | Gewinn: 3.900 € (13%)<br><br>
-<strong>Situation B — Umsatz auf 40.000 Euro gewachsen, GLEICHE Quoten:</strong><br>
-Wareneinsatz: 13.600 € | Personal: 15.200 € | Fixkosten: 4.500 € | Gewinn: 6.700 € (16,75%)<br><br>
-<strong>Situation C — 40.000 Euro Umsatz, 30% WE, 34% Personal, 15% Fixkosten:</strong><br>
-Wareneinsatz: 12.000 € | Personal: 13.600 € | Fixkosten: 4.500 € | Gewinn: 9.900 € (24,75%)<br><br>
-Der Unterschied zwischen B und C: 3.200 Euro mehr Gewinn — ohne einen Euro mehr Umsatz. Nur durch bessere Quoten.</p></div>
-
-
-<h2>Vertiefung: Häufige Fragen und Missverständnisse</h2>
-<h3>Muss ich das alles alleine machen?</h3>
-<p>Nein. Gastro-OS ist so aufgebaut dass du von Modul zu Modul immer mehr an dein Team delegierst. Am Anfang machst du vieles selbst — weil du die Systeme aufbaust. Aber das Ziel ist immer dass das System danach ohne dich läuft. Die Systeme die du aufbaust sollen dich entlasten — nicht mehr von dir verlangen.</p>
-<p>Konkret: Die wöchentliche Inventur machst du in Modul 3 zunächst selbst. Bis Modul 5 entwickelst du einen Mitarbeiter der sie übernimmt. Bis Modul 6 hat dieser Mitarbeiter eine Rollenbeschreibung und macht die Inventur eigenständig. Du checkst das Ergebnis in 5 Minuten. Das ist der Weg von "ich mache alles" zu "mein System macht alles".</p>
-<h3>Was wenn ich kaum Zeit habe?</h3>
-<p>Das ist die häufigste Rückmeldung von Gastronomen die mit Gastro-OS anfangen. Und es ist der Hauptgrund warum so viele Betriebe im Dauermodus stecken: keine Zeit für Verbesserungen weil der Alltag alle Zeit auffrisst. Das ist der Kreislauf der durchbrochen werden muss.</p>
-<p>Die Lösung ist nicht mehr Zeit zu finden — sondern die ersten 30 Minuten Investition in Systeme durch die gesparte Zeit in den folgenden Wochen zu rechtfertigen. Wer 30 Minuten in eine SOP für die Öffnungsroutine investiert, spart danach täglich 10 Minuten an Erklärungen und Korrekturen. Nach 3 Tagen ist die Investition schon ausgeglichen. Danach ist jede SOP pure Gewinn an Zeit.</p>
-<h3>Warum Gastro-OS funktioniert wenn andere Konzepte es nicht getan haben</h3>
-<p>Viele Gastronomen haben schon Bücher gelesen, Seminare besucht, Berater engagiert. Und trotzdem hat sich wenig verändert. Gastro-OS ist anders weil es nicht auf Inspiration setzt sondern auf Systeme. Inspiration verblasst. Systeme bleiben.</p>
-<p>Jede Lektion endet mit einer konkreten Aufgabe — nicht mit Motivation. Jedes Modul hat ein Tool das direkt genutzt werden kann — nicht nur Theorie. Und der Fortschritt ist messbar: deine Kennzahlen vor und nach zeigen dir schwarz auf weiß was sich verändert hat. Das hält die Motivation aufrecht wenn die anfängliche Begeisterung nachlässt — weil du siehst dass es wirkt.</p>
-
-
-<h2>Die ersten 7 Tage mit Gastro-OS</h2>
-<h3>Tag 1–2: Zahlen beschaffen</h3>
-<p>Deine erste Aufgabe nach dieser Lektion ist nicht kompliziert aber sie ist konkret. Besorge dir die Kassendaten des letzten Monats und die letzten Einkaufsrechnungen. Berechne deinen Wareneinsatz in Prozent. Berechne deine Personalkosten in Prozent. Schreib beide Zahlen auf.</p>
-<p>Wenn du keinen Zugang zu diesen Daten hast — das ist bereits eine wichtige Information. Es bedeutet dass dein erstes System das sein muss das dir Zugang zu diesen Daten gibt. Sprich mit deinem Steuerberater oder richte einen monatlichen Kassenbericht ein.</p>
-<h3>Tag 3–5: Eine Aufgabe delegieren</h3>
-<p>Wähle eine Aufgabe die du heute noch delegieren könntest. Sie muss nicht die wichtigste sein. Sie muss nur eine sein die jemand anderes nach einer kurzen Erklärung genauso gut machen könnte wie du. Erkläre es der Person. Übergib es. Und widersteh der Versuchung nach 2 Tagen wieder einzugreifen.</p>
-<h3>Tag 6–7: Erste Rückmeldung holen</h3>
-<p>Frage die Person der du delegiert hast: Hat die Anleitung gereicht? Was war unklar? Was würde die Aufgabe einfacher machen? Diese Rückmeldung ist der Anfang deines ersten SOPs. Schreib es auf. Das ist dein erstes System — entstanden aus einer delegierten Aufgabe und einer ehrlichen Rückmeldung.</p>
-<p>Nach 7 Tagen: Du hast deine Basiszahlen. Du hast eine Aufgabe delegiert. Und du hast den Kern deines ersten SOPs. Das ist kein großer Schritt auf dem Papier — aber es ist der Schritt der den Unterschied macht zwischen Gastronomen die Gastro-OS lesen und Gastronomen die es leben.</p>
-<div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
+<h2>Kapitel 3 — Die stille Erosion</h2>
+<h3>Wie Margen unbemerkt schrumpfen</h3>
+<p>Die gefährlichste Form von betrieblichem Misserfolg ist die stille Erosion. Nicht der dramatische Einbruch — sondern das langsame Auffressen der Marge durch schleichend steigende Kosten, nicht angepasste Preise und wachsenden Wareneinsatz. Viele Gastronomen die heute in ernsten Schwierigkeiten stecken hatten vor drei Jahren noch solide Zahlen — aber nichts gemessen und nichts angepasst.</p>
+<p>Der Wareneinsatz steigt jährlich um 1,5 Prozentpunkte weil Einkaufspreise steigen aber Speisekartenpreise nicht angepasst werden. Nach vier Jahren: 6 Prozentpunkte mehr Wareneinsatz. Bei 35.000 Euro Monatsumsatz sind das 2.100 Euro weniger Gewinn pro Monat — 25.200 Euro pro Jahr die still verschwunden sind.</p>
+<h3>Das Messsystem schützt dich</h3>
+<p>Wer seinen Wareneinsatz jeden Monat misst erkennt einen Anstieg im ersten Monat. Wer nie misst, bemerkt ihn erst nach Jahren. Das monatliche Controlling ist dein Frühwarnsystem. 20 Minuten am ersten Werktag des Monats, fünf Zahlen — das reicht um deinen Betrieb finanziell im Blick zu behalten besser als die meisten Gastronomen die du kennst.</p>
+<div class="beispiel"><div class="beispiel-lbl">📊 Stille Erosion über 4 Jahre</div>
+<p>Bistro Sonnenblick, 38.000 € Monatsumsatz:<br>
+Jahr 1: WE 29%, Gewinn 9% — solide<br>
+Jahr 2: Einkaufspreise +3%, Preise nicht angepasst. WE 31%, Gewinn 7%<br>
+Jahr 3: Verderb gestiegen, WE 33%. Gewinn 4,5%<br>
+Jahr 4: Personalkosten erhöht. WE stabil, Gewinn 1,5%<br><br>
+<strong>Kein einziges Jahr war eine Katastrophe. Zusammen: existenzbedrohend. Und alles messbar gewesen.</strong></p></div>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 3</div>
+<p>Vergleiche deinen aktuellen Wareneinsatz mit dem vor zwei Jahren wenn möglich. Ist er gestiegen? Um wie viel? Was hat sich verändert? Das ist deine erste echte Diagnose deines Betriebs.</p></div>
 
 <div class="nav-row"><span></span><a href="modul0-lektion2.html" class="nav-btn">Lektion 2 →</a></div>
+<div class="fazit"><div class="fazit-lbl">🎯 Das Wichtigste auf einen Blick</div><ul><li>Umsatz ≠ Erfolg. Gewinn ist der einzige echte Maßstab.</li><li>Drei Zahlen entscheiden alles: Wareneinsatz %, Personalquote %, Gewinn %.</li><li>Stille Erosion ist gefährlicher als Krisen — weil sie niemand bemerkt.</li><li>20 Minuten monatliches Controlling ist das beste Frühwarnsystem.</li></ul></div>
+<div class="checkliste"><div class="checkliste-lbl">✅ Sofort-Checkliste — Das kannst du heute noch tun</div><ul><li>Letzte BWA oder Kassenbericht raussuchen</li><li>Wareneinsatz in % berechnen</li><li>Personalkosten in % berechnen — inkl. Sozialabgaben</li><li>Alle drei Zahlen aufschreiben: das ist dein Ausgangspunkt</li></ul></div>
+  <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
 </div>
 <div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
 </body>
