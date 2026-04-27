@@ -51,8 +51,9 @@ tr:last-child td { border-bottom:none; }
 .btn-row { display:flex; gap:12px; flex-wrap:wrap; margin-top:24px; }
 .btn-save { background:#d4af37; color:#1a2a4a; border:none; padding:12px 28px; border-radius:8px; font-size:14px; font-weight:700; cursor:pointer; transition:all 0.2s; }
 .btn-save:hover { background:#c8a030; }
-.btn-print{background:#a09060;color:#fff;border:none;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s}
-.btn-print:hover{background:#d4af37;color:#1a2a4a}
+.btn-export{background:#1a6640;color:#fff;border:none;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s}
+.btn-export:hover{background:#d4af37;color:#1a2a4a}
+.export-msg{font-size:12px;color:#c0392b;display:none;font-weight:600}
 .btn-clear { background:transparent; color:#8090a8; border:1px solid #d0c8b0; padding:12px 20px; border-radius:8px; font-size:13px; cursor:pointer; transition:all 0.2s; }
 .save-msg { color:#1a6030; font-size:13px; display:none; align-items:center; gap:6px; }
 .gold-divider { height:2px; background:linear-gradient(90deg,#d4af37,transparent); margin:28px 0; }
@@ -83,8 +84,9 @@ tr:last-child td { border-bottom:none; }
 .action-row{display:flex;gap:10px;margin-bottom:28px;flex-wrap:wrap;align-items:center;padding:16px 0;border-bottom:2px solid #e8dfc8}
 .btn-save{background:#1a2a4a;color:#d4af37;border:none;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s}
 .btn-save:hover{background:#d4af37;color:#1a2a4a}
-.btn-print{background:#a09060;color:#fff;border:none;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s}
-.btn-print:hover{background:#d4af37;color:#1a2a4a}
+.btn-export{background:#1a6640;color:#fff;border:none;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s}
+.btn-export:hover{background:#d4af37;color:#1a2a4a}
+.export-msg{font-size:12px;color:#c0392b;display:none;font-weight:600}
 .btn-reset{background:transparent;border:1.5px solid #c0b090;color:#8070a0;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s}
 .btn-reset:hover{background:#f0ece0;color:#1a2a4a;border-color:#1a2a4a}
 .save-msg{font-size:13px;color:#4a8a4a;align-self:center;display:none}
@@ -127,7 +129,7 @@ tr:last-child td { border-bottom:none; }
 <div class="main">
   <div class="action-row">
     <button class="btn-save" onclick="saveData()">💾 Speichern</button>
-    <button class="btn-print" onclick="window.print()">🖨️ Drucken / PDF</button>
+    <button class="btn-export" onclick="exportPDF()">📥 Als PDF speichern</button><span class="export-msg" id="export-msg">⚠️ Bitte alle Felder ausfüllen bevor du speicherst.</span>
     <button class="btn-reset" onclick="resetData()">↺ Neu starten</button>
     <span class="save-msg" id="save-msg">✓ Gespeichert</span>
   </div>
@@ -433,7 +435,7 @@ tr:last-child td { border-bottom:none; }
 
   <div class="btn-row">
     <button class="btn-save" onclick="saveData()">💾 Speichern</button>
-    <button class="btn-print" onclick="window.print()">🖨️ Drucken / PDF</button>
+    <button class="btn-export" onclick="exportPDF()">📥 Als PDF speichern</button><span class="export-msg" id="export-msg">⚠️ Bitte alle Felder ausfüllen bevor du speicherst.</span>
     <button class="btn-clear" onclick="clearData()">Neu starten</button>
     <span class="save-msg" id="saveMsg">✓ Gespeichert!</span>
   </div>
@@ -488,5 +490,37 @@ function clearData() {
 
 loadData();
 </script>
+
+<script>
+function checkAllFilled() {
+  // Check all text inputs and textareas
+  var inputs = document.querySelectorAll('input[type=text], input[type=number], input[type=date], textarea');
+  for (var i = 0; i < inputs.length; i++) {
+    if (inputs[i].value.trim() === '') return false;
+  }
+  // Check all radio button groups
+  var radioGroups = {};
+  var radios = document.querySelectorAll('input[type=radio]');
+  for (var i = 0; i < radios.length; i++) {
+    radioGroups[radios[i].name] = radioGroups[radios[i].name] || false;
+    if (radios[i].checked) radioGroups[radios[i].name] = true;
+  }
+  for (var g in radioGroups) {
+    if (!radioGroups[g]) return false;
+  }
+  return true;
+}
+
+function exportPDF() {
+  if (!checkAllFilled()) {
+    var msg = document.getElementById('export-msg');
+    msg.style.display = 'inline';
+    setTimeout(function(){ msg.style.display = 'none'; }, 4000);
+    return;
+  }
+  window.print();
+}
+</script>
+
 </body>
 </html>
