@@ -34,8 +34,9 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 }
 .btn-save  { background:#1a2a4a; color:#d4af37; }
 .btn-save:hover  { background:#d4af37; color:#1a2a4a; }
-.btn-print{background:#a09060;color:#fff;border:none;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s}
-.btn-print:hover{background:#d4af37;color:#1a2a4a}
+.btn-export{background:#1a6640;color:#fff;border:none;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s}
+.btn-export:hover{background:#d4af37;color:#1a2a4a}
+.export-msg{font-size:12px;color:#c0392b;display:none;font-weight:600}
 .btn-reset{background:transparent;border:1.5px solid #c0b090;color:#8070a0;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s}
 .btn-reset:hover{background:#f0ece0;color:#1a2a4a;border-color:#1a2a4a}
 .save-msg { font-size:12px; color:#4aaa60; display:none; margin-left:6px; }
@@ -249,8 +250,9 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 .action-row{display:flex;gap:10px;margin-bottom:28px;flex-wrap:wrap;align-items:center;padding:16px 0;border-bottom:2px solid #e8dfc8}
 .btn-save{background:#1a2a4a;color:#d4af37;border:none;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s}
 .btn-save:hover{background:#d4af37;color:#1a2a4a}
-.btn-print{background:#a09060;color:#fff;border:none;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s}
-.btn-print:hover{background:#d4af37;color:#1a2a4a}
+.btn-export{background:#1a6640;color:#fff;border:none;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s}
+.btn-export:hover{background:#d4af37;color:#1a2a4a}
+.export-msg{font-size:12px;color:#c0392b;display:none;font-weight:600}
 .btn-reset{background:transparent;border:1.5px solid #c0b090;color:#8070a0;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s}
 .btn-reset:hover{background:#f0ece0;color:#1a2a4a;border-color:#1a2a4a}
 .save-msg{font-size:13px;color:#4a8a4a;align-self:center;display:none}
@@ -528,5 +530,37 @@ async function loadData() {
 
 loadData();
 </script>
+
+<script>
+function checkAllFilled() {
+  // Check all text inputs and textareas
+  var inputs = document.querySelectorAll('input[type=text], input[type=number], input[type=date], textarea');
+  for (var i = 0; i < inputs.length; i++) {
+    if (inputs[i].value.trim() === '') return false;
+  }
+  // Check all radio button groups
+  var radioGroups = {};
+  var radios = document.querySelectorAll('input[type=radio]');
+  for (var i = 0; i < radios.length; i++) {
+    radioGroups[radios[i].name] = radioGroups[radios[i].name] || false;
+    if (radios[i].checked) radioGroups[radios[i].name] = true;
+  }
+  for (var g in radioGroups) {
+    if (!radioGroups[g]) return false;
+  }
+  return true;
+}
+
+function exportPDF() {
+  if (!checkAllFilled()) {
+    var msg = document.getElementById('export-msg');
+    msg.style.display = 'inline';
+    setTimeout(function(){ msg.style.display = 'none'; }, 4000);
+    return;
+  }
+  window.print();
+}
+</script>
+
 </body>
 </html>
