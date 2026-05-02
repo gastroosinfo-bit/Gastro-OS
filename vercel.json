@@ -1,7 +1,1 @@
-{
-  "functions": {
-    "api/check-auth.js": {
-      "runtime": "nodejs20.x"
-    }
-  }
-}
+{}
