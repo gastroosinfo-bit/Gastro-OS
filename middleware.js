@@ -1,68 +1,52 @@
-// middleware.js
-// Vercel Edge Middleware – schützt alle Seiten außer login.html und api/
+// middleware.js – Vercel Edge Middleware ohne Next.js
 
-import { NextResponse } from 'next/server';
+export default async function middleware(request) {
+  const url = new URL(request.url);
+  const pathname = url.pathname;
 
-const SESSION_SECRET = process.env.SESSION_SECRET;
-const SESSION_DAYS = 30;
-
-// Seiten die OHNE Login erreichbar sind
-const PUBLIC_PATHS = ['/login.html', '/api/check-auth'];
-
-async function verifySession(token) {
-  if (!token) return false;
-  try {
-    const decoded = atob(token);
-    const parts = decoded.split('|');
-    if (parts.length !== 3) return false;
-
-    const [email, expires, sig] = parts;
-
-    // Abgelaufen?
-    if (Date.now() > parseInt(expires)) return false;
-
-    // Signatur prüfen
-    const data = `${email}|${expires}`;
-    const encoder = new TextEncoder();
-    const keyData = encoder.encode(SESSION_SECRET);
-    const messageData = encoder.encode(data);
-
-    const key = await crypto.subtle.importKey(
-      'raw', keyData, { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']
-    );
-    const sigBuffer = await crypto.subtle.sign('HMAC', key, messageData);
-    const expectedSig = Array.from(new Uint8Array(sigBuffer))
-      .map(b => b.toString(16).padStart(2, '0')).join('');
-
-    return sig === expectedSig;
-  } catch {
-    return false;
-  }
-}
-
-export async function middleware(request) {
-  const { pathname } = request.nextUrl;
-
-  // Öffentliche Pfade durchlassen
-  if (PUBLIC_PATHS.some(p => pathname.startsWith(p))) {
-    return NextResponse.next();
+  // Öffentliche Pfade — kein Login nötig
+  const publicPaths = ['/login.html', '/api/check-auth'];
+  if (publicPaths.some(p => pathname.startsWith(p))) {
+    return new Response(null, { status: 200 });
   }
 
-  // Statische Dateien durchlassen (CSS, Bilder etc.)
-  if (pathname.match(/\.(css|js|png|jpg|jpeg|gif|svg|ico|woff|woff2)$/)) {
-    return NextResponse.next();
+  // Statische Dateien durchlassen
+  if (/\.(css|js|png|jpg|jpeg|gif|svg|ico|woff|woff2|mp4|webp)$/.test(pathname)) {
+    return new Response(null, { status: 200 });
   }
 
   // Session-Cookie prüfen
-  const sessionToken = request.cookies.get('gastro_os_session')?.value;
-  const isValid = await verifySession(sessionToken);
+  const cookie = request.headers.get('cookie') || '';
+  const match = cookie.match(/gastro_os_session=([^;]+)/);
+  const token = match ? match[1] : null;
 
-  if (!isValid) {
+  if (!token) {
     // Nicht eingeloggt → zur Login-Seite
-    return NextResponse.redirect(new URL('/login.html', request.url));
+    return Response.redirect(new URL('/login.html', request.url), 302);
   }
 
-  return NextResponse.next();
+  try {
+    const SESSION_SECRET = process.env.SESSION_SECRET;
+    const decoded = atob(token);
+    const parts = decoded.split('|');
+
+    if (parts.length !== 3) {
+      return Response.redirect(new URL('/login.html', request.url), 302);
+    }
+
+    const [email, expires] = parts;
+
+    // Abgelaufen?
+    if (Date.now() > parseInt(expires)) {
+      return Response.redirect(new URL('/login.html', request.url), 302);
+    }
+
+    // Token gültig → durchlassen
+    return new Response(null, { status: 200 });
+
+  } catch {
+    return Response.redirect(new URL('/login.html', request.url), 302);
+  }
 }
 
 export const config = {
