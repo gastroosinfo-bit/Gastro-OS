@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "api/check-auth.js": {
+      "runtime": "nodejs18.x"
+    }
+  }
+}
