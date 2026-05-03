@@ -1,6 +1,4 @@
 // api/check-auth.js
-// Vercel Serverless Function – prüft ob E-Mail ein aktives Whop-Abo hat
-
 const crypto = require('crypto');
 
 const WHOP_API_KEY = process.env.WHOP_API_KEY;
@@ -27,9 +25,9 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Whop API: Mitgliedschaften für diese E-Mail abrufen
+    // Whop API v5
     const response = await fetch(
-      `https://api.whop.com/api/v2/memberships?status=active&valid=true&page=1`,
+      `https://api.whop.com/v5/memberships?status=active&product_id=${WHOP_PRODUCT_ID}`,
       {
         headers: {
           'Authorization': `Bearer ${WHOP_API_KEY}`,
@@ -39,17 +37,15 @@ export default async function handler(req, res) {
     );
 
     if (!response.ok) {
-      console.error('Whop API Fehler:', response.status);
+      console.error('Whop API Fehler:', response.status, await response.text());
       return res.status(500).json({ error: 'Whop API nicht erreichbar' });
     }
 
     const data = await response.json();
     const memberships = data.data || [];
 
-    // Prüfen ob die E-Mail ein aktives Abo für unser Produkt hat
     const activeMembership = memberships.find(m =>
       m.user?.email?.toLowerCase() === email.toLowerCase() &&
-      m.product_id === WHOP_PRODUCT_ID &&
       m.valid === true
     );
 
@@ -59,7 +55,6 @@ export default async function handler(req, res) {
       });
     }
 
-    // Session-Cookie setzen (30 Tage gültig)
     const token = signSession(email);
     res.setHeader('Set-Cookie',
       `gastro_os_session=${token}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${SESSION_DAYS * 86400}`
