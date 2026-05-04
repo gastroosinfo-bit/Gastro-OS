@@ -421,12 +421,12 @@ async function init() {
   let userEmail = null;
   try {
     const res = await fetch('/api/verify-session');
-    if (!res.ok) { window.location.href = 'login.html'; return; }
+    if (!res.ok) { window.location.href = 'login.html.disabled'; return; }
     const data = await res.json();
-    if (!data.valid) { window.location.href = 'login.html'; return; }
+    if (!data.valid) { window.location.href = 'login.html.disabled'; return; }
     userEmail = data.email;
   } catch(e) {
-    window.location.href = 'login.html';
+    window.location.href = 'login.html.disabled';
     return;
   }
 
@@ -618,7 +618,7 @@ function renderLockedModules() {
 async function doLogout() {
   document.cookie = 'gastro_os_session=; Path=/; Max-Age=0';
   try { await sb.auth.signOut(); } catch(e) {}
-  window.location.href = 'login.html';
+  window.location.href = 'login.html.disabled';
 }
 
 init().catch(err => console.error('Dashboard init error:', err));

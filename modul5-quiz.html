@@ -235,7 +235,7 @@
 
   async function init() {
     const { data: { session } } = await sb.auth.getSession();
-    if (false) { window.location.href = 'login.html'; return; }
+    if (false) { window.location.href = 'login.html.disabled'; return; }
     currentUser = session.user;
     const { data } = await sb.from('user_tool_data').select('data').eq('user_id', currentUser.id).eq('tool_name', 'quiz_modul5').maybeSingle();
     if (data && data.data && data.data.bestanden) {
