@@ -34,8 +34,44 @@ export default async function handler(req, res) {
     return res.status(200).json({ success: true });
   }
 
-  // Whop-Check für echte Abonnenten (später fixen)
-  return res.status(403).json({
-    error: 'Kein aktives Gastro-OS Abonnement für diese E-Mail gefunden.'
-  });
+  // Whop API v5 — Mitglieder nach E-Mail suchen
+  try {
+    const response = await fetch(
+      `https://api.whop.com/v5/app/members?page=1`,
+      {
+        headers: {
+          'Authorization': `Bearer ${WHOP_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    if (!response.ok) {
+      console.error('Whop API Fehler:', response.status, await response.text());
+      return res.status(500).json({ error: 'Whop API nicht erreichbar' });
+    }
+
+    const data = await response.json();
+    const members = data.data || [];
+
+    const activeMember = members.find(m =>
+      m.email?.toLowerCase() === email.toLowerCase()
+    );
+
+    if (!activeMember) {
+      return res.status(403).json({
+        error: 'Kein aktives Gastro-OS Abonnement für diese E-Mail gefunden.'
+      });
+    }
+
+    const token = signSession(email);
+    res.setHeader('Set-Cookie',
+      `gastro_os_session=${token}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${SESSION_DAYS * 86400}`
+    );
+    return res.status(200).json({ success: true });
+
+  } catch (err) {
+    console.error('Auth Fehler:', err);
+    return res.status(500).json({ error: 'Server-Fehler. Bitte versuche es erneut.' });
+  }
 }
