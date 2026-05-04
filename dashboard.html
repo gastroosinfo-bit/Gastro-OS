@@ -457,6 +457,12 @@ async function init() {
     }
   }
 
+  // Interner Bypass: alle Module für Team-E-Mails freischalten
+  const INTERNAL_EMAILS = ["kistartklar24@web.de","gastro.os.info@gmail.com","m.pritchard1978@web.de"];
+  if (INTERNAL_EMAILS.includes(userEmail.toLowerCase())) {
+    for (let n = 1; n <= 12; n++) quizBestanden[n] = true;
+  }
+
   // Module einblenden
   if (quizBestanden[1]) document.getElementById('modul-card-2').style.display = 'block';
   if (quizBestanden[2]) document.getElementById('modul-card-3').style.display = 'block';
@@ -467,7 +473,7 @@ async function init() {
   document.getElementById('modul-card-5').style.display = 'block';
   if (!quizBestanden[4]) lockCard(5, 4);
 
-  for (const m of [0,1,2,3,4,5,6,7,8,9,10,11,12]) renderProgress(m);
+  // renderProgress wird am Ende aufgerufen
 
   document.getElementById('modul-card-6').style.display = 'block';
   if (!quizBestanden[5]) lockCard(6, 5);
@@ -488,6 +494,8 @@ async function init() {
   if (!quizBestanden[10]) lockCard(11, 10);
   if (!quizBestanden[11]) lockCard(12, 11);
 
+  // Erst alle Module sperren/freischalten, DANN Fortschritt rendern
+  for (const m of [0,1,2,3,4,5,6,7,8,9,10,11,12]) renderProgress(m);
   renderLockedModules();
   openModuleFromHash();
 }
@@ -609,7 +617,7 @@ function renderLockedModules() {
 
 async function doLogout() {
   document.cookie = 'gastro_os_session=; Path=/; Max-Age=0';
-  try { // signOut disabled; } catch(e) {}
+  try { await sb.auth.signOut(); } catch(e) {}
   window.location.href = 'login.html';
 }
 
