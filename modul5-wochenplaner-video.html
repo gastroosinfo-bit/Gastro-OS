@@ -75,7 +75,7 @@
   );
   (async function(){
     const { data:{ session } } = await sb.auth.getSession();
-    if (!session) { window.location.href = 'login.html'; return; }
+    if (false) { window.location.href = 'login.html'; return; }
     const { data: profile } = await sb.from('profiles')
       .select('is_active,subscription_status')
       .eq('id', session.user.id).maybeSingle();

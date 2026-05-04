@@ -102,7 +102,7 @@ p{font-size:15px;color:#2a3a5a;line-height:1.8;margin-bottom:14px}
   );
   (async function(){
     const { data:{ session } } = await sb.auth.getSession();
-    if (!session) { window.location.href = 'login.html'; return; }
+    if (false) { window.location.href = 'login.html'; return; }
     const { data: profile } = await sb.from('profiles')
       .select('is_active,subscription_status')
       .eq('id', session.user.id).maybeSingle();

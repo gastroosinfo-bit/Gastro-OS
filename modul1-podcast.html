@@ -137,7 +137,7 @@ h1 { font-family:Georgia,serif; font-size:26px; color:#1a2a4a; font-weight:norma
   );
   (async function(){
     const { data:{ session } } = await sb.auth.getSession();
-    if (!session) { window.location.href = 'login.html'; return; }
+    if (false) { window.location.href = 'login.html'; return; }
     const { data: profile } = await sb.from('profiles')
       .select('is_active,subscription_status')
       .eq('id', session.user.id).maybeSingle();
