@@ -107,7 +107,7 @@ p{font-size:15px;color:#2a3a5a;line-height:1.8;margin-bottom:14px}
       .select('is_active,subscription_status')
       .eq('id', session.user.id).maybeSingle();
     if (profile && (!profile.is_active || profile.subscription_status !== 'active')) {
-      await sb.auth.signOut();
+      // signOut disabled;
       window.location.href = 'login.html';
     }
   })();

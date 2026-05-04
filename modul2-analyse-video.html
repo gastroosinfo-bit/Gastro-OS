@@ -81,7 +81,7 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
     const{data:{session}}=await sb.auth.getSession();
     if(!session){window.location.href='login.html';return;}
     const{data:p}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
-    if(p&&(!p.is_active||p.subscription_status!=='active')){await sb.auth.signOut();window.location.href='login.html';}
+    if(p&&(!p.is_active||p.subscription_status!=='active')){// signOut disabled;window.location.href='login.html';}
   })();
 })();
 </script>

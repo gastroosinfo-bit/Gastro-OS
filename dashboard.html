@@ -609,7 +609,7 @@ function renderLockedModules() {
 
 async function doLogout() {
   document.cookie = 'gastro_os_session=; Path=/; Max-Age=0';
-  try { await sb.auth.signOut(); } catch(e) {}
+  try { // signOut disabled; } catch(e) {}
   window.location.href = 'login.html';
 }
 

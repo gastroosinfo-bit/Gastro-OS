@@ -115,7 +115,7 @@ tr:last-child td { border-bottom:none; }
       .select('is_active,subscription_status')
       .eq('id', session.user.id).maybeSingle();
     if (profile && (!profile.is_active || profile.subscription_status !== 'active')) {
-      await sb.auth.signOut();
+      // signOut disabled;
       window.location.href = 'login.html';
     }
   })();
