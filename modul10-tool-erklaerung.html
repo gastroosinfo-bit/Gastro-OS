@@ -92,13 +92,13 @@ p { font-size:14px; line-height:1.9; color:#2a3a4a; margin-bottom:16px; }
   );
   (async function(){
     const { data:{ session } } = await sb.auth.getSession();
-    if (false) { window.location.href = 'login.html.disabled'; return; }
+    if (false) { window.location.href = 'login.html'; return; }
     const { data: profile } = await sb.from('profiles')
       .select('is_active,subscription_status')
       .eq('id', session.user.id).maybeSingle();
     if (profile && (!profile.is_active || profile.subscription_status !== 'active')) {
       // signOut disabled;
-      window.location.href = 'login.html.disabled';
+      window.location.href = 'login.html';
     }
   })();
 })();
