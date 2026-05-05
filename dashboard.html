@@ -90,14 +90,12 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 </script>
 </head>
 <body>
-
 <div class="header">
   <div class="brand">GASTRO-OS</div>
   <div class="welcome">Willkommen, <span id="user-name">...</span></div>
   <button class="btn-logout" onclick="doLogout()">Abmelden</button>
 </div>
 <div class="gold-bar"></div>
-
 <div class="overall-progress-bar">
   <div class="op-inner">
     <div class="op-stats">
@@ -107,295 +105,294 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
     <div class="op-track"><div class="op-fill" id="op-fill" style="width:0%"></div></div>
   </div>
 </div>
-
 <div class="main">
 
-  <!-- MODUL 0 -->
-  <div class="module-card" id="modul-card-0">
-    <div class="module-header" onclick="toggleModule(0)">
-      <div class="module-left"><div class="module-number">0</div><div><div class="module-title">Willkommen &amp; Systemüberblick</div><div class="module-subtitle" id="subtitle-0">0 von 7 abgeschlossen</div></div></div>
-      <div style="display:flex;align-items:center;gap:8px;"><span class="module-badge badge-open" id="badge-0">Offen</span><span class="module-arrow" id="arrow-0">▼</span></div>
-    </div>
-    <div class="module-content" id="content-0">
-      <div class="content-item"><div class="check-box" id="chk-0-0" onclick="toggleCheck(0,0)"></div><span class="item-icon">📋</span><div class="item-info"><div class="item-title" id="title-0-0">Modulübersicht</div></div><a href="modul0-uebersicht.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-0-1" onclick="toggleCheck(0,1)"></div><span class="item-icon">🎬</span><div class="item-info"><div class="item-title" id="title-0-1">Ankervideo — Starte hier</div></div><a href="modul0-ankervideo.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-0-2" onclick="toggleCheck(0,2)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-0-2">Lektion 1 — Warum Umsatz dich nicht rettet</div></div><a href="modul0-lektion1.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-0-3" onclick="toggleCheck(0,3)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-0-3">Lektion 2 — Das Gastro OS Prinzip</div></div><a href="modul0-lektion2.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-0-4" onclick="toggleCheck(0,4)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-0-4">Lektion 3 — Wo stehst du heute</div></div><a href="modul0-lektion3.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-0-5" onclick="toggleCheck(0,5)"></div><span class="item-icon">📋</span><div class="item-info"><div class="item-title" id="title-0-5">Mindmap — Das Gastro OS Prinzip</div></div><a href="modul0-mindmap.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-0-6" onclick="toggleCheck(0,6)"></div><span class="item-icon">✅</span><div class="item-info"><div class="item-title" id="title-0-6">Reflexionsaufgabe — Dein erster ehrlicher Blick</div></div><a href="modul0-reflexion.html" class="item-link">Öffnen →</a></div>
-      <div class="progress-bar-wrap"><div class="progress-label"><span>Fortschritt Modul 0</span><span id="progress-text-0">0%</span></div><div class="progress-bar"><div class="progress-fill" id="progress-fill-0" style="width:0%"></div></div></div>
-    </div>
+<!-- MODUL 0 -->
+<div class="module-card" id="modul-card-0">
+  <div class="module-header" onclick="toggleModule(0)">
+    <div class="module-left"><div class="module-number">0</div><div><div class="module-title">Willkommen &amp; Systemüberblick</div><div class="module-subtitle" id="subtitle-0">0 von 7 abgeschlossen</div></div></div>
+    <div style="display:flex;align-items:center;gap:8px;"><span class="module-badge badge-open" id="badge-0">Offen</span><span class="module-arrow" id="arrow-0">▼</span></div>
   </div>
-
-  <!-- MODUL 1 -->
-  <div class="module-card" id="modul-card-1">
-    <div class="module-header" onclick="toggleModule(1)">
-      <div class="module-left"><div class="module-number">1</div><div><div class="module-title">Unternehmer-Denken &amp; Gewinn-Fokus</div><div class="module-subtitle" id="subtitle-1">0 von 10 abgeschlossen</div></div></div>
-      <div style="display:flex;align-items:center;gap:8px;"><span class="module-badge badge-open" id="badge-1">Offen</span><span class="module-arrow" id="arrow-1">▼</span></div>
-    </div>
-    <div class="module-content" id="content-1">
-      <div class="content-item"><div class="check-box" id="chk-1-0" onclick="toggleCheck(1,0)"></div><span class="item-icon">📋</span><div class="item-info"><div class="item-title" id="title-1-0">Modulübersicht &amp; Inhaltsverzeichnis</div></div><a href="modul1-uebersicht.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-1-1" onclick="toggleCheck(1,1)"></div><span class="item-icon">🎬</span><div class="item-info"><div class="item-title" id="title-1-1">Ankervideo — Starte hier</div></div><a href="modul1-ankervideo.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-1-2" onclick="toggleCheck(1,2)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-1-2">Lektion 1 — Vom Selbstständigen zum Unternehmer</div></div><a href="modul1-lektion1.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-1-3" onclick="toggleCheck(1,3)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-1-3">Lektion 2 — Das Prinzip der Ersetzbarkeit</div></div><a href="modul1-lektion2.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-1-4" onclick="toggleCheck(1,4)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-1-4">Lektion 3 — Gewinn-Fokus &amp; die vier Säulen</div></div><a href="modul1-lektion3.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-1-5" onclick="toggleCheck(1,5)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-1-5">Lektion 4 — Fallstudie &amp; 30-Tage-Schlachtplan</div></div><a href="modul1-lektion4.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-1-6" onclick="toggleCheck(1,6)"></div><span class="item-icon">🎙️</span><div class="item-info"><div class="item-title" id="title-1-6">Küchenfunk #1 — Podcast</div></div><a href="modul1-podcast.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-1-7" onclick="toggleCheck(1,7)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title" id="title-1-7">So nutzt du den Unternehmer-Score</div></div><a href="modul1-score-video.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-1-8" onclick="toggleCheck(1,8)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-1-8">Unternehmer-Score</div></div><a href="modul1-score.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-1-9" onclick="toggleCheck(1,9)"></div><span class="item-icon">🎯</span><div class="item-info"><div class="item-title" id="title-1-9">Quiz — Teste dein Wissen</div></div><a href="modul1-quiz.html" class="item-link">Öffnen →</a></div>
-      <div class="progress-bar-wrap"><div class="progress-label"><span>Fortschritt Modul 1</span><span id="progress-text-1">0%</span></div><div class="progress-bar"><div class="progress-fill" id="progress-fill-1" style="width:0%"></div></div></div>
-    </div>
+  <div class="module-content" id="content-0">
+    <div class="content-item"><div class="check-box" id="chk-0-0" onclick="toggleCheck(0,0)"></div><span class="item-icon">📋</span><div class="item-info"><div class="item-title" id="title-0-0">Modulübersicht</div></div><a href="modul0-uebersicht.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-0-1" onclick="toggleCheck(0,1)"></div><span class="item-icon">🎬</span><div class="item-info"><div class="item-title" id="title-0-1">Ankervideo — Starte hier</div></div><a href="modul0-ankervideo.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-0-2" onclick="toggleCheck(0,2)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-0-2">Lektion 1 — Warum Umsatz dich nicht rettet</div></div><a href="modul0-lektion1.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-0-3" onclick="toggleCheck(0,3)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-0-3">Lektion 2 — Das Gastro OS Prinzip</div></div><a href="modul0-lektion2.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-0-4" onclick="toggleCheck(0,4)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-0-4">Lektion 3 — Wo stehst du heute</div></div><a href="modul0-lektion3.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-0-5" onclick="toggleCheck(0,5)"></div><span class="item-icon">📋</span><div class="item-info"><div class="item-title" id="title-0-5">Mindmap — Das Gastro OS Prinzip</div></div><a href="modul0-mindmap.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-0-6" onclick="toggleCheck(0,6)"></div><span class="item-icon">✅</span><div class="item-info"><div class="item-title" id="title-0-6">Reflexionsaufgabe — Dein erster ehrlicher Blick</div></div><a href="modul0-reflexion.html" class="item-link">Öffnen →</a></div>
+    <div class="progress-bar-wrap"><div class="progress-label"><span>Fortschritt Modul 0</span><span id="progress-text-0">0%</span></div><div class="progress-bar"><div class="progress-fill" id="progress-fill-0" style="width:0%"></div></div></div>
   </div>
+</div>
 
-  <!-- MODUL 2 -->
-  <div class="module-card" id="modul-card-2" style="display:none;">
-    <div class="module-header" onclick="toggleModule(2)">
-      <div class="module-left"><div class="module-number">2</div><div><div class="module-title">Speisekarte &amp; Angebotssystem</div><div class="module-subtitle" id="subtitle-2">0 von 12 abgeschlossen</div></div></div>
-      <div style="display:flex;align-items:center;gap:8px;"><span class="module-badge badge-open" id="badge-2">Offen</span><span class="module-arrow" id="arrow-2">▼</span></div>
-    </div>
-    <div class="module-content" id="content-2">
-      <div class="content-item"><div class="check-box" id="chk-2-0" onclick="toggleCheck(2,0)"></div><span class="item-icon">📋</span><div class="item-info"><div class="item-title" id="title-2-0">Modulübersicht &amp; Inhaltsverzeichnis</div></div><a href="modul2-uebersicht.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-2-1" onclick="toggleCheck(2,1)"></div><span class="item-icon">🎬</span><div class="item-info"><div class="item-title" id="title-2-1">Ankervideo — Starte hier</div></div><a href="modul2-ankervideo.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-2-2" onclick="toggleCheck(2,2)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-2-2">Lektion 1 — Die Karte als Umsatzmaschine</div></div><a href="modul2-lektion1.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-2-3" onclick="toggleCheck(2,3)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-2-3">Lektion 2 — Kalkulation &amp; Preispsychologie</div></div><a href="modul2-lektion2.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-2-4" onclick="toggleCheck(2,4)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-2-4">Lektion 3 — Der strategische Kartenaufbau</div></div><a href="modul2-lektion3.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-2-5" onclick="toggleCheck(2,5)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-2-5">Lektion 4 — Upselling &amp; Fallstudie</div></div><a href="modul2-lektion4.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-2-6" onclick="toggleCheck(2,6)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-2-6">Lektion 5 — Fehler &amp; Aktionsplan</div></div><a href="modul2-lektion5.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-2-7" onclick="toggleCheck(2,7)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title" id="title-2-7">So nutzt du den Analyse Guide</div></div><a href="modul2-analyse-video.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-2-8" onclick="toggleCheck(2,8)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-2-8">Analyse Guide — Welche Gerichte fliegen raus?</div></div><a href="modul2-analyse.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-2-9" onclick="toggleCheck(2,9)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title" id="title-2-9">So nutzt du das Marge Tool</div></div><a href="modul2-marge-video.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-2-10" onclick="toggleCheck(2,10)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-2-10">Marge Tool — Deine Kalkulation auf einen Blick</div></div><a href="modul2-marge.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-2-11" onclick="toggleCheck(2,11)"></div><span class="item-icon">🎯</span><div class="item-info"><div class="item-title" id="title-2-11">Quiz — Teste dein Wissen</div></div><a href="modul2-quiz.html" class="item-link">Öffnen →</a></div>
-      <div class="progress-bar-wrap"><div class="progress-label"><span>Fortschritt Modul 2</span><span id="progress-text-2">0%</span></div><div class="progress-bar"><div class="progress-fill" id="progress-fill-2" style="width:0%"></div></div></div>
-    </div>
+<!-- MODUL 1 -->
+<div class="module-card" id="modul-card-1">
+  <div class="module-header" onclick="toggleModule(1)">
+    <div class="module-left"><div class="module-number">1</div><div><div class="module-title">Unternehmer-Denken &amp; Gewinn-Fokus</div><div class="module-subtitle" id="subtitle-1">0 von 10 abgeschlossen</div></div></div>
+    <div style="display:flex;align-items:center;gap:8px;"><span class="module-badge badge-open" id="badge-1">Offen</span><span class="module-arrow" id="arrow-1">▼</span></div>
   </div>
-
-  <!-- MODUL 3 -->
-  <div class="module-card" id="modul-card-3" style="display:none;">
-    <div class="module-header" onclick="toggleModule(3)">
-      <div class="module-left"><div class="module-number">3</div><div><div class="module-title">Einkauf &amp; Wareneinsatz</div><div class="module-subtitle" id="subtitle-3">0 von 11 abgeschlossen</div></div></div>
-      <div style="display:flex;align-items:center;gap:8px;"><span class="module-badge badge-open" id="badge-3">Offen</span><span class="module-arrow" id="arrow-3">▼</span></div>
-    </div>
-    <div class="module-content" id="content-3">
-      <div class="content-item"><div class="check-box" id="chk-3-0" onclick="toggleCheck(3,0)"></div><span class="item-icon">📋</span><div class="item-info"><div class="item-title" id="title-3-0">Modulübersicht &amp; Inhaltsverzeichnis</div></div><a href="modul3-uebersicht.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-3-1" onclick="toggleCheck(3,1)"></div><span class="item-icon">🎬</span><div class="item-info"><div class="item-title" id="title-3-1">Ankervideo — Starte hier</div></div><a href="modul3-ankervideo.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-3-2" onclick="toggleCheck(3,2)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-3-2">Lektion 1 — Wareneinsatz verstehen &amp; Einkauf planen</div></div><a href="modul3-lektion1.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-3-3" onclick="toggleCheck(3,3)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-3-3">Lektion 2 — Verhandeln mit Lieferanten</div></div><a href="modul3-lektion2.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-3-4" onclick="toggleCheck(3,4)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-3-4">Lektion 3 — Qualität halten &amp; dauerhaft optimieren</div></div><a href="modul3-lektion3.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-3-5" onclick="toggleCheck(3,5)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-3-5">Lektion 4 — Fallbeispiel &amp; 30-Tage-Aktionsplan</div></div><a href="modul3-lektion4.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-3-6" onclick="toggleCheck(3,6)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title" id="title-3-6">So nutzt du den Einkaufs Check</div></div><a href="modul3-einkauf-video.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-3-7" onclick="toggleCheck(3,7)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-3-7">Einkaufs Check — Dein wöchentlicher Einkaufsprozess</div></div><a href="modul3-einkauf.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-3-8" onclick="toggleCheck(3,8)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title" id="title-3-8">So nutzt du den Lieferanten Vergleich</div></div><a href="modul3-lieferanten-video.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-3-9" onclick="toggleCheck(3,9)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-3-9">Lieferanten Vergleich — Alle Lieferanten auf einen Blick</div></div><a href="modul3-lieferanten.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-3-10" onclick="toggleCheck(3,10)"></div><span class="item-icon">🎯</span><div class="item-info"><div class="item-title" id="title-3-10">Quiz — Teste dein Wissen</div></div><a href="modul3-quiz.html" class="item-link">Öffnen →</a></div>
-      <div class="progress-bar-wrap"><div class="progress-label"><span>Fortschritt Modul 3</span><span id="progress-text-3">0%</span></div><div class="progress-bar"><div class="progress-fill" id="progress-fill-3" style="width:0%"></div></div></div>
-    </div>
+  <div class="module-content" id="content-1">
+    <div class="content-item"><div class="check-box" id="chk-1-0" onclick="toggleCheck(1,0)"></div><span class="item-icon">📋</span><div class="item-info"><div class="item-title" id="title-1-0">Modulübersicht &amp; Inhaltsverzeichnis</div></div><a href="modul1-uebersicht.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-1-1" onclick="toggleCheck(1,1)"></div><span class="item-icon">🎬</span><div class="item-info"><div class="item-title" id="title-1-1">Ankervideo — Starte hier</div></div><a href="modul1-ankervideo.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-1-2" onclick="toggleCheck(1,2)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-1-2">Lektion 1 — Vom Selbstständigen zum Unternehmer</div></div><a href="modul1-lektion1.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-1-3" onclick="toggleCheck(1,3)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-1-3">Lektion 2 — Das Prinzip der Ersetzbarkeit</div></div><a href="modul1-lektion2.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-1-4" onclick="toggleCheck(1,4)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-1-4">Lektion 3 — Gewinn-Fokus &amp; die vier Säulen</div></div><a href="modul1-lektion3.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-1-5" onclick="toggleCheck(1,5)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-1-5">Lektion 4 — Fallstudie &amp; 30-Tage-Schlachtplan</div></div><a href="modul1-lektion4.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-1-6" onclick="toggleCheck(1,6)"></div><span class="item-icon">🎙️</span><div class="item-info"><div class="item-title" id="title-1-6">Küchenfunk #1 — Podcast</div></div><a href="modul1-podcast.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-1-7" onclick="toggleCheck(1,7)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title" id="title-1-7">So nutzt du den Unternehmer-Score</div></div><a href="modul1-score-video.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-1-8" onclick="toggleCheck(1,8)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-1-8">Unternehmer-Score</div></div><a href="modul1-score.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-1-9" onclick="toggleCheck(1,9)"></div><span class="item-icon">🎯</span><div class="item-info"><div class="item-title" id="title-1-9">Quiz — Teste dein Wissen</div></div><a href="modul1-quiz.html" class="item-link">Öffnen →</a></div>
+    <div class="progress-bar-wrap"><div class="progress-label"><span>Fortschritt Modul 1</span><span id="progress-text-1">0%</span></div><div class="progress-bar"><div class="progress-fill" id="progress-fill-1" style="width:0%"></div></div></div>
   </div>
+</div>
 
-  <!-- MODUL 4 -->
-  <div class="module-card" id="modul-card-4" style="display:none;">
-    <div class="module-header" onclick="toggleModule(4)">
-      <div class="module-left"><div class="module-number">4</div><div><div class="module-title">Zahlen verstehen &amp; kontrollieren</div><div class="module-subtitle" id="subtitle-4">0 von 12 abgeschlossen</div></div></div>
-      <div style="display:flex;align-items:center;gap:8px;"><span class="module-badge badge-open" id="badge-4">Offen</span><span class="module-arrow" id="arrow-4">▼</span></div>
-    </div>
-    <div class="module-content" id="content-4">
-      <div class="content-item"><div class="check-box" id="chk-4-0" onclick="toggleCheck(4,0)"></div><span class="item-icon">📋</span><div class="item-info"><div class="item-title" id="title-4-0">Modulübersicht &amp; Inhaltsverzeichnis</div></div><a href="modul4-uebersicht.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-4-1" onclick="toggleCheck(4,1)"></div><span class="item-icon">🎬</span><div class="item-info"><div class="item-title" id="title-4-1">Ankervideo — Starte hier</div></div><a href="modul4-ankervideo.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-4-2" onclick="toggleCheck(4,2)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-4-2">Lektion 1 — Fixkosten, variable Kosten &amp; Break Even</div></div><a href="modul4-lektion1.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-4-3" onclick="toggleCheck(4,3)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-4-3">Lektion 2 — Die BWA richtig lesen</div></div><a href="modul4-lektion2.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-4-4" onclick="toggleCheck(4,4)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-4-4">Lektion 3 — Die 5 größten Kostentreiber</div></div><a href="modul4-lektion3.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-4-5" onclick="toggleCheck(4,5)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-4-5">Lektion 4 — Fallbeispiel &amp; 30-Tage-Aktionsplan</div></div><a href="modul4-lektion4.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-4-6" onclick="toggleCheck(4,6)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title" id="title-4-6">Screenshot Guide BWA</div></div><a href="modul4-bwa-guide.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-4-7" onclick="toggleCheck(4,7)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title" id="title-4-7">So nutzt du den Gewinn Rechner</div></div><a href="modul4-gewinn-anleitung.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-4-8" onclick="toggleCheck(4,8)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-4-8">Gewinn Rechner — Dein Break Even auf einen Blick</div></div><a href="modul4-gewinn.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-4-9" onclick="toggleCheck(4,9)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title" id="title-4-9">So nutzt du die Kostentreiber Checkliste</div></div><a href="modul4-kostentreiber-video.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-4-10" onclick="toggleCheck(4,10)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-4-10">Kostentreiber Checkliste — Die 5 größten Kostenbereiche</div></div><a href="modul4-kostentreiber.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-4-11" onclick="toggleCheck(4,11)"></div><span class="item-icon">🎯</span><div class="item-info"><div class="item-title" id="title-4-11">Quiz — Teste dein Wissen</div></div><a href="modul4-quiz.html" class="item-link">Öffnen →</a></div>
-      <div class="progress-bar-wrap"><div class="progress-label"><span>Fortschritt Modul 4</span><span id="progress-text-4">0%</span></div><div class="progress-bar"><div class="progress-fill" id="progress-fill-4" style="width:0%"></div></div></div>
-    </div>
+<!-- MODUL 2 -->
+<div class="module-card" id="modul-card-2" style="display:none;">
+  <div class="module-header" onclick="toggleModule(2)">
+    <div class="module-left"><div class="module-number">2</div><div><div class="module-title">Speisekarte &amp; Angebotssystem</div><div class="module-subtitle" id="subtitle-2">0 von 12 abgeschlossen</div></div></div>
+    <div style="display:flex;align-items:center;gap:8px;"><span class="module-badge badge-open" id="badge-2">Offen</span><span class="module-arrow" id="arrow-2">▼</span></div>
   </div>
-
-  <!-- MODUL 5 -->
-  <div class="module-card" id="modul-card-5" style="display:none;">
-    <div class="module-header" onclick="toggleModule(5)">
-      <div class="module-left"><div class="module-number">5</div><div><div class="module-title">Struktur &amp; Organisation</div><div class="module-subtitle" id="subtitle-5">0 von 11 abgeschlossen</div></div></div>
-      <div style="display:flex;align-items:center;gap:8px;"><span class="module-badge badge-open" id="badge-5">Offen</span><span class="module-arrow" id="arrow-5">▼</span></div>
-    </div>
-    <div class="module-content" id="content-5">
-      <div class="content-item"><div class="check-box" id="chk-5-0" onclick="toggleCheck(5,0)"></div><span class="item-icon">📋</span><div class="item-info"><div class="item-title" id="title-5-0">Modulübersicht &amp; Inhaltsverzeichnis</div></div><a href="modul5-uebersicht.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-5-1" onclick="toggleCheck(5,1)"></div><span class="item-icon">🎬</span><div class="item-info"><div class="item-title" id="title-5-1">Ankervideo — Starte hier</div></div><a href="modul5-ankervideo.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-5-2" onclick="toggleCheck(5,2)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-5-2">Lektion 1 — Unternehmer vs. Selbständiger</div></div><a href="modul5-lektion1.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-5-3" onclick="toggleCheck(5,3)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-5-3">Lektion 2 — Was sind SOPs und wie du anfängst</div></div><a href="modul5-lektion2.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-5-4" onclick="toggleCheck(5,4)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-5-4">Lektion 3 — Deine Tagesstruktur als Unternehmer</div></div><a href="modul5-lektion3.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-5-5" onclick="toggleCheck(5,5)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-5-5">Lektion 4 — Fallbeispiel &amp; 30-Tage-Aktionsplan</div></div><a href="modul5-lektion4.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-5-6" onclick="toggleCheck(5,6)"></div><span class="item-icon">🎬</span><div class="item-info"><div class="item-title" id="title-5-6">Video Fallbeispiel Sandra</div></div><a href="modul5-fallbeispiel-video.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-5-7" onclick="toggleCheck(5,7)"></div><span class="item-icon">🎙️</span><div class="item-info"><div class="item-title" id="title-5-7">Küchenfunk #2 — Stoßzeiten &amp; Leerzeiten</div></div><a href="modul5-podcast.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-5-8" onclick="toggleCheck(5,8)"></div><span class="item-icon">🎬</span><div class="item-info"><div class="item-title" id="title-5-8">So nutzt du den Wochenplaner</div></div><a href="modul5-wochenplaner-video.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-5-9" onclick="toggleCheck(5,9)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-5-9">Wochenplaner — Dein Werkzeug für die nächste Woche</div></div><a href="modul5-wochenplaner.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-5-10" onclick="toggleCheck(5,10)"></div><span class="item-icon">🎯</span><div class="item-info"><div class="item-title" id="title-5-10">Quiz — Teste dein Wissen</div></div><a href="modul5-quiz.html" class="item-link">Öffnen →</a></div>
-      <div class="progress-bar-wrap"><div class="progress-label"><span>Fortschritt Modul 5</span><span id="progress-text-5">0%</span></div><div class="progress-bar"><div class="progress-fill" id="progress-fill-5" style="width:0%"></div></div></div>
-    </div>
+  <div class="module-content" id="content-2">
+    <div class="content-item"><div class="check-box" id="chk-2-0" onclick="toggleCheck(2,0)"></div><span class="item-icon">📋</span><div class="item-info"><div class="item-title" id="title-2-0">Modulübersicht &amp; Inhaltsverzeichnis</div></div><a href="modul2-uebersicht.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-2-1" onclick="toggleCheck(2,1)"></div><span class="item-icon">🎬</span><div class="item-info"><div class="item-title" id="title-2-1">Ankervideo — Starte hier</div></div><a href="modul2-ankervideo.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-2-2" onclick="toggleCheck(2,2)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-2-2">Lektion 1 — Die Karte als Umsatzmaschine</div></div><a href="modul2-lektion1.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-2-3" onclick="toggleCheck(2,3)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-2-3">Lektion 2 — Kalkulation &amp; Preispsychologie</div></div><a href="modul2-lektion2.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-2-4" onclick="toggleCheck(2,4)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-2-4">Lektion 3 — Der strategische Kartenaufbau</div></div><a href="modul2-lektion3.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-2-5" onclick="toggleCheck(2,5)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-2-5">Lektion 4 — Upselling &amp; Fallstudie</div></div><a href="modul2-lektion4.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-2-6" onclick="toggleCheck(2,6)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-2-6">Lektion 5 — Fehler &amp; Aktionsplan</div></div><a href="modul2-lektion5.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-2-7" onclick="toggleCheck(2,7)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title" id="title-2-7">So nutzt du den Analyse Guide</div></div><a href="modul2-analyse-video.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-2-8" onclick="toggleCheck(2,8)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-2-8">Analyse Guide — Welche Gerichte fliegen raus?</div></div><a href="modul2-analyse.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-2-9" onclick="toggleCheck(2,9)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title" id="title-2-9">So nutzt du das Marge Tool</div></div><a href="modul2-marge-video.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-2-10" onclick="toggleCheck(2,10)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-2-10">Marge Tool — Deine Kalkulation auf einen Blick</div></div><a href="modul2-marge.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-2-11" onclick="toggleCheck(2,11)"></div><span class="item-icon">🎯</span><div class="item-info"><div class="item-title" id="title-2-11">Quiz — Teste dein Wissen</div></div><a href="modul2-quiz.html" class="item-link">Öffnen →</a></div>
+    <div class="progress-bar-wrap"><div class="progress-label"><span>Fortschritt Modul 2</span><span id="progress-text-2">0%</span></div><div class="progress-bar"><div class="progress-fill" id="progress-fill-2" style="width:0%"></div></div></div>
   </div>
+</div>
 
-  <!-- MODUL 6 -->
-  <div class="module-card" id="modul-card-6" style="display:none;">
-    <div class="module-header" onclick="toggleModule(6)">
-      <div class="module-left"><div class="module-number">6</div><div><div class="module-title">Mitarbeiter führen statt nur reagieren</div><div class="module-subtitle" id="subtitle-6">0 von 13 abgeschlossen</div></div></div>
-      <div style="display:flex;align-items:center;gap:8px;"><span class="module-badge badge-open" id="badge-6">Offen</span><span class="module-arrow" id="arrow-6">▼</span></div>
-    </div>
-    <div class="module-content" id="content-6">
-      <div class="content-item"><div class="check-box" id="chk-6-0" onclick="toggleCheck(6,0)"></div><span class="item-icon">📋</span><div class="item-info"><div class="item-title" id="title-6-0">Modulübersicht &amp; Inhaltsverzeichnis</div></div><a href="modul6-uebersicht.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-6-1" onclick="toggleCheck(6,1)"></div><span class="item-icon">🎬</span><div class="item-info"><div class="item-title" id="title-6-1">Ankervideo — Starte hier</div></div><a href="modul6-ankervideo.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-6-2" onclick="toggleCheck(6,2)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-6-2">Lektion 1 — Warum klare Rollen alles verändern</div></div><a href="modul6-lektion1.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-6-3" onclick="toggleCheck(6,3)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-6-3">Lektion 2 — So definierst du Rollen in deinem Betrieb</div></div><a href="modul6-lektion2.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-6-4" onclick="toggleCheck(6,4)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-6-4">Lektion 3 — Der Schichtleiter als Schlüssel</div></div><a href="modul6-lektion3.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-6-5" onclick="toggleCheck(6,5)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-6-5">Lektion 4 — Fallbeispiel &amp; 30-Tage-Aktionsplan</div></div><a href="modul6-lektion4.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-6-6" onclick="toggleCheck(6,6)"></div><span class="item-icon">🎬</span><div class="item-info"><div class="item-title" id="title-6-6">Fallbeispiel Marco — Wie er sein Team befreit hat</div></div><a href="modul6-fallbeispiel-video.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-6-7" onclick="toggleCheck(6,7)"></div><span class="item-icon">🎙️</span><div class="item-info"><div class="item-title" id="title-6-7">Küchenfunk #3 — Podcast Modul 6</div></div><a href="modul6-podcast.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-6-8" onclick="toggleCheck(6,8)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title" id="title-6-8">So nutzt du den Personalstruktur Check</div></div><a href="modul6-personalstruktur-video.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-6-9" onclick="toggleCheck(6,9)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-6-9">Personalstruktur Check — Rollen &amp; Entscheidungsrechte</div></div><a href="modul6-personalstruktur.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-6-10" onclick="toggleCheck(6,10)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title" id="title-6-10">So nutzt du das Mitarbeiter-Feedback-Gespräch</div></div><a href="modul6-feedback-video.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-6-11" onclick="toggleCheck(6,11)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-6-11">Strukturiertes Mitarbeiter-Feedback-Gespräch</div></div><a href="modul6-feedback.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-6-12" onclick="toggleCheck(6,12)"></div><span class="item-icon">🎯</span><div class="item-info"><div class="item-title" id="title-6-12">Quiz — Teste dein Wissen</div></div><a href="modul6-quiz.html" class="item-link">Öffnen →</a></div>
-      <div class="progress-bar-wrap"><div class="progress-label"><span>Fortschritt Modul 6</span><span id="progress-text-6">0%</span></div><div class="progress-bar"><div class="progress-fill" id="progress-fill-6" style="width:0%"></div></div></div>
-    </div>
+<!-- MODUL 3 -->
+<div class="module-card" id="modul-card-3" style="display:none;">
+  <div class="module-header" onclick="toggleModule(3)">
+    <div class="module-left"><div class="module-number">3</div><div><div class="module-title">Einkauf &amp; Wareneinsatz</div><div class="module-subtitle" id="subtitle-3">0 von 11 abgeschlossen</div></div></div>
+    <div style="display:flex;align-items:center;gap:8px;"><span class="module-badge badge-open" id="badge-3">Offen</span><span class="module-arrow" id="arrow-3">▼</span></div>
   </div>
-
-  <!-- MODUL 7 -->
-  <div class="module-card" id="modul-card-7" style="display:none;">
-    <div class="module-header" onclick="toggleModule(7)">
-      <div class="module-left"><div class="module-number">7</div><div><div class="module-title">Kostenkontrolle &amp; Effizienz</div><div class="module-subtitle" id="subtitle-7">0 von 11 abgeschlossen</div></div></div>
-      <div style="display:flex;align-items:center;gap:8px;"><span class="module-badge badge-open" id="badge-7">Offen</span><span class="module-arrow" id="arrow-7">▼</span></div>
-    </div>
-    <div class="module-content" id="content-7">
-      <div class="content-item"><div class="check-box" id="chk-7-0" onclick="toggleCheck(7,0)"></div><span class="item-icon">📋</span><div class="item-info"><div class="item-title" id="title-7-0">Modulübersicht &amp; Inhaltsverzeichnis</div></div><a href="modul7-uebersicht.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-7-1" onclick="toggleCheck(7,1)"></div><span class="item-icon">🎬</span><div class="item-info"><div class="item-title" id="title-7-1">Ankervideo — Starte hier</div></div><a href="modul7-ankervideo.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-7-2" onclick="toggleCheck(7,2)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-7-2">Lektion 1 — Die versteckten Kostenvernichter</div></div><a href="modul7-lektion1.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-7-3" onclick="toggleCheck(7,3)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-7-3">Lektion 2 — Energie und Kühlung im Griff</div></div><a href="modul7-lektion2.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-7-4" onclick="toggleCheck(7,4)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-7-4">Lektion 3 — Verschwendung stoppen</div></div><a href="modul7-lektion3.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-7-5" onclick="toggleCheck(7,5)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-7-5">Lektion 4 — Vom Plan zur Umsetzung</div></div><a href="modul7-lektion4.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-7-6" onclick="toggleCheck(7,6)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title" id="title-7-6">So nutzt du den Gastro Effizienz Check</div></div><a href="modul7-effizienzcheck-anleitung.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-7-7" onclick="toggleCheck(7,7)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-7-7">Gastro Effizienz Check</div></div><a href="modul7-effizienzcheck.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-7-8" onclick="toggleCheck(7,8)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title" id="title-7-8">So nutzt du das Kosten Analyse Tool</div></div><a href="modul7-kostenanalyse-anleitung.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-7-9" onclick="toggleCheck(7,9)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-7-9">Kosten Analyse Tool</div></div><a href="modul7-kostenanalyse.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-7-10" onclick="toggleCheck(7,10)"></div><span class="item-icon">🎯</span><div class="item-info"><div class="item-title" id="title-7-10">Quiz — Teste dein Wissen</div></div><a href="modul7-quiz.html" class="item-link">Öffnen →</a></div>
-      <div class="progress-bar-wrap"><div class="progress-label"><span>Fortschritt Modul 7</span><span id="progress-text-7">0%</span></div><div class="progress-bar"><div class="progress-fill" id="progress-fill-7" style="width:0%"></div></div></div>
-    </div>
+  <div class="module-content" id="content-3">
+    <div class="content-item"><div class="check-box" id="chk-3-0" onclick="toggleCheck(3,0)"></div><span class="item-icon">📋</span><div class="item-info"><div class="item-title" id="title-3-0">Modulübersicht &amp; Inhaltsverzeichnis</div></div><a href="modul3-uebersicht.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-3-1" onclick="toggleCheck(3,1)"></div><span class="item-icon">🎬</span><div class="item-info"><div class="item-title" id="title-3-1">Ankervideo — Starte hier</div></div><a href="modul3-ankervideo.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-3-2" onclick="toggleCheck(3,2)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-3-2">Lektion 1 — Wareneinsatz verstehen &amp; Einkauf planen</div></div><a href="modul3-lektion1.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-3-3" onclick="toggleCheck(3,3)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-3-3">Lektion 2 — Verhandeln mit Lieferanten</div></div><a href="modul3-lektion2.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-3-4" onclick="toggleCheck(3,4)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-3-4">Lektion 3 — Qualität halten &amp; dauerhaft optimieren</div></div><a href="modul3-lektion3.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-3-5" onclick="toggleCheck(3,5)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-3-5">Lektion 4 — Fallbeispiel &amp; 30-Tage-Aktionsplan</div></div><a href="modul3-lektion4.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-3-6" onclick="toggleCheck(3,6)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title" id="title-3-6">So nutzt du den Einkaufs Check</div></div><a href="modul3-einkauf-video.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-3-7" onclick="toggleCheck(3,7)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-3-7">Einkaufs Check — Dein wöchentlicher Einkaufsprozess</div></div><a href="modul3-einkauf.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-3-8" onclick="toggleCheck(3,8)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title" id="title-3-8">So nutzt du den Lieferanten Vergleich</div></div><a href="modul3-lieferanten-video.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-3-9" onclick="toggleCheck(3,9)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-3-9">Lieferanten Vergleich — Alle Lieferanten auf einen Blick</div></div><a href="modul3-lieferanten.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-3-10" onclick="toggleCheck(3,10)"></div><span class="item-icon">🎯</span><div class="item-info"><div class="item-title" id="title-3-10">Quiz — Teste dein Wissen</div></div><a href="modul3-quiz.html" class="item-link">Öffnen →</a></div>
+    <div class="progress-bar-wrap"><div class="progress-label"><span>Fortschritt Modul 3</span><span id="progress-text-3">0%</span></div><div class="progress-bar"><div class="progress-fill" id="progress-fill-3" style="width:0%"></div></div></div>
   </div>
+</div>
 
-  <!-- MODUL 8 -->
-  <div class="module-card" id="modul-card-8" style="display:none;">
-    <div class="module-header" onclick="toggleModule(8)">
-      <div class="module-left"><div class="module-number">8</div><div><div class="module-title">Umsatz smart steigern</div><div class="module-subtitle" id="subtitle-8">0 von 11 abgeschlossen</div></div></div>
-      <div style="display:flex;align-items:center;gap:8px;"><span class="module-badge badge-open" id="badge-8">Offen</span><span class="module-arrow" id="arrow-8">▼</span></div>
-    </div>
-    <div class="module-content" id="content-8">
-      <div class="content-item"><div class="check-box" id="chk-8-0" onclick="toggleCheck(8,0)"></div><span class="item-icon">📋</span><div class="item-info"><div class="item-title" id="title-8-0">Modulübersicht &amp; Inhaltsverzeichnis</div></div><a href="modul8-uebersicht.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-8-1" onclick="toggleCheck(8,1)"></div><span class="item-icon">🎬</span><div class="item-info"><div class="item-title" id="title-8-1">Ankervideo — Starte hier</div></div><a href="modul8-ankervideo.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-8-2" onclick="toggleCheck(8,2)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-8-2">Lektion 1 — Upselling richtig verstehen</div></div><a href="modul8-lektion1.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-8-3" onclick="toggleCheck(8,3)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-8-3">Lektion 2 — Verkaufspsychologie</div></div><a href="modul8-lektion2.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-8-4" onclick="toggleCheck(8,4)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-8-4">Lektion 3 — Zusatzangebote clever nutzen</div></div><a href="modul8-lektion3.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-8-5" onclick="toggleCheck(8,5)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-8-5">Lektion 4 — Umsetzung und Aktionsplan</div></div><a href="modul8-lektion4.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-8-6" onclick="toggleCheck(8,6)"></div><span class="item-icon">🎙️</span><div class="item-info"><div class="item-title" id="title-8-6">Podcast Küchenfunk#4 Modul 8</div></div><a href="modul8-podcast.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-8-7" onclick="toggleCheck(8,7)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title" id="title-8-7">So nutzt du den Upselling Tracker</div></div><a href="modul8-tracker-anleitung.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-8-8" onclick="toggleCheck(8,8)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-8-8">Upselling Tracker</div></div><a href="modul8-tracker.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-8-9" onclick="toggleCheck(8,9)"></div><span class="item-icon">📋</span><div class="item-info"><div class="item-title" id="title-8-9">Mindmap Team Übersicht Upselling</div></div><a href="modul8-mindmap.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-8-10" onclick="toggleCheck(8,10)"></div><span class="item-icon">🎯</span><div class="item-info"><div class="item-title" id="title-8-10">Quiz — Teste dein Wissen</div></div><a href="modul8-quiz.html" class="item-link">Öffnen →</a></div>
-      <div class="progress-bar-wrap"><div class="progress-label"><span>Fortschritt Modul 8</span><span id="progress-text-8">0%</span></div><div class="progress-bar"><div class="progress-fill" id="progress-fill-8" style="width:0%"></div></div></div>
-    </div>
+<!-- MODUL 4 -->
+<div class="module-card" id="modul-card-4" style="display:none;">
+  <div class="module-header" onclick="toggleModule(4)">
+    <div class="module-left"><div class="module-number">4</div><div><div class="module-title">Zahlen verstehen &amp; kontrollieren</div><div class="module-subtitle" id="subtitle-4">0 von 12 abgeschlossen</div></div></div>
+    <div style="display:flex;align-items:center;gap:8px;"><span class="module-badge badge-open" id="badge-4">Offen</span><span class="module-arrow" id="arrow-4">▼</span></div>
   </div>
-
-  <!-- MODUL 9 -->
-  <div class="module-card" id="modul-card-9" style="display:none;">
-    <div class="module-header" onclick="toggleModule(9)">
-      <div class="module-left"><div class="module-number">9</div><div><div class="module-title">Marketing &amp; Sichtbarkeit</div><div class="module-subtitle" id="subtitle-9">0 von 12 abgeschlossen</div></div></div>
-      <div style="display:flex;align-items:center;gap:8px;"><span class="module-badge badge-open" id="badge-9">Offen</span><span class="module-arrow" id="arrow-9">▼</span></div>
-    </div>
-    <div class="module-content" id="content-9">
-      <div class="content-item"><div class="check-box" id="chk-9-0" onclick="toggleCheck(9,0)"></div><span class="item-icon">📋</span><div class="item-info"><div class="item-title" id="title-9-0">Modulübersicht</div></div><a href="modul9-uebersicht.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-9-1" onclick="toggleCheck(9,1)"></div><span class="item-icon">🎬</span><div class="item-info"><div class="item-title" id="title-9-1">Ankervideo — Starte hier</div></div><a href="modul9-ankervideo.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-9-2" onclick="toggleCheck(9,2)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-9-2">Lektion 1 — Google vs. Instagram</div></div><a href="modul9-lektion1.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-9-3" onclick="toggleCheck(9,3)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-9-3">Lektion 2 — Bewertungen gezielt steigern</div></div><a href="modul9-lektion2.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-9-4" onclick="toggleCheck(9,4)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-9-4">Lektion 3 — Social Media ohne Stress</div></div><a href="modul9-lektion3.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-9-5" onclick="toggleCheck(9,5)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-9-5">Lektion 4 — Umsetzung und Aktionsplan</div></div><a href="modul9-lektion4.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-9-6" onclick="toggleCheck(9,6)"></div><span class="item-icon">🛒</span><div class="item-info"><div class="item-title" id="title-9-6">Social Media Starter Kit</div></div><a href="modul9-startkit.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-9-7" onclick="toggleCheck(9,7)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-9-7">So nutzt du den 15 Min Marketingplan</div></div><a href="modul9-marketingplan-anleitung.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-9-8" onclick="toggleCheck(9,8)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-9-8">15 Minuten Marketingplan</div></div><a href="modul9-marketingplan.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-9-9" onclick="toggleCheck(9,9)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title" id="title-9-9">So nutzt du den Marketing Aktionsplan</div></div><a href="modul9-aktionsplan-anleitung.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-9-10" onclick="toggleCheck(9,10)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-9-10">Marketing Aktionsplan</div></div><a href="modul9-aktionsplan.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-9-11" onclick="toggleCheck(9,11)"></div><span class="item-icon">🎯</span><div class="item-info"><div class="item-title" id="title-9-11">Quiz — Teste dein Wissen</div></div><a href="modul9-quiz.html" class="item-link">Öffnen →</a></div>
-      <div class="progress-bar-wrap"><div class="progress-label"><span>Fortschritt Modul 9</span><span id="progress-text-9">0%</span></div><div class="progress-bar"><div class="progress-fill" id="progress-fill-9" style="width:0%"></div></div></div>
-    </div>
+  <div class="module-content" id="content-4">
+    <div class="content-item"><div class="check-box" id="chk-4-0" onclick="toggleCheck(4,0)"></div><span class="item-icon">📋</span><div class="item-info"><div class="item-title" id="title-4-0">Modulübersicht &amp; Inhaltsverzeichnis</div></div><a href="modul4-uebersicht.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-4-1" onclick="toggleCheck(4,1)"></div><span class="item-icon">🎬</span><div class="item-info"><div class="item-title" id="title-4-1">Ankervideo — Starte hier</div></div><a href="modul4-ankervideo.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-4-2" onclick="toggleCheck(4,2)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-4-2">Lektion 1 — Fixkosten, variable Kosten &amp; Break Even</div></div><a href="modul4-lektion1.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-4-3" onclick="toggleCheck(4,3)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-4-3">Lektion 2 — Die BWA richtig lesen</div></div><a href="modul4-lektion2.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-4-4" onclick="toggleCheck(4,4)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-4-4">Lektion 3 — Die 5 größten Kostentreiber</div></div><a href="modul4-lektion3.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-4-5" onclick="toggleCheck(4,5)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-4-5">Lektion 4 — Fallbeispiel &amp; 30-Tage-Aktionsplan</div></div><a href="modul4-lektion4.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-4-6" onclick="toggleCheck(4,6)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title" id="title-4-6">Screenshot Guide BWA</div></div><a href="modul4-bwa-guide.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-4-7" onclick="toggleCheck(4,7)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title" id="title-4-7">So nutzt du den Gewinn Rechner</div></div><a href="modul4-gewinn-anleitung.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-4-8" onclick="toggleCheck(4,8)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-4-8">Gewinn Rechner — Dein Break Even auf einen Blick</div></div><a href="modul4-gewinn.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-4-9" onclick="toggleCheck(4,9)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title" id="title-4-9">So nutzt du die Kostentreiber Checkliste</div></div><a href="modul4-kostentreiber-video.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-4-10" onclick="toggleCheck(4,10)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-4-10">Kostentreiber Checkliste</div></div><a href="modul4-kostentreiber.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-4-11" onclick="toggleCheck(4,11)"></div><span class="item-icon">🎯</span><div class="item-info"><div class="item-title" id="title-4-11">Quiz — Teste dein Wissen</div></div><a href="modul4-quiz.html" class="item-link">Öffnen →</a></div>
+    <div class="progress-bar-wrap"><div class="progress-label"><span>Fortschritt Modul 4</span><span id="progress-text-4">0%</span></div><div class="progress-bar"><div class="progress-fill" id="progress-fill-4" style="width:0%"></div></div></div>
   </div>
+</div>
 
-  <!-- MODUL 10 -->
-  <div class="module-card" id="modul-card-10" style="display:none;">
-    <div class="module-header" onclick="toggleModule(10)">
-      <div class="module-left"><div class="module-number">10</div><div><div class="module-title">Wachstum &amp; Skalierung</div><div class="module-subtitle" id="subtitle-10">0 von 10 abgeschlossen</div></div></div>
-      <div style="display:flex;align-items:center;gap:8px;"><span class="module-badge badge-open" id="badge-10">Offen</span><span class="module-arrow" id="arrow-10">▼</span></div>
-    </div>
-    <div class="module-content" id="content-10">
-      <div class="content-item"><div class="check-box" id="chk-10-0" onclick="toggleCheck(10,0)"></div><span class="item-icon">📋</span><div class="item-info"><div class="item-title" id="title-10-0">Modulübersicht &amp; Inhaltsverzeichnis</div></div><a href="modul10-uebersicht.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-10-1" onclick="toggleCheck(10,1)"></div><span class="item-icon">🎬</span><div class="item-info"><div class="item-title" id="title-10-1">Ankervideo — Starte hier</div></div><a href="modul10-ankervideo.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-10-2" onclick="toggleCheck(10,2)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-10-2">Lektion 1 — Ist dein Fundament stabil genug</div></div><a href="modul10-lektion1.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-10-3" onclick="toggleCheck(10,3)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-10-3">Lektion 2 — Wann ist Wachstum sinnvoll</div></div><a href="modul10-lektion2.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-10-4" onclick="toggleCheck(10,4)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-10-4">Lektion 3 — Expansion mit System</div></div><a href="modul10-lektion3.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-10-5" onclick="toggleCheck(10,5)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-10-5">Lektion 4 — Vom Plan zur Umsetzung</div></div><a href="modul10-lektion4.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-10-6" onclick="toggleCheck(10,6)"></div><span class="item-icon">⚠️</span><div class="item-info"><div class="item-title" id="title-10-6">Fehler Report Gastronomie</div></div><a href="modul10-fehlerreport.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-10-7" onclick="toggleCheck(10,7)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title" id="title-10-7">So nutzt du das Standort Analyse Tool</div></div><a href="modul10-tool-video.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-10-8" onclick="toggleCheck(10,8)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-10-8">Standort Analyse Tool</div></div><a href="modul10-tool.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-10-9" onclick="toggleCheck(10,9)"></div><span class="item-icon">🎯</span><div class="item-info"><div class="item-title" id="title-10-9">Quiz — Teste dein Wissen</div></div><a href="modul10-quiz.html" class="item-link">Öffnen →</a></div>
-      <div class="progress-bar-wrap"><div class="progress-label"><span>Fortschritt Modul 10</span><span id="progress-text-10">0%</span></div><div class="progress-bar"><div class="progress-fill" id="progress-fill-10" style="width:0%"></div></div></div>
-    </div>
+<!-- MODUL 5 -->
+<div class="module-card" id="modul-card-5" style="display:none;">
+  <div class="module-header" onclick="toggleModule(5)">
+    <div class="module-left"><div class="module-number">5</div><div><div class="module-title">Struktur &amp; Organisation</div><div class="module-subtitle" id="subtitle-5">0 von 11 abgeschlossen</div></div></div>
+    <div style="display:flex;align-items:center;gap:8px;"><span class="module-badge badge-open" id="badge-5">Offen</span><span class="module-arrow" id="arrow-5">▼</span></div>
   </div>
-
-  <!-- MODUL 11 -->
-  <div class="module-card" id="modul-card-11" style="display:none;">
-    <div class="module-header" onclick="toggleModule(11)">
-      <div class="module-left"><div class="module-number">11</div><div><div class="module-title">Freiheit &amp; Lebensqualität</div><div class="module-subtitle" id="subtitle-11">0 von 11 abgeschlossen</div></div></div>
-      <div style="display:flex;align-items:center;gap:8px;"><span class="module-badge badge-open" id="badge-11">Offen</span><span class="module-arrow" id="arrow-11">▼</span></div>
-    </div>
-    <div class="module-content" id="content-11">
-      <div class="content-item"><div class="check-box" id="chk-11-0" onclick="toggleCheck(11,0)"></div><span class="item-icon">📋</span><div class="item-info"><div class="item-title" id="title-11-0">Modulübersicht &amp; Inhaltsverzeichnis</div></div><a href="modul11-uebersicht.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-11-1" onclick="toggleCheck(11,1)"></div><span class="item-icon">🎬</span><div class="item-info"><div class="item-title" id="title-11-1">Ankervideo — Vom Dauerstress zur stabilen Routine</div></div><a href="modul11-ankervideo.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-11-2" onclick="toggleCheck(11,2)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-11-2">Lektion 1 — Raus aus dem Dauerstress</div></div><a href="modul11-lektion1.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-11-3" onclick="toggleCheck(11,3)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-11-3">Lektion 2 — Zeit für Familie und Freizeit</div></div><a href="modul11-lektion2.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-11-4" onclick="toggleCheck(11,4)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-11-4">Lektion 3 — Dein Unternehmer-Rhythmus</div></div><a href="modul11-lektion3.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-11-5" onclick="toggleCheck(11,5)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-11-5">Lektion 4 — Vom Plan zur Umsetzung</div></div><a href="modul11-lektion4.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-11-6" onclick="toggleCheck(11,6)"></div><span class="item-icon">🎙️</span><div class="item-info"><div class="item-title" id="title-11-6">Podcast Küchenfunk #5 — Modul 11</div></div><a href="modul11-podcast.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-11-7" onclick="toggleCheck(11,7)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title" id="title-11-7">So nutzt du die Monats-Reflexion</div></div><a href="modul11-reflexion-video.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-11-8" onclick="toggleCheck(11,8)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-11-8">Monats-Reflexion</div></div><a href="modul11-reflexion.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-11-9" onclick="toggleCheck(11,9)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title" id="title-11-9">So nutzt du das Sterne-Level-System</div></div><a href="modul11-sterne-video.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-11-10" onclick="toggleCheck(11,10)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-11-10">Sterne-Level System</div></div><a href="modul11-sterne.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-11-11" onclick="toggleCheck(11,11)"></div><span class="item-icon">🎯</span><div class="item-info"><div class="item-title" id="title-11-11">Quiz — Teste dein Wissen</div></div><a href="modul11-quiz.html" class="item-link">Öffnen →</a></div>
-      <div class="progress-bar-wrap"><div class="progress-label"><span>Fortschritt Modul 11</span><span id="progress-text-11">0%</span></div><div class="progress-bar"><div class="progress-fill" id="progress-fill-11" style="width:0%"></div></div></div>
-    </div>
+  <div class="module-content" id="content-5">
+    <div class="content-item"><div class="check-box" id="chk-5-0" onclick="toggleCheck(5,0)"></div><span class="item-icon">📋</span><div class="item-info"><div class="item-title" id="title-5-0">Modulübersicht &amp; Inhaltsverzeichnis</div></div><a href="modul5-uebersicht.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-5-1" onclick="toggleCheck(5,1)"></div><span class="item-icon">🎬</span><div class="item-info"><div class="item-title" id="title-5-1">Ankervideo — Starte hier</div></div><a href="modul5-ankervideo.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-5-2" onclick="toggleCheck(5,2)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-5-2">Lektion 1 — Unternehmer vs. Selbständiger</div></div><a href="modul5-lektion1.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-5-3" onclick="toggleCheck(5,3)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-5-3">Lektion 2 — Was sind SOPs und wie du anfängst</div></div><a href="modul5-lektion2.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-5-4" onclick="toggleCheck(5,4)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-5-4">Lektion 3 — Deine Tagesstruktur als Unternehmer</div></div><a href="modul5-lektion3.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-5-5" onclick="toggleCheck(5,5)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-5-5">Lektion 4 — Fallbeispiel &amp; 30-Tage-Aktionsplan</div></div><a href="modul5-lektion4.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-5-6" onclick="toggleCheck(5,6)"></div><span class="item-icon">🎬</span><div class="item-info"><div class="item-title" id="title-5-6">Video Fallbeispiel Sandra</div></div><a href="modul5-fallbeispiel-video.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-5-7" onclick="toggleCheck(5,7)"></div><span class="item-icon">🎙️</span><div class="item-info"><div class="item-title" id="title-5-7">Küchenfunk #2 — Stoßzeiten &amp; Leerzeiten</div></div><a href="modul5-podcast.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-5-8" onclick="toggleCheck(5,8)"></div><span class="item-icon">🎬</span><div class="item-info"><div class="item-title" id="title-5-8">So nutzt du den Wochenplaner</div></div><a href="modul5-wochenplaner-video.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-5-9" onclick="toggleCheck(5,9)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-5-9">Wochenplaner</div></div><a href="modul5-wochenplaner.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-5-10" onclick="toggleCheck(5,10)"></div><span class="item-icon">🎯</span><div class="item-info"><div class="item-title" id="title-5-10">Quiz — Teste dein Wissen</div></div><a href="modul5-quiz.html" class="item-link">Öffnen →</a></div>
+    <div class="progress-bar-wrap"><div class="progress-label"><span>Fortschritt Modul 5</span><span id="progress-text-5">0%</span></div><div class="progress-bar"><div class="progress-fill" id="progress-fill-5" style="width:0%"></div></div></div>
   </div>
+</div>
 
-  <!-- MODUL 12 -->
-  <div class="module-card" id="modul-card-12" style="display:none;">
-    <div class="module-header" onclick="toggleModule(12)">
-      <div class="module-left"><div class="module-number">12</div><div><div class="module-title">Mitarbeiter finden &amp; halten</div><div class="module-subtitle" id="subtitle-12">0 von 10 abgeschlossen</div></div></div>
-      <div style="display:flex;align-items:center;gap:8px;"><span class="module-badge badge-open" id="badge-12">Offen</span><span class="module-arrow" id="arrow-12">▼</span></div>
-    </div>
-    <div class="module-content" id="content-12">
-      <div class="content-item"><div class="check-box" id="chk-12-0" onclick="toggleCheck(12,0)"></div><span class="item-icon">📋</span><div class="item-info"><div class="item-title" id="title-12-0">Modulübersicht &amp; Inhaltsverzeichnis</div></div><a href="modul12-uebersicht.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-12-1" onclick="toggleCheck(12,1)"></div><span class="item-icon">🎬</span><div class="item-info"><div class="item-title" id="title-12-1">Ankervideo — Mitarbeiter finden &amp; halten</div></div><a href="modul12-ankervideo.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-12-2" onclick="toggleCheck(12,2)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-12-2">Lektion 1 — Warum gute Leute gehen</div></div><a href="modul12-lektion1.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-12-3" onclick="toggleCheck(12,3)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-12-3">Lektion 2 — Die richtige Stellenanzeige</div></div><a href="modul12-lektion2.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-12-4" onclick="toggleCheck(12,4)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-12-4">Lektion 3 — Onboarding mit System</div></div><a href="modul12-lektion3.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-12-5" onclick="toggleCheck(12,5)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-12-5">Lektion 4 — Vom Plan zur Umsetzung</div></div><a href="modul12-lektion4.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-12-6" onclick="toggleCheck(12,6)"></div><span class="item-icon">🎙️</span><div class="item-info"><div class="item-title" id="title-12-6">Podcast Küchenfunk #6 — Modul 12</div></div><a href="modul12-podcast.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-12-7" onclick="toggleCheck(12,7)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title" id="title-12-7">So nutzt du den Mitarbeiter Recruiting Plan</div></div><a href="modul12-recruiting-video.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-12-8" onclick="toggleCheck(12,8)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-12-8">Mitarbeiter Recruiting Plan</div></div><a href="modul12-recruiting.html" class="item-link">Öffnen →</a></div>
-      <div class="content-item"><div class="check-box" id="chk-12-9" onclick="toggleCheck(12,9)"></div><span class="item-icon">🎯</span><div class="item-info"><div class="item-title" id="title-12-9">Quiz — Teste dein Wissen</div></div><a href="modul12-quiz.html" class="item-link">Öffnen →</a></div>
-      <div class="progress-bar-wrap"><div class="progress-label"><span>Fortschritt Modul 12</span><span id="progress-text-12">0%</span></div><div class="progress-bar"><div class="progress-fill" id="progress-fill-12" style="width:0%"></div></div></div>
-    </div>
+<!-- MODUL 6 -->
+<div class="module-card" id="modul-card-6" style="display:none;">
+  <div class="module-header" onclick="toggleModule(6)">
+    <div class="module-left"><div class="module-number">6</div><div><div class="module-title">Mitarbeiter führen statt nur reagieren</div><div class="module-subtitle" id="subtitle-6">0 von 13 abgeschlossen</div></div></div>
+    <div style="display:flex;align-items:center;gap:8px;"><span class="module-badge badge-open" id="badge-6">Offen</span><span class="module-arrow" id="arrow-6">▼</span></div>
   </div>
+  <div class="module-content" id="content-6">
+    <div class="content-item"><div class="check-box" id="chk-6-0" onclick="toggleCheck(6,0)"></div><span class="item-icon">📋</span><div class="item-info"><div class="item-title" id="title-6-0">Modulübersicht &amp; Inhaltsverzeichnis</div></div><a href="modul6-uebersicht.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-6-1" onclick="toggleCheck(6,1)"></div><span class="item-icon">🎬</span><div class="item-info"><div class="item-title" id="title-6-1">Ankervideo — Starte hier</div></div><a href="modul6-ankervideo.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-6-2" onclick="toggleCheck(6,2)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-6-2">Lektion 1 — Warum klare Rollen alles verändern</div></div><a href="modul6-lektion1.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-6-3" onclick="toggleCheck(6,3)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-6-3">Lektion 2 — So definierst du Rollen in deinem Betrieb</div></div><a href="modul6-lektion2.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-6-4" onclick="toggleCheck(6,4)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-6-4">Lektion 3 — Der Schichtleiter als Schlüssel</div></div><a href="modul6-lektion3.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-6-5" onclick="toggleCheck(6,5)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-6-5">Lektion 4 — Fallbeispiel &amp; 30-Tage-Aktionsplan</div></div><a href="modul6-lektion4.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-6-6" onclick="toggleCheck(6,6)"></div><span class="item-icon">🎬</span><div class="item-info"><div class="item-title" id="title-6-6">Fallbeispiel Marco</div></div><a href="modul6-fallbeispiel-video.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-6-7" onclick="toggleCheck(6,7)"></div><span class="item-icon">🎙️</span><div class="item-info"><div class="item-title" id="title-6-7">Küchenfunk #3 — Podcast Modul 6</div></div><a href="modul6-podcast.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-6-8" onclick="toggleCheck(6,8)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title" id="title-6-8">So nutzt du den Personalstruktur Check</div></div><a href="modul6-personalstruktur-video.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-6-9" onclick="toggleCheck(6,9)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-6-9">Personalstruktur Check</div></div><a href="modul6-personalstruktur.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-6-10" onclick="toggleCheck(6,10)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title" id="title-6-10">So nutzt du das Mitarbeiter-Feedback-Gespräch</div></div><a href="modul6-feedback-video.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-6-11" onclick="toggleCheck(6,11)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-6-11">Strukturiertes Mitarbeiter-Feedback-Gespräch</div></div><a href="modul6-feedback.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-6-12" onclick="toggleCheck(6,12)"></div><span class="item-icon">🎯</span><div class="item-info"><div class="item-title" id="title-6-12">Quiz — Teste dein Wissen</div></div><a href="modul6-quiz.html" class="item-link">Öffnen →</a></div>
+    <div class="progress-bar-wrap"><div class="progress-label"><span>Fortschritt Modul 6</span><span id="progress-text-6">0%</span></div><div class="progress-bar"><div class="progress-fill" id="progress-fill-6" style="width:0%"></div></div></div>
+  </div>
+</div>
 
-  <div id="locked-modules"></div>
+<!-- MODUL 7 -->
+<div class="module-card" id="modul-card-7" style="display:none;">
+  <div class="module-header" onclick="toggleModule(7)">
+    <div class="module-left"><div class="module-number">7</div><div><div class="module-title">Kostenkontrolle &amp; Effizienz</div><div class="module-subtitle" id="subtitle-7">0 von 11 abgeschlossen</div></div></div>
+    <div style="display:flex;align-items:center;gap:8px;"><span class="module-badge badge-open" id="badge-7">Offen</span><span class="module-arrow" id="arrow-7">▼</span></div>
+  </div>
+  <div class="module-content" id="content-7">
+    <div class="content-item"><div class="check-box" id="chk-7-0" onclick="toggleCheck(7,0)"></div><span class="item-icon">📋</span><div class="item-info"><div class="item-title" id="title-7-0">Modulübersicht &amp; Inhaltsverzeichnis</div></div><a href="modul7-uebersicht.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-7-1" onclick="toggleCheck(7,1)"></div><span class="item-icon">🎬</span><div class="item-info"><div class="item-title" id="title-7-1">Ankervideo — Starte hier</div></div><a href="modul7-ankervideo.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-7-2" onclick="toggleCheck(7,2)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-7-2">Lektion 1 — Die versteckten Kostenvernichter</div></div><a href="modul7-lektion1.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-7-3" onclick="toggleCheck(7,3)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-7-3">Lektion 2 — Energie und Kühlung im Griff</div></div><a href="modul7-lektion2.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-7-4" onclick="toggleCheck(7,4)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-7-4">Lektion 3 — Verschwendung stoppen</div></div><a href="modul7-lektion3.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-7-5" onclick="toggleCheck(7,5)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-7-5">Lektion 4 — Vom Plan zur Umsetzung</div></div><a href="modul7-lektion4.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-7-6" onclick="toggleCheck(7,6)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title" id="title-7-6">So nutzt du den Gastro Effizienz Check</div></div><a href="modul7-effizienzcheck-anleitung.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-7-7" onclick="toggleCheck(7,7)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-7-7">Gastro Effizienz Check</div></div><a href="modul7-effizienzcheck.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-7-8" onclick="toggleCheck(7,8)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title" id="title-7-8">So nutzt du das Kosten Analyse Tool</div></div><a href="modul7-kostenanalyse-anleitung.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-7-9" onclick="toggleCheck(7,9)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-7-9">Kosten Analyse Tool</div></div><a href="modul7-kostenanalyse.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-7-10" onclick="toggleCheck(7,10)"></div><span class="item-icon">🎯</span><div class="item-info"><div class="item-title" id="title-7-10">Quiz — Teste dein Wissen</div></div><a href="modul7-quiz.html" class="item-link">Öffnen →</a></div>
+    <div class="progress-bar-wrap"><div class="progress-label"><span>Fortschritt Modul 7</span><span id="progress-text-7">0%</span></div><div class="progress-bar"><div class="progress-fill" id="progress-fill-7" style="width:0%"></div></div></div>
+  </div>
+</div>
+
+<!-- MODUL 8 -->
+<div class="module-card" id="modul-card-8" style="display:none;">
+  <div class="module-header" onclick="toggleModule(8)">
+    <div class="module-left"><div class="module-number">8</div><div><div class="module-title">Umsatz smart steigern</div><div class="module-subtitle" id="subtitle-8">0 von 11 abgeschlossen</div></div></div>
+    <div style="display:flex;align-items:center;gap:8px;"><span class="module-badge badge-open" id="badge-8">Offen</span><span class="module-arrow" id="arrow-8">▼</span></div>
+  </div>
+  <div class="module-content" id="content-8">
+    <div class="content-item"><div class="check-box" id="chk-8-0" onclick="toggleCheck(8,0)"></div><span class="item-icon">📋</span><div class="item-info"><div class="item-title" id="title-8-0">Modulübersicht &amp; Inhaltsverzeichnis</div></div><a href="modul8-uebersicht.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-8-1" onclick="toggleCheck(8,1)"></div><span class="item-icon">🎬</span><div class="item-info"><div class="item-title" id="title-8-1">Ankervideo — Starte hier</div></div><a href="modul8-ankervideo.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-8-2" onclick="toggleCheck(8,2)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-8-2">Lektion 1 — Upselling richtig verstehen</div></div><a href="modul8-lektion1.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-8-3" onclick="toggleCheck(8,3)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-8-3">Lektion 2 — Verkaufspsychologie</div></div><a href="modul8-lektion2.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-8-4" onclick="toggleCheck(8,4)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-8-4">Lektion 3 — Zusatzangebote clever nutzen</div></div><a href="modul8-lektion3.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-8-5" onclick="toggleCheck(8,5)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-8-5">Lektion 4 — Umsetzung und Aktionsplan</div></div><a href="modul8-lektion4.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-8-6" onclick="toggleCheck(8,6)"></div><span class="item-icon">🎙️</span><div class="item-info"><div class="item-title" id="title-8-6">Podcast Küchenfunk#4 Modul 8</div></div><a href="modul8-podcast.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-8-7" onclick="toggleCheck(8,7)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title" id="title-8-7">So nutzt du den Upselling Tracker</div></div><a href="modul8-tracker-anleitung.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-8-8" onclick="toggleCheck(8,8)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-8-8">Upselling Tracker</div></div><a href="modul8-tracker.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-8-9" onclick="toggleCheck(8,9)"></div><span class="item-icon">📋</span><div class="item-info"><div class="item-title" id="title-8-9">Mindmap Team Übersicht Upselling</div></div><a href="modul8-mindmap.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-8-10" onclick="toggleCheck(8,10)"></div><span class="item-icon">🎯</span><div class="item-info"><div class="item-title" id="title-8-10">Quiz — Teste dein Wissen</div></div><a href="modul8-quiz.html" class="item-link">Öffnen →</a></div>
+    <div class="progress-bar-wrap"><div class="progress-label"><span>Fortschritt Modul 8</span><span id="progress-text-8">0%</span></div><div class="progress-bar"><div class="progress-fill" id="progress-fill-8" style="width:0%"></div></div></div>
+  </div>
+</div>
+
+<!-- MODUL 9 -->
+<div class="module-card" id="modul-card-9" style="display:none;">
+  <div class="module-header" onclick="toggleModule(9)">
+    <div class="module-left"><div class="module-number">9</div><div><div class="module-title">Marketing &amp; Sichtbarkeit</div><div class="module-subtitle" id="subtitle-9">0 von 12 abgeschlossen</div></div></div>
+    <div style="display:flex;align-items:center;gap:8px;"><span class="module-badge badge-open" id="badge-9">Offen</span><span class="module-arrow" id="arrow-9">▼</span></div>
+  </div>
+  <div class="module-content" id="content-9">
+    <div class="content-item"><div class="check-box" id="chk-9-0" onclick="toggleCheck(9,0)"></div><span class="item-icon">📋</span><div class="item-info"><div class="item-title" id="title-9-0">Modulübersicht</div></div><a href="modul9-uebersicht.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-9-1" onclick="toggleCheck(9,1)"></div><span class="item-icon">🎬</span><div class="item-info"><div class="item-title" id="title-9-1">Ankervideo — Starte hier</div></div><a href="modul9-ankervideo.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-9-2" onclick="toggleCheck(9,2)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-9-2">Lektion 1 — Google vs. Instagram</div></div><a href="modul9-lektion1.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-9-3" onclick="toggleCheck(9,3)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-9-3">Lektion 2 — Bewertungen gezielt steigern</div></div><a href="modul9-lektion2.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-9-4" onclick="toggleCheck(9,4)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-9-4">Lektion 3 — Social Media ohne Stress</div></div><a href="modul9-lektion3.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-9-5" onclick="toggleCheck(9,5)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-9-5">Lektion 4 — Umsetzung und Aktionsplan</div></div><a href="modul9-lektion4.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-9-6" onclick="toggleCheck(9,6)"></div><span class="item-icon">🛒</span><div class="item-info"><div class="item-title" id="title-9-6">Social Media Starter Kit</div></div><a href="modul9-startkit.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-9-7" onclick="toggleCheck(9,7)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-9-7">So nutzt du den 15 Min Marketingplan</div></div><a href="modul9-marketingplan-anleitung.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-9-8" onclick="toggleCheck(9,8)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-9-8">15 Minuten Marketingplan</div></div><a href="modul9-marketingplan.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-9-9" onclick="toggleCheck(9,9)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title" id="title-9-9">So nutzt du den Marketing Aktionsplan</div></div><a href="modul9-aktionsplan-anleitung.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-9-10" onclick="toggleCheck(9,10)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-9-10">Marketing Aktionsplan</div></div><a href="modul9-aktionsplan.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-9-11" onclick="toggleCheck(9,11)"></div><span class="item-icon">🎯</span><div class="item-info"><div class="item-title" id="title-9-11">Quiz — Teste dein Wissen</div></div><a href="modul9-quiz.html" class="item-link">Öffnen →</a></div>
+    <div class="progress-bar-wrap"><div class="progress-label"><span>Fortschritt Modul 9</span><span id="progress-text-9">0%</span></div><div class="progress-bar"><div class="progress-fill" id="progress-fill-9" style="width:0%"></div></div></div>
+  </div>
+</div>
+
+<!-- MODUL 10 -->
+<div class="module-card" id="modul-card-10" style="display:none;">
+  <div class="module-header" onclick="toggleModule(10)">
+    <div class="module-left"><div class="module-number">10</div><div><div class="module-title">Wachstum &amp; Skalierung</div><div class="module-subtitle" id="subtitle-10">0 von 10 abgeschlossen</div></div></div>
+    <div style="display:flex;align-items:center;gap:8px;"><span class="module-badge badge-open" id="badge-10">Offen</span><span class="module-arrow" id="arrow-10">▼</span></div>
+  </div>
+  <div class="module-content" id="content-10">
+    <div class="content-item"><div class="check-box" id="chk-10-0" onclick="toggleCheck(10,0)"></div><span class="item-icon">📋</span><div class="item-info"><div class="item-title" id="title-10-0">Modulübersicht &amp; Inhaltsverzeichnis</div></div><a href="modul10-uebersicht.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-10-1" onclick="toggleCheck(10,1)"></div><span class="item-icon">🎬</span><div class="item-info"><div class="item-title" id="title-10-1">Ankervideo — Starte hier</div></div><a href="modul10-ankervideo.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-10-2" onclick="toggleCheck(10,2)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-10-2">Lektion 1 — Ist dein Fundament stabil genug</div></div><a href="modul10-lektion1.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-10-3" onclick="toggleCheck(10,3)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-10-3">Lektion 2 — Wann ist Wachstum sinnvoll</div></div><a href="modul10-lektion2.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-10-4" onclick="toggleCheck(10,4)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-10-4">Lektion 3 — Expansion mit System</div></div><a href="modul10-lektion3.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-10-5" onclick="toggleCheck(10,5)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-10-5">Lektion 4 — Vom Plan zur Umsetzung</div></div><a href="modul10-lektion4.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-10-6" onclick="toggleCheck(10,6)"></div><span class="item-icon">⚠️</span><div class="item-info"><div class="item-title" id="title-10-6">Fehler Report Gastronomie</div></div><a href="modul10-fehlerreport.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-10-7" onclick="toggleCheck(10,7)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title" id="title-10-7">So nutzt du das Standort Analyse Tool</div></div><a href="modul10-tool-video.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-10-8" onclick="toggleCheck(10,8)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-10-8">Standort Analyse Tool</div></div><a href="modul10-tool.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-10-9" onclick="toggleCheck(10,9)"></div><span class="item-icon">🎯</span><div class="item-info"><div class="item-title" id="title-10-9">Quiz — Teste dein Wissen</div></div><a href="modul10-quiz.html" class="item-link">Öffnen →</a></div>
+    <div class="progress-bar-wrap"><div class="progress-label"><span>Fortschritt Modul 10</span><span id="progress-text-10">0%</span></div><div class="progress-bar"><div class="progress-fill" id="progress-fill-10" style="width:0%"></div></div></div>
+  </div>
+</div>
+
+<!-- MODUL 11 -->
+<div class="module-card" id="modul-card-11" style="display:none;">
+  <div class="module-header" onclick="toggleModule(11)">
+    <div class="module-left"><div class="module-number">11</div><div><div class="module-title">Freiheit &amp; Lebensqualität</div><div class="module-subtitle" id="subtitle-11">0 von 12 abgeschlossen</div></div></div>
+    <div style="display:flex;align-items:center;gap:8px;"><span class="module-badge badge-open" id="badge-11">Offen</span><span class="module-arrow" id="arrow-11">▼</span></div>
+  </div>
+  <div class="module-content" id="content-11">
+    <div class="content-item"><div class="check-box" id="chk-11-0" onclick="toggleCheck(11,0)"></div><span class="item-icon">📋</span><div class="item-info"><div class="item-title" id="title-11-0">Modulübersicht &amp; Inhaltsverzeichnis</div></div><a href="modul11-uebersicht.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-11-1" onclick="toggleCheck(11,1)"></div><span class="item-icon">🎬</span><div class="item-info"><div class="item-title" id="title-11-1">Ankervideo — Vom Dauerstress zur stabilen Routine</div></div><a href="modul11-ankervideo.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-11-2" onclick="toggleCheck(11,2)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-11-2">Lektion 1 — Raus aus dem Dauerstress</div></div><a href="modul11-lektion1.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-11-3" onclick="toggleCheck(11,3)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-11-3">Lektion 2 — Zeit für Familie und Freizeit</div></div><a href="modul11-lektion2.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-11-4" onclick="toggleCheck(11,4)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-11-4">Lektion 3 — Dein Unternehmer-Rhythmus</div></div><a href="modul11-lektion3.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-11-5" onclick="toggleCheck(11,5)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-11-5">Lektion 4 — Vom Plan zur Umsetzung</div></div><a href="modul11-lektion4.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-11-6" onclick="toggleCheck(11,6)"></div><span class="item-icon">🎙️</span><div class="item-info"><div class="item-title" id="title-11-6">Podcast Küchenfunk #5 — Modul 11</div></div><a href="modul11-podcast.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-11-7" onclick="toggleCheck(11,7)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title" id="title-11-7">So nutzt du die Monats-Reflexion</div></div><a href="modul11-reflexion-video.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-11-8" onclick="toggleCheck(11,8)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-11-8">Monats-Reflexion</div></div><a href="modul11-reflexion.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-11-9" onclick="toggleCheck(11,9)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title" id="title-11-9">So nutzt du das Sterne-Level-System</div></div><a href="modul11-sterne-video.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-11-10" onclick="toggleCheck(11,10)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-11-10">Sterne-Level System</div></div><a href="modul11-sterne.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-11-11" onclick="toggleCheck(11,11)"></div><span class="item-icon">🎯</span><div class="item-info"><div class="item-title" id="title-11-11">Quiz — Teste dein Wissen</div></div><a href="modul11-quiz.html" class="item-link">Öffnen →</a></div>
+    <div class="progress-bar-wrap"><div class="progress-label"><span>Fortschritt Modul 11</span><span id="progress-text-11">0%</span></div><div class="progress-bar"><div class="progress-fill" id="progress-fill-11" style="width:0%"></div></div></div>
+  </div>
+</div>
+
+<!-- MODUL 12 -->
+<div class="module-card" id="modul-card-12" style="display:none;">
+  <div class="module-header" onclick="toggleModule(12)">
+    <div class="module-left"><div class="module-number">12</div><div><div class="module-title">Mitarbeiter finden &amp; halten</div><div class="module-subtitle" id="subtitle-12">0 von 10 abgeschlossen</div></div></div>
+    <div style="display:flex;align-items:center;gap:8px;"><span class="module-badge badge-open" id="badge-12">Offen</span><span class="module-arrow" id="arrow-12">▼</span></div>
+  </div>
+  <div class="module-content" id="content-12">
+    <div class="content-item"><div class="check-box" id="chk-12-0" onclick="toggleCheck(12,0)"></div><span class="item-icon">📋</span><div class="item-info"><div class="item-title" id="title-12-0">Modulübersicht &amp; Inhaltsverzeichnis</div></div><a href="modul12-uebersicht.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-12-1" onclick="toggleCheck(12,1)"></div><span class="item-icon">🎬</span><div class="item-info"><div class="item-title" id="title-12-1">Ankervideo — Mitarbeiter finden &amp; halten</div></div><a href="modul12-ankervideo.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-12-2" onclick="toggleCheck(12,2)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-12-2">Lektion 1 — Warum gute Leute gehen</div></div><a href="modul12-lektion1.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-12-3" onclick="toggleCheck(12,3)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-12-3">Lektion 2 — Die richtige Stellenanzeige</div></div><a href="modul12-lektion2.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-12-4" onclick="toggleCheck(12,4)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-12-4">Lektion 3 — Onboarding mit System</div></div><a href="modul12-lektion3.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-12-5" onclick="toggleCheck(12,5)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-12-5">Lektion 4 — Vom Plan zur Umsetzung</div></div><a href="modul12-lektion4.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-12-6" onclick="toggleCheck(12,6)"></div><span class="item-icon">🎙️</span><div class="item-info"><div class="item-title" id="title-12-6">Podcast Küchenfunk #6 — Modul 12</div></div><a href="modul12-podcast.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-12-7" onclick="toggleCheck(12,7)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title" id="title-12-7">So nutzt du den Mitarbeiter Recruiting Plan</div></div><a href="modul12-recruiting-video.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-12-8" onclick="toggleCheck(12,8)"></div><span class="item-icon">📊</span><div class="item-info"><div class="item-title" id="title-12-8">Mitarbeiter Recruiting Plan</div></div><a href="modul12-recruiting.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-12-9" onclick="toggleCheck(12,9)"></div><span class="item-icon">🎯</span><div class="item-info"><div class="item-title" id="title-12-9">Quiz — Teste dein Wissen</div></div><a href="modul12-quiz.html" class="item-link">Öffnen →</a></div>
+    <div class="progress-bar-wrap"><div class="progress-label"><span>Fortschritt Modul 12</span><span id="progress-text-12">0%</span></div><div class="progress-bar"><div class="progress-fill" id="progress-fill-12" style="width:0%"></div></div></div>
+  </div>
+</div>
+
+<div id="locked-modules"></div>
 </div>
 
 <div class="gold-bar"></div>
@@ -406,18 +403,16 @@ const SUPABASE_URL = 'https://hchlganbgjeciwhwaisj.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_6nQgc9KSINQ1IHZXqeG5IQ_l-19-Fw3';
 const { createClient } = supabase;
 const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
-
 const MODULE_ITEMS = { 0:7, 1:10, 2:12, 3:11, 4:12, 5:11, 6:13, 7:11, 8:11, 9:12, 10:10, 11:12, 12:10 };
 const MODUL_TITLES = ['Das Gastro OS Prinzip','Unternehmer-Denken & Gewinn-Fokus','Speisekarte & Angebotssystem','Einkauf & Wareneinsatz','Zahlen verstehen & kontrollieren','Struktur & Organisation','Mitarbeiter führen statt nur reagieren','Kostenkontrolle & Effizienz','Umsatz smart steigern','Marketing & Sichtbarkeit','Wachstum & Skalierung','Freiheit & Lebensqualität','Mitarbeiter finden & halten'];
 const QUIZ_KEYS = { 1:'1-9', 2:'2-11', 3:'3-10', 4:'4-11', 5:'5-10', 6:'6-12', 7:'7-10', 8:'8-10', 9:'9-11', 10:'10-9', 11:'11-10', 12:'12-8' };
 const QUIZ_TOOL_NAMES = { 1:'quiz_modul1', 2:'quiz_modul2', 3:'quiz_modul3', 4:'quiz_modul4', 5:'quiz_modul5', 6:'quiz_modul6', 7:'quiz_modul7', 8:'quiz_modul8', 9:'quiz_modul9', 10:'quiz_modul10', 11:'quiz_modul11', 12:'quiz_modul12' };
-
 let currentUser = null;
 let progress = {};
 let quizBestanden = {};
+let lockedModules = new Set();
 
 async function init() {
-  // Cookie-basierte Auth prüfen
   let userEmail = null;
   try {
     const res = await fetch('/api/verify-session');
@@ -425,82 +420,55 @@ async function init() {
     const data = await res.json();
     if (!data.valid) { window.location.href = 'login.html'; return; }
     userEmail = data.email;
-  } catch(e) {
-    window.location.href = 'login.html';
-    return;
-  }
+  } catch(e) { window.location.href = 'login.html'; return; }
 
   currentUser = { id: userEmail, email: userEmail };
   document.getElementById('user-name').textContent = userEmail.split('@')[0];
 
-  // Fortschritt laden
-  const { data: toolData } = await sb.from('user_tool_data')
-    .select('data').eq('user_id', userEmail)
-    .eq('tool_name', 'modul_progress').maybeSingle();
+  const { data: toolData } = await sb.from('user_tool_data').select('data').eq('user_id', userEmail).eq('tool_name', 'modul_progress').maybeSingle();
   progress = (toolData && toolData.data && typeof toolData.data === 'object') ? toolData.data : {};
 
-  // Quiz-Status laden
   for (const [num, key] of Object.entries(QUIZ_KEYS)) {
     const n = parseInt(num);
-    if (progress[key]) {
-      quizBestanden[n] = true;
-    } else {
+    if (progress[key]) { quizBestanden[n] = true; } else {
       try {
-        const { data: qd } = await sb.from('user_tool_data')
-          .select('data').eq('user_id', userEmail)
-          .eq('tool_name', QUIZ_TOOL_NAMES[n]).maybeSingle();
-        if (qd && qd.data && qd.data.bestanden) {
-          quizBestanden[n] = true;
-          progress[key] = true;
-        }
+        const { data: qd } = await sb.from('user_tool_data').select('data').eq('user_id', userEmail).eq('tool_name', QUIZ_TOOL_NAMES[n]).maybeSingle();
+        if (qd && qd.data && qd.data.bestanden) { quizBestanden[n] = true; progress[key] = true; }
       } catch(e) {}
     }
   }
 
-  // Interner Bypass: alle Module für Team-E-Mails freischalten
   const INTERNAL_EMAILS = ["kistartklar24@web.de","gastro.os.info@gmail.com","m.pritchard1978@web.de"];
-  if (INTERNAL_EMAILS.includes(userEmail.toLowerCase())) {
-    for (let n = 1; n <= 12; n++) quizBestanden[n] = true;
-  }
+  if (INTERNAL_EMAILS.includes(userEmail.toLowerCase())) { for (let n = 1; n <= 12; n++) quizBestanden[n] = true; }
 
-  // Module einblenden
   if (quizBestanden[1]) document.getElementById('modul-card-2').style.display = 'block';
   if (quizBestanden[2]) document.getElementById('modul-card-3').style.display = 'block';
-
   document.getElementById('modul-card-4').style.display = 'block';
-  if (!quizBestanden[3]) lockCard(4, 3);
-
+  if (!quizBestanden[3]) lockCard(4);
   document.getElementById('modul-card-5').style.display = 'block';
-  if (!quizBestanden[4]) lockCard(5, 4);
-
-  // renderProgress wird am Ende aufgerufen
-
+  if (!quizBestanden[4]) lockCard(5);
   document.getElementById('modul-card-6').style.display = 'block';
-  if (!quizBestanden[5]) lockCard(6, 5);
-
+  if (!quizBestanden[5]) lockCard(6);
   document.getElementById('modul-card-7').style.display = 'block';
-  if (!quizBestanden[6]) lockCard(7, 6);
-
+  if (!quizBestanden[6]) lockCard(7);
   document.getElementById('modul-card-8').style.display = 'block';
-  if (!quizBestanden[7]) lockCard(8, 7);
-
+  if (!quizBestanden[7]) lockCard(8);
   document.getElementById('modul-card-9').style.display = 'block';
-  if (!quizBestanden[8]) lockCard(9, 8);
-
+  if (!quizBestanden[8]) lockCard(9);
   document.getElementById('modul-card-10').style.display = 'block';
   document.getElementById('modul-card-11').style.display = 'block';
   document.getElementById('modul-card-12').style.display = 'block';
-  if (!quizBestanden[9])  lockCard(10, 9);
-  if (!quizBestanden[10]) lockCard(11, 10);
-  if (!quizBestanden[11]) lockCard(12, 11);
+  if (!quizBestanden[9])  lockCard(10);
+  if (!quizBestanden[10]) lockCard(11);
+  if (!quizBestanden[11]) lockCard(12);
 
-  // Erst alle Module sperren/freischalten, DANN Fortschritt rendern
   for (const m of [0,1,2,3,4,5,6,7,8,9,10,11,12]) renderProgress(m);
   renderLockedModules();
   openModuleFromHash();
 }
 
-function lockCard(m, requiredQuiz) {
+function lockCard(m) {
+  lockedModules.add(m);
   const card = document.getElementById('modul-card-' + m);
   if (!card) return;
   card.classList.add('locked');
@@ -517,6 +485,7 @@ function lockCard(m, requiredQuiz) {
 }
 
 function renderProgress(m) {
+  if (lockedModules.has(m)) return;
   if (!progress || typeof progress !== 'object') return;
   const total = MODULE_ITEMS[m];
   if (!total) return;
@@ -525,19 +494,13 @@ function renderProgress(m) {
     const key = m + '-' + i;
     const chk = document.getElementById('chk-' + m + '-' + i);
     const ttl = document.getElementById('title-' + m + '-' + i);
-    if (progress[key]) {
-      done++;
-      if (chk) chk.classList.add('checked');
-      if (ttl) ttl.classList.add('done');
-    } else {
-      if (chk) chk.classList.remove('checked');
-      if (ttl) ttl.classList.remove('done');
-    }
+    if (progress[key]) { done++; if (chk) chk.classList.add('checked'); if (ttl) ttl.classList.add('done'); }
+    else { if (chk) chk.classList.remove('checked'); if (ttl) ttl.classList.remove('done'); }
   }
   const pct = Math.round((done / total) * 100);
-  const fill  = document.getElementById('progress-fill-' + m);
-  const txt   = document.getElementById('progress-text-' + m);
-  const sub   = document.getElementById('subtitle-' + m);
+  const fill = document.getElementById('progress-fill-' + m);
+  const txt  = document.getElementById('progress-text-' + m);
+  const sub  = document.getElementById('subtitle-' + m);
   const badge = document.getElementById('badge-' + m);
   if (fill)  fill.style.width = pct + '%';
   if (txt)   txt.textContent  = pct + '%';
@@ -571,12 +534,7 @@ function updateOverallProgress() {
 async function toggleCheck(m, i) {
   const key = m + '-' + i;
   progress[key] = !progress[key];
-  await sb.from('user_tool_data').upsert({
-    user_id: currentUser.id,
-    tool_name: 'modul_progress',
-    data: progress,
-    updated_at: new Date().toISOString()
-  }, { onConflict: 'user_id,tool_name' });
+  await sb.from('user_tool_data').upsert({ user_id: currentUser.id, tool_name: 'modul_progress', data: progress, updated_at: new Date().toISOString() }, { onConflict: 'user_id,tool_name' });
   renderProgress(m);
 }
 
@@ -586,7 +544,7 @@ function toggleModule(m) {
   if (!content) return;
   const isOpen = content.classList.contains('open');
   content.classList.toggle('open', !isOpen);
-  arrow.classList.toggle('open', !isOpen);
+  if (arrow) arrow.classList.toggle('open', !isOpen);
 }
 
 function renderLockedModules() {
