@@ -1,4 +1,3 @@
-
 const crypto = require('crypto');
 
 const WHOP_API_KEY = process.env.WHOP_API_KEY;
@@ -37,7 +36,7 @@ export default async function handler(req, res) {
   try {
     // Schritt 1: Aktive Memberships für unser Produkt holen
     const membershipRes = await fetch(
-      `https://api.whop.com/v5/app/memberships?product_id=${WHOP_PRODUCT_ID}&valid=true`,
+      `https://api.whop.com/v5/company/memberships?product_id=${WHOP_PRODUCT_ID}&valid=true`,
       {
         headers: {
           'Authorization': `Bearer ${WHOP_API_KEY}`,
@@ -48,7 +47,7 @@ export default async function handler(req, res) {
 
     if (!membershipRes.ok) {
       const errText = await membershipRes.text();
-      console.error('Whop Memberships Fehler:', membershipRes.status, errText);
+      console.error('Whop Fehler:', membershipRes.status, errText);
       return res.status(500).json({ error: 'Whop API nicht erreichbar' });
     }
 
@@ -62,7 +61,7 @@ export default async function handler(req, res) {
       if (!userId) continue;
 
       const userRes = await fetch(
-        `https://api.whop.com/v5/app/users/${userId}`,
+        `https://api.whop.com/v5/company/users/${userId}`,
         {
           headers: {
             'Authorization': `Bearer ${WHOP_API_KEY}`,
