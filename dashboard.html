@@ -441,8 +441,10 @@ async function init() {
   const INTERNAL_EMAILS = ["kistartklar24@web.de","gastro.os.info@gmail.com","m.pritchard1978@web.de"];
   if (INTERNAL_EMAILS.includes(userEmail.toLowerCase())) { for (let n = 1; n <= 12; n++) quizBestanden[n] = true; }
 
-  if (quizBestanden[1]) document.getElementById('modul-card-2').style.display = 'block';
-  if (quizBestanden[2]) document.getElementById('modul-card-3').style.display = 'block';
+  document.getElementById('modul-card-2').style.display = 'block';
+if (!quizBestanden[1]) lockCard(2);
+document.getElementById('modul-card-3').style.display = 'block';
+if (!quizBestanden[2]) lockCard(3);
   document.getElementById('modul-card-4').style.display = 'block';
   if (!quizBestanden[3]) lockCard(4);
   document.getElementById('modul-card-5').style.display = 'block';
