@@ -1,3 +1,4 @@
+
 const crypto = require('crypto');
 
 const WHOP_API_KEY = process.env.WHOP_API_KEY;
@@ -19,12 +20,11 @@ export default async function handler(req, res) {
   }
 
   const { email } = req.body;
-
   if (!email || !email.includes('@')) {
     return res.status(400).json({ error: 'Ungültige E-Mail-Adresse' });
   }
 
-  // Whitelist-Check (für interne Nutzer)
+  // Whitelist-Check
   const bypassList = BYPASS_EMAILS.split(',').map(e => e.trim().toLowerCase());
   if (bypassList.includes(email.toLowerCase())) {
     const token = signSession(email);
@@ -34,10 +34,10 @@ export default async function handler(req, res) {
     return res.status(200).json({ success: true });
   }
 
-  // Whop API v5 — Mitglieder nach E-Mail suchen
   try {
-    const response = await fetch(
-      `https://api.whop.com/v5/app/members?page=1`,
+    // Schritt 1: Aktive Memberships für unser Produkt holen
+    const membershipRes = await fetch(
+      `https://api.whop.com/v5/app/memberships?product_id=${WHOP_PRODUCT_ID}&valid=true`,
       {
         headers: {
           'Authorization': `Bearer ${WHOP_API_KEY}`,
@@ -46,19 +46,41 @@ export default async function handler(req, res) {
       }
     );
 
-    if (!response.ok) {
-      console.error('Whop API Fehler:', response.status, await response.text());
+    if (!membershipRes.ok) {
+      const errText = await membershipRes.text();
+      console.error('Whop Memberships Fehler:', membershipRes.status, errText);
       return res.status(500).json({ error: 'Whop API nicht erreichbar' });
     }
 
-    const data = await response.json();
-    const members = data.data || [];
+    const membershipData = await membershipRes.json();
+    const memberships = membershipData.data || [];
 
-    const activeMember = members.find(m =>
-      m.email?.toLowerCase() === email.toLowerCase()
-    );
+    // Schritt 2: Für jede Membership den User holen und E-Mail prüfen
+    let found = false;
+    for (const membership of memberships) {
+      const userId = membership.user_id;
+      if (!userId) continue;
 
-    if (!activeMember) {
+      const userRes = await fetch(
+        `https://api.whop.com/v5/app/users/${userId}`,
+        {
+          headers: {
+            'Authorization': `Bearer ${WHOP_API_KEY}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      if (!userRes.ok) continue;
+
+      const user = await userRes.json();
+      if (user.email?.toLowerCase() === email.toLowerCase()) {
+        found = true;
+        break;
+      }
+    }
+
+    if (!found) {
       return res.status(403).json({
         error: 'Kein aktives Gastro-OS Abonnement für diese E-Mail gefunden.'
       });
