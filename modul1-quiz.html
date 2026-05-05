@@ -1,168 +1,3 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GASTRO-OS – Modul 1 | Quiz</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f0e8; color: #1a2a4a; min-height: 100vh; }
-  .header{background:#1a2a4a;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
-  .header .brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
-  .header .modul-label { font-size: 11px; color: #a0b0c8; letter-spacing: 3px; text-transform: uppercase; margin-top: 4px; }
-  .gold-bar { height: 3px; background: linear-gradient(90deg, #1a2a4a, #d4af37, #1a2a4a); }
-  .main { max-width: 780px; margin: 36px auto; padding: 0 24px 60px; }
-  h1 { font-family: Georgia, serif; font-size: 26px; color: #1a2a4a; margin-bottom: 8px; }
-  .gold-rule { width: 56px; height: 2px; background: #d4af37; margin: 10px 0 16px; }
-  .intro { font-size: 14px; color: #5060a0; line-height: 1.7; margin-bottom: 28px; }
-  .bereits-box { background: #e4f5e8; border: 2px solid #4aaa60; border-radius: 10px; padding: 28px 32px; text-align: center; display: none; }
-  .bereits-box .icon { font-size: 48px; margin-bottom: 12px; }
-  .bereits-box h2 { font-family: Georgia, serif; color: #1a6030; margin-bottom: 8px; }
-  .bereits-box p { color: #2a7040; font-size: 14px; }
-  .bereits-box .back-btn { display: inline-block; margin-top: 20px; background: #1a2a4a; color: #d4af37; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 13px; }
-  .frage-card { background: #fff; border-radius: 10px; padding: 24px 26px; margin-bottom: 16px; border: 1px solid #e8dfc8; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
-  .frage-card .nummer { font-size: 11px; font-weight: 700; color: #d4af37; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
-  .frage-card .frage { font-size: 15px; font-weight: 600; color: #1a2a4a; margin-bottom: 16px; line-height: 1.5; }
-  .antwort-option { display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; border-radius: 6px; border: 1.5px solid #e0dcd0; margin-bottom: 8px; cursor: pointer; transition: all 0.15s; background: #faf8f4; }
-  .antwort-option:hover { border-color: #d4af37; background: #fffdf0; }
-  .antwort-option.selected { border-color: #1a2a4a; background: #f0f4fb; }
-  .antwort-option.correct { border-color: #4aaa60; background: #e4f5e8; }
-  .antwort-option.wrong { border-color: #d06050; background: #fde8e4; }
-  .antwort-option input[type="radio"] { margin-top: 3px; flex-shrink: 0; }
-  .antwort-option label { font-size: 13px; color: #334; line-height: 1.6; cursor: pointer; }
-  .feedback { font-size: 12px; margin-top: 10px; padding: 8px 12px; border-radius: 6px; display: none; }
-  .feedback.correct { background: #e4f5e8; color: #1a6030; }
-  .feedback.wrong { background: #fde8e4; color: #8a2010; }
-  .submit-btn { width: 100%; padding: 16px; background: #1a2a4a; color: #d4af37; border: none; border-radius: 8px; font-size: 15px; font-weight: 700; cursor: pointer; letter-spacing: 1px; transition: background 0.2s; margin-top: 8px; }
-  .submit-btn:hover { background: #2a3a5a; }
-  .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-  .ergebnis-box { display: none; border-radius: 10px; padding: 28px 32px; text-align: center; margin-top: 20px; }
-  .ergebnis-box.bestanden { background: #e4f5e8; border: 2px solid #4aaa60; }
-  .ergebnis-box.nochmal { background: #fff8e8; border: 2px solid #d4af37; }
-  .ergebnis-box .icon { font-size: 48px; margin-bottom: 12px; }
-  .ergebnis-box h2 { font-family: Georgia, serif; margin-bottom: 8px; }
-  .ergebnis-box.bestanden h2 { color: #1a6030; }
-  .ergebnis-box.nochmal h2 { color: #7a5000; }
-  .ergebnis-box p { font-size: 14px; line-height: 1.7; margin-bottom: 12px; }
-  .ergebnis-box.bestanden p { color: #2a7040; }
-  .ergebnis-box.nochmal p { color: #5a4000; }
-  .ergebnis-btn { display: inline-block; background: #1a2a4a; color: #d4af37; padding: 13px 24px; border-radius: 6px; text-decoration: none; font-weight: 700; font-size: 13px; border: none; cursor: pointer; }
-  .retry-btn { background: transparent; border: 1.5px solid #d4af37; color: #9a7000; margin-top: 10px; display: block; width: 100%; padding: 11px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; }
-  .footer { background: #1a2a4a; margin-top: 48px; padding: 14px 40px; text-align: center; font-size: 11px; color: #8090a8; letter-spacing: 1px; }
-  .footer strong { color: #d4af37; }
-
-.btn-back-modul {
-  background: #d4af37;
-  color: #1a2a4a;
-  border: none;
-  padding: 9px 20px;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-block;
-  transition: all 0.2s;
-  letter-spacing: 0.3px;
-}
-.btn-back-modul:hover { background: #c8a030; color: #1a2a4a; }
-
-</style>
-<script>
-(function(){
-  document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
-  document.addEventListener('keydown', function(e){
-    if (e.ctrlKey && ['s','u','p','a'].includes(e.key.toLowerCase())) e.preventDefault();
-    if (e.key === 'F12') e.preventDefault();
-  });
-})();
-</script>
-</head>
-<body>
-<div class="header">
-  <div class="brand">GASTRO-OS</div>
-  <a href="dashboard.html#modul-1" class="btn-back-modul">← Zurück zum Dashboard</a>
-</div>
-<div class="gold-bar"></div>
-<div class="main">
-  <h1>Quiz — Modul 1</h1>
-  <div class="gold-rule"></div>
-  <p class="intro">Teste dein Wissen aus Modul 1. 5 Fragen rund um Gewinn-Denken, die vier Kennzahlen und den Mindset-Shift vom Selbstständigen zum Unternehmer. Du brauchst mindestens 4 von 5 richtigen Antworten. Viel Erfolg! 😊</p>
-
-  <div class="bereits-box" id="bereits-box">
-    <div class="icon">🏆</div>
-    <h2>Quiz bereits abgeschlossen!</h2>
-    <p>Du hast dieses Quiz bereits erfolgreich abgeschlossen.<br>Modul 2 ist für dich freigeschaltet.</p>
-    <a href="dashboard.html#modul-1" class="back-btn">← Zurück zum Dashboard</a>
-  </div>
-
-  <div id="quiz-form">
-    <div class="frage-card">
-      <div class="nummer">Frage 1 von 5</div>
-      <div class="frage">Was ist der entscheidende Unterschied zwischen Umsatz und Gewinn?</div>
-      <div class="antwort-option" onclick="selectAnswer(1,'A')"><input type="radio" name="q1" id="q1a"><label for="q1a">Umsatz ist das gesamte eingenommene Geld, während Gewinn der Betrag ist, der nach Abzug aller Kosten verbleibt.</label></div>
-      <div class="antwort-option" onclick="selectAnswer(1,'B')"><input type="radio" name="q1" id="q1b"><label for="q1b">Umsatz ist das Ergebnis bewusster Entscheidungen, während Gewinn lediglich eine Glückssache ist.</label></div>
-      <div class="antwort-option" onclick="selectAnswer(1,'C')"><input type="radio" name="q1" id="q1c"><label for="q1c">Umsatz zeigt das Wachstum an, während Gewinn nur für die Tilgung von Krediten verwendet wird.</label></div>
-      <div class="feedback" id="feedback-1"></div>
-    </div>
-
-    <div class="frage-card">
-      <div class="nummer">Frage 2 von 5</div>
-      <div class="frage">Welche Maßnahme verbessert die Gewinnmarge eines Restaurants am direktesten?</div>
-      <div class="antwort-option" onclick="selectAnswer(2,'A')"><input type="radio" name="q2" id="q2a"><label for="q2a">Die Öffnungszeiten verlängern, um mehr Gäste anzuziehen.</label></div>
-      <div class="antwort-option" onclick="selectAnswer(2,'B')"><input type="radio" name="q2" id="q2b"><label for="q2b">Den Wareneinsatz optimieren und Lebensmittelverschwendung konsequent reduzieren.</label></div>
-      <div class="antwort-option" onclick="selectAnswer(2,'C')"><input type="radio" name="q2" id="q2c"><label for="q2c">Die Speisekarte möglichst umfangreich gestalten, um jeden Geschmack zu treffen.</label></div>
-      <div class="feedback" id="feedback-2"></div>
-    </div>
-
-    <div class="frage-card">
-      <div class="nummer">Frage 3 von 5</div>
-      <div class="frage">Was versteht man unter dem Break-even-Point in einem Gastronomiebetrieb?</div>
-      <div class="antwort-option" onclick="selectAnswer(3,'A')"><input type="radio" name="q3" id="q3a"><label for="q3a">Der Punkt, ab dem der Betrieb schließen muss, weil die Schulden zu hoch sind.</label></div>
-      <div class="antwort-option" onclick="selectAnswer(3,'B')"><input type="radio" name="q3" id="q3b"><label for="q3b">Der Umsatz, bei dem alle Kosten gedeckt sind und weder Gewinn noch Verlust entsteht.</label></div>
-      <div class="antwort-option" onclick="selectAnswer(3,'C')"><input type="radio" name="q3" id="q3c"><label for="q3c">Die maximale Anzahl an Gästen, die ein Lokal pro Abend bedienen kann.</label></div>
-      <div class="feedback" id="feedback-3"></div>
-    </div>
-
-    <div class="frage-card">
-      <div class="nummer">Frage 4 von 5</div>
-      <div class="frage">Welche Kennzahl zeigt an, wie viel Prozent des Umsatzes für Lebensmittel ausgegeben wird?</div>
-      <div class="antwort-option" onclick="selectAnswer(4,'A')"><input type="radio" name="q4" id="q4a"><label for="q4a">Die Personalquote – sie misst den Anteil der Lohnkosten am Umsatz.</label></div>
-      <div class="antwort-option" onclick="selectAnswer(4,'B')"><input type="radio" name="q4" id="q4b"><label for="q4b">Der Deckungsbeitrag – er zeigt, was nach den variablen Kosten übrig bleibt.</label></div>
-      <div class="antwort-option" onclick="selectAnswer(4,'C')"><input type="radio" name="q4" id="q4c"><label for="q4c">Die Food Cost Quote – sie gibt den prozentualen Anteil der Wareneinsatzkosten am Umsatz an.</label></div>
-      <div class="feedback" id="feedback-4"></div>
-    </div>
-
-    <div class="frage-card">
-      <div class="nummer">Frage 5 von 5</div>
-      <div class="frage">Warum ist die Liquidität wichtiger als der Gewinn, wenn es ums Überleben eines Restaurants geht?</div>
-      <div class="antwort-option" onclick="selectAnswer(5,'A')"><input type="radio" name="q5" id="q5a"><label for="q5a">Weil Liquidität bedeutet, jederzeit Rechnungen und Löhne bezahlen zu können – auch wenn auf dem Papier Gewinn steht.</label></div>
-      <div class="antwort-option" onclick="selectAnswer(5,'B')"><input type="radio" name="q5" id="q5b"><label for="q5b">Weil Gewinn nur für Investitionen relevant ist und nichts mit dem laufenden Betrieb zu tun hat.</label></div>
-      <div class="antwort-option" onclick="selectAnswer(5,'C')"><input type="radio" name="q5" id="q5c"><label for="q5c">Weil Banken nur die Liquidität und niemals den Gewinn prüfen, bevor sie Kredite vergeben.</label></div>
-      <div class="feedback" id="feedback-5"></div>
-    </div>
-
-    <button class="submit-btn" id="submit-btn" onclick="submitQuiz()" disabled>Quiz auswerten →</button>
-  </div>
-
-  <div class="ergebnis-box bestanden" id="ergebnis-bestanden">
-    <div class="icon">🎉</div>
-    <h2>Sehr gut — bestanden!</h2>
-    <p id="ergebnis-text"></p>
-    <p><strong>Modul 2 ist jetzt für dich freigeschaltet!</strong></p>
-    <a href="dashboard.html#modul-1" class="ergebnis-btn">→ Weiter zu Modul 2</a>
-  </div>
-
-  <div class="ergebnis-box nochmal" id="ergebnis-nochmal">
-    <div class="icon">💪</div>
-    <h2>Fast geschafft — noch einmal!</h2>
-    <p id="ergebnis-text-2"></p>
-    <button class="ergebnis-btn" onclick="retryQuiz()">Quiz wiederholen</button>
-  </div>
-</div>
-<div class="gold-bar"></div>
-<div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
 
 <script>
   const SUPABASE_URL = 'https://hchlganbgjeciwhwaisj.supabase.co';
@@ -174,9 +9,16 @@
   let currentUser = null;
 
   async function init() {
-    const { data: { session } } = await sb.auth.getSession();
-    if (false) { window.location.href = 'login.html'; return; }
-    currentUser = session.user;
+    try {
+      const res = await fetch('/api/verify-session');
+      if (!res.ok) { window.location.href = 'login.html'; return; }
+      const d = await res.json();
+      if (!d.valid) { window.location.href = 'login.html'; return; }
+      currentUser = { id: d.email, email: d.email };
+    } catch(e) {
+      window.location.href = 'login.html';
+      return;
+    }
     const { data } = await sb.from('user_tool_data').select('data').eq('user_id', currentUser.id).eq('tool_name', 'quiz_modul1').maybeSingle();
     if (data && data.data && data.data.bestanden) {
       document.getElementById('quiz-form').style.display = 'none';
@@ -217,11 +59,21 @@
     document.getElementById('submit-btn').style.display = 'none';
 
     if (richtig >= 4) {
-      await sb.from('user_tool_data').upsert({ user_id: currentUser.id, tool_name: 'quiz_modul1', data: { bestanden: true, richtig, datum: new Date().toISOString() }, updated_at: new Date().toISOString() }, { onConflict: 'user_id,tool_name' });
+      await sb.from('user_tool_data').upsert({
+        user_id: currentUser.id,
+        tool_name: 'quiz_modul1',
+        data: { bestanden: true, richtig, datum: new Date().toISOString() },
+        updated_at: new Date().toISOString()
+      }, { onConflict: 'user_id,tool_name' });
       const { data: progData } = await sb.from('user_tool_data').select('data').eq('user_id', currentUser.id).eq('tool_name', 'modul_progress').maybeSingle();
-      const progress = progData ? progData.data : {};
+      const progress = (progData && progData.data) ? progData.data : {};
       progress['1-9'] = true;
-      await sb.from('user_tool_data').upsert({ user_id: currentUser.id, tool_name: 'modul_progress', data: progress, updated_at: new Date().toISOString() }, { onConflict: 'user_id,tool_name' });
+      await sb.from('user_tool_data').upsert({
+        user_id: currentUser.id,
+        tool_name: 'modul_progress',
+        data: progress,
+        updated_at: new Date().toISOString()
+      }, { onConflict: 'user_id,tool_name' });
       document.getElementById('ergebnis-text').textContent = `Du hast ${richtig} von 5 Fragen richtig beantwortet. Ausgezeichnet!`;
       document.getElementById('ergebnis-bestanden').style.display = 'block';
       document.getElementById('ergebnis-bestanden').scrollIntoView({ behavior: 'smooth' });
@@ -235,5 +87,3 @@
   function retryQuiz() { window.location.reload(); }
   init();
 </script>
-</body>
-</html>
