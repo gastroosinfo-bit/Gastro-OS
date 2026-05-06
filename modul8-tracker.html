@@ -242,11 +242,11 @@ function setData(d){
   recalcAll();
 }
 async function saveData(){
-  try{const{data:{session}}=await sb.auth.getSession();if(session){await sb.from('user_tool_data').upsert({user_id:session.user.id,tool_name:'upselling_tracker_modul8',data:getData(),updated_at:new Date().toISOString()},{onConflict:'user_id,tool_name'});}}catch(e){}
+  try{try{const res=await fetch('/api/verify-session');if(!res.ok){window.location.href='login.html';return;}const d=await res.json();if(!d.valid){window.location.href='login.html';return;}currentUser={id:d.email,email:d.email};}catch(e){window.location.href='login.html';return;}if(session){await sb.from('user_tool_data').upsert({user_id:session.user.id,tool_name:'upselling_tracker_modul8',data:getData(),updated_at:new Date().toISOString()},{onConflict:'user_id,tool_name'});}}catch(e){}
   const m=document.getElementById('save-msg');m.style.display='inline';setTimeout(()=>m.style.display='none',2500);
 }
 async function loadData(){
-  try{const{data:{session}}=await sb.auth.getSession();if(!session)return;const{data}=await sb.from('user_tool_data').select('data').eq('user_id',session.user.id).eq('tool_name','upselling_tracker_modul8').maybeSingle();if(data?.data)setData(data.data);}catch(e){}
+  try{try{const res=await fetch('/api/verify-session');if(!res.ok){window.location.href='login.html';return;}const d=await res.json();if(!d.valid){window.location.href='login.html';return;}currentUser={id:d.email,email:d.email};}catch(e){window.location.href='login.html';return;}if(!session)return;const{data}=await sb.from('user_tool_data').select('data').eq('user_id',session.user.id).eq('tool_name','upselling_tracker_modul8').maybeSingle();if(data?.data)setData(data.data);}catch(e){}
 }
 function resetAll(){
   if(!confirm('Alle Eingaben zurücksetzen?'))return;

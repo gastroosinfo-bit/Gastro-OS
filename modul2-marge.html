@@ -424,7 +424,7 @@ buildTable();
 async function resetData(){
   if(!confirm('Alle Eingaben zurücksetzen?'))return;
   document.querySelectorAll('input[type=text],input[type=number],textarea').forEach(el=>{el.value='';});
-  const{data:{session}}=await sb.auth.getSession();
+  try{const res=await fetch('/api/verify-session');if(!res.ok){window.location.href='login.html';return;}const d=await res.json();if(!d.valid){window.location.href='login.html';return;}currentUser={id:d.email,email:d.email};}catch(e){window.location.href='login.html';return;}
   if(session){
     await sb.from('user_tool_data').upsert({user_id:session.user.id,tool_name:'marge_tool_modul2',data:{rows:{},top5:'',updated:new Date().toISOString()},updated_at:new Date().toISOString()},{onConflict:'user_id,tool_name'});
   }
