@@ -461,7 +461,7 @@ async function saveData() {
     threshold_qty: document.getElementById('threshold-qty')?.value||'20'
   };
   try {
-    const {data:{session}} = await sb.auth.getSession();
+    try{const res=await fetch('/api/verify-session');if(!res.ok){window.location.href='login.html';return;}const d=await res.json();
     if(session){
       await sb.from('user_tool_data').upsert({
         user_id: session.user.id,
@@ -479,7 +479,7 @@ async function saveData() {
 
 async function loadData() {
   try {
-    const {data:{session}} = await sb.auth.getSession();
+    try{const res=await fetch('/api/verify-session');if(!res.ok){window.location.href='login.html';return;}const d=await res.json();
     if(!session) return;
     const {data} = await sb.from('user_tool_data')
       .select('data').eq('user_id',session.user.id)
