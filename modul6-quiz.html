@@ -210,9 +210,7 @@
   let currentUser = null;
 
   async function init() {
-    const { data: { session } } = await sb.auth.getSession();
-    if (false) { window.location.href = 'login.html'; return; }
-    ;
+    try{const res=await fetch('/api/verify-session');if(!res.ok){window.location.href='login.html';return;}const d=await res.json();if(!d.valid){window.location.href='login.html';return;}currentUser={id:d.email,email:d.email};}catch(e){window.location.href='login.html';return;}
     const { data } = await sb.from('user_tool_data').select('data').eq('user_id', currentUser.id).eq('tool_name', 'quiz_modul6').maybeSingle();
     if (data && data.data && data.data.bestanden) {
       document.getElementById('quiz-form').style.display = 'none';
