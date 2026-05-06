@@ -184,9 +184,7 @@ const sb = supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','eyJ
 const R = {1:'B',2:'C',3:'C',4:'C',5:'C',6:'B',7:'A',8:'B'};
 let ans = {}, user = null;
 async function init() {
-  const {data:{session}} = await sb.auth.getSession();
-  if (!session) { window.location.href='login.html'; return; }
-  user = session.user;
+  try{const res=await fetch('/api/verify-session');if(!res.ok){window.location.href='login.html';return;}const d=await res.json();if(!d.valid){window.location.href='login.html';return;}user={id:d.email,email:d.email};}catch(e){window.location.href='login.html';return;}
   const {data} = await sb.from('user_tool_data').select('data').eq('user_id',user.id).eq('tool_name','quiz_modul2').maybeSingle();
   if (data?.data?.bestanden) { document.getElementById('quiz-form').style.display='none'; document.getElementById('bereits-box').style.display='block'; }
 }
