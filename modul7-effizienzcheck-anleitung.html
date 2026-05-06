@@ -7,26 +7,26 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: Arial, sans-serif; background: #f5f0e8; color: #333; }
-  .top-bar { background: #1a2a4a; padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; }
+  .top-bar { background: #1a2a4a; padding: 12px 28px; display: flex; align-items: center; justify-content: space-between; }
   .top-bar .logo { font-family: Georgia, serif; color: #d4af37; font-size: 18px; letter-spacing: 1px; }
-  .top-bar a { color: #aaa; font-size: 13px; text-decoration: none; }
-  .top-bar a:hover { color: #d4af37; }
-  .hero { background: #1a2a4a; padding: 28px 40px 24px; }
-  .hero .badge { color: #d4af37; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
-  .hero h1 { font-family: Georgia, serif; color: white; font-size: 26px; margin-bottom: 6px; }
-  .hero p { color: #aaa; font-size: 14px; }
-  .container { max-width: 860px; margin: 32px auto; padding: 0 24px 60px; }
-  .step { background: white; border-radius: 8px; padding: 28px 32px; margin-bottom: 28px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
-  .step-header { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
-  .step-num { background: #1a2a4a; color: #d4af37; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: Georgia, serif; font-size: 16px; font-weight: bold; flex-shrink: 0; }
-  .step h2 { font-family: Georgia, serif; color: #1a2a4a; font-size: 19px; }
-  .step p { color: #555; font-size: 14px; line-height: 1.6; margin-bottom: 16px; }
-  .tip { background: #fffbe6; border-left: 4px solid #d4af37; padding: 12px 16px; font-size: 13px; color: #666; margin-top: 14px; border-radius: 0 4px 4px 0; }
-  .screenshot { width: 100%; border: 2px solid #e0d9cc; border-radius: 6px; margin-top: 14px; display: block; }
-  .nav-footer { display: flex; justify-content: space-between; max-width: 860px; margin: 0 auto; padding: 0 24px 40px; }
-  .nav-footer a { color: #1a2a4a; text-decoration: none; font-size: 14px; padding: 10px 20px; border: 2px solid #1a2a4a; border-radius: 5px; }
+  .top-bar a { background: #d4af37; color: #1a2a4a; font-size: 13px; font-weight: bold; text-decoration: none; padding: 8px 18px; border-radius: 4px; }
+  .top-bar a:hover { background: #c49b2a; }
+  .page-content { max-width: 820px; margin: 40px auto; padding: 0 28px 60px; }
+  .page-title { margin-bottom: 32px; }
+  .page-title h1 { font-family: Georgia, serif; color: #1a2a4a; font-size: 26px; margin-bottom: 10px; }
+  .page-title .gold-line { width: 60px; height: 3px; background: #d4af37; border-radius: 2px; margin-bottom: 16px; }
+  .page-title p { color: #555; font-size: 14px; line-height: 1.65; }
+  .step { background: white; border-radius: 8px; padding: 28px 32px; margin-bottom: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+  .step-header { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+  .step-num { background: #1a2a4a; color: #d4af37; width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: Georgia, serif; font-size: 15px; font-weight: bold; flex-shrink: 0; }
+  .step h2 { font-family: Georgia, serif; color: #1a2a4a; font-size: 18px; }
+  .step p { color: #555; font-size: 14px; line-height: 1.65; margin-bottom: 0; }
+  .tip { background: #fffbe6; border-left: 4px solid #d4af37; padding: 11px 15px; font-size: 13px; color: #666; margin-top: 14px; border-radius: 0 4px 4px 0; }
+  .screenshot { width: 100%; border: 1px solid #ddd; border-radius: 5px; margin-top: 16px; display: block; }
+  .nav-footer { display: flex; justify-content: space-between; margin-top: 8px; }
+  .nav-footer a { color: #1a2a4a; text-decoration: none; font-size: 13px; padding: 9px 18px; border: 2px solid #1a2a4a; border-radius: 5px; }
   .nav-footer a:hover { background: #1a2a4a; color: #d4af37; }
-  .footer { background: #1a2a4a; color: #aaa; text-align: center; padding: 16px; font-size: 12px; }
+  .footer { background: #1a2a4a; color: #aaa; text-align: center; padding: 14px; font-size: 12px; margin-top: 40px; }
   .footer strong { color: #d4af37; }
 </style>
 </head>
@@ -34,16 +34,16 @@
 
 <div class="top-bar">
   <span class="logo">GASTRO-OS</span>
-  <a href="dashboard.html#modul-7">← Zurück zum Dashboard</a>
+  <a href="dashboard.html#modul-7">→ Zurück zum Dashboard</a>
 </div>
 
-<div class="hero">
-  <div class="badge">Modul 7 · Anleitung</div>
-  <h1>📸 So nutzt du den Gastro Effizienz Check</h1>
-  <p>Der Gastro Effizienz Check scannt deinen Betrieb auf technische und hygienische Mängel. In 20 Minuten siehst du wo Handlungsbedarf besteht — und kannst deinen Fortschritt über Zeit verfolgen.</p>
-</div>
+<div class="page-content">
 
-<div class="container">
+  <div class="page-title">
+    <h1>📸 So nutzt du den Gastro Effizienz Check</h1>
+    <div class="gold-line"></div>
+    <p>Der Gastro Effizienz Check scannt deinen Betrieb auf technische und hygienische Mängel. In 20 Minuten siehst du wo Handlungsbedarf besteht — und kannst deinen Fortschritt über Zeit verfolgen.</p>
+  </div>
 
   <div class="step">
     <div class="step-header">
@@ -84,11 +84,11 @@
     <div class="tip">💡 Ein regelmäßiger monatlicher Check ist wertvoller als ein perfekter einmaliger Check — Kontinuität macht den Unterschied.</div>
   </div>
 
-</div>
+  <div class="nav-footer">
+    <a href="modul7-uebersicht.html">← Modul 7 Übersicht</a>
+    <a href="modul7-effizienzcheck.html">📊 Zum Effizienz Check →</a>
+  </div>
 
-<div class="nav-footer">
-  <a href="modul7-uebersicht.html">← Modul 7 Übersicht</a>
-  <a href="modul7-effizienzcheck.html">📊 Zum Effizienz Check →</a>
 </div>
 
 <div class="footer"><strong>GASTRO-OS</strong> · System · Strategie · Erfolg</div>
