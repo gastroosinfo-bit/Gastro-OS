@@ -361,9 +361,7 @@ function resetData(){
 }
 
 async function init(){
-  const{data:{session}}=await sb.auth.getSession();
-  if(!session){window.location.href='login.html';return;}
-  currentUser=session.user;
+  try{const res=await fetch('/api/verify-session');if(!res.ok){window.location.href='login.html';return;}const d=await res.json();if(!d.valid){window.location.href='login.html';return;}currentUser={id:d.email,email:d.email};}catch(e){window.location.href='login.html';return;}
   buildTable('tech-body',TECH_DATA,'tech');
   buildTable('hygiene-body',HYGIENE_DATA,'hyg');
   buildJahres();

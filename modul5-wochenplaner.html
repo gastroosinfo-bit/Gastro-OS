@@ -353,9 +353,7 @@ function resetData(){
 }
 
 async function init(){
-  const{data:{session}}=await sb.auth.getSession();
-  if(!session){window.location.href='login.html';return;}
-  currentUser=session.user;
+  try{const res=await fetch('/api/verify-session');if(!res.ok){window.location.href='login.html';return;}const d=await res.json();if(!d.valid){window.location.href='login.html';return;}currentUser={id:d.email,email:d.email};}catch(e){window.location.href='login.html';return;}
   buildPlanner(); buildHL(); buildSOP();
   const{data:td}=await sb.from('user_tool_data').select('data').eq('user_id',currentUser.id).eq('tool_name','wochenplaner_modul5').maybeSingle();
   if(td&&td.data)setData(td.data);
