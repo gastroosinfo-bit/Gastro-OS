@@ -480,7 +480,7 @@ async function saveData() {
 async function loadData() {
   try {
     try{const res=await fetch('/api/verify-session');if(!res.ok){window.location.href='login.html';return;}const d=await res.json();
-    if(!session) return;
+     return;
     const {data} = await sb.from('user_tool_data')
       .select('data').eq('user_id',session.user.id)
       .eq('tool_name','analyse_guide_modul2').maybeSingle();

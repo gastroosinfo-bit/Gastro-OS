@@ -453,7 +453,7 @@ async function submitReflexion() {
 
   // In Supabase speichern
   try {
-    const { data: { session } } = await sb.auth.getSession();
+    const res=await fetch('/api/verify-session');if(!res.ok){window.location.href='login.html';return;}const d=await res.json();if(!d.valid){window.location.href='login.html';return;}
     if (session) {
       await sb.from('user_tool_data').upsert({
         user_id: session.user.id,

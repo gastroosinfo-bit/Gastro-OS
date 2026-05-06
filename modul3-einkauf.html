@@ -562,7 +562,7 @@ function setData(d){
 
 async function saveData(){
   try{
-    const {data:{session}}=await sb.auth.getSession();
+    const res=await fetch('/api/verify-session');if(!res.ok){window.location.href='login.html';return;}const d=await res.json();if(!d.valid){window.location.href='login.html';return;}
     if(session){
       await sb.from('user_tool_data').upsert({user_id:session.user.id,tool_name:'einkaufs_check_modul3',data:getData(),updated_at:new Date().toISOString()},{onConflict:'user_id,tool_name'});
     }
@@ -573,8 +573,8 @@ async function saveData(){
 
 async function loadData(){
   try{
-    const {data:{session}}=await sb.auth.getSession();
-    if(!session) return;
+    const res=await fetch('/api/verify-session');if(!res.ok){window.location.href='login.html';return;}const d=await res.json();if(!d.valid){window.location.href='login.html';return;}
+     return;
     const {data}=await sb.from('user_tool_data').select('data').eq('user_id',session.user.id).eq('tool_name','einkaufs_check_modul3').maybeSingle();
     if(data?.data) setData(data.data);
   }catch(e){}
