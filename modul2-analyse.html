@@ -461,8 +461,8 @@ async function saveData() {
     threshold_qty: document.getElementById('threshold-qty')?.value||'20'
   };
   try {
-    try{const res=await fetch('/api/verify-session');if(!res.ok){window.location.href='login.html';return;}const d=await res.json();
-    if(session){
+    const res=await fetch('/api/verify-session');if(!res.ok){window.location.href='login.html';return;}const d=await res.json();if(!d.valid){window.location.href='login.html';return;}currentUser={id:d.email,email:d.email};
+    if(currentUser){
       await sb.from('user_tool_data').upsert({
         user_id: session.user.id,
         tool_name: 'analyse_guide_modul2',
@@ -479,10 +479,9 @@ async function saveData() {
 
 async function loadData() {
   try {
-    try{const res=await fetch('/api/verify-session');if(!res.ok){window.location.href='login.html';return;}const d=await res.json();
-     return;
+    const res=await fetch('/api/verify-session');if(!res.ok){window.location.href='login.html';return;}const d=await res.json();if(!d.valid){window.location.href='login.html';return;}currentUser={id:d.email,email:d.email};
     const {data} = await sb.from('user_tool_data')
-      .select('data').eq('user_id',session.user.id)
+      .select('data').eq('user_id',currentUser.id)
       .eq('tool_name','analyse_guide_modul2').maybeSingle();
     if(!data?.data) return;
     const d = data.data;
