@@ -383,8 +383,8 @@ async function saveData(){
   }
   try{
     const res=await fetch('/api/verify-session');if(!res.ok){window.location.href='login.html';return;}const d=await res.json();if(!d.valid){window.location.href='login.html';return;}
-    if(session){
-      await sb.from('user_tool_data').upsert({user_id:session.user.id,tool_name:'marge_tool_modul2',data:{rows,top5,updated:new Date().toISOString()},updated_at:new Date().toISOString()},{onConflict:'user_id,tool_name'});
+    if(currentUser){
+      await sb.from('user_tool_data').upsert({user_id:currentUser.id,tool_name:'marge_tool_modul2',data:{rows,top5,updated:new Date().toISOString()},updated_at:new Date().toISOString()},{onConflict:'user_id,tool_name'});
     }
   }catch(e){}
   ['save-msg1','save-msg2'].forEach(id=>{const el=document.getElementById(id);if(el){el.style.display='inline';setTimeout(()=>el.style.display='none',2500);}});
@@ -393,8 +393,7 @@ async function saveData(){
 async function loadData(){
   try{
     const res=await fetch('/api/verify-session');if(!res.ok){window.location.href='login.html';return;}const d=await res.json();if(!d.valid){window.location.href='login.html';return;}
-     return;
-    const {data}=await sb.from('user_tool_data').select('data').eq('user_id',session.user.id).eq('tool_name','marge_tool_modul2').maybeSingle();
+     const {data}=await sb.from('user_tool_data').select('data').eq('user_id',currentUser.id).eq('tool_name','marge_tool_modul2').maybeSingle();
     if(!data?.data) return;
     let d=data.data;
     if(d.rows){
