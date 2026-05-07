@@ -10,8 +10,6 @@
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
 .header{background:#1a2a4a;padding:14px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
 .brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
-.back-btn { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; text-decoration:none; display:inline-block; transition:all 0.2s; }
-.back-btn:hover { border-color:#d4af37; color:#d4af37; }
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
 .wrap { max-width:1100px; margin:0 auto; padding:24px 24px 60px; }
 .tool-label { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:4px; }
@@ -38,23 +36,21 @@ input.num-input { width:80px; border:1px solid #e0d8c8; border-radius:4px; paddi
 input.num-input:focus { outline:none; border-color:#3a7ad4; background:#fff; }
 td.calc { font-weight:600; font-size:13px; }
 .badge { display:inline-block; padding:3px 9px; border-radius:12px; font-size:11px; font-weight:700; white-space:nowrap; }
-.badge-star   { background:#fff8e0; color:#b07000; border:1px solid #d4af37; }
-.badge-plowh  { background:#e8f0fb; color:#1a4a8a; border:1px solid #5a8ad0; }
+.badge-star { background:#fff8e0; color:#b07000; border:1px solid #d4af37; }
+.badge-plowh { background:#e8f0fb; color:#1a4a8a; border:1px solid #5a8ad0; }
 .badge-puzzle { background:#e8f5e8; color:#1a6030; border:1px solid #4aaa60; }
-.badge-dog    { background:#fdf0f0; color:#a03030; border:1px solid #d06060; }
-.badge-dash   { background:#f5f5f5; color:#8090a8; border:1px solid #d0c8b0; }
+.badge-dog { background:#fdf0f0; color:#a03030; border:1px solid #d06060; }
+.badge-dash { background:#f5f5f5; color:#8090a8; border:1px solid #d0c8b0; }
 .summary-row { background:#1a2a4a !important; }
 .summary-row td { color:#a0b0c8; font-weight:600; padding:10px 8px; }
 .summary-row td.gold { color:#d4af37; }
 .status-bar { margin-top:12px; padding:12px 16px; border-radius:8px; font-size:13px; font-weight:600; display:none; }
-.status-ok   { background:#e4f5e8; color:#1a6030; border:1px solid #4aaa60; }
+.status-ok { background:#e4f5e8; color:#1a6030; border:1px solid #4aaa60; }
 .status-warn { background:#fff3cd; color:#856404; border:1px solid #d4a800; }
 .save-row { display:flex; align-items:center; gap:14px; margin-top:18px; }
 .btn-save { background:#1a2a4a; color:#d4af37; border:none; padding:10px 24px; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; }
 .btn-save:hover { background:#d4af37; color:#1a2a4a; }
 .save-msg { font-size:12px; color:#4aaa60; display:none; }
-
-/* Auswertung */
 .ausw-section { margin-bottom:24px; }
 .ausw-title { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; margin-bottom:12px; font-weight:normal; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
 .ausw-table { width:100%; border-collapse:collapse; font-size:13px; }
@@ -65,43 +61,22 @@ td.calc { font-weight:600; font-size:13px; }
 .massnahme-cell { font-size:12px; color:#5a6a80; font-style:italic; }
 .top5-input { width:100%; border:1px solid #e0d8c8; border-radius:4px; padding:5px 7px; font-size:12px; color:#1a4a8a; background:#eaf2ff; }
 .top5-input:focus { outline:none; border-color:#3a7ad4; }
-
-/* Anleitung */
 .anl-step { display:flex; gap:16px; padding:16px 0; border-bottom:1px solid #f0ece4; }
 .anl-step:last-of-type { border-bottom:none; }
 .anl-num { background:#1a2a4a; color:#d4af37; width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; flex-shrink:0; }
 .anl-body h3 { font-family:Georgia,serif; font-size:15px; color:#1a2a4a; font-weight:normal; margin-bottom:6px; }
 .anl-body p { font-size:14px; color:#2a3a54; line-height:1.7; margin:0; }
-
 .footer-brand { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-brand strong { color:#d4af37; }
-@media print{.header,.back-btn,.gold-bar{display:none!important;}body{background:#fff;}}
-
-.btn-back-modul {
-  background: #d4af37;
-  color: #1a2a4a;
-  border: none;
-  padding: 9px 20px;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-block;
-  transition: all 0.2s;
-  letter-spacing: 0.3px;
-}
-.btn-back-modul:hover { background: #c8a030; color: #1a2a4a; }
-
+.btn-back-modul { background:#d4af37; color:#1a2a4a; border:none; padding:9px 20px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; letter-spacing:0.3px; }
+.btn-back-modul:hover { background:#c8a030; color:#1a2a4a; }
 .action-row{display:flex;gap:10px;margin-bottom:28px;flex-wrap:wrap;align-items:center;padding:16px 0;border-bottom:2px solid #e8dfc8}
-.btn-save{background:#1a2a4a;color:#d4af37;border:none;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s}
-.btn-save:hover{background:#d4af37;color:#1a2a4a}
 .btn-export{background:#1a6640;color:#fff;border:none;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s}
 .btn-export:hover{background:#d4af37;color:#1a2a4a}
 .export-msg{font-size:12px;color:#c0392b;display:none;font-weight:600}
 .btn-reset{background:transparent;border:1.5px solid #c0b090;color:#8070a0;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s}
 .btn-reset:hover{background:#f0ece0;color:#1a2a4a;border-color:#1a2a4a}
-.save-msg{font-size:13px;color:#4a8a4a;align-self:center;display:none}
+@media print{.header,.gold-bar{display:none!important;}body{background:#fff;}}
 </style>
 <script>
 (function(){
@@ -123,7 +98,8 @@ td.calc { font-weight:600; font-size:13px; }
 <div class="wrap">
   <div class="action-row">
     <button class="btn-save" onclick="saveData()">💾 Speichern</button>
-    <button class="btn-export" onclick="exportPDF()">📥 Als PDF speichern</button><span class="export-msg" id="export-msg">⚠️ Bitte alle Felder ausfüllen bevor du speicherst.</span>
+    <button class="btn-export" onclick="exportPDF()">📥 Als PDF speichern</button>
+    <span class="export-msg" id="export-msg">⚠️ Bitte alle Felder ausfüllen bevor du speicherst.</span>
     <button class="btn-reset" onclick="resetData()">↺ Neu starten</button>
     <span class="save-msg" id="save-msg">✓ Gespeichert</span>
   </div>
@@ -149,14 +125,10 @@ td.calc { font-weight:600; font-size:13px; }
       <table>
         <thead>
           <tr>
-            <th>Nr.</th>
-            <th style="min-width:160px;">Gericht / Position</th>
-            <th>Wareneinsatz (€)</th>
-            <th>Verkaufspreis (€)</th>
-            <th>Deckungsbeitrag (€)</th>
-            <th>Wareneinsatz %</th>
-            <th>Menge / Monat</th>
-            <th>Gewinn / Monat (€)</th>
+            <th>Nr.</th><th style="min-width:160px;">Gericht / Position</th>
+            <th>Wareneinsatz (€)</th><th>Verkaufspreis (€)</th>
+            <th>Deckungsbeitrag (€)</th><th>Wareneinsatz %</th>
+            <th>Menge / Monat</th><th>Gewinn / Monat (€)</th>
             <th>Kategorie (automatisch)</th>
           </tr>
         </thead>
@@ -170,9 +142,6 @@ td.calc { font-weight:600; font-size:13px; }
       <button class="btn-save" style="background:#4a6a3a;" onclick="window.print()">🖨️ Drucken / PDF</button>
       <button class="btn-save" style="background:transparent;border:1px solid #cc5544;color:#cc5544;" onclick="resetData()">↺ Neu starten</button>
       <span class="save-msg" id="save-msg1">✓ Gespeichert</span>
-    </div>
-    <div style="margin-top:16px;font-size:11px;color:#8090a8;letter-spacing:1px;">
-      <strong style="color:#d4af37;">GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg &nbsp;|&nbsp; Modul 2: Speisekarte &amp; Angebotssystem
     </div>
   </div>
 
@@ -193,7 +162,6 @@ td.calc { font-weight:600; font-size:13px; }
         </tbody>
       </table>
     </div>
-
     <div class="ausw-section">
       <div class="ausw-title">DEINE TOP 5 — Höchster Monatsgewinn</div>
       <table class="ausw-table">
@@ -201,15 +169,11 @@ td.calc { font-weight:600; font-size:13px; }
         <tbody id="top5-body"></tbody>
       </table>
     </div>
-
     <div class="save-row">
       <button class="btn-save" onclick="saveData()">💾 Speichern</button>
       <button class="btn-save" style="background:#4a6a3a;" onclick="window.print()">🖨️ Drucken / PDF</button>
       <button class="btn-save" style="background:transparent;border:1px solid #cc5544;color:#cc5544;" onclick="resetData()">↺ Neu starten</button>
       <span class="save-msg" id="save-msg2">✓ Gespeichert</span>
-    </div>
-    <div style="margin-top:16px;font-size:11px;color:#8090a8;letter-spacing:1px;">
-      <strong style="color:#d4af37;">GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg &nbsp;|&nbsp; Modul 2: Speisekarte &amp; Angebotssystem
     </div>
   </div>
 
@@ -218,37 +182,13 @@ td.calc { font-weight:600; font-size:13px; }
     <div style="font-family:Georgia,serif;font-size:16px;color:#1a2a4a;margin-bottom:16px;font-weight:normal;padding-bottom:10px;border-bottom:1px solid #e8dfc8;">
       GASTRO-OS | ANLEITUNG — Marge-Tool in 7 Schritten
     </div>
-    <div class="anl-step">
-      <div class="anl-num">1</div>
-      <div class="anl-body"><h3>Tab öffnen</h3><p>Starte im Tab 'Marge-Tool'. Alles was du brauchst ist dort, einfach von oben nach unten ausfüllen.</p></div>
-    </div>
-    <div class="anl-step">
-      <div class="anl-num">2</div>
-      <div class="anl-body"><h3>Gericht eintragen</h3><p>Trage den Namen deines Gerichts in die Spalte Gericht / Position ein (blauer Text = Eingabe). Starte mit deinen 10 meistverkauften Gerichten.</p></div>
-    </div>
-    <div class="anl-step">
-      <div class="anl-num">3</div>
-      <div class="anl-body"><h3>Wareneinsatz eingeben</h3><p>Wareneinsatz (€): Rohstoffkosten pro Portion in Euro (Fleisch, Gemüse, Sauce, Beilage). Kein Personal, keine Miete, nur Lebensmittel.</p></div>
-    </div>
-    <div class="anl-step">
-      <div class="anl-num">4</div>
-      <div class="anl-body"><h3>Verkaufspreis eingeben</h3><p>Verkaufspreis (€): Netto-Verkaufspreis (ohne MwSt.). Deckungsbeitrag und Wareneinsatz-Quote berechnen sich sofort automatisch.</p></div>
-    </div>
-    <div class="anl-step">
-      <div class="anl-num">5</div>
-      <div class="anl-body"><h3>Menge eintragen</h3><p>Menge / Monat: Wie oft wird dieses Gericht pro Monat bestellt? Schau ins Kassensystem oder schätze. Die Kategorie erscheint automatisch.</p></div>
-    </div>
-    <div class="anl-step">
-      <div class="anl-num">6</div>
-      <div class="anl-body"><h3>Auswertung lesen</h3><p>Wechsle in den Tab 'Auswertung', dort siehst du deine Stars, Dogs, den Ø Wareneinsatz und deine Top 5 nach Monatsgewinn.</p></div>
-    </div>
-    <div class="anl-step">
-      <div class="anl-num">7</div>
-      <div class="anl-body"><h3>Quartalsweise wiederholen</h3><p>Mindestens 2x pro Jahr aktualisieren, Einkaufspreise ändern sich und deine Kategorien verschieben sich mit ihnen.</p></div>
-    </div>
-    <div style="margin-top:24px;font-size:11px;color:#8090a8;letter-spacing:1px;padding-top:16px;border-top:1px solid #e8dfc8;">
-      <strong style="color:#d4af37;">GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg &nbsp;|&nbsp; Modul 2: Speisekarte &amp; Angebotssystem
-    </div>
+    <div class="anl-step"><div class="anl-num">1</div><div class="anl-body"><h3>Tab öffnen</h3><p>Starte im Tab 'Marge-Tool'. Alles was du brauchst ist dort, einfach von oben nach unten ausfüllen.</p></div></div>
+    <div class="anl-step"><div class="anl-num">2</div><div class="anl-body"><h3>Gericht eintragen</h3><p>Trage den Namen deines Gerichts in die Spalte Gericht / Position ein. Starte mit deinen 10 meistverkauften Gerichten.</p></div></div>
+    <div class="anl-step"><div class="anl-num">3</div><div class="anl-body"><h3>Wareneinsatz eingeben</h3><p>Wareneinsatz (€): Rohstoffkosten pro Portion in Euro. Kein Personal, keine Miete, nur Lebensmittel.</p></div></div>
+    <div class="anl-step"><div class="anl-num">4</div><div class="anl-body"><h3>Verkaufspreis eingeben</h3><p>Verkaufspreis (€): Netto-Verkaufspreis (ohne MwSt.). Deckungsbeitrag und Wareneinsatz-Quote berechnen sich sofort automatisch.</p></div></div>
+    <div class="anl-step"><div class="anl-num">5</div><div class="anl-body"><h3>Menge eintragen</h3><p>Menge / Monat: Wie oft wird dieses Gericht pro Monat bestellt? Die Kategorie erscheint automatisch.</p></div></div>
+    <div class="anl-step"><div class="anl-num">6</div><div class="anl-body"><h3>Auswertung lesen</h3><p>Wechsle in den Tab 'Auswertung', dort siehst du deine Stars, Dogs, den Ø Wareneinsatz und deine Top 5 nach Monatsgewinn.</p></div></div>
+    <div class="anl-step"><div class="anl-num">7</div><div class="anl-body"><h3>Quartalsweise wiederholen</h3><p>Mindestens 2x pro Jahr aktualisieren — Einkaufspreise ändern sich und deine Kategorien verschieben sich mit ihnen.</p></div></div>
   </div>
 </div>
 
@@ -260,6 +200,7 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 const { createClient } = supabase;
 const sb = createClient(SUPABASE_URL, SUPABASE_KEY, { global: { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } } });
 const NUM_ROWS = 50;
+let currentUser = null;
 
 function buildTable() {
   const tbody = document.getElementById('marge-body');
@@ -277,7 +218,6 @@ function buildTable() {
       <td id="kat-${i}"><span class="badge badge-dash">—</span></td>`;
     tbody.appendChild(tr);
   }
-  // Build top5 rows
   const t5 = document.getElementById('top5-body');
   for(let i=1;i<=5;i++){
     let tr = document.createElement('tr');
@@ -291,26 +231,23 @@ function buildTable() {
 function calcTop5Row(i){
   const d=parseFloat(document.getElementById('t5d-'+i)?.value)||0;
   const m=parseFloat(document.getElementById('t5m-'+i)?.value)||0;
-  document.getElementById('t5gew-'+i).textContent = (d&&m) ? (d*m).toFixed(2).replace('.',',')+'€' : '—';
+  document.getElementById('t5gew-'+i).textContent = (d&&m)?(d*m).toFixed(2).replace('.',',')+'€':'—';
 }
 
 function recalcRow(i){
   const we=parseFloat(document.getElementById('we-'+i)?.value)||0;
   const vp=parseFloat(document.getElementById('vp-'+i)?.value)||0;
   const bm=parseFloat(document.getElementById('bm-'+i)?.value)||0;
-
   const dbEl=document.getElementById('db-'+i);
   const wpEl=document.getElementById('wp-'+i);
   const gmEl=document.getElementById('gm-'+i);
   const katEl=document.getElementById('kat-'+i);
-
   if(!we||!vp){ dbEl.textContent='—'; wpEl.textContent='—'; gmEl.textContent='—'; katEl.innerHTML='<span class="badge badge-dash">—</span>'; updateAusw(); return; }
   const db=vp-we, wp=we/vp;
   dbEl.textContent=db.toFixed(2).replace('.',',')+'€';
   wpEl.textContent=(wp*100).toFixed(1).replace('.',',')+' %';
   wpEl.style.color=wp<=0.38?'#1a6030':'#a03030';
-  gmEl.textContent = bm ? (db*bm).toFixed(2).replace('.',',')+'€' : '—';
-
+  gmEl.textContent=bm?(db*bm).toFixed(2).replace('.',',')+'€':'—';
   if(!bm){ katEl.innerHTML='<span class="badge badge-dash">—</span>'; }
   else if(bm>=20&&wp<=0.38){ katEl.innerHTML='<span class="badge badge-star">⭐ STAR</span>'; }
   else if(bm>=20&&wp>0.38){ katEl.innerHTML='<span class="badge badge-plowh">🐴 PLOWHORSE</span>'; }
@@ -321,13 +258,12 @@ function recalcRow(i){
 
 function updateAusw(){
   const cats={star:{cnt:0,dbSum:0,gewSum:0},plowh:{cnt:0,dbSum:0,gewSum:0},puzzle:{cnt:0,dbSum:0,gewSum:0},dog:{cnt:0,dbSum:0,gewSum:0}};
-  let wpSum=0,wpCnt=0,total=0;
+  let wpSum=0,wpCnt=0;
   for(let i=1;i<=NUM_ROWS;i++){
     let we=parseFloat(document.getElementById('we-'+i)?.value)||0;
     let vp=parseFloat(document.getElementById('vp-'+i)?.value)||0;
     let bm=parseFloat(document.getElementById('bm-'+i)?.value)||0;
     if(!we||!vp) continue;
-    total++;
     let db=vp-we, wp=we/vp, gm=bm?db*bm:0;
     wpSum+=wp; wpCnt++;
     const txt=document.getElementById('kat-'+i)?.textContent||'';
@@ -343,23 +279,18 @@ function updateAusw(){
     document.getElementById('a-'+k+'-gew').textContent=c.cnt?(fmt(c.gewSum)+' €'):'—';
   }
   const totalGew=Object.values(cats).reduce((s,c)=>s+c.gewSum,0);
+  const total=Object.values(cats).reduce((s,c)=>s+c.cnt,0);
   document.getElementById('a-ges-cnt').textContent=total||'—';
   document.getElementById('a-ges-wp').textContent=wpCnt?(fmt(wpSum/wpCnt*100,1)+' %'):'—';
   document.getElementById('a-ges-sum').textContent=total?(cats.star.cnt+' Stars | '+cats.dog.cnt+' Dogs'):'—';
-
-  // status bar
   if(wpCnt){
     const avgWp=wpSum/wpCnt;
     const sb2=document.getElementById('marge-status');
     sb2.style.display='block';
     if(avgWp<=0.38){sb2.className='status-bar status-ok';sb2.textContent='✅ Ø Wareneinsatz im grünen Bereich (unter 38%) — weiter so!';}
     else{sb2.className='status-bar status-warn';sb2.textContent='⚠️ Ø Wareneinsatz über 38% — Karte überprüfen!';}
-  }
-  // Summary row in marge table
-  const foot=document.getElementById('marge-foot');
-  if(wpCnt){
-    let avgWp=wpSum/wpCnt;
-    foot.innerHTML=`<tr class="summary-row"><td colspan="2">GESAMT / DURCHSCHNITT</td><td></td><td></td><td></td><td class="gold">${fmt(avgWp*100,1)} %</td><td></td><td class="gold">${fmt(Object.values(cats).reduce((s,c)=>s+c.gewSum,0))} €</td><td class="gold">${cats.star.cnt} Stars | ${cats.dog.cnt} Dogs</td></tr>`;
+    const foot=document.getElementById('marge-foot');
+    foot.innerHTML=`<tr class="summary-row"><td colspan="2">GESAMT / DURCHSCHNITT</td><td></td><td></td><td></td><td class="gold">${fmt(avgWp*100,1)} %</td><td></td><td class="gold">${fmt(totalGew)} €</td><td class="gold">${cats.star.cnt} Stars | ${cats.dog.cnt} Dogs</td></tr>`;
   }
 }
 
@@ -373,6 +304,13 @@ function switchTab(tab){
 }
 
 async function saveData(){
+  try {
+    const res=await fetch('/api/verify-session');
+    if(!res.ok){ window.location.href='login.html'; return; }
+    const d=await res.json();
+    if(!d.valid){ window.location.href='login.html'; return; }
+    currentUser={id:d.email,email:d.email};
+  } catch(e){ window.location.href='login.html'; return; }
   const rows={};
   for(let i=1;i<=NUM_ROWS;i++){
     rows[i]={gericht:document.getElementById('mg-'+i)?.value||'',we:document.getElementById('we-'+i)?.value||'',vp:document.getElementById('vp-'+i)?.value||'',bm:document.getElementById('bm-'+i)?.value||''};
@@ -381,24 +319,25 @@ async function saveData(){
   for(let i=1;i<=5;i++){
     top5[i]={gericht:document.getElementById('t5g-'+i)?.value||'',db:document.getElementById('t5d-'+i)?.value||'',menge:document.getElementById('t5m-'+i)?.value||''};
   }
-  try{
-    const res=await fetch('/api/verify-session');if(!res.ok){window.location.href='login.html';return;}const d=await res.json();if(!d.valid){window.location.href='login.html';return;}
-    if(currentUser){
-      await sb.from('user_tool_data').upsert({user_id:currentUser.id,tool_name:'marge_tool_modul2',data:{rows,top5,updated:new Date().toISOString()},updated_at:new Date().toISOString()},{onConflict:'user_id,tool_name'});
-    }
-  }catch(e){}
-  ['save-msg1','save-msg2'].forEach(id=>{const el=document.getElementById(id);if(el){el.style.display='inline';setTimeout(()=>el.style.display='none',2500);}});
+  try {
+    await sb.from('user_tool_data').upsert({user_id:currentUser.id,tool_name:'marge_tool_modul2',data:{rows,top5,updated:new Date().toISOString()},updated_at:new Date().toISOString()},{onConflict:'user_id,tool_name'});
+  } catch(e){}
+  ['save-msg','save-msg1','save-msg2'].forEach(id=>{const el=document.getElementById(id);if(el){el.style.display='inline';setTimeout(()=>el.style.display='none',2500);}});
 }
 
 async function loadData(){
-  try{
-    const res=await fetch('/api/verify-session');if(!res.ok){window.location.href='login.html';return;}const d=await res.json();if(!d.valid){window.location.href='login.html';return;}
-     const {data}=await sb.from('user_tool_data').select('data').eq('user_id',currentUser.id).eq('tool_name','marge_tool_modul2').maybeSingle();
+  try {
+    const res=await fetch('/api/verify-session');
+    if(!res.ok){ window.location.href='login.html'; return; }
+    const d=await res.json();
+    if(!d.valid){ window.location.href='login.html'; return; }
+    currentUser={id:d.email,email:d.email};
+    const {data}=await sb.from('user_tool_data').select('data').eq('user_id',currentUser.id).eq('tool_name','marge_tool_modul2').maybeSingle();
     if(!data?.data) return;
-    let d=data.data;
-    if(d.rows){
+    const dd=data.data;
+    if(dd.rows){
       for(let i=1;i<=NUM_ROWS;i++){
-        const r=d.rows[i]; if(!r) continue;
+        const r=dd.rows[i]; if(!r) continue;
         if(r.gericht) document.getElementById('mg-'+i).value=r.gericht;
         if(r.we) document.getElementById('we-'+i).value=r.we;
         if(r.vp) document.getElementById('vp-'+i).value=r.vp;
@@ -406,62 +345,50 @@ async function loadData(){
         recalcRow(i);
       }
     }
-    if(d.top5){
+    if(dd.top5){
       for(let i=1;i<=5;i++){
-        let r=d.top5[i]; if(!r) continue;
+        const r=dd.top5[i]; if(!r) continue;
         if(r.gericht) document.getElementById('t5g-'+i).value=r.gericht;
         if(r.db) document.getElementById('t5d-'+i).value=r.db;
         if(r.menge) document.getElementById('t5m-'+i).value=r.menge;
         calcTop5Row(i);
       }
     }
-  }catch(e){}
+  } catch(e){}
 }
-
-buildTable();
 
 async function resetData(){
-  if(!confirm('Alle Eingaben zurücksetzen?'))return;
-  document.querySelectorAll('input[type=text],input[type=number],textarea').forEach(el=>{el.value='';});
-  try{const res=await fetch('/api/verify-session');if(!res.ok){window.location.href='login.html';return;}const d=await res.json();if(!d.valid){window.location.href='login.html';return;}currentUser={id:d.email,email:d.email};}catch(e){window.location.href='login.html';return;}
-  if(session){
-    await sb.from('user_tool_data').upsert({user_id:session.user.id,tool_name:'marge_tool_modul2',data:{rows:{},top5:'',updated:new Date().toISOString()},updated_at:new Date().toISOString()},{onConflict:'user_id,tool_name'});
-  }
+  if(!confirm('Alle Eingaben zurücksetzen?')) return;
+  document.querySelectorAll('input[type=text],input[type=number]').forEach(el=>{el.value='';});
+  try {
+    const res=await fetch('/api/verify-session');
+    if(!res.ok) return;
+    const d=await res.json();
+    if(!d.valid) return;
+    currentUser={id:d.email,email:d.email};
+    await sb.from('user_tool_data').upsert({user_id:currentUser.id,tool_name:'marge_tool_modul2',data:{rows:{},top5:{},updated:new Date().toISOString()},updated_at:new Date().toISOString()},{onConflict:'user_id,tool_name'});
+  } catch(e){}
   location.reload();
 }
-loadData();
-</script>
 
-<script>
 function checkAllFilled() {
-  // Check all text inputs and textareas
-  var inputs = document.querySelectorAll('input[type=text], input[type=number], input[type=date], textarea');
-  for (var i = 0; i < inputs.length; i++) {
-    if (inputs[i].value.trim() === '') return false;
-  }
-  // Check all radio button groups
-  var radioGroups = {};
-  var radios = document.querySelectorAll('input[type=radio]');
-  for (var i = 0; i < radios.length; i++) {
-    radioGroups[radios[i].name] = radioGroups[radios[i].name] || false;
-    if (radios[i].checked) radioGroups[radios[i].name] = true;
-  }
-  for (var g in radioGroups) {
-    if (!radioGroups[g]) return false;
-  }
+  var inputs = document.querySelectorAll('input[type=text], input[type=number]');
+  for (var i=0; i<inputs.length; i++) { if(inputs[i].value.trim()==='') return false; }
   return true;
 }
 
 function exportPDF() {
   if (!checkAllFilled()) {
     var msg = document.getElementById('export-msg');
-    msg.style.display = 'inline';
-    setTimeout(function(){ msg.style.display = 'none'; }, 4000);
+    msg.style.display='inline';
+    setTimeout(function(){ msg.style.display='none'; }, 4000);
     return;
   }
   window.print();
 }
-</script>
 
+buildTable();
+loadData();
+</script>
 </body>
 </html>
