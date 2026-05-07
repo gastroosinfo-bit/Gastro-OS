@@ -570,7 +570,7 @@ function renderLockedModules() {
     const locked = m > unlockedUpTo;
     const card = document.createElement('div');
     card.className = 'module-card' + (locked ? ' locked' : '');
-    card.innerHTML = `<div class="module-header no-click"><div class="module-left"><div class="module-number">${m}</div><div><div class="module-title">${MODUL_TITLES[m] || 'Modul ' + m}</div><div class="module-subtitle">${isNext ? '🎉 Jetzt verfügbar! Inhalte folgen in Kürze.' : 'Schließe Modul ' + (m-1) + ' ab um fortzufahren'}</div></div></div><span class="module-badge ${isNext ? 'badge-open' : 'badge-locked'}">${isNext ? 'Offen' : '🔒 Gesperrt'}</span></div>`;
+    card.innerHTML = `<div class="module-header no-click"><div class="module-left"><div class="module-number">${m}</div><div><div class="module-title">${MODUL_TITLES[m] || 'Modul ' + m}</div><div class="module-subtitle">${isNext ? '🎉 Es bleibt spannend — Inhalte folgen in Kürze.' : 'Schließe Modul ' + (m-1) + ' ab um fortzufahren'}</div></div></div><span class="module-badge ${isNext ? 'badge-open' : 'badge-locked'}">${isNext ? 'Offen' : '🔒 Gesperrt'}</span></div>`;
     container.appendChild(card);
   }
 }
