@@ -10,8 +10,6 @@
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
 .header{background:#1a2a4a;padding:14px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
 .brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
-.btn-back { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; text-decoration:none; display:inline-block; transition:all 0.2s; }
-.btn-back:hover { border-color:#d4af37; color:#d4af37; }
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
 .wrap { max-width:820px; margin:0 auto; padding:28px 24px 60px; }
 .tool-label { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:4px; }
@@ -28,16 +26,12 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 .save-msg { font-size:12px; color:#4aaa60; display:none; }
 .section { background:#fff; border:1px solid #e8dfc8; border-radius:10px; padding:22px 26px; margin-bottom:20px; box-shadow:0 2px 6px rgba(0,0,0,0.04); }
 .section-head { background:#1a2a4a; color:#d4af37; font-size:13px; font-weight:700; letter-spacing:1px; padding:10px 14px; border-radius:6px; margin-bottom:18px; }
-
-/* Input fields */
 .input-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
 .field-group { display:flex; flex-direction:column; gap:6px; }
 .field-group label { font-size:12px; font-weight:700; color:#8090a8; text-transform:uppercase; letter-spacing:0.5px; }
 .field-group input { border:2px solid #3a7ad4; border-radius:6px; padding:10px 14px; font-size:15px; color:#1a2a4a; background:#eaf2ff; font-family:inherit; font-weight:600; }
 .field-group input:focus { outline:none; border-color:#d4af37; background:#fff; }
 .field-hint { font-size:11px; color:#8090a8; margin-top:2px; }
-
-/* Results */
 .results-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:20px; }
 .result-card { border-radius:8px; padding:16px 18px; }
 .result-card.primary { background:#1a2a4a; color:#fff; }
@@ -52,76 +46,36 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 .result-card.warning .result-value { color:#856404; }
 .result-card.danger .result-value { color:#a03020; }
 .result-sub { font-size:12px; margin-top:4px; opacity:0.75; }
-
-/* Score */
 .score-box { background:#1a2a4a; border-radius:10px; padding:22px 28px; text-align:center; margin-bottom:20px; }
 .score-num { font-family:Georgia,serif; font-size:52px; color:#d4af37; font-weight:700; line-height:1; }
 .score-label-txt { font-size:13px; color:#a0b0c8; margin:6px 0; }
 .score-analyse { font-size:14px; color:#fff; margin-top:10px; font-weight:600; }
 .score-bar-wrap { background:rgba(255,255,255,0.1); border-radius:4px; height:8px; margin:12px 0 0; overflow:hidden; }
 .score-bar-fill { height:100%; border-radius:4px; background:linear-gradient(90deg,#cc5544,#d4a800,#4aaa60); transition:width 0.5s ease; }
-
-/* Warnung */
 .warn-box { border-radius:8px; padding:14px 18px; font-size:13px; line-height:1.7; margin-bottom:16px; display:none; }
 .warn-box.show { display:block; }
 .warn-box.red { background:#fde8e4; border:1px solid #d06050; color:#7a2010; }
-.warn-box.amber { background:#fff3cd; border:1px solid #d4a800; color:#856404; }
 .warn-box.green { background:#e4f5e8; border:1px solid #4aaa60; color:#1a6030; }
-
-/* Break-Even Visualisierung */
 .be-visual { margin-top:14px; }
 .be-bar-wrap { background:#e8dfc8; border-radius:4px; height:24px; overflow:hidden; position:relative; }
 .be-bar-fill { height:100%; border-radius:4px; transition:width 0.5s ease; display:flex; align-items:center; padding-left:8px; font-size:11px; font-weight:700; color:#fff; }
 .be-labels { display:flex; justify-content:space-between; font-size:11px; color:#8090a8; margin-top:4px; }
-
-/* Szenarien */
 .szenario-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; }
 .sz-card { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:14px 16px; text-align:center; }
 .sz-card h4 { font-size:12px; color:#8090a8; margin-bottom:6px; font-weight:600; }
 .sz-val { font-family:Georgia,serif; font-size:18px; font-weight:700; color:#1a2a4a; }
 .sz-sub { font-size:11px; color:#8090a8; margin-top:2px; }
-
 .nav-row { display:flex; gap:12px; justify-content:space-between; margin-top:24px; }
 .nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:12px 24px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none; transition:all 0.2s; display:inline-block; }
 .nav-btn:hover { background:#d4af37; color:#1a2a4a; }
 .nav-btn.secondary { background:transparent; border:1px solid rgba(26,42,74,0.3); color:#1a2a4a; }
 .nav-btn.secondary:hover { background:#1a2a4a; color:#d4af37; }
-
-@media print { .header,.action-row,.nav-row,.gold-bar { display:none!important; } body { background:#fff; } .section { box-shadow:none; break-inside:avoid; } }
-@media(max-width:600px) { .input-grid,.results-grid,.szenario-grid { grid-template-columns:1fr; } }
 .footer-brand { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-brand strong { color:#d4af37; }
-
-.btn-dashboard {
-  background: transparent;
-  border: 1px solid rgba(212,175,55,0.4);
-  color: #a0b0c8;
-  padding: 7px 16px;
-  border-radius: 6px;
-  font-size: 12px;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-block;
-  transition: all 0.2s;
-}
-.btn-dashboard:hover { border-color: #d4af37; color: #d4af37; }
-
-.btn-back-modul {
-  background: #d4af37;
-  color: #1a2a4a;
-  border: none;
-  padding: 9px 20px;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-block;
-  transition: all 0.2s;
-  letter-spacing: 0.3px;
-}
-.btn-back-modul:hover { background: #c8a030; color: #1a2a4a; }
-
+.btn-back-modul { background:#d4af37; color:#1a2a4a; border:none; padding:9px 20px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; letter-spacing:0.3px; }
+.btn-back-modul:hover { background:#c8a030; color:#1a2a4a; }
+@media print { .header,.action-row,.nav-row,.gold-bar { display:none!important; } body { background:#fff; } .section { box-shadow:none; break-inside:avoid; } }
+@media(max-width:600px) { .input-grid,.results-grid,.szenario-grid { grid-template-columns:1fr; } }
 </style>
 <script>
 (function(){
@@ -142,19 +96,16 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 <div class="wrap">
   <div class="action-row">
     <button class="btn-save" onclick="saveData()">💾 Speichern</button>
-    <button class="btn-export" onclick="exportPDF()">📥 Als PDF speichern</button><span class="export-msg" id="export-msg">⚠️ Bitte alle Felder ausfüllen bevor du speicherst.</span>
+    <button class="btn-export" onclick="exportPDF()">📥 Als PDF speichern</button>
+    <span class="export-msg" id="export-msg">⚠️ Bitte alle Felder ausfüllen bevor du speicherst.</span>
     <button class="btn-reset" onclick="resetData()">↺ Neu starten</button>
     <span class="save-msg" id="save-msg">✓ Gespeichert</span>
   </div>
-  
 
   <div class="tool-label">Modul 4 · Tool</div>
   <div class="tool-title">GASTRO-OS | Gewinn-Rechner</div>
   <div class="tool-sub">Modul 4 — Zahlen verstehen &amp; kontrollieren | Gewinn, Break-Even &amp; Unternehmer-Score</div>
 
-  
-
-  <!-- EINGABEN -->
   <div class="section">
     <div class="section-head">① EINGABEN — Trage deine vier Zahlen ein</div>
     <div class="input-grid">
@@ -181,11 +132,10 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
     </div>
   </div>
 
-  <!-- ERGEBNISSE -->
   <div class="section">
     <div class="section-head">② BERECHNUNG — Dein Ergebnis</div>
     <div class="results-grid">
-      <div class="result-card primary">
+      <div class="result-card primary" id="r-gewinn-card">
         <div class="result-label">Gewinn / Verlust</div>
         <div class="result-value" id="r-gewinn">—</div>
         <div class="result-sub" id="r-gewinn-sub">Bitte Zahlen eingeben</div>
@@ -219,7 +169,6 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 
     <div class="warn-box" id="warn-box"></div>
 
-    <!-- Break-Even Visualisierung -->
     <div class="be-visual" id="be-visual" style="display:none;">
       <div style="font-size:12px;font-weight:700;color:#1a2a4a;margin-bottom:6px;">Break-Even Fortschritt</div>
       <div class="be-bar-wrap">
@@ -233,7 +182,6 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
     </div>
   </div>
 
-  <!-- UNTERNEHMER SCORE -->
   <div class="score-box">
     <div class="score-label-txt">UNTERNEHMER-SCORE</div>
     <div class="score-num" id="score-num">0</div>
@@ -242,7 +190,6 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
     <div class="score-analyse" id="score-analyse">🔴 KRITISCH — sofort handeln</div>
   </div>
 
-  <!-- SZENARIEN -->
   <div class="section">
     <div class="section-head">③ SZENARIEN — Was-wäre-wenn</div>
     <p style="font-size:13px;color:#5a6a80;margin-bottom:14px;">Basierend auf deinen aktuellen Eingaben:</p>
@@ -267,7 +214,8 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 
   <div class="action-row" style="margin-top:0;">
     <button class="btn-save" onclick="saveData()">💾 Speichern</button>
-    <button class="btn-export" onclick="exportPDF()">📥 Als PDF speichern</button><span class="export-msg" id="export-msg">⚠️ Bitte alle Felder ausfüllen bevor du speicherst.</span>
+    <button class="btn-export" onclick="exportPDF()">📥 Als PDF speichern</button>
+    <span class="export-msg" id="export-msg2">⚠️ Bitte alle Felder ausfüllen bevor du speicherst.</span>
     <button class="btn-reset" onclick="resetData()">↺ Neu starten</button>
     <span class="save-msg" id="save-msg2">✓ Gespeichert</span>
   </div>
@@ -292,6 +240,7 @@ function pct(n){return n.toFixed(1).replace('.',',')+' %';}
 
 function setCard(id,cls){
   const el=document.getElementById(id);
+  if(!el) return;
   el.className='result-card '+cls;
 }
 
@@ -300,7 +249,7 @@ function calc(){
   const w=parseFloat(document.getElementById('waren').value)||0;
   const f=parseFloat(document.getElementById('fixkosten').value)||0;
   const p=parseFloat(document.getElementById('personal').value)||0;
-  if(!u){return;}
+  if(!u) return;
 
   const gesamtkosten=w+f+p;
   const gewinn=u-gesamtkosten;
@@ -311,13 +260,9 @@ function calc(){
   const deckung=1-varPct;
   const breakeven=deckung>0?f/deckung:0;
 
-  // Gewinn
   document.getElementById('r-gewinn').textContent=fmt(gewinn);
   document.getElementById('r-gewinn-sub').textContent=gewinn>=0?'✅ Gewinn':'❌ Verlust';
-  setCard('r-gewinn-card', gewinn>=0?'result-card success':'result-card danger');
-  // Fallback — parent element
-  const gewinnEl=document.getElementById('r-gewinn').closest('.result-card');
-  if(gewinnEl) gewinnEl.className='result-card '+(gewinn>=0?'success':'danger');
+  setCard('r-gewinn-card', gewinn>=0?'success':'danger');
 
   document.getElementById('r-marge').textContent=pct(marge);
   setCard('r-marge-card', marge>=10?'success':marge>=5?'warning':'danger');
@@ -337,7 +282,6 @@ function calc(){
   document.getElementById('r-be-sub').textContent=u>=breakeven?'✅ Über Break-Even':'❌ Unter Break-Even';
   setCard('r-be-card', u>=breakeven?'success':'danger');
 
-  // Warnung
   const wb=document.getElementById('warn-box');
   let warnings=[];
   if(warenPct>35) warnings.push('⚠️ Wareneinsatz über 35% — prüfe Portionen und Einkauf.');
@@ -348,7 +292,6 @@ function calc(){
   else if(marge>=10){wb.className='warn-box show green';wb.innerHTML='✅ Alle Werte im grünen Bereich. Weiter so!';}
   else{wb.style.display='none';}
 
-  // Break-Even Bar
   document.getElementById('be-visual').style.display='block';
   const bePct=Math.min(100,breakeven>0?u/breakeven*100:100);
   const beBar=document.getElementById('be-bar');
@@ -358,27 +301,24 @@ function calc(){
   document.getElementById('be-label-mid').textContent='Break-Even: '+fmt(breakeven);
   document.getElementById('be-label-umsatz').textContent='Umsatz: '+fmt(u);
 
-  // Score
   let score=0;
-  if(warenPct<=30)score+=25;else if(warenPct<=35)score+=15;else if(warenPct<=40)score+=5;
-  if(personalPct<=35)score+=25;else if(personalPct<=40)score+=15;else if(personalPct<=45)score+=5;
-  if(marge>=10)score+=25;else if(marge>=5)score+=15;else if(marge>=0)score+=5;
-  if(u>=breakeven)score+=25;else if(u>=breakeven*0.9)score+=15;else if(u>=breakeven*0.75)score+=5;
+  if(warenPct<=30) score+=25; else if(warenPct<=35) score+=15; else if(warenPct<=40) score+=5;
+  if(personalPct<=35) score+=25; else if(personalPct<=40) score+=15; else if(personalPct<=45) score+=5;
+  if(marge>=10) score+=25; else if(marge>=5) score+=15; else if(marge>=0) score+=5;
+  if(u>=breakeven) score+=25; else if(u>=breakeven*0.9) score+=15; else if(u>=breakeven*0.75) score+=5;
+
   document.getElementById('score-num').textContent=score;
   document.getElementById('score-bar').style.width=score+'%';
-  let analyse,analyseColor;
-  if(score>=75){analyse='🟢 STARK — dein Betrieb ist gut aufgestellt';analyseColor='#4aaa60';}
-  else if(score>=50){analyse='🟡 SOLIDE — Optimierungspotenzial vorhanden';analyseColor='#d4a800';}
-  else if(score>=25){analyse='🟠 VERBESSERUNGSBEDARF — konkrete Maßnahmen nötig';analyseColor='#d07000';}
-  else{analyse='🔴 KRITISCH — sofort handeln';analyseColor='#cc5544';}
-  const sa=document.getElementById('score-analyse');
-  sa.textContent=analyse; sa.style.color=analyseColor;
+  let analyse;
+  if(score>=75) analyse='🟢 STARK — dein Betrieb ist gut aufgestellt';
+  else if(score>=50) analyse='🟡 SOLIDE — Optimierungspotenzial vorhanden';
+  else if(score>=25) analyse='🟠 VERBESSERUNGSBEDARF — konkrete Maßnahmen nötig';
+  else analyse='🔴 KRITISCH — sofort handeln';
+  document.getElementById('score-analyse').textContent=analyse;
 
-  // Szenarien
   document.getElementById('sz-preis').textContent=fmt(80*25);
   document.getElementById('sz-waren').textContent=fmt(u*0.05);
-  const gewinnMinus=u*0.8-gesamtkosten+(w-(u*0.8*(w/u)));
-  const gewinnMinusReal=(u*0.8)-(w*(0.8))-(f)-(p*(0.8));
+  const gewinnMinusReal=(u*0.8)-(w*0.8)-(f)-(p*0.8);
   document.getElementById('sz-umsatz-minus').textContent=fmt(gewinnMinusReal);
 
   autoSave();
@@ -394,7 +334,7 @@ function getData(){
 }
 
 function setData(d){
-  if(!d)return;
+  if(!d) return;
   if(d.umsatz) document.getElementById('umsatz').value=d.umsatz;
   if(d.waren) document.getElementById('waren').value=d.waren;
   if(d.fixkosten) document.getElementById('fixkosten').value=d.fixkosten;
@@ -403,15 +343,17 @@ function setData(d){
 }
 
 async function saveData(){
-  if(!currentUser)return;
-  await sb.from('user_tool_data').upsert({user_id:currentUser.id,tool_name:'gewinn_rechner_modul4',data:getData(),updated_at:new Date().toISOString()},{onConflict:'user_id,tool_name'});
-  ['save-msg','save-msg2'].forEach(id=>{const el=document.getElementById(id);if(el){el.style.display='inline';setTimeout(()=>el.style.display='none',2500);}});
+  if(!currentUser) return;
+  try {
+    await sb.from('user_tool_data').upsert({user_id:currentUser.id,tool_name:'gewinn_rechner_modul4',data:getData(),updated_at:new Date().toISOString()},{onConflict:'user_id,tool_name'});
+    ['save-msg','save-msg2'].forEach(id=>{const el=document.getElementById(id);if(el){el.style.display='inline';setTimeout(()=>el.style.display='none',2500);}});
+  } catch(e){}
 }
 
 function autoSave(){clearTimeout(saveTimer);saveTimer=setTimeout(saveData,1500);}
 
 function resetData(){
-  if(!confirm('Alle Eingaben zurücksetzen?'))return;
+  if(!confirm('Alle Eingaben zurücksetzen?')) return;
   ['umsatz','waren','fixkosten','personal'].forEach(id=>document.getElementById(id).value='');
   ['r-gewinn','r-marge','r-waren-pct','r-personal-pct','r-gesamtkosten','r-breakeven'].forEach(id=>document.getElementById(id).textContent='—');
   document.getElementById('score-num').textContent='0';
@@ -423,43 +365,35 @@ function resetData(){
 }
 
 async function init(){
-  try{const res=await fetch('/api/verify-session');if(!res.ok){window.location.href='login.html';return;}const d=await res.json();if(!d.valid){window.location.href='login.html';return;}currentUser={id:d.email,email:d.email};}catch(e){window.location.href='login.html';return;}
-  const{data:td}=await sb.from('user_tool_data').select('data').eq('user_id',currentUser.id).eq('tool_name','gewinn_rechner_modul4').maybeSingle();
-  if(td&&td.data)setData(td.data);
+  try{
+    const res=await fetch('/api/verify-session');
+    if(!res.ok){window.location.href='login.html';return;}
+    const d=await res.json();
+    if(!d.valid){window.location.href='login.html';return;}
+    currentUser={id:d.email,email:d.email};
+  }catch(e){window.location.href='login.html';return;}
+  try{
+    const{data:td}=await sb.from('user_tool_data').select('data').eq('user_id',currentUser.id).eq('tool_name','gewinn_rechner_modul4').maybeSingle();
+    if(td&&td.data)setData(td.data);
+  }catch(e){}
 }
 init();
-</script>
 
-<script>
-function checkAllFilled() {
-  // Check all text inputs and textareas
-  var inputs = document.querySelectorAll('input[type=text], input[type=number], input[type=date], textarea');
-  for (var i = 0; i < inputs.length; i++) {
-    if (inputs[i].value.trim() === '') return false;
-  }
-  // Check all radio button groups
-  var radioGroups = {};
-  var radios = document.querySelectorAll('input[type=radio]');
-  for (var i = 0; i < radios.length; i++) {
-    radioGroups[radios[i].name] = radioGroups[radios[i].name] || false;
-    if (radios[i].checked) radioGroups[radios[i].name] = true;
-  }
-  for (var g in radioGroups) {
-    if (!radioGroups[g]) return false;
-  }
+function checkAllFilled(){
+  var inputs=document.querySelectorAll('input[type=number]');
+  for(var i=0;i<inputs.length;i++){if(inputs[i].value.trim()==='')return false;}
   return true;
 }
 
-function exportPDF() {
-  if (!checkAllFilled()) {
-    var msg = document.getElementById('export-msg');
-    msg.style.display = 'inline';
-    setTimeout(function(){ msg.style.display = 'none'; }, 4000);
+function exportPDF(){
+  if(!checkAllFilled()){
+    var msg=document.getElementById('export-msg');
+    msg.style.display='inline';
+    setTimeout(function(){msg.style.display='none';},4000);
     return;
   }
   window.print();
 }
 </script>
-
 </body>
 </html>
