@@ -3,83 +3,55 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quiz – Modul 8 | GASTRO-OS</title>
+<title>GASTRO-OS – Modul 8 | Quiz</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-* { margin:0; padding:0; box-sizing:border-box; }
-body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
-.header{background:#1a2a4a;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
-.brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
-.btn-back { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
-.btn-back:hover { border-color:#d4af37; color:#d4af37; }
-.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
-.main { max-width:760px; margin:36px auto; padding:0 24px 60px; }
-.page-tag { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; margin-bottom:8px; }
-.page-title { font-family:Georgia,serif; font-size:24px; color:#1a2a4a; margin-bottom:6px; }
-.page-sub { font-size:13px; color:#8090a8; margin-bottom:28px; }
-.intro-card { background:#fff; border:1px solid #e8dfc8; border-radius:10px; padding:22px 26px; margin-bottom:28px; }
-.intro-card h2 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; margin-bottom:8px; }
-.intro-card p { font-size:13px; color:#4a5a6a; line-height:1.7; }
-.stats-row { display:flex; gap:16px; margin-top:14px; }
-.stat { text-align:center; background:#f5f0e8; border-radius:8px; padding:10px 20px; }
-.stat .number { font-family:Georgia,serif; font-size:20px; color:#1a2a4a; font-weight:700; }
-.stat .label { font-size:11px; color:#8090a8; margin-top:2px; }
-.progress-wrap { margin-bottom:24px; }
-.progress-label { display:flex; justify-content:space-between; font-size:12px; color:#8090a8; margin-bottom:6px; }
-.progress-bar { height:6px; background:#e8dfc8; border-radius:3px; overflow:hidden; }
-.progress-fill { height:100%; background:linear-gradient(90deg,#1a2a4a,#d4af37); border-radius:3px; transition:width 0.4s ease; }
-.question-card { background:#fff; border:1px solid #e8dfc8; border-radius:10px; padding:24px 26px; margin-bottom:20px; box-shadow:0 2px 8px rgba(0,0,0,0.04); display:none; }
-.question-card.active { display:block; }
-.q-num { font-size:11px; font-weight:700; color:#d4af37; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:10px; }
-.q-text { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; margin-bottom:20px; line-height:1.5; }
-.options { display:flex; flex-direction:column; gap:10px; }
-.option { display:flex; align-items:flex-start; gap:12px; padding:12px 16px; border:2px solid #e8dfc8; border-radius:8px; cursor:pointer; transition:all 0.2s; background:#faf8f4; user-select:none; }
-.option:hover:not(.disabled) { border-color:#d4af37; background:#fff; }
-.option.selected { border-color:#1a2a4a; background:#f0f4ff; }
-.option.correct { border-color:#4aaa70; background:#e6f7ee; }
-.option.wrong { border-color:#cc5544; background:#fdecea; }
-.option.disabled { cursor:default; }
-.option-check { width:20px; height:20px; border:2px solid #d0c8b0; border-radius:4px; flex-shrink:0; margin-top:1px; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; transition:all 0.2s; }
-.option.selected .option-check { background:#1a2a4a; border-color:#1a2a4a; color:#fff; }
-.option.correct .option-check { background:#4aaa70; border-color:#4aaa70; color:#fff; }
-.option.wrong .option-check { background:#cc5544; border-color:#cc5544; color:#fff; }
-.option-text { font-size:14px; color:#2a3a4a; line-height:1.5; flex:1; }
-.feedback-box { display:none; border-radius:8px; padding:14px 18px; margin-top:16px; font-size:13px; line-height:1.7; }
-.feedback-box.show { display:block; }
-.feedback-box.correct { background:#e6f7ee; border:1px solid #4aaa70; color:#1a5030; }
-.feedback-box.wrong { background:#fdecea; border:1px solid #cc5544; color:#7a2010; }
-.btn-row { display:flex; justify-content:space-between; align-items:center; margin-top:20px; gap:12px; }
-.btn-check { background:#1a2a4a; color:#d4af37; border:none; padding:11px 28px; border-radius:8px; font-size:13px; font-weight:700; cursor:pointer; transition:all 0.2s; }
-.btn-check:hover { background:#d4af37; color:#1a2a4a; }
-.btn-check:disabled { opacity:0.4; cursor:default; }
-.btn-next { background:#d4af37; color:#1a2a4a; border:none; padding:11px 28px; border-radius:8px; font-size:13px; font-weight:700; cursor:pointer; transition:all 0.2s; display:none; }
-.btn-next:hover { background:#1a2a4a; color:#d4af37; }
-.result-card { display:none; background:#fff; border:1px solid #e8dfc8; border-radius:10px; padding:36px 32px; text-align:center; }
-.result-card.show { display:block; }
-.score-big { font-family:Georgia,serif; font-size:48px; color:#d4af37; font-weight:700; margin:16px 0 4px; }
-.gold-divider { height:2px; background:linear-gradient(90deg,transparent,#d4af37,transparent); margin:24px 0; }
-.btn-freischalten { background:#d4af37; color:#1a2a4a; border:none; padding:14px 36px; border-radius:8px; font-size:15px; font-weight:700; cursor:pointer; transition:all 0.2s; margin-top:8px; }
-.btn-freischalten:hover { background:#1a2a4a; color:#d4af37; }
-.bestanden-banner { background:#e6f7ee; border:1px solid #4aaa70; border-radius:10px; padding:20px 24px; margin-bottom:24px; text-align:center; display:none; }
-.footer { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
-.footer strong { color:#d4af37; }
-
-.btn-back-modul {
-  background: #d4af37;
-  color: #1a2a4a;
-  border: none;
-  padding: 9px 20px;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-block;
-  transition: all 0.2s;
-  letter-spacing: 0.3px;
-}
-.btn-back-modul:hover { background: #c8a030; color: #1a2a4a; }
-
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f0e8; color: #1a2a4a; min-height: 100vh; }
+  .header{background:#1a2a4a;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
+  .header .brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
+  .gold-bar { height: 3px; background: linear-gradient(90deg, #1a2a4a, #d4af37, #1a2a4a); }
+  .main { max-width: 780px; margin: 36px auto; padding: 0 24px 60px; }
+  h1 { font-family: Georgia, serif; font-size: 26px; color: #1a2a4a; margin-bottom: 8px; }
+  .gold-rule { width: 56px; height: 2px; background: #d4af37; margin: 10px 0 16px; }
+  .intro { font-size: 14px; color: #5060a0; line-height: 1.7; margin-bottom: 28px; }
+  .bereits-box { background: #e4f5e8; border: 2px solid #4aaa60; border-radius: 10px; padding: 28px 32px; text-align: center; display: none; }
+  .bereits-box .icon { font-size: 48px; margin-bottom: 12px; }
+  .bereits-box h2 { font-family: Georgia, serif; color: #1a6030; margin-bottom: 8px; }
+  .bereits-box p { color: #2a7040; font-size: 14px; }
+  .bereits-box .back-btn { display: inline-block; margin-top: 20px; background: #1a2a4a; color: #d4af37; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 13px; }
+  .frage-card { background: #fff; border-radius: 10px; padding: 24px 26px; margin-bottom: 16px; border: 1px solid #e8dfc8; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+  .frage-card .nummer { font-size: 11px; font-weight: 700; color: #d4af37; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+  .frage-card .multi-hint { font-size: 11px; color: #8090a8; margin-bottom: 10px; font-style: italic; }
+  .frage-card .frage { font-size: 15px; font-weight: 600; color: #1a2a4a; margin-bottom: 16px; line-height: 1.5; }
+  .antwort-option { display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; border-radius: 6px; border: 1.5px solid #e0dcd0; margin-bottom: 8px; cursor: pointer; transition: all 0.15s; background: #faf8f4; }
+  .antwort-option:hover { border-color: #d4af37; background: #fffdf0; }
+  .antwort-option.selected { border-color: #1a2a4a; background: #f0f4fb; }
+  .antwort-option.correct { border-color: #4aaa60; background: #e4f5e8; }
+  .antwort-option.wrong { border-color: #d06050; background: #fde8e4; }
+  .antwort-option input { margin-top: 3px; flex-shrink: 0; }
+  .antwort-option label { font-size: 13px; color: #334; line-height: 1.6; cursor: pointer; }
+  .feedback { font-size: 12px; margin-top: 10px; padding: 8px 12px; border-radius: 6px; display: none; }
+  .feedback.correct { background: #e4f5e8; color: #1a6030; }
+  .feedback.wrong { background: #fde8e4; color: #8a2010; }
+  .submit-btn { width: 100%; padding: 16px; background: #1a2a4a; color: #d4af37; border: none; border-radius: 8px; font-size: 15px; font-weight: 700; cursor: pointer; letter-spacing: 1px; transition: background 0.2s; margin-top: 8px; }
+  .submit-btn:hover { background: #2a3a5a; }
+  .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .ergebnis-box { display: none; border-radius: 10px; padding: 28px 32px; text-align: center; margin-top: 20px; }
+  .ergebnis-box.bestanden { background: #e4f5e8; border: 2px solid #4aaa60; }
+  .ergebnis-box.nochmal { background: #fff8e8; border: 2px solid #d4af37; }
+  .ergebnis-box .icon { font-size: 48px; margin-bottom: 12px; }
+  .ergebnis-box h2 { font-family: Georgia, serif; margin-bottom: 8px; }
+  .ergebnis-box.bestanden h2 { color: #1a6030; }
+  .ergebnis-box.nochmal h2 { color: #7a5000; }
+  .ergebnis-box p { font-size: 14px; line-height: 1.7; margin-bottom: 12px; }
+  .ergebnis-box.bestanden p { color: #2a7040; }
+  .ergebnis-box.nochmal p { color: #5a4000; }
+  .ergebnis-btn { display: inline-block; background: #1a2a4a; color: #d4af37; padding: 13px 24px; border-radius: 6px; text-decoration: none; font-weight: 700; font-size: 13px; border: none; cursor: pointer; }
+  .footer { background: #1a2a4a; margin-top: 48px; padding: 14px 40px; text-align: center; font-size: 11px; color: #8090a8; letter-spacing: 1px; }
+  .footer strong { color: #d4af37; }
+  .btn-back-modul { background: #d4af37; color: #1a2a4a; border: none; padding: 9px 20px; border-radius: 6px; font-size: 13px; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.2s; letter-spacing: 0.3px; }
+  .btn-back-modul:hover { background: #c8a030; color: #1a2a4a; }
 </style>
 <script>
 (function(){
@@ -98,202 +70,119 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 </div>
 <div class="gold-bar"></div>
 <div class="main">
-  <div class="page-tag">Modul 8 · Umsatz smart steigern</div>
-  <div class="page-title">🎯 Quiz — Teste dein Wissen</div>
-  <div class="page-sub">8 Fragen · Sofortiges Feedback · Modul 9 wird nach Abschluss freigeschaltet</div>
+  <h1>🎯 Quiz — Modul 8</h1>
+  <div class="gold-rule"></div>
+  <p class="intro">Teste dein Wissen aus Modul 8. 8 Fragen rund um Upselling, Verkaufspsychologie und Zusatzangebote — manchmal sind auch mehrere Antworten richtig. Du brauchst mindestens 6 von 8 richtigen Antworten. Viel Erfolg! 😊</p>
 
-  <div class="bestanden-banner" id="bestanden-banner">
-    <h3 style="font-family:Georgia,serif;font-size:16px;color:#1a6030;margin-bottom:6px;">🎉 Du hast dieses Quiz bereits abgeschlossen!</h3>
-    <p style="font-size:13px;color:#2a6040;margin-bottom:12px;">Modul 9 ist bereits freigeschaltet.</p>
-    <a href="dashboard.html#modul-8" style="background:#1a2a4a;color:#d4af37;padding:10px 24px;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;">Zum Dashboard →</a>
+  <div class="bereits-box" id="bereits-box">
+    <div class="icon">🏆</div>
+    <h2>Quiz bereits abgeschlossen!</h2>
+    <p>Du hast dieses Quiz bereits erfolgreich abgeschlossen.</p>
+    <a href="dashboard.html#modul-8" class="back-btn">← Zurück zum Dashboard</a>
   </div>
 
-  <div class="intro-card">
-    <h2>Quiz Modul 8: Umsatz smart steigern</h2>
-    <p>Teste dein Wissen aus Modul 8. 8 Fragen rund um Upselling, Verkaufspsychologie und Zusatzangebote — diesmal sind manchmal auch mehrere Antworten richtig. Lies jede Frage sorgfältig. Viel Erfolg! 😊</p>
-    <div class="stats-row">
-      <div class="stat"><div class="number">8</div><div class="label">Fragen</div></div>
-      <div class="stat"><div class="number">⚡</div><div class="label">Sofort-Feedback</div></div>
-      <div class="stat"><div class="number">5'</div><div class="label">Minuten</div></div>
+  <div id="quiz-form">
+
+    <div class="frage-card">
+      <div class="nummer">Frage 1 von 8</div>
+      <div class="frage">Was ist Upselling richtig verstanden?</div>
+      <div class="antwort-option" onclick="selectRadio(1,'A')"><input type="radio" name="q1" id="q1a"><label for="q1a">A) Dem Gast etwas verkaufen das er nicht braucht</label></div>
+      <div class="antwort-option" onclick="selectRadio(1,'B')"><input type="radio" name="q1" id="q1b"><label for="q1b">B) Den Bon künstlich in die Höhe treiben</label></div>
+      <div class="antwort-option" onclick="selectRadio(1,'C')"><input type="radio" name="q1" id="q1c"><label for="q1c">C) Dem Gast passende Zusatzangebote machen die seinen Besuch verbessern</label></div>
+      <div class="antwort-option" onclick="selectRadio(1,'D')"><input type="radio" name="q1" id="q1d"><label for="q1d">D) Preise erhöhen ohne Mehrwert</label></div>
+      <div class="feedback" id="feedback-1"></div>
     </div>
+
+    <div class="frage-card">
+      <div class="nummer">Frage 2 von 8</div>
+      <div class="frage">Welcher Moment ist der beste für eine Upselling-Empfehlung?</div>
+      <div class="antwort-option" onclick="selectRadio(2,'A')"><input type="radio" name="q2" id="q2a"><label for="q2a">A) Wenn der Gast bereits bezahlt hat</label></div>
+      <div class="antwort-option" onclick="selectRadio(2,'B')"><input type="radio" name="q2" id="q2b"><label for="q2b">B) Beim Bestellen — aktiv und konkret ansprechen</label></div>
+      <div class="antwort-option" onclick="selectRadio(2,'C')"><input type="radio" name="q2" id="q2c"><label for="q2c">C) Nur wenn der Gast selbst fragt</label></div>
+      <div class="antwort-option" onclick="selectRadio(2,'D')"><input type="radio" name="q2" id="q2d"><label for="q2d">D) Am Ende des Abends</label></div>
+      <div class="feedback" id="feedback-2"></div>
+    </div>
+
+    <div class="frage-card">
+      <div class="nummer">Frage 3 von 8</div>
+      <div class="multi-hint">Mehrere Antworten möglich</div>
+      <div class="frage">Was ist der Unterschied zwischen Upselling und Cross-Selling?</div>
+      <div class="antwort-option" onclick="toggleCheck(3,'A')"><input type="checkbox" id="q3a"><label for="q3a">A) Es gibt keinen Unterschied</label></div>
+      <div class="antwort-option" onclick="toggleCheck(3,'B')"><input type="checkbox" id="q3b"><label for="q3b">B) Upselling ist ein Upgrade des gleichen Produkts</label></div>
+      <div class="antwort-option" onclick="toggleCheck(3,'C')"><input type="checkbox" id="q3c"><label for="q3c">C) Cross-Selling ist ein passendes Zusatzprodukt</label></div>
+      <div class="antwort-option" onclick="toggleCheck(3,'D')"><input type="checkbox" id="q3d"><label for="q3d">D) Cross-Selling ist nur für Getränke</label></div>
+      <div class="feedback" id="feedback-3"></div>
+    </div>
+
+    <div class="frage-card">
+      <div class="nummer">Frage 4 von 8</div>
+      <div class="multi-hint">Mehrere Antworten möglich</div>
+      <div class="frage">Welche Prinzipien der Verkaufspsychologie helfen beim Upselling?</div>
+      <div class="antwort-option" onclick="toggleCheck(4,'A')"><input type="checkbox" id="q4a"><label for="q4a">A) Das Anker-Prinzip — ein teures Gericht lässt andere günstiger wirken</label></div>
+      <div class="antwort-option" onclick="toggleCheck(4,'B')"><input type="checkbox" id="q4b"><label for="q4b">B) Das Prinzip der konkreten Empfehlung — Menschen kaufen lieber mit klarem Vorschlag</label></div>
+      <div class="antwort-option" onclick="toggleCheck(4,'C')"><input type="checkbox" id="q4c"><label for="q4c">C) Das Knappheitsprinzip — begrenzte Tagesangebote wirken attraktiver</label></div>
+      <div class="antwort-option" onclick="toggleCheck(4,'D')"><input type="checkbox" id="q4d"><label for="q4d">D) Preisdruck — günstigere Alternativen zuerst nennen</label></div>
+      <div class="feedback" id="feedback-4"></div>
+    </div>
+
+    <div class="frage-card">
+      <div class="nummer">Frage 5 von 8</div>
+      <div class="frage">Was ist eine gute Upselling-Formulierung?</div>
+      <div class="antwort-option" onclick="selectRadio(5,'A')"><input type="radio" name="q5" id="q5a"><label for="q5a">A) „Wollen Sie noch was?"</label></div>
+      <div class="antwort-option" onclick="selectRadio(5,'B')"><input type="radio" name="q5" id="q5b"><label for="q5b">B) „Kann ich Ihnen noch etwas bringen?"</label></div>
+      <div class="antwort-option" onclick="selectRadio(5,'C')"><input type="radio" name="q5" id="q5c"><label for="q5c">C) „Darf es dazu ein Glas unseres Hausweins sein — der passt perfekt zum Steak?"</label></div>
+      <div class="antwort-option" onclick="selectRadio(5,'D')"><input type="radio" name="q5" id="q5d"><label for="q5d">D) „Wir haben auch Desserts."</label></div>
+      <div class="feedback" id="feedback-5"></div>
+    </div>
+
+    <div class="frage-card">
+      <div class="nummer">Frage 6 von 8</div>
+      <div class="multi-hint">Mehrere Antworten möglich</div>
+      <div class="frage">Was misst der Upselling Tracker in Gastro-OS?</div>
+      <div class="antwort-option" onclick="toggleCheck(6,'A')"><input type="checkbox" id="q6a"><label for="q6a">A) Den täglichen Gesamtumsatz des Betriebs</label></div>
+      <div class="antwort-option" onclick="toggleCheck(6,'B')"><input type="checkbox" id="q6b"><label for="q6b">B) Wie oft eine Aktion angeboten wurde</label></div>
+      <div class="antwort-option" onclick="toggleCheck(6,'C')"><input type="checkbox" id="q6c"><label for="q6c">C) Wie oft eine Aktion erfolgreich war</label></div>
+      <div class="antwort-option" onclick="toggleCheck(6,'D')"><input type="checkbox" id="q6d"><label for="q6d">D) Welchen Mehrumsatz die Aktion gebracht hat</label></div>
+      <div class="feedback" id="feedback-6"></div>
+    </div>
+
+    <div class="frage-card">
+      <div class="nummer">Frage 7 von 8</div>
+      <div class="frage">Was ist eine realistische Erfolgsquote beim Upselling?</div>
+      <div class="antwort-option" onclick="selectRadio(7,'A')"><input type="radio" name="q7" id="q7a"><label for="q7a">A) Unter 5% — mehr ist nicht möglich</label></div>
+      <div class="antwort-option" onclick="selectRadio(7,'B')"><input type="radio" name="q7" id="q7b"><label for="q7b">B) Über 80% — alles darunter ist zu wenig</label></div>
+      <div class="antwort-option" onclick="selectRadio(7,'C')"><input type="radio" name="q7" id="q7c"><label for="q7c">C) Über 30% ist sehr gut und ein realistisches Ziel</label></div>
+      <div class="antwort-option" onclick="selectRadio(7,'D')"><input type="radio" name="q7" id="q7d"><label for="q7d">D) Erfolgsquoten lassen sich nicht messen</label></div>
+      <div class="feedback" id="feedback-7"></div>
+    </div>
+
+    <div class="frage-card">
+      <div class="nummer">Frage 8 von 8</div>
+      <div class="multi-hint">Mehrere Antworten möglich</div>
+      <div class="frage">Welche Zusatzangebote haben den größten Hebel auf den Bon?</div>
+      <div class="antwort-option" onclick="toggleCheck(8,'A')"><input type="checkbox" id="q8a"><label for="q8a">A) Getränke — besonders Wein und Aperitifs</label></div>
+      <div class="antwort-option" onclick="toggleCheck(8,'B')"><input type="checkbox" id="q8b"><label for="q8b">B) Desserts aktiv empfehlen</label></div>
+      <div class="antwort-option" onclick="toggleCheck(8,'C')"><input type="checkbox" id="q8c"><label for="q8c">C) Brot und Butter</label></div>
+      <div class="antwort-option" onclick="toggleCheck(8,'D')"><input type="checkbox" id="q8d"><label for="q8d">D) Tagesempfehlungen mit höherer Marge</label></div>
+      <div class="feedback" id="feedback-8"></div>
+    </div>
+    <button class="submit-btn" id="submit-btn" onclick="submitQuiz()" disabled>Quiz auswerten →</button>
   </div>
 
-  <div class="progress-wrap" id="progress-wrap">
-    <div class="progress-label"><span id="progress-text">Frage 1 von 8</span><span id="progress-pct">0%</span></div>
-    <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+  <div class="ergebnis-box bestanden" id="ergebnis-bestanden">
+    <div class="icon">🎉</div>
+    <h2>Sehr gut — bestanden!</h2>
+    <p id="ergebnis-text"></p>
+    <p><strong>Modul 9 ist jetzt freigeschaltet!</strong></p>
+    <a href="dashboard.html#modul-8" class="ergebnis-btn">→ Zurück zum Dashboard</a>
   </div>
 
-  <!-- Q1 -->
-  <div class="question-card active" id="q0">
-    <div class="q-num">Frage 1 von 8</div>
-    <div class="q-text">Was ist Upselling richtig verstanden?</div>
-    <div class="options" id="opts0">
-      <div class="option" onclick="sel(0,0)"><div class="option-check"></div><div class="option-text">A) Dem Gast etwas verkaufen das er nicht braucht</div></div>
-      <div class="option" onclick="sel(0,1)"><div class="option-check"></div><div class="option-text">B) Den Bon künstlich in die Höhe treiben</div></div>
-      <div class="option" onclick="sel(0,2)"><div class="option-check"></div><div class="option-text">C) Dem Gast passende Zusatzangebote machen die seinen Besuch verbessern</div></div>
-      <div class="option" onclick="sel(0,3)"><div class="option-check"></div><div class="option-text">D) Preise erhöhen ohne Mehrwert</div></div>
-    </div>
-    <div class="feedback-box" id="fb0"></div>
-    <div class="btn-row">
-      <span style="font-size:12px;color:#8090a8;">Mehrere Antworten möglich</span>
-      <div style="display:flex;gap:10px;">
-        <button class="btn-check" id="check0" onclick="check(0)" disabled>Antwort prüfen</button>
-        <button class="btn-next" id="next0" onclick="next(0)">Weiter →</button>
-      </div>
-    </div>
+  <div class="ergebnis-box nochmal" id="ergebnis-nochmal">
+    <div class="icon">💪</div>
+    <h2>Fast geschafft — noch einmal!</h2>
+    <p id="ergebnis-text-2"></p>
+    <button class="ergebnis-btn" onclick="retryQuiz()">Quiz wiederholen</button>
   </div>
-
-  <!-- Q2 -->
-  <div class="question-card" id="q1">
-    <div class="q-num">Frage 2 von 8</div>
-    <div class="q-text">Welcher Moment ist der beste für eine Upselling-Empfehlung?</div>
-    <div class="options" id="opts1">
-      <div class="option" onclick="sel(1,0)"><div class="option-check"></div><div class="option-text">A) Wenn der Gast bereits bezahlt hat</div></div>
-      <div class="option" onclick="sel(1,1)"><div class="option-check"></div><div class="option-text">B) Beim Bestellen – aktiv und konkret ansprechen</div></div>
-      <div class="option" onclick="sel(1,2)"><div class="option-check"></div><div class="option-text">C) Nur wenn der Gast selbst fragt</div></div>
-      <div class="option" onclick="sel(1,3)"><div class="option-check"></div><div class="option-text">D) Am Ende des Abends</div></div>
-    </div>
-    <div class="feedback-box" id="fb1"></div>
-    <div class="btn-row">
-      <span style="font-size:12px;color:#8090a8;">Mehrere Antworten möglich</span>
-      <div style="display:flex;gap:10px;">
-        <button class="btn-check" id="check1" onclick="check(1)" disabled>Antwort prüfen</button>
-        <button class="btn-next" id="next1" onclick="next(1)">Weiter →</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Q3 -->
-  <div class="question-card" id="q2">
-    <div class="q-num">Frage 3 von 8</div>
-    <div class="q-text">Was ist der Unterschied zwischen Upselling und Cross-Selling?</div>
-    <div class="options" id="opts2">
-      <div class="option" onclick="sel(2,0)"><div class="option-check"></div><div class="option-text">A) Es gibt keinen Unterschied</div></div>
-      <div class="option" onclick="sel(2,1)"><div class="option-check"></div><div class="option-text">B) Upselling ist ein Upgrade des gleichen Produkts</div></div>
-      <div class="option" onclick="sel(2,2)"><div class="option-check"></div><div class="option-text">C) Cross-Selling ist ein passendes Zusatzprodukt</div></div>
-      <div class="option" onclick="sel(2,3)"><div class="option-check"></div><div class="option-text">D) Cross-Selling ist nur für Getränke</div></div>
-    </div>
-    <div class="feedback-box" id="fb2"></div>
-    <div class="btn-row">
-      <span style="font-size:12px;color:#8090a8;">Mehrere Antworten möglich</span>
-      <div style="display:flex;gap:10px;">
-        <button class="btn-check" id="check2" onclick="check(2)" disabled>Antwort prüfen</button>
-        <button class="btn-next" id="next2" onclick="next(2)">Weiter →</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Q4 -->
-  <div class="question-card" id="q3">
-    <div class="q-num">Frage 4 von 8</div>
-    <div class="q-text">Welche Prinzipien der Verkaufspsychologie helfen beim Upselling?</div>
-    <div class="options" id="opts3">
-      <div class="option" onclick="sel(3,0)"><div class="option-check"></div><div class="option-text">A) Das Anker-Prinzip – ein teures Gericht lässt andere günstiger wirken</div></div>
-      <div class="option" onclick="sel(3,1)"><div class="option-check"></div><div class="option-text">B) Das Prinzip der konkreten Empfehlung – Menschen kaufen lieber mit klarem Vorschlag</div></div>
-      <div class="option" onclick="sel(3,2)"><div class="option-check"></div><div class="option-text">C) Das Knappheitsprinzip – begrenzte Tagesangebote wirken attraktiver</div></div>
-      <div class="option" onclick="sel(3,3)"><div class="option-check"></div><div class="option-text">D) Preisdruck – günstigere Alternativen zuerst nennen</div></div>
-    </div>
-    <div class="feedback-box" id="fb3"></div>
-    <div class="btn-row">
-      <span style="font-size:12px;color:#8090a8;">Mehrere Antworten möglich</span>
-      <div style="display:flex;gap:10px;">
-        <button class="btn-check" id="check3" onclick="check(3)" disabled>Antwort prüfen</button>
-        <button class="btn-next" id="next3" onclick="next(3)">Weiter →</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Q5 -->
-  <div class="question-card" id="q4">
-    <div class="q-num">Frage 5 von 8</div>
-    <div class="q-text">Was ist eine gute Upselling-Formulierung?</div>
-    <div class="options" id="opts4">
-      <div class="option" onclick="sel(4,0)"><div class="option-check"></div><div class="option-text">A) „Wollen Sie noch was?"</div></div>
-      <div class="option" onclick="sel(4,1)"><div class="option-check"></div><div class="option-text">B) „Kann ich Ihnen noch etwas bringen?"</div></div>
-      <div class="option" onclick="sel(4,2)"><div class="option-check"></div><div class="option-text">C) „Darf es dazu ein Glas unseres Hausweins sein – der passt perfekt zum Steak?"</div></div>
-      <div class="option" onclick="sel(4,3)"><div class="option-check"></div><div class="option-text">D) „Wir haben auch Desserts."</div></div>
-    </div>
-    <div class="feedback-box" id="fb4"></div>
-    <div class="btn-row">
-      <span style="font-size:12px;color:#8090a8;">Mehrere Antworten möglich</span>
-      <div style="display:flex;gap:10px;">
-        <button class="btn-check" id="check4" onclick="check(4)" disabled>Antwort prüfen</button>
-        <button class="btn-next" id="next4" onclick="next(4)">Weiter →</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Q6 -->
-  <div class="question-card" id="q5">
-    <div class="q-num">Frage 6 von 8</div>
-    <div class="q-text">Was misst der Upselling Tracker in Gastro-OS?</div>
-    <div class="options" id="opts5">
-      <div class="option" onclick="sel(5,0)"><div class="option-check"></div><div class="option-text">A) Den täglichen Gesamtumsatz des Betriebs</div></div>
-      <div class="option" onclick="sel(5,1)"><div class="option-check"></div><div class="option-text">B) Wie oft eine Aktion angeboten wurde</div></div>
-      <div class="option" onclick="sel(5,2)"><div class="option-check"></div><div class="option-text">C) Wie oft eine Aktion erfolgreich war</div></div>
-      <div class="option" onclick="sel(5,3)"><div class="option-check"></div><div class="option-text">D) Welchen Mehrumsatz die Aktion gebracht hat</div></div>
-    </div>
-    <div class="feedback-box" id="fb5"></div>
-    <div class="btn-row">
-      <span style="font-size:12px;color:#8090a8;">Mehrere Antworten möglich</span>
-      <div style="display:flex;gap:10px;">
-        <button class="btn-check" id="check5" onclick="check(5)" disabled>Antwort prüfen</button>
-        <button class="btn-next" id="next5" onclick="next(5)">Weiter →</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Q7 -->
-  <div class="question-card" id="q6">
-    <div class="q-num">Frage 7 von 8</div>
-    <div class="q-text">Was ist eine realistische Erfolgsquote beim Upselling?</div>
-    <div class="options" id="opts6">
-      <div class="option" onclick="sel(6,0)"><div class="option-check"></div><div class="option-text">A) Unter 5% – mehr ist nicht möglich</div></div>
-      <div class="option" onclick="sel(6,1)"><div class="option-check"></div><div class="option-text">B) Über 80% – alles darunter ist zu wenig</div></div>
-      <div class="option" onclick="sel(6,2)"><div class="option-check"></div><div class="option-text">C) Über 30% ist sehr gut und ein realistisches Ziel</div></div>
-      <div class="option" onclick="sel(6,3)"><div class="option-check"></div><div class="option-text">D) Erfolgsquoten lassen sich nicht messen</div></div>
-    </div>
-    <div class="feedback-box" id="fb6"></div>
-    <div class="btn-row">
-      <span style="font-size:12px;color:#8090a8;">Mehrere Antworten möglich</span>
-      <div style="display:flex;gap:10px;">
-        <button class="btn-check" id="check6" onclick="check(6)" disabled>Antwort prüfen</button>
-        <button class="btn-next" id="next6" onclick="next(6)">Weiter →</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Q8 -->
-  <div class="question-card" id="q7">
-    <div class="q-num">Frage 8 von 8</div>
-    <div class="q-text">Welche Zusatzangebote haben den größten Hebel auf den Bon?</div>
-    <div class="options" id="opts7">
-      <div class="option" onclick="sel(7,0)"><div class="option-check"></div><div class="option-text">A) Getränke – besonders Wein und Aperitifs</div></div>
-      <div class="option" onclick="sel(7,1)"><div class="option-check"></div><div class="option-text">B) Desserts aktiv empfehlen</div></div>
-      <div class="option" onclick="sel(7,2)"><div class="option-check"></div><div class="option-text">C) Brot und Butter</div></div>
-      <div class="option" onclick="sel(7,3)"><div class="option-check"></div><div class="option-text">D) Tagesempfehlungen mit höherer Marge</div></div>
-    </div>
-    <div class="feedback-box" id="fb7"></div>
-    <div class="btn-row">
-      <span style="font-size:12px;color:#8090a8;">Mehrere Antworten möglich</span>
-      <div style="display:flex;gap:10px;">
-        <button class="btn-check" id="check7" onclick="check(7)" disabled>Antwort prüfen</button>
-        <button class="btn-next" id="next7" onclick="showResult()">Ergebnis anzeigen →</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ERGEBNIS -->
-  <div class="result-card" id="result-card">
-    <div style="font-size:56px;margin-bottom:16px;" id="result-icon">🎉</div>
-    <h2 style="font-family:Georgia,serif;font-size:22px;color:#1a2a4a;margin-bottom:10px;" id="result-title">Quiz abgeschlossen!</h2>
-    <div class="score-big" id="score-big">0/8</div>
-    <div style="font-size:13px;color:#8090a8;margin-bottom:16px;">Punkte erreicht</div>
-    <p style="font-size:14px;color:#4a5a6a;line-height:1.7;" id="result-msg"></p>
-    <div class="gold-divider"></div>
-    <button class="btn-freischalten" onclick="markBestanden()">✓ Modul 9 freischalten</button>
-  </div>
-
 </div>
 <div class="gold-bar"></div>
 <div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg &nbsp;·&nbsp; <a href="impressum.html" style="color:#8090a8;text-decoration:none;">Impressum</a> &nbsp;·&nbsp; <a href="datenschutz.html" style="color:#8090a8;text-decoration:none;">Datenschutz</a> &nbsp;·&nbsp; <a href="agb.html" style="color:#8090a8;text-decoration:none;">AGB</a></div>
@@ -303,131 +192,137 @@ const SUPABASE_URL = 'https://hchlganbgjeciwhwaisj.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhjaGxnYW5iZ2plY2l3aHdhaXNqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYyMzA0NjAsImV4cCI6MjA5MTgwNjQ2MH0.mA6oAPJCCgFq5LIUPFDGM0WI_le6STHTuGiwLtGMgu8';
 const { createClient } = supabase;
 const sb = createClient(SUPABASE_URL, SUPABASE_KEY, { global: { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } } });
+
+const RICHTIG_RADIO = {1:'C', 2:'B', 5:'C', 7:'C'};
+const RICHTIG_CHECK = {3:['B', 'C'], 4:['A', 'B', 'C'], 6:['B', 'C', 'D'], 8:['A', 'B', 'D']};
+const TOTAL = 8;
+const PASS_SCORE = 6;
+
+let radioAnswers = {};
+let checkAnswers = { 3:[], 4:[], 6:[], 8:[] };
 let currentUser = null;
 
-const CORRECT = [[2],[1],[1,2],[0,1,2],[2],[1,2,3],[2],[0,1,3]];
-const FB_OK = [
-  'Genau! Gutes Upselling ist guter Service. Der Gast profitiert genauso wie du — er bekommt einen besseren Abend, du einen besseren Bon.',
-  'Perfekt! Der beste Moment ist direkt beim Bestellen — mit einer konkreten persönlichen Empfehlung. Nicht fragen ob, sondern was.',
-  'Sehr gut! Upselling ist zum Beispiel das größere Glas Wein statt dem kleinen. Cross-Selling ist das Dessert zum Hauptgang. Beide Strategien ergänzen sich ideal.',
-  'Sehr gut — A, B und C sind richtig. Kleine psychologische Hebel die zusammen einen großen Unterschied machen — ohne einen einzigen Cent mehr zu investieren.',
-  'Genau! Konkret, persönlich und mit Begründung. Diese Formulierung lädt zum Ja ein — ohne Druck und ohne Aufdringlichkeit.',
-  'Perfekt — B, C und D sind richtig. Der Tracker gibt dir alle Zahlen die du brauchst um dein Team gezielt weiterzuentwickeln.',
-  'Richtig! Wer über 30% liegt arbeitet professionell und aktiv. Und der Upselling Tracker zeigt dir jede Woche genau wo du stehst.',
-  'Sehr gut — A, B und D sind richtig. Drei Bereiche mit echtem Hebel die viele Gastronomen täglich liegen lassen. Jetzt nicht mehr.',
-];
-const FB_WRONG = [
-  'Upselling das sich aufdrängt schadet der Gästebindung. Richtig wäre C — es geht immer darum den Gast zu bereichern, nicht zu überreden.',
-  'Richtig wäre B. Wer wartet bis der Gast selbst fragt verliert Umsatz. Aktives Ansprechen beim Bestellen macht den Unterschied.',
-  'Richtig wären B und C. Upselling ist ein Upgrade, Cross-Selling ein passendes Zusatzprodukt. Beide zusammen sind dein stärkster Hebel auf den Bon.',
-  'Richtig wären A, B und C. Preisdruck schadet der Wahrnehmung deines Angebots. Die anderen drei Prinzipien stärken sie gezielt.',
-  'Richtig wäre C. Offene Fragen ohne Vorschlag werden fast immer verneint. Eine konkrete Empfehlung mit Begründung ist der entscheidende Unterschied.',
-  'Richtig wären B, C und D. Der Tracker konzentriert sich auf Upselling-Aktionen — nicht auf den Gesamtumsatz. So siehst du genau wo der Hebel liegt.',
-  'Richtig wäre C. Mit aktivem Ansprechen und guten Formulierungen ist 30% ein realistisches und erreichbares Ziel — und der Tracker hilft dir dabei.',
-  'Richtig wären A, B und D. Brot und Butter haben meist geringe Margen. Getränke, Desserts und Tagesempfehlungen sind die wahren Umsatzhebel.',
-];
+function countAnswered() {
+  let count = 0;
+  for (const q of [1,2,5,7]) { if (radioAnswers[q]) count++; }
+  for (const q of [3,4,6,8]) { if (checkAnswers[q] && checkAnswers[q].length > 0) count++; }
+  return count;
+}
 
-let selected = Array.from({length:8}, () => []);
-let answered = Array(8).fill(false);
-let points = 0;
+function selectRadio(frage, wert) {
+  radioAnswers[frage] = wert;
+  document.querySelectorAll(`[name="q${frage}"]`).forEach(r => r.closest('.antwort-option').classList.remove('selected'));
+  const el = document.getElementById(`q${frage}${wert.toLowerCase()}`);
+  el.checked = true;
+  el.closest('.antwort-option').classList.add('selected');
+  if (countAnswered() === TOTAL) document.getElementById('submit-btn').disabled = false;
+}
 
-function sel(q, opt) {
-  if (answered[q]) return;
-  const opts = document.querySelectorAll('#opts'+q+' .option');
-  const idx = selected[q].indexOf(opt);
-  if (idx === -1) {
-    selected[q].push(opt);
-    opts[opt].classList.add('selected');
-    opts[opt].querySelector('.option-check').textContent = '✓';
+function toggleCheck(frage, wert) {
+  const el = document.getElementById(`q${frage}${wert.toLowerCase()}`);
+  el.checked = !el.checked;
+  const opt = el.closest('.antwort-option');
+  if (el.checked) {
+    if (!checkAnswers[frage].includes(wert)) checkAnswers[frage].push(wert);
+    opt.classList.add('selected');
   } else {
-    selected[q].splice(idx, 1);
-    opts[opt].classList.remove('selected');
-    opts[opt].querySelector('.option-check').textContent = '';
+    checkAnswers[frage] = checkAnswers[frage].filter(v => v !== wert);
+    opt.classList.remove('selected');
   }
-  document.getElementById('check'+q).disabled = selected[q].length === 0;
-}
-
-function arrEq(a,b) { return a.length===b.length && [...a].sort().every((v,i)=>v===[...b].sort()[i]); }
-
-function check(q) {
-  if (answered[q]) return;
-  answered[q] = true;
-  const correct = CORRECT[q];
-  const userSel = selected[q];
-  const isOk = arrEq(userSel, correct);
-  if (isOk) points++;
-  const opts = document.querySelectorAll('#opts'+q+' .option');
-  opts.forEach((o,i) => {
-    o.classList.remove('selected'); o.querySelector('.option-check').textContent=''; o.classList.add('disabled'); o.onclick=null;
-    if (correct.includes(i)) { o.classList.add('correct'); o.querySelector('.option-check').textContent='✓'; }
-    else if (userSel.includes(i)) { o.classList.add('wrong'); o.querySelector('.option-check').textContent='✗'; }
-  });
-  const fb = document.getElementById('fb'+q);
-  fb.classList.add('show');
-  if (isOk) { fb.classList.add('correct'); fb.innerHTML='✅ '+FB_OK[q]; }
-  else { fb.classList.add('wrong'); fb.innerHTML='❌ '+FB_WRONG[q]; }
-  document.getElementById('check'+q).style.display='none';
-  document.getElementById('next'+q).style.display='inline-block';
-  const done = answered.filter(Boolean).length;
-  const pct = Math.round((done/8)*100);
-  document.getElementById('progress-fill').style.width=pct+'%';
-  document.getElementById('progress-pct').textContent=pct+'%';
-}
-
-function next(q) {
-  document.getElementById('q'+q).classList.remove('active');
-  const n = q+1;
-  if (n < 8) {
-    document.getElementById('q'+n).classList.add('active');
-    document.getElementById('progress-text').textContent='Frage '+(n+1)+' von 8';
-    window.scrollTo({top:0,behavior:'smooth'});
-  }
-}
-
-function showResult() {
-  document.getElementById('q7').classList.remove('active');
-  document.getElementById('progress-wrap').style.display='none';
-  const rc = document.getElementById('result-card');
-  rc.classList.add('show');
-  document.getElementById('score-big').textContent=points+'/8';
-  let icon, msg;
-  if (points>=7) { icon='🎉'; msg='Ausgezeichnet! Du hast Modul 8 vollständig verstanden. Upselling ist kein Verkaufstrick — es ist guter Service mit System. Jetzt weißt du wie es funktioniert und wo dein Team ansetzen kann. Öffne den Upselling Tracker und starte diese Woche.'; }
-  else if (points>=5) { icon='👍'; msg='Gut gemacht! Du hast die wichtigsten Konzepte verstanden. Schau dir die Fragen die du nicht richtig hattest noch einmal in den Lektionen an.'; }
-  else { icon='📖'; msg='Lies die Lektionen aus Modul 8 noch einmal durch — besonders zu Upselling-Formulierungen und Verkaufspsychologie. Du schaffst das!'; }
-  document.getElementById('result-icon').textContent=icon;
-  document.getElementById('result-msg').textContent=msg;
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-
-async function markBestanden() {
-  if (!currentUser) return;
-  await sb.from('user_tool_data').upsert({
-    user_id: currentUser.id, tool_name:'quiz_modul8',
-    data:{bestanden:true, punkte:points, datum:new Date().toISOString()},
-    updated_at:new Date().toISOString()
-  },{onConflict:'user_id,tool_name'});
-  const {data:td} = await sb.from('user_tool_data').select('data').eq('user_id',currentUser.id).eq('tool_name','modul_progress').maybeSingle();
-  const progress = (td&&td.data)?td.data:{};
-  progress['8-10']=true;
-  await sb.from('user_tool_data').upsert({
-    user_id:currentUser.id, tool_name:'modul_progress', data:progress, updated_at:new Date().toISOString()
-  },{onConflict:'user_id,tool_name'});
-  document.getElementById('result-card').innerHTML=`
-    <div style="font-size:56px;margin-bottom:16px;">🎉</div>
-    <h2 style="font-family:Georgia,serif;font-size:22px;color:#1a2a4a;margin-bottom:10px;">Modul 9 freigeschaltet!</h2>
-    <p style="font-size:14px;color:#4a5a6a;margin-bottom:24px;">Glückwunsch! Du hast Modul 8 erfolgreich abgeschlossen. Modul 9 ist jetzt verfügbar.</p>
-    <a href="dashboard.html#modul-8" style="background:#d4af37;color:#1a2a4a;padding:14px 36px;border-radius:8px;font-size:15px;font-weight:700;text-decoration:none;display:inline-block;">Zum Dashboard → Modul 9</a>
-  `;
+  if (countAnswered() === TOTAL) document.getElementById('submit-btn').disabled = false;
 }
 
 async function init() {
-  try{const res=await fetch('/api/verify-session');if(!res.ok){window.location.href='login.html';return;}const d=await res.json();
-  if(!d.valid){window.location.href='login.html';return;}
-  currentUser={id:d.email,email:d.email};
-  }catch(e){window.location.href='login.html';return;}
-  const {data:qd} = await sb.from('user_tool_data').select('data').eq('user_id',currentUser.id).eq('tool_name','quiz_modul8').maybeSingle();
-  if (qd&&qd.data&&qd.data.bestanden) document.getElementById('bestanden-banner').style.display='block';
+  try {
+    const res = await fetch('/api/verify-session');
+    if (!res.ok) { window.location.href = 'login.html'; return; }
+    const d = await res.json();
+    if (!d.valid) { window.location.href = 'login.html'; return; }
+    currentUser = { id: d.email, email: d.email };
+  } catch(e) { window.location.href = 'login.html'; return; }
+  const { data } = await sb.from('user_tool_data').select('data').eq('user_id', currentUser.id).eq('tool_name', 'quiz_modul8').maybeSingle();
+  if (data && data.data && data.data.bestanden) {
+    document.getElementById('quiz-form').style.display = 'none';
+    document.getElementById('bereits-box').style.display = 'block';
+  }
 }
+
+async function submitQuiz() {
+  document.getElementById('submit-btn').disabled = true;
+  let richtig = 0;
+
+  for (const [q, korr] of Object.entries(RICHTIG_RADIO)) {
+    const qi = parseInt(q);
+    const gew = radioAnswers[qi];
+    const el = document.getElementById(`q${qi}${gew.toLowerCase()}`);
+    const opt = el.closest('.antwort-option');
+    const fb = document.getElementById(`feedback-${qi}`);
+    if (gew === korr) {
+      richtig++;
+      opt.classList.add('correct');
+      fb.textContent = '✓ Richtig!';
+      fb.className = 'feedback correct';
+    } else {
+      opt.classList.add('wrong');
+      document.getElementById(`q${qi}${korr.toLowerCase()}`).closest('.antwort-option').classList.add('correct');
+      fb.textContent = `✗ Leider falsch. Die richtige Antwort ist ${korr}.`;
+      fb.className = 'feedback wrong';
+    }
+    fb.style.display = 'block';
+  }
+
+  for (const [q, korrArr] of Object.entries(RICHTIG_CHECK)) {
+    const qi = parseInt(q);
+    const gew = checkAnswers[qi] || [];
+    const fb = document.getElementById(`feedback-${qi}`);
+    const korrSet = new Set(korrArr);
+    const gewSet = new Set(gew);
+    const isCorrect = korrSet.size === gewSet.size && [...korrSet].every(v => gewSet.has(v));
+    ['A','B','C','D'].forEach(letter => {
+      const el = document.getElementById(`q${qi}${letter.toLowerCase()}`);
+      if (!el) return;
+      const opt = el.closest('.antwort-option');
+      if (korrSet.has(letter)) opt.classList.add('correct');
+      else if (gewSet.has(letter)) opt.classList.add('wrong');
+    });
+    if (isCorrect) {
+      richtig++;
+      fb.textContent = '✓ Richtig!';
+      fb.className = 'feedback correct';
+    } else {
+      fb.textContent = `✗ Leider nicht ganz richtig. Richtig wären: ${korrArr.join(', ')}`;
+      fb.className = 'feedback wrong';
+    }
+    fb.style.display = 'block';
+  }
+
+  document.querySelectorAll('.antwort-option').forEach(o => o.style.pointerEvents = 'none');
+  document.getElementById('submit-btn').style.display = 'none';
+
+  if (richtig >= PASS_SCORE) {
+    await sb.from('user_tool_data').upsert({
+      user_id: currentUser.id, tool_name: 'quiz_modul8',
+      data: { bestanden: true, richtig, datum: new Date().toISOString() },
+      updated_at: new Date().toISOString()
+    }, { onConflict: 'user_id,tool_name' });
+    const { data: pd } = await sb.from('user_tool_data').select('data').eq('user_id', currentUser.id).eq('tool_name', 'modul_progress').maybeSingle();
+    const progress = (pd && pd.data) ? pd.data : {};
+    progress['8-10'] = true;
+    await sb.from('user_tool_data').upsert({
+      user_id: currentUser.id, tool_name: 'modul_progress',
+      data: progress, updated_at: new Date().toISOString()
+    }, { onConflict: 'user_id,tool_name' });
+    document.getElementById('ergebnis-text').textContent = `Du hast ${richtig} von 8 Fragen richtig beantwortet. Ausgezeichnet!`;
+    document.getElementById('ergebnis-bestanden').style.display = 'block';
+    document.getElementById('ergebnis-bestanden').scrollIntoView({ behavior: 'smooth' });
+  } else {
+    document.getElementById('ergebnis-text-2').textContent = `Du hast ${richtig} von 8 Fragen richtig beantwortet. Du brauchst mindestens 6 richtige Antworten.`;
+    document.getElementById('ergebnis-nochmal').style.display = 'block';
+    document.getElementById('ergebnis-nochmal').scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+function retryQuiz() { window.location.reload(); }
 init();
 </script>
 </body>
