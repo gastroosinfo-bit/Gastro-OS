@@ -261,9 +261,7 @@ function updateGesamt() {
 
   // Level
   var level;
-  if (total === 0) {
-    level = 'Noch keine Auswahl';
-  } else if (pct >= 0.85) {
+  if (pct >= 0.85) {
     level = '🏆 GASTRO-OS Profi';
   } else if (pct >= 0.65) {
     level = '⭐⭐⭐ Fortgeschritten';
