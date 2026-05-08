@@ -23,17 +23,19 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f0e8;color:#1a2a4a;mi
 .btn-reset{background:transparent;border:1.5px solid #c0b090;color:#8070a0;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s}
 .btn-reset:hover{background:#f0ece0;color:#1a2a4a;border-color:#1a2a4a}
 .save-msg{font-size:13px;color:#4a8a4a;align-self:center;display:none}
-.export-msg{font-size:12px;color:#c0392b;display:none;font-weight:600}
 .sterne-card{background:#fff;border:1px solid #e8dfc8;border-radius:10px;padding:24px 28px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,0.04)}
 .level-badge{display:inline-block;background:#1a2a4a;color:#d4af37;font-size:12px;font-weight:700;padding:4px 14px;border-radius:20px;letter-spacing:1px;margin-bottom:16px}
 .sterne-row{display:flex;align-items:center;gap:12px;margin-bottom:10px}
 .sterne-label{font-size:14px;color:#3a4a6a;min-width:220px}
-.sterne-select{background:#f5f0e8;border:1px solid #e8dfc8;border-radius:6px;padding:7px 12px;font-size:14px;color:#1a2a4a;cursor:pointer;width:120px}
+.sterne-select{background:#f5f0e8;border:1px solid #e8dfc8;border-radius:6px;padding:7px 12px;font-size:14px;color:#1a2a4a;cursor:pointer;width:140px}
 .sterne-note{width:100%;background:#f5f0e8;border:1px solid #e8dfc8;border-radius:6px;padding:8px 12px;font-size:13px;color:#3a4a6a;resize:vertical;min-height:60px;margin-top:8px;font-family:'Segoe UI',Arial,sans-serif}
 .gesamt-box{background:#1a2a4a;border-radius:10px;padding:28px 24px;margin-top:24px;text-align:center}
-.gesamt-label{font-size:13px;color:#a0b0c8;margin-bottom:8px}
-.gesamt-sterne{font-size:36px;margin-bottom:8px;letter-spacing:2px;color:#d4af37}
-.gesamt-level{font-size:18px;color:#d4af37;font-weight:700}
+.gesamt-label{font-size:13px;color:#a0b0c8;margin-bottom:12px}
+.gesamt-sterne-wrap{margin-bottom:10px;min-height:44px;display:flex;align-items:center;justify-content:center;gap:4px}
+.stern-filled{font-size:32px;color:#d4af37;line-height:1}
+.stern-empty{font-size:32px;color:#4a5a7a;line-height:1}
+.gesamt-level{font-size:18px;color:#d4af37;font-weight:700;margin-bottom:8px}
+.gesamt-punkte{font-size:12px;color:#6a7a9a;letter-spacing:1px}
 .nav-row{display:flex;gap:12px;justify-content:space-between;margin-top:24px}
 .nav-btn{background:#1a2a4a;color:#d4af37;border:none;padding:12px 24px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;transition:all 0.2s}
 .nav-btn:hover{background:#d4af37;color:#1a2a4a}
@@ -64,11 +66,10 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f0e8;color:#1a2a4a;mi
 
 <div class="wrap">
   <div class="action-row">
-    <button class="btn-save" onclick="saveData()">💾 Speichern</button>
+    <button class="btn-save" id="btn-save">💾 Speichern</button>
     <button class="btn-export" onclick="window.print()">📥 Als PDF speichern</button>
-    <button class="btn-reset" onclick="resetData()">↺ Neu starten</button>
+    <button class="btn-reset" id="btn-reset">↺ Neu starten</button>
     <span class="save-msg" id="save-msg">✓ Gespeichert</span>
-    <span class="export-msg" id="export-msg"></span>
   </div>
 
   <div class="lektion-hero">
@@ -76,11 +77,12 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f0e8;color:#1a2a4a;mi
     <h1>⭐ Sterne-Level System</h1>
   </div>
 
+  <!-- BEREICH 1 -->
   <div class="sterne-card">
     <div class="level-badge">BEREICH 1 — FINANZEN & ZAHLEN</div>
     <div class="sterne-row">
       <span class="sterne-label">Ich kenne meinen Wareneinsatz</span>
-      <select class="sterne-select" id="f1" onchange="updateGesamt()">
+      <select class="sterne-select" id="f1">
         <option value="0">☆☆☆ – Noch nicht</option>
         <option value="1">★☆☆ – Anfänger</option>
         <option value="2">★★☆ – Gut</option>
@@ -89,7 +91,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f0e8;color:#1a2a4a;mi
     </div>
     <div class="sterne-row">
       <span class="sterne-label">Ich kontrolliere meine Kosten monatlich</span>
-      <select class="sterne-select" id="f2" onchange="updateGesamt()">
+      <select class="sterne-select" id="f2">
         <option value="0">☆☆☆ – Noch nicht</option>
         <option value="1">★☆☆ – Anfänger</option>
         <option value="2">★★☆ – Gut</option>
@@ -98,7 +100,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f0e8;color:#1a2a4a;mi
     </div>
     <div class="sterne-row">
       <span class="sterne-label">Ich habe einen monatlichen Gewinnplan</span>
-      <select class="sterne-select" id="f3" onchange="updateGesamt()">
+      <select class="sterne-select" id="f3">
         <option value="0">☆☆☆ – Noch nicht</option>
         <option value="1">★☆☆ – Anfänger</option>
         <option value="2">★★☆ – Gut</option>
@@ -108,11 +110,12 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f0e8;color:#1a2a4a;mi
     <textarea class="sterne-note" id="f_note" placeholder="Meine Notizen zu diesem Bereich..."></textarea>
   </div>
 
+  <!-- BEREICH 2 -->
   <div class="sterne-card">
     <div class="level-badge">BEREICH 2 — STRUKTUR & PROZESSE</div>
     <div class="sterne-row">
       <span class="sterne-label">Ich habe schriftliche Prozesse (SOPs)</span>
-      <select class="sterne-select" id="s1" onchange="updateGesamt()">
+      <select class="sterne-select" id="s1">
         <option value="0">☆☆☆ – Noch nicht</option>
         <option value="1">★☆☆ – Anfänger</option>
         <option value="2">★★☆ – Gut</option>
@@ -121,7 +124,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f0e8;color:#1a2a4a;mi
     </div>
     <div class="sterne-row">
       <span class="sterne-label">Mein Betrieb läuft ohne mich (Testtag)</span>
-      <select class="sterne-select" id="s2" onchange="updateGesamt()">
+      <select class="sterne-select" id="s2">
         <option value="0">☆☆☆ – Noch nicht</option>
         <option value="1">★☆☆ – Anfänger</option>
         <option value="2">★★☆ – Gut</option>
@@ -130,7 +133,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f0e8;color:#1a2a4a;mi
     </div>
     <div class="sterne-row">
       <span class="sterne-label">Ich plane meinen Einkauf strukturiert</span>
-      <select class="sterne-select" id="s3" onchange="updateGesamt()">
+      <select class="sterne-select" id="s3">
         <option value="0">☆☆☆ – Noch nicht</option>
         <option value="1">★☆☆ – Anfänger</option>
         <option value="2">★★☆ – Gut</option>
@@ -140,11 +143,12 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f0e8;color:#1a2a4a;mi
     <textarea class="sterne-note" id="s_note" placeholder="Meine Notizen zu diesem Bereich..."></textarea>
   </div>
 
+  <!-- BEREICH 3 -->
   <div class="sterne-card">
     <div class="level-badge">BEREICH 3 — TEAM & FÜHRUNG</div>
     <div class="sterne-row">
       <span class="sterne-label">Alle Mitarbeiter haben klare Rollen</span>
-      <select class="sterne-select" id="t1" onchange="updateGesamt()">
+      <select class="sterne-select" id="t1">
         <option value="0">☆☆☆ – Noch nicht</option>
         <option value="1">★☆☆ – Anfänger</option>
         <option value="2">★★☆ – Gut</option>
@@ -153,7 +157,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f0e8;color:#1a2a4a;mi
     </div>
     <div class="sterne-row">
       <span class="sterne-label">Ich führe regelmäßige Feedbackgespräche</span>
-      <select class="sterne-select" id="t2" onchange="updateGesamt()">
+      <select class="sterne-select" id="t2">
         <option value="0">☆☆☆ – Noch nicht</option>
         <option value="1">★☆☆ – Anfänger</option>
         <option value="2">★★☆ – Gut</option>
@@ -162,7 +166,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f0e8;color:#1a2a4a;mi
     </div>
     <div class="sterne-row">
       <span class="sterne-label">Ich bilde mein Team aktiv weiter</span>
-      <select class="sterne-select" id="t3" onchange="updateGesamt()">
+      <select class="sterne-select" id="t3">
         <option value="0">☆☆☆ – Noch nicht</option>
         <option value="1">★☆☆ – Anfänger</option>
         <option value="2">★★☆ – Gut</option>
@@ -172,11 +176,12 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f0e8;color:#1a2a4a;mi
     <textarea class="sterne-note" id="t_note" placeholder="Meine Notizen zu diesem Bereich..."></textarea>
   </div>
 
+  <!-- BEREICH 4 -->
   <div class="sterne-card">
     <div class="level-badge">BEREICH 4 — FREIZEIT & LEBENSQUALITÄT</div>
     <div class="sterne-row">
       <span class="sterne-label">Ich habe mindestens 1 freien Tag pro Woche</span>
-      <select class="sterne-select" id="l1" onchange="updateGesamt()">
+      <select class="sterne-select" id="l1">
         <option value="0">☆☆☆ – Noch nicht</option>
         <option value="1">★☆☆ – Anfänger</option>
         <option value="2">★★☆ – Gut</option>
@@ -185,7 +190,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f0e8;color:#1a2a4a;mi
     </div>
     <div class="sterne-row">
       <span class="sterne-label">Ich mache regelmäßig Urlaub</span>
-      <select class="sterne-select" id="l2" onchange="updateGesamt()">
+      <select class="sterne-select" id="l2">
         <option value="0">☆☆☆ – Noch nicht</option>
         <option value="1">★☆☆ – Anfänger</option>
         <option value="2">★★☆ – Gut</option>
@@ -194,7 +199,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f0e8;color:#1a2a4a;mi
     </div>
     <div class="sterne-row">
       <span class="sterne-label">Ich arbeite strategisch AM statt IM Betrieb</span>
-      <select class="sterne-select" id="l3" onchange="updateGesamt()">
+      <select class="sterne-select" id="l3">
         <option value="0">☆☆☆ – Noch nicht</option>
         <option value="1">★☆☆ – Anfänger</option>
         <option value="2">★★☆ – Gut</option>
@@ -206,8 +211,9 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f0e8;color:#1a2a4a;mi
 
   <div class="gesamt-box">
     <div class="gesamt-label">Dein aktuelles Gesamtergebnis</div>
-    <div class="gesamt-sterne" id="gesamt-sterne">☆☆☆☆☆☆☆☆☆☆☆☆</div>
+    <div class="gesamt-sterne-wrap" id="gesamt-sterne-wrap"></div>
     <div class="gesamt-level" id="gesamt-level">Noch keine Auswahl</div>
+    <div class="gesamt-punkte" id="gesamt-punkte">0 von 36 Punkten</div>
   </div>
 
   <div class="nav-row">
@@ -222,60 +228,117 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f0e8;color:#1a2a4a;mi
 <script>
 const SUPABASE_URL = 'https://hchlganbgjeciwhwaisj.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhjaGxnYW5iZ2plY2l3aHdhaXNqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYyMzA0NjAsImV4cCI6MjA5MTgwNjQ2MH0.mA6oAPJCCgFq5LIUPFDGM0WI_le6STHTuGiwLtGMgu8';
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {global:{headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`}}});
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+  global:{headers:{apikey:SUPABASE_KEY, Authorization:`Bearer ${SUPABASE_KEY}`}}
+});
+
 const FIELDS = ['f1','f2','f3','s1','s2','s3','t1','t2','t3','l1','l2','l3'];
 const NOTES  = ['f_note','s_note','t_note','l_note'];
 let currentUser = null;
 
-async function init() {
-  try {
-    const res = await fetch('/api/verify-session');
-    if (!res.ok) { window.location.href='login.html'; return; }
-    const d = await res.json();
-    if (!d.valid) { window.location.href='login.html'; return; }
-    currentUser = { id: d.email, email: d.email };
-  } catch(e) { window.location.href='login.html'; return; }
-
-  const { data } = await sb.from('user_tool_data').select('data').eq('user_id', currentUser.id).eq('tool_name','sterne_level_m11').maybeSingle();
-  if (data && data.data) {
-    const saved = data.data;
-    FIELDS.forEach(id => { if (saved[id] !== undefined) document.getElementById(id).value = saved[id]; });
-    NOTES.forEach(id => { if (saved[id]) document.getElementById(id).value = saved[id]; });
-  }
-  updateGesamt();
-}
-
 function updateGesamt() {
-  let total = FIELDS.reduce((sum,id) => sum + parseInt(document.getElementById(id).value||0), 0);
-  let max = FIELDS.length * 3;
-  let pct = total / max;
-  let stars = Math.round(pct * 12);
-  document.getElementById('gesamt-sterne').textContent = '★'.repeat(stars) + '☆'.repeat(12 - stars);
-  let level = pct >= 0.85 ? '🏆 GASTRO-OS Profi' :
-              pct >= 0.65 ? '⭐⭐⭐ Fortgeschritten' :
-              pct >= 0.4  ? '⭐⭐ Auf dem Weg' :
-              total === 0 ? 'Noch keine Auswahl' :
-              '⭐ Starter – du bist auf dem richtigen Weg';
-  document.getElementById('gesamt-level').textContent = level;
+  let total = 0;
+  FIELDS.forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) total += Number(el.value) || 0;
+  });
+
+  var max = FIELDS.length * 3; // 36
+  var pct = total / max;
+  var stars = Math.round(pct * 12);
+
+  // Sterne-Anzeige mit separaten Spans (kein CSS-Farbproblem)
+  var wrap = document.getElementById('gesamt-sterne-wrap');
+  if (wrap) {
+    wrap.innerHTML = '';
+    for (var i = 0; i < 12; i++) {
+      var span = document.createElement('span');
+      span.className = i < stars ? 'stern-filled' : 'stern-empty';
+      span.textContent = '★';
+      wrap.appendChild(span);
+    }
+  }
+
+  // Level
+  var level;
+  if (total === 0) {
+    level = 'Noch keine Auswahl';
+  } else if (pct >= 0.85) {
+    level = '🏆 GASTRO-OS Profi';
+  } else if (pct >= 0.65) {
+    level = '⭐⭐⭐ Fortgeschritten';
+  } else if (pct >= 0.40) {
+    level = '⭐⭐ Auf dem Weg';
+  } else {
+    level = '⭐ Starter – du bist auf dem richtigen Weg';
+  }
+
+  var lvlEl = document.getElementById('gesamt-level');
+  if (lvlEl) lvlEl.textContent = level;
+
+  var pktEl = document.getElementById('gesamt-punkte');
+  if (pktEl) pktEl.textContent = total + ' von ' + max + ' Punkten';
 }
 
 async function saveData() {
   if (!currentUser) return;
-  let d = {};
-  FIELDS.forEach(id => d[id] = document.getElementById(id).value);
-  NOTES.forEach(id => d[id] = document.getElementById(id).value);
-  await sb.from('user_tool_data').upsert({ user_id: currentUser.id, tool_name: 'sterne_level_m11', data: d, updated_at: new Date().toISOString() }, { onConflict: 'user_id,tool_name' });
-  let msg = document.getElementById('save-msg');
+  var d = {};
+  FIELDS.forEach(function(id) { d[id] = document.getElementById(id).value; });
+  NOTES.forEach(function(id) { d[id] = document.getElementById(id).value; });
+  await sb.from('user_tool_data').upsert(
+    { user_id: currentUser.id, tool_name: 'sterne_level_m11', data: d, updated_at: new Date().toISOString() },
+    { onConflict: 'user_id,tool_name' }
+  );
+  var msg = document.getElementById('save-msg');
   msg.style.display = 'inline';
-  setTimeout(() => msg.style.display='none', 2000);
+  setTimeout(function(){ msg.style.display = 'none'; }, 2000);
 }
 
 function resetData() {
   if (!confirm('Wirklich alles zurücksetzen?')) return;
-  FIELDS.forEach(id => document.getElementById(id).value = '0');
-  NOTES.forEach(id => document.getElementById(id).value = '');
+  FIELDS.forEach(function(id){ document.getElementById(id).value = '0'; });
+  NOTES.forEach(function(id){ document.getElementById(id).value = ''; });
   updateGesamt();
 }
+
+async function init() {
+  try {
+    var res = await fetch('/api/verify-session');
+    if (!res.ok) { window.location.href = 'login.html'; return; }
+    var d = await res.json();
+    if (!d.valid) { window.location.href = 'login.html'; return; }
+    currentUser = { id: d.email, email: d.email };
+  } catch(e) {
+    window.location.href = 'login.html'; return;
+  }
+
+  // Gespeicherte Daten laden
+  try {
+    var result = await sb.from('user_tool_data')
+      .select('data')
+      .eq('user_id', currentUser.id)
+      .eq('tool_name', 'sterne_level_m11')
+      .maybeSingle();
+    if (result.data && result.data.data) {
+      var saved = result.data.data;
+      FIELDS.forEach(function(id){ if (saved[id] !== undefined) document.getElementById(id).value = saved[id]; });
+      NOTES.forEach(function(id){ if (saved[id]) document.getElementById(id).value = saved[id]; });
+    }
+  } catch(e) { /* kein gespeicherter Stand */ }
+
+  updateGesamt();
+}
+
+// Event Listener nach DOM-Load setzen (statt inline onchange)
+document.addEventListener('DOMContentLoaded', function() {
+  FIELDS.forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.addEventListener('change', updateGesamt);
+  });
+  document.getElementById('btn-save').addEventListener('click', saveData);
+  document.getElementById('btn-reset').addEventListener('click', resetData);
+  updateGesamt(); // Initialanzeige
+});
 
 init();
 </script>
