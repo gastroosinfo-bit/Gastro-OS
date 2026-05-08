@@ -563,8 +563,8 @@ function setData(d){
 async function saveData(){
   try{
     const res=await fetch('/api/verify-session');if(!res.ok){window.location.href='login.html';return;}const d=await res.json();if(!d.valid){window.location.href='login.html';return;}
-    if(session){
-      await sb.from('user_tool_data').upsert({user_id:session.user.id,tool_name:'einkaufs_check_modul3',data:getData(),updated_at:new Date().toISOString()},{onConflict:'user_id,tool_name'});
+    if(currentUser){
+      await sb.from('user_tool_data').upsert({user_id:currentUser.id,tool_name:'einkaufs_check_modul3',data:getData(),updated_at:new Date().toISOString()},{onConflict:'user_id,tool_name'});
     }
   }catch(e){}
   const msg=document.getElementById('save-msg');
@@ -575,7 +575,7 @@ async function loadData(){
   try{
     const res=await fetch('/api/verify-session');if(!res.ok){window.location.href='login.html';return;}const d=await res.json();if(!d.valid){window.location.href='login.html';return;}
      return;
-    const {data}=await sb.from('user_tool_data').select('data').eq('user_id',session.user.id).eq('tool_name','einkaufs_check_modul3').maybeSingle();
+    const {data}=await sb.from('user_tool_data').select('data').eq('user_id',currentUser.id).eq('tool_name','einkaufs_check_modul3').maybeSingle();
     if(data?.data) setData(data.data);
   }catch(e){}
 }
@@ -585,8 +585,8 @@ async function resetData(){
   if(!confirm('Alle Eingaben zurücksetzen?'))return;
   document.querySelectorAll('input[type=text],input[type=number],textarea').forEach(el=>{el.value='';});
   try{const res=await fetch('/api/verify-session');if(!res.ok){window.location.href='login.html';return;}const d=await res.json();if(!d.valid){window.location.href='login.html';return;}currentUser={id:d.email,email:d.email};}catch(e){window.location.href='login.html';return;}
-  if(session){
-    await sb.from('user_tool_data').upsert({user_id:session.user.id,tool_name:'einkaufs_check_modul3',data:{},updated_at:new Date().toISOString()},{onConflict:'user_id,tool_name'});
+  if(currentUser){
+    await sb.from('user_tool_data').upsert({user_id:currentUser.id,tool_name:'einkaufs_check_modul3',data:{},updated_at:new Date().toISOString()},{onConflict:'user_id,tool_name'});
   }
   location.reload();
 }

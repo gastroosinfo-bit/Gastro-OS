@@ -494,9 +494,9 @@ function setData(d) {
 async function saveData() {
   try {
     const res=await fetch('/api/verify-session');if(!res.ok){window.location.href='login.html';return;}const d=await res.json();if(!d.valid){window.location.href='login.html';return;}
-    if (session) {
+    if (currentUser) {
       await sb.from('user_tool_data').upsert({
-        user_id: session.user.id,
+        user_id: currentUser.id,
         tool_name: 'feedback_gespraech_modul6',
         data: getData(),
         updated_at: new Date().toISOString()
@@ -520,9 +520,9 @@ function resetForm() {
 async function loadData() {
   try {
     const res=await fetch('/api/verify-session');if(!res.ok){window.location.href='login.html';return;}const d=await res.json();if(!d.valid){window.location.href='login.html';return;}
-    if (!session) return;
+    if (!currentUser) return;
     const { data } = await sb.from('user_tool_data')
-      .select('data').eq('user_id', session.user.id)
+      .select('data').eq('user_id', currentUser.id)
       .eq('tool_name', 'feedback_gespraech_modul6').maybeSingle();
     if (data?.data) setData(data.data);
   } catch(e) {}

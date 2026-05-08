@@ -588,10 +588,13 @@ document.addEventListener('DOMContentLoaded', function(){
 });
 
 async function init(){
-  var res = await sb.auth.getSession();
-  var session = res.data.session;
-  if(!d.valid){window.location.href='login.html';return;}
-  ;
+  try {
+    var res = await fetch('/api/verify-session');
+    if (!res.ok) { window.location.href='login.html'; return; }
+    var d = await res.json();
+    if (!d.valid) { window.location.href='login.html'; return; }
+    currentUser = { id: d.email, email: d.email };
+  } catch(e) { window.location.href='login.html'; return; }
   var td = await sb.from('user_tool_data').select('data').eq('user_id',currentUser.id).eq('tool_name','modul10_standort_tool').maybeSingle();
   if (td.data && td.data.data) fillData(td.data.data);
 }
