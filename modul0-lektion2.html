@@ -35,10 +35,10 @@ p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
 .tipp-box { background:#e4f5e8; border:1px solid #4aaa60; border-radius:8px; padding:14px 18px; margin:18px 0; }
 .tipp-box p { font-size:14px; color:#1a6030; margin-bottom:0; line-height:1.7; }
 .nav-row { display:flex; gap:12px; justify-content:space-between; margin:40px 0 0; }
-.nav-btn { background:#1a2a4a; color:#d4af37; border:none; padding:11px 20px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; transition:all 0.2s; }
-.nav-btn:hover { background:#d4af37; color:#1a2a4a; }
-.nav-btn.secondary { background:#fff; color:#1a2a4a; border:1px solid #e8dfc8; }
-.nav-btn.secondary:hover { border-color:#d4af37; }
+.nav-btn { background:#d4af37; color:#1a2a4a; border:none; padding:11px 20px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; transition:all 0.2s; }
+.nav-btn:hover { background:#c8a030; color:#1a2a4a; }
+.nav-btn.secondary { background:#d4af37; color:#1a2a4a; border:none; }
+.nav-btn.secondary:hover { background:#c8a030; }
 .fazit { background:#fdf9ee; border:2px solid #d4af37; border-radius:8px; padding:18px 22px; margin:32px 0 0; }
 .fazit-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
 .fazit ul { list-style:none; padding:0; margin:0; }
@@ -69,8 +69,6 @@ p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
   (async function(){
     try{const res=await fetch('/api/verify-session');if(!res.ok){window.location.href='login.html';return;}const d=await res.json();if(!d.valid){window.location.href='login.html';return;}currentUser={id:d.email,email:d.email};}catch(e){window.location.href='login.html';return;}
     
-    const{data:p}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
-    if(p&&(!p.is_active||p.subscription_status!=='active')){// signOut disabled;window.location.href='login.html';}
   })();
 })();
 </script>
