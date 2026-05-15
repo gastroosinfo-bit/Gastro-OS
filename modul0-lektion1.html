@@ -27,11 +27,20 @@ p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
 .aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin:24px 0; }
 .aufgabe-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
 .aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; line-height:1.7; }
+.aufgabe-hinweis { font-size:13px; color:#8090a8; margin-top:8px; font-style:italic; }
 .beispiel { background:#fff; border:1px solid #e8dfc8; border-left:4px solid #3a7ad4; border-radius:0 8px 8px 0; padding:16px 20px; margin:20px 0; }
 .beispiel-lbl { font-size:11px; color:#3a7ad4; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
 .beispiel p { font-size:14px; color:#2a3a54; margin-bottom:8px; line-height:1.75; }
 .beispiel p:last-child { margin-bottom:0; }
 .rechnung { background:#f0f4f8; border-radius:5px; padding:10px 14px; font-family:monospace; font-size:13px; color:#1a2a4a; margin:8px 0; line-height:1.6; }
+.formel-box { background:#1a2a4a; border-radius:8px; padding:18px 22px; margin:16px 0; }
+.formel-box .formel-title { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:12px; }
+.formel-schritt { display:flex; align-items:center; gap:10px; margin:6px 0; }
+.formel-schritt .schritt-nr { background:#d4af37; color:#1a2a4a; font-weight:700; font-size:12px; width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.formel-schritt .schritt-text { font-size:13px; color:#a0b0c8; line-height:1.5; }
+.formel-ergebnis { background:#d4af37; color:#1a2a4a; border-radius:6px; padding:10px 14px; margin-top:12px; font-size:13px; font-weight:700; text-align:center; }
+.formel-ziel { font-size:12px; color:#a0b0c8; text-align:center; margin-top:6px; }
+.merksatz { background:#fff8e8; border-left:4px solid #d4af37; border-radius:0 8px 8px 0; padding:14px 20px; margin:20px 0; font-size:15px; color:#5a4000; font-style:italic; line-height:1.7; }
 .tipp-box { background:#e4f5e8; border:1px solid #4aaa60; border-radius:8px; padding:14px 18px; margin:18px 0; }
 .tipp-box p { font-size:14px; color:#1a6030; margin-bottom:0; line-height:1.7; }
 .nav-row { display:flex; gap:12px; justify-content:space-between; margin:40px 0 0; }
@@ -48,9 +57,10 @@ p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
 .checkliste { background:#fff; border:1px solid #e8dfc8; border-radius:8px; padding:16px 20px; margin:20px 0 0; }
 .checkliste-lbl { font-size:11px; color:#1a2a4a; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
 .checkliste ul { list-style:none; padding:0; margin:0; }
-.checkliste li { font-size:14px; color:#2a3a54; padding:7px 0 7px 28px; position:relative; border-bottom:1px solid #f0ece4; line-height:1.55; }
+.checkliste li { font-size:14px; color:#2a3a54; padding:7px 0 7px 36px; position:relative; border-bottom:1px solid #f0ece4; line-height:1.55; cursor:pointer; transition:color 0.2s; }
 .checkliste li:last-child { border-bottom:none; }
-.checkliste li::before { content:'☐'; position:absolute; left:0; color:#d4af37; font-size:16px; line-height:1.2; }
+.checkliste li input[type=checkbox] { position:absolute; left:0; top:50%; transform:translateY(-50%); width:18px; height:18px; accent-color:#d4af37; cursor:pointer; }
+.checkliste li.done { color:#8090a8; text-decoration:line-through; }
 .footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-lbl strong { color:#d4af37; }
 .footer-main { background:#1a2a4a; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
@@ -68,7 +78,6 @@ p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
   const sb=supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhjaGxnYW5iZ2plY2l3aHdhaXNqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYyMzA0NjAsImV4cCI6MjA5MTgwNjQ2MH0.mA6oAPJCCgFq5LIUPFDGM0WI_le6STHTuGiwLtGMgu8');
   (async function(){
     try{const res=await fetch('/api/verify-session');if(!res.ok){window.location.href='login.html';return;}const d=await res.json();if(!d.valid){window.location.href='login.html';return;}currentUser={id:d.email,email:d.email};}catch(e){window.location.href='login.html';return;}
-    
   })();
 })();
 </script>
@@ -85,17 +94,30 @@ p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
 
 <h2>Kapitel 1 — Die größte Lüge der Gastronomie</h2>
 <h3>Warum Umsatz trügt</h3>
-<p>Es gibt einen Satz den Gastronomen häufig sagen wenn es läuft: <em>Wir sind immer voll.</em> Und dann kommt am Monatsende wenig bis nichts übrig. Wie ist das möglich? Die Antwort liegt in einem Irrtum der tief in der Gastro-Kultur verwurzelt ist: Umsatz wird mit Erfolg gleichgesetzt. Ein volles Restaurant fühlt sich wie Erfolg an — aber ein volles Restaurant das zu hohe Kosten hat, macht trotzdem Verlust.</p>
+<p>Es gibt einen Satz, den Gastronomen häufig sagen, wenn es läuft: <em>Wir sind immer voll.</em> Und dann bleibt am Monatsende wenig bis nichts übrig. Wie ist das möglich? Die Antwort liegt in einem Irrtum, der tief in der Gastro-Kultur verwurzelt ist: Umsatz wird mit Erfolg gleichgesetzt. Ein volles Restaurant fühlt sich wie Erfolg an — aber ein volles Restaurant, das zu hohe Kosten hat, macht trotzdem Verlust.</p>
 <p>Umsatz ist das was reinkommt. Gewinn ist das was bleibt. Nur der Gewinn bezahlt deinen Lebensunterhalt, deine Rücklagen, deine Freiheit. Ein Betrieb mit 80.000 Euro Monatsumsatz und 82.000 Euro Kosten ist kein Erfolg — er ist ein Problem das sich gut anfühlt.</p>
 <h3>Zwei Gastronomen — ein Vergleich</h3>
 <p>Gastronom A macht 40.000 Euro Umsatz im Monat. Kosten: 36.000 Euro. Gewinn: 4.000 Euro. Gastronom B macht 70.000 Euro Umsatz. Kosten: 68.500 Euro. Gewinn: 1.500 Euro. Wer ist erfolgreicher? Nach außen Gastronom B. In Wirklichkeit Gastronom A — mehr Gewinn, weniger Stress, weniger Risiko.</p>
-<div class="highlight">Merksatz: Du führst kein Umsatz-Unternehmen. Du führst ein Gewinn-Unternehmen. Umsatz ist das Mittel — Gewinn ist das Ziel.</div>
+<div class="merksatz">Du führst kein Umsatz-Unternehmen. Du führst ein Gewinn-Unternehmen. Umsatz ist das Mittel — Gewinn ist das Ziel.</div>
 
 <h2>Kapitel 2 — Die drei Kennzahlen die alles entscheiden</h2>
 <h3>Kennzahl 1: Wareneinsatz in Prozent</h3>
-<p>Was von deinem Umsatz geht direkt für Lebensmittel und Getränke drauf? Formel: Warenbestand Anfang + Einkäufe im Monat − Warenbestand Ende = tatsächlicher Wareneinsatz. Dividiert durch Nettoumsatz mal 100. Zielwert: unter 30%. Viele Betriebe liegen bei 35–40% und wissen es nicht — weil sie nie gemessen haben.</p>
+<p>Was von deinem Umsatz geht direkt für Lebensmittel und Getränke drauf? So berechnest du es Schritt für Schritt:</p>
+<div class="formel-box">
+  <div class="formel-title">📐 Formel: Wareneinsatz in %</div>
+  <div class="formel-schritt"><span class="schritt-nr">1</span><span class="schritt-text">Warenbestand zu Monatsbeginn (aus Inventur)</span></div>
+  <div class="formel-schritt"><span class="schritt-nr">2</span><span class="schritt-text">+ alle Einkäufe im Monat (Lieferantenrechnungen)</span></div>
+  <div class="formel-schritt"><span class="schritt-nr">3</span><span class="schritt-text">− Warenbestand am Monatsende (neue Inventur)</span></div>
+  <div class="formel-schritt"><span class="schritt-nr">4</span><span class="schritt-text">= tatsächlicher Wareneinsatz in Euro</span></div>
+  <div class="formel-ergebnis">Wareneinsatz € ÷ Nettoumsatz € × 100 = Wareneinsatz %</div>
+  <div class="formel-ziel">Zielwert: unter 30% | Viele Betriebe liegen bei 35–40% — und wissen es nicht.</div>
+</div>
+
 <h3>Kennzahl 2: Personalkosten in Prozent</h3>
-<p>Löhne, Gehälter und alle Sozialabgaben als Anteil am Umsatz. Zielwert: unter 35%. Wichtig: Der Arbeitgeberanteil zur Sozialversicherung (ca. 20% des Bruttolohns) muss eingerechnet sein. Ein Koch mit 2.200 Euro Bruttolohn kostet tatsächlich ca. 2.640 Euro. Wer das ignoriert, unterschätzt die Personalkosten systematisch.</p>
+<p>Löhne, Gehälter und alle Sozialabgaben als Anteil am Umsatz. Zielwert: unter 35%.</p>
+<p>Wichtig: Der Arbeitgeberanteil zur Sozialversicherung (ca. 20% des Bruttolohns) muss eingerechnet sein. Ein Koch mit 2.200 Euro Bruttolohn kostet tatsächlich ca. 2.640 Euro. Wer das ignoriert, unterschätzt die Personalkosten systematisch.</p>
+<p>So berechnest du deinen Anteil: Alle Bruttolöhne + Sozialabgaben Arbeitgeber + Aushilfslöhne ÷ Nettoumsatz × 100 = Personalquote %.</p>
+
 <h3>Kennzahl 3: Gewinnmarge in Prozent</h3>
 <p>Was bleibt nach allen Kosten? Zielwert: mindestens 10–15%. Jeder Prozentpunkt Verbesserung bringt bei 35.000 Euro Umsatz 350 Euro mehr Gewinn pro Monat — 4.200 Euro pro Jahr.</p>
 <div class="beispiel"><div class="beispiel-lbl">📊 Was 1 Prozentpunkt bedeutet</div>
@@ -105,11 +127,15 @@ Personalquote von 37% auf 36%: +350 €/Monat = +4.200 €/Jahr<br>
 Durchschnittsbon +1 € bei 60 Gästen × 25 Tage: +1.500 €/Monat = +18.000 €/Jahr<br><br>
 <strong>Drei 1%-Verbesserungen: +27.600 €/Jahr — aus denselben Gästen, demselben Betrieb.</strong></p></div>
 <div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 2</div>
-<p>Schau dir deine letzte BWA an. Berechne: Wareneinsatz in %? Personalquote in %? Was bleibt als Gewinn? Schreib diese drei Zahlen auf.</p></div>
+<p>Schau dir deine letzte BWA an. Berechne die drei Kennzahlen:</p>
+<p>① Wareneinsatz %: Nimm den ausgewiesenen Wareneinsatz aus der BWA und teile ihn durch den Nettoumsatz, dann mal 100.<br>
+② Personalquote %: Alle Personalkosten inkl. Sozialabgaben ÷ Nettoumsatz × 100.<br>
+③ Gewinnmarge %: Betriebsergebnis ÷ Nettoumsatz × 100.</p>
+<p class="aufgabe-hinweis">📝 Schreib diese drei Zahlen auf Papier oder in ein Notizbuch — sie sind dein Ausgangspunkt für alles was folgt.</p></div>
 
 <h2>Kapitel 3 — Die stille Erosion</h2>
 <h3>Wie Margen unbemerkt schrumpfen</h3>
-<p>Die gefährlichste Form von betrieblichem Misserfolg ist die stille Erosion. Nicht der dramatische Einbruch — sondern das langsame Auffressen der Marge durch schleichend steigende Kosten, nicht angepasste Preise und wachsenden Wareneinsatz. Viele Gastronomen die heute in Schwierigkeiten stecken hatten vor drei Jahren noch solide Zahlen — aber nichts gemessen und nichts angepasst.</p>
+<p>Die gefährlichste Form von betrieblichem Misserfolg ist die stille Erosion. Nicht der dramatische Einbruch — sondern das langsame Auffressen der Marge durch schleichend steigende Kosten, nicht angepasste Preise und wachsenden Wareneinsatz. Viele Gastronomen die heute in Schwierigkeiten stecken hatten vor drei Jahren noch solide Zahlen — haben aber nichts gemessen und angepasst.</p>
 <p>Der Wareneinsatz steigt jährlich um 1,5 Prozentpunkte weil Einkaufspreise steigen aber Speisekartenpreise nicht angepasst werden. Nach vier Jahren: 6 Prozentpunkte mehr Wareneinsatz. Bei 35.000 Euro Monatsumsatz sind das 2.100 Euro weniger Gewinn pro Monat — 25.200 Euro pro Jahr die still verschwunden sind.</p>
 <h3>Das Messsystem schützt dich</h3>
 <p>Wer seinen Wareneinsatz jeden Monat misst erkennt einen Anstieg im ersten Monat. Wer nie misst bemerkt ihn erst nach Jahren. Das monatliche Controlling ist dein Frühwarnsystem — 20 Minuten am ersten Werktag des Monats, fünf Zahlen. Das reicht.</p>
@@ -121,10 +147,18 @@ Jahr 3: Verderb gestiegen → WE 33%, Gewinn 4,5%<br>
 Jahr 4: Personalkosten erhöht → Gewinn 1,5%<br><br>
 <strong>Kein einziges Jahr war eine Katastrophe. Zusammen: existenzbedrohend. Und alles messbar gewesen.</strong></p></div>
 <div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 3</div>
-<p>Vergleiche deinen aktuellen Wareneinsatz mit dem vor zwei Jahren. Ist er gestiegen? Um wie viel? Das ist deine erste echte Diagnose.</p></div>
+<p>Vergleiche deinen aktuellen Wareneinsatz mit dem vor zwei Jahren — falls dir diese Daten vorliegen. Ist er gestiegen? Um wie viel? Das ist deine erste echte Diagnose.</p>
+<p class="aufgabe-hinweis">💡 Falls du keine Zahlen von vor zwei Jahren hast: Kein Problem — starte ab heute mit der Messung. Der heutige Wert ist dein neuer Ausgangspunkt.</p></div>
 
 <div class="fazit"><div class="fazit-lbl">🎯 Das Wichtigste auf einen Blick</div><ul><li>Umsatz ≠ Erfolg. Gewinn ist der einzige echte Maßstab.</li><li>Drei Zahlen entscheiden alles: Wareneinsatz %, Personalquote %, Gewinn %.</li><li>Stille Erosion ist gefährlicher als Krisen — weil sie niemand bemerkt.</li><li>20 Minuten monatliches Controlling ist das beste Frühwarnsystem.</li></ul></div>
-<div class="checkliste"><div class="checkliste-lbl">✅ Sofort-Checkliste — Das kannst du heute noch tun</div><ul><li>Letzte BWA oder Kassenbericht raussuchen</li><li>Wareneinsatz in % berechnen</li><li>Personalkosten in % berechnen — inkl. Sozialabgaben</li><li>Alle drei Zahlen aufschreiben: das ist dein Ausgangspunkt</li></ul></div>
+
+<div class="checkliste"><div class="checkliste-lbl">✅ Sofort-Checkliste — Das kannst du heute noch tun</div><ul>
+  <li><input type="checkbox" onchange="this.parentElement.classList.toggle('done',this.checked)"> Letzte BWA oder Kassenbericht raussuchen</li>
+  <li><input type="checkbox" onchange="this.parentElement.classList.toggle('done',this.checked)"> Wareneinsatz in % berechnen</li>
+  <li><input type="checkbox" onchange="this.parentElement.classList.toggle('done',this.checked)"> Personalkosten in % berechnen — inkl. Sozialabgaben</li>
+  <li><input type="checkbox" onchange="this.parentElement.classList.toggle('done',this.checked)"> Alle drei Zahlen notieren: das ist dein Ausgangspunkt</li>
+</ul></div>
+
   <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
 <div class="nav-row"><span></span><a href="modul0-lektion2.html" class="nav-btn">Lektion 2 →</a></div>
 </div>
