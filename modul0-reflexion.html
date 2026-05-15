@@ -8,343 +8,179 @@
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
-
-.header{background:#1a2a4a;padding:14px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
-.brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
-.back-btn {
-  background:transparent; border:1px solid rgba(212,175,55,0.4);
-  color:#a0b0c8; padding:7px 16px; border-radius:6px;
-  font-size:12px; cursor:pointer; transition:all 0.2s;
-  text-decoration:none; display:inline-block;
-}
-.back-btn:hover { border-color:#d4af37; color:#d4af37; }
+.header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:18px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.back-btn { background:#d4af37; color:#1a2a4a; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.back-btn:hover { background:#c8a030; }
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
-
 .wrap { max-width:680px; margin:40px auto; padding:0 24px 60px; }
-
-/* Intro-Box */
-.intro-card {
-  background:#fff; border-radius:10px; border:1px solid #e8dfc8;
-  padding:28px 30px; margin-bottom:32px;
-  box-shadow:0 2px 8px rgba(0,0,0,0.05);
-}
-.intro-label {
-  font-size:11px; color:#d4af37; letter-spacing:2px;
-  text-transform:uppercase; font-weight:600; margin-bottom:8px;
-}
-.intro-card h1 {
-  font-family:Georgia,serif; font-size:22px; color:#1a2a4a;
-  font-weight:normal; margin-bottom:14px;
-}
+.intro-card { background:#fff; border-radius:10px; border:1px solid #e8dfc8; padding:28px 30px; margin-bottom:32px; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+.intro-label { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:8px; }
+.intro-card h1 { font-family:Georgia,serif; font-size:22px; color:#1a2a4a; font-weight:normal; margin-bottom:14px; }
 .intro-card p { font-size:14px; line-height:1.75; color:#3a4a6a; margin-bottom:12px; }
 .intro-card p:last-child { margin-bottom:0; }
-
-.score-guide {
-  background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px;
-  padding:14px 18px; margin-top:16px;
-}
-.score-guide p { font-size:13px; color:#3a4a6a; margin-bottom:6px; }
-.score-guide p:last-child { margin-bottom:0; }
-.score-guide strong { color:#1a2a4a; }
-
-/* Fragen */
-.question-card {
-  background:#fff; border-radius:10px; border:1px solid #e8dfc8;
-  padding:24px 26px; margin-bottom:16px;
-  box-shadow:0 2px 8px rgba(0,0,0,0.05);
-  transition:border-color 0.2s;
-}
+.question-card { background:#fff; border-radius:10px; border:1px solid #e8dfc8; padding:24px 26px; margin-bottom:16px; box-shadow:0 2px 8px rgba(0,0,0,0.05); transition:border-color 0.2s; }
 .question-card.answered { border-color:#d4af37; }
-
-.q-number {
-  font-size:11px; color:#d4af37; font-weight:700;
-  letter-spacing:1px; text-transform:uppercase; margin-bottom:8px;
-}
-.q-title {
-  font-family:Georgia,serif; font-size:16px; color:#1a2a4a;
-  font-weight:normal; margin-bottom:16px; line-height:1.4;
-}
-.q-subtitle { font-size:13px; color:#6070888; margin-bottom:16px; font-style:italic; }
-
-.option {
-  display:flex; align-items:flex-start; gap:12px;
-  padding:12px 14px; border-radius:8px;
-  border:2px solid #e8dfc8; margin-bottom:8px;
-  cursor:pointer; transition:all 0.18s; background:#fff;
-  text-align:left; width:100%;
-}
+.q-number { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
+.q-title { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin-bottom:6px; line-height:1.4; }
+.q-subtitle { font-size:13px; color:#607088; margin-bottom:16px; font-style:italic; }
+.option { display:flex; align-items:flex-start; gap:12px; padding:12px 14px; border-radius:8px; border:2px solid #e8dfc8; margin-bottom:8px; cursor:pointer; transition:all 0.18s; background:#fff; text-align:left; width:100%; }
 .option:last-of-type { margin-bottom:0; }
 .option:hover { border-color:#d4af37; background:#faf8f4; }
-.option.selected {
-  border-color:#d4af37; background:#fdf9ee;
-}
-.option-dot {
-  width:20px; height:20px; border-radius:50%;
-  border:2px solid #d0c8b0; flex-shrink:0;
-  display:flex; align-items:center; justify-content:center;
-  transition:all 0.18s; margin-top:1px;
-}
-.option.selected .option-dot {
-  background:#d4af37; border-color:#d4af37;
-}
-.option.selected .option-dot::after {
-  content:''; width:8px; height:8px; border-radius:50%; background:#1a2a4a;
-}
+.option.selected { border-color:#d4af37; background:#fdf9ee; }
+.option-dot { width:20px; height:20px; border-radius:50%; border:2px solid #d0c8b0; flex-shrink:0; display:flex; align-items:center; justify-content:center; transition:all 0.18s; margin-top:1px; }
+.option.selected .option-dot { background:#d4af37; border-color:#d4af37; }
+.option.selected .option-dot::after { content:''; width:8px; height:8px; border-radius:50%; background:#1a2a4a; }
 .option-text { font-size:14px; color:#2a3a54; line-height:1.55; }
-
-/* Submit */
 .submit-wrap { margin-top:28px; text-align:center; }
-.btn-submit {
-  background:#1a2a4a; color:#d4af37;
-  border:none; padding:14px 40px; border-radius:8px;
-  font-size:14px; font-weight:700; cursor:not-allowed;
-  transition:all 0.2s; letter-spacing:0.5px;
-  opacity:0.4; pointer-events:none;
-}
-.btn-submit.ready {
-  opacity:1; pointer-events:auto; cursor:pointer;
-  background:#d4af37; color:#1a2a4a;
-}
-.btn-submit.ready:hover { background:#c8a030; }
+.btn-submit { background:#1a2a4a; color:#d4af37; border:none; padding:14px 40px; border-radius:8px; font-size:14px; font-weight:700; cursor:pointer; transition:all 0.2s; letter-spacing:0.5px; opacity:0.4; pointer-events:none; }
 .btn-submit.ready { opacity:1; pointer-events:auto; }
 .btn-submit.ready:hover { background:#d4af37; color:#1a2a4a; }
-
-.progress-hint {
-  font-size:12px; color:#8090a8; margin-top:10px;
-}
-
-/* ERGEBNIS */
+.progress-hint { font-size:12px; color:#8090a8; margin-top:10px; }
 #result-screen { display:none; }
-
-.result-card {
-  background:#fff; border-radius:12px; border:2px solid #d4af37;
-  padding:36px 32px; text-align:center;
-  box-shadow:0 4px 24px rgba(212,175,55,0.15);
-  animation:fadeIn 0.4s ease;
-}
-@keyframes fadeIn {
-  from { opacity:0; transform:translateY(16px); }
-  to   { opacity:1; transform:translateY(0); }
-}
-
+.result-card { background:#fff; border-radius:12px; border:2px solid #d4af37; padding:36px 32px; text-align:center; box-shadow:0 4px 24px rgba(212,175,55,0.15); animation:fadeIn 0.4s ease; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);} }
 .result-emoji { font-size:52px; margin-bottom:12px; }
-.result-label {
-  font-size:11px; color:#d4af37; letter-spacing:2px;
-  text-transform:uppercase; font-weight:600; margin-bottom:8px;
-}
-.result-title {
-  font-family:Georgia,serif; font-size:26px; color:#1a2a4a;
-  font-weight:normal; margin-bottom:16px; line-height:1.3;
-}
-.result-score {
-  display:inline-block; background:#1a2a4a; color:#d4af37;
-  padding:6px 20px; border-radius:20px;
-  font-size:13px; font-weight:700; margin-bottom:20px;
-}
-.result-text {
-  font-size:15px; line-height:1.75; color:#2a3a54;
-  max-width:480px; margin:0 auto 24px;
-}
-
-.result-divider {
-  height:1px; background:linear-gradient(90deg,transparent,#d4af37,transparent);
-  margin:24px 0;
-}
-
-.result-saved {
-  font-size:12px; color:#8090a8; margin-bottom:20px;
-}
-.result-saved span { color:#4aaa60; font-weight:600; }
-
-.btn-back { background:#d4af37; color:#1a2a4a; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
-.btn-back:hover { background:#c8a030; }
-
-.btn-retry {
-  display:inline-block; background:transparent;
-  border:2px solid rgba(212,175,55,0.5); color:#8090a8;
-  padding:11px 28px; border-radius:8px;
-  font-size:13px; font-weight:600; cursor:pointer;
-  transition:all 0.2s; margin:4px;
-}
+.result-label { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:8px; }
+.result-title { font-family:Georgia,serif; font-size:26px; color:#1a2a4a; font-weight:normal; margin-bottom:16px; line-height:1.3; }
+.result-text { font-size:15px; line-height:1.75; color:#2a3a54; max-width:480px; margin:0 auto 24px; }
+.result-divider { height:1px; background:linear-gradient(90deg,transparent,#d4af37,transparent); margin:24px 0; }
+.btn-back { display:inline-block; background:transparent; border:2px solid #1a2a4a; color:#1a2a4a; padding:11px 28px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none; transition:all 0.2s; margin:4px; }
+.btn-back:hover { background:#1a2a4a; color:#d4af37; }
+.btn-retry { display:inline-block; background:transparent; border:2px solid rgba(212,175,55,0.5); color:#8090a8; padding:11px 28px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; margin:4px; }
 .btn-retry:hover { border-color:#d4af37; color:#d4af37; }
-
-/* Footer */
-.footer-brand {
-  background:#1a2a4a; margin-top:60px; padding:14px 40px;
-  text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px;
+.btn-pdf { display:inline-block; background:#d4af37; border:none; color:#1a2a4a; padding:11px 28px; border-radius:8px; font-size:13px; font-weight:700; cursor:pointer; transition:all 0.2s; margin:4px; }
+.btn-pdf:hover { background:#c8a030; }
+@media print {
+  .header, .gold-bar, .footer-brand, #form-screen, .btn-back, .btn-retry, .btn-pdf { display:none !important; }
+  body { background:#fff; }
+  .result-card { box-shadow:none; border:1px solid #ccc; }
 }
+.footer-brand { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-brand strong { color:#d4af37; }
-
-.btn-back-modul {
-  background: #d4af37;
-  color: #1a2a4a;
-  border: none;
-  padding: 9px 20px;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-block;
-  transition: all 0.2s;
-  letter-spacing: 0.3px;
-}
-.btn-back-modul:hover { background: #c8a030; color: #1a2a4a; }
-
-.action-row{display:flex;gap:10px;margin-bottom:28px;flex-wrap:wrap;align-items:center;padding:16px 0;border-bottom:2px solid #e8dfc8}
-.btn-save{background:#1a2a4a;color:#d4af37;border:none;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s}
-.btn-save:hover{background:#d4af37;color:#1a2a4a}
-.btn-export{background:#1a6640;color:#fff;border:none;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s}
-.btn-export:hover{background:#d4af37;color:#1a2a4a}
-.export-msg{font-size:12px;color:#c0392b;display:none;font-weight:600}
-.btn-reset{background:transparent;border:1.5px solid #c0b090;color:#8070a0;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s}
-.btn-reset:hover{background:#f0ece0;color:#1a2a4a;border-color:#1a2a4a}
-.save-msg{font-size:13px;color:#4a8a4a;align-self:center;display:none}
 </style>
-<script>
-(function(){
-  document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
-  document.addEventListener('keydown', function(e){
-    if (e.ctrlKey && ['s','u','p','a'].includes(e.key.toLowerCase())) e.preventDefault();
-    if (e.key === 'F12') e.preventDefault();
-  });
-})();
-</script>
 </head>
 <body>
 
 <div class="header">
   <div class="brand">GASTRO-OS</div>
-  <a href="dashboard.html#modul-0" class="btn-back-modul">← Zurück zum Dashboard</a>
+  <a href="dashboard.html" class="back-btn">← Zurück zum Dashboard</a>
 </div>
 <div class="gold-bar"></div>
 
 <div class="wrap">
-  <div class="action-row">
-    <button class="btn-save" onclick="saveData()">💾 Speichern</button>
-    <button class="btn-export" onclick="exportPDF()">📥 Als PDF speichern</button><span class="export-msg" id="export-msg">⚠️ Bitte alle Felder ausfüllen bevor du speicherst.</span>
-    <button class="btn-reset" onclick="resetData()">↺ Neu starten</button>
-    <span class="save-msg" id="save-msg">✓ Gespeichert</span>
-  </div>
 
-  <!-- FORMULAR -->
   <div id="form-screen">
 
     <div class="intro-card">
       <div class="intro-label">Modul 0 · Reflexionsaufgabe</div>
-      <h1>Willkommen bei deinem Gastro-OS Status-Check! 🚀</h1>
-      <p>Schön, dass du dir die Zeit nimmst, dein Business ehrlich zu analysieren. Dieses Quiz hilft uns, deinen Startpunkt im System genau zu bestimmen.</p>
-
-      <div class="score-guide">
-        <p><strong>So wertest du dein Ergebnis aus:</strong></p>
-        <p>Jede deiner Antworten hat einen Punktwert:</p>
-        <p>· <strong>Antwort A (die oberste):</strong> 10 Punkte</p>
-        <p>· <strong>Antwort B (die mittlere):</strong> 20 Punkte</p>
-        <p>· <strong>Antwort C (die unterste):</strong> 30 Punkte</p>
-        <p style="margin-top:10px;">Am Ende erfährst du sofort, ob du aktuell als <strong>„Feuerwehrmann"</strong>, <strong>„Solider Verwalter"</strong> oder bereits als <strong>„System-Profi"</strong> agierst. Viel Erfolg!</p>
-      </div>
+      <h1>Wo stehst du heute wirklich? 🎯</h1>
+      <p>Beantworte die folgenden 10 Fragen so ehrlich wie möglich. Es gibt keine richtigen oder falschen Antworten — nur deinen aktuellen Stand. Am Ende siehst du sofort dein persönliches Profil und was das für deine ersten Schritte in GASTRO-OS bedeutet.</p>
     </div>
 
     <!-- Frage 1 -->
     <div class="question-card" id="qcard-1">
-      <div class="q-number">Frage 1 von 5</div>
-      <div class="q-title">Zeit-Invest im operativen Geschäft</div>
-      <div class="q-subtitle">Wie viele Stunden arbeitest du aktuell durchschnittlich pro Woche direkt IM Betrieb (Küche, Service, Administration, Problemlösung)?</div>
-      <button class="option" onclick="selectOption(1, 10, this)">
-        <div class="option-dot"></div>
-        <div class="option-text">Über 60 Stunden</div>
-      </button>
-      <button class="option" onclick="selectOption(1, 20, this)">
-        <div class="option-dot"></div>
-        <div class="option-text">40–60 Stunden</div>
-      </button>
-      <button class="option" onclick="selectOption(1, 30, this)">
-        <div class="option-dot"></div>
-        <div class="option-text">Unter 40 Stunden</div>
-      </button>
+      <div class="q-number">Frage 1 von 10</div>
+      <div class="q-title">Zeit im operativen Betrieb</div>
+      <div class="q-subtitle">Wie viel deiner Arbeitszeit verbringst du mit strategischer Arbeit — also AM Betrieb statt IM Betrieb?</div>
+      <button class="option" onclick="selectOption(1,10,this)"><div class="option-dot"></div><div class="option-text">Fast keine — ich bin den ganzen Tag im Tagesgeschäft gebunden</div></button>
+      <button class="option" onclick="selectOption(1,20,this)"><div class="option-dot"></div><div class="option-text">Gelegentlich — aber nur wenn es der Alltag zulässt</div></button>
+      <button class="option" onclick="selectOption(1,30,this)"><div class="option-dot"></div><div class="option-text">Regelmäßig — ich halte mir bewusst Zeit für Strategie und Entwicklung frei</div></button>
     </div>
 
     <!-- Frage 2 -->
     <div class="question-card" id="qcard-2">
-      <div class="q-number">Frage 2 von 5</div>
-      <div class="q-title">Der „Feierabend-Faktor"</div>
-      <div class="q-subtitle">Welches Gefühl beschreibt deinen Feierabend am besten?</div>
-      <button class="option" onclick="selectOption(2, 10, this)">
-        <div class="option-dot"></div>
-        <div class="option-text">Ständige Erreichbarkeit: Mein Handy steht nie still, das Team fragt alles nach</div>
-      </button>
-      <button class="option" onclick="selectOption(2, 20, this)">
-        <div class="option-dot"></div>
-        <div class="option-text">Erschöpfung: Ich habe viel geschafft, aber nur Brände gelöscht</div>
-      </button>
-      <button class="option" onclick="selectOption(2, 30, this)">
-        <div class="option-dot"></div>
-        <div class="option-text">Zufriedenheit: Der Betrieb läuft auch ohne mein ständiges Eingreifen</div>
-      </button>
+      <div class="q-number">Frage 2 von 10</div>
+      <div class="q-title">Wie endet dein typischer Arbeitstag?</div>
+      <div class="q-subtitle">Was überwiegt am Ende des Tages?</div>
+      <button class="option" onclick="selectOption(2,10,this)"><div class="option-dot"></div><div class="option-text">Ständige Erreichbarkeit — das Team fragt alles nach, das Handy steht nie still</div></button>
+      <button class="option" onclick="selectOption(2,20,this)"><div class="option-dot"></div><div class="option-text">Erschöpfung — ich habe viel geschafft, aber vor allem Brände gelöscht</div></button>
+      <button class="option" onclick="selectOption(2,30,this)"><div class="option-dot"></div><div class="option-text">Zufriedenheit — der Betrieb läuft auch ohne mein ständiges Eingreifen</div></button>
     </div>
 
     <!-- Frage 3 -->
     <div class="question-card" id="qcard-3">
-      <div class="q-number">Frage 3 von 5</div>
+      <div class="q-number">Frage 3 von 10</div>
       <div class="q-title">Finanzielle Klarheit</div>
-      <div class="q-subtitle">Wie sicher bist du dir bei der Kalkulation deiner Speisen und Getränke?</div>
-      <button class="option" onclick="selectOption(3, 10, this)">
-        <div class="option-dot"></div>
-        <div class="option-text">Ich hoffe am Monatsende einfach, dass etwas übrig bleibt</div>
-      </button>
-      <button class="option" onclick="selectOption(3, 20, this)">
-        <div class="option-dot"></div>
-        <div class="option-text">Ich habe ein grobes Bauchgefühl für meine Margen</div>
-      </button>
-      <button class="option" onclick="selectOption(3, 30, this)">
-        <div class="option-dot"></div>
-        <div class="option-text">Ich kenne meinen Wareneinsatz und meine Deckungsbeiträge auf den Cent genau</div>
-      </button>
+      <div class="q-subtitle">Wie sicher bist du dir bei deinen wichtigsten Kennzahlen?</div>
+      <button class="option" onclick="selectOption(3,10,this)"><div class="option-dot"></div><div class="option-text">Ich hoffe am Monatsende einfach dass etwas übrig bleibt</div></button>
+      <button class="option" onclick="selectOption(3,20,this)"><div class="option-dot"></div><div class="option-text">Ich habe ein grobes Bauchgefühl für meine Margen</div></button>
+      <button class="option" onclick="selectOption(3,30,this)"><div class="option-dot"></div><div class="option-text">Ich kenne meinen Wareneinsatz und meine Deckungsbeiträge genau</div></button>
     </div>
 
     <!-- Frage 4 -->
     <div class="question-card" id="qcard-4">
-      <div class="q-number">Frage 4 von 5</div>
-      <div class="q-title">Der „Urlaubs-Test"</div>
-      <div class="q-subtitle">Was passiert, wenn du heute für zwei Wochen spontan komplett ausfällst?</div>
-      <button class="option" onclick="selectOption(4, 10, this)">
-        <div class="option-dot"></div>
-        <div class="option-text">Das totale Chaos – der Betrieb müsste wahrscheinlich schließen</div>
-      </button>
-      <button class="option" onclick="selectOption(4, 20, this)">
-        <div class="option-dot"></div>
-        <div class="option-text">Es läuft irgendwie weiter, aber die Qualität und der Service leiden massiv</div>
-      </button>
-      <button class="option" onclick="selectOption(4, 30, this)">
-        <div class="option-dot"></div>
-        <div class="option-text">Kein Problem – mein Team weiß exakt, was zu tun ist, die Systeme laufen</div>
-      </button>
+      <div class="q-number">Frage 4 von 10</div>
+      <div class="q-title">Der Urlaubs-Test</div>
+      <div class="q-subtitle">Was passiert wenn du heute für zwei Wochen spontan ausfällst?</div>
+      <button class="option" onclick="selectOption(4,10,this)"><div class="option-dot"></div><div class="option-text">Das totale Chaos — der Betrieb müsste wahrscheinlich schließen</div></button>
+      <button class="option" onclick="selectOption(4,20,this)"><div class="option-dot"></div><div class="option-text">Es läuft irgendwie weiter, aber Qualität und Service leiden massiv</div></button>
+      <button class="option" onclick="selectOption(4,30,this)"><div class="option-dot"></div><div class="option-text">Kein Problem — mein Team weiß genau was zu tun ist, die Systeme laufen</div></button>
     </div>
 
     <!-- Frage 5 -->
     <div class="question-card" id="qcard-5">
-      <div class="q-number">Frage 5 von 5</div>
+      <div class="q-number">Frage 5 von 10</div>
       <div class="q-title">Umgang mit Kostensteigerungen</div>
-      <div class="q-subtitle">Wie reagierst du auf steigende Kosten (Energie, Personal, Ware)?</div>
-      <button class="option" onclick="selectOption(5, 10, this)">
-        <div class="option-dot"></div>
-        <div class="option-text">Ich versuche durchzuhalten und hoffe auf bessere Zeiten</div>
-      </button>
-      <button class="option" onclick="selectOption(5, 20, this)">
-        <div class="option-dot"></div>
-        <div class="option-text">Ich erhöhe gelegentlich die Preise, wenn es gar nicht mehr anders geht</div>
-      </button>
-      <button class="option" onclick="selectOption(5, 30, this)">
-        <div class="option-dot"></div>
-        <div class="option-text">Ich optimiere laufend meine Prozesse und nutze Tools zur Kostensenkung</div>
-      </button>
+      <div class="q-subtitle">Wie reagierst du auf steigende Kosten bei Energie, Personal oder Ware?</div>
+      <button class="option" onclick="selectOption(5,10,this)"><div class="option-dot"></div><div class="option-text">Ich versuche durchzuhalten und hoffe auf bessere Zeiten</div></button>
+      <button class="option" onclick="selectOption(5,20,this)"><div class="option-dot"></div><div class="option-text">Ich erhöhe gelegentlich die Preise wenn es gar nicht mehr anders geht</div></button>
+      <button class="option" onclick="selectOption(5,30,this)"><div class="option-dot"></div><div class="option-text">Ich beobachte meine Kosten monatlich und reagiere frühzeitig mit gezielten Maßnahmen</div></button>
+    </div>
+
+    <!-- Frage 6 -->
+    <div class="question-card" id="qcard-6">
+      <div class="q-number">Frage 6 von 10</div>
+      <div class="q-title">Speisekarte & Preise</div>
+      <div class="q-subtitle">Weißt du welche deiner Gerichte die höchste Marge haben?</div>
+      <button class="option" onclick="selectOption(6,10,this)"><div class="option-dot"></div><div class="option-text">Nein — die Karte ist historisch gewachsen, Margen habe ich nie berechnet</div></button>
+      <button class="option" onclick="selectOption(6,20,this)"><div class="option-dot"></div><div class="option-text">Ich kenne meine Bestseller, aber nicht unbedingt ihre Marge</div></button>
+      <button class="option" onclick="selectOption(6,30,this)"><div class="option-dot"></div><div class="option-text">Ja — ich kenne Stars und Dogs auf meiner Karte und steuere das aktiv</div></button>
+    </div>
+
+    <!-- Frage 7 -->
+    <div class="question-card" id="qcard-7">
+      <div class="q-number">Frage 7 von 10</div>
+      <div class="q-title">Einkauf & Warenwirtschaft</div>
+      <div class="q-subtitle">Wie organisiert ist dein Einkauf?</div>
+      <button class="option" onclick="selectOption(7,10,this)"><div class="option-dot"></div><div class="option-text">Ich bestelle nach Gefühl wenn etwas ausgeht</div></button>
+      <button class="option" onclick="selectOption(7,20,this)"><div class="option-dot"></div><div class="option-text">Ich habe feste Bestelltage, aber keine genauen Mengenstandards</div></button>
+      <button class="option" onclick="selectOption(7,30,this)"><div class="option-dot"></div><div class="option-text">Ich habe Bestellrhythmen, Portionsstandards und führe regelmäßig Inventur durch</div></button>
+    </div>
+
+    <!-- Frage 8 -->
+    <div class="question-card" id="qcard-8">
+      <div class="q-number">Frage 8 von 10</div>
+      <div class="q-title">Mitarbeiter & Führung</div>
+      <div class="q-subtitle">Wie gut funktioniert dein Team ohne deine direkte Anwesenheit?</div>
+      <button class="option" onclick="selectOption(8,10,this)"><div class="option-dot"></div><div class="option-text">Ohne mich läuft kaum etwas — ich bin überall gleichzeitig gefragt</div></button>
+      <button class="option" onclick="selectOption(8,20,this)"><div class="option-dot"></div><div class="option-text">Das Team arbeitet gut, aber bei unerwarteten Situationen brauchen sie mich</div></button>
+      <button class="option" onclick="selectOption(8,30,this)"><div class="option-dot"></div><div class="option-text">Mein Team führt eigenständig — es gibt klare Rollen und einen Schichtleiter</div></button>
+    </div>
+
+    <!-- Frage 9 -->
+    <div class="question-card" id="qcard-9">
+      <div class="q-number">Frage 9 von 10</div>
+      <div class="q-title">Marketing & Sichtbarkeit</div>
+      <div class="q-subtitle">Wie gewinnt dein Betrieb heute neue Gäste?</div>
+      <button class="option" onclick="selectOption(9,10,this)"><div class="option-dot"></div><div class="option-text">Hauptsächlich durch Zufall oder Mundpropaganda — ich mache kaum aktives Marketing</div></button>
+      <button class="option" onclick="selectOption(9,20,this)"><div class="option-dot"></div><div class="option-text">Ich habe ein Google-Profil und poste gelegentlich auf Social Media</div></button>
+      <button class="option" onclick="selectOption(9,30,this)"><div class="option-dot"></div><div class="option-text">Ich habe eine aktive Strategie: Bewertungen, Social Media und Google laufen regelmäßig</div></button>
+    </div>
+
+    <!-- Frage 10 -->
+    <div class="question-card" id="qcard-10">
+      <div class="q-number">Frage 10 von 10</div>
+      <div class="q-title">Persönliche Freiheit</div>
+      <div class="q-subtitle">Wie viele echte freie Tage hattest du in den letzten 3 Monaten — ohne Erreichbarkeit?</div>
+      <button class="option" onclick="selectOption(10,10,this)"><div class="option-dot"></div><div class="option-text">Kaum oder keine — ich bin praktisch immer erreichbar oder vor Ort</div></button>
+      <button class="option" onclick="selectOption(10,20,this)"><div class="option-dot"></div><div class="option-text">Vereinzelt — aber wirklich abschalten gelingt mir selten</div></button>
+      <button class="option" onclick="selectOption(10,30,this)"><div class="option-dot"></div><div class="option-text">Regelmäßig — ich habe feste freie Tage und kann den Betrieb loslassen</div></button>
     </div>
 
     <div class="submit-wrap">
-      <button class="btn-submit" id="btn-submit" onclick="submitReflexion()">
-        Ergebnis anzeigen →
-      </button>
-      <div class="progress-hint" id="progress-hint">Bitte alle 5 Fragen beantworten</div>
+      <button class="btn-submit" id="btn-submit" onclick="submitReflexion()">Ergebnis anzeigen →</button>
+      <div class="progress-hint" id="progress-hint">Bitte alle 10 Fragen beantworten</div>
     </div>
 
   </div><!-- /form-screen -->
@@ -353,15 +189,14 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
   <div id="result-screen">
     <div class="result-card">
       <div class="result-emoji" id="res-emoji"></div>
-      <div class="result-label">Dein Ergebnis</div>
+      <div class="result-label">Dein Profil</div>
       <div class="result-title" id="res-title"></div>
-      <div class="result-score" id="res-score"></div>
       <div class="result-text" id="res-text"></div>
       <div class="result-divider"></div>
-      <div class="result-saved" id="res-saved"></div>
       <div>
-        <a href="dashboard.html#modul-0" class="btn-back">← Zurück zum Dashboard</a>
+        <a href="dashboard.html" class="btn-back">← Zurück zum Dashboard</a>
         <button class="btn-retry" onclick="resetReflexion()">Nochmal ausfüllen</button>
+        <button class="btn-pdf" onclick="window.print()">📄 Als PDF speichern</button>
       </div>
     </div>
   </div>
@@ -373,18 +208,12 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 </div>
 
 <script>
-const SUPABASE_URL = 'https://hchlganbgjeciwhwaisj.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhjaGxnYW5iZ2plY2l3aHdhaXNqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYyMzA0NjAsImV4cCI6MjA5MTgwNjQ2MH0.mA6oAPJCCgFq5LIUPFDGM0WI_le6STHTuGiwLtGMgu8';
-const { createClient } = supabase;
-const sb = createClient(SUPABASE_URL, SUPABASE_KEY, { global: { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } } });
-
-const answers = {};   // { 1: 10, 2: 20, ... }
+const answers = {};
+const TOTAL_QUESTIONS = 10;
 
 function selectOption(qNum, pts, el) {
-  // Alle Optionen der Frage zurücksetzen
   const card = document.getElementById('qcard-' + qNum);
   card.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
-  // Gewählte Option markieren
   el.classList.add('selected');
   card.classList.add('answered');
   answers[qNum] = pts;
@@ -395,79 +224,50 @@ function updateSubmit() {
   const count = Object.keys(answers).length;
   const btn = document.getElementById('btn-submit');
   const hint = document.getElementById('progress-hint');
-  if (count === 5) {
+  if (count === TOTAL_QUESTIONS) {
     btn.classList.add('ready');
     hint.textContent = '✓ Alle Fragen beantwortet — bereit!';
     hint.style.color = '#4aaa60';
   } else {
     btn.classList.remove('ready');
-    hint.textContent = (5 - count) + ' Frage' + (5 - count !== 1 ? 'n' : '') + ' noch offen';
+    const remaining = TOTAL_QUESTIONS - count;
+    hint.textContent = remaining + ' Frage' + (remaining !== 1 ? 'n' : '') + ' noch offen';
     hint.style.color = '#8090a8';
   }
 }
 
 function getResult(score) {
-  if (score <= 80) {
+  // Max score: 10 × 30 = 300
+  if (score <= 150) {
     return {
       emoji: '👨‍🚒',
-      title: '"FEUERWEHR-MODUS"',
-      text: 'Du löschst aktuell nur Brände. Das Gastro-OS ist deine Rettungsweste. Starte sofort mit Modul 1!',
-      key: 'feuerwehr'
+      title: 'Feuerwehr-Modus',
+      text: 'Du löschst aktuell vor allem Brände. Das ist der Ausgangspunkt vieler Gastronomen — und genau dafür ist GASTRO-OS gebaut. Starte mit Modul 1 und leg die Basis: Zahlen, Systeme, Struktur. Der erste Schritt ändert alles.'
     };
-  } else if (score <= 115) {
+  } else if (score <= 220) {
     return {
       emoji: '📋',
-      title: '"DER SOLIDE VERWALTER"',
-      text: 'Die Basis steht, aber du verschenkst Freiheit und Gewinn. Wir feintunen jetzt dein System.',
-      key: 'verwalter'
+      title: 'Der solide Verwalter',
+      text: 'Die Grundlage steht — aber du verschenkst noch Freiheit und Gewinn. GASTRO-OS hilft dir jetzt, aus einzelnen guten Ansätzen ein echtes System zu machen. Du bist näher am Ziel als du denkst.'
     };
   } else {
     return {
       emoji: '🚀',
-      title: '"SYSTEM-PROFI"',
-      text: 'Du bist bereit für die Skalierung. Das Gastro-OS bringt dich auf das nächste Level.',
-      key: 'systemprofi'
+      title: 'System-Profi',
+      text: 'Du hast bereits viel aufgebaut. GASTRO-OS bringt dich auf das nächste Level — Skalierung, Wachstum, und noch mehr Freiheit. Die Module 9 und 10 sind besonders relevant für dich.'
     };
   }
 }
 
-async function submitReflexion() {
-  if (Object.keys(answers).length < 5) return;
-
+function submitReflexion() {
+  if (Object.keys(answers).length < TOTAL_QUESTIONS) return;
   const total = Object.values(answers).reduce((a, b) => a + b, 0);
   const result = getResult(total);
-
-  // Ergebnis anzeigen
   document.getElementById('form-screen').style.display = 'none';
   document.getElementById('result-screen').style.display = 'block';
   document.getElementById('res-emoji').textContent = result.emoji;
   document.getElementById('res-title').textContent = result.title;
-  document.getElementById('res-score').textContent = total + ' von 150 Punkten';
   document.getElementById('res-text').textContent = result.text;
-
-  // In Supabase speichern
-  try {
-    const res=await fetch('/api/verify-session');if(!res.ok){window.location.href='login.html';return;}const d=await res.json();if(!d.valid){window.location.href='login.html';return;}
-    if (session) {
-      await sb.from('user_tool_data').upsert({
-        user_id: session.user.id,
-        tool_name: 'reflexion_modul0',
-        data: {
-          answers,
-          score: total,
-          result: result.key,
-          abgeschlossen: true,
-          datum: new Date().toISOString()
-        },
-        updated_at: new Date().toISOString()
-      }, { onConflict: 'user_id,tool_name' });
-      document.getElementById('res-saved').innerHTML =
-        '<span>✓</span> Dein Ergebnis wurde gespeichert.';
-    }
-  } catch(e) {
-    document.getElementById('res-saved').textContent = 'Ergebnis lokal ausgewertet.';
-  }
-
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -476,43 +276,11 @@ function resetReflexion() {
   document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
   document.querySelectorAll('.question-card').forEach(c => c.classList.remove('answered'));
   document.getElementById('btn-submit').classList.remove('ready');
-  document.getElementById('progress-hint').textContent = 'Bitte alle 5 Fragen beantworten';
+  document.getElementById('progress-hint').textContent = 'Bitte alle 10 Fragen beantworten';
   document.getElementById('progress-hint').style.color = '#8090a8';
   document.getElementById('form-screen').style.display = 'block';
   document.getElementById('result-screen').style.display = 'none';
   window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-</script>
-
-
-<script>
-function checkAllFilled() {
-  // Check all text inputs and textareas
-  var inputs = document.querySelectorAll('input[type=text], input[type=number], input[type=date], textarea');
-  for (var i = 0; i < inputs.length; i++) {
-    if (inputs[i].value.trim() === '') return false;
-  }
-  // Check all radio button groups
-  var radioGroups = {};
-  var radios = document.querySelectorAll('input[type=radio]');
-  for (var i = 0; i < radios.length; i++) {
-    radioGroups[radios[i].name] = radioGroups[radios[i].name] || false;
-    if (radios[i].checked) radioGroups[radios[i].name] = true;
-  }
-  for (var g in radioGroups) {
-    if (!radioGroups[g]) return false;
-  }
-  return true;
-}
-
-function exportPDF() {
-  if (!checkAllFilled()) {
-    var msg = document.getElementById('export-msg');
-    msg.style.display = 'inline';
-    setTimeout(function(){ msg.style.display = 'none'; }, 4000);
-    return;
-  }
-  window.print();
 }
 </script>
 
