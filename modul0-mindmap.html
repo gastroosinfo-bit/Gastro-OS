@@ -3,304 +3,214 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GASTRO-OS – Modul 0 | Mindmap</title>
+<title>GASTRO-OS – Systemübersicht</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    font-family: 'Segoe UI', Arial, sans-serif;
-    background: #f5f0e8;
-    color: #1a2a4a;
-    min-height: 100vh;
-  }
-
-  .header{background:#1a2a4a;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
-  .header .brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
-  .header .modul-label {
-    font-size: 11px;
-    color: #a0b0c8;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    margin-top: 4px;
-  }
-  .gold-bar { height: 3px; background: linear-gradient(90deg, #1a2a4a, #d4af37, #1a2a4a); }
-
-  .main {
-    max-width: 960px;
-    margin: 36px auto;
-    padding: 0 24px;
-  }
-
-  .intro { margin-bottom: 24px; }
-  .intro h1 {
-    font-family: Georgia, serif;
-    font-size: 24px;
-    color: #1a2a4a;
-    margin-bottom: 8px;
-  }
-  .gold-rule { width: 56px; height: 2px; background: #d4af37; margin: 10px 0 12px; }
-  .intro p {
-    font-size: 14px;
-    color: #5060a0;
-    line-height: 1.7;
-    max-width: 640px;
-  }
-
-  /* Zoom controls */
-  .zoom-bar {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 12px;
-  }
-  .zoom-btn {
-    background: #1a2a4a;
-    color: #d4af37;
-    border: none;
-    width: 34px;
-    height: 34px;
-    border-radius: 6px;
-    font-size: 18px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.2s;
-  }
-  .zoom-btn:hover { background: #2a3a5a; }
-  .zoom-label {
-    font-size: 12px;
-    color: #8090a8;
-    min-width: 40px;
-    text-align: center;
-  }
-  .zoom-hint {
-    font-size: 12px;
-    color: #a0b0c8;
-    margin-left: 8px;
-  }
-
-  /* Image container */
-  .mindmap-wrapper {
-    background: #fff;
-    border: 2px solid #d4af37;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 24px rgba(26,42,74,0.12);
-  }
-
-  .mindmap-header {
-    background: #1a2a4a;
-    padding: 10px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .mindmap-header .label {
-    font-size: 12px;
-    color: #a0b0c8;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
-  .mindmap-header .badge {
-    background: rgba(212,175,55,0.15);
-    border: 1px solid #d4af37;
-    color: #d4af37;
-    font-size: 11px;
-    padding: 3px 12px;
-    border-radius: 20px;
-    letter-spacing: 1px;
-  }
-
-  .mindmap-scroll {
-    overflow: auto;
-    max-height: 680px;
-    cursor: grab;
-    background: #faf8f4;
-  }
-  .mindmap-scroll:active { cursor: grabbing; }
-
-  .mindmap-scroll img {
-    display: block;
-    transition: transform 0.2s;
-    transform-origin: top left;
-    max-width: none;
-  }
-
-  .mindmap-footer {
-    background: #fffdf0;
-    border-top: 1px solid #e8dfc8;
-    padding: 10px 16px;
-    font-size: 12px;
-    color: #9a8040;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  /* Hinweis */
-  .hinweis {
-    margin-top: 20px;
-    background: #fff;
-    border: 1px solid #e8dfc8;
-    border-left: 4px solid #d4af37;
-    border-radius: 0 8px 8px 0;
-    padding: 16px 20px;
-    font-size: 13px;
-    color: #5060a0;
-    line-height: 1.7;
-  }
-  .hinweis strong { color: #1a2a4a; }
-
-  .footer {
-    background: #1a2a4a;
-    margin-top: 48px;
-    padding: 16px 40px;
-    text-align: center;
-    font-size: 11px;
-    color: #8090a8;
-    letter-spacing: 1px;
-  }
-  .footer strong { color: #d4af37; }
-
-.btn-dashboard {
-  background: transparent;
-  border: 1px solid rgba(212,175,55,0.4);
-  color: #a0b0c8;
-  padding: 7px 16px;
-  border-radius: 6px;
-  font-size: 12px;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-block;
-  transition: all 0.2s;
-}
-.btn-dashboard:hover { border-color: #d4af37; color: #d4af37; }
-
-.btn-back-modul {
-  background: #d4af37;
-  color: #1a2a4a;
-  border: none;
-  padding: 9px 20px;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-block;
-  transition: all 0.2s;
-  letter-spacing: 0.3px;
-}
-.btn-back-modul:hover { background: #c8a030; color: #1a2a4a; }
-
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
+.header { background:#1a2a4a; padding:22px 40px; text-align:center; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.header .brand { font-family:Georgia,serif; font-size:22px; color:#d4af37; letter-spacing:4px; font-weight:normal; }
+.header .modul-label { font-size:11px; color:#a0b0c8; letter-spacing:3px; text-transform:uppercase; margin-top:4px; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+.main { max-width:1100px; margin:36px auto; padding:0 24px 60px; }
+.intro { margin-bottom:28px; }
+.intro h1 { font-family:Georgia,serif; font-size:24px; color:#1a2a4a; margin-bottom:8px; }
+.gold-rule { width:56px; height:2px; background:#d4af37; margin:10px 0 12px; }
+.intro p { font-size:14px; color:#5060a0; line-height:1.7; max-width:680px; }
+.mindmap-container { background:#1a2a4a; border:2px solid #d4af37; border-radius:12px; padding:40px 24px; box-shadow:0 4px 32px rgba(26,42,74,0.18); position:relative; overflow:hidden; }
+.mindmap-container::before { content:''; position:absolute; inset:0; background-image:radial-gradient(circle at 20% 20%,rgba(212,175,55,0.05) 0%,transparent 50%),radial-gradient(circle at 80% 80%,rgba(212,175,55,0.05) 0%,transparent 50%); pointer-events:none; }
+.center-node { text-align:center; margin-bottom:8px; position:relative; z-index:1; }
+.center-circle { display:inline-flex; flex-direction:column; align-items:center; justify-content:center; background:linear-gradient(135deg,#d4af37,#c8a030); color:#1a2a4a; border-radius:50%; width:140px; height:140px; font-family:Georgia,serif; box-shadow:0 0 0 4px rgba(212,175,55,0.3),0 8px 32px rgba(0,0,0,0.3); gap:3px; }
+.center-top { font-size:10px; letter-spacing:3px; text-transform:uppercase; opacity:0.8; font-family:'Segoe UI',Arial,sans-serif; }
+.center-main { font-size:18px; letter-spacing:2px; font-weight:bold; }
+.center-sub { font-size:10px; letter-spacing:1px; opacity:0.7; font-family:'Segoe UI',Arial,sans-serif; font-weight:normal; }
+.center-line { width:2px; height:24px; background:linear-gradient(to bottom,#d4af37,rgba(212,175,55,0.3)); margin:0 auto; }
+.click-hint { text-align:center; margin-bottom:12px; font-size:11px; color:rgba(160,176,200,0.6); letter-spacing:1px; position:relative; z-index:1; }
+.pillars-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; position:relative; z-index:1; }
+.pillar { display:flex; flex-direction:column; }
+.pillar-connector { height:20px; display:flex; align-items:center; justify-content:center; }
+.pillar-connector-line { width:2px; height:100%; background:rgba(212,175,55,0.35); }
+.pillar-header { background:linear-gradient(135deg,rgba(212,175,55,0.12),rgba(212,175,55,0.04)); border:1px solid rgba(212,175,55,0.35); border-radius:8px 8px 0 0; padding:14px 10px 12px; text-align:center; cursor:pointer; transition:all 0.2s; border-bottom:none; }
+.pillar-header:hover { background:linear-gradient(135deg,rgba(212,175,55,0.22),rgba(212,175,55,0.08)); border-color:#d4af37; }
+.pillar-header.active { background:linear-gradient(135deg,rgba(212,175,55,0.28),rgba(212,175,55,0.12)); border-color:#d4af37; }
+.pillar-icon { font-size:22px; margin-bottom:6px; display:block; }
+.pillar-nr { font-size:10px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; margin-bottom:4px; }
+.pillar-title { font-family:Georgia,serif; font-size:12.5px; color:#fff; line-height:1.35; font-weight:normal; }
+.pillar-body { background:rgba(255,255,255,0.04); border:1px solid rgba(212,175,55,0.25); border-radius:0 0 8px 8px; border-top:none; overflow:hidden; max-height:0; transition:max-height 0.35s ease; }
+.pillar-body.open { max-height:400px; }
+.pillar-body-inner { padding:12px; }
+.pillar-item { display:flex; align-items:flex-start; gap:6px; padding:5px 0; border-bottom:1px solid rgba(212,175,55,0.1); font-size:11.5px; color:#a0b0c8; line-height:1.45; }
+.pillar-item:last-child { border-bottom:none; }
+.pillar-item::before { content:'→'; color:#d4af37; font-size:10px; flex-shrink:0; margin-top:2px; }
+.pillar-modul { margin-top:10px; padding:6px 10px; background:rgba(212,175,55,0.1); border-radius:4px; font-size:10px; color:#d4af37; letter-spacing:1px; text-align:center; text-transform:uppercase; }
+.bottom-section { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:28px; position:relative; z-index:1; }
+.info-box { background:rgba(255,255,255,0.04); border:1px solid rgba(212,175,55,0.25); border-radius:8px; padding:16px 18px; }
+.info-box-title { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; margin-bottom:10px; font-weight:700; }
+.info-box-list { list-style:none; padding:0; }
+.info-box-list li { font-size:12px; color:#a0b0c8; padding:4px 0 4px 16px; position:relative; line-height:1.5; border-bottom:1px solid rgba(212,175,55,0.08); }
+.info-box-list li:last-child { border-bottom:none; }
+.info-box-list li::before { content:'✓'; position:absolute; left:0; color:#d4af37; font-size:10px; }
+.hinweis { margin-top:20px; background:#fff; border:1px solid #e8dfc8; border-left:4px solid #d4af37; border-radius:0 8px 8px 0; padding:16px 20px; font-size:13px; color:#5060a0; line-height:1.7; }
+.hinweis strong { color:#1a2a4a; }
+.footer-main { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-main strong { color:#d4af37; }
+@media(max-width:700px){.pillars-grid{grid-template-columns:1fr 1fr;}.bottom-section{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-(function(){
-  // Rechtsklick & Tastenkürzel sperren
-  document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
-  document.addEventListener('keydown', function(e){
-    if (e.ctrlKey && ['s','u','p','a'].includes(e.key.toLowerCase())) e.preventDefault();
-    if (e.key === 'F12') e.preventDefault();
-  });
-
-  // Supabase Auth Check
-  const sb = supabase.createClient(
-    'https://hchlganbgjeciwhwaisj.supabase.co',
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhjaGxnYW5iZ2plY2l3aHdhaXNqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYyMzA0NjAsImV4cCI6MjA5MTgwNjQ2MH0.mA6oAPJCCgFq5LIUPFDGM0WI_le6STHTuGiwLtGMgu8'
-  );
-  (async function(){
-    const res=await fetch('/api/verify-session');if(!res.ok){window.location.href='login.html';return;}const d=await res.json();if(!d.valid){window.location.href='login.html';return;}
-  })();
-})();
-</script>
-
 <div class="header">
   <div class="brand">GASTRO-OS</div>
-  <a href="dashboard.html#modul-0" class="btn-back-modul">← Zurück zum Dashboard</a>
+  <div class="modul-label">Systemübersicht</div>
 </div>
 <div class="gold-bar"></div>
-
 <div class="main">
-
   <div class="intro">
     <h1>Das GASTRO-OS System auf einen Blick</h1>
     <div class="gold-rule"></div>
-    <p>Diese Mindmap zeigt dir das gesamte System — alle Module und ihre Verbindungen zueinander. Nutze die Zoom-Buttons um die Details besser zu erkennen.</p>
+    <p>Fünf Säulen. Ein System. Klick auf eine Säule um die Inhalte aufzuklappen und zu sehen was GASTRO-OS dort für dich bereithält.</p>
   </div>
-
-  <!-- Zoom Controls -->
-  <div class="zoom-bar">
-    <button class="zoom-btn" onclick="zoomOut()">−</button>
-    <span class="zoom-label" id="zoom-label">100%</span>
-    <button class="zoom-btn" onclick="zoomIn()">+</button>
-    <button class="zoom-btn" onclick="zoomReset()" title="Zurücksetzen" style="font-size:13px;">↺</button>
-    <span class="zoom-hint">💡 Tipp: Scrollen zum Zoomen, Ziehen zum Verschieben</span>
-  </div>
-
-  <div class="mindmap-wrapper">
-    <div class="mindmap-header">
-      <span class="label">🗺️ Modul 0 — Systemübersicht</span>
-      <span class="badge">GASTRO-OS</span>
+  <div class="mindmap-container">
+    <div class="center-node">
+      <div class="center-circle">
+        <span class="center-top">Das</span>
+        <span class="center-main">GASTRO-OS</span>
+        <span class="center-sub">Betriebssystem</span>
+      </div>
     </div>
+    <div class="center-line"></div>
+    <div class="click-hint">▼ Klick auf eine Säule zum Aufklappen</div>
+    <div class="pillars-grid">
 
-    <div class="mindmap-scroll" id="scrollBox">
-      <img
-        id="mindmap-img"
-        src="https://drive.google.com/thumbnail?id=1XuBPYSvG0e6IWjRC2hXEhYTgmoxHay4d&sz=w2000"
-        alt="GASTRO-OS Modul 0 Mindmap"
-        style="width: 100%;"
-        onerror="this.onerror=null; this.src='https://drive.google.com/uc?export=view&id=1XuBPYSvG0e6IWjRC2hXEhYTgmoxHay4d';"
-      />
+      <div class="pillar">
+        <div class="pillar-connector"><div class="pillar-connector-line"></div></div>
+        <div class="pillar-header" onclick="toggle(this)">
+          <span class="pillar-icon">📊</span>
+          <div class="pillar-nr">Säule 1</div>
+          <div class="pillar-title">Zahlen & Controlling</div>
+        </div>
+        <div class="pillar-body"><div class="pillar-body-inner">
+          <div class="pillar-item">Wareneinsatz berechnen</div>
+          <div class="pillar-item">Personalquote ermitteln</div>
+          <div class="pillar-item">Gewinnmarge kennen</div>
+          <div class="pillar-item">Break-Even bestimmen</div>
+          <div class="pillar-item">Monatliches Controlling</div>
+          <div class="pillar-item">BWA lesen & nutzen</div>
+          <div class="pillar-modul">Modul 1 & 4</div>
+        </div></div>
+      </div>
+
+      <div class="pillar">
+        <div class="pillar-connector"><div class="pillar-connector-line"></div></div>
+        <div class="pillar-header" onclick="toggle(this)">
+          <span class="pillar-icon">🍽️</span>
+          <div class="pillar-nr">Säule 2</div>
+          <div class="pillar-title">Speisekarte & Angebot</div>
+        </div>
+        <div class="pillar-body"><div class="pillar-body-inner">
+          <div class="pillar-item">Menu Engineering</div>
+          <div class="pillar-item">Deckungsbeitrag pro Gericht</div>
+          <div class="pillar-item">Stars & Dogs erkennen</div>
+          <div class="pillar-item">Preiskalkulation</div>
+          <div class="pillar-item">Upselling systematisch</div>
+          <div class="pillar-item">Karte strategisch aufbauen</div>
+          <div class="pillar-modul">Modul 2 & 8</div>
+        </div></div>
+      </div>
+
+      <div class="pillar">
+        <div class="pillar-connector"><div class="pillar-connector-line"></div></div>
+        <div class="pillar-header" onclick="toggle(this)">
+          <span class="pillar-icon">🛒</span>
+          <div class="pillar-nr">Säule 3</div>
+          <div class="pillar-title">Einkauf & Warenwirtschaft</div>
+        </div>
+        <div class="pillar-body"><div class="pillar-body-inner">
+          <div class="pillar-item">Bestellrhythmen festlegen</div>
+          <div class="pillar-item">Lieferanten verhandeln</div>
+          <div class="pillar-item">Portionsstandards definieren</div>
+          <div class="pillar-item">Inventur systematisieren</div>
+          <div class="pillar-item">Verderb reduzieren</div>
+          <div class="pillar-item">Wareneinsatz senken</div>
+          <div class="pillar-modul">Modul 3</div>
+        </div></div>
+      </div>
+
+      <div class="pillar">
+        <div class="pillar-connector"><div class="pillar-connector-line"></div></div>
+        <div class="pillar-header" onclick="toggle(this)">
+          <span class="pillar-icon">👥</span>
+          <div class="pillar-nr">Säule 4</div>
+          <div class="pillar-title">Struktur & Team</div>
+        </div>
+        <div class="pillar-body"><div class="pillar-body-inner">
+          <div class="pillar-item">SOPs erstellen</div>
+          <div class="pillar-item">Schichtleiter aufbauen</div>
+          <div class="pillar-item">Rollen klar definieren</div>
+          <div class="pillar-item">Betrieb ohne Chef führen</div>
+          <div class="pillar-item">Mitarbeiter entwickeln</div>
+          <div class="pillar-item">Kosten optimieren</div>
+          <div class="pillar-modul">Modul 5 & 6 & 7</div>
+        </div></div>
+      </div>
+
+      <div class="pillar">
+        <div class="pillar-connector"><div class="pillar-connector-line"></div></div>
+        <div class="pillar-header" onclick="toggle(this)">
+          <span class="pillar-icon">📣</span>
+          <div class="pillar-nr">Säule 5</div>
+          <div class="pillar-title">Sichtbarkeit & Wachstum</div>
+        </div>
+        <div class="pillar-body"><div class="pillar-body-inner">
+          <div class="pillar-item">Google-Profil optimieren</div>
+          <div class="pillar-item">Bewertungen aufbauen</div>
+          <div class="pillar-item">Social Media Rhythmus</div>
+          <div class="pillar-item">Stammgäste binden</div>
+          <div class="pillar-item">Wachstum planen</div>
+          <div class="pillar-item">Skalierung vorbereiten</div>
+          <div class="pillar-modul">Modul 9 & 10</div>
+        </div></div>
+      </div>
+
     </div>
-
-    <div class="mindmap-footer">
-      💡 Bild lässt sich zoomen und verschieben &nbsp;·&nbsp; Bei Unschärfe: Zoom erhöhen
+    <div class="bottom-section">
+      <div class="info-box">
+        <div class="info-box-title">🎯 Das Ziel</div>
+        <ul class="info-box-list">
+          <li>Ein Betrieb der auch ohne dich funktioniert</li>
+          <li>Kennzahlen die du jeden Monat kennst</li>
+          <li>Mehr Gewinn aus denselben Gästen</li>
+          <li>Zeit für das was dir wirklich wichtig ist</li>
+        </ul>
+      </div>
+      <div class="info-box">
+        <div class="info-box-title">⚙️ Das Prinzip</div>
+        <ul class="info-box-list">
+          <li>System = Prozess + Verantwortlichkeit + Rhythmus</li>
+          <li>Eine Säule stärkt die nächste</li>
+          <li>Jeder Schritt ist sofort umsetzbar</li>
+          <li>Kein Theorie-Kurs — ein Betriebssystem</li>
+        </ul>
+      </div>
     </div>
   </div>
 
   <div class="hinweis">
-    <strong>📌 So nutzt du die Mindmap:</strong> Schau dir zuerst das große Bild an — wo stehst du gerade? Welche Bereiche kennst du schon, welche sind neu für dich? Das hilft dir, das GASTRO-OS System einzuordnen. Im nächsten Schritt folgt die Reflexionsaufgabe.
+    <strong>📌 So nutzt du diese Übersicht:</strong> Klick auf eine Säule um die Themen aufzuklappen. Du siehst sofort welche Module dazu gehören und was dich erwartet. Diese Übersicht begleitet dich durch das gesamte System.
   </div>
-
 </div>
-
 <div class="gold-bar"></div>
-<div class="footer" style="margin-top:40px;">
-  <strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg
-</div>
+<div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
 
 <script>
-  let currentZoom = 1;
-  const img = document.getElementById('mindmap-img');
-  const label = document.getElementById('zoom-label');
-
-  function zoomIn() {
-    currentZoom = Math.min(currentZoom + 0.25, 3);
-    applyZoom();
+function toggle(header) {
+  const body = header.nextElementSibling;
+  const isOpen = body.classList.contains('open');
+  document.querySelectorAll('.pillar-body').forEach(b => b.classList.remove('open'));
+  document.querySelectorAll('.pillar-header').forEach(h => h.classList.remove('active'));
+  if (!isOpen) {
+    body.classList.add('open');
+    header.classList.add('active');
   }
-  function zoomOut() {
-    currentZoom = Math.max(currentZoom - 0.25, 0.5);
-    applyZoom();
-  }
-  function zoomReset() {
-    currentZoom = 1;
-    applyZoom();
-  }
-  function applyZoom() {
-    img.style.width = (currentZoom * 100) + '%';
-    label.textContent = Math.round(currentZoom * 100) + '%';
-  }
-
-  // Scroll to zoom with mouse wheel
-  document.getElementById('scrollBox').addEventListener('wheel', function(e) {
-    e.preventDefault();
-    if (e.deltaY < 0) zoomIn();
-    else zoomOut();
-  }, { passive: false });
+}
 </script>
-
 </body>
 </html>
