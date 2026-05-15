@@ -24,16 +24,22 @@ h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:norma
 h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:22px 0 10px; }
 h4 { font-size:15px; color:#1a2a4a; font-weight:700; margin:18px 0 8px; }
 p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
+.merksatz { background:#fff8e8; border-left:4px solid #d4af37; border-radius:0 8px 8px 0; padding:14px 20px; margin:20px 0; font-size:15px; color:#5a4000; font-style:italic; line-height:1.7; }
 .aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin:24px 0; }
 .aufgabe-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
-.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; line-height:1.7; }
+.aufgabe p { font-size:14px; margin-bottom:8px; color:#3a4a6a; line-height:1.7; }
+.aufgabe p:last-child { margin-bottom:0; }
+.aufgabe-hinweis { font-size:13px; color:#8090a8; font-style:italic; }
 .beispiel { background:#fff; border:1px solid #e8dfc8; border-left:4px solid #3a7ad4; border-radius:0 8px 8px 0; padding:16px 20px; margin:20px 0; }
 .beispiel-lbl { font-size:11px; color:#3a7ad4; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
 .beispiel p { font-size:14px; color:#2a3a54; margin-bottom:8px; line-height:1.75; }
 .beispiel p:last-child { margin-bottom:0; }
-.rechnung { background:#f0f4f8; border-radius:5px; padding:10px 14px; font-family:monospace; font-size:13px; color:#1a2a4a; margin:8px 0; line-height:1.6; }
-.tipp-box { background:#e4f5e8; border:1px solid #4aaa60; border-radius:8px; padding:14px 18px; margin:18px 0; }
-.tipp-box p { font-size:14px; color:#1a6030; margin-bottom:0; line-height:1.7; }
+.score-tabelle { width:100%; border-collapse:collapse; margin:16px 0; font-size:13px; }
+.score-tabelle th { background:#1a2a4a; color:#d4af37; padding:8px 12px; text-align:left; font-weight:700; letter-spacing:1px; font-size:11px; text-transform:uppercase; }
+.score-tabelle td { padding:8px 12px; border-bottom:1px solid #e8dfc8; color:#2a3a54; line-height:1.5; vertical-align:top; }
+.score-tabelle tr:last-child td { border-bottom:none; }
+.score-tabelle tr:nth-child(even) td { background:#faf8f4; }
+.score-nr { font-weight:700; color:#d4af37; }
 .nav-row { display:flex; gap:12px; justify-content:space-between; margin:40px 0 0; }
 .nav-btn { background:#d4af37; color:#1a2a4a; border:none; padding:11px 20px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; transition:all 0.2s; }
 .nav-btn:hover { background:#c8a030; color:#1a2a4a; }
@@ -48,9 +54,10 @@ p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
 .checkliste { background:#fff; border:1px solid #e8dfc8; border-radius:8px; padding:16px 20px; margin:20px 0 0; }
 .checkliste-lbl { font-size:11px; color:#1a2a4a; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
 .checkliste ul { list-style:none; padding:0; margin:0; }
-.checkliste li { font-size:14px; color:#2a3a54; padding:7px 0 7px 28px; position:relative; border-bottom:1px solid #f0ece4; line-height:1.55; }
+.checkliste li { font-size:14px; color:#2a3a54; padding:7px 0 7px 36px; position:relative; border-bottom:1px solid #f0ece4; line-height:1.55; cursor:pointer; }
 .checkliste li:last-child { border-bottom:none; }
-.checkliste li::before { content:'☐'; position:absolute; left:0; color:#d4af37; font-size:16px; line-height:1.2; }
+.checkliste li input[type=checkbox] { position:absolute; left:0; top:50%; transform:translateY(-50%); width:18px; height:18px; accent-color:#d4af37; cursor:pointer; }
+.checkliste li.done { color:#8090a8; text-decoration:line-through; }
 .footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-lbl strong { color:#d4af37; }
 .footer-main { background:#1a2a4a; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
@@ -68,7 +75,6 @@ p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
   const sb=supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhjaGxnYW5iZ2plY2l3aHdhaXNqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYyMzA0NjAsImV4cCI6MjA5MTgwNjQ2MH0.mA6oAPJCCgFq5LIUPFDGM0WI_le6STHTuGiwLtGMgu8');
   (async function(){
     try{const res=await fetch('/api/verify-session');if(!res.ok){window.location.href='login.html';return;}const d=await res.json();if(!d.valid){window.location.href='login.html';return;}currentUser={id:d.email,email:d.email};}catch(e){window.location.href='login.html';return;}
-    
   })();
 })();
 </script>
@@ -80,56 +86,100 @@ p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
 <div class="wrap">
   <div class="lbl">Modul 0 · Lektion 3</div>
   <h1>Wo stehst du heute</h1>
-  <div class="intro">Bevor du Gastro-OS anwendest brauchst du einen ehrlichen Ausgangspunkt. In dieser Lektion machst du deinen ersten Status-Check — nicht um dich schlecht zu fühlen, sondern um zu wissen wo du wirklich stehst.</div>
+  <div class="intro">Bevor du Gastro-OS anwendest brauchst du einen ehrlichen Ausgangspunkt. In dieser Lektion machst du deinen ersten Status-Check — um zu wissen wo du wirklich stehst und wo du als erstes ansetzt.</div>
   <div class="lern-box"><div class="lern-box-title">📚 Was du in dieser Lektion lernst</div><ul><li>Den Status-Check für alle fünf Bereiche durchführen</li><li>Deinen persönlichen Score ermitteln und interpretieren</li><li>Die richtigen Prioritäten aus dem Score ableiten</li><li>Einen realistischen 12-Monats-Aktionsplan entwickeln</li></ul></div>
 
 <h2>Kapitel 1 — Der Status-Check: fünf Bereiche, eine ehrliche Antwort</h2>
 <h3>Warum der Ausgangspunkt so wichtig ist</h3>
-<p>Bevor du Gastro-OS anwendest brauchst du einen ehrlichen Ausgangspunkt. Ein Arzt macht zuerst eine Diagnose bevor er behandelt. Ein Gastronom der den Status-Check überspringt, optimiert ohne zu wissen was er optimiert. Der Check hat fünf Bereiche — für jeden gibst du dir eine ehrliche Bewertung von 1 bis 5.</p>
-<h3>Bereich 1: Zahlen und Controlling</h3>
-<p>Kennst du deinen Wareneinsatz, deine Personalquote und deinen Break-Even? Kannst du heute sagen was dein Gewinn im letzten Monat war — ohne auf den Steuerberater zu warten?<br>
-1 = kenne keine Zahlen. 3 = kenne Umsatz und groben Wareneinsatz. 5 = berechne alle Kennzahlen monatlich und entscheide auf Basis von Daten.</p>
-<h3>Bereich 2: Speisekarte und Angebot</h3>
-<p>Weißt du welche Gerichte deine höchste Marge haben? Ist deine Karte strategisch aufgebaut oder historisch gewachsen?<br>
-1 = weiß nicht welche Gerichte profitabel sind. 3 = kenne Bestseller aber nicht ihre Marge. 5 = führe regelmäßig Menu Engineering durch.</p>
-<h3>Bereich 3: Einkauf und Wareneinsatz</h3>
-<p>Hast du feste Bestellrhythmen? Verhandelst du regelmäßig mit Lieferanten? Gibt es ein Rezeptbuch mit genauen Portionsmengen?</p>
-<h3>Bereich 4: Struktur und Prozesse</h3>
-<p>Gibt es dokumentierte Abläufe? Kann dein Betrieb einen vollen Abend ohne dich laufen? Haben Mitarbeiter klare Rollen?</p>
-<h3>Bereich 5: Marketing und Sichtbarkeit</h3>
-<p>Ist dein Google-Profil aktuell? Sammelst du aktiv Bewertungen? Hast du einen Social-Media-Plan der auch läuft?</p>
+<p>Ein Arzt macht zuerst eine Diagnose bevor er behandelt. Ein Gastronom der den Status-Check überspringt, optimiert ohne zu wissen was er optimiert. Der Check hat fünf Bereiche — für jeden gibst du dir eine ehrliche Bewertung von 1 bis 5.</p>
+
+<table class="score-tabelle">
+  <tr><th>Bereich</th><th>1 Punkt</th><th>3 Punkte</th><th>5 Punkte</th></tr>
+  <tr>
+    <td><strong>1 — Zahlen & Controlling</strong></td>
+    <td>Keine Kennzahlen bekannt</td>
+    <td>Umsatz und grober Wareneinsatz bekannt</td>
+    <td>Alle Kennzahlen monatlich berechnet, Entscheidungen auf Datenbasis</td>
+  </tr>
+  <tr>
+    <td><strong>2 — Speisekarte & Angebot</strong></td>
+    <td>Nicht bekannt welche Gerichte profitabel sind</td>
+    <td>Bestseller bekannt, Margen aber nicht</td>
+    <td>Regelmäßiges Menu Engineering, Karte strategisch aufgebaut</td>
+  </tr>
+  <tr>
+    <td><strong>3 — Einkauf & Wareneinsatz</strong></td>
+    <td>Keine festen Bestellrhythmen, keine Portionsstandards</td>
+    <td>Feste Bestelltage, gelegentliche Lieferantengespräche</td>
+    <td>Dokumentierte Portionsmengen, aktive Lieferantenverhandlung, monatliche Inventur</td>
+  </tr>
+  <tr>
+    <td><strong>4 — Struktur & Prozesse</strong></td>
+    <td>Alles läuft über den Chef, keine Dokumentation</td>
+    <td>Manche Abläufe bekannt, Chef muss bei Fragen einspringen</td>
+    <td>Klare SOPs, Schichtleiter führt selbstständig, Betrieb läuft auch ohne Chef</td>
+  </tr>
+  <tr>
+    <td><strong>5 — Marketing & Sichtbarkeit</strong></td>
+    <td>Kein gepflegtes Google-Profil, keine Bewertungsstrategie</td>
+    <td>Google-Profil vorhanden, gelegentliche Posts</td>
+    <td>Aktive Bewertungsstrategie, regelmäßige Präsenz, Google-Score über 4,5</td>
+  </tr>
+</table>
+
 <div class="beispiel"><div class="beispiel-lbl">📊 Status-Check Beispiel — Gastronom Markus</div>
 <p>Zahlen: 2 | Speisekarte: 3 | Einkauf: 1 | Struktur: 2 | Marketing: 3 → Gesamt: 11/25<br><br>
 Ein Jahr später: 19/25. Wareneinsatz gesenkt, Schichtleiter eingestellt, Google-Bewertungen von 4,1 auf 4,6 Sterne.<br>
 <strong>Score 11 war kein Urteil — er war der Startpunkt.</strong></p></div>
+
 <div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 1</div>
-<p>Mach den Status-Check jetzt. Schreib für jeden der 5 Bereiche deine ehrliche Bewertung auf (1–5). Welcher Bereich hat die niedrigste Bewertung? Das ist dein erster Fokus.</p></div>
+<p>Mach den Status-Check jetzt. Schreib für jeden der 5 Bereiche deine ehrliche Bewertung auf (1–5) und bilde die Summe.</p>
+<p class="aufgabe-hinweis">📝 Notiere deinen Score — du wirst ihn in Kapitel 2 und 3 brauchen.</p></div>
 
 <h2>Kapitel 2 — Was der Score dir sagt</h2>
 <h3>Scores interpretieren</h3>
-<p>Score 5–9: Starte mit Modul 1 — Zahlen verstehen bevor du alles andere optimierst. Score 10–15: Du hast Grundlagen aber noch keine Systeme. Beginne beim schwächsten Bereich. Score 16–20: Du bist gut aufgestellt. Gastro-OS hebt die letzten 20%. Score über 20: Modul 10 (Wachstum) ist besonders relevant.</p>
+<p>Der Score zeigt dir nicht wie gut oder schlecht du bist — er zeigt dir <strong>wo du anfängst</strong> und welche Module für dich als erstes relevant sind.</p>
+
+<div class="beispiel"><div class="beispiel-lbl">📊 Dein Score als Wegweiser</div>
+<p><strong>5–9 Punkte:</strong> Starte mit Modul 1 — Zahlen sind die Basis für alles andere. Ohne sie arbeiten alle anderen Verbesserungen im Dunkeln.<br><br>
+<strong>10–15 Punkte:</strong> Du hast erste Grundlagen. Dein niedrigster Bereich zeigt dir wo du als nächstes ansetzt — dort liegt das größte Verbesserungspotenzial.<br><br>
+<strong>16–20 Punkte:</strong> Du bist gut aufgestellt. Gastro-OS hilft dir die letzten 20% herauszuholen und Bestehendes in echte Systeme zu überführen.<br><br>
+<strong>Über 20 Punkte:</strong> Modul 9 und 10 (Sichtbarkeit und Wachstum) sind besonders relevant — du hast das Fundament, jetzt geht es um Skalierung.</p></div>
+
 <h3>Der Score als Kompass</h3>
 <p>Mach diesen Check jetzt — und dann in 3, 6 und 12 Monaten erneut. Der Score ist nicht der Maßstab für Erfolg — er ist das Messinstrument für Fortschritt. Und Fortschritt ist das einzige was zählt.</p>
+
 <div class="beispiel"><div class="beispiel-lbl">📊 12-Monate-Progression</div>
 <p>Restaurant Bergblick, Ausgangsscore 10/25:<br>
 Nach 3 Monaten: 14/25 — Zahlen im Griff, erstes Rezeptbuch<br>
 Nach 6 Monaten: 17/25 — WE von 36% auf 31%, Google-Score 4,4<br>
 Nach 12 Monaten: 21/25 — Betrieb läuft 4 Abende/Woche ohne Chef, Gewinn verdoppelt<br><br>
 <strong>Das ist keine Magie. Das ist konsequente Arbeit mit einem klaren System.</strong></p></div>
+
 <div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 2</div>
 <p>Schreib deinen heutigen Score auf und leg das Blatt weg — für 3 Monate. Dann Check erneut. Der Vergleich zeigt dir ob du auf dem richtigen Weg bist.</p></div>
 
 <h2>Kapitel 3 — Dein Aktionsplan</h2>
 <h3>Von Scores zu Prioritäten</h3>
-<p>Fokussiere zuerst auf den schwächsten Bereich bis du ihn auf mindestens 3 Punkte bringst. Dann auf den nächstschwächsten. Das bringt schneller spürbare Verbesserungen als wenn du überall gleichzeitig ein bisschen machst.</p>
-<h3>Was in 12 Monaten möglich ist</h3>
-<p>Nach 3 Monaten: Kennzahlen bekannt, erste Delegation, Google-Profil aktuell. Nach 6 Monaten: Wareneinsatz um 2–4 Punkte gesenkt, Schichtleiter in Ausbildung, ein freier Tag pro Woche. Nach 12 Monaten: Betrieb läuft eigenständig an 4+ Tagen, Gewinn 1.500–3.500 Euro höher.</p>
-<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 3</div>
-<p>Schreib auf: Was ändert sich in meinem Betrieb und in meinem Leben wenn ich 12 Monate konsequent mit Gastro-OS arbeite? Konkret — bei den Zahlen, beim Team, bei deiner Zeit. Diese Antwort ist deine Motivation wenn der Alltag wieder drückt.</p></div>
+<p>Arbeite von deinem schwächsten Bereich nach oben — bring jeden auf mindestens 3 Punkte bevor du zum nächsten gehst. Das bringt schneller spürbare Verbesserungen als wenn du überall gleichzeitig ein bisschen machst.</p>
 
-<div class="fazit"><div class="fazit-lbl">🎯 Das Wichtigste auf einen Blick</div><ul><li>Status-Check: alle 5 Bereiche ehrlich mit 1–5 bewerten.</li><li>Niedrigster Score = erste Priorität für Modul 1+.</li><li>Score in 3 Monaten erneut — der Fortschritt wird dich überraschen.</li><li>Nicht perfekt anfangen. Jetzt anfangen.</li></ul></div>
-<div class="checkliste"><div class="checkliste-lbl">✅ Sofort-Checkliste — Das kannst du heute noch tun</div><ul><li>Status-Check vollständig ausfüllen und Gesamtscore notieren</li><li>Score aufbewahren für den 3-Monats-Vergleich</li><li>Ersten Fokusbereich identifizieren und aufschreiben</li></ul></div>
-  <div style="text-align:right;margin-bottom:12px;"><a href="dashboard.html" class="nav-btn">← Zurück zum Dashboard</a></div><div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
+<h3>Was in 12 Monaten möglich ist</h3>
+<p>Nach 3 Monaten: Kennzahlen bekannt, erste Delegation funktioniert, Google-Profil gepflegt und aktiv. Nach 6 Monaten: Wareneinsatz um 3–5 Prozentpunkte gesenkt, Schichtleiter übernimmt eigenständig, ein bis zwei freie Tage pro Woche. Nach 12 Monaten: Betrieb läuft eigenständig an 4 oder mehr Tagen, Gewinn spürbar und dauerhaft gesteigert — realistisch 2.000–5.000 Euro mehr pro Monat.</p>
+
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 3</div>
+<p>Schreib auf: Was ändert sich in deinem Betrieb und in deinem Leben wenn du 12 Monate konsequent mit Gastro-OS arbeitest? Konkret — bei den Zahlen, beim Team, bei deiner Zeit.</p>
+<p class="aufgabe-hinweis">💡 Diese Antwort ist deine Motivation wenn der Alltag wieder drückt.</p></div>
+
+<div class="fazit"><div class="fazit-lbl">🎯 Das Wichtigste auf einen Blick</div><ul><li>Status-Check: alle 5 Bereiche ehrlich mit 1–5 bewerten.</li><li>Dein niedrigster Bereich zeigt dir wo Gastro-OS als erstes ansetzt.</li><li>Score in 3 Monaten erneut — der Fortschritt wird dich überraschen.</li><li>Nicht perfekt anfangen. Jetzt anfangen.</li></ul></div>
+
+<div class="checkliste"><div class="checkliste-lbl">✅ Sofort-Checkliste — Das kannst du heute noch tun</div><ul>
+  <li><input type="checkbox" onchange="this.parentElement.classList.toggle('done',this.checked)"> Status-Check vollständig ausfüllen und Gesamtscore notieren</li>
+  <li><input type="checkbox" onchange="this.parentElement.classList.toggle('done',this.checked)"> Score aufbewahren für den 3-Monats-Vergleich</li>
+  <li><input type="checkbox" onchange="this.parentElement.classList.toggle('done',this.checked)"> Ersten Fokusbereich identifizieren und aufschreiben</li>
+</ul></div>
+
+  <div style="text-align:right;margin-bottom:12px;margin-top:20px;"><a href="dashboard.html" class="nav-btn">← Zurück zum Dashboard</a></div>
+  <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
 <div class="nav-row"><a href="modul0-lektion2.html" class="nav-btn secondary">← Lektion 2</a></div>
 </div>
 <div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
