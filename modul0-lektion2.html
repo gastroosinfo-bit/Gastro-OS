@@ -24,21 +24,27 @@ h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:norma
 h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:22px 0 10px; }
 h4 { font-size:15px; color:#1a2a4a; font-weight:700; margin:18px 0 8px; }
 p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
+.merksatz { background:#fff8e8; border-left:4px solid #d4af37; border-radius:0 8px 8px 0; padding:14px 20px; margin:20px 0; font-size:15px; color:#5a4000; font-style:italic; line-height:1.7; }
 .aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin:24px 0; }
 .aufgabe-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
-.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; line-height:1.7; }
+.aufgabe p { font-size:14px; margin-bottom:8px; color:#3a4a6a; line-height:1.7; }
+.aufgabe p:last-child { margin-bottom:0; }
+.aufgabe-hinweis { font-size:13px; color:#8090a8; font-style:italic; }
 .beispiel { background:#fff; border:1px solid #e8dfc8; border-left:4px solid #3a7ad4; border-radius:0 8px 8px 0; padding:16px 20px; margin:20px 0; }
 .beispiel-lbl { font-size:11px; color:#3a7ad4; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
 .beispiel p { font-size:14px; color:#2a3a54; margin-bottom:8px; line-height:1.75; }
 .beispiel p:last-child { margin-bottom:0; }
-.rechnung { background:#f0f4f8; border-radius:5px; padding:10px 14px; font-family:monospace; font-size:13px; color:#1a2a4a; margin:8px 0; line-height:1.6; }
+.kreislauf { display:flex; flex-direction:column; gap:0; margin:16px 0; }
+.kreislauf-item { display:flex; align-items:flex-start; gap:12px; padding:10px 14px; background:#fff; border:1px solid #e8dfc8; border-radius:6px; margin-bottom:4px; font-size:14px; color:#2a3a54; line-height:1.5; }
+.kreislauf-item .k-icon { font-size:16px; flex-shrink:0; margin-top:1px; }
+.kreislauf-arrow { text-align:center; color:#d4af37; font-size:18px; font-weight:700; margin:0; line-height:1; }
+.kreislauf-neg .kreislauf-item { background:#fff4f4; border-color:#e8c0c0; }
+.kreislauf-pos .kreislauf-item { background:#f4fff6; border-color:#b0ddb8; }
 .tipp-box { background:#e4f5e8; border:1px solid #4aaa60; border-radius:8px; padding:14px 18px; margin:18px 0; }
 .tipp-box p { font-size:14px; color:#1a6030; margin-bottom:0; line-height:1.7; }
 .nav-row { display:flex; gap:12px; justify-content:space-between; margin:40px 0 0; }
 .nav-btn { background:#d4af37; color:#1a2a4a; border:none; padding:11px 20px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; transition:all 0.2s; }
 .nav-btn:hover { background:#c8a030; color:#1a2a4a; }
-.nav-btn.secondary { background:#d4af37; color:#1a2a4a; border:none; }
-.nav-btn.secondary:hover { background:#c8a030; }
 .fazit { background:#fdf9ee; border:2px solid #d4af37; border-radius:8px; padding:18px 22px; margin:32px 0 0; }
 .fazit-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
 .fazit ul { list-style:none; padding:0; margin:0; }
@@ -48,9 +54,10 @@ p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
 .checkliste { background:#fff; border:1px solid #e8dfc8; border-radius:8px; padding:16px 20px; margin:20px 0 0; }
 .checkliste-lbl { font-size:11px; color:#1a2a4a; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
 .checkliste ul { list-style:none; padding:0; margin:0; }
-.checkliste li { font-size:14px; color:#2a3a54; padding:7px 0 7px 28px; position:relative; border-bottom:1px solid #f0ece4; line-height:1.55; }
+.checkliste li { font-size:14px; color:#2a3a54; padding:7px 0 7px 36px; position:relative; border-bottom:1px solid #f0ece4; line-height:1.55; cursor:pointer; }
 .checkliste li:last-child { border-bottom:none; }
-.checkliste li::before { content:'☐'; position:absolute; left:0; color:#d4af37; font-size:16px; line-height:1.2; }
+.checkliste li input[type=checkbox] { position:absolute; left:0; top:50%; transform:translateY(-50%); width:18px; height:18px; accent-color:#d4af37; cursor:pointer; }
+.checkliste li.done { color:#8090a8; text-decoration:line-through; }
 .footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-lbl strong { color:#d4af37; }
 .footer-main { background:#1a2a4a; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
@@ -68,7 +75,6 @@ p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
   const sb=supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhjaGxnYW5iZ2plY2l3aHdhaXNqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYyMzA0NjAsImV4cCI6MjA5MTgwNjQ2MH0.mA6oAPJCCgFq5LIUPFDGM0WI_le6STHTuGiwLtGMgu8');
   (async function(){
     try{const res=await fetch('/api/verify-session');if(!res.ok){window.location.href='login.html';return;}const d=await res.json();if(!d.valid){window.location.href='login.html';return;}currentUser={id:d.email,email:d.email};}catch(e){window.location.href='login.html';return;}
-    
   })();
 })();
 </script>
@@ -87,20 +93,24 @@ p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
 <h3>System vs. Bauchgefühl</h3>
 <p>Die meisten Entscheidungen in kleinen Gastrobetrieben laufen über Bauchgefühl. Der Chef entscheidet was auf die Karte kommt, wann wie viel bestellt wird, wie Mitarbeiter eingesetzt werden. Das funktioniert — solange der Chef da ist. Sobald er nicht da ist fehlt das Bauchgefühl und damit die Entscheidungsgrundlage. Das ist warum viele Gastrobetriebe ohne den Chef sofort schlechter laufen.</p>
 <p>Ein System ist eine wiederholbare Art etwas zu tun. Die Frage ist nicht ob du Systeme hast — sondern ob deine Systeme gut genug sind.</p>
-<div class="highlight">Der Kern von Gastro-OS: Übertrage dein Wissen und dein Bauchgefühl in Systeme die auch ohne dich funktionieren. Das gibt dir Freiheit — und deinem Betrieb Stabilität.</div>
+
+<div class="merksatz"><strong>Der Kern von Gastro-OS:</strong> Übertrage dein Wissen und dein Bauchgefühl in Systeme die auch ohne dich funktionieren. Das gibt dir Freiheit — und deinem Betrieb Stabilität.</div>
+
 <h3>Was ein System braucht</h3>
 <p>Jedes System braucht drei Elemente: einen klaren Prozess (wie wird es gemacht), eine klare Verantwortlichkeit (wer macht es) und einen klaren Rhythmus (wann wird es gemacht). Fehlt eines der drei, ist es ein Vorsatz — kein System.</p>
 <div class="beispiel"><div class="beispiel-lbl">📊 System vs. Vorsatz</div>
 <p><strong>Vorsatz:</strong> "Ich werde den Wareneinsatz besser im Blick behalten."<br>
 Ergebnis nach 3 Monaten: nichts verändert.<br><br>
-<strong>System:</strong> "Jeden ersten Montag des Monats — ich, 20 Minuten — berechne ich Wareneinsatz und Personalquote und trage sie in meine Tabelle ein."<br>
+<strong>System:</strong> "Jeden ersten Montag des Monats — etwa 20 Minuten lang — berechne ich Wareneinsatz und Personalquote und trage sie in meine Tabelle ein."<br>
 Ergebnis nach 3 Monaten: Trends erkennbar, Entscheidungen auf Basis von Daten.</p></div>
+
 <div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 1</div>
-<p>Schreib die drei Bereiche auf in denen du am stärksten von dir selbst abhängig bist. Wo käme es sofort zu Problemen wenn du eine Woche nicht da wärst?</p></div>
+<p>Schreib die drei Bereiche auf in denen dein Betrieb am stärksten von dir abhängt. Wo käme es sofort zu Problemen wenn du eine Woche nicht da wärst?</p>
+<p class="aufgabe-hinweis">📝 Notiere deine Antworten auf Papier oder in einem Notizbuch — du wirst sie in Kapitel 3 wieder brauchen.</p></div>
 
 <h2>Kapitel 2 — Die fünf Säulen von Gastro-OS</h2>
 <h3>Säule 1: Zahlen und Controlling</h3>
-<p>Das Fundament für alle anderen Säulen. Wareneinsatz, Personalkosten, Marge, Break-Even. Du musst kein Buchhalter sein — aber du musst deine wichtigsten Zahlen kennen und regelmäßig messen.</p>
+<p>Die erste Säule — und die Basis auf der alles andere aufbaut. Wareneinsatz, Personalkosten, Marge, Break-Even. Du musst kein Buchhalter sein — aber du musst deine wichtigsten Zahlen kennen und regelmäßig messen. Ohne diese Grundlage arbeiten alle anderen Säulen im Dunkeln.</p>
 <h3>Säule 2: Speisekarte und Angebot</h3>
 <p>Die Speisekarte ist dein wichtigstes Gewinn-Instrument. Menu Engineering, Preiskalkulation und Upselling — Modul 2 zeigt dir wie du mit derselben Karte mehr Gewinn machst.</p>
 <h3>Säule 3: Einkauf und Warenwirtschaft</h3>
@@ -108,23 +118,55 @@ Ergebnis nach 3 Monaten: Trends erkennbar, Entscheidungen auf Basis von Daten.</
 <h3>Säule 4: Struktur und Team</h3>
 <p>SOPs die Fragen beantworten bevor sie gestellt werden. Schichtleiter der in deiner Abwesenheit führt. Ein Betrieb der ohne dich läuft. Das ist Freiheit — Modul 5 und 6.</p>
 <h3>Säule 5: Sichtbarkeit und Wachstum</h3>
-<p>Marketing ohne Zeitaufwand, Upselling, Expansion. Wenn die ersten vier Säulen stehen, macht diese Säule den Unterschied zwischen einem stabilen und einem wachsenden Betrieb.</p>
+<p>Mehr Reichweite, gezieltes Upselling, Expansion. Wenn die ersten vier Säulen stehen, macht diese Säule den Unterschied zwischen einem stabilen und einem wachsenden Betrieb.</p>
+
 <div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 2</div>
-<p>Welche der fünf Säulen ist bei dir am schwächsten? Das ist dein Fokus für die ersten drei Monate.</p></div>
+<p>Welche der fünf Säulen fühlt sich in deinem Betrieb am wackligsten an — wo läuft am meisten nach Bauchgefühl statt nach System? Benenne sie und notiere kurz warum.</p>
+<p class="aufgabe-hinweis">💡 Das ist dein erster Fokusbereich in Gastro-OS.</p></div>
 
 <h2>Kapitel 3 — Der positive Kreislauf</h2>
 <h3>Wie Systeme sich gegenseitig stärken</h3>
-<p>Ein besseres Einkaufs-System senkt den Wareneinsatz. Bessere Zahlen motivieren zu mehr Systemarbeit. Mehr Systemarbeit führt zu einem stabileren Betrieb. Ein stabilerer Betrieb gibt dir Zeit für Marketing. Mehr Gäste verbessern die Zahlen weiter.</p>
-<p>Das ist der positive Kreislauf. Er beginnt mit dem ersten System — und er ersetzt den negativen Kreislauf: kein System → Chaos → Chef muss einspringen → keine Zeit für Systeme → mehr Chaos.</p>
-<div class="beispiel"><div class="beispiel-lbl">📊 Wie Anna ihr System aufgebaut hat</div>
+<p>Systeme wirken nicht isoliert — sie verstärken sich gegenseitig. Wer einmal anfängt, merkt schnell: jeder Schritt macht den nächsten leichter.</p>
+
+<p><strong>Der negative Kreislauf — ohne Systeme:</strong></p>
+<div class="kreislauf kreislauf-neg">
+  <div class="kreislauf-item"><span class="k-icon">❌</span> Kein System → Entscheidungen laufen über den Chef</div>
+  <div class="kreislauf-arrow">↓</div>
+  <div class="kreislauf-item"><span class="k-icon">❌</span> Chef muss ständig einspringen → keine Zeit für Aufbau</div>
+  <div class="kreislauf-arrow">↓</div>
+  <div class="kreislauf-item"><span class="k-icon">❌</span> Kein Aufbau → mehr Chaos, mehr Abhängigkeit</div>
+  <div class="kreislauf-arrow">↓</div>
+  <div class="kreislauf-item"><span class="k-icon">❌</span> Mehr Chaos → noch weniger Zeit → Kreislauf wiederholt sich</div>
+</div>
+
+<p style="margin-top:20px;"><strong>Der positive Kreislauf — mit Systemen:</strong></p>
+<div class="kreislauf kreislauf-pos">
+  <div class="kreislauf-item"><span class="k-icon">✅</span> Erstes System → Einkauf läuft ohne dich</div>
+  <div class="kreislauf-arrow">↓</div>
+  <div class="kreislauf-item"><span class="k-icon">✅</span> Wareneinsatz sinkt → bessere Zahlen, mehr Klarheit</div>
+  <div class="kreislauf-arrow">↓</div>
+  <div class="kreislauf-item"><span class="k-icon">✅</span> Mehr Klarheit → Motivation für nächstes System</div>
+  <div class="kreislauf-arrow">↓</div>
+  <div class="kreislauf-item"><span class="k-icon">✅</span> Stabilerer Betrieb → Zeit für Sichtbarkeit und Wachstum</div>
+</div>
+
+<div class="beispiel" style="margin-top:20px;"><div class="beispiel-lbl">📊 Wie Anna ihr System aufgebaut hat</div>
 <p>Anna, 60-Plätze-Restaurant. Vor Gastro-OS: 65 Stunden/Woche, ständig im Betrieb.<br>
 Nach 6 Monaten: 50 Stunden/Woche, ein freier Tag, Schichtleiterin übernimmt 3 Abende.<br>
-Wareneinsatz von 34% auf 28% — spart 2.400 €/Monat. Kein Zauber — Systeme.</p></div>
+Wareneinsatz von 34% auf 28% — spart 2.400 €/Monat. Das Ergebnis konsequenter Systemarbeit.</p></div>
+
 <div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 3</div>
-<p>Welches erste System würde in deinem Betrieb den größten Unterschied machen? Beschreibe es mit Prozess, Verantwortlichkeit und Rhythmus.</p></div>
+<p>Nimm die drei Bereiche aus Kapitel 1 — in denen dein Betrieb am stärksten von dir abhängt. Formuliere für den wichtigsten davon ein erstes System: Prozess, Verantwortlichkeit, Rhythmus.</p>
+<p class="aufgabe-hinweis">📝 Schreib es in einem Satz: „Jeden [Zeitpunkt] — [wer] — [was] — [wie lange]."</p></div>
 
 <div class="fazit"><div class="fazit-lbl">🎯 Das Wichtigste auf einen Blick</div><ul><li>System = Prozess + Verantwortlichkeit + Rhythmus. Fehlt eines: Vorsatz, kein System.</li><li>Die fünf Säulen: Zahlen, Karte, Einkauf, Struktur, Sichtbarkeit.</li><li>Systeme stärken sich gegenseitig — jeder Schritt macht den nächsten leichter.</li><li>Wer wartet bis es ruhiger wird, wartet ewig. Das System startet jetzt.</li></ul></div>
-<div class="checkliste"><div class="checkliste-lbl">✅ Sofort-Checkliste — Das kannst du heute noch tun</div><ul><li>Die drei Bereiche identifizieren in denen du am meisten von dir abhängig bist</li><li>Die schwächste Säule benennen — das ist dein erster Fokus</li><li>Erstes System in einem Satz formulieren: Prozess, Verantwortlichkeit, Rhythmus</li></ul></div>
+
+<div class="checkliste"><div class="checkliste-lbl">✅ Sofort-Checkliste — Das kannst du heute noch tun</div><ul>
+  <li><input type="checkbox" onchange="this.parentElement.classList.toggle('done',this.checked)"> Die 3 Bereiche identifizieren, in denen dein Betrieb am meisten von dir abhängt</li>
+  <li><input type="checkbox" onchange="this.parentElement.classList.toggle('done',this.checked)"> Die schwächste Säule benennen — das ist dein erster Fokus</li>
+  <li><input type="checkbox" onchange="this.parentElement.classList.toggle('done',this.checked)"> Erstes System in einem Satz formulieren: Prozess, Verantwortlichkeit, Rhythmus</li>
+</ul></div>
+
   <div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
 <div class="nav-row"><a href="modul0-lektion1.html" class="nav-btn secondary">← Lektion 1</a><a href="modul0-lektion3.html" class="nav-btn">Lektion 3 →</a></div>
 </div>
