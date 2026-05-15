@@ -7,7 +7,7 @@
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
-.header { background:#1a2a4a; padding:22px 40px; text-align:center; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
 .header .brand { font-family:Georgia,serif; font-size:22px; color:#d4af37; letter-spacing:4px; font-weight:normal; }
 .header .modul-label { font-size:11px; color:#a0b0c8; letter-spacing:3px; text-transform:uppercase; margin-top:4px; }
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
@@ -53,13 +53,15 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 .hinweis strong { color:#1a2a4a; }
 .footer-main { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-main strong { color:#d4af37; }
+.btn-back-modul { background:#d4af37; color:#1a2a4a; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.btn-back-modul:hover { background:#c8a030; }
 @media(max-width:700px){.pillars-grid{grid-template-columns:1fr 1fr;}.bottom-section{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
 <div class="header">
   <div class="brand">GASTRO-OS</div>
-  <div class="modul-label">Systemübersicht</div>
+  <a href="dashboard.html" class="btn-back-modul">← Zurück zum Dashboard</a>
 </div>
 <div class="gold-bar"></div>
 <div class="main">
@@ -94,7 +96,6 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
           <div class="pillar-item">Break-Even bestimmen</div>
           <div class="pillar-item">Monatliches Controlling</div>
           <div class="pillar-item">BWA lesen & nutzen</div>
-          <div class="pillar-modul">Modul 1 & 4</div>
         </div></div>
       </div>
 
@@ -112,7 +113,6 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
           <div class="pillar-item">Preiskalkulation</div>
           <div class="pillar-item">Upselling systematisch</div>
           <div class="pillar-item">Karte strategisch aufbauen</div>
-          <div class="pillar-modul">Modul 2 & 8</div>
         </div></div>
       </div>
 
@@ -130,7 +130,6 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
           <div class="pillar-item">Inventur systematisieren</div>
           <div class="pillar-item">Verderb reduzieren</div>
           <div class="pillar-item">Wareneinsatz senken</div>
-          <div class="pillar-modul">Modul 3</div>
         </div></div>
       </div>
 
@@ -148,7 +147,6 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
           <div class="pillar-item">Betrieb ohne Chef führen</div>
           <div class="pillar-item">Mitarbeiter entwickeln</div>
           <div class="pillar-item">Kosten optimieren</div>
-          <div class="pillar-modul">Modul 5 & 6 & 7</div>
         </div></div>
       </div>
 
@@ -166,7 +164,6 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
           <div class="pillar-item">Stammgäste binden</div>
           <div class="pillar-item">Wachstum planen</div>
           <div class="pillar-item">Skalierung vorbereiten</div>
-          <div class="pillar-modul">Modul 9 & 10</div>
         </div></div>
       </div>
 
@@ -196,6 +193,7 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
   <div class="hinweis">
     <strong>📌 So nutzt du diese Übersicht:</strong> Klick auf eine Säule um die Themen aufzuklappen. Du siehst sofort welche Module dazu gehören und was dich erwartet. Diese Übersicht begleitet dich durch das gesamte System.
   </div>
+
 </div>
 <div class="gold-bar"></div>
 <div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
