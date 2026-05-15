@@ -46,7 +46,6 @@ body {font-family:'Segoe UI',Arial,sans-serif;background:#f5f0e8;color:#1a2a4a;m
   const sb=supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhjaGxnYW5iZ2plY2l3aHdhaXNqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYyMzA0NjAsImV4cCI6MjA5MTgwNjQ2MH0.mA6oAPJCCgFq5LIUPFDGM0WI_le6STHTuGiwLtGMgu8');
   (async function(){
     try{const res=await fetch('/api/verify-session');if(!res.ok){window.location.href='login.html';return;}const d=await res.json();if(!d.valid){window.location.href='login.html';return;}currentUser={id:d.email,email:d.email};}catch(e){window.location.href='login.html';return;}
-    
     const{data:p}=await sb.from('profiles').select('is_active,subscription_status').eq('id',session.user.id).maybeSingle();
     if(p&&(!p.is_active||p.subscription_status!=='active')){// signOut disabled;window.location.href='login.html';}
   })();
@@ -63,7 +62,7 @@ body {font-family:'Segoe UI',Arial,sans-serif;background:#f5f0e8;color:#1a2a4a;m
   <div class="modul-header">
     <div class="nummer">Modul 0</div>
     <h1>Das Gastro OS Prinzip</h1>
-    <p>Du hast den ersten Schritt gemacht — und das zählt.</p>
+    <p>Du hast den ersten Schritt gemacht.</p>
   </div>
 
   <div class="intro-box">
@@ -123,24 +122,24 @@ body {font-family:'Segoe UI',Arial,sans-serif;background:#f5f0e8;color:#1a2a4a;m
   </div>
 
   <div class="tipp-box">
-    <strong>Ein Tipp zur Reflexionsaufgabe.</strong> Füll sie heute aus und speichere deine Antworten. Nach drei Monaten, nach sechs Monaten und nach einem Jahr schau sie dir noch einmal an. Du wirst sehen wie sich dein Blick auf deinen Betrieb verändert hat. Was damals ein Problem war ist vielleicht heute gelöst. Was damals unklar war ist heute selbstverständlich. Diese Entwicklung sichtbar zu machen ist einer der wertvollsten Momente in Gastro OS.
+    <strong>Ein Tipp zur Reflexionsaufgabe.</strong> Füll sie heute aus und speichere deine Antworten. Nach drei Monaten, nach sechs Monaten und nach einem Jahr schau sie dir noch einmal an. Du wirst sehen wie sich dein Blick auf deinen Betrieb verändert hat. Was mal ein Problem war, ist dann häufig keines mehr. Was damals unklar war, ist es dann nicht mehr. Diese Entwicklung sichtbar zu machen ist einer der wertvollsten Momente in Gastro OS.
   </div>
 
   <div class="section-title">So liest du die Symbole in Gastro OS</div>
-  <p style="font-size:14px;color:#3a4a6a;margin-bottom:14px;line-height:1.7">Bevor du startest, kurz ein Blick auf die Symbole die dich durch den gesamten Kurs begleiten. Jedes Symbol steht für einen bestimmten Inhaltstyp. So weißt du auf einen Blick was dich erwartet bevor du einen Tab öffnest.</p>
+  <p style="font-size:14px;color:#3a4a6a;margin-bottom:14px;line-height:1.7">Bevor du startest, gibt es eine Übersicht für die Symbole, die dich durch den gesamten Kurs begleiten. Jedes Symbol steht für einen bestimmten Inhaltstypen. So weißt du auf einen Blick, was dich erwartet, bevor du einen Tab öffnest.</p>
   <div class="symbol-list">
     <div class="symbol-row"><span class="sym">🎬</span><div><strong>Video</strong> — Schau das Video bevor du weiterliest. Es gibt dir den Rahmen für alles was folgt.</div></div>
     <div class="symbol-row"><span class="sym">📖</span><div><strong>Lektion</strong> — Dein Hauptlerninhalt. Lies ihn in Ruhe durch und mach die Aufgaben am Ende jedes Kapitels.</div></div>
     <div class="symbol-row"><span class="sym">🎙</span><div><strong>Podcast Küchenfunk</strong> — Dein Audio Begleiter. Perfekt für unterwegs, im Auto oder vor dem Service.</div></div>
     <div class="symbol-row"><span class="sym">📸</span><div><strong>Screenshot Anleitung</strong> — Zeigt dir Schritt für Schritt wie du ein Tool ausfüllst und nutzt.</div></div>
-    <div class="symbol-row"><span class="sym">📊</span><div><strong>Tool</strong> — Dein praktisches Werkzeug. Öffnen, ausfüllen, anwenden. Manche Tools haben mehrere Sheets. Arbeite sie immer der Reihe nach durch.</div></div>
+    <div class="symbol-row"><span class="sym">📊</span><div><strong>Tool</strong> — Dein praktisches Werkzeug. Öffnen, ausfüllen, anwenden. Arbeite sie immer der Reihe nach durch.</div></div>
     <div class="symbol-row"><span class="sym">📋</span><div><strong>Mindmap</strong> — Eine Zusammenfassung des Moduls oder wichtige Hinweise.</div></div>
-    <div class="symbol-row"><span class="sym">🎯</span><div><strong>Quiz</strong> — Teste dein Wissen am Ende jedes Moduls. Dauert keine 5 Minuten.</div></div>
+    <div class="symbol-row"><span class="sym">🎯</span><div><strong>Quiz</strong> — Teste dein Wissen am Ende jedes Moduls. Das dauert nur wenige Minuten.</div></div>
     <div class="symbol-row"><span class="sym">🛒</span><div><strong>Shop</strong> — Zusätzliche Produkte die dir den Alltag erleichtern und Zeit sparen.</div></div>
     <div class="symbol-row"><span class="sym">⚠️</span><div><strong>Wichtiger Hinweis</strong> — Unbedingt lesen bevor du weitermachst.</div></div>
   </div>
 
-  <div class="hinweis">💡 <strong>So gehst du vor:</strong> Arbeite die Lektionen der Reihe nach durch. Überspringe nichts. Jede Lektion baut auf der vorherigen auf. Die Reflexionsaufgabe am Ende ist Pflicht, nicht optional. Sie ist dein persönlicher Startpunkt für die nächsten zwölf Monate. Viel Erfolg. Du machst das.</div>
+  <div class="hinweis">💡 <strong>So gehst du vor:</strong> Arbeite die Lektionen der Reihe nach durch. Überspringe nichts. Jede Lektion baut auf der vorherigen auf. Die Reflexionsaufgaben am Ende eines Moduls sind wichtig und notwendig, um fortzufahren. Sie ist dein persönlicher Startpunkt für die nächsten zwölf Monate. Viel Erfolg. Du machst das.</div>
 
 </div>
 <div class="gold-bar"></div>
