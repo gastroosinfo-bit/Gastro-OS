@@ -297,6 +297,8 @@ async function init() {
   if (data && data.data && data.data.bestanden) {
     document.getElementById('quiz-form').style.display = 'none';
     document.getElementById('bereits-box').style.display = 'block';
+    const intro = document.querySelector('p.intro');
+    if (intro) intro.style.display = 'none';
   }
 }
 
