@@ -1,52 +1,51 @@
-// GASTRO-OS — Checklisten-Speicherung + Navigation
-// Speichert Haken-Status und fügt Dashboard-Button automatisch ein.
-
+// GASTRO-OS — Checklisten-Speicherung + Dashboard-Button unten
 (function() {
   const SUPABASE_URL = 'https://hchlganbgjeciwhwaisj.supabase.co';
   const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhjaGxnYW5iZ2plY2l3aHdhaXNqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYyMzA0NjAsImV4cCI6MjA5MTgwNjQ2MH0.mA6oAPJCCgFq5LIUPFDGM0WI_le6STHTuGiwLtGMgu8';
 
-  // ─── Dashboard-Button ───────────────────────────────────────────────────────
+  // ─── Dashboard-Button unten rechts ─────────────────────────────────────────
 
   function addDashboardButton() {
-    // Nicht auf Dashboard/Login/Legal-Seiten
-    const path = window.location.pathname;
-    const file = path.split('/').pop();
+    const file = window.location.pathname.split('/').pop();
     const skip = ['dashboard.html','login.html','impressum.html','datenschutz.html','agb.html',''];
     if (skip.includes(file)) return;
+    if (document.querySelector('.gastro-db-btn-bottom')) return;
 
-    // Bereits vorhanden?
-    if (document.querySelector('.gastro-dashboard-btn')) return;
-
-    // Button-Styles
+    // Styles
     const style = document.createElement('style');
-    style.textContent = '.gastro-dashboard-btn{display:inline-block;background:#d4af37;color:#1a2a4a;border:none;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;transition:all 0.2s;}.gastro-dashboard-btn:hover{background:#c8a030;color:#1a2a4a;}.gastro-dashboard-row{text-align:right;margin:20px 0 8px;padding:0 0 4px;}';
+    style.textContent = [
+      '.gastro-db-btn-bottom{display:inline-block;background:#d4af37;color:#1a2a4a;border:none;',
+      'padding:10px 22px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;',
+      'text-decoration:none;transition:all 0.2s;}',
+      '.gastro-db-btn-bottom:hover{background:#c8a030;color:#1a2a4a;}',
+      '.gastro-db-row-bottom{text-align:right;margin-top:24px;margin-bottom:8px;}'
+    ].join('');
     document.head.appendChild(style);
 
-    const btn = '<div class="gastro-dashboard-row"><a href="dashboard.html" class="gastro-dashboard-btn">← Zurück zum Dashboard</a></div>';
+    const btn = document.createElement('div');
+    btn.className = 'gastro-db-row-bottom';
+    btn.innerHTML = '<a href="dashboard.html" class="gastro-db-btn-bottom">← Zurück zum Dashboard</a>';
 
-    // nav-row prüfen
+    // nav-row vorhanden?
     const navRow = document.querySelector('.nav-row');
-
     if (navRow) {
-      // Hat die nav-row einen Vorwärts-Pfeil? (→ = Folge-Lektion vorhanden)
-      const hasForward = navRow.innerHTML.includes('→');
-      if (hasForward) return; // Folge-Lektion vorhanden — kein Dashboard-Button
-      // Letzte Lektion — Button nach nav-row einfügen
-      navRow.insertAdjacentHTML('afterend', btn);
+      // Hat Vorwärts-Pfeil → = Folge-Lektion, kein Button
+      if (navRow.innerHTML.includes('→')) return;
+      // Letzte Lektion: Button nach nav-row
+      navRow.parentNode.insertBefore(btn, navRow.nextSibling);
     } else {
-      // Kein nav-row — Button vor Footer einfügen
-      const footer = document.querySelector('.gold-bar, .footer-main, .footer-brand, .footer');
-      if (footer) {
-        footer.insertAdjacentHTML('beforebegin', btn);
+      // Kein nav-row: Button am Ende des Inhaltsbereichs (wrap, main, content-wrap)
+      const content = document.querySelector('.wrap, .main, .content-wrap');
+      if (content) {
+        content.appendChild(btn);
       }
     }
   }
 
-  // ─── Checklisten-Speicherung ────────────────────────────────────────────────
+  // ─── Checklisten-Speicherung ───────────────────────────────────────────────
 
   function getToolName() {
-    const path = window.location.pathname;
-    const file = path.split('/').pop().replace('.html', '').replace(/-/g, '_');
+    const file = window.location.pathname.split('/').pop().replace('.html','').replace(/-/g,'_');
     return 'checklist_' + file;
   }
 
@@ -61,7 +60,8 @@
   async function loadState(userId) {
     try {
       const res = await fetch(
-        SUPABASE_URL + '/rest/v1/user_tool_data?user_id=eq.' + encodeURIComponent(userId) + '&tool_name=eq.' + getToolName() + '&select=data',
+        SUPABASE_URL + '/rest/v1/user_tool_data?user_id=eq.' + encodeURIComponent(userId) +
+        '&tool_name=eq.' + getToolName() + '&select=data',
         { headers: sbHeaders() }
       );
       const rows = await res.json();
@@ -85,13 +85,11 @@
     } catch(e) {}
   }
 
-  // ─── Init ────────────────────────────────────────────────────────────────────
+  // ─── Init ──────────────────────────────────────────────────────────────────
 
   async function init() {
-    // Dashboard-Button sofort einfügen
     addDashboardButton();
 
-    // Session für Checklisten
     let userEmail = null;
     try {
       const res = await fetch('/api/verify-session');
@@ -124,5 +122,4 @@
   } else {
     init();
   }
-
 })();
