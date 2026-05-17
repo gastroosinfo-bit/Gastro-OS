@@ -52,6 +52,10 @@
   .footer strong { color: #d4af37; }
   .btn-back-modul { background: #d4af37; color: #1a2a4a; border: none; padding: 9px 20px; border-radius: 6px; font-size: 13px; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.2s; letter-spacing: 0.3px; }
   .btn-back-modul:hover { background: #c8a030; color: #1a2a4a; }
+
+.btn-dashboard { background:#d4af37; color:#1a2a4a; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.btn-dashboard:hover { background:#c8a030; color:#1a2a4a; }
+.dashboard-row { text-align:right; margin-top:24px; padding:0 0 8px; }
 </style>
 <script>
 (function(){
@@ -68,6 +72,8 @@
   <div class="brand">GASTRO-OS</div>
   <a href="dashboard.html#modul-8" class="btn-back-modul">← Zurück zum Dashboard</a>
 </div>
+
+<div class="dashboard-row"><a href="dashboard.html" class="btn-dashboard">← Zurück zum Dashboard</a></div>
 <div class="gold-bar"></div>
 <div class="main">
   <h1>🎯 Quiz — Modul 8</h1>
@@ -178,10 +184,10 @@
   </div>
 
   <div class="ergebnis-box nochmal" id="ergebnis-nochmal">
-    <div class="icon">💪</div>
+    <div class="icon">💪<button onclick="retryQuiz()" style="background:#d4af37;color:#1a2a4a;border:none;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;margin-top:12px;">Nochmal versuchen</button></div>
     <h2>Fast geschafft — noch einmal!</h2>
     <p id="ergebnis-text-2"></p>
-    <button class="ergebnis-btn" onclick="retryQuiz()">Quiz wiederholen</button>
+    
   </div>
 </div>
 <div class="gold-bar"></div>
