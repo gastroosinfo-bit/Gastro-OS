@@ -1,49 +1,46 @@
-// GASTRO-OS — Checklisten-Speicherung + Dashboard-Button unten
+// GASTRO-OS — Checklisten-Speicherung + Navigation
 (function() {
   const SUPABASE_URL = 'https://hchlganbgjeciwhwaisj.supabase.co';
   const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhjaGxnYW5iZ2plY2l3aHdhaXNqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYyMzA0NjAsImV4cCI6MjA5MTgwNjQ2MH0.mA6oAPJCCgFq5LIUPFDGM0WI_le6STHTuGiwLtGMgu8';
 
-  // ─── Dashboard-Button unten rechts ─────────────────────────────────────────
-
+  // ─── Dashboard-Button ───────────────────────────────────────────────────────
   function addDashboardButton() {
     const file = window.location.pathname.split('/').pop();
     const skip = ['dashboard.html','login.html','impressum.html','datenschutz.html','agb.html',''];
     if (skip.includes(file)) return;
-    if (document.querySelector('.gastro-db-btn-bottom')) return;
+    if (document.querySelector('.gastro-db-added')) return;
 
-    // Styles
     const style = document.createElement('style');
-    style.textContent = [
-      '.gastro-db-btn-bottom{display:inline-block;background:#d4af37;color:#1a2a4a;border:none;',
-      'padding:10px 22px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;',
-      'text-decoration:none;transition:all 0.2s;}',
-      '.gastro-db-btn-bottom:hover{background:#c8a030;color:#1a2a4a;}',
-      '.gastro-db-row-bottom{text-align:right;margin-top:24px;margin-bottom:8px;}'
-    ].join('');
+    style.textContent = '.gastro-db-added{display:inline-block;background:#d4af37;color:#1a2a4a;border:none;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;transition:all 0.2s;}.gastro-db-added:hover{background:#c8a030;color:#1a2a4a;}.gastro-db-wrap{text-align:right;margin-top:24px;margin-bottom:8px;}';
     document.head.appendChild(style);
 
-    const btn = document.createElement('div');
-    btn.className = 'gastro-db-row-bottom';
-    btn.innerHTML = '<a href="dashboard.html" class="gastro-db-btn-bottom">← Zurück zum Dashboard</a>';
-
-    // nav-row vorhanden?
     const navRow = document.querySelector('.nav-row');
+
     if (navRow) {
-      // Hat Vorwärts-Pfeil → = Folge-Lektion, kein Button
-      if (navRow.innerHTML.includes('→')) return;
-      // Letzte Lektion: Button nach nav-row
-      navRow.parentNode.insertBefore(btn, navRow.nextSibling);
+      const hasForward = navRow.innerHTML.includes('→');
+      if (hasForward) {
+        // Folge-Lektion vorhanden — kein Dashboard-Button, nav-row bleibt
+        return;
+      } else {
+        // Letzte Lektion — nav-row entfernen, nur Dashboard-Button zeigen
+        const wrap = document.createElement('div');
+        wrap.className = 'gastro-db-wrap';
+        wrap.innerHTML = '<a href="dashboard.html" class="gastro-db-added">← Zurück zum Dashboard</a>';
+        navRow.parentNode.replaceChild(wrap, navRow);
+      }
     } else {
-      // Kein nav-row: Button am Ende des Inhaltsbereichs (wrap, main, content-wrap)
+      // Kein nav-row — Button am Ende des Inhaltsbereichs
       const content = document.querySelector('.wrap, .main, .content-wrap');
       if (content) {
-        content.appendChild(btn);
+        const wrap = document.createElement('div');
+        wrap.className = 'gastro-db-wrap';
+        wrap.innerHTML = '<a href="dashboard.html" class="gastro-db-added">← Zurück zum Dashboard</a>';
+        content.appendChild(wrap);
       }
     }
   }
 
   // ─── Checklisten-Speicherung ───────────────────────────────────────────────
-
   function getToolName() {
     const file = window.location.pathname.split('/').pop().replace('.html','').replace(/-/g,'_');
     return 'checklist_' + file;
@@ -86,7 +83,6 @@
   }
 
   // ─── Init ──────────────────────────────────────────────────────────────────
-
   async function init() {
     addDashboardButton();
 
