@@ -93,6 +93,10 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
   .op-stats span:first-child { font-size:13px; }
   .op-stats { font-size:12px; }
 }
+
+.btn-dashboard { background:#d4af37; color:#1a2a4a; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.btn-dashboard:hover { background:#c8a030; color:#1a2a4a; }
+.dashboard-row { text-align:right; margin-top:24px; padding:0 0 8px; }
 </style>
 <script>
 (function(){
@@ -110,6 +114,7 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
   <div class="welcome">Willkommen, <span id="user-name">...</span></div>
   <button class="btn-logout" onclick="doLogout()">Abmelden</button>
 </div>
+
 <div class="gold-bar"></div>
 <div class="overall-progress-bar">
   <div class="op-inner">
