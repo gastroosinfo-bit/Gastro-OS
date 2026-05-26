@@ -15,8 +15,8 @@ h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:norma
 .lern-box ul { list-style:none; padding:0; margin:0; }
 .lern-box li { font-size:13px; color:#a0b0c8; padding:4px 0 4px 20px; position:relative; line-height:1.6; }
 .lern-box li::before { content:'✓'; position:absolute; left:0; color:#d4af37; font-weight:700; }
-h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:normal; margin:36px 0 14px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
-h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:22px 0 10px; }
+h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:700; margin:36px 0 14px; padding-bottom:10px; border-bottom:3px solid #d4af37; }
+h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:600; margin:22px 0 10px; padding-left:12px; border-left:3px solid #d4af37; }
 h4 { font-size:15px; color:#1a2a4a; font-weight:700; margin:18px 0 8px; }
 p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
 .aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin:24px 0; }
@@ -49,7 +49,8 @@ p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
 .footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-lbl strong { color:#d4af37; }
 .footer-main { background:#1a2a4a; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
-.footer-main strong { color:#d4af37; }</style></head>
+.footer-main strong { color:#d4af37; }mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
+</style></head>
 <body>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -80,23 +81,23 @@ p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
 <h2>Kapitel 1 — Was der Wareneinsatz wirklich misst</h2>
 <h3>Die wichtigste Zahl nach dem Umsatz</h3>
 <p>Wareneinsatz % = Wareneinsatz (€) geteilt durch Nettoumsatz (€) mal 100. Diese eine Zahl sagt dir wie viel von jedem Euro Umsatz für Lebensmittel und Getränke draufgeht. Alles was darüber hinaus übrig bleibt muss Personal, Miete, Energie und deinen Gewinn finanzieren.</p>
-<p>Zielwert für die meisten Gastronomiebetriebe: unter 30%. Das klingt einfach. In der Realität liegt der Wareneinsatz vieler Betriebe bei 35-42% — weil er nie systematisch kontrolliert wurde.</p>
+<p>Zielwert für die meisten Gastronomiebetriebe: unter 30%. Das klingt einfach. In der Realität liegt der Wareneinsatz vieler Betriebe bei 35–42 % — weil er nie systematisch kontrolliert wurde.</p>
 <h3>Die 3 häufigsten Einkaufsfehler</h3>
 <p>Fehler 1 — Zu viel einkaufen: Man kauft auf Vorrat weil der Lieferant eine Mindestmenge hat oder weil es gerade günstig ist. Ergebnis: Überbestand, Verderb, gebundenes Kapital.</p>
-<p>Fehler 2 — Keine Portionsstandards: Ohne klare Standards variiert der Wareneinsatz pro Portion um 10-25%. Was zu viel auf dem Teller landet kostet dich täglich Geld ohne dass du es siehst.</p>
+<p>Fehler 2 — Keine Portionsstandards: Ohne klare Standards variiert der Wareneinsatz pro Portion um 10–25 %. Was zu viel auf dem Teller landet kostet dich täglich Geld ohne dass du es siehst.</p>
 <p>Fehler 3 — Kein Lieferantenvergleich: Viele Gastronomen kaufen seit Jahren beim selben Lieferanten ohne je zu prüfen ob die Konditionen noch marktgerecht sind. Märkte verändern sich — wer nicht vergleicht, zahlt zu viel.</p>
-<div class="beispiel"><div class="beispiel-lbl">📊 Rechenbeispiel aus der Praxis</div><p>Gasthaus, Monatsumsatz 32.000 €, aktueller WE 40% = 12.800 €/Monat.</p><p>Ziel: WE auf 30% senken = 32.000 × 0,30 = 9.600 €/Monat.</p><div class="rechnung">Einsparung pro Monat: 3.200 €. Pro Jahr: 38.400 €.</div><p>Das sind keine Fantasiezahlen. Betriebe mit System erreichen 28-31% WE. Der Unterschied liegt nicht im Umsatz — er liegt im Einkauf.</p></div>
+<div class="beispiel"><div class="beispiel-lbl">📊 Rechenbeispiel aus der Praxis</div><p>Gasthaus, Monatsumsatz 32.000 €, aktueller WE 40% = 12.800 €/Monat.</p><p>Ziel: WE auf 30% senken = 32.000 × 0,30 = 9.600 €/Monat.</p><div class="rechnung">Einsparung pro Monat: 3.200 €. Pro Jahr: 38.400 €.</div><p>Das sind keine Fantasiezahlen. Betriebe mit System erreichen 28–31 % WE. Der Unterschied liegt nicht im Umsatz — er liegt im Einkauf.</p></div>
 <div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 1</div><p>Berechne deinen aktuellen Wareneinsatz % für den letzten Monat. Wie weit bist du vom Zielwert entfernt? Was wäre deine monatliche Einsparung wenn du den Zielwert erreichst? Schreib diese Zahl groß auf.</p></div>
 <h2>Kapitel 2 — Der systematische Einkauf</h2>
 <h3>Einkaufsplanung statt Bauchgefühl</h3>
 <p>Systematischer Einkauf bedeutet: Du weißt vor jeder Bestellung was du hast (Inventur), was du brauchst (Bedarfsplanung basierend auf Dienstplan und gebuchten Tischen) und was es kosten darf (Wareneinsatz-Budget).</p>
-<p>Diese drei Schritte klingen aufwendig. In der Praxis dauert eine strukturierte Einkaufsroutine 20-30 Minuten pro Woche — wenn man sie einmal aufgebaut hat. Ohne System dauert der Einkauf genauso lang, ist aber viel weniger effektiv.</p>
+<p>Diese drei Schritte klingen aufwendig. In der Praxis dauert eine strukturierte Einkaufsroutine 20–30 Minuten pro Woche — wenn man sie einmal aufgebaut hat. Ohne System dauert der Einkauf genauso lang, ist aber viel weniger effektiv.</p>
 <h3>Die wöchentliche Einkaufsroutine in 5 Schritten</h3>
 <p>Schritt 1: Inventur — was ist noch da? Schritt 2: Wochenplan prüfen — welche Gerichte sind geplant? Schritt 3: Bedarf berechnen — was fehlt? Schritt 4: Preisvergleich für Top-3-Positionen. Schritt 5: Bestellen. Das ist es.</p>
 <div class="tipp-box"><p>💡 <strong>Profi-Tipp:</strong> Starte die Einkaufsplanung immer mit einer physischen Inventur — nicht mit dem Kopf. Was du glaubst noch zu haben und was tatsächlich im Kühlraum liegt sind oft zwei verschiedene Realitäten. 10 Minuten Inventur sparen oft 100 Euro Überbestellung.</p></div>
 <div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 2</div><p>Führe jetzt eine sofortige Inventur deiner 5 teuersten Einkaufspositionen durch. Was hast du aktuell? Was wirst du diese Woche brauchen? Bestelle nur was du wirklich brauchst — und protokolliere was du am Ende der Woche wegwirfst.</p></div>
 
-<div class="fazit"><div class="fazit-lbl">🎯 Das Wichtigste auf einen Blick</div><ul><li>WE% = Wareneinsatz ÷ Nettoumsatz × 100. Ziel: unter 30%.</li><li>1% WE-Senkung bei 30.000 € Umsatz = 3.600 €/Jahr mehr Gewinn.</li><li>3 Fehler: zu viel kaufen · keine Portionsstandards · kein Lieferantenvergleich.</li><li>Wöchentliche Einkaufsroutine: 20-30 Minuten die tausende Euro sparen.</li></ul></div>
+<div class="fazit"><div class="fazit-lbl">🎯 Das Wichtigste auf einen Blick</div><ul><li>WE% = Wareneinsatz ÷ Nettoumsatz × 100. Ziel: unter 30%.</li><li>1% WE-Senkung bei 30.000 € Umsatz = 3.600 €/Jahr mehr Gewinn.</li><li>3 Fehler: zu viel kaufen · keine Portionsstandards · kein Lieferantenvergleich.</li><li>Wöchentliche Einkaufsroutine: 20–30 Minuten die tausende Euro sparen.</li></ul></div>
 <div class="checkliste"><div class="checkliste-lbl">✅ Sofort-Checkliste — Das kannst du heute noch tun</div><ul><li>Aktuellen WE% berechnen und mit Zielwert vergleichen</li><li>Einkaufsroutine in 5 Schritten für nächste Woche planen</li><li>Sofortige Inventur der 5 teuersten Einkaufspositionen</li><li>Einkaufs-Check Tool öffnen und erste Woche eintragen</li></ul></div>
   
 <h3>Der Wareneinsatz im Jahresverlauf</h3>
@@ -110,13 +111,13 @@ p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
 
 <h3>FIFO — First In First Out als Standard</h3>
 <p>FIFO ist das wichtigste Prinzip in der Warenlagerung: Was zuerst geliefert wurde muss zuerst verbraucht werden. Klingt selbstverständlich. Wird aber in der Hektik des Alltags ständig verletzt — wenn jemand greift was vorne liegt statt was hinten liegt, wenn neue Lieferungen vor die alten gestellt werden, wenn niemand die Ankunftsdaten kontrolliert.</p>
-<p>Das Ergebnis: Produkte die zuerst verbraucht werden sollten bleiben liegen bis sie nicht mehr verwendbar sind. Verderb der vollständig vermeidbar gewesen wäre. Eine einfache Maßnahme: Alle gelieferten Waren sofort mit dem Lieferdatum markieren und nach FIFO einlagern. Das dauert 2 Minuten pro Lieferung und spart langfristig Hunderte von Euro pro Monat.</p>
+<p>Das Ergebnis: Produkte, die zuerst verbraucht werden sollten bleiben liegen bis sie nicht mehr verwendbar sind. Verderb der vollständig vermeidbar gewesen wäre. Eine einfache Maßnahme: Alle gelieferten Waren sofort mit dem Lieferdatum markieren und nach FIFO einlagern. Das dauert 2 Minuten pro Lieferung und spart langfristig Hunderte von Euro pro Monat.</p>
 
 <h2>Wareneinsatz: Die vollständige Optimierungs-Strategie</h2>
 <h3>Der systematische Einkaufs-Audit</h3>
 <p>Einmal im Quartal solltest du einen vollständigen Einkaufs-Audit durchführen. Das bedeutet: alle eingekauften Produkte der letzten 3 Monate listen, Preise mit dem Vorquartal vergleichen, Lieferanten-Performance bewerten (Liefertreue, Qualität, Erreichbarkeit), und Bestellmengen mit tatsächlichem Verbrauch abgleichen. Dieser Audit dauert 2 bis 3 Stunden und zeigt dir systematisch wo Geld verloren geht und wo Optimierungspotenzial liegt.</p>
 <h3>Wareneinsatz nach Kategorie trennen</h3>
-<p>Viele Gastronomen kennen nur ihren Gesamt-Wareneinsatz. Professionelles Controlling trennt nach Kategorien: Fleisch und Fisch (oft 40-50% des Wareneinsatzes), Gemüse und Obst (15-20%), Molkerei und Eier (10-15%), Getränke (10-15%), Sonstiges. Diese Aufteilung zeigt sofort in welcher Kategorie der Wareneinsatz zu hoch ist und wo gezielt angesetzt werden muss.</p>
+<p>Viele Gastronomen kennen nur ihren Gesamt-Wareneinsatz. Professionelles Controlling trennt nach Kategorien: Fleisch und Fisch (oft 40–50 % des Wareneinsatzes), Gemüse und Obst (15–20 %), Molkerei und Eier (10–15 %), Getränke (10–15 %), Sonstiges. Diese Aufteilung zeigt sofort in welcher Kategorie der Wareneinsatz zu hoch ist und wo gezielt angesetzt werden muss.</p>
 <h3>Die Lieferanten-Scorecard</h3>
 <p>Bewerte deine Lieferanten zweimal im Jahr nach vier Kriterien: Preisqualität (günstig für die gelieferte Qualität), Liefertreue (pünktlich, vollständig, wie vereinbart), Qualitätskonstanz (immer dieselbe Qualität oder schwankend?), und Service (erreichbar, reagiert schnell auf Probleme). Lieferanten mit niedrigen Scores werden mit Alternativen verglichen — Lieferanten mit hohen Scores werden langfristig an den Betrieb gebunden.</p>
 <div class="beispiel"><div class="beispiel-lbl">📊 Wareneinsatz nach Kategorie — Beispiel-Analyse</div><p>Restaurant Stadtmitte, 38.000 € Monatsumsatz, WE gesamt 33%:<br>Fleisch/Fisch: 6.840 € (45% des WE) — 3% über Branchendurchschnitt → Lieferant verhandeln, Portionen prüfen<br>Gemüse/Obst: 1.900 € (12,5% des WE) — im Rahmen → weiter beobachten<br>Molkerei: 1.520 € (10% des WE) — ok<br>Getränke (alkoholfrei): 1.216 € (8% des WE) — ok<br>Sonstiges: 2.064 € (13,5% des WE) — 4% über Benchmark → genau analysieren<br><br><strong>Erkenntnis: Fleisch und "Sonstiges" sind die Baustellen. 3% Senkung im Fleisch-Einkauf = 205 €/Monat. 4% Senkung bei Sonstiges = 152 €/Monat. Gesamt: 357 €/Monat = 4.284 €/Jahr.</strong></p></div>
@@ -124,7 +125,7 @@ p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
 
 <h2>Vertiefung: Warenwirtschaft als Wettbewerbsvorteil</h2>
 <h3>Die unsichtbaren Einkaufskosten</h3>
-<p>Jenseits des Kaufpreises entstehen weitere Kosten die selten berechnet werden: Lagerkosten (Kühlraum-Energie, Platz, Verwaltung), Verarbeitungskosten (Zeit um Rohware zu verarbeiten), Entsorgungskosten (Verderb, Reste). Ein Produkt das günstig eingekauft wird aber viel Verarbeitungszeit erfordert, ist oft teurer als ein teureres Convenience-Produkt. Diese Vollkostenbetrachtung verändert Einkaufs-Entscheidungen grundlegend.</p>
+<p>Jenseits des Kaufpreises entstehen weitere Kosten, die selten berechnet werden: Lagerkosten (Kühlraum-Energie, Platz, Verwaltung), Verarbeitungskosten (Zeit um Rohware zu verarbeiten), Entsorgungskosten (Verderb, Reste). Ein Produkt das günstig eingekauft wird aber viel Verarbeitungszeit erfordert, ist oft teurer als ein teureres Convenience-Produkt. Diese Vollkostenbetrachtung verändert Einkaufs-Entscheidungen grundlegend.</p>
 <h3>Einkauf und Kalkulation verbinden</h3>
 <p>Wenn sich ein Einkaufspreis verändert muss das sofort in der Kalkulation und gegebenenfalls im Speisekartenpreis reflektiert werden. Viele Gastronomen passen Preise nicht an wenn Einkaufskosten steigen — weil sie die Veränderung nicht bemerken oder sich scheuen die Karte zu aktualisieren. Das Ergebnis: die Marge erodiert still. Die Lösung ist ein automatischer Trigger: jede Preisänderung eines Top-10-Produkts löst eine Kalkulations-Prüfung aus.</p>
 <h3>Der Wareneinsatz als Frühwarn-System</h3>
@@ -178,7 +179,7 @@ Gesamt-Verbesserung bei 35.000 € Umsatz: +1.400 + 1.050 = +2.450 €/Monat<br>
 <p>Der bewährteste Ansatz: Wähle die eine Maßnahme aus dieser Lektion die den größten Effekt bei geringstem Aufwand hat. Implementiere genau diese eine Maßnahme in den nächsten 7 Tagen. Messe das Ergebnis nach 4 Wochen. Dann erst kommt die nächste Maßnahme. Dieser serielle Ansatz — eine Sache nach der anderen, vollständig und messbar — übertrifft in jedem realen Betrieb den parallelen Ansatz bei dem viele Dinge gleichzeitig begonnen und nichts zu Ende geführt wird.</p>
 <h3>Typische Implementierungsfehler und wie du sie vermeidest</h3>
 <p>Fehler 1: Zu viel auf einmal. Wenn du in der ersten Woche 5 neue Systeme einführst, überfordert das das Team und dich. Wähle eine Priorität und führe sie vollständig durch bevor du die nächste startest.</p>
-<p>Fehler 2: Implementierung ohne Team-Einbindung. Systeme die dem Team übergestülpt werden ohne Erklärung, werden passiv oder aktiv sabotiert — nicht aus böser Absicht, sondern weil Sinn fehlt. Erkläre das Warum immer bevor du das Was einführst.</p>
+<p>Fehler 2: Implementierung ohne Team-Einbindung. Systeme, die dem Team übergestülpt werden ohne Erklärung, werden passiv oder aktiv sabotiert — nicht aus böser Absicht, sondern, weil Sinn fehlt. Erkläre das Warum immer bevor du das Was einführst.</p>
 <p>Fehler 3: Keine Messung. Ohne Messung weißt du nicht ob die Maßnahme wirkt. Und ohne Wirkungsnachweis fehlt die Motivation weiterzumachen wenn der Alltag wieder drückt. Definiere immer eine messbare Kennzahl die zeigt ob die Maßnahme erfolgreich war.</p>
 <p>Fehler 4: Aufgeben beim ersten Rückschlag. Neue Systeme funktionieren selten perfekt vom ersten Tag. Es braucht Anpassung, Nachbesserung und Geduld. Der erste Monat zeigt immer Schwächen — das ist nicht das System das versagt, das ist der normale Lern-Prozess jeder Veränderung.</p>
 <h3>Deine persönliche Implementierungs-Checkliste</h3>

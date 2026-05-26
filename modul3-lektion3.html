@@ -15,8 +15,8 @@ h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:norma
 .lern-box ul { list-style:none; padding:0; margin:0; }
 .lern-box li { font-size:13px; color:#a0b0c8; padding:4px 0 4px 20px; position:relative; line-height:1.6; }
 .lern-box li::before { content:'✓'; position:absolute; left:0; color:#d4af37; font-weight:700; }
-h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:normal; margin:36px 0 14px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
-h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:22px 0 10px; }
+h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:700; margin:36px 0 14px; padding-bottom:10px; border-bottom:3px solid #d4af37; }
+h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:600; margin:22px 0 10px; padding-left:12px; border-left:3px solid #d4af37; }
 h4 { font-size:15px; color:#1a2a4a; font-weight:700; margin:18px 0 8px; }
 p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
 .aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin:24px 0; }
@@ -49,7 +49,8 @@ p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
 .footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-lbl strong { color:#d4af37; }
 .footer-main { background:#1a2a4a; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
-.footer-main strong { color:#d4af37; }</style></head>
+.footer-main strong { color:#d4af37; }mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
+</style></head>
 <body>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -129,7 +130,7 @@ p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
 <h3>Die Waage als Kontroll-Instrument</h3>
 <p>Eine einfache Küchenwaage die an jeder Fleisch- und Fisch-Station steht, ist die günstigste Investition zur Portionskontrolle. Kosten: 30 bis 80 Euro. Einmaliger Nutzen: dauerhafte Portionskonstanz bei allen gegrillten, gebratenen oder beilagenseitig portionierten Produkten. Der ROI dieser Investition berechnet sich in Wochen — weil die Einsparungen durch konsistente Portionierung fast sofort eintreten.</p>
 <h3>Portionsverluste einkalkulieren</h3>
-<p>Ein häufiger Fehler: Portionsgewichte werden im Rezeptbuch als Rohgewicht eingetragen ohne Gargewichtsverlust zu berücksichtigen. Ein Rinderfilet verliert beim Braten ca. 20-25% Gewicht. Ein Hähnchen-Brustfilet ca. 15-20%. Gemüse beim Blanchieren ca. 10-15%. Wenn du 200g Rohgewicht als Portion kalkulierst aber der Gast 150-160g Gargewicht bekommt, stimmt deine Kalkulation — wenn du es nicht eingerechnet hast, aber glaubst 200g zu servieren, ist dein Wareneinsatz höher als berechnet.</p>
+<p>Ein häufiger Fehler: Portionsgewichte werden im Rezeptbuch als Rohgewicht eingetragen ohne Gargewichtsverlust zu berücksichtigen. Ein Rinderfilet verliert beim Braten ca. 20–25 % Gewicht. Ein Hähnchen-Brustfilet ca. 15–20 %. Gemüse beim Blanchieren ca. 10–15 %. Wenn du 200g Rohgewicht als Portion kalkulierst aber der Gast 150-160g Gargewicht bekommt, stimmt deine Kalkulation — wenn du es nicht eingerechnet hast, aber glaubst 200g zu servieren, ist dein Wareneinsatz höher als berechnet.</p>
 <div class="beispiel"><div class="beispiel-lbl">📊 Gargewichtsverlust in der Kalkulation</div><p>Gericht: Lammkeule, Ziel-Portion: 180g (Gargewicht)<br>Garungs-Verlust: 25%<br>Benötigtes Rohgewicht: 180g ÷ 0,75 = 240g<br>Einkaufspreis Lammfleisch: 12,80 €/kg<br>Tatsächlicher Wareneinsatz Fleisch: 0,240 × 12,80 = 3,07 €<br><br>Fehler ohne Garungs-Verlust in Kalkulation: 0,180 × 12,80 = 2,30 € (unterschätzt!)<br>Differenz: 0,77 € pro Portion<br>Bei 25 Portionen/Tag × 22 Tage: 423,50 €/Monat Kalkulationsfehler<br><br><strong>Ohne korrekte Garungs-Verlust-Kalkulation: du denkst du verdienst mehr als du wirklich verdienst — 5.082 €/Jahr Differenz zwischen kalkuliertem und tatsächlichem Wareneinsatz.</strong></p></div>
 <h2>Fazit und nächste Schritte</h2>
 <p>Portionsstandards sind das Fundament für alle anderen Optimierungen. Ohne standardisierte Portionen sind Wareneinsatz-Berechnungen ungenau und Menu Engineering liefert falsche Ergebnisse. Investiere 5 bis 6 Stunden in ein vollständiges Rezeptbuch mit korrekten Portionsmengen — diese Investition zahlt sich monatlich durch präzisere Kalkulation und niedrigeren Wareneinsatz aus.</p>
@@ -179,7 +180,7 @@ Monat 3: 245 € Verderb (−64% gegenüber Ausgangslage)<br>
 <p>Der bewährteste Ansatz: Wähle die eine Maßnahme aus dieser Lektion die den größten Effekt bei geringstem Aufwand hat. Implementiere genau diese eine Maßnahme in den nächsten 7 Tagen. Messe das Ergebnis nach 4 Wochen. Dann erst kommt die nächste Maßnahme. Dieser serielle Ansatz — eine Sache nach der anderen, vollständig und messbar — übertrifft in jedem realen Betrieb den parallelen Ansatz bei dem viele Dinge gleichzeitig begonnen und nichts zu Ende geführt wird.</p>
 <h3>Typische Implementierungsfehler und wie du sie vermeidest</h3>
 <p>Fehler 1: Zu viel auf einmal. Wenn du in der ersten Woche 5 neue Systeme einführst, überfordert das das Team und dich. Wähle eine Priorität und führe sie vollständig durch bevor du die nächste startest.</p>
-<p>Fehler 2: Implementierung ohne Team-Einbindung. Systeme die dem Team übergestülpt werden ohne Erklärung, werden passiv oder aktiv sabotiert — nicht aus böser Absicht, sondern weil Sinn fehlt. Erkläre das Warum immer bevor du das Was einführst.</p>
+<p>Fehler 2: Implementierung ohne Team-Einbindung. Systeme, die dem Team übergestülpt werden ohne Erklärung, werden passiv oder aktiv sabotiert — nicht aus böser Absicht, sondern, weil Sinn fehlt. Erkläre das Warum immer bevor du das Was einführst.</p>
 <p>Fehler 3: Keine Messung. Ohne Messung weißt du nicht ob die Maßnahme wirkt. Und ohne Wirkungsnachweis fehlt die Motivation weiterzumachen wenn der Alltag wieder drückt. Definiere immer eine messbare Kennzahl die zeigt ob die Maßnahme erfolgreich war.</p>
 <p>Fehler 4: Aufgeben beim ersten Rückschlag. Neue Systeme funktionieren selten perfekt vom ersten Tag. Es braucht Anpassung, Nachbesserung und Geduld. Der erste Monat zeigt immer Schwächen — das ist nicht das System das versagt, das ist der normale Lern-Prozess jeder Veränderung.</p>
 <h3>Deine persönliche Implementierungs-Checkliste</h3>
