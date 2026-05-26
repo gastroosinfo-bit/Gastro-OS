@@ -15,8 +15,8 @@ h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:norma
 .lern-box ul { list-style:none; padding:0; margin:0; }
 .lern-box li { font-size:13px; color:#a0b0c8; padding:4px 0 4px 20px; position:relative; line-height:1.6; }
 .lern-box li::before { content:'✓'; position:absolute; left:0; color:#d4af37; font-weight:700; }
-h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:normal; margin:36px 0 14px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
-h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:22px 0 10px; }
+h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:700; margin:36px 0 14px; padding-bottom:10px; border-bottom:3px solid #d4af37; }
+h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:600; margin:22px 0 10px; padding-left:12px; border-left:3px solid #d4af37; }
 h4 { font-size:15px; color:#1a2a4a; font-weight:700; margin:18px 0 8px; }
 p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
 .aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin:24px 0; }
@@ -49,7 +49,8 @@ p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
 .footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-lbl strong { color:#d4af37; }
 .footer-main { background:#1a2a4a; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
-.footer-main strong { color:#d4af37; }</style></head>
+.footer-main strong { color:#d4af37; }mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
+</style></head>
 <body>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -79,20 +80,20 @@ p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
 
 <h2>Kapitel 1 — Energie-Sofortmaßnahmen</h2>
 <h3>Was sofort ohne Kosten funktioniert</h3>
-<p>'Alles aus'-Protokoll: Eine Liste aller Geräte mit ihren Ausschalt-Zeitpunkten. Wann geht die Fritteuse an? Wann aus? Wann der Backofen? Wann die Kaffeemaschine? Diese Liste wird als SOP aushängend und täglich abgehakt. Kosten: 0 Euro. Einsparung: 5-15% Energiekosten.</p>
+<p>'Alles aus'-Protokoll: Eine Liste aller Geräte mit ihren Ausschalt-Zeitpunkten. Wann geht die Fritteuse an? Wann aus? Wann der Backofen? Wann die Kaffeemaschine? Diese Liste wird als SOP aushängend und täglich abgehakt. Kosten: 0 Euro. Einsparung: 5–15 % Energiekosten.</p>
 <p>Kühlraum-Disziplin: Türen geschlossen halten, nicht länger als nötig öffnen. Kühlraum nicht mit heißen Produkten beladen. Kondenswasser-Abtau-Zyklen nicht manuell unterbrechen. Klingt trivial — ist messbar.</p>
 <h3>Schnell-Check: Türdichtungen</h3>
-<p>Stecke ein Blatt Papier in die Kühlschrankoder Kühlraumtür und ziehe es heraus. Gibt es Widerstand? Gut — die Dichtung ist dicht. Kein Widerstand? Die Dichtung ist undicht — der Kühlschrank verbraucht 20-40% mehr Energie. Eine neue Dichtung kostet 30-80 Euro. Amortisation: unter einem Monat.</p>
+<p>Stecke ein Blatt Papier in die Kühlschrankoder Kühlraumtür und ziehe es heraus. Gibt es Widerstand? Gut — die Dichtung ist dicht. Kein Widerstand? Die Dichtung ist undicht — der Kühlschrank verbraucht 20–40 % mehr Energie. Eine neue Dichtung kostet 30–80 Euro. Amortisation: unter einem Monat.</p>
 <div class="beispiel"><div class="beispiel-lbl">📊 Rechenbeispiel aus der Praxis</div><p>Restaurant, 80 kWh/Tag Stromverbrauch, 0,35 €/kWh.</p><p>Monatliche Stromkosten: 80 × 30 × 0,35 = 840 €/Monat.</p><p>Maßnahmen: Fritteuse 2h früher aus (−1,5 kWh/Tag), LED-Umrüstung (−6 kWh/Tag), Kühlraum-Dichtung repariert (−4 kWh/Tag).</p><div class="rechnung">Einsparung: 11,5 kWh/Tag × 0,35 × 300 = 1.207 €/Jahr. LED-Investition: 350 €. Dichtung: 60 €. Gesamt-ROI: über 12× im ersten Jahr.</div></div>
 <div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 1</div><p>Führe heute den Dichtungs-Test an allen Kühlgeräten durch. Erstelle das 'Alles aus'-Protokoll für deinen Betrieb: Welches Gerät wird wann eingeschaltet? Wann ausgeschaltet? Hänge es als SOP aus.</p></div>
 <h2>Kapitel 2 — Investitions-Entscheidungen bei Geräten</h2>
 <h3>Wann sich neue Geräte lohnen</h3>
 <p>Faustregel: Wenn ein Gerät älter als 8 Jahre ist, lohnt sich ein Vergleich mit neueren Modellen fast immer. Energieeffizienz-Klassen haben sich verbessert. Ein neuer A++-Kühlschrank verbraucht oft 60% weniger als ein 10 Jahre altes Gerät.</p>
-<p>Vor jeder Geräte-Investition: Jährliche Einsparung berechnen × Payback-Zeit. Unter 3 Jahre: kaufen. 3-5 Jahre: sorgfältig prüfen. Über 5 Jahre: warten.</p>
+<p>Vor jeder Geräte-Investition: Jährliche Einsparung berechnen × Payback-Zeit. Unter 3 Jahre: kaufen. 3–5 Jahre: sorgfältig prüfen. Über 5 Jahre: warten.</p>
 <div class="tipp-box"><p>💡 <strong>Profi-Tipp:</strong> Nutze die Energieberatung deiner regionalen Handwerkskammer oder des lokalen Energieversorgers — oft kostenlos. Sie scannen deinen Betrieb auf Einsparpotenziale und zeigen dir welche Investitionen wirklich Sinn machen. Das spart Zeit und Fehlentscheidungen.</p></div>
 <div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 2</div><p>Liste alle Geräte in deinem Betrieb auf die älter als 8 Jahre sind. Recherchiere für das älteste und energieintensivste den Verbrauch eines aktuellen Vergleichsgeräts. Rechne die Payback-Zeit aus. Lohnt sich die Investition?</p></div>
 
-<div class="fazit"><div class="fazit-lbl">🎯 Das Wichtigste auf einen Blick</div><ul><li>'Alles aus'-Protokoll: kostenlose SOP die 5-15% Energiekosten spart.</li><li>Dichtungs-Test: 2 Minuten, 30-80 € Reparatur, Amortisation unter einem Monat.</li><li>Geräte über 8 Jahre: Vergleich mit neueren lohnt sich fast immer.</li><li>Payback unter 3 Jahre: kaufen. Über 5 Jahre: warten.</li></ul></div>
+<div class="fazit"><div class="fazit-lbl">🎯 Das Wichtigste auf einen Blick</div><ul><li>'Alles aus'-Protokoll: kostenlose SOP die 5–15 % Energiekosten spart.</li><li>Dichtungs-Test: 2 Minuten, 30-80 € Reparatur, Amortisation unter einem Monat.</li><li>Geräte über 8 Jahre: Vergleich mit neueren lohnt sich fast immer.</li><li>Payback unter 3 Jahre: kaufen. Über 5 Jahre: warten.</li></ul></div>
 <div class="checkliste"><div class="checkliste-lbl">✅ Sofort-Checkliste — Das kannst du heute noch tun</div><ul><li>Dichtungs-Test an allen Kühlgeräten durchführen</li><li>'Alles aus'-Protokoll erstellen und als SOP aushängen</li><li>Alle Geräte über 8 Jahre auflisten</li><li>Kosten-Analyse Tool öffnen und Energiekosten eintragen</li></ul></div>
   
 <h3>Energie als strategisches Thema</h3>
@@ -119,7 +120,7 @@ p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
 <p>Der bewährteste Ansatz: Wähle die eine Maßnahme aus dieser Lektion die den größten Effekt bei geringstem Aufwand hat. Implementiere genau diese eine Maßnahme in den nächsten 7 Tagen. Messe das Ergebnis nach 4 Wochen. Dann erst kommt die nächste Maßnahme. Dieser serielle Ansatz — eine Sache nach der anderen, vollständig und messbar — übertrifft in jedem realen Betrieb den parallelen Ansatz bei dem viele Dinge gleichzeitig begonnen und nichts zu Ende geführt wird.</p>
 <h3>Typische Implementierungsfehler und wie du sie vermeidest</h3>
 <p>Fehler 1: Zu viel auf einmal. Wenn du in der ersten Woche 5 neue Systeme einführst, überfordert das das Team und dich. Wähle eine Priorität und führe sie vollständig durch bevor du die nächste startest.</p>
-<p>Fehler 2: Implementierung ohne Team-Einbindung. Systeme die dem Team übergestülpt werden ohne Erklärung, werden passiv oder aktiv sabotiert — nicht aus böser Absicht, sondern weil Sinn fehlt. Erkläre das Warum immer bevor du das Was einführst.</p>
+<p>Fehler 2: Implementierung ohne Team-Einbindung. Systeme, die dem Team übergestülpt werden ohne Erklärung, werden passiv oder aktiv sabotiert — nicht aus böser Absicht, sondern, weil Sinn fehlt. Erkläre das Warum immer bevor du das Was einführst.</p>
 <p>Fehler 3: Keine Messung. Ohne Messung weißt du nicht ob die Maßnahme wirkt. Und ohne Wirkungsnachweis fehlt die Motivation weiterzumachen wenn der Alltag wieder drückt. Definiere immer eine messbare Kennzahl die zeigt ob die Maßnahme erfolgreich war.</p>
 <p>Fehler 4: Aufgeben beim ersten Rückschlag. Neue Systeme funktionieren selten perfekt vom ersten Tag. Es braucht Anpassung, Nachbesserung und Geduld. Der erste Monat zeigt immer Schwächen — das ist nicht das System das versagt, das ist der normale Lern-Prozess jeder Veränderung.</p>
 <h3>Deine persönliche Implementierungs-Checkliste</h3>
@@ -144,7 +145,7 @@ p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
 <h2>Das Gastro-OS Gesamtsystem im Überblick</h2>
 <h3>Wie alle Module zusammenwirken</h3>
 <p>Gastro-OS ist kein Sammlung unverbundener Tipps — es ist ein integriertes System dessen Module sich gegenseitig verstärken. Modul 2 (Speisekarte) senkt den Wareneinsatz UND erhöht den Durchschnittsbon. Modul 3 (Einkauf) senkt den Wareneinsatz weiter durch bessere Beschaffung. Modul 5 (Struktur) gibt dir Zeit für strategische Arbeit die Modul 2 und 3 verbessert. Und Modul 11 (Lebensqualität) gibt dir die Energie und den Kopf um all das nachhaltig umzusetzen.</p>
-<p>Wer einzelne Module isoliert betrachtet, sieht Teilwirkungen. Wer alle Module integriert betrachtet, sieht die Gesamttransformation. Ein Betrieb der alle 12 Module konsequent umgesetzt hat, ist in jeder Dimension besser als vorher: finanziell stärker, operativ stabiler, personell entwickelter, und persönlich freier für den Inhaber.</p>
+<p>Wer einzelne Module isoliert betrachtet, sieht Teilwirkungen. Wer alle Module integriert betrachtet, sieht die Gesamttransformation. Ein Betrieb, der alle 12 Module konsequent umgesetzt hat, ist in jeder Dimension besser als vorher: finanziell stärker, operativ stabiler, personell entwickelter, und persönlich freier für den Inhaber.</p>
 <h3>Dein persönlicher Gastro-OS Fahrplan</h3>
 <p>Jeder Betrieb ist verschieden — deshalb ist der Gastro-OS Fahrplan für jeden Betrieb verschieden. Die Reihenfolge die du wählst, sollte an deinen größten Hebeln ausgerichtet sein. Ist dein Wareneinsatz dein größtes Problem? Dann beginne mit Modul 3 und baue die anderen darauf auf. Hast du ein Team-Problem? Dann sind Module 5 und 6 deine Priorität. Bist du operativ abhängig und hast keine persönliche Zeit? Dann ist Module 5 in Kombination mit Modul 11 dein Einstieg.</p>
 <p>Es gibt keine falsche Reihenfolge — nur die Reihenfolge die zu deiner aktuellen Situation passt. Und diese Situation verändert sich mit jedem Modul das du erfolgreich umsetzt. Nach 6 Monaten ist dein größter Hebel vielleicht nicht mehr derselbe wie am Anfang. Das System passt sich mit dir an.</p>
@@ -154,7 +155,7 @@ p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
 
 <h2>Abschluss: Warum diese Lektion zählt</h2>
 <h3>Der kumulative Effekt von Verbesserungen</h3>
-<p>Eine einzelne Maßnahme aus einer Lektion bringt vielleicht 300 bis 800 Euro Gewinnzuwachs pro Monat. Das klingt nach wenig wenn man allein damit konfrontiert wird. Aber Gastro-OS ist kein Einzel-Maßnahmen-Programm — es ist ein Kumulations-Programm. Die 300 Euro aus dieser Lektion addieren sich zu den 400 Euro aus Modul 3, den 500 Euro aus Modul 2 und den 200 Euro aus Modul 7. Zusammen sind das 1.400 Euro mehr Gewinn pro Monat — 16.800 Euro pro Jahr — aus vier Maßnahmen die jede einzeln klein erscheinen.</p>
+<p>Eine einzelne Maßnahme aus einer Lektion bringt vielleicht 300 bis 800 Euro Gewinnzuwachs pro Monat. Das klingt nach wenig wenn man allein damit konfrontiert wird. Aber Gastro-OS ist kein Einzel-Maßnahmen-Programm — es ist ein Kumulations-Programm. Die 300 Euro aus dieser Lektion addieren sich zu den 400 Euro aus Modul 3, den 500 Euro aus Modul 2 und den 200 Euro aus Modul 7. Zusammen sind das 1.400 Euro mehr Gewinn pro Monat — 16.800 Euro pro Jahr — aus vier Maßnahmen, die jede einzeln klein erscheinen.</p>
 <p>Dieses kumulative Denken ist das Fundament von Gastro-OS. Nicht der eine große Schritt — die vielen kleinen die sich summieren. Und das Schöne an kleinen Schritten: Sie sind erreichbar. Jeder einzelne. Woche für Woche, Modul für Modul.</p>
 <h3>Die Konkurrenz schläft</h3>
 <p>Die meisten deiner Mitbewerber arbeiten reaktiv. Sie reagieren auf Probleme wenn sie entstehen. Sie lesen keine Lektionen über Wareneinsatz-Optimierung. Sie führen keine monatlichen Controlling-Gespräche mit sich selbst. Sie haben kein Rezeptbuch, keinen Upselling-Rhythmus, keine systematische Bewertungs-Strategie.</p>
