@@ -15,8 +15,8 @@ h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:norma
 .lern-box ul { list-style:none; padding:0; margin:0; }
 .lern-box li { font-size:13px; color:#a0b0c8; padding:4px 0 4px 20px; position:relative; line-height:1.6; }
 .lern-box li::before { content:'✓'; position:absolute; left:0; color:#d4af37; font-weight:700; }
-h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:normal; margin:36px 0 14px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
-h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:22px 0 10px; }
+h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:700; margin:36px 0 14px; padding-bottom:10px; border-bottom:3px solid #d4af37; }
+h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:600; margin:22px 0 10px; padding-left:12px; border-left:3px solid #d4af37; }
 h4 { font-size:15px; color:#1a2a4a; font-weight:700; margin:18px 0 8px; }
 p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
 .aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin:24px 0; }
@@ -50,6 +50,7 @@ p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
 .footer-lbl strong { color:#d4af37; }
 .footer-main { background:#1a2a4a; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-main strong { color:#d4af37; }
+mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
 </style></head>
 <body>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -88,7 +89,7 @@ p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
 <div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 1</div><p>Erstelle jetzt deinen 12-Monats-Finanzplan: Schreibe für jeden Monat deinen geschätzten Umsatz und alle Fixkosten auf. Wo ist das Liquiditäts-Minimum? Was musst du zurücklegen?</p></div>
 <h2>Kapitel 2 — Investitionen klug bewerten</h2>
 <h3>Die Payback-Rechnung</h3>
-<p>Vor jeder Investition: Wann habe ich das investierte Geld zurück? Investition durch jährliche Einsparung oder Mehrertrag = Payback-Zeit in Jahren. Unter 3 Jahre: fast immer sinnvoll. 3-5 Jahre: prüfen. Über 5 Jahre: kritisch hinterfragen.</p>
+<p>Vor jeder Investition: Wann habe ich das investierte Geld zurück? Investition durch jährliche Einsparung oder Mehrertrag = Payback-Zeit in Jahren. Unter 3 Jahre: fast immer sinnvoll. 3–5 Jahre: prüfen. Über 5 Jahre: kritisch hinterfragen.</p>
 <h3>Was Investitionen klug macht</h3>
 <p>Energiesparende Geräte mit unter 3 Jahren Payback: kaufen. Neues Kassensystem das Analyse ermöglicht: kaufen wenn der Nutzen klar ist. Umbau der 'schön wäre': warten bis Liquidität stabil ist.</p>
 <div class="tipp-box"><p>💡 <strong>Profi-Tipp:</strong> Die wichtigste Investition die du tätigen kannst kostet nichts: Zeit. 3 Stunden pro Woche AM Betrieb — an Systemen, Zahlen, Strategie. Diese Zeit hat einen ROI der jede andere Investition übersteigt.</p></div>
@@ -109,19 +110,19 @@ p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
 <p>Dieser Plan macht Probleme sichtbar bevor sie entstehen. Wenn du im Dezember siehst dass du im Februar eine große Miete zahlen musst und der Januar erfahrungsgemäß schwach ist, kannst du heute schon dafür planen. Das ist der Unterschied zwischen reaktivem und proaktivem Finanzmanagement.</p>
 <h3>Controlling als Dauersystem</h3>
 <p>Controlling ist keine Aufgabe die irgendwann abgeschlossen ist. Es ist ein Dauersystem das sich mit deinem Betrieb mitentwickelt. Heute trackt du fünf Kennzahlen. In einem Jahr vielleicht acht. In drei Jahren vielleicht zwölf — weil du gelernt hast welche Zahlen wirklich die Entscheidungen treiben.</p>
-<p>Gastronomen die ihr Controlling konsequent über mehrere Jahre aufbauen, treffen bessere Entscheidungen — weil sie aus Erfahrung wissen wie ihr Betrieb auf Veränderungen reagiert. Das ist nicht Buchhaltung. Das ist unternehmerisches Lernen.</p>
+<p>Gastronomen, die ihr Controlling konsequent über mehrere Jahre aufbauen, treffen bessere Entscheidungen — weil sie aus Erfahrung wissen wie ihr Betrieb auf Veränderungen reagiert. Das ist nicht Buchhaltung. Das ist unternehmerisches Lernen.</p>
 
 <h3>Der Übergang von reaktiv zu proaktiv</h3>
 <p>Der wichtigste Shift im Finanzmanagement ist der von reaktiv zu proaktiv. Reaktiv bedeutet: Probleme erkennen wenn sie schon da sind. Die Lieferantenrechnung die nicht gedeckt werden kann. Die Personalkosten die erst beim Monatsabschluss als zu hoch auffallen. Der Gewinn der am Jahresende deutlich unter dem liegt was man erwartet hat.</p>
 <p>Proaktiv bedeutet: Probleme erkennen bevor sie entstehen. Der wöchentliche Umsatz-Check der zeigt ob der Monat auf Kurs ist. Die monatliche Kennzahlen-Analyse die früh zeigt wenn der Wareneinsatz steigt. Der Liquiditätsplan der zeigt welche Monate kritisch werden könnten.</p>
-<p>Proaktives Finanzmanagement entsteht nicht sofort — es entsteht durch konsequente Praxis über 6 bis 12 Monate. Nach diesem Zeitraum wirst du deinen Betrieb finanziell besser verstehen als die meisten Gastronomen die 10 Jahre lang reaktiv geführt haben.</p>
+<p>Proaktives Finanzmanagement entsteht nicht sofort — es entsteht durch konsequente Praxis über 6 bis 12 Monate. Nach diesem Zeitraum wirst du deinen Betrieb finanziell besser verstehen als die meisten Gastronomen, die 10 Jahre lang reaktiv geführt haben.</p>
 
 <h2>Langfristige Finanzstabilität aufbauen</h2>
 <h3>Rücklagen systematisch aufbauen</h3>
 <p>In der Gastronomie ist die Versuchung groß, jeden Gewinneuro sofort zu reinvestieren oder zu entnehmen. Das ist menschlich — aber gefährlich. Betriebe ohne Rücklagen sind einen Geräteausfall oder eine schwache Saison von einer Liquiditätskrise entfernt. Der Aufbau von Rücklagen ist deshalb keine Option für bessere Zeiten — es ist eine betriebliche Notwendigkeit.</p>
 <p>Praktische Methode: Definiere einen festen Prozentsatz des monatlichen Gewinns der automatisch auf ein separates Konto überwiesen wird. 20 bis 30% des Gewinns ist ein guter Startpunkt. Dieses Konto wird nicht für laufende Kosten genutzt — nur für echte Notfälle (Geräteausfall, unerwartete Renovierung) oder für geplante Investitionen (wenn du 3 Monate gespart hast für eine neue Kaffeemaschine statt sie zu finanzieren).</p>
 <h3>Investitions-Entscheidungen nach ROI</h3>
-<p>Jede Investition in deinen Betrieb sollte durch eine ROI-Berechnung begründet werden. Nicht weil alles monetarisierbar sein muss — sondern weil eine einfache Rechnung viele Fehlinvestitionen verhindert. Die Formel: Wie viel spart oder verdient diese Investition pro Monat? Wie lange dauert es bis sie sich amortisiert? Ist das in einem akzeptablen Zeitraum?</p>
+<p>Jede Investition in deinen Betrieb sollte durch eine ROI-Berechnung begründet werden. Nicht weil alles monetarisierbar sein muss — sondern, weil eine einfache Rechnung viele Fehlinvestitionen verhindert. Die Formel: Wie viel spart oder verdient diese Investition pro Monat? Wie lange dauert es bis sie sich amortisiert? Ist das in einem akzeptablen Zeitraum?</p>
 <p>Eine neue Spülmaschine für 5.500 Euro die 180 Euro/Monat Energiekosten spart und 30 Minuten tägliche Arbeitszeit einspart (= ca. 150 Euro/Monat Personaleinsparung): ROI 5.500 ÷ 330 = 16,7 Monate. Das ist eine vertretbare Investition. Ein Premium-Espresso-Automat für 12.000 Euro der hauptsächlich "besser aussieht" ohne messbaren Umsatz-Uplift: keine rechnerische Rechtfertigung.</p>
 <h3>Controlling und strategische Planung verbinden</h3>
 <p>Das monatliche Controlling gibt dir Rückblick — was war. Die strategische Planung gibt dir Ausblick — was werden soll. Diese beiden verbinden bedeutet: Controlling-Erkenntnisse direkt in Planungs-Anpassungen überführen. Wareneinsatz im letzten Quartal konstant 2% über Ziel? Dann ist "Einkaufs-System verbessern" eine strategische Priorität für das nächste Quartal. Personalquote saisonal im Sommer erhöht? Dann ist "Sommerpersonal-Plan optimieren" eine Jahresplanung-Aufgabe für den November.</p>
@@ -141,7 +142,7 @@ ROI: 7.000 ÷ 205 = 34 Monate<br><br>
 <p>In der Gastronomie ist die Versuchung groß, jeden Gewinneuro sofort zu reinvestieren oder zu entnehmen. Das ist menschlich — aber gefährlich. Betriebe ohne Rücklagen sind einen Geräteausfall oder eine schwache Saison von einer Liquiditätskrise entfernt. Der Aufbau von Rücklagen ist deshalb keine Option für bessere Zeiten — es ist eine betriebliche Notwendigkeit.</p>
 <p>Praktische Methode: Definiere einen festen Prozentsatz des monatlichen Gewinns der automatisch auf ein separates Konto überwiesen wird. 20 bis 30% des Gewinns ist ein guter Startpunkt. Dieses Konto wird nicht für laufende Kosten genutzt — nur für echte Notfälle (Geräteausfall, unerwartete Renovierung) oder für geplante Investitionen (wenn du 3 Monate gespart hast für eine neue Kaffeemaschine statt sie zu finanzieren).</p>
 <h3>Investitions-Entscheidungen nach ROI</h3>
-<p>Jede Investition in deinen Betrieb sollte durch eine ROI-Berechnung begründet werden. Nicht weil alles monetarisierbar sein muss — sondern weil eine einfache Rechnung viele Fehlinvestitionen verhindert. Die Formel: Wie viel spart oder verdient diese Investition pro Monat? Wie lange dauert es bis sie sich amortisiert? Ist das in einem akzeptablen Zeitraum?</p>
+<p>Jede Investition in deinen Betrieb sollte durch eine ROI-Berechnung begründet werden. Nicht weil alles monetarisierbar sein muss — sondern, weil eine einfache Rechnung viele Fehlinvestitionen verhindert. Die Formel: Wie viel spart oder verdient diese Investition pro Monat? Wie lange dauert es bis sie sich amortisiert? Ist das in einem akzeptablen Zeitraum?</p>
 <p>Eine neue Spülmaschine für 5.500 Euro die 180 Euro/Monat Energiekosten spart und 30 Minuten tägliche Arbeitszeit einspart (= ca. 150 Euro/Monat Personaleinsparung): ROI 5.500 ÷ 330 = 16,7 Monate. Das ist eine vertretbare Investition. Ein Premium-Espresso-Automat für 12.000 Euro der hauptsächlich "besser aussieht" ohne messbaren Umsatz-Uplift: keine rechnerische Rechtfertigung.</p>
 <h3>Controlling und strategische Planung verbinden</h3>
 <p>Das monatliche Controlling gibt dir Rückblick — was war. Die strategische Planung gibt dir Ausblick — was werden soll. Diese beiden verbinden bedeutet: Controlling-Erkenntnisse direkt in Planungs-Anpassungen überführen. Wareneinsatz im letzten Quartal konstant 2% über Ziel? Dann ist "Einkaufs-System verbessern" eine strategische Priorität für das nächste Quartal. Personalquote saisonal im Sommer erhöht? Dann ist "Sommerpersonal-Plan optimieren" eine Jahresplanung-Aufgabe für den November.</p>
@@ -162,7 +163,7 @@ ROI: 7.000 ÷ 205 = 34 Monate<br><br>
 <p>Der bewährteste Ansatz: Wähle die eine Maßnahme aus dieser Lektion die den größten Effekt bei geringstem Aufwand hat. Implementiere genau diese eine Maßnahme in den nächsten 7 Tagen. Messe das Ergebnis nach 4 Wochen. Dann erst kommt die nächste Maßnahme. Dieser serielle Ansatz — eine Sache nach der anderen, vollständig und messbar — übertrifft in jedem realen Betrieb den parallelen Ansatz bei dem viele Dinge gleichzeitig begonnen und nichts zu Ende geführt wird.</p>
 <h3>Typische Implementierungsfehler und wie du sie vermeidest</h3>
 <p>Fehler 1: Zu viel auf einmal. Wenn du in der ersten Woche 5 neue Systeme einführst, überfordert das das Team und dich. Wähle eine Priorität und führe sie vollständig durch bevor du die nächste startest.</p>
-<p>Fehler 2: Implementierung ohne Team-Einbindung. Systeme die dem Team übergestülpt werden ohne Erklärung, werden passiv oder aktiv sabotiert — nicht aus böser Absicht, sondern weil Sinn fehlt. Erkläre das Warum immer bevor du das Was einführst.</p>
+<p>Fehler 2: Implementierung ohne Team-Einbindung. Systeme, die dem Team übergestülpt werden ohne Erklärung, werden passiv oder aktiv sabotiert — nicht aus böser Absicht, sondern, weil Sinn fehlt. Erkläre das Warum immer bevor du das Was einführst.</p>
 <p>Fehler 3: Keine Messung. Ohne Messung weißt du nicht ob die Maßnahme wirkt. Und ohne Wirkungsnachweis fehlt die Motivation weiterzumachen wenn der Alltag wieder drückt. Definiere immer eine messbare Kennzahl die zeigt ob die Maßnahme erfolgreich war.</p>
 <p>Fehler 4: Aufgeben beim ersten Rückschlag. Neue Systeme funktionieren selten perfekt vom ersten Tag. Es braucht Anpassung, Nachbesserung und Geduld. Der erste Monat zeigt immer Schwächen — das ist nicht das System das versagt, das ist der normale Lern-Prozess jeder Veränderung.</p>
 <h3>Deine persönliche Implementierungs-Checkliste</h3>

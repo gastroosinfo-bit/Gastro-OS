@@ -15,8 +15,8 @@ h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:norma
 .lern-box ul { list-style:none; padding:0; margin:0; }
 .lern-box li { font-size:13px; color:#a0b0c8; padding:4px 0 4px 20px; position:relative; line-height:1.6; }
 .lern-box li::before { content:'✓'; position:absolute; left:0; color:#d4af37; font-weight:700; }
-h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:normal; margin:36px 0 14px; padding-bottom:8px; border-bottom:1px solid #e8dfc8; }
-h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:normal; margin:22px 0 10px; }
+h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:700; margin:36px 0 14px; padding-bottom:10px; border-bottom:3px solid #d4af37; }
+h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:600; margin:22px 0 10px; padding-left:12px; border-left:3px solid #d4af37; }
 h4 { font-size:15px; color:#1a2a4a; font-weight:700; margin:18px 0 8px; }
 p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
 .aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin:24px 0; }
@@ -49,7 +49,8 @@ p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
 .footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-lbl strong { color:#d4af37; }
 .footer-main { background:#1a2a4a; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
-.footer-main strong { color:#d4af37; }</style></head>
+.footer-main strong { color:#d4af37; }mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
+</style></head>
 <body>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -81,7 +82,7 @@ p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
 <h3>Was der Break-Even dir sagt</h3>
 <p>Der Break-Even ist der Umsatz bei dem du weder Gewinn noch Verlust machst. Jeder Euro Umsatz über diesem Wert ist Gewinn. Jeder Euro darunter ist Verlust. Wer seinen Break-Even kennt, weiß bei jedem Tagesumsatz sofort: Bin ich heute im Plus oder im Minus?</p>
 <h3>Die Berechnung</h3>
-<p>Schritt 1: Alle Fixkosten pro Monat aufaddieren. Fixkosten sind alle Kosten die unabhängig vom Umsatz entstehen: Miete, feste Personalkosten, Versicherungen, Leasing, Internet, Buchhaltung. Schritt 2: Variable Kostenquote bestimmen. Das sind Kosten die mit dem Umsatz steigen: Wareneinsatz, variable Personalkosten, Verpackung. Schritt 3: Break-Even = Fixkosten geteilt durch (1 minus variable Kostenquote).</p>
+<p>Schritt 1: Alle Fixkosten pro Monat aufaddieren. Fixkosten sind alle Kosten, die unabhängig vom Umsatz entstehen: Miete, feste Personalkosten, Versicherungen, Leasing, Internet, Buchhaltung. Schritt 2: Variable Kostenquote bestimmen. Das sind Kosten, die mit dem Umsatz steigen: Wareneinsatz, variable Personalkosten, Verpackung. Schritt 3: Break-Even = Fixkosten geteilt durch (1 minus variable Kostenquote).</p>
 <div class="beispiel"><div class="beispiel-lbl">📊 Rechenbeispiel aus der Praxis</div><p>Bistro 40 Plätze. Fixkosten/Monat: Miete 2.800 € + Personal fix 5.800 € + Versicherungen 350 € + Leasing 280 € + Sonstiges 570 € = 9.800 €.</p><p>Variable Kosten: WE 30% + variable Personal 5% + Sonstiges 3% = 38%.</p><div class="rechnung">Break-Even = 9.800 ÷ (1 - 0,38) = 9.800 ÷ 0,62 = 15.807 €/Monat.</div><p>Bei 25 Öffnungstagen: 15.807 ÷ 25 = 632 €/Tag Mindestumsatz. Jeden Tag darunter: Verlust.</p></div>
 <div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 1</div><p>Berechne deinen Break-Even jetzt. Liste alle Fixkosten auf. Berechne deine variable Kostenquote (WE% + variable Personalquote + Sonstiges%). Dann: Break-Even = Fixkosten ÷ (1 - variable Quote). Schreibe das Ergebnis als Tagesumsatz.</p></div>
 <h2>Kapitel 2 — Break-Even aktiv senken</h2>
@@ -116,7 +117,7 @@ p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
 <h3>Deckungsbeitrag pro Stunde — die tiefere Perspektive</h3>
 <p>Eine fortgeschrittene Perspektive auf Rentabilität: Wie viel Deckungsbeitrag erwirtschaftest du pro Öffnungsstunde? Bei 12 Stunden Öffnungszeit pro Tag und 30 Öffnungstagen im Monat sind das 360 Stunden. Wenn dein monatlicher Deckungsbeitrag 18.000 Euro ist, erwirtschaftest du 50 Euro DB pro Stunde. Welche Tageszeiten sind am produktivsten? Welche Wochentage? Und: Lohnen sich die schwächsten Stunden — oder könnten Anpassungen der Öffnungszeiten die Rentabilität verbessern?</p>
 <h3>Der finanzielle Puffer — warum er unverzichtbar ist</h3>
-<p>Jeder Betrieb braucht einen finanziellen Puffer der 2 bis 3 Monatsumsätze umfasst. Nicht weil immer etwas schiefläuft — sondern weil manchmal etwas schiefläuft. Eine Hauptküchenmaschine die unerwartet kaputtgeht. Ein Rohrleitungsschaden der 2 Wochen Schließung erfordert. Eine Pandemie. Krisen kommen — und ihre Wirkung hängt direkt davon ab wie gut du vorbereitet bist. Ein Betrieb mit Puffer überlebt Krisen. Ein Betrieb ohne Puffer wird durch Krisen zerstört.</p>
+<p>Jeder Betrieb braucht einen finanziellen Puffer der 2 bis 3 Monatsumsätze umfasst. Nicht weil immer etwas schiefläuft — sondern, weil manchmal etwas schiefläuft. Eine Hauptküchenmaschine die unerwartet kaputtgeht. Ein Rohrleitungsschaden der 2 Wochen Schließung erfordert. Eine Pandemie. Krisen kommen — und ihre Wirkung hängt direkt davon ab wie gut du vorbereitet bist. Ein Betrieb mit Puffer überlebt Krisen. Ein Betrieb ohne Puffer wird durch Krisen zerstört.</p>
 <div class="beispiel"><div class="beispiel-lbl">📊 Break-Even Szenario-Analyse</div>
 <p>Aktueller Break-Even: 22.000 €/Monat | Aktueller Ø-Umsatz: 27.000 € | Puffer: 5.000 €<br><br>
 Szenario: Chef erwägt zweiten Vollzeit-Koch (Mehrkosten 3.200 €/Monat inkl. Nebenkosten)<br>
@@ -132,7 +133,7 @@ Neuer Umsatz-Puffer: 27.000 − 26.923 = nur noch 77 €/Monat<br><br>
 <h3>Deckungsbeitrag pro Stunde — die tiefere Perspektive</h3>
 <p>Eine fortgeschrittene Perspektive auf Rentabilität: Wie viel Deckungsbeitrag erwirtschaftest du pro Öffnungsstunde? Bei 12 Stunden Öffnungszeit pro Tag und 30 Öffnungstagen im Monat sind das 360 Stunden. Wenn dein monatlicher Deckungsbeitrag 18.000 Euro ist, erwirtschaftest du 50 Euro DB pro Stunde. Welche Tageszeiten sind am produktivsten? Welche Wochentage? Und: Lohnen sich die schwächsten Stunden — oder könnten Anpassungen der Öffnungszeiten die Rentabilität verbessern?</p>
 <h3>Der finanzielle Puffer — warum er unverzichtbar ist</h3>
-<p>Jeder Betrieb braucht einen finanziellen Puffer der 2 bis 3 Monatsumsätze umfasst. Nicht weil immer etwas schiefläuft — sondern weil manchmal etwas schiefläuft. Eine Hauptküchenmaschine die unerwartet kaputtgeht. Ein Rohrleitungsschaden der 2 Wochen Schließung erfordert. Eine Pandemie. Krisen kommen — und ihre Wirkung hängt direkt davon ab wie gut du vorbereitet bist. Ein Betrieb mit Puffer überlebt Krisen. Ein Betrieb ohne Puffer wird durch Krisen zerstört.</p>
+<p>Jeder Betrieb braucht einen finanziellen Puffer der 2 bis 3 Monatsumsätze umfasst. Nicht weil immer etwas schiefläuft — sondern, weil manchmal etwas schiefläuft. Eine Hauptküchenmaschine die unerwartet kaputtgeht. Ein Rohrleitungsschaden der 2 Wochen Schließung erfordert. Eine Pandemie. Krisen kommen — und ihre Wirkung hängt direkt davon ab wie gut du vorbereitet bist. Ein Betrieb mit Puffer überlebt Krisen. Ein Betrieb ohne Puffer wird durch Krisen zerstört.</p>
 <div class="beispiel"><div class="beispiel-lbl">📊 Break-Even Szenario-Analyse</div>
 <p>Aktueller Break-Even: 22.000 €/Monat | Aktueller Ø-Umsatz: 27.000 € | Puffer: 5.000 €<br><br>
 Szenario: Chef erwägt zweiten Vollzeit-Koch (Mehrkosten 3.200 €/Monat inkl. Nebenkosten)<br>
@@ -147,7 +148,7 @@ Neuer Umsatz-Puffer: 27.000 − 26.923 = nur noch 77 €/Monat<br><br>
 <p>Der bewährteste Ansatz: Wähle die eine Maßnahme aus dieser Lektion die den größten Effekt bei geringstem Aufwand hat. Implementiere genau diese eine Maßnahme in den nächsten 7 Tagen. Messe das Ergebnis nach 4 Wochen. Dann erst kommt die nächste Maßnahme. Dieser serielle Ansatz — eine Sache nach der anderen, vollständig und messbar — übertrifft in jedem realen Betrieb den parallelen Ansatz bei dem viele Dinge gleichzeitig begonnen und nichts zu Ende geführt wird.</p>
 <h3>Typische Implementierungsfehler und wie du sie vermeidest</h3>
 <p>Fehler 1: Zu viel auf einmal. Wenn du in der ersten Woche 5 neue Systeme einführst, überfordert das das Team und dich. Wähle eine Priorität und führe sie vollständig durch bevor du die nächste startest.</p>
-<p>Fehler 2: Implementierung ohne Team-Einbindung. Systeme die dem Team übergestülpt werden ohne Erklärung, werden passiv oder aktiv sabotiert — nicht aus böser Absicht, sondern weil Sinn fehlt. Erkläre das Warum immer bevor du das Was einführst.</p>
+<p>Fehler 2: Implementierung ohne Team-Einbindung. Systeme, die dem Team übergestülpt werden ohne Erklärung, werden passiv oder aktiv sabotiert — nicht aus böser Absicht, sondern, weil Sinn fehlt. Erkläre das Warum immer bevor du das Was einführst.</p>
 <p>Fehler 3: Keine Messung. Ohne Messung weißt du nicht ob die Maßnahme wirkt. Und ohne Wirkungsnachweis fehlt die Motivation weiterzumachen wenn der Alltag wieder drückt. Definiere immer eine messbare Kennzahl die zeigt ob die Maßnahme erfolgreich war.</p>
 <p>Fehler 4: Aufgeben beim ersten Rückschlag. Neue Systeme funktionieren selten perfekt vom ersten Tag. Es braucht Anpassung, Nachbesserung und Geduld. Der erste Monat zeigt immer Schwächen — das ist nicht das System das versagt, das ist der normale Lern-Prozess jeder Veränderung.</p>
 <h3>Deine persönliche Implementierungs-Checkliste</h3>
@@ -172,7 +173,7 @@ Neuer Umsatz-Puffer: 27.000 − 26.923 = nur noch 77 €/Monat<br><br>
 <h2>Das Gastro-OS Gesamtsystem im Überblick</h2>
 <h3>Wie alle Module zusammenwirken</h3>
 <p>Gastro-OS ist kein Sammlung unverbundener Tipps — es ist ein integriertes System dessen Module sich gegenseitig verstärken. Modul 2 (Speisekarte) senkt den Wareneinsatz UND erhöht den Durchschnittsbon. Modul 3 (Einkauf) senkt den Wareneinsatz weiter durch bessere Beschaffung. Modul 5 (Struktur) gibt dir Zeit für strategische Arbeit die Modul 2 und 3 verbessert. Und Modul 11 (Lebensqualität) gibt dir die Energie und den Kopf um all das nachhaltig umzusetzen.</p>
-<p>Wer einzelne Module isoliert betrachtet, sieht Teilwirkungen. Wer alle Module integriert betrachtet, sieht die Gesamttransformation. Ein Betrieb der alle 12 Module konsequent umgesetzt hat, ist in jeder Dimension besser als vorher: finanziell stärker, operativ stabiler, personell entwickelter, und persönlich freier für den Inhaber.</p>
+<p>Wer einzelne Module isoliert betrachtet, sieht Teilwirkungen. Wer alle Module integriert betrachtet, sieht die Gesamttransformation. Ein Betrieb, der alle 12 Module konsequent umgesetzt hat, ist in jeder Dimension besser als vorher: finanziell stärker, operativ stabiler, personell entwickelter, und persönlich freier für den Inhaber.</p>
 <h3>Dein persönlicher Gastro-OS Fahrplan</h3>
 <p>Jeder Betrieb ist verschieden — deshalb ist der Gastro-OS Fahrplan für jeden Betrieb verschieden. Die Reihenfolge die du wählst, sollte an deinen größten Hebeln ausgerichtet sein. Ist dein Wareneinsatz dein größtes Problem? Dann beginne mit Modul 3 und baue die anderen darauf auf. Hast du ein Team-Problem? Dann sind Module 5 und 6 deine Priorität. Bist du operativ abhängig und hast keine persönliche Zeit? Dann ist Module 5 in Kombination mit Modul 11 dein Einstieg.</p>
 <p>Es gibt keine falsche Reihenfolge — nur die Reihenfolge die zu deiner aktuellen Situation passt. Und diese Situation verändert sich mit jedem Modul das du erfolgreich umsetzt. Nach 6 Monaten ist dein größter Hebel vielleicht nicht mehr derselbe wie am Anfang. Das System passt sich mit dir an.</p>
