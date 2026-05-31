@@ -42,7 +42,7 @@ h1 { font-family:Georgia,serif; font-size:26px; color:#1a2a4a; font-weight:norma
   position: relative;
   width: 100%;
   aspect-ratio: 16 / 9;
-  border-radius: 8px 0 8px 8px;
+  border-radius: 8px;
   overflow: hidden;
   background: #0a0f1e;
   margin: 24px 0;
@@ -50,10 +50,10 @@ h1 { font-family:Georgia,serif; font-size:26px; color:#1a2a4a; font-weight:norma
 }
 .video-wrap iframe {
   position: absolute;
-  top: -79px;
+  top: 0;
   left: 0;
   width: 100%;
-  height: calc(100% + 79px);
+  height: 100%;
   border: none;
 }
 /* GASTRO-OS Logo deckt Drive-Icon oben rechts ab */
@@ -173,7 +173,7 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
       </div>
     </div>
     <div class="video-wrap">
-      <iframe src="https://drive.google.com/file/d/1iCX6aRPlGWiIJuifOQb81qVjJWyFRvcA/preview"
+      <iframe loading="lazy" src="https://drive.google.com/file/d/1iCX6aRPlGWiIJuifOQb81qVjJWyFRvcA/preview"
         allow="autoplay"
         title="Küchenfunk #1 Podcast" sandbox="allow-scripts allow-same-origin allow-presentation">
       </iframe>
