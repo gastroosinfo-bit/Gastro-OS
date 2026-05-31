@@ -23,7 +23,7 @@ p:last-child { margin-bottom:0; }
   position: relative;
   width: 100%;
   aspect-ratio: 16 / 9;
-  border-radius: 8px 0 8px 8px;
+  border-radius: 8px;
   overflow: hidden;
   background: #0a0f1e;
   margin: 24px 0;
@@ -31,10 +31,10 @@ p:last-child { margin-bottom:0; }
 }
 .video-wrap iframe {
   position: absolute;
-  top: -79px;
+  top: 0;
   left: 0;
   width: 100%;
-  height: calc(100% + 79px);
+  height: 100%;
   border: none;
 }
 .video-cover-tr {
@@ -98,7 +98,7 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
     <p>Die Antwort auf diese Frage zeigt dir genau wo du heute stehst. Und dieses Video zeigt dir wohin du in Modul 5 kommst. Schau es in Ruhe an. Dann lies weiter.</p>
     <div class="gold-divider"></div>
     <div class="video-wrap">
-      <iframe src="https://drive.google.com/file/d/1-23BTQvXaX9suyBq8G-yQQmo5k67kOEC/preview" allow="autoplay" allowfullscreen sandbox="allow-scripts allow-same-origin allow-presentation allow-popups allow-forms"></iframe>
+      <iframe loading="lazy" src="https://drive.google.com/file/d/1-23BTQvXaX9suyBq8G-yQQmo5k67kOEC/preview" allow="autoplay" allowfullscreen sandbox="allow-scripts allow-same-origin allow-presentation allow-popups allow-forms"></iframe>
       <div class="video-cover-tr"></div>
     </div>
   </div>
