@@ -67,6 +67,49 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
   .video-wrap { margin: 12px 0 !important; }
   .video-wrap iframe { top: 0 !important; height: 100% !important; }
 }
+
+/* ─── Mobile Video Button ─── */
+.mobile-video-btn {
+  display: none;
+}
+@media (max-width: 768px) {
+  .mobile-video-btn {
+    display: flex;
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    align-items: center;
+    justify-content: center;
+    background: rgba(10,15,30,0.55);
+    border-radius: 8px;
+    cursor: pointer;
+    flex-direction: column;
+    gap: 10px;
+    text-decoration: none;
+  }
+  .mobile-video-btn .mvb-play {
+    width: 64px;
+    height: 64px;
+    background: #d4af37;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    color: #1a2a4a;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  }
+  .mobile-video-btn .mvb-label {
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+  }
+  .video-wrap iframe {
+    pointer-events: none;
+  }
+}
 </style>
 </head>
 <body>
@@ -100,7 +143,8 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
     <div class="gold-divider"></div>
     <div class="video-wrap">
       <iframe loading="lazy" src="https://drive.google.com/file/d/1vKPz0twokd7X5YbiqhWVj7bAMKpL-NXG/preview" allow="autoplay; fullscreen" allowfullscreen sandbox="allow-scripts allow-same-origin allow-presentation allow-popups allow-forms"></iframe>
-      <div class="video-cover-tr"></div>
+      <a class="mobile-video-btn" href="https://drive.google.com/file/d/1vKPz0twokd7X5YbiqhWVj7bAMKpL-NXG/view" target="_blank" rel="noopener"><div class="mvb-play">▶</div><div class="mvb-label">Video abspielen</div></a>
+    <div class="video-cover-tr"></div>
     </div>
   </div>
   <div class="gold-divider"></div>
