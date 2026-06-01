@@ -104,8 +104,8 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
   /* Cover: exactly over Drive logo (top:8px right:8px, 34x34px) */
   .video-cover-tr {
     display: block !important;
-    width: 34px !important;
-    height: 34px !important;
+    width: 56px !important;
+    height: 56px !important;
     top: 8px !important;
     right: 8px !important;
     pointer-events: none !important;
@@ -135,7 +135,7 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
 .video-play-btn {
   display: none;
   position: absolute;
-  top: 50%;
+  top: 55%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 90px;
@@ -218,5 +218,19 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
   <strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg
 </div>
 <script src="checklist-save.js"></script>
+
+<script>
+(function(){
+  var btn = document.querySelector('.video-play-btn');
+  if (!btn) return;
+  var wrap = btn.closest('.video-wrap') || btn.parentElement;
+  if (!wrap) return;
+  // Hide after touch anywhere on video area
+  wrap.addEventListener('touchstart', function(){
+    setTimeout(function(){ btn.style.display = 'none'; }, 800);
+  }, { once: true });
+})();
+</script>
+
 </body>
 </html>
