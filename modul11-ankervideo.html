@@ -60,6 +60,8 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
 
 
 
+
+
 @media (max-width: 768px) {
   .video-wrap {
     border-radius: 0 !important;
@@ -71,14 +73,21 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
     pointer-events: auto !important;
     touch-action: auto !important;
   }
+  /* Cover: exactly over Drive logo (top:8px right:8px, 34x34px) */
   .video-cover-tr {
     display: block !important;
-    width: 40px !important;
-    height: 40px !important;
+    width: 34px !important;
+    height: 34px !important;
+    top: 8px !important;
+    right: 8px !important;
     pointer-events: none !important;
   }
   .mobile-video-btn {
     display: none !important;
+  }
+  /* Golden play button in center */
+  .video-play-btn {
+    display: flex !important;
   }
 }
 
@@ -93,6 +102,26 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
   .video-wrap iframe { top: 0 !important; height: 100% !important; }
 }
 
+
+/* Golden play button overlay */
+.video-play-btn {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 68px;
+  height: 68px;
+  background: #d4af37;
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  color: #1a2a4a;
+  z-index: 15;
+  pointer-events: none;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
 </style>
 </head>
 <body>
@@ -127,6 +156,7 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
     <div class="video-wrap">
       <iframe loading="lazy" src="https://drive.google.com/file/d/1osNekP2fLjWQ8wqtW7kioFk9X_MtC1dO/preview" allow="autoplay; fullscreen" allowfullscreen sandbox="allow-scripts allow-same-origin allow-presentation allow-popups allow-forms"></iframe>
       <div class="mobile-video-btn" onclick="window.open('https://drive.google.com/file/d/1osNekP2fLjWQ8wqtW7kioFk9X_MtC1dO/preview','_blank')"><div class="mvb-play">▶</div><div class="mvb-label">Video abspielen</div></div>
+    <div class="video-play-btn">▶</div>
     <div class="video-cover-tr"></div>
     </div>
   </div>
