@@ -71,6 +71,26 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 }
 mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
 
+
+@media (max-width: 768px) {
+  .video-wrap {
+    border-radius: 0 !important;
+    margin-left: -12px !important;
+    margin-right: -12px !important;
+    width: calc(100% + 24px) !important;
+  }
+  .video-wrap iframe {
+    pointer-events: auto !important;
+    touch-action: auto !important;
+  }
+  .video-cover-tr {
+    display: none !important;
+  }
+  .mobile-video-btn {
+    display: none !important;
+  }
+}
+
 @media (max-width: 768px) {
   .header { padding: 12px 16px !important; }
   .brand { font-size: 16px !important; }
@@ -82,48 +102,6 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
   .video-wrap iframe { top: 0 !important; height: 100% !important; }
 }
 
-/* ─── Mobile Video Button ─── */
-.mobile-video-btn {
-  display: none;
-}
-@media (max-width: 768px) {
-  .mobile-video-btn {
-    display: flex;
-    position: absolute;
-    inset: 0;
-    z-index: 20;
-    align-items: center;
-    justify-content: center;
-    background: rgba(10,15,30,0.55);
-    border-radius: 8px;
-    cursor: pointer;
-    flex-direction: column;
-    gap: 10px;
-    text-decoration: none;
-  }
-  .mobile-video-btn .mvb-play {
-    width: 64px;
-    height: 64px;
-    background: #d4af37;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 26px;
-    color: #1a2a4a;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-  }
-  .mobile-video-btn .mvb-label {
-    color: #fff;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    text-shadow: 0 1px 4px rgba(0,0,0,0.6);
-  }
-  .video-wrap iframe {
-    pointer-events: none;
-  }
-}
 </style>
 </head>
 <body>
