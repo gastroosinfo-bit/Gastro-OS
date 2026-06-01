@@ -167,4 +167,28 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
 })();
 </script>
 
+
+<script>
+(function(){
+  var btn = document.querySelector('.video-play-btn');
+  var wrap = document.querySelector('.video-wrap');
+  var iframe = document.querySelector('.video-wrap iframe');
+  if (!btn || !wrap || !iframe) return;
+
+  wrap.addEventListener('touchstart', function(){
+    // Hide play button
+    btn.style.display = 'none';
+    // Request fullscreen on the iframe
+    setTimeout(function(){
+      try {
+        if (iframe.requestFullscreen) iframe.requestFullscreen();
+        else if (iframe.webkitRequestFullscreen) iframe.webkitRequestFullscreen();
+        else if (iframe.mozRequestFullScreen) iframe.mozRequestFullScreen();
+        else if (iframe.msRequestFullscreen) iframe.msRequestFullscreen();
+      } catch(e) {}
+    }, 300);
+  }, { once: true });
+})();
+</script>
+
 </body></html>
