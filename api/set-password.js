@@ -1,12 +1,9 @@
 const crypto = require('crypto');
-const { createClient } = require('@supabase/supabase-js');
 
 const SESSION_SECRET = process.env.SESSION_SECRET;
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
 const SESSION_DAYS = 30;
-
-const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
 
 function hashPassword(password) {
   return crypto.createHmac('sha256', SESSION_SECRET).update(password).digest('hex');
@@ -32,22 +29,36 @@ export default async function handler(req, res) {
 
   const hash = hashPassword(password);
 
-  // Passwort in Supabase speichern (upsert falls Profil existiert)
-  const { error } = await supabase
-    .from('profiles')
-    .update({ password_hash: hash })
-    .eq('email', email.toLowerCase());
+  try {
+    const response = await fetch(
+      `${SUPABASE_URL}/rest/v1/profiles?email=eq.${encodeURIComponent(email.toLowerCase())}`,
+      {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPABASE_SERVICE_KEY,
+          'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}`,
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify({ password_hash: hash })
+      }
+    );
 
-  if (error) {
-    console.error('Supabase Fehler:', error);
-    return res.status(500).json({ error: 'Passwort konnte nicht gespeichert werden.' });
+    if (!response.ok) {
+      const err = await response.text();
+      console.error('Supabase Fehler:', err);
+      return res.status(500).json({ error: 'Passwort konnte nicht gespeichert werden.' });
+    }
+
+    const token = signSession(email);
+    res.setHeader('Set-Cookie',
+      `gastro_os_session=${token}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${SESSION_DAYS * 86400}`
+    );
+
+    return res.status(200).json({ success: true });
+
+  } catch (err) {
+    console.error('Server Fehler:', err);
+    return res.status(500).json({ error: 'Server-Fehler. Bitte versuche es erneut.' });
   }
-
-  // Session direkt setzen
-  const token = signSession(email);
-  res.setHeader('Set-Cookie',
-    `gastro_os_session=${token}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${SESSION_DAYS * 86400}`
-  );
-
-  return res.status(200).json({ success: true });
 }
