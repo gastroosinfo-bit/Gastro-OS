@@ -1,12 +1,9 @@
 {
-  "redirects": [
-    {
-      "source": "/",
-      "destination": "/login.html",
-      "permanent": false
-    }
-  ],
   "routes": [
+    {
+      "src": "/",
+      "dest": "/starten.html"
+    },
     {
       "src": "/starten",
       "dest": "/starten.html"
