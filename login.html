@@ -6,7 +6,6 @@
   <title>Gastro-OS · Login</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
     body {
       font-family: Georgia, 'Times New Roman', serif;
       background: #F5F0E8;
@@ -15,7 +14,6 @@
       align-items: center;
       justify-content: center;
     }
-
     .login-card {
       background: #fff;
       border: 1px solid #D4AF37;
@@ -25,60 +23,15 @@
       max-width: 440px;
       box-shadow: 0 4px 24px rgba(26,42,74,0.08);
     }
-
-    .logo {
-      text-align: center;
-      margin-bottom: 32px;
-    }
-
-    .logo-title {
-      font-size: 32px;
-      font-weight: 700;
-      color: #1A2A4A;
-      letter-spacing: 2px;
-    }
-
-    .logo-title span {
-      color: #D4AF37;
-    }
-
-    .logo-sub {
-      font-size: 12px;
-      letter-spacing: 4px;
-      color: #9A7D3A;
-      margin-top: 4px;
-    }
-
-    .divider {
-      height: 1px;
-      background: linear-gradient(to right, transparent, #D4AF37, transparent);
-      margin: 20px 0 32px;
-    }
-
-    h2 {
-      font-size: 20px;
-      color: #1A2A4A;
-      margin-bottom: 8px;
-      text-align: center;
-    }
-
-    .subtitle {
-      font-size: 14px;
-      color: #666;
-      text-align: center;
-      margin-bottom: 28px;
-      line-height: 1.6;
-    }
-
-    label {
-      display: block;
-      font-size: 13px;
-      color: #1A2A4A;
-      margin-bottom: 6px;
-      letter-spacing: 1px;
-    }
-
-    input[type="email"] {
+    .logo { text-align: center; margin-bottom: 32px; }
+    .logo-title { font-size: 32px; font-weight: 700; color: #1A2A4A; letter-spacing: 2px; }
+    .logo-title span { color: #D4AF37; }
+    .logo-sub { font-size: 12px; letter-spacing: 4px; color: #9A7D3A; margin-top: 4px; }
+    .divider { height: 1px; background: linear-gradient(to right, transparent, #D4AF37, transparent); margin: 20px 0 32px; }
+    h2 { font-size: 20px; color: #1A2A4A; margin-bottom: 8px; text-align: center; }
+    .subtitle { font-size: 14px; color: #666; text-align: center; margin-bottom: 28px; line-height: 1.6; }
+    label { display: block; font-size: 13px; color: #1A2A4A; margin-bottom: 6px; letter-spacing: 1px; }
+    input[type="email"], input[type="password"] {
       width: 100%;
       padding: 12px 16px;
       border: 1px solid #D4AF37;
@@ -89,15 +42,12 @@
       background: #FDFAF5;
       outline: none;
       transition: border-color 0.2s;
+      margin-bottom: 16px;
     }
-
-    input[type="email"]:focus {
-      border-color: #1A2A4A;
-    }
-
+    input:focus { border-color: #1A2A4A; }
     button {
       width: 100%;
-      margin-top: 20px;
+      margin-top: 4px;
       padding: 14px;
       background: #1A2A4A;
       color: #D4AF37;
@@ -110,87 +60,112 @@
       cursor: pointer;
       transition: background 0.2s;
     }
-
     button:hover { background: #0D1B2A; }
     button:disabled { background: #ccc; color: #999; cursor: not-allowed; }
-
     .error-msg {
-      margin-top: 16px;
-      padding: 12px 16px;
-      background: #FFF0F0;
-      border: 1px solid #FFCCCC;
-      border-radius: 4px;
-      color: #CC0000;
-      font-size: 13px;
-      display: none;
+      margin-top: 16px; padding: 12px 16px;
+      background: #FFF0F0; border: 1px solid #FFCCCC;
+      border-radius: 4px; color: #CC0000; font-size: 13px; display: none;
     }
-
     .success-msg {
-      margin-top: 16px;
-      padding: 12px 16px;
-      background: #F0FFF4;
-      border: 1px solid #9AE6B4;
-      border-radius: 4px;
-      color: #276749;
-      font-size: 13px;
-      display: none;
+      margin-top: 16px; padding: 12px 16px;
+      background: #F0FFF4; border: 1px solid #9AE6B4;
+      border-radius: 4px; color: #276749; font-size: 13px; display: none;
     }
-
-    .footer-note {
-      margin-top: 28px;
-      text-align: center;
-      font-size: 12px;
-      color: #999;
-      line-height: 1.6;
-    }
-
-    .footer-note a {
-      color: #9A7D3A;
-      text-decoration: none;
-    }
-</style>
+    .footer-note { margin-top: 28px; text-align: center; font-size: 12px; color: #999; line-height: 1.6; }
+    .footer-note a { color: #9A7D3A; text-decoration: none; }
+    .password-field { display: none; }
+  </style>
 </head>
 <body>
-
 <div class="login-card">
   <div class="logo">
     <div class="logo-title">Gastro<span>-OS</span></div>
     <div class="logo-sub">SYSTEM · STRATEGIE · ERFOLG</div>
   </div>
-
   <div class="divider"></div>
 
-  <h2>Willkommen zurück</h2>
-  <p class="subtitle">Gib deine E-Mail-Adresse ein, mit der du dein Gastro-OS Abonnement abgeschlossen hast.</p>
+  <!-- SCHRITT 1: E-Mail -->
+  <div id="step1">
+    <h2>Willkommen zurück</h2>
+    <p class="subtitle">Gib deine E-Mail-Adresse ein, mit der du dein Gastro-OS Abonnement abgeschlossen hast.</p>
+    <form id="emailForm" onsubmit="handleEmailStep(event)">
+      <label for="email">E-MAIL-ADRESSE</label>
+      <input type="email" id="email" placeholder="deine@email.de" required autocomplete="email"/>
+      <button type="submit" id="emailBtn">WEITER</button>
+    </form>
+  </div>
 
-  <form id="loginForm" onsubmit="handleLogin(event)">
-    <label for="email">E-MAIL-ADRESSE</label>
-    <input type="email" id="email" placeholder="deine@email.de" required autocomplete="email"/>
-    <button type="submit" id="submitBtn">EINLOGGEN</button>
-  </form>
+  <!-- SCHRITT 2a: Passwort erstellen (Erstanmeldung) -->
+  <div id="step2new" style="display:none;">
+    <h2>Passwort erstellen</h2>
+    <p class="subtitle">Willkommen! Bitte lege jetzt dein persönliches Passwort fest.</p>
+    <form id="setPasswordForm" onsubmit="handleSetPassword(event)">
+      <label for="newPassword">NEUES PASSWORT</label>
+      <input type="password" id="newPassword" placeholder="Mindestens 8 Zeichen" required minlength="8"/>
+      <label for="confirmPassword">PASSWORT WIEDERHOLEN</label>
+      <input type="password" id="confirmPassword" placeholder="Passwort bestätigen" required minlength="8"/>
+      <button type="submit" id="setPasswordBtn">PASSWORT SPEICHERN</button>
+    </form>
+  </div>
+
+  <!-- SCHRITT 2b: Passwort eingeben (Wiederkehrende Nutzer) -->
+  <div id="step2existing" style="display:none;">
+    <h2>Willkommen zurück</h2>
+    <p class="subtitle" id="returningEmail"></p>
+    <form id="passwordForm" onsubmit="handlePasswordLogin(event)">
+      <label for="password">PASSWORT</label>
+      <input type="password" id="password" placeholder="Dein Passwort" required/>
+      <button type="submit" id="passwordBtn">EINLOGGEN</button>
+    </form>
+    <div style="text-align:center; margin-top:12px;">
+      <a href="#" onclick="resetToStep1()" style="font-size:12px; color:#9A7D3A; text-decoration:none;">Andere E-Mail verwenden</a>
+    </div>
+  </div>
 
   <div class="error-msg" id="errorMsg"></div>
-  <div class="success-msg" id="successMsg">✓ Zugang bestätigt. Du wirst weitergeleitet...</div>
+  <div class="success-msg" id="successMsg"></div>
 
-  
-<div class="footer-note">
+  <div class="footer-note">
     Noch kein Abonnement?
-    <a href="https://whop.com/gastro-os" target="_blank">Jetzt Mitglied werden →</a>
+    <a href="https://whop.com/gastro-os-81b8/starten/" target="_blank">Jetzt Mitglied werden →</a>
   </div>
 </div>
 
 <script>
-async function handleLogin(event) {
+let currentEmail = '';
+
+function showError(msg) {
+  const el = document.getElementById('errorMsg');
+  el.textContent = msg;
+  el.style.display = 'block';
+  document.getElementById('successMsg').style.display = 'none';
+}
+
+function showSuccess(msg) {
+  const el = document.getElementById('successMsg');
+  el.textContent = msg;
+  el.style.display = 'block';
+  document.getElementById('errorMsg').style.display = 'none';
+}
+
+function hideMessages() {
+  document.getElementById('errorMsg').style.display = 'none';
+  document.getElementById('successMsg').style.display = 'none';
+}
+
+function resetToStep1() {
+  document.getElementById('step1').style.display = 'block';
+  document.getElementById('step2new').style.display = 'none';
+  document.getElementById('step2existing').style.display = 'none';
+  hideMessages();
+}
+
+async function handleEmailStep(event) {
   event.preventDefault();
-
   const email = document.getElementById('email').value.trim();
-  const btn = document.getElementById('submitBtn');
-  const errorMsg = document.getElementById('errorMsg');
-  const successMsg = document.getElementById('successMsg');
-
-  // Reset
-  errorMsg.style.display = 'none';
-  successMsg.style.display = 'none';
+  const btn = document.getElementById('emailBtn');
+  hideMessages();
   btn.disabled = true;
   btn.textContent = 'PRÜFE ZUGANG...';
 
@@ -198,31 +173,104 @@ async function handleLogin(event) {
     const response = await fetch('/api/check-auth', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email }),
+      body: JSON.stringify({ email, step: 'check_email' }),
     });
+    const data = await response.json();
 
+    if (!response.ok) {
+      showError(data.error || 'Zugang nicht möglich. Bitte überprüfe deine E-Mail.');
+      btn.disabled = false;
+      btn.textContent = 'WEITER';
+      return;
+    }
+
+    currentEmail = email;
+    document.getElementById('step1').style.display = 'none';
+
+    if (data.hasPassword) {
+      document.getElementById('returningEmail').textContent = email;
+      document.getElementById('step2existing').style.display = 'block';
+    } else {
+      document.getElementById('step2new').style.display = 'block';
+    }
+
+  } catch (err) {
+    showError('Verbindungsfehler. Bitte versuche es erneut.');
+    btn.disabled = false;
+    btn.textContent = 'WEITER';
+  }
+}
+
+async function handleSetPassword(event) {
+  event.preventDefault();
+  const newPassword = document.getElementById('newPassword').value;
+  const confirmPassword = document.getElementById('confirmPassword').value;
+  const btn = document.getElementById('setPasswordBtn');
+
+  hideMessages();
+
+  if (newPassword !== confirmPassword) {
+    showError('Die Passwörter stimmen nicht überein.');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'WIRD GESPEICHERT...';
+
+  try {
+    const response = await fetch('/api/set-password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: currentEmail, password: newPassword }),
+    });
     const data = await response.json();
 
     if (response.ok && data.success) {
-      successMsg.style.display = 'block';
-      setTimeout(() => {
-        window.location.href = '/dashboard.html';
-      }, 1200);
+      showSuccess('✓ Passwort gespeichert. Du wirst weitergeleitet...');
+      setTimeout(() => { window.location.href = '/dashboard.html'; }, 1200);
     } else {
-      errorMsg.textContent = data.error || 'Zugang nicht möglich. Bitte überprüfe deine E-Mail.';
-      errorMsg.style.display = 'block';
+      showError(data.error || 'Fehler beim Speichern. Bitte versuche es erneut.');
+      btn.disabled = false;
+      btn.textContent = 'PASSWORT SPEICHERN';
+    }
+  } catch (err) {
+    showError('Verbindungsfehler. Bitte versuche es erneut.');
+    btn.disabled = false;
+    btn.textContent = 'PASSWORT SPEICHERN';
+  }
+}
+
+async function handlePasswordLogin(event) {
+  event.preventDefault();
+  const password = document.getElementById('password').value;
+  const btn = document.getElementById('passwordBtn');
+
+  hideMessages();
+  btn.disabled = true;
+  btn.textContent = 'PRÜFE...';
+
+  try {
+    const response = await fetch('/api/check-auth', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: currentEmail, password, step: 'login' }),
+    });
+    const data = await response.json();
+
+    if (response.ok && data.success) {
+      showSuccess('✓ Zugang bestätigt. Du wirst weitergeleitet...');
+      setTimeout(() => { window.location.href = '/dashboard.html'; }, 1200);
+    } else {
+      showError(data.error || 'Falsches Passwort. Bitte versuche es erneut.');
       btn.disabled = false;
       btn.textContent = 'EINLOGGEN';
     }
   } catch (err) {
-    errorMsg.textContent = 'Verbindungsfehler. Bitte versuche es erneut.';
-    errorMsg.style.display = 'block';
+    showError('Verbindungsfehler. Bitte versuche es erneut.');
     btn.disabled = false;
     btn.textContent = 'EINLOGGEN';
   }
 }
 </script>
-
-<script src="checklist-save.js"></script>
 </body>
 </html>
