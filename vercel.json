@@ -5,6 +5,10 @@
       "dest": "/login.html"
     },
     {
+      "src": "/login",
+      "dest": "/login.html"
+    },
+    {
       "src": "/starten",
       "dest": "/starten.html"
     },
