@@ -31,16 +31,16 @@ export default async function handler(req, res) {
 
   try {
     const response = await fetch(
-      `${SUPABASE_URL}/rest/v1/profiles?email=eq.${encodeURIComponent(email.toLowerCase())}`,
+      `${SUPABASE_URL}/rest/v1/profiles`,
       {
-        method: 'PATCH',
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'apikey': SUPABASE_SERVICE_KEY,
           'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}`,
-          'Prefer': 'return=minimal'
+          'Prefer': 'resolution=merge-duplicates,return=minimal'
         },
-        body: JSON.stringify({ password_hash: hash })
+        body: JSON.stringify({ email: email.toLowerCase(), password_hash: hash })
       }
     );
 
