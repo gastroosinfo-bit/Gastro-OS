@@ -52,7 +52,7 @@ export default async function handler(req, res) {
   if (step === 'check_email') {
     if (!isBypass) {
       const membershipRes = await fetch(
-        `https://api.whop.com/v5/company/memberships?product_id=${WHOP_PRODUCT_ID}&valid=true`,
+`https://api.whop.com/v5/company/memberships?product_id=${WHOP_PRODUCT_ID}`,
         { headers: { 'Authorization': `Bearer ${WHOP_API_KEY}`, 'Content-Type': 'application/json' } }
       );
       if (!membershipRes.ok) {
