@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gastro-OS – Das Betriebssystem für dein Restaurant</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #1C2340;
+      --gold: #9A7D3A;
+      --gold-light: #C4A55A;
+      --cream: #F5F0E8;
+      --cream-dark: #EDE9DC;
+      --white: #FFFFFF;
+      --gray: #6B7280;
+      --dark: #111827;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--dark);
+      line-height: 1.6;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--navy);
+      color: var(--white);
+      padding: 60px 24px 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(154,125,58,0.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .logo-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(154,125,58,0.15);
+      border: 1px solid rgba(154,125,58,0.4);
+      border-radius: 100px;
+      padding: 8px 20px;
+      margin-bottom: 32px;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gold-light);
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 5vw, 52px);
+      font-weight: 900;
+      line-height: 1.15;
+      max-width: 720px;
+      margin: 0 auto 24px;
+    }
+    .hero h1 em {
+      font-style: normal;
+      color: var(--gold-light);
+    }
+    .hero-sub {
+      font-size: clamp(15px, 2vw, 18px);
+      color: rgba(255,255,255,0.7);
+      max-width: 520px;
+      margin: 0 auto 40px;
+      font-weight: 300;
+    }
+    .cta-btn {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      padding: 18px 40px;
+      border-radius: 4px;
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .cta-btn:hover { background: var(--gold-light); transform: translateY(-2px); }
+    .price-note {
+      margin-top: 16px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.45);
+    }
+
+    /* ── PAIN ── */
+    .pain {
+      background: var(--white);
+      padding: 64px 24px;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .pain h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(22px, 3.5vw, 32px);
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 16px;
+    }
+    .pain p {
+      font-size: 16px;
+      color: var(--gray);
+      margin-bottom: 32px;
+      line-height: 1.75;
+    }
+    .divider {
+      width: 48px;
+      height: 3px;
+      background: var(--gold);
+      margin: 32px 0;
+    }
+
+    /* ── SOLUTION ── */
+    .solution {
+      background: var(--cream);
+      padding: 64px 24px;
+    }
+    .solution-inner {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .section-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+    .solution h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(22px, 3.5vw, 32px);
+      color: var(--navy);
+      margin-bottom: 16px;
+    }
+    .solution p {
+      font-size: 16px;
+      color: var(--gray);
+      line-height: 1.75;
+      margin-bottom: 40px;
+    }
+
+    /* ── BENEFITS ── */
+    .benefits {
+      background: var(--navy);
+      padding: 64px 24px;
+      color: var(--white);
+    }
+    .benefits-inner {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .benefits h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(22px, 3.5vw, 30px);
+      margin-bottom: 40px;
+    }
+    .benefit-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .benefit-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(154,125,58,0.2);
+      border-radius: 6px;
+      padding: 18px 20px;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+    .benefit-list li .icon {
+      font-size: 22px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .benefit-list li strong {
+      display: block;
+      color: var(--gold-light);
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+    .benefit-list li span {
+      color: rgba(255,255,255,0.7);
+      font-size: 14px;
+    }
+
+    /* ── GROWING ── */
+    .growing {
+      background: var(--cream-dark);
+      padding: 48px 24px;
+      text-align: center;
+    }
+    .growing-inner {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .growing p {
+      font-size: 16px;
+      color: var(--navy);
+      line-height: 1.75;
+    }
+    .growing p strong {
+      color: var(--gold);
+    }
+
+    /* ── PRICING ── */
+    .pricing {
+      background: var(--white);
+      padding: 64px 24px;
+      text-align: center;
+    }
+    .price-card {
+      max-width: 480px;
+      margin: 0 auto;
+      border: 2px solid var(--navy);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .price-card-header {
+      background: var(--navy);
+      padding: 28px 32px;
+      color: var(--white);
+    }
+    .price-card-header h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      margin-bottom: 8px;
+    }
+    .price-amount {
+      font-size: 42px;
+      font-weight: 700;
+      color: var(--gold-light);
+      line-height: 1;
+    }
+    .price-amount span {
+      font-size: 16px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.6);
+    }
+    .price-card-body {
+      padding: 28px 32px;
+      background: var(--cream);
+    }
+    .price-card-body p {
+      font-size: 15px;
+      color: var(--gray);
+      margin-bottom: 24px;
+      line-height: 1.65;
+    }
+    .price-card-body .cta-btn {
+      display: block;
+      text-align: center;
+    }
+    .tax-note {
+      margin-top: 16px;
+      font-size: 13px;
+      color: var(--gray);
+    }
+
+    /* ── FAQ ── */
+    .faq {
+      background: var(--cream);
+      padding: 64px 24px;
+    }
+    .faq-inner {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .faq h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(22px, 3vw, 30px);
+      color: var(--navy);
+      margin-bottom: 40px;
+    }
+    .faq-item {
+      border-bottom: 1px solid var(--cream-dark);
+      border: 1px solid rgba(28,35,64,0.1);
+      border-radius: 6px;
+      margin-bottom: 8px;
+      overflow: hidden;
+    }
+    .faq-q {
+      width: 100%;
+      background: var(--white);
+      border: none;
+      text-align: left;
+      padding: 20px 24px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--navy);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      transition: background 0.15s;
+    }
+    .faq-q:hover { background: var(--cream); }
+    .faq-q .plus {
+      font-size: 20px;
+      color: var(--gold);
+      flex-shrink: 0;
+      transition: transform 0.2s;
+      font-weight: 300;
+    }
+    .faq-q.open { background: var(--navy); color: var(--white); }
+    .faq-q.open .plus { transform: rotate(45deg); color: var(--gold-light); }
+    .faq-a {
+      display: none;
+      padding: 16px 24px 20px;
+      background: var(--cream);
+      font-size: 15px;
+      color: var(--gray);
+      line-height: 1.7;
+    }
+    .faq-a.open { display: block; }
+
+    /* ── FOOTER ── */
+    .footer {
+      background: var(--navy);
+      color: rgba(255,255,255,0.5);
+      text-align: center;
+      padding: 32px 24px;
+      font-size: 13px;
+    }
+    .footer a {
+      color: var(--gold-light);
+      text-decoration: none;
+    }
+    .footer a:hover { text-decoration: underline; }
+
+    /* ── MOBILE ── */
+    @media (max-width: 600px) {
+      .hero { padding: 48px 20px 64px; }
+      .pain, .solution-inner, .benefits-inner, .faq-inner { padding-left: 0; padding-right: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="logo-badge">GASTRO-OS · System · Strategie · Erfolg</div>
+  <h1>Die Schritt-für-Schritt-Anleitung für dein <em>automatisiertes</em> Gastronomie-Business</h1>
+  <p class="hero-sub">Für Inhaber von Restaurants, Cafés, Bistros und Gaststätten, die bereit sind ihren Betrieb wie ein Unternehmer zu führen.</p>
+  <a href="https://whop.com/gastro-os-81b8/starten/" class="cta-btn">Jetzt Zugriff erhalten</a>
+  <p class="price-note">299 € / Monat · Monatlich kündbar · Von der Steuer absetzbar</p>
+</section>
+
+<!-- PAIN -->
+<section style="background: var(--white); padding: 64px 24px;">
+  <div style="max-width: 720px; margin: 0 auto;">
+    <h2 style="font-family: 'Playfair Display', serif; font-size: clamp(20px,3.5vw,30px); color: var(--navy); margin-bottom: 16px;">Dein Restaurant läuft – aber du läufst hinterher.</h2>
+    <p style="font-size: 16px; color: var(--gray); line-height: 1.8;">Du arbeitest 12, 14, manchmal 16 Stunden am Tag. Und trotzdem bleibt am Ende des Monats zu wenig übrig. Nicht weil du nicht hart genug arbeitest – sondern weil dir niemand gezeigt hat wie ein Gastronomiebetrieb wirklich funktioniert.</p>
+    <div style="width: 48px; height: 3px; background: var(--gold); margin: 32px 0;"></div>
+    <p style="font-size: 16px; font-weight: 600; color: var(--navy); margin-bottom: 8px;">Gastro-OS ändert das.</p>
+    <p style="font-size: 16px; color: var(--gray); line-height: 1.8;">Kein theoretischer Kurs. Kein leeres Motivationsgerede. Ein komplettes Betriebssystem für deinen Betrieb – mit Modulen, Tools, Videos und Podcasts direkt aus der Praxis.</p>
+  </div>
+</section>
+
+<!-- BENEFITS -->
+<section class="benefits">
+  <div class="benefits-inner">
+    <h2>Was du bekommst:</h2>
+    <ul class="benefit-list">
+      <li>
+        <span class="icon">🎯</span>
+        <div><strong>Zahlen die du verstehst</strong><span>Food Cost, Deckungsbeitrag, Break-even – endlich klar erklärt mit echten Fallbeispielen.</span></div>
+      </li>
+      <li>
+        <span class="icon">📈</span>
+        <div><strong>Mehr Umsatz – ohne mehr Gäste</strong><span>Lerne wie du mit denselben Gästen mehr verdienst.</span></div>
+      </li>
+      <li>
+        <span class="icon">👥</span>
+        <div><strong>Ein Team das mitdenkt</strong><span>Ohne dass alles an dir hängt.</span></div>
+      </li>
+      <li>
+        <span class="icon">⚙️</span>
+        <div><strong>Systeme statt Chaos</strong><span>Strukturen die auch ohne dich funktionieren.</span></div>
+      </li>
+      <li>
+        <span class="icon">💡</span>
+        <div><strong>Marketing das wirkt</strong><span>Ohne stundenlang Content zu produzieren.</span></div>
+      </li>
+      <li>
+        <span class="icon">🔧</span>
+        <div><strong>Interaktive Tools direkt nutzbar</strong><span>Berechnungstools, Checklisten und Vorlagen die du sofort einsetzen kannst.</span></div>
+      </li>
+      <li>
+        <span class="icon">🎙</span>
+        <div><strong>Küchenfunk Podcast</strong><span>Für unterwegs – immer dabei wenn du einen Moment hast.</span></div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- GROWING -->
+<section class="growing">
+  <div class="growing-inner">
+    <p><strong>Es wächst mit dir.</strong> Neue Module, Tools und Videos kommen regelmäßig dazu – als Mitglied profitierst du automatisch davon.</p>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing">
+  <p class="section-tag">Jetzt starten</p>
+  <div class="price-card">
+    <div class="price-card-header">
+      <h3>Gastro-OS</h3>
+      <div class="price-amount">299 € <span>/ Monat</span></div>
+    </div>
+    <div class="price-card-body">
+      <p>Monatlich kündbar. Sofortiger Zugang zu allen Inhalten. Als Betriebsausgabe von der Steuer absetzbar.</p>
+      <a href="https://whop.com/gastro-os-81b8/starten/" class="cta-btn">Zugriff erhalten →</a>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq">
+  <div class="faq-inner">
+    <h2>Häufig gestellte Fragen</h2>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggle(this)">Für wen ist GASTRO-OS geeignet? <span class="plus">+</span></button>
+      <div class="faq-a">Für selbstständige Gastronomen — Restaurants, Cafés, Bistros und Gaststätten im DACH-Raum, die ihren Betrieb profitabler und strukturierter führen wollen.</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggle(this)">Was genau bekomme ich nach dem Kauf? <span class="plus">+</span></button>
+      <div class="faq-a">Sofortigen Zugang zu allen 12 Modulen auf mein-gastro-system.de — mit Videos, Lektionen, Praxistools, Quizzen und Podcasts. Alles direkt im Browser, kein Download nötig.</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggle(this)">Wie lange ist die Mindestlaufzeit? <span class="plus">+</span></button>
+      <div class="faq-a">Es gibt keine Mindestlaufzeit. Du startest monatlich und kannst jederzeit verlängern oder pausieren.</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggle(this)">Was ist der Unterschied zu einem normalen Online-Kurs? <span class="plus">+</span></button>
+      <div class="faq-a">GASTRO-OS ist kein Kurs — es ist ein digitales Betriebssystem mit Tools die du dauerhaft in deinem Alltag nutzt.</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggle(this)">Bekomme ich auch neue Inhalte wenn ich bereits Mitglied bin? <span class="plus">+</span></button>
+      <div class="faq-a">Ja. GASTRO-OS wird laufend erweitert — neue Module, Tools und Inhalte kommen regelmäßig dazu. Als Mitglied profitierst du automatisch davon.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section style="background: var(--navy); padding: 64px 24px; text-align: center;">
+  <p style="font-family: 'Playfair Display', serif; font-size: clamp(20px,3vw,30px); color: var(--white); margin-bottom: 24px; max-width: 500px; margin-left: auto; margin-right: auto;">Bereit deinen Betrieb wirklich in den Griff zu kriegen?</p>
+  <a href="https://whop.com/gastro-os-81b8/starten/" class="cta-btn">Jetzt Zugriff erhalten</a>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <p>© GASTRO-OS · <a href="https://mein-gastro-system.de/impressum.html">Impressum</a> · <a href="https://mein-gastro-system.de/datenschutz.html">Datenschutz</a> · <a href="https://mein-gastro-system.de/agb.html">AGB</a></p>
+</footer>
+
+<script>
+  function toggle(btn) {
+    const answer = btn.nextElementSibling;
+    const isOpen = btn.classList.contains('open');
+    document.querySelectorAll('.faq-q').forEach(b => { b.classList.remove('open'); b.nextElementSibling.classList.remove('open'); });
+    if (!isOpen) { btn.classList.add('open'); answer.classList.add('open'); }
+  }
+</script>
+</body>
+</html>
