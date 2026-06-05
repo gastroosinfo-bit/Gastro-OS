@@ -120,6 +120,7 @@
     </form>
     <div style="text-align:center; margin-top:12px;">
       <a href="#" onclick="resetToStep1()" style="font-size:12px; color:#9A7D3A; text-decoration:none;">Andere E-Mail verwenden</a>
+      <a href="#" onclick="handleForgotPassword()" style="font-size:12px; color:#9A7D3A; text-decoration:none; display:block; margin-top:8px;">Passwort vergessen?</a>
     </div>
   </div>
 
@@ -271,6 +272,21 @@ async function handlePasswordLogin(event) {
     btn.textContent = 'EINLOGGEN';
   }
 }
+  async function handleForgotPassword() {
+  if (!currentEmail) { showError('Bitte zuerst E-Mail eingeben.'); return; }
+  const btn = document.getElementById('passwordBtn');
+  btn.disabled = true;
+  btn.textContent = 'WIRD GESENDET...';
+  await fetch('/api/forgot-password', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email: currentEmail }),
+  });
+  showSuccess('✓ Falls ein Konto existiert, wurde eine E-Mail gesendet.');
+  btn.disabled = false;
+  btn.textContent = 'EINLOGGEN';
+}
+
 </script>
 </body>
 </html>
