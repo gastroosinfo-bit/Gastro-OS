@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Start-Check — Modul 0 | GASTRO-OS</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
@@ -67,65 +68,24 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
   border-radius:0 0 2px 2px;
 }
 @keyframes fadeIn { from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);} }
-
 .result-logo { font-family:Georgia,serif; font-size:12px; color:#d4af37; letter-spacing:4px; text-transform:uppercase; margin-bottom:24px; }
-.result-icon { font-size:42px; margin-bottom:16px; line-height:1; }
+.result-icon { font-size:48px; margin-bottom:16px; line-height:1; }
 .result-label { font-size:10px; color:#d4af37; letter-spacing:3px; text-transform:uppercase; font-weight:700; margin-bottom:8px; }
-.result-title { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:4px; }
+.result-title { font-family:Georgia,serif; font-size:30px; color:#1a2a4a; font-weight:normal; margin-bottom:4px; }
 .result-subtitle { font-size:12px; color:#8090a8; letter-spacing:2px; text-transform:uppercase; margin-bottom:0; }
 .result-divider { height:1px; background:linear-gradient(90deg,transparent,#d4af37,transparent); margin:22px 0; }
-
 .result-section { text-align:left; margin-bottom:12px; background:#f5f0e8; border-radius:6px; padding:16px 18px; border-left:4px solid #d4af37; }
 .result-section-label { font-size:10px; color:#1a2a4a; letter-spacing:2px; text-transform:uppercase; font-weight:700; margin-bottom:6px; }
 .result-section-text { font-size:13px; line-height:1.75; color:#2a3a54; }
-
 .result-seal-row { display:flex; align-items:center; justify-content:space-between; margin:22px 0 20px; }
 .result-date-text { font-size:12px; color:#8090a8; font-style:italic; }
-.result-seal {
-  font-family:Georgia,serif; font-size:9px; color:#d4af37;
-  letter-spacing:1px; border:2px solid #d4af37; border-radius:50%;
-  width:64px; height:64px; display:flex; align-items:center;
-  justify-content:center; text-align:center; line-height:1.4;
-  flex-shrink:0;
-}
-
-.result-actions { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+.result-seal { font-family:Georgia,serif; font-size:9px; color:#d4af37; letter-spacing:1px; border:2px solid #d4af37; border-radius:50%; width:64px; height:64px; display:flex; align-items:center; justify-content:center; text-align:center; line-height:1.4; flex-shrink:0; }
+.result-actions { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:4px; }
 .btn-pdf { display:inline-block; background:#1a2a4a; border:none; color:#d4af37; padding:13px 32px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; transition:all 0.2s; letter-spacing:1px; }
 .btn-pdf:hover { background:#d4af37; color:#1a2a4a; }
+.btn-pdf:disabled { background:#aaa; color:#fff; cursor:wait; }
 .btn-retry { display:inline-block; background:transparent; border:2px solid #e8dfc8; color:#8090a8; padding:11px 24px; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; margin-top:10px; }
 .btn-retry:hover { border-color:#d4af37; color:#d4af37; }
-
-@media print {
-  @page {
-    margin:10mm 15mm;
-    size:A4 portrait;
-  }
-  * { -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }
-  .header, .gold-bar, .footer-brand, #form-screen, .result-actions, .btn-retry, .no-print { display:none !important; }
-  html, body { background:#fff !important; }
-  .wrap { margin:0 !important; padding:0 !important; max-width:100% !important; }
-  #result-screen { display:block !important; }
-  .result-card {
-    box-shadow:none !important;
-    border:3px solid #d4af37 !important;
-    padding:32px 30px 28px !important;
-    page-break-inside:avoid;
-  }
-  .result-card::before {
-    background:#d4af37 !important;
-    height:8px !important;
-  }
-  .result-card::after {
-    background:#d4af37 !important;
-    height:4px !important;
-  }
-  .result-section { background:#f5f0e8 !important; page-break-inside:avoid; margin-bottom:10px !important; padding:12px 16px !important; }
-  .result-section-text { font-size:12px !important; line-height:1.65 !important; }
-  .result-logo { margin-bottom:16px !important; }
-  .result-divider { margin:16px 0 !important; }
-  .result-seal-row { margin:16px 0 14px !important; }
-}
-
 .footer-brand { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-brand strong { color:#d4af37; }
 </style>
@@ -139,7 +99,6 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 <div class="gold-bar"></div>
 
 <div class="wrap">
-
   <div id="form-screen">
     <div class="intro-card">
       <div class="intro-label">Modul 0 · Start-Check</div>
@@ -155,7 +114,6 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
       <button class="option" onclick="selectOption(1,20,this)"><div class="option-dot"></div><div class="option-text">Gelegentlich — aber nur wenn es der Alltag zulässt</div></button>
       <button class="option" onclick="selectOption(1,30,this)"><div class="option-dot"></div><div class="option-text">Regelmäßig — ich halte mir bewusst Zeit für Strategie und Entwicklung frei</div></button>
     </div>
-
     <div class="question-card" id="qcard-2">
       <div class="q-number">Frage 2 von 10</div>
       <div class="q-title">Wie endet dein typischer Arbeitstag?</div>
@@ -164,7 +122,6 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
       <button class="option" onclick="selectOption(2,20,this)"><div class="option-dot"></div><div class="option-text">Erschöpfung — ich habe viel geschafft, aber vor allem Brände gelöscht</div></button>
       <button class="option" onclick="selectOption(2,30,this)"><div class="option-dot"></div><div class="option-text">Zufriedenheit — der Betrieb läuft auch ohne mein ständiges Eingreifen</div></button>
     </div>
-
     <div class="question-card" id="qcard-3">
       <div class="q-number">Frage 3 von 10</div>
       <div class="q-title">Finanzielle Klarheit</div>
@@ -173,7 +130,6 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
       <button class="option" onclick="selectOption(3,20,this)"><div class="option-dot"></div><div class="option-text">Ich habe ein grobes Bauchgefühl für meine Margen</div></button>
       <button class="option" onclick="selectOption(3,30,this)"><div class="option-dot"></div><div class="option-text">Ich kenne meinen Wareneinsatz und meine Deckungsbeiträge genau</div></button>
     </div>
-
     <div class="question-card" id="qcard-4">
       <div class="q-number">Frage 4 von 10</div>
       <div class="q-title">Der Urlaubs-Test</div>
@@ -182,7 +138,6 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
       <button class="option" onclick="selectOption(4,20,this)"><div class="option-dot"></div><div class="option-text">Es läuft irgendwie weiter, aber Qualität und Service leiden massiv</div></button>
       <button class="option" onclick="selectOption(4,30,this)"><div class="option-dot"></div><div class="option-text">Kein Problem — mein Team weiß genau was zu tun ist, die Systeme laufen</div></button>
     </div>
-
     <div class="question-card" id="qcard-5">
       <div class="q-number">Frage 5 von 10</div>
       <div class="q-title">Umgang mit Kostensteigerungen</div>
@@ -191,7 +146,6 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
       <button class="option" onclick="selectOption(5,20,this)"><div class="option-dot"></div><div class="option-text">Ich passe Preise an, aber ohne genaue Kalkulation dahinter</div></button>
       <button class="option" onclick="selectOption(5,30,this)"><div class="option-dot"></div><div class="option-text">Ich kalkuliere gezielt nach und passe Preise oder Rezepturen systematisch an</div></button>
     </div>
-
     <div class="question-card" id="qcard-6">
       <div class="q-number">Frage 6 von 10</div>
       <div class="q-title">Mitarbeiterführung</div>
@@ -200,7 +154,6 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
       <button class="option" onclick="selectOption(6,20,this)"><div class="option-dot"></div><div class="option-text">Es gibt grobe Abläufe, aber vieles hängt von der Person ab die einarbeitet</div></button>
       <button class="option" onclick="selectOption(6,30,this)"><div class="option-dot"></div><div class="option-text">Wir haben klare Einarbeitungspläne und Standards, die für alle gelten</div></button>
     </div>
-
     <div class="question-card" id="qcard-7">
       <div class="q-number">Frage 7 von 10</div>
       <div class="q-title">Preisgestaltung</div>
@@ -209,7 +162,6 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
       <button class="option" onclick="selectOption(7,20,this)"><div class="option-dot"></div><div class="option-text">Ich habe grob kalkuliert, aber nicht alle Kosten einbezogen</div></button>
       <button class="option" onclick="selectOption(7,30,this)"><div class="option-dot"></div><div class="option-text">Ich kalkuliere jeden Artikel mit Wareneinsatz, Personalkosten und Ziel-Marge</div></button>
     </div>
-
     <div class="question-card" id="qcard-8">
       <div class="q-number">Frage 8 von 10</div>
       <div class="q-title">Gästebindung</div>
@@ -218,7 +170,6 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
       <button class="option" onclick="selectOption(8,20,this)"><div class="option-dot"></div><div class="option-text">Gelegentliche Aktionen oder Posts, aber kein festes System</div></button>
       <button class="option" onclick="selectOption(8,30,this)"><div class="option-dot"></div><div class="option-text">Ich habe ein aktives System: Newsletter, Stammgast-Aktionen oder regelmäßige Kommunikation</div></button>
     </div>
-
     <div class="question-card" id="qcard-9">
       <div class="q-number">Frage 9 von 10</div>
       <div class="q-title">Marketing & Sichtbarkeit</div>
@@ -227,7 +178,6 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
       <button class="option" onclick="selectOption(9,20,this)"><div class="option-dot"></div><div class="option-text">Ich habe ein Google-Profil und poste gelegentlich auf Social Media</div></button>
       <button class="option" onclick="selectOption(9,30,this)"><div class="option-dot"></div><div class="option-text">Ich habe eine aktive Strategie: Bewertungen, Social Media und Google laufen regelmäßig</div></button>
     </div>
-
     <div class="question-card" id="qcard-10">
       <div class="q-number">Frage 10 von 10</div>
       <div class="q-title">Persönliche Freiheit</div>
@@ -252,7 +202,6 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
       <div class="result-title" id="res-title"></div>
       <div class="result-subtitle" id="res-subtitle"></div>
       <div class="result-divider"></div>
-
       <div class="result-section">
         <div class="result-section-label">Was das bedeutet</div>
         <div class="result-section-text" id="res-bedeutet"></div>
@@ -265,36 +214,29 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
         <div class="result-section-label">So geht es weiter</div>
         <div class="result-section-text" id="res-weiter"></div>
       </div>
-
       <div class="result-seal-row">
         <div class="result-date-text" id="res-date"></div>
         <div class="result-seal">GASTRO<br>OS<br>✓</div>
       </div>
-
-      <div class="result-actions no-print">
-        <button class="btn-pdf" onclick="window.print()">📄 Als PDF speichern</button>
+      <div class="result-actions">
+        <button class="btn-pdf" id="btn-pdf" onclick="downloadPDF()">📄 Als PDF speichern</button>
       </div>
-      <div class="no-print" style="text-align:center;">
+      <div style="text-align:center;">
         <button class="btn-retry" onclick="resetReflexion()">Nochmal ausfüllen</button>
       </div>
     </div>
   </div>
-
 </div>
 
-<div class="footer-brand no-print">
+<div class="footer-brand">
   <strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg
 </div>
 
 <script>
 const answers = {};
 const TOTAL_QUESTIONS = 10;
-
-const PROFILE_ICONS = {
-  feuer: '🔥',
-  verwalter: '📋',
-  profi: '⭐'
-};
+let currentResult = null;
+let currentDate = '';
 
 function selectOption(qNum, pts, el) {
   const card = document.getElementById('qcard-' + qNum);
@@ -324,7 +266,7 @@ function updateSubmit() {
 function getResult(score) {
   if (score <= 150) {
     return {
-      icon: PROFILE_ICONS.feuer,
+      icon: '🔥',
       title: 'Feuerwehr-Modus',
       subtitle: 'Wo stehst du aktuell?',
       bedeutet: 'Dein Alltag ist geprägt von Reaktion statt Planung. Du arbeitest hart — aber vor allem für den Betrieb, nicht an ihm. Das ist kein Versagen, sondern der Ausgangspunkt vieler erfolgreicher Gastronomen. Der Unterschied liegt darin, was du jetzt daraus machst.',
@@ -333,7 +275,7 @@ function getResult(score) {
     };
   } else if (score <= 220) {
     return {
-      icon: PROFILE_ICONS.verwalter,
+      icon: '📋',
       title: 'Der solide Verwalter',
       subtitle: 'Wo stehst du aktuell?',
       bedeutet: 'Dein Betrieb funktioniert bereits in vielen Bereichen. Gleichzeitig laufen wahrscheinlich noch zu viele Dinge über Erfahrung, Bauchgefühl oder deine persönliche Kontrolle. Genau dort liegt dein nächster Entwicklungsschritt.',
@@ -342,7 +284,7 @@ function getResult(score) {
     };
   } else {
     return {
-      icon: PROFILE_ICONS.profi,
+      icon: '⭐',
       title: 'System-Profi',
       subtitle: 'Wo stehst du aktuell?',
       bedeutet: 'Du hast bereits eine starke Basis aufgebaut. Dein Betrieb läuft strukturiert, du denkst unternehmerisch und hast vieles im Griff. Jetzt geht es darum, das nächste Level zu erreichen — mehr Freiheit, mehr Wachstum, noch klarere Systeme.',
@@ -355,22 +297,204 @@ function getResult(score) {
 function submitReflexion() {
   if (Object.keys(answers).length < TOTAL_QUESTIONS) return;
   const total = Object.values(answers).reduce((a, b) => a + b, 0);
-  const result = getResult(total);
+  currentResult = getResult(total);
+  const now = new Date();
+  currentDate = 'Erstellt am ' + now.toLocaleDateString('de-DE', { day:'2-digit', month:'long', year:'numeric' });
 
   document.getElementById('form-screen').style.display = 'none';
   document.getElementById('result-screen').style.display = 'block';
-  document.getElementById('res-icon').textContent = result.icon;
-  document.getElementById('res-title').textContent = result.title;
-  document.getElementById('res-subtitle').textContent = result.subtitle;
-  document.getElementById('res-bedeutet').textContent = result.bedeutet;
-  document.getElementById('res-hebel').textContent = result.hebel;
-  document.getElementById('res-weiter').textContent = result.weiter;
-
-  const now = new Date();
-  document.getElementById('res-date').textContent =
-    'Erstellt am ' + now.toLocaleDateString('de-DE', { day:'2-digit', month:'long', year:'numeric' });
-
+  document.getElementById('res-icon').textContent = currentResult.icon;
+  document.getElementById('res-title').textContent = currentResult.title;
+  document.getElementById('res-subtitle').textContent = currentResult.subtitle;
+  document.getElementById('res-bedeutet').textContent = currentResult.bedeutet;
+  document.getElementById('res-hebel').textContent = currentResult.hebel;
+  document.getElementById('res-weiter').textContent = currentResult.weiter;
+  document.getElementById('res-date').textContent = currentDate;
   window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function wrapText(doc, text, x, y, maxWidth, lineHeight) {
+  const lines = doc.splitTextToSize(text, maxWidth);
+  lines.forEach(line => {
+    doc.text(line, x, y);
+    y += lineHeight;
+  });
+  return y;
+}
+
+function downloadPDF() {
+  if (!currentResult) return;
+  const btn = document.getElementById('btn-pdf');
+  btn.disabled = true;
+  btn.textContent = 'Wird erstellt...';
+
+  try {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+
+    const navy = [26, 42, 74];
+    const gold = [212, 175, 55];
+    const cream = [245, 240, 232];
+    const darkText = [42, 58, 84];
+    const lightText = [128, 144, 168];
+    const W = 210;
+    const H = 297;
+    const margin = 20;
+    const innerW = W - margin * 2;
+
+    // Hintergrund
+    doc.setFillColor(255, 255, 255);
+    doc.rect(0, 0, W, H, 'F');
+
+    // Äußerer Rahmen navy
+    doc.setDrawColor(...navy);
+    doc.setLineWidth(1.0);
+    doc.rect(margin - 4, 14, innerW + 8, H - 28, 'S');
+
+    // Goldener Rahmen innen
+    doc.setDrawColor(...gold);
+    doc.setLineWidth(0.5);
+    doc.rect(margin - 2, 16, innerW + 4, H - 32, 'S');
+
+    // Goldbalken oben
+    doc.setFillColor(...gold);
+    doc.rect(margin - 4, 14, innerW + 8, 4, 'F');
+
+    // Goldbalken unten
+    doc.rect(margin - 4, H - 18, innerW + 8, 2.5, 'F');
+
+    // Navy-Ecken oben
+    doc.setFillColor(...navy);
+    doc.rect(margin - 4, 14, 8, 8, 'F');
+    doc.rect(W - margin - 4, 14, 8, 8, 'F');
+
+    let y = 32;
+
+    // GASTRO-OS Header
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(8);
+    doc.setTextColor(...gold);
+    doc.setCharSpace(3);
+    doc.text('GASTRO-OS · SYSTEM · STRATEGIE · ERFOLG', W/2, y, { align: 'center' });
+    doc.setCharSpace(0);
+    y += 6;
+
+    // Trennlinie gold
+    doc.setDrawColor(...gold);
+    doc.setLineWidth(0.3);
+    doc.line(margin + 10, y, W - margin - 10, y);
+    y += 8;
+
+    // Icon
+    doc.setFontSize(28);
+    doc.setTextColor(50, 50, 50);
+    doc.text(currentResult.icon, W/2, y, { align: 'center' });
+    y += 10;
+
+    // DEIN PROFIL label
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(7);
+    doc.setTextColor(...gold);
+    doc.setCharSpace(2);
+    doc.text('DEIN PROFIL', W/2, y, { align: 'center' });
+    doc.setCharSpace(0);
+    y += 7;
+
+    // Titel
+    doc.setFont('times', 'normal');
+    doc.setFontSize(26);
+    doc.setTextColor(...navy);
+    doc.text(currentResult.title, W/2, y, { align: 'center' });
+    y += 7;
+
+    // Subtitle
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(7);
+    doc.setTextColor(...lightText);
+    doc.setCharSpace(1.5);
+    doc.text(currentResult.subtitle.toUpperCase(), W/2, y, { align: 'center' });
+    doc.setCharSpace(0);
+    y += 8;
+
+    // Goldlinie
+    doc.setDrawColor(...gold);
+    doc.setLineWidth(0.4);
+    doc.line(margin + 20, y, W - margin - 20, y);
+    y += 8;
+
+    // Abschnitte
+    const sections = [
+      { label: 'WAS DAS BEDEUTET', text: currentResult.bedeutet },
+      { label: 'DEIN GRÖSSTER HEBEL', text: currentResult.hebel },
+      { label: 'SO GEHT ES WEITER', text: currentResult.weiter }
+    ];
+
+    sections.forEach(section => {
+      // Section background
+      const sectionX = margin;
+      const sectionW = innerW;
+      // Berechne Höhe
+      doc.setFontSize(9);
+      const lines = doc.splitTextToSize(section.text, sectionW - 16);
+      const sectionH = 6 + lines.length * 5 + 6;
+
+      doc.setFillColor(...cream);
+      doc.roundedRect(sectionX, y, sectionW, sectionH, 2, 2, 'F');
+      doc.setFillColor(...gold);
+      doc.rect(sectionX, y, 3, sectionH, 'F');
+
+      // Label
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(7);
+      doc.setTextColor(...navy);
+      doc.setCharSpace(1.5);
+      doc.text(section.label, sectionX + 8, y + 5.5);
+      doc.setCharSpace(0);
+
+      // Text
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9);
+      doc.setTextColor(...darkText);
+      let ty = y + 11;
+      lines.forEach(line => {
+        doc.text(line, sectionX + 8, ty);
+        ty += 5;
+      });
+
+      y += sectionH + 5;
+    });
+
+    y += 4;
+
+    // Datum links, Siegel rechts
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8);
+    doc.setTextColor(...lightText);
+    doc.text(currentDate, margin, y + 6);
+
+    // Siegel
+    const sealX = W - margin - 12;
+    const sealY = y;
+    doc.setDrawColor(...gold);
+    doc.setLineWidth(0.5);
+    doc.circle(sealX, sealY + 6, 10, 'S');
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(6);
+    doc.setTextColor(...gold);
+    doc.setCharSpace(0.5);
+    doc.text('GASTRO', sealX, sealY + 3, { align: 'center' });
+    doc.text('OS', sealX, sealY + 7, { align: 'center' });
+    doc.text('✓', sealX, sealY + 11, { align: 'center' });
+    doc.setCharSpace(0);
+
+    doc.save('GASTRO-OS_Start-Check.pdf');
+  } catch(e) {
+    console.error(e);
+    alert('PDF konnte nicht erstellt werden. Bitte versuche es erneut.');
+  }
+
+  btn.disabled = false;
+  btn.textContent = '📄 Als PDF speichern';
 }
 
 function resetReflexion() {
@@ -382,6 +506,7 @@ function resetReflexion() {
   document.getElementById('progress-hint').style.color = '#8090a8';
   document.getElementById('form-screen').style.display = 'block';
   document.getElementById('result-screen').style.display = 'none';
+  currentResult = null;
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 </script>
