@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Reflexionsaufgabe — Modul 0 | GASTRO-OS</title>
+<title>Start-Check — Modul 0 | GASTRO-OS</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
@@ -38,27 +38,71 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 .btn-submit.ready:hover { background:#d4af37; color:#1a2a4a; }
 .progress-hint { font-size:12px; color:#8090a8; margin-top:10px; }
 #result-screen { display:none; }
-.result-card { background:#fff; border-radius:12px; border:2px solid #d4af37; padding:36px 32px; text-align:center; box-shadow:0 4px 24px rgba(212,175,55,0.15); animation:fadeIn 0.4s ease; }
-@keyframes fadeIn { from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);} }
-.result-emoji { font-size:52px; margin-bottom:12px; }
-.result-label { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:8px; }
-.result-title { font-family:Georgia,serif; font-size:26px; color:#1a2a4a; font-weight:normal; margin-bottom:16px; line-height:1.3; }
-.result-text { font-size:15px; line-height:1.75; color:#2a3a54; max-width:480px; margin:0 auto 24px; }
-.result-divider { height:1px; background:linear-gradient(90deg,transparent,#d4af37,transparent); margin:24px 0; }
-.btn-back { display:inline-block; background:transparent; border:2px solid #1a2a4a; color:#1a2a4a; padding:11px 28px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none; transition:all 0.2s; margin:4px; }
-.btn-back:hover { background:#1a2a4a; color:#d4af37; }
-.btn-retry { display:inline-block; background:transparent; border:2px solid rgba(212,175,55,0.5); color:#8090a8; padding:11px 28px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; margin:4px; }
-.btn-retry:hover { border-color:#d4af37; color:#d4af37; }
-.btn-pdf { display:inline-block; background:#d4af37; border:none; color:#1a2a4a; padding:11px 28px; border-radius:8px; font-size:13px; font-weight:700; cursor:pointer; transition:all 0.2s; margin:4px; }
-.btn-pdf:hover { background:#c8a030; }
-@media print {
-  .header, .gold-bar, .footer-brand, #form-screen, .btn-back, .btn-retry, .btn-pdf { display:none !important; }
-  body { background:#fff; }
-  .result-card { box-shadow:none; border:1px solid #ccc; }
+
+/* RESULT CARD — Urkunden-Stil */
+.result-card {
+  background:#fff;
+  border-radius:12px;
+  border:2px solid #d4af37;
+  padding:48px 36px 36px;
+  text-align:center;
+  box-shadow:0 8px 40px rgba(212,175,55,0.18);
+  animation:fadeIn 0.4s ease;
+  position:relative;
+  overflow:hidden;
 }
+.result-card::before {
+  content:'';
+  position:absolute;
+  top:0; left:0; right:0;
+  height:6px;
+  background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a);
+}
+.result-card::after {
+  content:'GASTRO-OS';
+  position:absolute;
+  bottom:16px; right:20px;
+  font-family:Georgia,serif;
+  font-size:10px;
+  color:#e8dfc8;
+  letter-spacing:3px;
+}
+@keyframes fadeIn { from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);} }
+.result-emoji { font-size:56px; margin-bottom:16px; }
+.result-label { font-size:11px; color:#d4af37; letter-spacing:3px; text-transform:uppercase; font-weight:700; margin-bottom:10px; }
+.result-title { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:6px; line-height:1.3; }
+.result-subtitle { font-size:13px; color:#8090a8; letter-spacing:1px; text-transform:uppercase; margin-bottom:20px; }
+.result-divider { height:1px; background:linear-gradient(90deg,transparent,#d4af37,transparent); margin:24px 0; }
+
+/* Abschnitte */
+.result-section { text-align:left; margin-bottom:20px; background:#faf8f4; border-radius:8px; padding:18px 20px; border-left:3px solid #d4af37; }
+.result-section-label { font-size:10px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:700; margin-bottom:6px; }
+.result-section-text { font-size:14px; line-height:1.75; color:#2a3a54; }
+
+.result-actions { margin-top:28px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+.btn-back { display:inline-block; background:transparent; border:2px solid #1a2a4a; color:#1a2a4a; padding:11px 28px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none; transition:all 0.2s; }
+.btn-back:hover { background:#1a2a4a; color:#d4af37; }
+.btn-retry { display:inline-block; background:transparent; border:2px solid rgba(212,175,55,0.5); color:#8090a8; padding:11px 28px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; }
+.btn-retry:hover { border-color:#d4af37; color:#d4af37; }
+.btn-pdf { display:inline-block; background:#d4af37; border:none; color:#1a2a4a; padding:11px 28px; border-radius:8px; font-size:13px; font-weight:700; cursor:pointer; transition:all 0.2s; }
+.btn-pdf:hover { background:#c8a030; }
+
+/* Datum + Siegel */
+.result-meta { margin-top:28px; padding-top:20px; border-top:1px solid #e8dfc8; display:flex; align-items:center; justify-content:space-between; }
+.result-date { font-size:12px; color:#8090a8; }
+.result-seal { font-family:Georgia,serif; font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; border:1px solid #d4af37; border-radius:50%; width:70px; height:70px; display:flex; align-items:center; justify-content:center; text-align:center; line-height:1.3; }
+
+@media print {
+  .header, .gold-bar, .footer-brand, #form-screen, .result-actions, .result-retry-hint { display:none !important; }
+  body { background:#fff; }
+  .wrap { margin:0; padding:20px; }
+  .result-card { box-shadow:none; border:2px solid #d4af37; }
+  .result-card::after { display:block; }
+}
+
 .footer-brand { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-brand strong { color:#d4af37; }
-mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
+.result-retry-hint { text-align:center; margin-top:12px; font-size:12px; color:#8090a8; }
 </style>
 </head>
 <body>
@@ -75,9 +119,9 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
   <div id="form-screen">
 
     <div class="intro-card">
-      <div class="intro-label">Modul 0 · Reflexionsaufgabe</div>
-      <h1>Wo stehst du heute wirklich? 🎯</h1>
-      <p>Beantworte die folgenden 10 Fragen so ehrlich wie möglich,. Es gibt keine richtigen oder falschen Antworten — nur deinen aktuellen Stand. Am Ende siehst du sofort dein persönliches Profil und was das für deine ersten Schritte in GASTRO-OS bedeutet..</p>
+      <div class="intro-label">Modul 0 · Start-Check</div>
+      <h1>Wo steht dein Betrieb wirklich? 🎯</h1>
+      <p>Beantworte die folgenden 10 Fragen so ehrlich wie möglich. Es gibt keine richtigen oder falschen Antworten — nur deinen aktuellen Stand. Am Ende siehst du sofort dein persönliches Profil und was das für deine ersten Schritte in GASTRO-OS bedeutet.</p>
     </div>
 
     <!-- Frage 1 -->
@@ -86,7 +130,7 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
       <div class="q-title">Zeit im operativen Betrieb</div>
       <div class="q-subtitle">Wie viel deiner Arbeitszeit verbringst du mit strategischer Arbeit — also AM Betrieb statt IM Betrieb?</div>
       <button class="option" onclick="selectOption(1,10,this)"><div class="option-dot"></div><div class="option-text">Fast keine — ich bin den ganzen Tag im Tagesgeschäft gebunden</div></button>
-      <button class="option" onclick="selectOption(1,20,this)"><div class="option-dot"></div><div class="option-text">Gelegentlich — aber nur wenn es der Alltag zulässt,</div></button>
+      <button class="option" onclick="selectOption(1,20,this)"><div class="option-dot"></div><div class="option-text">Gelegentlich — aber nur wenn es der Alltag zulässt</div></button>
       <button class="option" onclick="selectOption(1,30,this)"><div class="option-dot"></div><div class="option-text">Regelmäßig — ich halte mir bewusst Zeit für Strategie und Entwicklung frei</div></button>
     </div>
 
@@ -124,47 +168,47 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
     <div class="question-card" id="qcard-5">
       <div class="q-number">Frage 5 von 10</div>
       <div class="q-title">Umgang mit Kostensteigerungen</div>
-      <div class="q-subtitle">Wie reagierst du auf steigende Kosten, bei Energie, Personal oder Ware?</div>
-      <button class="option" onclick="selectOption(5,10,this)"><div class="option-dot"></div><div class="option-text">Ich versuche durchzuhalten und hoffe auf bessere Zeiten</div></button>
-      <button class="option" onclick="selectOption(5,20,this)"><div class="option-dot"></div><div class="option-text">Ich erhöhe gelegentlich die Preise wenn es gar nicht mehr anders geht,</div></button>
-      <button class="option" onclick="selectOption(5,30,this)"><div class="option-dot"></div><div class="option-text">Ich beobachte meine Kosten monatlich und reagiere frühzeitig mit gezielten Maßnahmen</div></button>
+      <div class="q-subtitle">Wie reagierst du, wenn Einkaufspreise plötzlich steigen?</div>
+      <button class="option" onclick="selectOption(5,10,this)"><div class="option-dot"></div><div class="option-text">Ich schlucke es und hoffe dass sich das irgendwie ausgleicht</div></button>
+      <button class="option" onclick="selectOption(5,20,this)"><div class="option-dot"></div><div class="option-text">Ich passe Preise an, aber ohne genaue Kalkulation dahinter</div></button>
+      <button class="option" onclick="selectOption(5,30,this)"><div class="option-dot"></div><div class="option-text">Ich kalkuliere gezielt nach und passe Preise oder Rezepturen systematisch an</div></button>
     </div>
 
     <!-- Frage 6 -->
     <div class="question-card" id="qcard-6">
       <div class="q-number">Frage 6 von 10</div>
-      <div class="q-title">Speisekarte & Preise</div>
-      <div class="q-subtitle">Weißt du, welche deiner Gerichte die höchste Marge haben?</div>
-      <button class="option" onclick="selectOption(6,10,this)"><div class="option-dot"></div><div class="option-text">Nein — die Karte ist historisch gewachsen, Margen habe ich nie berechnet</div></button>
-      <button class="option" onclick="selectOption(6,20,this)"><div class="option-dot"></div><div class="option-text">Ich kenne meine Bestseller, aber nicht unbedingt ihre Marge</div></button>
-      <button class="option" onclick="selectOption(6,30,this)"><div class="option-dot"></div><div class="option-text">Ja — ich kenne Stars und Dogs auf meiner Karte und steuere das aktiv</div></button>
+      <div class="q-title">Mitarbeiterführung</div>
+      <div class="q-subtitle">Wie läuft die Einarbeitung neuer Mitarbeiter bei dir ab?</div>
+      <button class="option" onclick="selectOption(6,10,this)"><div class="option-dot"></div><div class="option-text">Ich zeige alles persönlich — es gibt keine schriftlichen Abläufe</div></button>
+      <button class="option" onclick="selectOption(6,20,this)"><div class="option-dot"></div><div class="option-text">Es gibt grobe Abläufe, aber vieles hängt von der Person ab die einarbeitet</div></button>
+      <button class="option" onclick="selectOption(6,30,this)"><div class="option-dot"></div><div class="option-text">Wir haben klare Einarbeitungspläne und Standards, die für alle gelten</div></button>
     </div>
 
     <!-- Frage 7 -->
     <div class="question-card" id="qcard-7">
       <div class="q-number">Frage 7 von 10</div>
-      <div class="q-title">Einkauf & Warenwirtschaft</div>
-      <div class="q-subtitle">Wie organisiert ist dein Einkauf?</div>
-      <button class="option" onclick="selectOption(7,10,this)"><div class="option-dot"></div><div class="option-text">Ich bestelle nach Gefühl wenn etwas ausgeht</div></button>
-      <button class="option" onclick="selectOption(7,20,this)"><div class="option-dot"></div><div class="option-text">Ich habe feste Bestelltage, aber keine genauen Mengenstandards</div></button>
-      <button class="option" onclick="selectOption(7,30,this)"><div class="option-dot"></div><div class="option-text">Ich habe Bestellrhythmen, Portionsstandards und führe regelmäßig Inventur durch</div></button>
+      <div class="q-title">Preisgestaltung</div>
+      <div class="q-subtitle">Wie hast du deine Verkaufspreise festgelegt?</div>
+      <button class="option" onclick="selectOption(7,10,this)"><div class="option-dot"></div><div class="option-text">Hauptsächlich nach Gefühl oder was die Konkurrenz verlangt</div></button>
+      <button class="option" onclick="selectOption(7,20,this)"><div class="option-dot"></div><div class="option-text">Ich habe grob kalkuliert, aber nicht alle Kosten einbezogen</div></button>
+      <button class="option" onclick="selectOption(7,30,this)"><div class="option-dot"></div><div class="option-text">Ich kalkuliere jeden Artikel mit Wareneinsatz, Personalkosten und Ziel-Marge</div></button>
     </div>
 
     <!-- Frage 8 -->
     <div class="question-card" id="qcard-8">
       <div class="q-number">Frage 8 von 10</div>
-      <div class="q-title">Mitarbeiter & Führung</div>
-      <div class="q-subtitle">Wie gut funktioniert dein Team ohne deine direkte Anwesenheit??</div>
-      <button class="option" onclick="selectOption(8,10,this)"><div class="option-dot"></div><div class="option-text">Ohne mich läuft kaum etwas — ich bin überall gleichzeitig gefragt</div></button>
-      <button class="option" onclick="selectOption(8,20,this)"><div class="option-dot"></div><div class="option-text">Das Team arbeitet gut, aber bei unerwarteten Situationen brauchen sie mich</div></button>
-      <button class="option" onclick="selectOption(8,30,this)"><div class="option-dot"></div><div class="option-text">Mein Team führt eigenständig — es gibt klare Rollen und einen Schichtleiter</div></button>
+      <div class="q-title">Gästebindung</div>
+      <div class="q-subtitle">Was tust du aktiv damit Gäste wiederkommen?</div>
+      <button class="option" onclick="selectOption(8,10,this)"><div class="option-dot"></div><div class="option-text">Nichts Gezieltes — ich hoffe dass es ihnen gefallen hat</div></button>
+      <button class="option" onclick="selectOption(8,20,this)"><div class="option-dot"></div><div class="option-text">Gelegentliche Aktionen oder Posts, aber kein festes System</div></button>
+      <button class="option" onclick="selectOption(8,30,this)"><div class="option-dot"></div><div class="option-text">Ich habe ein aktives System: Newsletter, Stammgast-Aktionen oder regelmäßige Kommunikation</div></button>
     </div>
 
     <!-- Frage 9 -->
     <div class="question-card" id="qcard-9">
       <div class="q-number">Frage 9 von 10</div>
       <div class="q-title">Marketing & Sichtbarkeit</div>
-      <div class="q-subtitle">Wie gewinnt dein Betrieb heute neue Gäste??</div>
+      <div class="q-subtitle">Wie gewinnt dein Betrieb heute neue Gäste?</div>
       <button class="option" onclick="selectOption(9,10,this)"><div class="option-dot"></div><div class="option-text">Hauptsächlich durch Zufall oder Mundpropaganda — ich mache kaum aktives Marketing</div></button>
       <button class="option" onclick="selectOption(9,20,this)"><div class="option-dot"></div><div class="option-text">Ich habe ein Google-Profil und poste gelegentlich auf Social Media</div></button>
       <button class="option" onclick="selectOption(9,30,this)"><div class="option-dot"></div><div class="option-text">Ich habe eine aktive Strategie: Bewertungen, Social Media und Google laufen regelmäßig</div></button>
@@ -176,7 +220,7 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
       <div class="q-title">Persönliche Freiheit</div>
       <div class="q-subtitle">Wie viele echte freie Tage hattest du in den letzten 3 Monaten — ohne Erreichbarkeit?</div>
       <button class="option" onclick="selectOption(10,10,this)"><div class="option-dot"></div><div class="option-text">Kaum oder keine — ich bin praktisch immer erreichbar oder vor Ort</div></button>
-      <button class="option" onclick="selectOption(10,20,this)"><div class="option-dot"></div><div class="option-text">Vereinzelt — aber wirklich abschalten gelingt mir selten,</div></button>
+      <button class="option" onclick="selectOption(10,20,this)"><div class="option-dot"></div><div class="option-text">Vereinzelt — aber wirklich abschalten gelingt mir selten</div></button>
       <button class="option" onclick="selectOption(10,30,this)"><div class="option-dot"></div><div class="option-text">Regelmäßig — ich habe feste freie Tage und kann den Betrieb loslassen</div></button>
     </div>
 
@@ -193,12 +237,35 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
       <div class="result-emoji" id="res-emoji"></div>
       <div class="result-label">Dein Profil</div>
       <div class="result-title" id="res-title"></div>
-      <div class="result-text" id="res-text"></div>
+      <div class="result-subtitle" id="res-subtitle"></div>
       <div class="result-divider"></div>
-      <div>
-        <a href="dashboard.html" class="btn-back">← Zurück zum Dashboard</a>
-        <button class="btn-retry" onclick="resetReflexion()">Nochmal ausfüllen</button>
+
+      <div class="result-section">
+        <div class="result-section-label">Was das bedeutet</div>
+        <div class="result-section-text" id="res-bedeutet"></div>
+      </div>
+
+      <div class="result-section">
+        <div class="result-section-label">Dein größter Hebel</div>
+        <div class="result-section-text" id="res-hebel"></div>
+      </div>
+
+      <div class="result-section">
+        <div class="result-section-label">So geht es weiter</div>
+        <div class="result-section-text" id="res-weiter"></div>
+      </div>
+
+      <div class="result-meta">
+        <div class="result-date" id="res-date"></div>
+        <div class="result-seal">GASTRO<br>OS<br>✓</div>
+      </div>
+
+      <div class="result-actions">
         <button class="btn-pdf" onclick="window.print()">📄 Als PDF speichern</button>
+        <a href="dashboard.html" class="btn-back">← Zurück zum Dashboard</a>
+      </div>
+      <div class="result-retry-hint">
+        <button class="btn-retry" onclick="resetReflexion()">Nochmal ausfüllen</button>
       </div>
     </div>
   </div>
@@ -239,24 +306,32 @@ function updateSubmit() {
 }
 
 function getResult(score) {
-  // Max score: 10 × 30 = 300
   if (score <= 150) {
     return {
       emoji: '👨‍🚒',
       title: 'Feuerwehr-Modus',
-      text: 'Du löschst aktuell vor allem Brände. Das ist der Ausgangspunkt vieler Gastronomen — und genau dafür ist GASTRO-OS gebaut. Starte mit Modul 1 und leg die Basis: Zahlen, Systeme, Struktur. Der erste Schritt ändert alles.'
+      subtitle: 'Wo stehst du gerade?',
+      bedeutet: 'Dein Alltag ist geprägt von Reaktion statt Planung. Du arbeitest hart — aber vor allem für den Betrieb, nicht an ihm. Das ist kein Versagen, sondern der Startpunkt vieler erfolgreicher Gastronomen. Der Unterschied liegt darin, was du jetzt daraus machst.',
+      hebel: 'Dein größter Hebel ist Struktur. Feste Abläufe, klare Zahlen und einfache Systeme werden dir sofort Luft verschaffen. Starte mit Modul 1 — es legt die Grundlage für alles andere.',
+      weiter: 'Arbeite GASTRO-OS Schritt für Schritt in der vorgesehenen Reihenfolge durch. Du musst nichts überspringen. Jedes Modul baut auf dem vorherigen auf — und jeder Schritt bringt dich spürbar weiter.\n\nSpeichere dir dein Ergebnis als PDF, damit du später siehst wie weit du gekommen bist.'
     };
   } else if (score <= 220) {
     return {
       emoji: '📋',
       title: 'Der solide Verwalter',
-      text: 'Die Grundlage steht — aber du verschenkst noch Freiheit und Gewinn. GASTRO-OS hilft dir jetzt, aus einzelnen guten Ansätzen ein echtes System zu machen. Du bist näher am Ziel als du denkst.'
+      subtitle: 'Wo stehst du gerade?',
+      bedeutet: 'Dein Betrieb funktioniert bereits in vielen Bereichen. Gleichzeitig laufen wahrscheinlich noch zu viele Dinge über Erfahrung, Bauchgefühl oder deine persönliche Kontrolle. Genau dort liegt dein nächster Entwicklungsschritt.',
+      hebel: 'Achte im weiteren Kurs besonders auf klare Abläufe, bessere Kalkulation, feste Verantwortlichkeiten und Systeme, die auch dann funktionieren, wenn du nicht alles selbst steuerst.',
+      weiter: 'Arbeite GASTRO-OS einfach Schritt für Schritt in der vorgesehenen Reihenfolge durch. Du musst nichts überspringen oder vorziehen.\n\nSpeichere dir dein Ergebnis gerne als PDF, damit du später darauf zurückkommen kannst.'
     };
   } else {
     return {
       emoji: '🚀',
       title: 'System-Profi',
-      text: 'Du hast bereits viel aufgebaut. GASTRO-OS bringt dich auf das nächste Level — Skalierung, Wachstum, und noch mehr Freiheit. Die Module 9 und 10 sind besonders relevant für dich.'
+      subtitle: 'Wo stehst du gerade?',
+      bedeutet: 'Du hast bereits eine starke Basis aufgebaut. Dein Betrieb läuft strukturiert, du denkst unternehmerisch und hast vieles im Griff. Jetzt geht es darum, das nächste Level zu erreichen — mehr Freiheit, mehr Wachstum, noch klarere Systeme.',
+      hebel: 'Dein größter Hebel liegt in der Skalierung und Optimierung. Schau dir besonders die Module zu Wachstum, Delegation und Controlling genau an. Kleine Stellschrauben können bei deinem Stand große Wirkung haben.',
+      weiter: 'Arbeite GASTRO-OS in der vorgesehenen Reihenfolge durch — auch wenn du einzelne Themen bereits kennst. Die Module 9 und 10 sind besonders relevant für deinen nächsten Schritt.\n\nSpeichere dir dein Ergebnis als PDF als Ausgangspunkt für deine weitere Entwicklung.'
     };
   }
 }
@@ -265,11 +340,20 @@ function submitReflexion() {
   if (Object.keys(answers).length < TOTAL_QUESTIONS) return;
   const total = Object.values(answers).reduce((a, b) => a + b, 0);
   const result = getResult(total);
+
   document.getElementById('form-screen').style.display = 'none';
   document.getElementById('result-screen').style.display = 'block';
   document.getElementById('res-emoji').textContent = result.emoji;
   document.getElementById('res-title').textContent = result.title;
-  document.getElementById('res-text').textContent = result.text;
+  document.getElementById('res-subtitle').textContent = result.subtitle;
+  document.getElementById('res-bedeutet').textContent = result.bedeutet;
+  document.getElementById('res-hebel').textContent = result.hebel;
+  document.getElementById('res-weiter').textContent = result.weiter;
+
+  const now = new Date();
+  document.getElementById('res-date').textContent =
+    'Erstellt am ' + now.toLocaleDateString('de-DE', { day:'2-digit', month:'long', year:'numeric' });
+
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
