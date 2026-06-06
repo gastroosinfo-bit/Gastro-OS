@@ -13,7 +13,7 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 .back-btn { background:#d4af37; color:#1a2a4a; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
 .back-btn:hover { background:#c8a030; }
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
-.wrap { max-width:680px; margin:40px auto; padding:0 24px 60px; }
+.wrap { max-width:860px; margin:40px auto; padding:0 24px 60px; }
 .intro-card { background:#fff; border-radius:10px; border:1px solid #e8dfc8; padding:28px 30px; margin-bottom:32px; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
 .intro-label { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:8px; }
 .intro-card h1 { font-family:Georgia,serif; font-size:22px; color:#1a2a4a; font-weight:normal; margin-bottom:14px; }
@@ -87,7 +87,7 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 .result-footer { display:flex; align-items:center; justify-content:space-between; margin-top:20px; padding-top:16px; border-top:1px solid #e8dfc8; }
 .result-date-text { font-size:11px; color:#8090a8; font-style:italic; }
 .result-seal { font-family:Georgia,serif; font-size:8px; color:#d4af37; letter-spacing:1px; border:1.5px solid #d4af37; border-radius:50%; width:56px; height:56px; display:flex; align-items:center; justify-content:center; text-align:center; line-height:1.5; }
-.result-actions { margin-top:20px; text-align:center; }
+.result-actions { margin-top:20px; text-align:center; display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
 .btn-pdf { display:inline-block; background:#1a2a4a; border:none; color:#d4af37; padding:13px 32px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; transition:all 0.2s; letter-spacing:1px; }
 .btn-pdf:hover { background:#d4af37; color:#1a2a4a; }
 .btn-retry { display:inline-block; background:transparent; border:1px solid #e8dfc8; color:#8090a8; padding:10px 22px; border-radius:6px; font-size:12px; cursor:pointer; transition:all 0.2s; margin-top:10px; }
@@ -247,8 +247,6 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
       </div>
       <div class="result-actions">
         <button class="btn-pdf" onclick="window.print()">Als PDF speichern</button>
-      </div>
-      <div style="text-align:center;">
         <button class="btn-retry" onclick="resetReflexion()">Nochmal ausfüllen</button>
       </div>
     </div>
