@@ -146,7 +146,7 @@ function showError(msg) {
 
 function showSuccess(msg) {
   const el = document.getElementById('successMsg');
-  el.textContent = msg;
+  el.innerHTML = msg;
   el.style.display = 'block';
   document.getElementById('errorMsg').style.display = 'none';
 }
@@ -283,7 +283,7 @@ async function handlePasswordLogin(event) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email: currentEmail }),
   });
-  showSuccess('✓ Falls ein Konto existiert, wurde eine E-Mail gesendet.');
+  showSuccess('✓ Falls ein Konto existiert, wurde eine E-Mail gesendet. <strong>Bitte prüfe auch deinen Spam-Ordner.</strong>');
   btn.disabled = false;
   btn.textContent = 'EINLOGGEN';
 }
