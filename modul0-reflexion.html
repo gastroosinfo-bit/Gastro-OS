@@ -39,70 +39,75 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 .progress-hint { font-size:12px; color:#8090a8; margin-top:10px; }
 #result-screen { display:none; }
 
-/* RESULT CARD — Urkunden-Stil */
+/* URKUNDE */
 .result-card {
   background:#fff;
-  border-radius:12px;
-  border:2px solid #d4af37;
-  padding:48px 36px 36px;
+  border-radius:4px;
+  border:3px solid #d4af37;
+  padding:52px 44px 40px;
   text-align:center;
-  box-shadow:0 8px 40px rgba(212,175,55,0.18);
+  box-shadow:0 12px 48px rgba(26,42,74,0.18);
   animation:fadeIn 0.4s ease;
   position:relative;
-  overflow:hidden;
 }
 .result-card::before {
   content:'';
   position:absolute;
   top:0; left:0; right:0;
-  height:6px;
-  background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a);
+  height:8px;
+  background:linear-gradient(90deg,#1a2a4a 0%,#d4af37 50%,#1a2a4a 100%);
 }
 .result-card::after {
-  content:'GASTRO-OS';
+  content:'';
   position:absolute;
-  bottom:16px; right:20px;
-  font-family:Georgia,serif;
-  font-size:10px;
-  color:#e8dfc8;
-  letter-spacing:3px;
+  bottom:0; left:0; right:0;
+  height:4px;
+  background:linear-gradient(90deg,#1a2a4a 0%,#d4af37 50%,#1a2a4a 100%);
 }
 @keyframes fadeIn { from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);} }
-.result-emoji { font-size:56px; margin-bottom:16px; }
-.result-label { font-size:11px; color:#d4af37; letter-spacing:3px; text-transform:uppercase; font-weight:700; margin-bottom:10px; }
-.result-title { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:6px; line-height:1.3; }
-.result-subtitle { font-size:13px; color:#8090a8; letter-spacing:1px; text-transform:uppercase; margin-bottom:20px; }
-.result-divider { height:1px; background:linear-gradient(90deg,transparent,#d4af37,transparent); margin:24px 0; }
 
-/* Abschnitte */
-.result-section { text-align:left; margin-bottom:20px; background:#faf8f4; border-radius:8px; padding:18px 20px; border-left:3px solid #d4af37; }
-.result-section-label { font-size:10px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:700; margin-bottom:6px; }
-.result-section-text { font-size:14px; line-height:1.75; color:#2a3a54; }
+.result-logo { font-family:Georgia,serif; font-size:13px; color:#d4af37; letter-spacing:4px; text-transform:uppercase; margin-bottom:28px; }
+.result-icon { width:64px; height:64px; background:#1a2a4a; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 20px; border:2px solid #d4af37; }
+.result-icon svg { width:32px; height:32px; }
+.result-label { font-size:10px; color:#d4af37; letter-spacing:3px; text-transform:uppercase; font-weight:700; margin-bottom:10px; }
+.result-title { font-family:Georgia,serif; font-size:30px; color:#1a2a4a; font-weight:normal; margin-bottom:6px; line-height:1.3; }
+.result-subtitle { font-size:12px; color:#8090a8; letter-spacing:2px; text-transform:uppercase; margin-bottom:28px; }
+.result-divider { height:1px; background:linear-gradient(90deg,transparent,#d4af37,transparent); margin:28px 0; }
 
-.result-actions { margin-top:28px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
-.btn-back { display:inline-block; background:transparent; border:2px solid #1a2a4a; color:#1a2a4a; padding:11px 28px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none; transition:all 0.2s; }
-.btn-back:hover { background:#1a2a4a; color:#d4af37; }
-.btn-retry { display:inline-block; background:transparent; border:2px solid rgba(212,175,55,0.5); color:#8090a8; padding:11px 28px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; }
+.result-section { text-align:left; margin-bottom:16px; background:#f5f0e8; border-radius:6px; padding:20px 22px; border-left:4px solid #d4af37; }
+.result-section-label { font-size:10px; color:#1a2a4a; letter-spacing:2px; text-transform:uppercase; font-weight:700; margin-bottom:8px; }
+.result-section-text { font-size:14px; line-height:1.8; color:#2a3a54; }
+
+.result-seal-row { display:flex; align-items:center; justify-content:space-between; margin:32px 0 28px; }
+.result-date-text { font-size:12px; color:#8090a8; font-style:italic; }
+.result-seal {
+  font-family:Georgia,serif; font-size:9px; color:#d4af37;
+  letter-spacing:1px; border:2px solid #d4af37; border-radius:50%;
+  width:72px; height:72px; display:flex; align-items:center;
+  justify-content:center; text-align:center; line-height:1.4;
+  flex-shrink:0;
+}
+
+.result-actions { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:4px; }
+.btn-pdf { display:inline-block; background:#1a2a4a; border:none; color:#d4af37; padding:13px 32px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; transition:all 0.2s; letter-spacing:1px; }
+.btn-pdf:hover { background:#d4af37; color:#1a2a4a; }
+.btn-retry { display:inline-block; background:transparent; border:2px solid #e8dfc8; color:#8090a8; padding:11px 24px; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; margin-top:12px; }
 .btn-retry:hover { border-color:#d4af37; color:#d4af37; }
-.btn-pdf { display:inline-block; background:#d4af37; border:none; color:#1a2a4a; padding:11px 28px; border-radius:8px; font-size:13px; font-weight:700; cursor:pointer; transition:all 0.2s; }
-.btn-pdf:hover { background:#c8a030; }
-
-/* Datum + Siegel */
-.result-meta { margin-top:28px; padding-top:20px; border-top:1px solid #e8dfc8; display:flex; align-items:center; justify-content:space-between; }
-.result-date { font-size:12px; color:#8090a8; }
-.result-seal { font-family:Georgia,serif; font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; border:1px solid #d4af37; border-radius:50%; width:70px; height:70px; display:flex; align-items:center; justify-content:center; text-align:center; line-height:1.3; }
 
 @media print {
-  .header, .gold-bar, .footer-brand, #form-screen, .result-actions, .result-retry-hint { display:none !important; }
+  @page { margin:15mm 20mm; }
+  .header, .gold-bar, .footer-brand, #form-screen, .result-actions, .btn-retry, .no-print { display:none !important; }
   body { background:#fff; }
-  .wrap { margin:0; padding:20px; }
-  .result-card { box-shadow:none; border:2px solid #d4af37; }
-  .result-card::after { display:block; }
+  .wrap { margin:0; padding:0; max-width:100%; }
+  .result-card { box-shadow:none; border:3px solid #d4af37; page-break-inside:avoid; }
+  .result-card::before, .result-card::after { display:block !important; }
+  .result-section { background:#f9f7f2; }
+  .print-header { display:block !important; text-align:center; font-family:Georgia,serif; font-size:13px; color:#1a2a4a; letter-spacing:2px; margin-bottom:20px; }
 }
+.print-header { display:none; }
 
 .footer-brand { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-brand strong { color:#d4af37; }
-.result-retry-hint { text-align:center; margin-top:12px; font-size:12px; color:#8090a8; }
 </style>
 </head>
 <body>
@@ -111,20 +116,17 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
   <div class="brand">GASTRO-OS</div>
   <a href="dashboard.html" class="back-btn">← Zurück zum Dashboard</a>
 </div>
-
 <div class="gold-bar"></div>
 
 <div class="wrap">
 
   <div id="form-screen">
-
     <div class="intro-card">
       <div class="intro-label">Modul 0 · Start-Check</div>
       <h1>Wo steht dein Betrieb wirklich? 🎯</h1>
       <p>Beantworte die folgenden 10 Fragen so ehrlich wie möglich. Es gibt keine richtigen oder falschen Antworten — nur deinen aktuellen Stand. Am Ende siehst du sofort dein persönliches Profil und was das für deine ersten Schritte in GASTRO-OS bedeutet.</p>
     </div>
 
-    <!-- Frage 1 -->
     <div class="question-card" id="qcard-1">
       <div class="q-number">Frage 1 von 10</div>
       <div class="q-title">Zeit im operativen Betrieb</div>
@@ -134,7 +136,6 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
       <button class="option" onclick="selectOption(1,30,this)"><div class="option-dot"></div><div class="option-text">Regelmäßig — ich halte mir bewusst Zeit für Strategie und Entwicklung frei</div></button>
     </div>
 
-    <!-- Frage 2 -->
     <div class="question-card" id="qcard-2">
       <div class="q-number">Frage 2 von 10</div>
       <div class="q-title">Wie endet dein typischer Arbeitstag?</div>
@@ -144,7 +145,6 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
       <button class="option" onclick="selectOption(2,30,this)"><div class="option-dot"></div><div class="option-text">Zufriedenheit — der Betrieb läuft auch ohne mein ständiges Eingreifen</div></button>
     </div>
 
-    <!-- Frage 3 -->
     <div class="question-card" id="qcard-3">
       <div class="q-number">Frage 3 von 10</div>
       <div class="q-title">Finanzielle Klarheit</div>
@@ -154,7 +154,6 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
       <button class="option" onclick="selectOption(3,30,this)"><div class="option-dot"></div><div class="option-text">Ich kenne meinen Wareneinsatz und meine Deckungsbeiträge genau</div></button>
     </div>
 
-    <!-- Frage 4 -->
     <div class="question-card" id="qcard-4">
       <div class="q-number">Frage 4 von 10</div>
       <div class="q-title">Der Urlaubs-Test</div>
@@ -164,7 +163,6 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
       <button class="option" onclick="selectOption(4,30,this)"><div class="option-dot"></div><div class="option-text">Kein Problem — mein Team weiß genau was zu tun ist, die Systeme laufen</div></button>
     </div>
 
-    <!-- Frage 5 -->
     <div class="question-card" id="qcard-5">
       <div class="q-number">Frage 5 von 10</div>
       <div class="q-title">Umgang mit Kostensteigerungen</div>
@@ -174,7 +172,6 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
       <button class="option" onclick="selectOption(5,30,this)"><div class="option-dot"></div><div class="option-text">Ich kalkuliere gezielt nach und passe Preise oder Rezepturen systematisch an</div></button>
     </div>
 
-    <!-- Frage 6 -->
     <div class="question-card" id="qcard-6">
       <div class="q-number">Frage 6 von 10</div>
       <div class="q-title">Mitarbeiterführung</div>
@@ -184,7 +181,6 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
       <button class="option" onclick="selectOption(6,30,this)"><div class="option-dot"></div><div class="option-text">Wir haben klare Einarbeitungspläne und Standards, die für alle gelten</div></button>
     </div>
 
-    <!-- Frage 7 -->
     <div class="question-card" id="qcard-7">
       <div class="q-number">Frage 7 von 10</div>
       <div class="q-title">Preisgestaltung</div>
@@ -194,7 +190,6 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
       <button class="option" onclick="selectOption(7,30,this)"><div class="option-dot"></div><div class="option-text">Ich kalkuliere jeden Artikel mit Wareneinsatz, Personalkosten und Ziel-Marge</div></button>
     </div>
 
-    <!-- Frage 8 -->
     <div class="question-card" id="qcard-8">
       <div class="q-number">Frage 8 von 10</div>
       <div class="q-title">Gästebindung</div>
@@ -204,7 +199,6 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
       <button class="option" onclick="selectOption(8,30,this)"><div class="option-dot"></div><div class="option-text">Ich habe ein aktives System: Newsletter, Stammgast-Aktionen oder regelmäßige Kommunikation</div></button>
     </div>
 
-    <!-- Frage 9 -->
     <div class="question-card" id="qcard-9">
       <div class="q-number">Frage 9 von 10</div>
       <div class="q-title">Marketing & Sichtbarkeit</div>
@@ -214,7 +208,6 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
       <button class="option" onclick="selectOption(9,30,this)"><div class="option-dot"></div><div class="option-text">Ich habe eine aktive Strategie: Bewertungen, Social Media und Google laufen regelmäßig</div></button>
     </div>
 
-    <!-- Frage 10 -->
     <div class="question-card" id="qcard-10">
       <div class="q-number">Frage 10 von 10</div>
       <div class="q-title">Persönliche Freiheit</div>
@@ -228,13 +221,16 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
       <button class="btn-submit" id="btn-submit" onclick="submitReflexion()">Ergebnis anzeigen →</button>
       <div class="progress-hint" id="progress-hint">Bitte alle 10 Fragen beantworten</div>
     </div>
-
-  </div><!-- /form-screen -->
+  </div>
 
   <!-- ERGEBNIS -->
   <div id="result-screen">
+    <div class="print-header">START-CHECK — MODUL 0 &nbsp;·&nbsp; GASTRO-OS</div>
     <div class="result-card">
-      <div class="result-emoji" id="res-emoji"></div>
+      <div class="result-logo">GASTRO-OS</div>
+      <div class="result-icon" id="res-icon">
+        <!-- Icon wird per JS gesetzt -->
+      </div>
       <div class="result-label">Dein Profil</div>
       <div class="result-title" id="res-title"></div>
       <div class="result-subtitle" id="res-subtitle"></div>
@@ -244,33 +240,30 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
         <div class="result-section-label">Was das bedeutet</div>
         <div class="result-section-text" id="res-bedeutet"></div>
       </div>
-
       <div class="result-section">
         <div class="result-section-label">Dein größter Hebel</div>
         <div class="result-section-text" id="res-hebel"></div>
       </div>
-
       <div class="result-section">
         <div class="result-section-label">So geht es weiter</div>
         <div class="result-section-text" id="res-weiter"></div>
       </div>
 
-      <div class="result-meta">
-        <div class="result-date" id="res-date"></div>
+      <div class="result-seal-row">
+        <div class="result-date-text" id="res-date"></div>
         <div class="result-seal">GASTRO<br>OS<br>✓</div>
       </div>
 
-      <div class="result-actions">
+      <div class="result-actions no-print">
         <button class="btn-pdf" onclick="window.print()">📄 Als PDF speichern</button>
-        <a href="dashboard.html" class="btn-back">← Zurück zum Dashboard</a>
       </div>
-      <div class="result-retry-hint">
+      <div class="no-print" style="text-align:center;">
         <button class="btn-retry" onclick="resetReflexion()">Nochmal ausfüllen</button>
       </div>
     </div>
   </div>
 
-</div><!-- /wrap -->
+</div>
 
 <div class="footer-brand">
   <strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg
@@ -279,6 +272,21 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 <script>
 const answers = {};
 const TOTAL_QUESTIONS = 10;
+
+const ICONS = {
+  feuer: `<svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M16 28C10.477 28 6 23.523 6 18c0-4 2.5-7.5 5-10 0 3 1.5 4.5 3 5.5C14 10 15 7 14 4c4 3 8 7.5 8 14 0 5.523-4.477 10-6 10z" fill="#d4af37" opacity="0.3"/>
+    <path d="M16 26c-3.314 0-6-2.686-6-6 0-2.5 1.5-4.5 3-6 0 1.8 1 2.7 2 3.3C15 15 15.5 13 15 11c2.5 1.8 5 4.5 5 9 0 3.314-1.686 6-4 6z" fill="#d4af37"/>
+  </svg>`,
+  verwalter: `<svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="6" y="8" width="20" height="16" rx="2" stroke="#d4af37" stroke-width="2"/>
+    <path d="M6 13h20" stroke="#d4af37" stroke-width="2"/>
+    <path d="M11 18h2M11 22h2M16 18h5M16 22h5" stroke="#d4af37" stroke-width="1.5" stroke-linecap="round"/>
+  </svg>`,
+  profi: `<svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M16 4L19.09 11.26L27 12.27L21.5 17.64L22.91 25.5L16 21.77L9.09 25.5L10.5 17.64L5 12.27L12.91 11.26L16 4Z" fill="#d4af37" opacity="0.3" stroke="#d4af37" stroke-width="1.5" stroke-linejoin="round"/>
+  </svg>`
+};
 
 function selectOption(qNum, pts, el) {
   const card = document.getElementById('qcard-' + qNum);
@@ -308,30 +316,30 @@ function updateSubmit() {
 function getResult(score) {
   if (score <= 150) {
     return {
-      emoji: '👨‍🚒',
+      icon: ICONS.feuer,
       title: 'Feuerwehr-Modus',
-      subtitle: 'Wo stehst du gerade?',
-      bedeutet: 'Dein Alltag ist geprägt von Reaktion statt Planung. Du arbeitest hart — aber vor allem für den Betrieb, nicht an ihm. Das ist kein Versagen, sondern der Startpunkt vieler erfolgreicher Gastronomen. Der Unterschied liegt darin, was du jetzt daraus machst.',
-      hebel: 'Dein größter Hebel ist Struktur. Feste Abläufe, klare Zahlen und einfache Systeme werden dir sofort Luft verschaffen. Starte mit Modul 1 — es legt die Grundlage für alles andere.',
-      weiter: 'Arbeite GASTRO-OS Schritt für Schritt in der vorgesehenen Reihenfolge durch. Du musst nichts überspringen. Jedes Modul baut auf dem vorherigen auf — und jeder Schritt bringt dich spürbar weiter.\n\nSpeichere dir dein Ergebnis als PDF, damit du später siehst wie weit du gekommen bist.'
+      subtitle: 'Wo stehst du aktuell?',
+      bedeutet: 'Dein Alltag ist geprägt von Reaktion statt Planung. Du arbeitest hart — aber vor allem für den Betrieb, nicht an ihm. Das ist kein Versagen, sondern der Ausgangspunkt vieler erfolgreicher Gastronomen. Der Unterschied liegt darin, was du jetzt daraus machst.',
+      hebel: 'Dein größter Hebel ist Struktur. Feste Abläufe, klare Zahlen und einfache Systeme werden dir sofort Luft verschaffen. Alles baut aufeinander auf — wer die Basis überspringt, kämpft später gegen dieselben Probleme.',
+      weiter: 'Arbeite Modul 0 vollständig durch — dann geht es weiter mit Modul 1. Gehe jeden Abschnitt in der vorgesehenen Reihenfolge durch. Schritt für Schritt, Modul für Modul. Jeder Baustein zählt.\n\nSpeichere dir dein Ergebnis als PDF — so siehst du später, wo du gestartet bist.'
     };
   } else if (score <= 220) {
     return {
-      emoji: '📋',
+      icon: ICONS.verwalter,
       title: 'Der solide Verwalter',
-      subtitle: 'Wo stehst du gerade?',
+      subtitle: 'Wo stehst du aktuell?',
       bedeutet: 'Dein Betrieb funktioniert bereits in vielen Bereichen. Gleichzeitig laufen wahrscheinlich noch zu viele Dinge über Erfahrung, Bauchgefühl oder deine persönliche Kontrolle. Genau dort liegt dein nächster Entwicklungsschritt.',
-      hebel: 'Achte im weiteren Kurs besonders auf klare Abläufe, bessere Kalkulation, feste Verantwortlichkeiten und Systeme, die auch dann funktionieren, wenn du nicht alles selbst steuerst.',
-      weiter: 'Arbeite GASTRO-OS einfach Schritt für Schritt in der vorgesehenen Reihenfolge durch. Du musst nichts überspringen oder vorziehen.\n\nSpeichere dir dein Ergebnis gerne als PDF, damit du später darauf zurückkommen kannst.'
+      hebel: 'Achte im weiteren Verlauf besonders auf klare Abläufe, bessere Kalkulation, feste Verantwortlichkeiten und Systeme, die auch dann funktionieren, wenn du nicht alles selbst steuerst.',
+      weiter: 'Arbeite GASTRO-OS Schritt für Schritt in der vorgesehenen Reihenfolge durch — Modul für Modul, ohne etwas auszulassen. Jeder Abschnitt baut auf dem vorherigen auf.\n\nSpeichere dir dein Ergebnis als PDF, damit du später darauf zurückkommen kannst.'
     };
   } else {
     return {
-      emoji: '🚀',
+      icon: ICONS.profi,
       title: 'System-Profi',
-      subtitle: 'Wo stehst du gerade?',
+      subtitle: 'Wo stehst du aktuell?',
       bedeutet: 'Du hast bereits eine starke Basis aufgebaut. Dein Betrieb läuft strukturiert, du denkst unternehmerisch und hast vieles im Griff. Jetzt geht es darum, das nächste Level zu erreichen — mehr Freiheit, mehr Wachstum, noch klarere Systeme.',
-      hebel: 'Dein größter Hebel liegt in der Skalierung und Optimierung. Schau dir besonders die Module zu Wachstum, Delegation und Controlling genau an. Kleine Stellschrauben können bei deinem Stand große Wirkung haben.',
-      weiter: 'Arbeite GASTRO-OS in der vorgesehenen Reihenfolge durch — auch wenn du einzelne Themen bereits kennst. Die Module 9 und 10 sind besonders relevant für deinen nächsten Schritt.\n\nSpeichere dir dein Ergebnis als PDF als Ausgangspunkt für deine weitere Entwicklung.'
+      hebel: 'Dein größter Hebel liegt in der Optimierung und Skalierung. Die Module "Mitarbeiter führen statt nur reagieren", "Wachstum & Skalierung" und "Freiheit & Lebensqualität" sind besonders relevant für deinen nächsten Schritt.',
+      weiter: 'Arbeite GASTRO-OS Modul für Modul in der vorgesehenen Reihenfolge durch — auch dort, wo du Themen bereits kennst. Die Systematik macht den Unterschied.\n\nSpeichere dir dein Ergebnis als PDF als Ausgangspunkt für deine weitere Entwicklung.'
     };
   }
 }
@@ -343,7 +351,7 @@ function submitReflexion() {
 
   document.getElementById('form-screen').style.display = 'none';
   document.getElementById('result-screen').style.display = 'block';
-  document.getElementById('res-emoji').textContent = result.emoji;
+  document.getElementById('res-icon').innerHTML = result.icon;
   document.getElementById('res-title').textContent = result.title;
   document.getElementById('res-subtitle').textContent = result.subtitle;
   document.getElementById('res-bedeutet').textContent = result.bedeutet;
@@ -369,7 +377,6 @@ function resetReflexion() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 </script>
-
 <script src="checklist-save.js"></script>
 </body>
 </html>
