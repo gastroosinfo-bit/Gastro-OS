@@ -70,7 +70,7 @@ jobs:
 
   /* Scroll-Hinweis über jeder Section mit Tabelle */
   .section::before {
-    content: '\2190 nach rechts wischen \2192';
+    content: '< nach rechts wischen >';
     display: block;
     text-align: center;
     font-size: 11px;
