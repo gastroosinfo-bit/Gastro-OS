@@ -113,6 +113,7 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
 
 
 
+
 /* ========== GASTRO-OS MOBILE FIX FINAL (07.06.2026) ========== */
 @media (max-width: 768px) {
   .header { padding: 12px 16px; }
@@ -126,13 +127,13 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
   .tool-hero { padding: 16px 14px; }
   .tool-hero h1 { font-size: 16px; }
   .tool-hero p { font-size: 12px; }
-  .section { overflow: visible !important; }
+  .section { overflow: visible !important; border-radius: 10px; }
   .section-head { padding: 10px 14px; font-size: 12px; flex-direction: column; align-items: flex-start; gap: 4px; }
   .section-head h2 { font-size: 12px; }
-  .section::before { content: "< nach rechts wischen >"; display: block; text-align: center; font-size: 11px; color: #d4af37; background: #1a2a4a; padding: 4px 0; letter-spacing: 0.5px; }
-  .table-wrap { display: block; width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  table, .tool-table, .diag-table, .profile-table, .verlauf-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; min-width: 560px; }
-  table td, table th, .tool-table td, .tool-table th { white-space: normal; min-width: 80px; }
+  .table-scroll-hint { display: block; text-align: center; font-size: 11px; color: #d4af37; background: #1a2a4a; padding: 4px 0; letter-spacing: 0.5px; margin: 0; }
+  .table-scroll-wrap { display: block; width: 100%; overflow-x: scroll; -webkit-overflow-scrolling: touch; overflow-y: visible; }
+  table, .tool-table, .diag-table, .profile-table, .verlauf-table { min-width: 700px; width: max-content; border-collapse: collapse; }
+  table td, table th, .tool-table td, .tool-table th { white-space: normal; min-width: 100px; }
   .meta-grid, .field-row, .two-col, .three-col, .four-col { display: block !important; grid-template-columns: 1fr !important; }
   input[type=text], input[type=number], input[type=date], input[type=email], select, textarea, .tool-input, .rating-select, .tool-textarea { width: 100% !important; box-sizing: border-box; font-size: 12px; }
   .score-box { padding: 16px 12px; }
@@ -193,7 +194,7 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
       <div class="an-field"><label>Betriebstage pro Jahr</label><input type="number" id="an-tage" value="300" oninput="calcEnergie();autoSave()"><div class="an-hint">Wie viele Tage ist der Betrieb geöffnet?</div></div>
     </div>
     <div style="overflow-x:auto">
-    <table class="energie-table">
+    <div class="table-scroll-hint">&lt; nach rechts wischen &gt;</div><div class="table-scroll-wrap"><table class="energie-table">
       <thead><tr>
         <th>Gerät / Bezeichnung</th><th>Energie</th>
         <th>Leistung (kW)</th><th>Betrieb Std/Tag</th>
@@ -205,7 +206,7 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
         <td class="amount" id="etotal-tag">0,00 €</td>
         <td class="amount" id="etotal-jahr">0,00 €</td>
       </tr></tfoot>
-    </table>
+    </table></div>
     </div>
   </div>
 
@@ -218,7 +219,7 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
       <span style="font-size:11px;color:#8090a8">Passe den Wert an deine durchschnittlichen Einkaufspreise an</span>
     </div>
     <div style="overflow-x:auto">
-    <table class="verschw-table">
+    <div class="table-scroll-hint">&lt; nach rechts wischen &gt;</div><div class="table-scroll-wrap"><table class="verschw-table">
       <thead><tr>
         <th style="text-align:left">Datum</th><th style="text-align:left">Produkt / Ware</th>
         <th>Menge (kg)</th><th style="text-align:left">Ursache</th>
@@ -230,7 +231,7 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
         <td class="amount" id="vtotal">0,00 €</td>
         <td colspan="2"></td>
       </tr></tfoot>
-    </table>
+    </table></div>
     </div>
   </div>
 
@@ -238,7 +239,7 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
   <div class="tab-content" id="tab-sofort">
     <div class="intro-box">Fülle diese Analyse in unter 30 Minuten aus. Sie zeigt dir sofort wo dein Betrieb Geld verliert — und was du als erstes angehst.</div>
     <div style="overflow-x:auto">
-    <table class="sofort-table">
+    <div class="table-scroll-hint">&lt; nach rechts wischen &gt;</div><div class="table-scroll-wrap"><table class="sofort-table">
       <thead><tr>
         <th>Kostenbereich</th>
         <th>Ist-Kosten (€/Monat)</th><th>Zielwert (€/Monat)</th>
@@ -252,11 +253,11 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
         <td class="amount" id="stotal-jahr">0,00 €</td>
         <td colspan="2"></td>
       </tr></tfoot>
-    </table>
+    </table></div>
     </div>
     <div style="margin-top:24px">
       <div style="background:#1a2a4a;color:#d4af37;font-size:12px;font-weight:700;letter-spacing:1px;padding:10px 14px;border-radius:6px 6px 0 0;">📋 MEIN SOFORT-AKTIONSPLAN — Die 3 größten Hebel diese Woche angehen</div>
-      <table class="aktions-table">
+      <div class="table-scroll-hint">&lt; nach rechts wischen &gt;</div><div class="table-scroll-wrap"><table class="aktions-table">
         <thead><tr><th>Priorität</th><th>Maßnahme</th><th>Erwartete Ersparnis</th><th>Bis wann</th><th>Verantwortlich</th><th>Status</th></tr></thead>
         <tbody>
           <tr><td>🥇 Sofort — diese Woche</td>
@@ -281,7 +282,7 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
             <td><input type="text" id="ak-3-s" placeholder="Status..." oninput="autoSave()"></td>
           </tr>
         </tbody>
-      </table>
+      </table></div>
     </div>
   </div>
 

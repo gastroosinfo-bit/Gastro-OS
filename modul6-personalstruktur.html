@@ -88,6 +88,7 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
 
 
 
+
 /* ========== GASTRO-OS MOBILE FIX FINAL (07.06.2026) ========== */
 @media (max-width: 768px) {
   .header { padding: 12px 16px; }
@@ -101,13 +102,13 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
   .tool-hero { padding: 16px 14px; }
   .tool-hero h1 { font-size: 16px; }
   .tool-hero p { font-size: 12px; }
-  .section { overflow: visible !important; }
+  .section { overflow: visible !important; border-radius: 10px; }
   .section-head { padding: 10px 14px; font-size: 12px; flex-direction: column; align-items: flex-start; gap: 4px; }
   .section-head h2 { font-size: 12px; }
-  .section::before { content: "< nach rechts wischen >"; display: block; text-align: center; font-size: 11px; color: #d4af37; background: #1a2a4a; padding: 4px 0; letter-spacing: 0.5px; }
-  .table-wrap { display: block; width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  table, .tool-table, .diag-table, .profile-table, .verlauf-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; min-width: 560px; }
-  table td, table th, .tool-table td, .tool-table th { white-space: normal; min-width: 80px; }
+  .table-scroll-hint { display: block; text-align: center; font-size: 11px; color: #d4af37; background: #1a2a4a; padding: 4px 0; letter-spacing: 0.5px; margin: 0; }
+  .table-scroll-wrap { display: block; width: 100%; overflow-x: scroll; -webkit-overflow-scrolling: touch; overflow-y: visible; }
+  table, .tool-table, .diag-table, .profile-table, .verlauf-table { min-width: 700px; width: max-content; border-collapse: collapse; }
+  table td, table th, .tool-table td, .tool-table th { white-space: normal; min-width: 100px; }
   .meta-grid, .field-row, .two-col, .three-col, .four-col { display: block !important; grid-template-columns: 1fr !important; }
   input[type=text], input[type=number], input[type=date], input[type=email], select, textarea, .tool-input, .rating-select, .tool-textarea { width: 100% !important; box-sizing: border-box; font-size: 12px; }
   .score-box { padding: 16px 12px; }
@@ -164,7 +165,7 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
       <h3>📊 Personalstruktur Check</h3>
       <div class="ps-sub">Trage hier alle Mitarbeiter ein und definiere ihre Rolle, Aufgaben und Entscheidungsrechte.</div>
       <div class="ps-table-wrap">
-        <table class="ps-table">
+        <div class="table-scroll-hint">&lt; nach rechts wischen &gt;</div><div class="table-scroll-wrap"><table class="ps-table">
           <thead>
             <tr>
               <th style="width:32px">#</th>
@@ -176,7 +177,7 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
             </tr>
           </thead>
           <tbody id="ps-body"></tbody>
-        </table>
+        </table></div>
       </div>
       <div class="tip-box">💡 <strong>Tipp:</strong> Hast du noch keinen Schichtleiter? Das ist deine wichtigste Aufgabe in den nächsten 30 Tagen. Ein Schichtleiter trägt Verantwortung vor Ort — damit du nicht immer selbst da sein musst.</div>
     </div>
@@ -192,7 +193,7 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
         <span>🔶 = situationsabhängig</span>
       </div>
       <div class="rm-table-wrap">
-        <table class="rm-table">
+        <div class="table-scroll-hint">&lt; nach rechts wischen &gt;</div><div class="table-scroll-wrap"><table class="rm-table">
           <thead>
             <tr>
               <th>Aufgabe / Entscheidung</th>
@@ -203,7 +204,7 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
             </tr>
           </thead>
           <tbody id="rm-body"></tbody>
-        </table>
+        </table></div>
       </div>
     </div>
   </div>

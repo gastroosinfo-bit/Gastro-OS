@@ -86,6 +86,8 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 .btn-reset:hover{background:#f0ece0;color:#1a2a4a;border-color:#1a2a4a}
 .save-msg{font-size:13px;color:#4a8a4a;align-self:center;display:none}
 mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
+
+
 /* ========== GASTRO-OS MOBILE FIX FINAL (07.06.2026) ========== */
 @media (max-width: 768px) {
   .header { padding: 12px 16px; }
@@ -99,12 +101,13 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
   .tool-hero { padding: 16px 14px; }
   .tool-hero h1 { font-size: 16px; }
   .tool-hero p { font-size: 12px; }
-  .section { overflow: hidden; }
+  .section { overflow: visible !important; border-radius: 10px; }
   .section-head { padding: 10px 14px; font-size: 12px; flex-direction: column; align-items: flex-start; gap: 4px; }
   .section-head h2 { font-size: 12px; }
-  .section::before { content: "< nach rechts wischen >"; display: block; text-align: center; font-size: 11px; color: #d4af37; background: #1a2a4a; padding: 4px 0; letter-spacing: 0.5px; }
-  table, .tool-table, .diag-table, .profile-table, .verlauf-table { display: block; width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; min-width: 560px; }
-  table td, table th, .tool-table td, .tool-table th { white-space: normal; min-width: 80px; }
+  .table-scroll-hint { display: block; text-align: center; font-size: 11px; color: #d4af37; background: #1a2a4a; padding: 4px 0; letter-spacing: 0.5px; margin: 0; }
+  .table-scroll-wrap { display: block; width: 100%; overflow-x: scroll; -webkit-overflow-scrolling: touch; overflow-y: visible; }
+  table, .tool-table, .diag-table, .profile-table, .verlauf-table { min-width: 700px; width: max-content; border-collapse: collapse; }
+  table td, table th, .tool-table td, .tool-table th { white-space: normal; min-width: 100px; }
   .meta-grid, .field-row, .two-col, .three-col, .four-col { display: block !important; grid-template-columns: 1fr !important; }
   input[type=text], input[type=number], input[type=date], input[type=email], select, textarea, .tool-input, .rating-select, .tool-textarea { width: 100% !important; box-sizing: border-box; font-size: 12px; }
   .score-box { padding: 16px 12px; }
@@ -120,7 +123,6 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
   .footer, .footer-brand { padding: 12px 16px; font-size: 10px; }
 }
 /* ========== END MOBILE FIX FINAL ========== */
-
 </style>
 
 </head>
@@ -155,7 +157,7 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
 
     <div class="section">
       <div class="section-head"><div class="section-num">①</div><h2>STANDORT-STAMMDATEN</h2></div>
-      <table class="tool-table">
+      <div class="table-scroll-hint">&lt; nach rechts wischen &gt;</div><div class="table-scroll-wrap"><table class="tool-table">
         <thead><tr><th style="width:20%"></th><th style="width:24%">Beschreibung</th><th class="center" style="width:18%">Standort A</th><th class="center" style="width:18%">Standort B</th><th class="center" style="width:18%">Standort C</th></tr></thead>
         <tbody>
           <tr><td class="label-col">Standortname / Adresse</td><td class="desc-col">Straße, Stadt, Viertel</td><td><input class="tool-input" id="sd_name_a" placeholder="Standort A" oninput="autosave()"></td><td><input class="tool-input" id="sd_name_b" placeholder="Standort B" oninput="autosave()"></td><td><input class="tool-input" id="sd_name_c" placeholder="Standort C" oninput="autosave()"></td></tr>
@@ -166,12 +168,12 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
           <tr><td class="label-col">Investitionsbedarf (€)</td><td class="desc-col">Umbau, Ausstattung, Anlauf</td><td><input class="tool-input" id="sd_invest_a" type="number" oninput="autosave()"></td><td><input class="tool-input" id="sd_invest_b" type="number" oninput="autosave()"></td><td><input class="tool-input" id="sd_invest_c" type="number" oninput="autosave()"></td></tr>
           <tr><td class="label-col">Geplantes Eröffnungsdatum</td><td class="desc-col">TT.MM.JJJJ</td><td><input class="tool-input" id="sd_datum_a" placeholder="TT.MM.JJJJ" oninput="autosave()"></td><td><input class="tool-input" id="sd_datum_b" placeholder="TT.MM.JJJJ" oninput="autosave()"></td><td><input class="tool-input" id="sd_datum_c" placeholder="TT.MM.JJJJ" oninput="autosave()"></td></tr>
         </tbody>
-      </table>
+      </table></div>
     </div>
 
     <div class="section">
       <div class="section-head"><div class="section-num">②</div><h2>BEWERTUNGSMATRIX — Bewertung 1 (schwach) bis 5 (sehr gut)</h2></div>
-      <table class="tool-table">
+      <div class="table-scroll-hint">&lt; nach rechts wischen &gt;</div><div class="table-scroll-wrap"><table class="tool-table">
         <thead><tr><th style="width:17%">Kriterium</th><th style="width:26%">Beschreibung</th><th class="center" style="width:13%">Standort A</th><th class="center" style="width:13%">Standort B</th><th class="center" style="width:13%">Standort C</th><th class="center" style="width:10%">Gewichtung %</th></tr></thead>
         <tbody id="matrix-body"></tbody>
         <tfoot>
@@ -183,12 +185,12 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
             <td></td>
           </tr>
         </tfoot>
-      </table>
+      </table></div>
     </div>
 
     <div class="section">
       <div class="section-head"><div class="section-num">③</div><h2>QUALITATIVE BEWERTUNG — Was die Zahlen nicht zeigen</h2></div>
-      <table class="tool-table">
+      <div class="table-scroll-hint">&lt; nach rechts wischen &gt;</div><div class="table-scroll-wrap"><table class="tool-table">
         <thead><tr><th style="width:28%">Frage</th><th class="center" style="width:24%">Standort A</th><th class="center" style="width:24%">Standort B</th><th class="center" style="width:24%">Standort C</th></tr></thead>
         <tbody>
           <tr><td class="label-col">Erstes Bauchgefühl beim Besuch des Standorts?</td><td><textarea class="tool-textarea" id="qual_bauch_a" oninput="autosave()"></textarea></td><td><textarea class="tool-textarea" id="qual_bauch_b" oninput="autosave()"></textarea></td><td><textarea class="tool-textarea" id="qual_bauch_c" oninput="autosave()"></textarea></td></tr>
@@ -197,12 +199,12 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
           <tr><td class="label-col">Gibt es bekannte Risiken (Baustelle, Konkurrenz geplant)?</td><td><textarea class="tool-textarea" id="qual_risiken_a" oninput="autosave()"></textarea></td><td><textarea class="tool-textarea" id="qual_risiken_b" oninput="autosave()"></textarea></td><td><textarea class="tool-textarea" id="qual_risiken_c" oninput="autosave()"></textarea></td></tr>
           <tr><td class="label-col">Empfehlung von lokalen Kontakten / Netzwerk?</td><td><textarea class="tool-textarea" id="qual_netzwerk_a" oninput="autosave()"></textarea></td><td><textarea class="tool-textarea" id="qual_netzwerk_b" oninput="autosave()"></textarea></td><td><textarea class="tool-textarea" id="qual_netzwerk_c" oninput="autosave()"></textarea></td></tr>
         </tbody>
-      </table>
+      </table></div>
     </div>
 
     <div class="section">
       <div class="section-head"><div class="section-num">④</div><h2>ENTSCHEIDUNG &amp; NÄCHSTE SCHRITTE</h2></div>
-      <table class="tool-table">
+      <div class="table-scroll-hint">&lt; nach rechts wischen &gt;</div><div class="table-scroll-wrap"><table class="tool-table">
         <thead><tr><th style="width:26%">Feld</th><th style="width:30%">Beschreibung</th><th style="width:44%">Deine Antwort</th></tr></thead>
         <tbody>
           <tr><td class="label-col">Bevorzugter Standort</td><td class="desc-col">Welcher Standort hat überzeugt?</td><td><input class="tool-input" id="ent_standort" oninput="autosave()"></td></tr>
@@ -211,7 +213,7 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
           <tr><td class="label-col">Nächster konkreter Schritt</td><td class="desc-col">Was passiert in den nächsten 14 Tagen?</td><td><textarea class="tool-textarea" id="ent_schritt" oninput="autosave()"></textarea></td></tr>
           <tr><td class="label-col">Entscheidungsdatum</td><td class="desc-col">Bis wann fällst du die finale Entscheidung?</td><td><input class="tool-input" id="ent_datum" placeholder="TT.MM.JJJJ" oninput="autosave()"></td></tr>
         </tbody>
-      </table>
+      </table></div>
       <div class="save-row">
         <span class="save-status" id="save-status-1">✓ Gespeichert</span>
         <button class="save-btn" onclick="saveData()">💾 Speichern</button>
@@ -229,7 +231,7 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
 
     <div class="section">
       <div class="section-head"><div class="section-num">①</div><h2>AKTUELLER STAND — Standort 1</h2></div>
-      <table class="tool-table">
+      <div class="table-scroll-hint">&lt; nach rechts wischen &gt;</div><div class="table-scroll-wrap"><table class="tool-table">
         <thead><tr><th style="width:22%">Kennzahl</th><th style="width:26%">Beschreibung</th><th style="width:22%">Aktueller Wert</th><th style="width:15%">Zielwert</th><th style="width:15%">Status</th></tr></thead>
         <tbody>
           <tr><td class="label-col">Monatlicher Gewinn (€)</td><td class="desc-col">Nach allen Kosten &amp; Unternehmerlohn</td><td><input class="tool-input" id="fc_gewinn" type="number" oninput="autosave();calcFC()"></td><td class="zielwert">&gt; 5.000 €</td><td id="fc_gewinn_status">—</td></tr>
@@ -240,7 +242,7 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
           <tr><td class="label-col">Eigenkapital verfügbar (€)</td><td class="desc-col">Für Investition in Standort 2</td><td><input class="tool-input" id="fc_eigenkapital" type="number" oninput="autosave();calcFC()"></td><td class="zielwert warn">Vorhanden</td><td id="fc_eigenkapital_status">—</td></tr>
           <tr><td class="label-col">Break-even Standort 2 (Monate)</td><td class="desc-col">Wann erwartest du Profitabilität?</td><td><input class="tool-input" id="fc_breakeven" type="number" oninput="autosave();calcFC()"></td><td class="zielwert">&lt; 12 Monate</td><td id="fc_breakeven_status">—</td></tr>
         </tbody>
-      </table>
+      </table></div>
     </div>
 
     <div class="section">
@@ -266,7 +268,7 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
 
     <div class="section">
       <div class="section-head"><div class="section-num">①</div><h2>WIRTSCHAFTLICHKEIT — Break-Even Berechnung</h2></div>
-      <table class="tool-table">
+      <div class="table-scroll-hint">&lt; nach rechts wischen &gt;</div><div class="table-scroll-wrap"><table class="tool-table">
         <thead><tr><th style="width:25%">Kennzahl</th><th style="width:27%">Beschreibung</th><th class="center" style="width:16%">Standort A</th><th class="center" style="width:16%">Standort B</th><th class="center" style="width:16%">Standort C</th></tr></thead>
         <tbody>
           <tr><td class="label-col">Erwarteter Monatsumsatz (€)</td><td class="desc-col">Realistischer Zielumsatz ab Monat 6</td>
@@ -304,12 +306,12 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
             <td class="score-cell" id="wb_breakeven_c" style="color:#d4af37">—</td>
           </tr>
         </tbody>
-      </table>
+      </table></div>
     </div>
 
     <div class="section">
       <div class="section-head"><div class="section-num">②</div><h2>GESAMTBEWERTUNG — Score aus allen 3 Bereichen</h2></div>
-      <table class="tool-table">
+      <div class="table-scroll-hint">&lt; nach rechts wischen &gt;</div><div class="table-scroll-wrap"><table class="tool-table">
         <thead><tr><th style="width:28%">Bereich</th><th style="width:24%">Gewichtung</th><th class="center" style="width:16%">Standort A</th><th class="center" style="width:16%">Standort B</th><th class="center" style="width:16%">Standort C</th></tr></thead>
         <tbody>
           <tr>
@@ -340,7 +342,7 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
             <td class="score-cell" id="gb_gesamt_c">—</td>
           </tr>
         </tbody>
-      </table>
+      </table></div>
     </div>
 
     <div class="section">
@@ -359,7 +361,7 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
         <div id="empfehlung-sub" style="display:none"></div>
       </div>
 
-      <table class="tool-table">
+      <div class="table-scroll-hint">&lt; nach rechts wischen &gt;</div><div class="table-scroll-wrap"><table class="tool-table">
         <tbody>
           <tr><td class="label-col" style="width:28%">Welchen Standort wählst du?</td><td><input class="tool-input" id="ent_standort" placeholder="Standort A / B / C oder keiner" oninput="autosave()"></td></tr>
           <tr><td class="label-col">Hauptgrund für die Entscheidung</td><td><textarea class="tool-textarea" id="ent_grund" placeholder="Was hat dich überzeugt — oder was hat dich zurückgehalten?" oninput="autosave()"></textarea></td></tr>
@@ -367,7 +369,7 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
           <tr><td class="label-col">Nächster konkreter Schritt</td><td><input class="tool-input" id="ent_schritt" placeholder="z.B. Vermieter anrufen, Finanzierungsgespräch, Besichtigung" oninput="autosave()"></td></tr>
           <tr><td class="label-col">Datum des nächsten Schritts</td><td><input class="tool-input" id="ent_datum" placeholder="TT.MM.JJJJ" oninput="autosave()"></td></tr>
         </tbody>
-      </table>
+      </table></div>
 
       <div class="save-row" style="margin-top:16px">
         <span class="save-status" id="save-status-3"></span>

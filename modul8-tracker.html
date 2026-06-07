@@ -65,6 +65,7 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
 
 
 
+
 /* ========== GASTRO-OS MOBILE FIX FINAL (07.06.2026) ========== */
 @media (max-width: 768px) {
   .header { padding: 12px 16px; }
@@ -78,13 +79,13 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
   .tool-hero { padding: 16px 14px; }
   .tool-hero h1 { font-size: 16px; }
   .tool-hero p { font-size: 12px; }
-  .section { overflow: visible !important; }
+  .section { overflow: visible !important; border-radius: 10px; }
   .section-head { padding: 10px 14px; font-size: 12px; flex-direction: column; align-items: flex-start; gap: 4px; }
   .section-head h2 { font-size: 12px; }
-  .section::before { content: "< nach rechts wischen >"; display: block; text-align: center; font-size: 11px; color: #d4af37; background: #1a2a4a; padding: 4px 0; letter-spacing: 0.5px; }
-  .table-wrap { display: block; width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  table, .tool-table, .diag-table, .profile-table, .verlauf-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; min-width: 560px; }
-  table td, table th, .tool-table td, .tool-table th { white-space: normal; min-width: 80px; }
+  .table-scroll-hint { display: block; text-align: center; font-size: 11px; color: #d4af37; background: #1a2a4a; padding: 4px 0; letter-spacing: 0.5px; margin: 0; }
+  .table-scroll-wrap { display: block; width: 100%; overflow-x: scroll; -webkit-overflow-scrolling: touch; overflow-y: visible; }
+  table, .tool-table, .diag-table, .profile-table, .verlauf-table { min-width: 700px; width: max-content; border-collapse: collapse; }
+  table td, table th, .tool-table td, .tool-table th { white-space: normal; min-width: 100px; }
   .meta-grid, .field-row, .two-col, .three-col, .four-col { display: block !important; grid-template-columns: 1fr !important; }
   input[type=text], input[type=number], input[type=date], input[type=email], select, textarea, .tool-input, .rating-select, .tool-textarea { width: 100% !important; box-sizing: border-box; font-size: 12px; }
   .score-box { padding: 16px 12px; }
@@ -135,11 +136,11 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
       <div class="card-title">TÄGLICHES UPSELLING-TRACKING</div>
       <div class="card-hint">Blaue Felder = Eingabe · Erfolgsquote &amp; Bon automatisch</div>
     </div>
-    <table class="tbl">
+    <div class="table-scroll-hint">&lt; nach rechts wischen &gt;</div><div class="table-scroll-wrap"><table class="tbl">
       <thead><tr><th>Tag</th><th>Service</th><th>Tische / Gäste</th><th>Versuche</th><th>Erfolge</th><th>Erfolgsquote</th><th>Umsatz gesamt (€)</th><th>Ø Bon (€)</th></tr></thead>
       <tbody id="track-body"></tbody>
       <tfoot id="track-foot"></tfoot>
-    </table>
+    </table></div>
   </div>
 
   <div class="card">
@@ -147,10 +148,10 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
       <div class="card-title">UPSELLING-KATEGORIEN — Was wurde empfohlen?</div>
       <div class="card-hint">Versuche und Erfolge pro Kategorie</div>
     </div>
-    <table class="tbl">
+    <div class="table-scroll-hint">&lt; nach rechts wischen &gt;</div><div class="table-scroll-wrap"><table class="tbl">
       <thead><tr><th>Kategorie</th><th>Versuche (Woche)</th><th>Erfolge (Woche)</th><th>Erfolgsquote</th><th>Notiz / Formulierung</th></tr></thead>
       <tbody id="kat-body"></tbody>
-    </table>
+    </table></div>
   </div>
 
   <div class="result-card">

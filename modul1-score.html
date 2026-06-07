@@ -91,6 +91,7 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
 
 
 
+
 /* ========== GASTRO-OS MOBILE FIX FINAL (07.06.2026) ========== */
 @media (max-width: 768px) {
   .header { padding: 12px 16px; }
@@ -104,13 +105,13 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
   .tool-hero { padding: 16px 14px; }
   .tool-hero h1 { font-size: 16px; }
   .tool-hero p { font-size: 12px; }
-  .section { overflow: visible !important; }
+  .section { overflow: visible !important; border-radius: 10px; }
   .section-head { padding: 10px 14px; font-size: 12px; flex-direction: column; align-items: flex-start; gap: 4px; }
   .section-head h2 { font-size: 12px; }
-  .section::before { content: "< nach rechts wischen >"; display: block; text-align: center; font-size: 11px; color: #d4af37; background: #1a2a4a; padding: 4px 0; letter-spacing: 0.5px; }
-  .table-wrap { display: block; width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  table, .tool-table, .diag-table, .profile-table, .verlauf-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; min-width: 560px; }
-  table td, table th, .tool-table td, .tool-table th { white-space: normal; min-width: 80px; }
+  .table-scroll-hint { display: block; text-align: center; font-size: 11px; color: #d4af37; background: #1a2a4a; padding: 4px 0; letter-spacing: 0.5px; margin: 0; }
+  .table-scroll-wrap { display: block; width: 100%; overflow-x: scroll; -webkit-overflow-scrolling: touch; overflow-y: visible; }
+  table, .tool-table, .diag-table, .profile-table, .verlauf-table { min-width: 700px; width: max-content; border-collapse: collapse; }
+  table td, table th, .tool-table td, .tool-table th { white-space: normal; min-width: 100px; }
   .meta-grid, .field-row, .two-col, .three-col, .four-col { display: block !important; grid-template-columns: 1fr !important; }
   input[type=text], input[type=number], input[type=date], input[type=email], select, textarea, .tool-input, .rating-select, .tool-textarea { width: 100% !important; box-sizing: border-box; font-size: 12px; }
   .score-box { padding: 16px 12px; }
@@ -218,7 +219,7 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
   <div class="section">
     <div class="section-head">Teil 4 — System-Diagnose <span>max. 20 Punkte · Ø × 2</span></div>
     <p style="font-size:13px;color:#5a6a80;margin-bottom:14px;">Bewerte jeden Bereich von 1 (schlecht) bis 10 (perfekt):</p>
-    <table class="diag-table">
+    <div class="table-scroll-hint">&lt; nach rechts wischen &gt;</div><div class="table-scroll-wrap"><table class="diag-table">
       <tr><th style="width:65%;">Bereich</th><th>Score (1–10)</th><th>Ziel</th></tr>
       <tr><td>1. Mitarbeiter-Autonomie — Können sie Probleme ohne dich lösen?</td><td><input class="diag-input" id="d1" type="number" min="1" max="10" placeholder="—" oninput="calcScore();autoSave()"></td><td class="target">8+</td></tr>
       <tr><td>2. Marketing-Konstanz — Kommen planbar neue Gäste ohne dein Zutun?</td><td><input class="diag-input" id="d2" type="number" min="1" max="10" placeholder="—" oninput="calcScore();autoSave()"></td><td class="target">7+</td></tr>
@@ -227,7 +228,7 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
       <tr><td>5. Persönliche Freiheit — Zeit für Familie und eigene Visionen?</td><td><input class="diag-input" id="d5" type="number" min="1" max="10" placeholder="—" oninput="calcScore();autoSave()"></td><td class="target">8+</td></tr>
       <tr><td style="font-weight:700;">Durchschnitt der 5 Scores:</td><td id="diag-avg" style="font-weight:700;">—</td><td class="target">∅</td></tr>
       <tr style="background:#1a2a4a;"><td style="color:#a0b0c8;font-weight:700;padding:9px 12px;">Punkte Teil 4 (Ø × 2):</td><td id="diag-pts" style="color:#d4af37;font-weight:700;padding:9px 12px;">—</td><td></td></tr>
-    </table>
+    </table></div>
   </div>
 
   <div class="score-box">
@@ -240,25 +241,25 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
 
   <div class="section">
     <div class="section-head">📊 Ergebnis-Profil</div>
-    <table class="profile-table">
+    <div class="table-scroll-hint">&lt; nach rechts wischen &gt;</div><div class="table-scroll-wrap"><table class="profile-table">
       <tr><th>Punkte</th><th>Dein Status</th><th>Deine nächste Aufgabe</th></tr>
       <tr id="pr-0"><td>0–15</td><td>👨‍🚒 Der Sklave des Betriebs</td><td>Sofortige Notbremse. Delegiere noch heute eine Aufgabe.</td></tr>
       <tr id="pr-1"><td>16–30</td><td>🔧 Der überlastete Allrounder</td><td>Schreibe deine erste SOP. Du bist der Flaschenhals.</td></tr>
       <tr id="pr-2"><td>31–45</td><td>📈 Der angehende Stratege</td><td>Optimiere Margen und baue Delegation systematisch aus.</td></tr>
       <tr id="pr-3"><td>46–50</td><td>🚀 Der Gastro-OS Profi</td><td>Bereit für Skalierung oder zweiten Standort.</td></tr>
-    </table>
+    </table></div>
   </div>
 
   <div class="section">
     <div class="section-head">📅 Monatlicher Verlauf <span>Trage deinen Score monatlich ein</span></div>
-    <table class="verlauf-table">
+    <div class="table-scroll-hint">&lt; nach rechts wischen &gt;</div><div class="table-scroll-wrap"><table class="verlauf-table">
       <tr><th>Datum</th><th>Score</th><th>Zeit (F2)</th><th>Abwesenheit (F4)</th><th>Doku (F5)</th><th>Break-Even (F6)</th><th>System (T4)</th></tr>
       <tr><td><input type="date" id="v1-d" class="verlauf-date" oninput="autoSave()"></td><td id="v1-s">—</td><td id="v1-q2">—</td><td id="v1-q4">—</td><td id="v1-q5">—</td><td id="v1-q6">—</td><td id="v1-t4">—</td></tr>
       <tr><td><input type="date" id="v2-d" class="verlauf-date" oninput="autoSave()"></td><td id="v2-s">—</td><td id="v2-q2">—</td><td id="v2-q4">—</td><td id="v2-q5">—</td><td id="v2-q6">—</td><td id="v2-t4">—</td></tr>
       <tr><td><input type="date" id="v3-d" class="verlauf-date" oninput="autoSave()"></td><td id="v3-s">—</td><td id="v3-q2">—</td><td id="v3-q4">—</td><td id="v3-q5">—</td><td id="v3-q6">—</td><td id="v3-t4">—</td></tr>
       <tr><td><input type="date" id="v4-d" class="verlauf-date" oninput="autoSave()"></td><td id="v4-s">—</td><td id="v4-q2">—</td><td id="v4-q4">—</td><td id="v4-q5">—</td><td id="v4-q6">—</td><td id="v4-t4">—</td></tr>
       <tr><td><input type="date" id="v5-d" class="verlauf-date" oninput="autoSave()"></td><td id="v5-s">—</td><td id="v5-q2">—</td><td id="v5-q4">—</td><td id="v5-q5">—</td><td id="v5-q6">—</td><td id="v5-t4">—</td></tr>
-    </table>
+    </table></div>
     <div style="margin-top:10px;">
       <button onclick="addVerlauf()" style="background:#1a2a4a;color:#d4af37;border:none;padding:8px 18px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;">+ Aktuellen Score eintragen</button>
     </div>

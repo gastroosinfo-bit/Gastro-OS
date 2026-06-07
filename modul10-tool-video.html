@@ -90,6 +90,7 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
 
 
 
+
 /* ========== GASTRO-OS MOBILE FIX FINAL (07.06.2026) ========== */
 @media (max-width: 768px) {
   .header { padding: 12px 16px; }
@@ -103,13 +104,13 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
   .tool-hero { padding: 16px 14px; }
   .tool-hero h1 { font-size: 16px; }
   .tool-hero p { font-size: 12px; }
-  .section { overflow: visible !important; }
+  .section { overflow: visible !important; border-radius: 10px; }
   .section-head { padding: 10px 14px; font-size: 12px; flex-direction: column; align-items: flex-start; gap: 4px; }
   .section-head h2 { font-size: 12px; }
-  .section::before { content: "< nach rechts wischen >"; display: block; text-align: center; font-size: 11px; color: #d4af37; background: #1a2a4a; padding: 4px 0; letter-spacing: 0.5px; }
-  .table-wrap { display: block; width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  table, .tool-table, .diag-table, .profile-table, .verlauf-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; min-width: 560px; }
-  table td, table th, .tool-table td, .tool-table th { white-space: normal; min-width: 80px; }
+  .table-scroll-hint { display: block; text-align: center; font-size: 11px; color: #d4af37; background: #1a2a4a; padding: 4px 0; letter-spacing: 0.5px; margin: 0; }
+  .table-scroll-wrap { display: block; width: 100%; overflow-x: scroll; -webkit-overflow-scrolling: touch; overflow-y: visible; }
+  table, .tool-table, .diag-table, .profile-table, .verlauf-table { min-width: 700px; width: max-content; border-collapse: collapse; }
+  table td, table th, .tool-table td, .tool-table th { white-space: normal; min-width: 100px; }
   .meta-grid, .field-row, .two-col, .three-col, .four-col { display: block !important; grid-template-columns: 1fr !important; }
   input[type=text], input[type=number], input[type=date], input[type=email], select, textarea, .tool-input, .rating-select, .tool-textarea { width: 100% !important; box-sizing: border-box; font-size: 12px; }
   .score-box { padding: 16px 12px; }
@@ -162,14 +163,14 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
       <div class="mockup-bar"><span class="gold">GASTRO-OS</span><span>Modul · Tool</span></div>
       <div class="mockup-inner"><div class="mock-section"><div class="mock-section-head">GASTRO-OS | Standort-Analyse-Tool &nbsp;·&nbsp; Analysiere bis zu 3 potenzielle Standorte im Vergleich.</div>
   <div class="mock-section-head" style="margin-bottom:8px">① STANDORT-STAMMDATEN</div>
-  <table class="mock-table">
+  <div class="table-scroll-hint">&lt; nach rechts wischen &gt;</div><div class="table-scroll-wrap"><table class="mock-table">
     <tr><th>Beschreibung</th><th>Standort A</th><th>Standort B</th><th>Standort C</th></tr>
     <tr><td>Standortname / Adresse</td><td style="background:#eaf2ff"><div class="mock-input"></div></td><td style="background:#eaf2ff"><div class="mock-input"></div></td><td style="background:#eaf2ff"><div class="mock-input"></div></td></tr>
     <tr><td>Konzept geplant</td><td style="background:#eaf2ff"><div class="mock-input"></div></td><td style="background:#eaf2ff"><div class="mock-input"></div></td><td style="background:#eaf2ff"><div class="mock-input"></div></td></tr>
     <tr><td>Mietkosten mtl. (€)</td><td style="background:#eaf2ff"><div class="mock-input"></div></td><td style="background:#eaf2ff"><div class="mock-input"></div></td><td style="background:#eaf2ff"><div class="mock-input"></div></td></tr>
     <tr><td>Fläche (m²)</td><td style="background:#eaf2ff"><div class="mock-input"></div></td><td style="background:#eaf2ff"><div class="mock-input"></div></td><td style="background:#eaf2ff"><div class="mock-input"></div></td></tr>
     <tr><td>Sitzplätze geplant</td><td style="background:#eaf2ff"><div class="mock-input"></div></td><td style="background:#eaf2ff"><div class="mock-input"></div></td><td style="background:#eaf2ff"><div class="mock-input"></div></td></tr>
-  </table></div></div>
+  </table></div></div></div>
     </div>
     
   </div>
@@ -179,13 +180,13 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
     <div class="mockup">
       <div class="mockup-bar"><span class="gold">GASTRO-OS</span><span>Modul · Tool</span></div>
       <div class="mockup-inner"><div class="mock-section"><div class="mock-section-head">② BEWERTUNGSMATRIX — Bewertung 1 (schwach) bis 5 (sehr gut)</div>
-  <table class="mock-table">
+  <div class="table-scroll-hint">&lt; nach rechts wischen &gt;</div><div class="table-scroll-wrap"><table class="mock-table">
     <tr><th>Kriterium</th><th>Gewicht</th><th>Standort A</th><th>Standort B</th><th>Standort C</th></tr>
     <tr><td>Lage &amp; Erreichbarkeit</td><td style="color:#d4af37;font-weight:700">25%</td><td style="background:#eaf2ff"><div class="mock-input"></div></td><td style="background:#eaf2ff"><div class="mock-input"></div></td><td style="background:#eaf2ff"><div class="mock-input"></div></td></tr>
     <tr><td>Passantenfrequenz</td><td style="color:#d4af37;font-weight:700">20%</td><td style="background:#eaf2ff"><div class="mock-input"></div></td><td style="background:#eaf2ff"><div class="mock-input"></div></td><td style="background:#eaf2ff"><div class="mock-input"></div></td></tr>
     <tr><td>Wettbewerbssituation</td><td style="color:#d4af37;font-weight:700">15%</td><td style="background:#eaf2ff"><div class="mock-input"></div></td><td style="background:#eaf2ff"><div class="mock-input"></div></td><td style="background:#eaf2ff"><div class="mock-input"></div></td></tr>
     <tr style="background:#1a2a4a"><td colspan="2" style="color:#d4af37;font-weight:700">Gewichteter Gesamtscore</td><td style="color:#d4af37;font-weight:700;font-size:15px">—</td><td style="color:#a0b0c8;font-weight:700;font-size:15px">—</td><td style="color:#a0b0c8;font-weight:700;font-size:15px">—</td></tr>
-  </table></div></div>
+  </table></div></div></div>
     </div>
     <div class="highlight">💡 Bewertungsmatrix und Finanzcheck Expansion (Tab 2) zusammen geben dir das vollständige Bild.</div>
   </div>
@@ -196,12 +197,12 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
       <div class="mockup-bar"><span class="gold">GASTRO-OS</span><span>Modul · Tool</span></div>
       <div class="mockup-inner"><div class="mock-result">
   <div style="font-family:Georgia,serif;font-size:13px;color:#d4af37;margin-bottom:10px">🏆 GESAMTBEWERTUNG &amp; ENTSCHEIDUNG</div>
-  <table class="mock-table">
+  <div class="table-scroll-hint">&lt; nach rechts wischen &gt;</div><div class="table-scroll-wrap"><table class="mock-table">
     <tr><th></th><th style="color:#d4af37">Standort A</th><th>Standort B</th><th>Standort C</th></tr>
     <tr><td style="color:#a0b0c8">Standort-Score</td><td style="color:#d4af37;font-weight:700;font-size:15px">82 / 100</td><td style="color:#a0b0c8">71</td><td style="color:#a0b0c8">65</td></tr>
     <tr><td style="color:#a0b0c8">Finanz-Score</td><td style="color:#d4af37;font-weight:700">Positiv</td><td style="color:#a0b0c8">Neutral</td><td style="color:#a0b0c8">Risiko</td></tr>
     <tr><td style="color:#a0b0c8">Empfehlung</td><td style="color:#d4af37;font-weight:700">⭐ EMPFOHLEN</td><td style="color:#a0b0c8">Möglich</td><td style="color:#a0b0c8">Nicht empfohlen</td></tr>
-  </table>
+  </table></div>
   <div style="background:#2a3a5a;border-radius:5px;padding:10px;margin-top:8px">
     <div style="font-size:11px;color:#a0b0c8">Entscheidungsnotiz:</div>
     <div style="background:#1a2a4a;border-radius:3px;padding:6px;margin-top:4px"><div class="mock-input"></div></div>

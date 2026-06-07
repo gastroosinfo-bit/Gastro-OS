@@ -123,6 +123,7 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
 
 
 
+
 /* ========== GASTRO-OS MOBILE FIX FINAL (07.06.2026) ========== */
 @media (max-width: 768px) {
   .header { padding: 12px 16px; }
@@ -136,13 +137,13 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
   .tool-hero { padding: 16px 14px; }
   .tool-hero h1 { font-size: 16px; }
   .tool-hero p { font-size: 12px; }
-  .section { overflow: visible !important; }
+  .section { overflow: visible !important; border-radius: 10px; }
   .section-head { padding: 10px 14px; font-size: 12px; flex-direction: column; align-items: flex-start; gap: 4px; }
   .section-head h2 { font-size: 12px; }
-  .section::before { content: "< nach rechts wischen >"; display: block; text-align: center; font-size: 11px; color: #d4af37; background: #1a2a4a; padding: 4px 0; letter-spacing: 0.5px; }
-  .table-wrap { display: block; width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  table, .tool-table, .diag-table, .profile-table, .verlauf-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; min-width: 560px; }
-  table td, table th, .tool-table td, .tool-table th { white-space: normal; min-width: 80px; }
+  .table-scroll-hint { display: block; text-align: center; font-size: 11px; color: #d4af37; background: #1a2a4a; padding: 4px 0; letter-spacing: 0.5px; margin: 0; }
+  .table-scroll-wrap { display: block; width: 100%; overflow-x: scroll; -webkit-overflow-scrolling: touch; overflow-y: visible; }
+  table, .tool-table, .diag-table, .profile-table, .verlauf-table { min-width: 700px; width: max-content; border-collapse: collapse; }
+  table td, table th, .tool-table td, .tool-table th { white-space: normal; min-width: 100px; }
   .meta-grid, .field-row, .two-col, .three-col, .four-col { display: block !important; grid-template-columns: 1fr !important; }
   input[type=text], input[type=number], input[type=date], input[type=email], select, textarea, .tool-input, .rating-select, .tool-textarea { width: 100% !important; box-sizing: border-box; font-size: 12px; }
   .score-box { padding: 16px 12px; }
@@ -205,21 +206,21 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
       <div class="legend-item"><div class="legend-dot" style="background:#a0b0c8"></div>Frei / Sonstiges</div>
     </div>
     <div class="planner-wrap">
-      <table class="planner">
+      <div class="table-scroll-hint">&lt; nach rechts wischen &gt;</div><div class="table-scroll-wrap"><table class="planner">
         <thead><tr>
           <th class="time-head" colspan="2">Zeit / Zone</th>
           <th class="day-head">Montag</th><th class="day-head">Dienstag</th><th class="day-head">Mittwoch</th>
           <th class="day-head">Donnerstag</th><th class="day-head">Freitag</th><th class="day-head">Samstag</th><th class="day-head">Sonntag</th>
         </tr></thead>
         <tbody id="planner-body"></tbody>
-      </table>
+      </table></div>
     </div>
     <div class="highlights">
       <h3>Tages-Highlights — Was ist heute das Wichtigste?</h3>
-      <table class="hl-table">
+      <div class="table-scroll-hint">&lt; nach rechts wischen &gt;</div><div class="table-scroll-wrap"><table class="hl-table">
         <thead><tr><th></th><th>Montag</th><th>Dienstag</th><th>Mittwoch</th><th>Donnerstag</th><th>Freitag</th><th>Samstag</th><th>Sonntag</th></tr></thead>
         <tbody id="hl-body"></tbody>
-      </table>
+      </table></div>
     </div>
     <div class="auswertung">
       <h3>📊 Wochen-Auswertung — Am Ende der Woche ausfüllen</h3>
@@ -245,10 +246,10 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
       <div class="sop-meta" style="margin-bottom:14px">
         <div class="sop-meta-field" style="flex:1"><label>Ziel dieser SOP</label><input type="text" id="sop-ziel" placeholder="Was soll durch diese SOP erreicht werden?" oninput="autoSave()"></div>
       </div>
-      <table class="sop-table">
+      <div class="table-scroll-hint">&lt; nach rechts wischen &gt;</div><div class="table-scroll-wrap"><table class="sop-table">
         <thead><tr><th style="width:36px">#</th><th>Was genau tun?</th><th style="width:200px">Wer / Womit / Bis wann?</th></tr></thead>
         <tbody id="sop-body"></tbody>
-      </table>
+      </table></div>
       <div class="sop-rules">
         <label>Wichtige Regeln / Was nicht vergessen werden darf:</label>
         <div id="sop-rules-list"></div>
