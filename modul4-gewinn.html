@@ -81,41 +81,77 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
 
 
 
-/* ========== GASTRO-OS MOBILE FIX FINAL (07.06.2026) ========== */
-@media (max-width: 768px) {
-  .header { padding: 12px 16px; }
-  .brand { font-size: 16px; letter-spacing: 2px; }
-  .btn-back, .btn-back-modul, .back-btn { padding: 8px 14px; font-size: 12px; }
-  .wrap, .main { padding: 16px 10px 48px; margin-top: 16px; }
-  .action-row { flex-direction: column; align-items: stretch; gap: 8px; }
-  .action-row button, .action-row a { width: 100%; text-align: center; }
-  .tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; flex-wrap: nowrap; }
-  .tab-btn { white-space: nowrap; padding: 10px 16px; font-size: 12px; }
-  .tool-hero { padding: 16px 14px; }
-  .tool-hero h1 { font-size: 16px; }
-  .tool-hero p { font-size: 12px; }
-  .section { overflow: visible !important; border-radius: 10px; }
-  .section-head { padding: 10px 14px; font-size: 12px; flex-direction: column; align-items: flex-start; gap: 4px; }
-  .section-head h2 { font-size: 12px; }
-  .table-scroll-hint { display: block; text-align: center; font-size: 11px; color: #d4af37; background: #1a2a4a; padding: 4px 0; letter-spacing: 0.5px; margin: 0; }
-  .table-scroll-wrap { display: block; width: 100%; overflow-x: scroll; -webkit-overflow-scrolling: touch; overflow-y: visible; }
-  table, .tool-table, .diag-table, .profile-table, .verlauf-table { min-width: 700px; width: max-content; border-collapse: collapse; }
-  table td, table th, .tool-table td, .tool-table th { white-space: normal; min-width: 100px; }
-  .meta-grid, .field-row, .two-col, .three-col, .four-col { display: block !important; grid-template-columns: 1fr !important; }
-  input[type=text], input[type=number], input[type=date], input[type=email], select, textarea, .tool-input, .rating-select, .tool-textarea { width: 100% !important; box-sizing: border-box; font-size: 12px; }
-  .score-box { padding: 16px 12px; }
-  .score-num { font-size: 40px; }
-  .score-type { font-size: 17px; }
-  .radio-opt { padding: 10px; }
-  .pts-badge { font-size: 10px; white-space: nowrap; }
-  .fazit-grid { padding: 12px; }
-  .save-row { flex-direction: column; align-items: stretch; }
-  .save-btn { width: 100%; }
-  .nav-row { flex-direction: column; gap: 8px; }
-  .nav-btn { width: 100%; text-align: center; }
-  .footer, .footer-brand { padding: 12px 16px; font-size: 10px; }
+
+
+/* ===== GASTRO-OS RESPONSIVE FIX (08.06.2026) ===== */
+html { font-size: clamp(12px, 3.5vw, 16px); }
+
+@media (max-width: 600px) {
+  .wrap, .main, .content-wrap, .page-wrap {
+    padding: 16px 12px 60px !important;
+    max-width: 100% !important;
+  }
+  .header { padding: 10px 14px !important; }
+  .brand { font-size: 16px !important; letter-spacing: 1px !important; }
+  .tool-title, h1 { font-size: clamp(16px, 5vw, 22px) !important; }
+  .tool-label, .tool-lbl, .lektion-tag { font-size: 10px !important; }
+  .tool-sub, .hint-bar { font-size: 12px !important; }
+
+  .save-row, .btn-row, .action-row, .nav-row {
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+  .btn-save, .btn-export, .btn-reset, .btn-back,
+  .back-btn, .btn-back-modul {
+    padding: 8px 14px !important;
+    font-size: 12px !important;
+    width: 100% !important;
+    text-align: center !important;
+    box-sizing: border-box !important;
+  }
+
+  .tabs { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; flex-wrap: nowrap !important; }
+  .tab-btn { white-space: nowrap !important; padding: 8px 12px !important; font-size: 12px !important; }
+
+  .field-row, .lief-row, .gesamt-row, .mass-row,
+  .meta-row, .quartal-grid, .week-row,
+  .meta-grid, .two-col, .three-col, .four-col {
+    display: flex !important;
+    flex-direction: column !important;
+    grid-template-columns: 1fr !important;
+  }
+  .field-input-wrap, .field-ziel, .field-status, .field-calc,
+  .lief-pct, .gesamt-col:not(:first-child) {
+    border-left: none !important;
+    border-top: 1px solid #f0ece4 !important;
+  }
+
+  .table-scroll-wrap, .tab-content, .block {
+    display: block !important;
+    width: 100% !important;
+    overflow-x: scroll !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  table { min-width: 480px !important; font-size: 12px !important; }
+  thead th, td { padding: 7px 8px !important; font-size: 11px !important; }
+
+  .meta-input, .field-input, .mass-input, .hebel-input,
+  input[type=text], input[type=number], input[type=date],
+  select, textarea {
+    min-width: unset !important;
+    width: 100% !important;
+    font-size: 13px !important;
+    box-sizing: border-box !important;
+  }
+
+  .score-grid, .kpi-grid { grid-template-columns: 1fr 1fr !important; }
+  .block, .tab-content, .card, .quartal-card { padding: 14px 12px !important; }
+  .footer-brand, .footer { padding: 12px 14px !important; font-size: 10px !important; }
 }
-/* ========== END MOBILE FIX FINAL ========== */
+/* ===== END RESPONSIVE FIX ===== */
+
 </style>
 <script>
 (function(){
