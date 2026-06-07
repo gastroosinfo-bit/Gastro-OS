@@ -6,7 +6,7 @@
   // ─── Dashboard-Button ───────────────────────────────────────────────────────
   function addDashboardButton() {
     const file = window.location.pathname.split('/').pop();
-    const skip = ['dashboard.html','login.html','impressum.html','datenschutz.html','agb.html',''];
+    const skip = ['dashboard.html','login.html','impressum.html','datenschutz.html','agb.html','modul0-reflexion.html',''];
     if (skip.includes(file)) return;
     if (document.querySelector('.gastro-db-added')) return;
 
