@@ -1,4 +1,4 @@
-name: Mobile Fix – Alle 20 Tools (Final)
+name: Mobile Fix - Alle 20 Tools Final
 
 on:
   workflow_dispatch:
@@ -12,8 +12,8 @@ jobs:
 
       - name: Mobile CSS in alle 20 Tool-Dateien injizieren
         run: |
-          python3 - <<'EOF'
-          import os
+          python3 << 'PYEOF'
+          import os, base64
 
           TOOL_FILES = [
             "modul1-score.html",
@@ -38,141 +38,25 @@ jobs:
             "modul12-recruiting.html",
           ]
 
-          MOBILE_CSS = """
-/* ========== GASTRO-OS MOBILE FIX FINAL (07.06.2026) ========== */
-@media (max-width: 768px) {
+          MOBILE_CSS = base64.b64decode("LyogPT09PT09PT09PSBHQVNUUk8tT1MgTU9CSUxFIEZJWCBGSU5BTCAoMDcuMDYuMjAyNikgPT09PT09PT09PSAqLwpAbWVkaWEgKG1heC13aWR0aDogNzY4cHgpIHsKICAuaGVhZGVyIHsgcGFkZGluZzogMTJweCAxNnB4OyB9CiAgLmJyYW5kIHsgZm9udC1zaXplOiAxNnB4OyBsZXR0ZXItc3BhY2luZzogMnB4OyB9CiAgLmJ0bi1iYWNrLCAuYnRuLWJhY2stbW9kdWwsIC5iYWNrLWJ0biB7IHBhZGRpbmc6IDhweCAxNHB4OyBmb250LXNpemU6IDEycHg7IH0KICAud3JhcCwgLm1haW4geyBwYWRkaW5nOiAxNnB4IDEwcHggNDhweDsgbWFyZ2luLXRvcDogMTZweDsgfQogIC5hY3Rpb24tcm93IHsgZmxleC1kaXJlY3Rpb246IGNvbHVtbjsgYWxpZ24taXRlbXM6IHN0cmV0Y2g7IGdhcDogOHB4OyB9CiAgLmFjdGlvbi1yb3cgYnV0dG9uLCAuYWN0aW9uLXJvdyBhIHsgd2lkdGg6IDEwMCU7IHRleHQtYWxpZ246IGNlbnRlcjsgfQogIC50YWJzIHsgb3ZlcmZsb3cteDogYXV0bzsgLXdlYmtpdC1vdmVyZmxvdy1zY3JvbGxpbmc6IHRvdWNoOyBmbGV4LXdyYXA6IG5vd3JhcDsgfQogIC50YWItYnRuIHsgd2hpdGUtc3BhY2U6IG5vd3JhcDsgcGFkZGluZzogMTBweCAxNnB4OyBmb250LXNpemU6IDEycHg7IH0KICAudG9vbC1oZXJvIHsgcGFkZGluZzogMTZweCAxNHB4OyB9CiAgLnRvb2wtaGVybyBoMSB7IGZvbnQtc2l6ZTogMTZweDsgfQogIC50b29sLWhlcm8gcCB7IGZvbnQtc2l6ZTogMTJweDsgfQogIC5zZWN0aW9uIHsgb3ZlcmZsb3c6IGhpZGRlbjsgfQogIC5zZWN0aW9uLWhlYWQgeyBwYWRkaW5nOiAxMHB4IDE0cHg7IGZvbnQtc2l6ZTogMTJweDsgZmxleC1kaXJlY3Rpb246IGNvbHVtbjsgYWxpZ24taXRlbXM6IGZsZXgtc3RhcnQ7IGdhcDogNHB4OyB9CiAgLnNlY3Rpb24taGVhZCBoMiB7IGZvbnQtc2l6ZTogMTJweDsgfQogIC5zZWN0aW9uOjpiZWZvcmUgeyBjb250ZW50OiAiPCBuYWNoIHJlY2h0cyB3aXNjaGVuID4iOyBkaXNwbGF5OiBibG9jazsgdGV4dC1hbGlnbjogY2VudGVyOyBmb250LXNpemU6IDExcHg7IGNvbG9yOiAjZDRhZjM3OyBiYWNrZ3JvdW5kOiAjMWEyYTRhOyBwYWRkaW5nOiA0cHggMDsgbGV0dGVyLXNwYWNpbmc6IDAuNXB4OyB9CiAgdGFibGUsIC50b29sLXRhYmxlLCAuZGlhZy10YWJsZSwgLnByb2ZpbGUtdGFibGUsIC52ZXJsYXVmLXRhYmxlIHsgZGlzcGxheTogYmxvY2s7IHdpZHRoOiAxMDAlOyBvdmVyZmxvdy14OiBhdXRvOyAtd2Via2l0LW92ZXJmbG93LXNjcm9sbGluZzogdG91Y2g7IHdoaXRlLXNwYWNlOiBub3dyYXA7IG1pbi13aWR0aDogNTYwcHg7IH0KICB0YWJsZSB0ZCwgdGFibGUgdGgsIC50b29sLXRhYmxlIHRkLCAudG9vbC10YWJsZSB0aCB7IHdoaXRlLXNwYWNlOiBub3JtYWw7IG1pbi13aWR0aDogODBweDsgfQogIC5tZXRhLWdyaWQsIC5maWVsZC1yb3csIC50d28tY29sLCAudGhyZWUtY29sLCAuZm91ci1jb2wgeyBkaXNwbGF5OiBibG9jayAhaW1wb3J0YW50OyBncmlkLXRlbXBsYXRlLWNvbHVtbnM6IDFmciAhaW1wb3J0YW50OyB9CiAgaW5wdXRbdHlwZT10ZXh0XSwgaW5wdXRbdHlwZT1udW1iZXJdLCBpbnB1dFt0eXBlPWRhdGVdLCBpbnB1dFt0eXBlPWVtYWlsXSwgc2VsZWN0LCB0ZXh0YXJlYSwgLnRvb2wtaW5wdXQsIC5yYXRpbmctc2VsZWN0LCAudG9vbC10ZXh0YXJlYSB7IHdpZHRoOiAxMDAlICFpbXBvcnRhbnQ7IGJveC1zaXppbmc6IGJvcmRlci1ib3g7IGZvbnQtc2l6ZTogMTJweDsgfQogIC5zY29yZS1ib3ggeyBwYWRkaW5nOiAxNnB4IDEycHg7IH0KICAuc2NvcmUtbnVtIHsgZm9udC1zaXplOiA0MHB4OyB9CiAgLnNjb3JlLXR5cGUgeyBmb250LXNpemU6IDE3cHg7IH0KICAucmFkaW8tb3B0IHsgcGFkZGluZzogMTBweDsgfQogIC5wdHMtYmFkZ2UgeyBmb250LXNpemU6IDEwcHg7IHdoaXRlLXNwYWNlOiBub3dyYXA7IH0KICAuZmF6aXQtZ3JpZCB7IHBhZGRpbmc6IDEycHg7IH0KICAuc2F2ZS1yb3cgeyBmbGV4LWRpcmVjdGlvbjogY29sdW1uOyBhbGlnbi1pdGVtczogc3RyZXRjaDsgfQogIC5zYXZlLWJ0biB7IHdpZHRoOiAxMDAlOyB9CiAgLm5hdi1yb3cgeyBmbGV4LWRpcmVjdGlvbjogY29sdW1uOyBnYXA6IDhweDsgfQogIC5uYXYtYnRuIHsgd2lkdGg6IDEwMCU7IHRleHQtYWxpZ246IGNlbnRlcjsgfQogIC5mb290ZXIsIC5mb290ZXItYnJhbmQgeyBwYWRkaW5nOiAxMnB4IDE2cHg7IGZvbnQtc2l6ZTogMTBweDsgfQp9Ci8qID09PT09PT09PT0gRU5EIE1PQklMRSBGSVggRklOQUwgPT09PT09PT09PSAqLwo=").decode("utf-8")
 
-  /* Header */
-  .header { padding: 12px 16px; }
-  .brand { font-size: 16px; letter-spacing: 2px; }
-  .btn-back, .btn-back-modul, .back-btn { padding: 8px 14px; font-size: 12px; }
-
-  /* Wrap / Main */
-  .wrap, .main { padding: 16px 10px 48px; margin-top: 16px; }
-
-  /* Action-Row: Buttons untereinander */
-  .action-row { flex-direction: column; align-items: stretch; gap: 8px; }
-  .action-row button, .action-row a { width: 100%; text-align: center; }
-
-  /* Tabs horizontal scrollbar */
-  .tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; flex-wrap: nowrap; }
-  .tab-btn { white-space: nowrap; padding: 10px 16px; font-size: 12px; }
-
-  /* Tool-Hero */
-  .tool-hero { padding: 16px 14px; }
-  .tool-hero h1 { font-size: 16px; }
-  .tool-hero p { font-size: 12px; }
-
-  /* Sections */
-  .section { overflow: hidden; }
-  .section-head { padding: 10px 14px; font-size: 12px; flex-direction: column; align-items: flex-start; gap: 4px; }
-  .section-head h2 { font-size: 12px; }
-
-  /* Scroll-Hinweis über jeder Section mit Tabelle */
-  .section::before {
-    content: '< nach rechts wischen >';
-    display: block;
-    text-align: center;
-    font-size: 11px;
-    color: #d4af37;
-    background: #1a2a4a;
-    padding: 4px 0;
-    letter-spacing: 0.5px;
-  }
-
-  /* Alle Tabellen: scrollbar + Mindestbreite */
-  table,
-  .tool-table,
-  .diag-table,
-  .profile-table,
-  .verlauf-table {
-    display: block;
-    width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    white-space: nowrap;
-    min-width: 560px;
-  }
-
-  /* Zellinhalte dürfen umbrechen */
-  table td, table th,
-  .tool-table td, .tool-table th {
-    white-space: normal;
-    min-width: 80px;
-  }
-
-  /* Alle Grids auf 1 Spalte */
-  .meta-grid,
-  [class*="grid"],
-  .field-row, .two-col, .three-col, .four-col {
-    display: block !important;
-    grid-template-columns: 1fr !important;
-  }
-
-  /* Inputs volle Breite */
-  input[type=text],
-  input[type=number],
-  input[type=date],
-  input[type=email],
-  select,
-  textarea,
-  .tool-input,
-  .rating-select,
-  .tool-textarea {
-    width: 100% !important;
-    box-sizing: border-box;
-    font-size: 12px;
-  }
-
-  /* Score-Box */
-  .score-box { padding: 16px 12px; }
-  .score-num { font-size: 40px; }
-  .score-type { font-size: 17px; }
-
-  /* Radio */
-  .radio-opt { padding: 10px 10px; }
-  .pts-badge { font-size: 10px; white-space: nowrap; }
-
-  /* Fazit / Save / Nav */
-  .fazit-grid { padding: 12px; }
-  .save-row { flex-direction: column; align-items: stretch; }
-  .save-btn { width: 100%; }
-  .nav-row { flex-direction: column; gap: 8px; }
-  .nav-btn { width: 100%; text-align: center; }
-
-  /* Footer */
-  .footer, .footer-brand { padding: 12px 16px; font-size: 10px; }
-}
-/* ========== END MOBILE FIX FINAL ========== */
-"""
-
-          fixed = 0
-          skipped = 0
-          errors = 0
-
+          fixed = skipped = errors = 0
           for filename in TOOL_FILES:
             if not os.path.exists(filename):
-              print(f"FEHLER: {filename} nicht gefunden")
-              errors += 1
-              continue
+              print(f"FEHLER: {filename} nicht gefunden"); errors += 1; continue
             with open(filename, "r", encoding="utf-8") as f:
               content = f.read()
             if "GASTRO-OS MOBILE FIX" in content:
-              print(f"Übersprungen (bereits gefixt): {filename}")
-              skipped += 1
-              continue
+              print(f"Uebersprungen: {filename}"); skipped += 1; continue
             if "</style>" not in content:
-              print(f"FEHLER: kein </style> in {filename}")
-              errors += 1
-              continue
+              print(f"FEHLER kein style-tag: {filename}"); errors += 1; continue
             content = content.replace("</style>", MOBILE_CSS + "\n</style>", 1)
             with open(filename, "w", encoding="utf-8") as f:
               f.write(content)
-            print(f"Gefixt: {filename}")
-            fixed += 1
+            print(f"Gefixt: {filename}"); fixed += 1
 
-          print(f"\nErgebnis: {fixed} gefixt | {skipped} übersprungen | {errors} Fehler")
-          EOF
+          print(f"Ergebnis: {fixed} gefixt | {skipped} uebersprungen | {errors} Fehler")
+          PYEOF
 
       - name: Committen und pushen
         run: |
