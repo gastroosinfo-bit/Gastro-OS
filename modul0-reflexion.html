@@ -248,7 +248,7 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
         <div class="result-seal">GASTRO<br>OS<br>✓</div>
       </div>
       <div class="result-actions">
-        <button class="btn-pdf" onclick="window.print()">Als PDF speichern</button>
+        <button class="btn-pdf" onclick="beforePrint()">Als PDF speichern</button>
         <button class="btn-retry" onclick="resetReflexion()">Nochmal ausfüllen</button>
       </div>
     </div>
@@ -332,6 +332,12 @@ function submitReflexion() {
   document.getElementById('res-weiter').textContent = result.weiter;
   document.getElementById('res-date').textContent = dateStr;
   window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function beforePrint() {
+  // Alle dynamisch eingefügten Dashboard-Buttons entfernen
+  document.querySelectorAll('.gastro-db-wrap, .gastro-db-added').forEach(el => el.remove());
+  window.print();
 }
 
 function resetReflexion() {
