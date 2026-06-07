@@ -10,10 +10,10 @@ jobs:
       - name: Repo auschecken
         uses: actions/checkout@v4
 
-      - name: Responsive Mobile Fix in alle 19 Tool-Dateien injizieren
+      - name: Responsive Mobile Fix injizieren
         run: |
           python3 << 'PYEOF'
-          import os, re
+          import os, re, base64
 
           TOOL_FILES = [
             "modul1-score.html", "modul2-analyse.html", "modul2-marge.html",
@@ -26,76 +26,7 @@ jobs:
             "modul11-reflexion.html", "modul11-sterne.html", "modul12-recruiting.html"
           ]
 
-          MOBILE_CSS = """
-/* ===== GASTRO-OS RESPONSIVE FIX (08.06.2026) ===== */
-html { font-size: clamp(12px, 3.5vw, 16px); }
-
-@media (max-width: 600px) {
-  .wrap, .main, .content-wrap, .page-wrap {
-    padding: 16px 12px 60px !important;
-    max-width: 100% !important;
-  }
-  .header { padding: 10px 14px !important; }
-  .brand { font-size: 16px !important; letter-spacing: 1px !important; }
-  .tool-title, h1 { font-size: clamp(16px, 5vw, 22px) !important; }
-  .tool-label, .tool-lbl, .lektion-tag { font-size: 10px !important; }
-  .tool-sub, .hint-bar { font-size: 12px !important; }
-
-  .save-row, .btn-row, .action-row, .nav-row {
-    flex-wrap: wrap !important;
-    gap: 8px !important;
-    flex-direction: column !important;
-    align-items: stretch !important;
-  }
-  .btn-save, .btn-export, .btn-reset, .btn-back,
-  .back-btn, .btn-back-modul, .btn-back { 
-    padding: 8px 14px !important;
-    font-size: 12px !important;
-    width: 100% !important;
-    text-align: center !important;
-    box-sizing: border-box !important;
-  }
-
-  .tabs { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; flex-wrap: nowrap !important; }
-  .tab-btn { white-space: nowrap !important; padding: 8px 12px !important; font-size: 12px !important; }
-
-  .field-row, .lief-row, .gesamt-row, .mass-row,
-  .meta-row, .quartal-grid, .week-row,
-  .meta-grid, .two-col, .three-col, .four-col {
-    display: flex !important;
-    flex-direction: column !important;
-    grid-template-columns: 1fr !important;
-  }
-  .field-input-wrap, .field-ziel, .field-status, .field-calc,
-  .lief-pct, .gesamt-col:not(:first-child) {
-    border-left: none !important;
-    border-top: 1px solid #f0ece4 !important;
-  }
-
-  .table-scroll-wrap, .tab-content, .block {
-    display: block !important;
-    width: 100% !important;
-    overflow-x: scroll !important;
-    -webkit-overflow-scrolling: touch !important;
-  }
-  table { min-width: 480px !important; font-size: 12px !important; }
-  thead th, td { padding: 7px 8px !important; font-size: 11px !important; }
-
-  .meta-input, .field-input, .mass-input, .hebel-input,
-  input[type=text], input[type=number], input[type=date],
-  select, textarea {
-    min-width: unset !important;
-    width: 100% !important;
-    font-size: 13px !important;
-    box-sizing: border-box !important;
-  }
-
-  .score-grid, .kpi-grid { grid-template-columns: 1fr 1fr !important; }
-  .block, .tab-content, .card, .quartal-card { padding: 14px 12px !important; }
-  .footer-brand, .footer { padding: 12px 14px !important; font-size: 10px !important; }
-}
-/* ===== END RESPONSIVE FIX ===== */
-"""
+          MOBILE_CSS = base64.b64decode("Ci8qID09PT09IEdBU1RSTy1PUyBSRVNQT05TSVZFIEZJWCAoMDguMDYuMjAyNikgPT09PT0gKi8KaHRtbCB7IGZvbnQtc2l6ZTogY2xhbXAoMTJweCwgMy41dncsIDE2cHgpOyB9CgpAbWVkaWEgKG1heC13aWR0aDogNjAwcHgpIHsKICAud3JhcCwgLm1haW4sIC5jb250ZW50LXdyYXAsIC5wYWdlLXdyYXAgewogICAgcGFkZGluZzogMTZweCAxMnB4IDYwcHggIWltcG9ydGFudDsKICAgIG1heC13aWR0aDogMTAwJSAhaW1wb3J0YW50OwogIH0KICAuaGVhZGVyIHsgcGFkZGluZzogMTBweCAxNHB4ICFpbXBvcnRhbnQ7IH0KICAuYnJhbmQgeyBmb250LXNpemU6IDE2cHggIWltcG9ydGFudDsgbGV0dGVyLXNwYWNpbmc6IDFweCAhaW1wb3J0YW50OyB9CiAgLnRvb2wtdGl0bGUsIGgxIHsgZm9udC1zaXplOiBjbGFtcCgxNnB4LCA1dncsIDIycHgpICFpbXBvcnRhbnQ7IH0KICAudG9vbC1sYWJlbCwgLnRvb2wtbGJsLCAubGVrdGlvbi10YWcgeyBmb250LXNpemU6IDEwcHggIWltcG9ydGFudDsgfQogIC50b29sLXN1YiwgLmhpbnQtYmFyIHsgZm9udC1zaXplOiAxMnB4ICFpbXBvcnRhbnQ7IH0KCiAgLnNhdmUtcm93LCAuYnRuLXJvdywgLmFjdGlvbi1yb3csIC5uYXYtcm93IHsKICAgIGZsZXgtd3JhcDogd3JhcCAhaW1wb3J0YW50OwogICAgZ2FwOiA4cHggIWltcG9ydGFudDsKICAgIGZsZXgtZGlyZWN0aW9uOiBjb2x1bW4gIWltcG9ydGFudDsKICAgIGFsaWduLWl0ZW1zOiBzdHJldGNoICFpbXBvcnRhbnQ7CiAgfQogIC5idG4tc2F2ZSwgLmJ0bi1leHBvcnQsIC5idG4tcmVzZXQsIC5idG4tYmFjaywKICAuYmFjay1idG4sIC5idG4tYmFjay1tb2R1bCB7CiAgICBwYWRkaW5nOiA4cHggMTRweCAhaW1wb3J0YW50OwogICAgZm9udC1zaXplOiAxMnB4ICFpbXBvcnRhbnQ7CiAgICB3aWR0aDogMTAwJSAhaW1wb3J0YW50OwogICAgdGV4dC1hbGlnbjogY2VudGVyICFpbXBvcnRhbnQ7CiAgICBib3gtc2l6aW5nOiBib3JkZXItYm94ICFpbXBvcnRhbnQ7CiAgfQoKICAudGFicyB7IG92ZXJmbG93LXg6IGF1dG8gIWltcG9ydGFudDsgLXdlYmtpdC1vdmVyZmxvdy1zY3JvbGxpbmc6IHRvdWNoICFpbXBvcnRhbnQ7IGZsZXgtd3JhcDogbm93cmFwICFpbXBvcnRhbnQ7IH0KICAudGFiLWJ0biB7IHdoaXRlLXNwYWNlOiBub3dyYXAgIWltcG9ydGFudDsgcGFkZGluZzogOHB4IDEycHggIWltcG9ydGFudDsgZm9udC1zaXplOiAxMnB4ICFpbXBvcnRhbnQ7IH0KCiAgLmZpZWxkLXJvdywgLmxpZWYtcm93LCAuZ2VzYW10LXJvdywgLm1hc3Mtcm93LAogIC5tZXRhLXJvdywgLnF1YXJ0YWwtZ3JpZCwgLndlZWstcm93LAogIC5tZXRhLWdyaWQsIC50d28tY29sLCAudGhyZWUtY29sLCAuZm91ci1jb2wgewogICAgZGlzcGxheTogZmxleCAhaW1wb3J0YW50OwogICAgZmxleC1kaXJlY3Rpb246IGNvbHVtbiAhaW1wb3J0YW50OwogICAgZ3JpZC10ZW1wbGF0ZS1jb2x1bW5zOiAxZnIgIWltcG9ydGFudDsKICB9CiAgLmZpZWxkLWlucHV0LXdyYXAsIC5maWVsZC16aWVsLCAuZmllbGQtc3RhdHVzLCAuZmllbGQtY2FsYywKICAubGllZi1wY3QsIC5nZXNhbXQtY29sOm5vdCg6Zmlyc3QtY2hpbGQpIHsKICAgIGJvcmRlci1sZWZ0OiBub25lICFpbXBvcnRhbnQ7CiAgICBib3JkZXItdG9wOiAxcHggc29saWQgI2YwZWNlNCAhaW1wb3J0YW50OwogIH0KCiAgLnRhYmxlLXNjcm9sbC13cmFwLCAudGFiLWNvbnRlbnQsIC5ibG9jayB7CiAgICBkaXNwbGF5OiBibG9jayAhaW1wb3J0YW50OwogICAgd2lkdGg6IDEwMCUgIWltcG9ydGFudDsKICAgIG92ZXJmbG93LXg6IHNjcm9sbCAhaW1wb3J0YW50OwogICAgLXdlYmtpdC1vdmVyZmxvdy1zY3JvbGxpbmc6IHRvdWNoICFpbXBvcnRhbnQ7CiAgfQogIHRhYmxlIHsgbWluLXdpZHRoOiA0ODBweCAhaW1wb3J0YW50OyBmb250LXNpemU6IDEycHggIWltcG9ydGFudDsgfQogIHRoZWFkIHRoLCB0ZCB7IHBhZGRpbmc6IDdweCA4cHggIWltcG9ydGFudDsgZm9udC1zaXplOiAxMXB4ICFpbXBvcnRhbnQ7IH0KCiAgLm1ldGEtaW5wdXQsIC5maWVsZC1pbnB1dCwgLm1hc3MtaW5wdXQsIC5oZWJlbC1pbnB1dCwKICBpbnB1dFt0eXBlPXRleHRdLCBpbnB1dFt0eXBlPW51bWJlcl0sIGlucHV0W3R5cGU9ZGF0ZV0sCiAgc2VsZWN0LCB0ZXh0YXJlYSB7CiAgICBtaW4td2lkdGg6IHVuc2V0ICFpbXBvcnRhbnQ7CiAgICB3aWR0aDogMTAwJSAhaW1wb3J0YW50OwogICAgZm9udC1zaXplOiAxM3B4ICFpbXBvcnRhbnQ7CiAgICBib3gtc2l6aW5nOiBib3JkZXItYm94ICFpbXBvcnRhbnQ7CiAgfQoKICAuc2NvcmUtZ3JpZCwgLmtwaS1ncmlkIHsgZ3JpZC10ZW1wbGF0ZS1jb2x1bW5zOiAxZnIgMWZyICFpbXBvcnRhbnQ7IH0KICAuYmxvY2ssIC50YWItY29udGVudCwgLmNhcmQsIC5xdWFydGFsLWNhcmQgeyBwYWRkaW5nOiAxNHB4IDEycHggIWltcG9ydGFudDsgfQogIC5mb290ZXItYnJhbmQsIC5mb290ZXIgeyBwYWRkaW5nOiAxMnB4IDE0cHggIWltcG9ydGFudDsgZm9udC1zaXplOiAxMHB4ICFpbXBvcnRhbnQ7IH0KfQovKiA9PT09PSBFTkQgUkVTUE9OU0lWRSBGSVggPT09PT0gKi8K").decode("utf-8")
 
           fixed = skipped = errors = 0
           for filename in TOOL_FILES:
@@ -103,16 +34,11 @@ html { font-size: clamp(12px, 3.5vw, 16px); }
               print(f"FEHLER: {filename} nicht gefunden"); errors += 1; continue
             with open(filename, "r", encoding="utf-8") as f:
               content = f.read()
-
-            # Alle alten Fix-Versionen entfernen
             content = re.sub(r'/\* =+ GASTRO-OS.*?END.*?=+ \*/', '', content, flags=re.DOTALL)
             content = re.sub(r'/\* =+ RESPONSIVE.*?END RESPONSIVE.*?=+ \*/', '', content, flags=re.DOTALL)
-
             if "</style>" not in content:
               print(f"FEHLER kein style-tag: {filename}"); errors += 1; continue
-
             content = content.replace("</style>", MOBILE_CSS + "\n</style>", 1)
-
             with open(filename, "w", encoding="utf-8") as f:
               f.write(content)
             print(f"Gefixt: {filename}"); fixed += 1
