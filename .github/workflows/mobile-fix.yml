@@ -1,0 +1,107 @@
+name: Mobile CSS Fix – Alle 19 Tools
+
+on:
+  workflow_dispatch:
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repo auschecken
+        uses: actions/checkout@v4
+
+      - name: Mobile CSS in alle Tool-Dateien injizieren
+        run: |
+          python3 - <<'EOF'
+          import os
+
+          TOOL_FILES = [
+            "modul1-score.html",
+            "modul2-analyse.html",
+            "modul2-marge.html",
+            "modul3-einkauf.html",
+            "modul3-lieferanten.html",
+            "modul4-gewinn.html",
+            "modul4-kostentreiber.html",
+            "modul5-wochenplaner.html",
+            "modul6-personalstruktur.html",
+            "modul6-feedback.html",
+            "modul7-effizienzcheck.html",
+            "modul7-kostenanalyse.html",
+            "modul8-tracker.html",
+            "modul9-marketingplan.html",
+            "modul9-aktionsplan.html",
+            "modul10-tool-video.html",
+            "modul11-reflexion.html",
+            "modul11-sterne.html",
+            "modul12-recruiting.html",
+          ]
+
+          MOBILE_CSS = """
+          /* ========== GASTRO-OS MOBILE FIX (07.06.2026) ========== */
+          @media (max-width: 768px) {
+            .header { padding: 12px 16px; }
+            .brand { font-size: 16px; letter-spacing: 2px; }
+            .btn-back, .btn-back-modul { padding: 8px 14px; font-size: 12px; }
+            .wrap { padding: 16px 12px 48px; }
+            .action-row { flex-direction: column; align-items: stretch; gap: 8px; }
+            .action-row button, .action-row a { width: 100%; text-align: center; }
+            .meta-grid,
+            [class*="grid"],
+            .field-row, .two-col, .three-col, .four-col {
+              display: block !important;
+              grid-template-columns: 1fr !important;
+            }
+            .section { padding: 14px 12px; }
+            .section-head { font-size: 12px; flex-direction: column; align-items: flex-start; gap: 4px; }
+            table, .diag-table, .profile-table, .verlauf-table {
+              display: block;
+              width: 100%;
+              overflow-x: auto;
+              -webkit-overflow-scrolling: touch;
+              white-space: nowrap;
+            }
+            input[type=text], input[type=number], input[type=date],
+            input[type=email], select, textarea {
+              width: 100% !important;
+              box-sizing: border-box;
+            }
+            .score-box { padding: 16px 12px; }
+            .score-num { font-size: 40px; }
+            .score-type { font-size: 17px; }
+            .radio-opt { padding: 10px 10px; }
+            .pts-badge { font-size: 10px; white-space: nowrap; }
+            .footer-brand { padding: 12px 16px; font-size: 10px; }
+          }
+          /* ========== END MOBILE FIX ========== */
+          """
+
+          fixed = 0
+          for filename in TOOL_FILES:
+            if not os.path.exists(filename):
+              print(f"FEHLER: {filename} nicht gefunden")
+              continue
+            with open(filename, "r", encoding="utf-8") as f:
+              content = f.read()
+            if "GASTRO-OS MOBILE FIX" in content:
+              print(f"Übersprungen (bereits gefixt): {filename}")
+              continue
+            if "</style>" not in content:
+              print(f"FEHLER: kein </style> in {filename}")
+              continue
+            content = content.replace("</style>", MOBILE_CSS + "\n</style>", 1)
+            with open(filename, "w", encoding="utf-8") as f:
+              f.write(content)
+            print(f"Gefixt: {filename}")
+            fixed += 1
+
+          print(f"\n✅ {fixed} Dateien gefixt.")
+          EOF
+
+      - name: Änderungen committen und pushen
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add *.html
+          git diff --staged --quiet || git commit -m "Mobile CSS Fix: alle 19 Tool-Dateien"
+          git push
