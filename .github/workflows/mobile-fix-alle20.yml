@@ -28,16 +28,15 @@ jobs:
           ]
 
           MOBILE_CSS = base64.b64decode("LyogPT09PT09PT09PSBHQVNUUk8tT1MgTU9CSUxFIEZJWCBGSU5BTCAoMDcuMDYuMjAyNikgPT09PT09PT09PSAqLwpAbWVkaWEgKG1heC13aWR0aDogNzY4cHgpIHsKICAuaGVhZGVyIHsgcGFkZGluZzogMTJweCAxNnB4OyB9CiAgLmJyYW5kIHsgZm9udC1zaXplOiAxNnB4OyBsZXR0ZXItc3BhY2luZzogMnB4OyB9CiAgLmJ0bi1iYWNrLCAuYnRuLWJhY2stbW9kdWwsIC5iYWNrLWJ0biB7IHBhZGRpbmc6IDhweCAxNHB4OyBmb250LXNpemU6IDEycHg7IH0KICAud3JhcCwgLm1haW4geyBwYWRkaW5nOiAxNnB4IDEwcHggNDhweDsgbWFyZ2luLXRvcDogMTZweDsgfQogIC5hY3Rpb24tcm93IHsgZmxleC1kaXJlY3Rpb246IGNvbHVtbjsgYWxpZ24taXRlbXM6IHN0cmV0Y2g7IGdhcDogOHB4OyB9CiAgLmFjdGlvbi1yb3cgYnV0dG9uLCAuYWN0aW9uLXJvdyBhIHsgd2lkdGg6IDEwMCU7IHRleHQtYWxpZ246IGNlbnRlcjsgfQogIC50YWJzIHsgb3ZlcmZsb3cteDogYXV0bzsgLXdlYmtpdC1vdmVyZmxvdy1zY3JvbGxpbmc6IHRvdWNoOyBmbGV4LXdyYXA6IG5vd3JhcDsgfQogIC50YWItYnRuIHsgd2hpdGUtc3BhY2U6IG5vd3JhcDsgcGFkZGluZzogMTBweCAxNnB4OyBmb250LXNpemU6IDEycHg7IH0KICAudG9vbC1oZXJvIHsgcGFkZGluZzogMTZweCAxNHB4OyB9CiAgLnRvb2wtaGVybyBoMSB7IGZvbnQtc2l6ZTogMTZweDsgfQogIC50b29sLWhlcm8gcCB7IGZvbnQtc2l6ZTogMTJweDsgfQogIC5zZWN0aW9uIHsgb3ZlcmZsb3c6IHZpc2libGUgIWltcG9ydGFudDsgYm9yZGVyLXJhZGl1czogMTBweDsgfQogIC5zZWN0aW9uLWhlYWQgeyBwYWRkaW5nOiAxMHB4IDE0cHg7IGZvbnQtc2l6ZTogMTJweDsgZmxleC1kaXJlY3Rpb246IGNvbHVtbjsgYWxpZ24taXRlbXM6IGZsZXgtc3RhcnQ7IGdhcDogNHB4OyB9CiAgLnNlY3Rpb24taGVhZCBoMiB7IGZvbnQtc2l6ZTogMTJweDsgfQogIC50YWJsZS1zY3JvbGwtaGludCB7IGRpc3BsYXk6IGJsb2NrOyB0ZXh0LWFsaWduOiBjZW50ZXI7IGZvbnQtc2l6ZTogMTFweDsgY29sb3I6ICNkNGFmMzc7IGJhY2tncm91bmQ6ICMxYTJhNGE7IHBhZGRpbmc6IDRweCAwOyBsZXR0ZXItc3BhY2luZzogMC41cHg7IG1hcmdpbjogMDsgfQogIC50YWJsZS1zY3JvbGwtd3JhcCB7IGRpc3BsYXk6IGJsb2NrOyB3aWR0aDogMTAwJTsgb3ZlcmZsb3cteDogc2Nyb2xsOyAtd2Via2l0LW92ZXJmbG93LXNjcm9sbGluZzogdG91Y2g7IG92ZXJmbG93LXk6IHZpc2libGU7IH0KICB0YWJsZSwgLnRvb2wtdGFibGUsIC5kaWFnLXRhYmxlLCAucHJvZmlsZS10YWJsZSwgLnZlcmxhdWYtdGFibGUgeyBtaW4td2lkdGg6IDcwMHB4OyB3aWR0aDogbWF4LWNvbnRlbnQ7IGJvcmRlci1jb2xsYXBzZTogY29sbGFwc2U7IH0KICB0YWJsZSB0ZCwgdGFibGUgdGgsIC50b29sLXRhYmxlIHRkLCAudG9vbC10YWJsZSB0aCB7IHdoaXRlLXNwYWNlOiBub3JtYWw7IG1pbi13aWR0aDogMTAwcHg7IH0KICAubWV0YS1ncmlkLCAuZmllbGQtcm93LCAudHdvLWNvbCwgLnRocmVlLWNvbCwgLmZvdXItY29sIHsgZGlzcGxheTogYmxvY2sgIWltcG9ydGFudDsgZ3JpZC10ZW1wbGF0ZS1jb2x1bW5zOiAxZnIgIWltcG9ydGFudDsgfQogIGlucHV0W3R5cGU9dGV4dF0sIGlucHV0W3R5cGU9bnVtYmVyXSwgaW5wdXRbdHlwZT1kYXRlXSwgaW5wdXRbdHlwZT1lbWFpbF0sIHNlbGVjdCwgdGV4dGFyZWEsIC50b29sLWlucHV0LCAucmF0aW5nLXNlbGVjdCwgLnRvb2wtdGV4dGFyZWEgeyB3aWR0aDogMTAwJSAhaW1wb3J0YW50OyBib3gtc2l6aW5nOiBib3JkZXItYm94OyBmb250LXNpemU6IDEycHg7IH0KICAuc2NvcmUtYm94IHsgcGFkZGluZzogMTZweCAxMnB4OyB9CiAgLnNjb3JlLW51bSB7IGZvbnQtc2l6ZTogNDBweDsgfQogIC5zY29yZS10eXBlIHsgZm9udC1zaXplOiAxN3B4OyB9CiAgLnJhZGlvLW9wdCB7IHBhZGRpbmc6IDEwcHg7IH0KICAucHRzLWJhZGdlIHsgZm9udC1zaXplOiAxMHB4OyB3aGl0ZS1zcGFjZTogbm93cmFwOyB9CiAgLmZheml0LWdyaWQgeyBwYWRkaW5nOiAxMnB4OyB9CiAgLnNhdmUtcm93IHsgZmxleC1kaXJlY3Rpb246IGNvbHVtbjsgYWxpZ24taXRlbXM6IHN0cmV0Y2g7IH0KICAuc2F2ZS1idG4geyB3aWR0aDogMTAwJTsgfQogIC5uYXYtcm93IHsgZmxleC1kaXJlY3Rpb246IGNvbHVtbjsgZ2FwOiA4cHg7IH0KICAubmF2LWJ0biB7IHdpZHRoOiAxMDAlOyB0ZXh0LWFsaWduOiBjZW50ZXI7IH0KICAuZm9vdGVyLCAuZm9vdGVyLWJyYW5kIHsgcGFkZGluZzogMTJweCAxNnB4OyBmb250LXNpemU6IDEwcHg7IH0KfQovKiA9PT09PT09PT09IEVORCBNT0JJTEUgRklYIEZJTkFMID09PT09PT09PT0gKi8=").decode("utf-8")
-          MARKER = "GASTRO-OS MOBILE FIX FINAL"
+          WRAPPER_MARKER = "table-scroll-wrap"
           HINT = '<div class="table-scroll-hint">&lt; nach rechts wischen &gt;</div>'
 
           def wrap_tables(content):
-            # Tabellen die noch nicht gewrapped sind einwickeln
             def replacer(m):
               table = m.group(0)
-              if 'table-scroll-wrap' in table:
+              if WRAPPER_MARKER in table:
                 return table
-              return HINT + '<div class="table-scroll-wrap">' + table + '</div>'
+              return HINT + '<div class="' + WRAPPER_MARKER + '">' + table + '</div>'
             return re.sub(r'<table\b[^>]*>.*?</table>', replacer, content, flags=re.DOTALL)
 
           fixed = skipped = errors = 0
@@ -46,17 +45,22 @@ jobs:
               print(f"FEHLER: {filename} nicht gefunden"); errors += 1; continue
             with open(filename, "r", encoding="utf-8") as f:
               content = f.read()
-            if MARKER in content:
-              print(f"Uebersprungen: {filename}"); skipped += 1; continue
-            # Alte Fix-Version entfernen falls vorhanden
-            if "GASTRO-OS MOBILE FIX" in content:
-              content = re.sub(r'/\* =+ GASTRO-OS MOBILE FIX.*?END MOBILE FIX.*?\*/', '', content, flags=re.DOTALL)
+
+            # Pruefen ob Wrapper bereits drin
+            if WRAPPER_MARKER in content:
+              print(f"Wrapper bereits vorhanden: {filename}"); skipped += 1; continue
+
+            # Alle alten Fix-Versionen entfernen
+            content = re.sub(r'/\* =+ GASTRO-OS MOBILE FIX.*?END MOBILE FIX.*?=+ \*/', '', content, flags=re.DOTALL)
+
             if "</style>" not in content:
               print(f"FEHLER kein style-tag: {filename}"); errors += 1; continue
-            # CSS injizieren
+
+            # Neues CSS injizieren
             content = content.replace("</style>", MOBILE_CSS + "\n</style>", 1)
             # Tabellen wrappen
             content = wrap_tables(content)
+
             with open(filename, "w", encoding="utf-8") as f:
               f.write(content)
             print(f"Gefixt: {filename}"); fixed += 1
@@ -69,5 +73,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add *.html
-          git diff --staged --quiet || git commit -m "Mobile Fix v3: scroll-wrapper fuer alle Tabellen"
+          git diff --staged --quiet || git commit -m "Mobile Fix v4: scroll-wrapper direkt im HTML"
           git push
