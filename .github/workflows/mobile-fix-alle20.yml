@@ -1,4 +1,4 @@
-name: Mobile Fix - Alle 20 Tools Final
+name: Mobile Fix - Responsive Scaling
 
 on:
   workflow_dispatch:
@@ -10,10 +10,10 @@ jobs:
       - name: Repo auschecken
         uses: actions/checkout@v4
 
-      - name: Mobile Fix in alle 20 Tool-Dateien injizieren
+      - name: Responsive Mobile Fix in alle 19 Tool-Dateien injizieren
         run: |
           python3 << 'PYEOF'
-          import os, re, base64
+          import os, re
 
           TOOL_FILES = [
             "modul1-score.html", "modul2-analyse.html", "modul2-marge.html",
@@ -22,22 +22,80 @@ jobs:
             "modul6-personalstruktur.html", "modul6-feedback.html",
             "modul7-effizienzcheck.html", "modul7-kostenanalyse.html",
             "modul8-tracker.html", "modul9-marketingplan.html",
-            "modul9-aktionsplan.html", "modul10-tool.html",
-            "modul10-tool-video.html", "modul11-reflexion.html",
-            "modul11-sterne.html", "modul12-recruiting.html",
+            "modul9-aktionsplan.html", "modul10-tool-video.html",
+            "modul11-reflexion.html", "modul11-sterne.html", "modul12-recruiting.html"
           ]
 
-          MOBILE_CSS = base64.b64decode("LyogPT09PT09PT09PSBHQVNUUk8tT1MgTU9CSUxFIEZJWCBGSU5BTCAoMDcuMDYuMjAyNikgPT09PT09PT09PSAqLwpAbWVkaWEgKG1heC13aWR0aDogNzY4cHgpIHsKICAuaGVhZGVyIHsgcGFkZGluZzogMTJweCAxNnB4OyB9CiAgLmJyYW5kIHsgZm9udC1zaXplOiAxNnB4OyBsZXR0ZXItc3BhY2luZzogMnB4OyB9CiAgLmJ0bi1iYWNrLCAuYnRuLWJhY2stbW9kdWwsIC5iYWNrLWJ0biB7IHBhZGRpbmc6IDhweCAxNHB4OyBmb250LXNpemU6IDEycHg7IH0KICAud3JhcCwgLm1haW4geyBwYWRkaW5nOiAxNnB4IDEwcHggNDhweDsgbWFyZ2luLXRvcDogMTZweDsgfQogIC5hY3Rpb24tcm93IHsgZmxleC1kaXJlY3Rpb246IGNvbHVtbjsgYWxpZ24taXRlbXM6IHN0cmV0Y2g7IGdhcDogOHB4OyB9CiAgLmFjdGlvbi1yb3cgYnV0dG9uLCAuYWN0aW9uLXJvdyBhIHsgd2lkdGg6IDEwMCU7IHRleHQtYWxpZ246IGNlbnRlcjsgfQogIC50YWJzIHsgb3ZlcmZsb3cteDogYXV0bzsgLXdlYmtpdC1vdmVyZmxvdy1zY3JvbGxpbmc6IHRvdWNoOyBmbGV4LXdyYXA6IG5vd3JhcDsgfQogIC50YWItYnRuIHsgd2hpdGUtc3BhY2U6IG5vd3JhcDsgcGFkZGluZzogMTBweCAxNnB4OyBmb250LXNpemU6IDEycHg7IH0KICAudG9vbC1oZXJvIHsgcGFkZGluZzogMTZweCAxNHB4OyB9CiAgLnRvb2wtaGVybyBoMSB7IGZvbnQtc2l6ZTogMTZweDsgfQogIC50b29sLWhlcm8gcCB7IGZvbnQtc2l6ZTogMTJweDsgfQogIC5zZWN0aW9uIHsgb3ZlcmZsb3c6IHZpc2libGUgIWltcG9ydGFudDsgYm9yZGVyLXJhZGl1czogMTBweDsgfQogIC5zZWN0aW9uLWhlYWQgeyBwYWRkaW5nOiAxMHB4IDE0cHg7IGZvbnQtc2l6ZTogMTJweDsgZmxleC1kaXJlY3Rpb246IGNvbHVtbjsgYWxpZ24taXRlbXM6IGZsZXgtc3RhcnQ7IGdhcDogNHB4OyB9CiAgLnNlY3Rpb24taGVhZCBoMiB7IGZvbnQtc2l6ZTogMTJweDsgfQogIC50YWJsZS1zY3JvbGwtaGludCB7IGRpc3BsYXk6IGJsb2NrOyB0ZXh0LWFsaWduOiBjZW50ZXI7IGZvbnQtc2l6ZTogMTFweDsgY29sb3I6ICNkNGFmMzc7IGJhY2tncm91bmQ6ICMxYTJhNGE7IHBhZGRpbmc6IDRweCAwOyBsZXR0ZXItc3BhY2luZzogMC41cHg7IG1hcmdpbjogMDsgfQogIC50YWJsZS1zY3JvbGwtd3JhcCB7IGRpc3BsYXk6IGJsb2NrOyB3aWR0aDogMTAwJTsgb3ZlcmZsb3cteDogc2Nyb2xsOyAtd2Via2l0LW92ZXJmbG93LXNjcm9sbGluZzogdG91Y2g7IG92ZXJmbG93LXk6IHZpc2libGU7IH0KICB0YWJsZSwgLnRvb2wtdGFibGUsIC5kaWFnLXRhYmxlLCAucHJvZmlsZS10YWJsZSwgLnZlcmxhdWYtdGFibGUgeyBtaW4td2lkdGg6IDcwMHB4OyB3aWR0aDogbWF4LWNvbnRlbnQ7IGJvcmRlci1jb2xsYXBzZTogY29sbGFwc2U7IH0KICB0YWJsZSB0ZCwgdGFibGUgdGgsIC50b29sLXRhYmxlIHRkLCAudG9vbC10YWJsZSB0aCB7IHdoaXRlLXNwYWNlOiBub3JtYWw7IG1pbi13aWR0aDogMTAwcHg7IH0KICAubWV0YS1ncmlkLCAuZmllbGQtcm93LCAudHdvLWNvbCwgLnRocmVlLWNvbCwgLmZvdXItY29sIHsgZGlzcGxheTogYmxvY2sgIWltcG9ydGFudDsgZ3JpZC10ZW1wbGF0ZS1jb2x1bW5zOiAxZnIgIWltcG9ydGFudDsgfQogIGlucHV0W3R5cGU9dGV4dF0sIGlucHV0W3R5cGU9bnVtYmVyXSwgaW5wdXRbdHlwZT1kYXRlXSwgaW5wdXRbdHlwZT1lbWFpbF0sIHNlbGVjdCwgdGV4dGFyZWEsIC50b29sLWlucHV0LCAucmF0aW5nLXNlbGVjdCwgLnRvb2wtdGV4dGFyZWEgeyB3aWR0aDogMTAwJSAhaW1wb3J0YW50OyBib3gtc2l6aW5nOiBib3JkZXItYm94OyBmb250LXNpemU6IDEycHg7IH0KICAuc2NvcmUtYm94IHsgcGFkZGluZzogMTZweCAxMnB4OyB9CiAgLnNjb3JlLW51bSB7IGZvbnQtc2l6ZTogNDBweDsgfQogIC5zY29yZS10eXBlIHsgZm9udC1zaXplOiAxN3B4OyB9CiAgLnJhZGlvLW9wdCB7IHBhZGRpbmc6IDEwcHg7IH0KICAucHRzLWJhZGdlIHsgZm9udC1zaXplOiAxMHB4OyB3aGl0ZS1zcGFjZTogbm93cmFwOyB9CiAgLmZheml0LWdyaWQgeyBwYWRkaW5nOiAxMnB4OyB9CiAgLnNhdmUtcm93IHsgZmxleC1kaXJlY3Rpb246IGNvbHVtbjsgYWxpZ24taXRlbXM6IHN0cmV0Y2g7IH0KICAuc2F2ZS1idG4geyB3aWR0aDogMTAwJTsgfQogIC5uYXYtcm93IHsgZmxleC1kaXJlY3Rpb246IGNvbHVtbjsgZ2FwOiA4cHg7IH0KICAubmF2LWJ0biB7IHdpZHRoOiAxMDAlOyB0ZXh0LWFsaWduOiBjZW50ZXI7IH0KICAuZm9vdGVyLCAuZm9vdGVyLWJyYW5kIHsgcGFkZGluZzogMTJweCAxNnB4OyBmb250LXNpemU6IDEwcHg7IH0KfQovKiA9PT09PT09PT09IEVORCBNT0JJTEUgRklYIEZJTkFMID09PT09PT09PT0gKi8=").decode("utf-8")
-          WRAPPER_MARKER = "table-scroll-wrap"
-          HINT = '<div class="table-scroll-hint">&lt; nach rechts wischen &gt;</div>'
+          MOBILE_CSS = """
+/* ===== GASTRO-OS RESPONSIVE FIX (08.06.2026) ===== */
+html { font-size: clamp(12px, 3.5vw, 16px); }
 
-          def wrap_tables(content):
-            def replacer(m):
-              table = m.group(0)
-              if WRAPPER_MARKER in table:
-                return table
-              return HINT + '<div class="' + WRAPPER_MARKER + '">' + table + '</div>'
-            return re.sub(r'<table\b[^>]*>.*?</table>', replacer, content, flags=re.DOTALL)
+@media (max-width: 600px) {
+  .wrap, .main, .content-wrap, .page-wrap {
+    padding: 16px 12px 60px !important;
+    max-width: 100% !important;
+  }
+  .header { padding: 10px 14px !important; }
+  .brand { font-size: 16px !important; letter-spacing: 1px !important; }
+  .tool-title, h1 { font-size: clamp(16px, 5vw, 22px) !important; }
+  .tool-label, .tool-lbl, .lektion-tag { font-size: 10px !important; }
+  .tool-sub, .hint-bar { font-size: 12px !important; }
+
+  .save-row, .btn-row, .action-row, .nav-row {
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+  .btn-save, .btn-export, .btn-reset, .btn-back,
+  .back-btn, .btn-back-modul, .btn-back { 
+    padding: 8px 14px !important;
+    font-size: 12px !important;
+    width: 100% !important;
+    text-align: center !important;
+    box-sizing: border-box !important;
+  }
+
+  .tabs { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; flex-wrap: nowrap !important; }
+  .tab-btn { white-space: nowrap !important; padding: 8px 12px !important; font-size: 12px !important; }
+
+  .field-row, .lief-row, .gesamt-row, .mass-row,
+  .meta-row, .quartal-grid, .week-row,
+  .meta-grid, .two-col, .three-col, .four-col {
+    display: flex !important;
+    flex-direction: column !important;
+    grid-template-columns: 1fr !important;
+  }
+  .field-input-wrap, .field-ziel, .field-status, .field-calc,
+  .lief-pct, .gesamt-col:not(:first-child) {
+    border-left: none !important;
+    border-top: 1px solid #f0ece4 !important;
+  }
+
+  .table-scroll-wrap, .tab-content, .block {
+    display: block !important;
+    width: 100% !important;
+    overflow-x: scroll !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  table { min-width: 480px !important; font-size: 12px !important; }
+  thead th, td { padding: 7px 8px !important; font-size: 11px !important; }
+
+  .meta-input, .field-input, .mass-input, .hebel-input,
+  input[type=text], input[type=number], input[type=date],
+  select, textarea {
+    min-width: unset !important;
+    width: 100% !important;
+    font-size: 13px !important;
+    box-sizing: border-box !important;
+  }
+
+  .score-grid, .kpi-grid { grid-template-columns: 1fr 1fr !important; }
+  .block, .tab-content, .card, .quartal-card { padding: 14px 12px !important; }
+  .footer-brand, .footer { padding: 12px 14px !important; font-size: 10px !important; }
+}
+/* ===== END RESPONSIVE FIX ===== */
+"""
 
           fixed = skipped = errors = 0
           for filename in TOOL_FILES:
@@ -46,20 +104,14 @@ jobs:
             with open(filename, "r", encoding="utf-8") as f:
               content = f.read()
 
-            # Pruefen ob Wrapper bereits drin
-            if WRAPPER_MARKER in content:
-              print(f"Wrapper bereits vorhanden: {filename}"); skipped += 1; continue
-
             # Alle alten Fix-Versionen entfernen
-            content = re.sub(r'/\* =+ GASTRO-OS MOBILE FIX.*?END MOBILE FIX.*?=+ \*/', '', content, flags=re.DOTALL)
+            content = re.sub(r'/\* =+ GASTRO-OS.*?END.*?=+ \*/', '', content, flags=re.DOTALL)
+            content = re.sub(r'/\* =+ RESPONSIVE.*?END RESPONSIVE.*?=+ \*/', '', content, flags=re.DOTALL)
 
             if "</style>" not in content:
               print(f"FEHLER kein style-tag: {filename}"); errors += 1; continue
 
-            # Neues CSS injizieren
             content = content.replace("</style>", MOBILE_CSS + "\n</style>", 1)
-            # Tabellen wrappen
-            content = wrap_tables(content)
 
             with open(filename, "w", encoding="utf-8") as f:
               f.write(content)
@@ -73,5 +125,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add *.html
-          git diff --staged --quiet || git commit -m "Mobile Fix v4: scroll-wrapper direkt im HTML"
+          git diff --staged --quiet || git commit -m "Fix: Responsive scaling alle 19 Tools"
           git push
