@@ -10,36 +10,35 @@ jobs:
       - name: Repo auschecken
         uses: actions/checkout@v4
 
-      - name: Mobile CSS in alle 20 Tool-Dateien injizieren
+      - name: Mobile Fix in alle 20 Tool-Dateien injizieren
         run: |
           python3 << 'PYEOF'
-          import os, base64
+          import os, re, base64
 
           TOOL_FILES = [
-            "modul1-score.html",
-            "modul2-analyse.html",
-            "modul2-marge.html",
-            "modul3-einkauf.html",
-            "modul3-lieferanten.html",
-            "modul4-gewinn.html",
-            "modul4-kostentreiber.html",
-            "modul5-wochenplaner.html",
-            "modul6-personalstruktur.html",
-            "modul6-feedback.html",
-            "modul7-effizienzcheck.html",
-            "modul7-kostenanalyse.html",
-            "modul8-tracker.html",
-            "modul9-marketingplan.html",
-            "modul9-aktionsplan.html",
-            "modul10-tool.html",
-            "modul10-tool-video.html",
-            "modul11-reflexion.html",
-            "modul11-sterne.html",
-            "modul12-recruiting.html",
+            "modul1-score.html", "modul2-analyse.html", "modul2-marge.html",
+            "modul3-einkauf.html", "modul3-lieferanten.html", "modul4-gewinn.html",
+            "modul4-kostentreiber.html", "modul5-wochenplaner.html",
+            "modul6-personalstruktur.html", "modul6-feedback.html",
+            "modul7-effizienzcheck.html", "modul7-kostenanalyse.html",
+            "modul8-tracker.html", "modul9-marketingplan.html",
+            "modul9-aktionsplan.html", "modul10-tool.html",
+            "modul10-tool-video.html", "modul11-reflexion.html",
+            "modul11-sterne.html", "modul12-recruiting.html",
           ]
 
-          MOBILE_CSS = base64.b64decode("LyogPT09PT09PT09PSBHQVNUUk8tT1MgTU9CSUxFIEZJWCBGSU5BTCAoMDcuMDYuMjAyNikgPT09PT09PT09PSAqLwpAbWVkaWEgKG1heC13aWR0aDogNzY4cHgpIHsKICAuaGVhZGVyIHsgcGFkZGluZzogMTJweCAxNnB4OyB9CiAgLmJyYW5kIHsgZm9udC1zaXplOiAxNnB4OyBsZXR0ZXItc3BhY2luZzogMnB4OyB9CiAgLmJ0bi1iYWNrLCAuYnRuLWJhY2stbW9kdWwsIC5iYWNrLWJ0biB7IHBhZGRpbmc6IDhweCAxNHB4OyBmb250LXNpemU6IDEycHg7IH0KICAud3JhcCwgLm1haW4geyBwYWRkaW5nOiAxNnB4IDEwcHggNDhweDsgbWFyZ2luLXRvcDogMTZweDsgfQogIC5hY3Rpb24tcm93IHsgZmxleC1kaXJlY3Rpb246IGNvbHVtbjsgYWxpZ24taXRlbXM6IHN0cmV0Y2g7IGdhcDogOHB4OyB9CiAgLmFjdGlvbi1yb3cgYnV0dG9uLCAuYWN0aW9uLXJvdyBhIHsgd2lkdGg6IDEwMCU7IHRleHQtYWxpZ246IGNlbnRlcjsgfQogIC50YWJzIHsgb3ZlcmZsb3cteDogYXV0bzsgLXdlYmtpdC1vdmVyZmxvdy1zY3JvbGxpbmc6IHRvdWNoOyBmbGV4LXdyYXA6IG5vd3JhcDsgfQogIC50YWItYnRuIHsgd2hpdGUtc3BhY2U6IG5vd3JhcDsgcGFkZGluZzogMTBweCAxNnB4OyBmb250LXNpemU6IDEycHg7IH0KICAudG9vbC1oZXJvIHsgcGFkZGluZzogMTZweCAxNHB4OyB9CiAgLnRvb2wtaGVybyBoMSB7IGZvbnQtc2l6ZTogMTZweDsgfQogIC50b29sLWhlcm8gcCB7IGZvbnQtc2l6ZTogMTJweDsgfQogIC5zZWN0aW9uIHsgb3ZlcmZsb3c6IHZpc2libGUgIWltcG9ydGFudDsgfQogIC5zZWN0aW9uLWhlYWQgeyBwYWRkaW5nOiAxMHB4IDE0cHg7IGZvbnQtc2l6ZTogMTJweDsgZmxleC1kaXJlY3Rpb246IGNvbHVtbjsgYWxpZ24taXRlbXM6IGZsZXgtc3RhcnQ7IGdhcDogNHB4OyB9CiAgLnNlY3Rpb24taGVhZCBoMiB7IGZvbnQtc2l6ZTogMTJweDsgfQogIC5zZWN0aW9uOjpiZWZvcmUgeyBjb250ZW50OiAiPCBuYWNoIHJlY2h0cyB3aXNjaGVuID4iOyBkaXNwbGF5OiBibG9jazsgdGV4dC1hbGlnbjogY2VudGVyOyBmb250LXNpemU6IDExcHg7IGNvbG9yOiAjZDRhZjM3OyBiYWNrZ3JvdW5kOiAjMWEyYTRhOyBwYWRkaW5nOiA0cHggMDsgbGV0dGVyLXNwYWNpbmc6IDAuNXB4OyB9CiAgLnRhYmxlLXdyYXAgeyBkaXNwbGF5OiBibG9jazsgd2lkdGg6IDEwMCU7IG92ZXJmbG93LXg6IGF1dG87IC13ZWJraXQtb3ZlcmZsb3ctc2Nyb2xsaW5nOiB0b3VjaDsgfQogIHRhYmxlLCAudG9vbC10YWJsZSwgLmRpYWctdGFibGUsIC5wcm9maWxlLXRhYmxlLCAudmVybGF1Zi10YWJsZSB7IGRpc3BsYXk6IGJsb2NrOyBvdmVyZmxvdy14OiBhdXRvOyAtd2Via2l0LW92ZXJmbG93LXNjcm9sbGluZzogdG91Y2g7IHdoaXRlLXNwYWNlOiBub3dyYXA7IG1pbi13aWR0aDogNTYwcHg7IH0KICB0YWJsZSB0ZCwgdGFibGUgdGgsIC50b29sLXRhYmxlIHRkLCAudG9vbC10YWJsZSB0aCB7IHdoaXRlLXNwYWNlOiBub3JtYWw7IG1pbi13aWR0aDogODBweDsgfQogIC5tZXRhLWdyaWQsIC5maWVsZC1yb3csIC50d28tY29sLCAudGhyZWUtY29sLCAuZm91ci1jb2wgeyBkaXNwbGF5OiBibG9jayAhaW1wb3J0YW50OyBncmlkLXRlbXBsYXRlLWNvbHVtbnM6IDFmciAhaW1wb3J0YW50OyB9CiAgaW5wdXRbdHlwZT10ZXh0XSwgaW5wdXRbdHlwZT1udW1iZXJdLCBpbnB1dFt0eXBlPWRhdGVdLCBpbnB1dFt0eXBlPWVtYWlsXSwgc2VsZWN0LCB0ZXh0YXJlYSwgLnRvb2wtaW5wdXQsIC5yYXRpbmctc2VsZWN0LCAudG9vbC10ZXh0YXJlYSB7IHdpZHRoOiAxMDAlICFpbXBvcnRhbnQ7IGJveC1zaXppbmc6IGJvcmRlci1ib3g7IGZvbnQtc2l6ZTogMTJweDsgfQogIC5zY29yZS1ib3ggeyBwYWRkaW5nOiAxNnB4IDEycHg7IH0KICAuc2NvcmUtbnVtIHsgZm9udC1zaXplOiA0MHB4OyB9CiAgLnNjb3JlLXR5cGUgeyBmb250LXNpemU6IDE3cHg7IH0KICAucmFkaW8tb3B0IHsgcGFkZGluZzogMTBweDsgfQogIC5wdHMtYmFkZ2UgeyBmb250LXNpemU6IDEwcHg7IHdoaXRlLXNwYWNlOiBub3dyYXA7IH0KICAuZmF6aXQtZ3JpZCB7IHBhZGRpbmc6IDEycHg7IH0KICAuc2F2ZS1yb3cgeyBmbGV4LWRpcmVjdGlvbjogY29sdW1uOyBhbGlnbi1pdGVtczogc3RyZXRjaDsgfQogIC5zYXZlLWJ0biB7IHdpZHRoOiAxMDAlOyB9CiAgLm5hdi1yb3cgeyBmbGV4LWRpcmVjdGlvbjogY29sdW1uOyBnYXA6IDhweDsgfQogIC5uYXYtYnRuIHsgd2lkdGg6IDEwMCU7IHRleHQtYWxpZ246IGNlbnRlcjsgfQogIC5mb290ZXIsIC5mb290ZXItYnJhbmQgeyBwYWRkaW5nOiAxMnB4IDE2cHg7IGZvbnQtc2l6ZTogMTBweDsgfQp9Ci8qID09PT09PT09PT0gRU5EIE1PQklMRSBGSVggRklOQUwgPT09PT09PT09PSAqLw==").decode("utf-8")
+          MOBILE_CSS = base64.b64decode("LyogPT09PT09PT09PSBHQVNUUk8tT1MgTU9CSUxFIEZJWCBGSU5BTCAoMDcuMDYuMjAyNikgPT09PT09PT09PSAqLwpAbWVkaWEgKG1heC13aWR0aDogNzY4cHgpIHsKICAuaGVhZGVyIHsgcGFkZGluZzogMTJweCAxNnB4OyB9CiAgLmJyYW5kIHsgZm9udC1zaXplOiAxNnB4OyBsZXR0ZXItc3BhY2luZzogMnB4OyB9CiAgLmJ0bi1iYWNrLCAuYnRuLWJhY2stbW9kdWwsIC5iYWNrLWJ0biB7IHBhZGRpbmc6IDhweCAxNHB4OyBmb250LXNpemU6IDEycHg7IH0KICAud3JhcCwgLm1haW4geyBwYWRkaW5nOiAxNnB4IDEwcHggNDhweDsgbWFyZ2luLXRvcDogMTZweDsgfQogIC5hY3Rpb24tcm93IHsgZmxleC1kaXJlY3Rpb246IGNvbHVtbjsgYWxpZ24taXRlbXM6IHN0cmV0Y2g7IGdhcDogOHB4OyB9CiAgLmFjdGlvbi1yb3cgYnV0dG9uLCAuYWN0aW9uLXJvdyBhIHsgd2lkdGg6IDEwMCU7IHRleHQtYWxpZ246IGNlbnRlcjsgfQogIC50YWJzIHsgb3ZlcmZsb3cteDogYXV0bzsgLXdlYmtpdC1vdmVyZmxvdy1zY3JvbGxpbmc6IHRvdWNoOyBmbGV4LXdyYXA6IG5vd3JhcDsgfQogIC50YWItYnRuIHsgd2hpdGUtc3BhY2U6IG5vd3JhcDsgcGFkZGluZzogMTBweCAxNnB4OyBmb250LXNpemU6IDEycHg7IH0KICAudG9vbC1oZXJvIHsgcGFkZGluZzogMTZweCAxNHB4OyB9CiAgLnRvb2wtaGVybyBoMSB7IGZvbnQtc2l6ZTogMTZweDsgfQogIC50b29sLWhlcm8gcCB7IGZvbnQtc2l6ZTogMTJweDsgfQogIC5zZWN0aW9uIHsgb3ZlcmZsb3c6IHZpc2libGUgIWltcG9ydGFudDsgYm9yZGVyLXJhZGl1czogMTBweDsgfQogIC5zZWN0aW9uLWhlYWQgeyBwYWRkaW5nOiAxMHB4IDE0cHg7IGZvbnQtc2l6ZTogMTJweDsgZmxleC1kaXJlY3Rpb246IGNvbHVtbjsgYWxpZ24taXRlbXM6IGZsZXgtc3RhcnQ7IGdhcDogNHB4OyB9CiAgLnNlY3Rpb24taGVhZCBoMiB7IGZvbnQtc2l6ZTogMTJweDsgfQogIC50YWJsZS1zY3JvbGwtaGludCB7IGRpc3BsYXk6IGJsb2NrOyB0ZXh0LWFsaWduOiBjZW50ZXI7IGZvbnQtc2l6ZTogMTFweDsgY29sb3I6ICNkNGFmMzc7IGJhY2tncm91bmQ6ICMxYTJhNGE7IHBhZGRpbmc6IDRweCAwOyBsZXR0ZXItc3BhY2luZzogMC41cHg7IG1hcmdpbjogMDsgfQogIC50YWJsZS1zY3JvbGwtd3JhcCB7IGRpc3BsYXk6IGJsb2NrOyB3aWR0aDogMTAwJTsgb3ZlcmZsb3cteDogc2Nyb2xsOyAtd2Via2l0LW92ZXJmbG93LXNjcm9sbGluZzogdG91Y2g7IG92ZXJmbG93LXk6IHZpc2libGU7IH0KICB0YWJsZSwgLnRvb2wtdGFibGUsIC5kaWFnLXRhYmxlLCAucHJvZmlsZS10YWJsZSwgLnZlcmxhdWYtdGFibGUgeyBtaW4td2lkdGg6IDcwMHB4OyB3aWR0aDogbWF4LWNvbnRlbnQ7IGJvcmRlci1jb2xsYXBzZTogY29sbGFwc2U7IH0KICB0YWJsZSB0ZCwgdGFibGUgdGgsIC50b29sLXRhYmxlIHRkLCAudG9vbC10YWJsZSB0aCB7IHdoaXRlLXNwYWNlOiBub3JtYWw7IG1pbi13aWR0aDogMTAwcHg7IH0KICAubWV0YS1ncmlkLCAuZmllbGQtcm93LCAudHdvLWNvbCwgLnRocmVlLWNvbCwgLmZvdXItY29sIHsgZGlzcGxheTogYmxvY2sgIWltcG9ydGFudDsgZ3JpZC10ZW1wbGF0ZS1jb2x1bW5zOiAxZnIgIWltcG9ydGFudDsgfQogIGlucHV0W3R5cGU9dGV4dF0sIGlucHV0W3R5cGU9bnVtYmVyXSwgaW5wdXRbdHlwZT1kYXRlXSwgaW5wdXRbdHlwZT1lbWFpbF0sIHNlbGVjdCwgdGV4dGFyZWEsIC50b29sLWlucHV0LCAucmF0aW5nLXNlbGVjdCwgLnRvb2wtdGV4dGFyZWEgeyB3aWR0aDogMTAwJSAhaW1wb3J0YW50OyBib3gtc2l6aW5nOiBib3JkZXItYm94OyBmb250LXNpemU6IDEycHg7IH0KICAuc2NvcmUtYm94IHsgcGFkZGluZzogMTZweCAxMnB4OyB9CiAgLnNjb3JlLW51bSB7IGZvbnQtc2l6ZTogNDBweDsgfQogIC5zY29yZS10eXBlIHsgZm9udC1zaXplOiAxN3B4OyB9CiAgLnJhZGlvLW9wdCB7IHBhZGRpbmc6IDEwcHg7IH0KICAucHRzLWJhZGdlIHsgZm9udC1zaXplOiAxMHB4OyB3aGl0ZS1zcGFjZTogbm93cmFwOyB9CiAgLmZheml0LWdyaWQgeyBwYWRkaW5nOiAxMnB4OyB9CiAgLnNhdmUtcm93IHsgZmxleC1kaXJlY3Rpb246IGNvbHVtbjsgYWxpZ24taXRlbXM6IHN0cmV0Y2g7IH0KICAuc2F2ZS1idG4geyB3aWR0aDogMTAwJTsgfQogIC5uYXYtcm93IHsgZmxleC1kaXJlY3Rpb246IGNvbHVtbjsgZ2FwOiA4cHg7IH0KICAubmF2LWJ0biB7IHdpZHRoOiAxMDAlOyB0ZXh0LWFsaWduOiBjZW50ZXI7IH0KICAuZm9vdGVyLCAuZm9vdGVyLWJyYW5kIHsgcGFkZGluZzogMTJweCAxNnB4OyBmb250LXNpemU6IDEwcHg7IH0KfQovKiA9PT09PT09PT09IEVORCBNT0JJTEUgRklYIEZJTkFMID09PT09PT09PT0gKi8=").decode("utf-8")
           MARKER = "GASTRO-OS MOBILE FIX FINAL"
+          HINT = '<div class="table-scroll-hint">&lt; nach rechts wischen &gt;</div>'
+
+          def wrap_tables(content):
+            # Tabellen die noch nicht gewrapped sind einwickeln
+            def replacer(m):
+              table = m.group(0)
+              if 'table-scroll-wrap' in table:
+                return table
+              return HINT + '<div class="table-scroll-wrap">' + table + '</div>'
+            return re.sub(r'<table\b[^>]*>.*?</table>', replacer, content, flags=re.DOTALL)
 
           fixed = skipped = errors = 0
           for filename in TOOL_FILES:
@@ -47,26 +46,22 @@ jobs:
               print(f"FEHLER: {filename} nicht gefunden"); errors += 1; continue
             with open(filename, "r", encoding="utf-8") as f:
               content = f.read()
-            # Alte Fix-Version ersetzen ODER neu einfügen
-            if "GASTRO-OS MOBILE FIX" in content and MARKER not in content:
-              # Alte Version raus, neue rein
-              import re
+            if MARKER in content:
+              print(f"Uebersprungen: {filename}"); skipped += 1; continue
+            # Alte Fix-Version entfernen falls vorhanden
+            if "GASTRO-OS MOBILE FIX" in content:
               content = re.sub(r'/\* =+ GASTRO-OS MOBILE FIX.*?END MOBILE FIX.*?\*/', '', content, flags=re.DOTALL)
-              content = content.replace("</style>", MOBILE_CSS + "\n</style>", 1)
-              with open(filename, "w", encoding="utf-8") as f:
-                f.write(content)
-              print(f"Aktualisiert: {filename}"); fixed += 1
-            elif MARKER in content:
-              print(f"Uebersprungen (aktuell): {filename}"); skipped += 1
-            elif "</style>" not in content:
-              print(f"FEHLER kein style-tag: {filename}"); errors += 1
-            else:
-              content = content.replace("</style>", MOBILE_CSS + "\n</style>", 1)
-              with open(filename, "w", encoding="utf-8") as f:
-                f.write(content)
-              print(f"Gefixt: {filename}"); fixed += 1
+            if "</style>" not in content:
+              print(f"FEHLER kein style-tag: {filename}"); errors += 1; continue
+            # CSS injizieren
+            content = content.replace("</style>", MOBILE_CSS + "\n</style>", 1)
+            # Tabellen wrappen
+            content = wrap_tables(content)
+            with open(filename, "w", encoding="utf-8") as f:
+              f.write(content)
+            print(f"Gefixt: {filename}"); fixed += 1
 
-          print(f"Ergebnis: {fixed} gefixt/aktualisiert | {skipped} uebersprungen | {errors} Fehler")
+          print(f"Ergebnis: {fixed} gefixt | {skipped} uebersprungen | {errors} Fehler")
           PYEOF
 
       - name: Committen und pushen
@@ -74,5 +69,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add *.html
-          git diff --staged --quiet || git commit -m "Mobile Fix v2: overflow-hidden Bug behoben"
+          git diff --staged --quiet || git commit -m "Mobile Fix v3: scroll-wrapper fuer alle Tabellen"
           git push
