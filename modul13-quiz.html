@@ -300,7 +300,7 @@ async function submitQuiz() {
     }, { onConflict: 'user_id,tool_name' });
     const { data: pd } = await sb.from('user_tool_data').select('data').eq('user_id', currentUser.id).eq('tool_name', 'modul_progress').maybeSingle();
     const progress = (pd && pd.data) ? pd.data : {};
-    progress['13-11'] = true;
+    progress['13-10'] = true;
     await sb.from('user_tool_data').upsert({
       user_id: currentUser.id, tool_name: 'modul_progress',
       data: progress, updated_at: new Date().toISOString()
