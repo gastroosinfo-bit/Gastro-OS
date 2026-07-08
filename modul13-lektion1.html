@@ -1,0 +1,120 @@
+<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Lektion 1 — Umsatzeinbruch erkennen & sofort reagieren | GASTRO-OS</title><style>* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
+.header { background:#1a2a4a; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:18px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.btn-back { background:#d4af37; color:#1a2a4a; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.btn-back:hover { background:#c8a030; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+.wrap { max-width:720px; margin:40px auto; padding:0 24px 60px; }
+.lbl { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:8px; }
+h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; font-weight:normal; margin-bottom:16px; line-height:1.3; }
+.intro { background:#fff; border-left:4px solid #d4af37; padding:16px 20px; border-radius:0 8px 8px 0; font-size:14px; color:#3a4a6a; margin:0 0 24px; line-height:1.8; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+.lern-box { background:#1a2a4a; border-radius:8px; padding:16px 20px; margin:0 0 28px; }
+.lern-box-title { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.lern-box ul { list-style:none; padding:0; margin:0; }
+.lern-box li { font-size:13px; color:#a0b0c8; padding:4px 0 4px 20px; position:relative; line-height:1.6; }
+.lern-box li::before { content:'✓'; position:absolute; left:0; color:#d4af37; font-weight:700; }
+h2 { font-family:Georgia,serif; font-size:19px; color:#1a2a4a; font-weight:700; margin:36px 0 14px; padding-bottom:10px; border-bottom:3px solid #d4af37; }
+h3 { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; font-weight:600; margin:22px 0 10px; padding-left:12px; border-left:3px solid #d4af37; }
+h4 { font-size:15px; color:#1a2a4a; font-weight:700; margin:18px 0 8px; }
+p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
+.aufgabe { background:#faf8f4; border:1px solid #e8dfc8; border-radius:8px; padding:18px 20px; margin:24px 0; }
+.aufgabe-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
+.aufgabe p { font-size:14px; margin-bottom:0; color:#3a4a6a; line-height:1.7; }
+.beispiel { background:#fff; border:1px solid #e8dfc8; border-left:4px solid #3a7ad4; border-radius:0 8px 8px 0; padding:16px 20px; margin:20px 0; }
+.beispiel-lbl { font-size:11px; color:#3a7ad4; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
+.beispiel p { font-size:14px; color:#2a3a54; margin-bottom:8px; line-height:1.75; }
+.beispiel p:last-child { margin-bottom:0; }
+.rechnung { background:#f0f4f8; border-radius:5px; padding:10px 14px; font-family:monospace; font-size:13px; color:#1a2a4a; margin:8px 0; line-height:1.6; }
+.tipp-box { background:#e4f5e8; border:1px solid #4aaa60; border-radius:8px; padding:14px 18px; margin:18px 0; }
+.tipp-box p { font-size:14px; color:#1a6030; margin-bottom:0; line-height:1.7; }
+.nav-row { display:flex; gap:12px; justify-content:space-between; margin:40px 0 0; }
+.nav-btn { background:#d4af37; color:#1a2a4a; border:none; padding:11px 20px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; transition:all 0.2s; }
+.nav-btn:hover { background:#c8a030; color:#1a2a4a; }
+.nav-btn.secondary { background:#d4af37; color:#1a2a4a; border:none; }
+.nav-btn.secondary:hover { background:#c8a030; }
+.fazit { background:#fdf9ee; border:2px solid #d4af37; border-radius:8px; padding:18px 22px; margin:32px 0 0; }
+.fazit-lbl { font-size:11px; color:#d4af37; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.fazit ul { list-style:none; padding:0; margin:0; }
+.fazit li { font-size:14px; color:#2a3a54; padding:6px 0 6px 22px; position:relative; line-height:1.65; border-bottom:1px solid #e8dfc8; }
+.fazit li:last-child { border-bottom:none; }
+.fazit li::before { content:'→'; position:absolute; left:0; color:#d4af37; font-weight:700; }
+.checkliste { background:#fff; border:1px solid #e8dfc8; border-radius:8px; padding:16px 20px; margin:20px 0 0; }
+.checkliste-lbl { font-size:11px; color:#1a2a4a; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+.checkliste ul { list-style:none; padding:0; margin:0; }
+.checkliste li { font-size:14px; color:#2a3a54; padding:7px 0 7px 28px; position:relative; border-bottom:1px solid #f0ece4; line-height:1.55; }
+.checkliste li:last-child { border-bottom:none; }
+.checkliste li::before { content:'☐'; position:absolute; left:0; color:#d4af37; font-size:16px; line-height:1.2; }
+.footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-lbl strong { color:#d4af37; }
+.footer-main { background:#1a2a4a; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-main strong { color:#d4af37; }mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
+</style></head>
+<body>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function(){
+  document.addEventListener('contextmenu',function(e){e.preventDefault();});
+  document.addEventListener('keydown',function(e){
+    if(e.ctrlKey&&['s','u','p','a'].includes(e.key.toLowerCase()))e.preventDefault();
+    if(e.key==='F12')e.preventDefault();
+  });
+  (async function(){
+    try{
+      const res=await fetch('/api/verify-session');
+      if(!res.ok){window.location.href='login.html';return;}
+      const d=await res.json();
+      if(!d.valid){window.location.href='login.html';return;}
+    }catch(e){window.location.href='login.html';}
+  })();
+})();
+</script>
+<div class="header"><div class="brand">GASTRO-OS</div><a href="dashboard.html#modul-13" class="btn-back">← Zurück zum Dashboard</a></div>
+<div class="gold-bar"></div>
+<div class="wrap">
+  <div class="lbl">Modul 13 · Lektion 1</div>
+  <h1>Umsatzeinbruch erkennen & sofort reagieren</h1>
+  <div class="intro">Du hast das Ankervideo gesehen und weißt jetzt worum es in Modul 13 geht. In dieser Lektion lernst du, einen Umsatzeinbruch frühzeitig zu erkennen — bevor er zur Existenzfrage wird — und richtig zu reagieren statt in Panik zu verfallen oder das Problem auszusitzen.</div>
+  <div class="lern-box"><div class="lern-box-title">📚 Was du in dieser Lektion lernst</div><ul><li>Die 3 Frühwarnsignale eines echten Umsatzeinbruchs erkennen</li><li>Zufälligen Umsatzrückgang von struktureller Krise unterscheiden</li><li>Den Sofort-Reaktionsplan der ersten 72 Stunden</li><li>Die häufigsten Fehler in der ersten Reaktion vermeiden</li></ul></div>
+
+<h2>Kapitel 1 — Den Unterschied erkennen: Schwankung oder Krise?</h2>
+<h3>Warum die meisten zu spät reagieren</h3>
+<p>Ein schlechter Monat ist noch keine Krise. Gastronomie schwankt — Wetter, Ferienzeiten, lokale Baustellen, ein neuer Konkurrent um die Ecke. Das Problem ist nicht die Schwankung selbst, sondern dass viele Gastronomen jede Schwankung als vorübergehend abtun — auch dann noch, wenn sie längst kein Zufall mehr ist. Genau in dieser Verzögerung liegt die eigentliche Gefahr: Wer drei Monate wartet um zu handeln, hat drei Monate Substanz verloren, die er nicht mehr zurückbekommt.</p>
+<p>Die Fähigkeit, früh zwischen normaler Schwankung und echtem Einbruch zu unterscheiden, ist deshalb keine Kür — sie ist die wichtigste Fähigkeit in diesem gesamten Modul. Alles andere baut darauf auf.</p>
+<h3>Die 3 Frühwarnsignale</h3>
+<p>Signal 1 — Dauer: Ein einzelner schwacher Tag ist Rauschen. Zwei bis drei schwache Wochen in Folge, verglichen mit dem Vorjahreszeitraum, sind ein Signal. Signal 2 — Richtung: Sinkt der Umsatz kontinuierlich Woche für Woche, statt zu schwanken? Kontinuität ist gefährlicher als Volatilität. Signal 3 — Ursachenlosigkeit: Kannst du den Rückgang klar erklären (Baustelle vor der Tür, Betriebsurlaub der Nachbarfirma) oder findest du keine offensichtliche Erklärung? Ein unerklärter Rückgang ist der ernsteste Fall, weil er oft strukturelle Ursachen hat — Qualität, Service, Wettbewerb, Reputation — die sich nicht von selbst auflösen.</p>
+<div class="beispiel"><div class="beispiel-lbl">📊 Rechenbeispiel aus der Praxis</div>
+<p>Restaurant, 45 Plätze. Ø-Wochenumsatz normalerweise 8.200 €.</p>
+<p>Woche 1: 7.100 € (−13%) | Woche 2: 6.800 € (−17%) | Woche 3: 6.400 € (−22%)</p>
+<div class="rechnung">Trend: kontinuierlich fallend, keine erkennbare Einzelursache, 3 Wochen in Folge.</div>
+<p>Einordnung: Alle 3 Frühwarnsignale erfüllt — das ist kein Zufall mehr, sondern ein struktureller Einbruch. Sofortreaktion erforderlich, nicht Abwarten.</p></div>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 1</div><p>Vergleiche deine letzten 3 Wochenumsätze mit dem gleichen Zeitraum im Vorjahr. Prüfe alle 3 Frühwarnsignale: Dauer, Richtung, Ursachenlosigkeit. Schreib auf, wie viele der 3 Signale bei dir aktuell zutreffen.</p></div>
+
+<h2>Kapitel 2 — Der Sofort-Reaktionsplan der ersten 72 Stunden</h2>
+<h3>Warum die ersten 3 Tage entscheiden</h3>
+<p>Sobald du einen echten Einbruch erkannt hast, zählt jeder Tag. Nicht, weil du in 72 Stunden das Problem vollständig lösen könntest — sondern, weil in dieser Zeit die Weichen gestellt werden zwischen kontrollierter Reaktion und Panikmodus. Betriebe, die sofort strukturiert reagieren, verlieren im Schnitt deutlich weniger Substanz als solche, die erst Wochen später aktiv werden.</p>
+<h3>Tag 1 — Ursachenanalyse ohne Schuldzuweisung</h3>
+<p>Setz dich hin und liste ehrlich alle möglichen Ursachen auf: Hat sich die Konkurrenz verändert? Gab es negative Bewertungen? Hat sich das Team oder der Service verschlechtert? Läuft eine Marketingmaßnahme nicht mehr? Ist die Speisekarte in die Jahre gekommen? Wichtig: Es geht in Tag 1 nicht um Lösungen, sondern um eine ehrliche, vollständige Bestandsaufnahme. Vorschnelle Lösungen ohne Ursachenklarheit verschwenden Energie an der falschen Stelle.</p>
+<h3>Tag 2 — Kostenseite sofort stabilisieren</h3>
+<p>Parallel zur Ursachenanalyse musst du am Tag 2 die Kostenseite in den Griff bekommen — unabhängig davon, was die Ursache ist. Prüfe: Wo lässt sich kurzfristig Wareneinsatz reduzieren, ohne Qualität zu gefährden? Wo lässt sich Personaleinsatz an den gesunkenen Bedarf anpassen? Welche nicht-essenziellen Ausgaben lassen sich für 4 Wochen pausieren? Diese Anpassung ist keine Panikreaktion — sie ist die logische Konsequenz aus geringerem Umsatz und schützt deine Liquidität, während du an der eigentlichen Ursache arbeitest.</p>
+<div class="tipp-box"><p>💡 <strong>Profi-Tipp:</strong> Kürze niemals bei Qualität oder Gästeerlebnis, wenn der Umsatz sinkt — das verstärkt den Abwärtstrend. Kürze bei internen Prozessen, Verwaltung und nicht-gästenahen Kosten zuerst.</p></div>
+<h3>Tag 3 — Erste sichtbare Maßnahme starten</h3>
+<p>Am dritten Tag brauchst du eine erste, für Gäste und Team sichtbare Maßnahme — nicht als Allheilmittel, sondern als Signal, dass gehandelt wird. Das kann eine gezielte Aktion sein (z. B. ein zeitlich begrenztes Angebot), eine direkte Kommunikation mit Stammgästen, oder eine sichtbare Verbesserung an einem Punkt, den du in der Ursachenanalyse identifiziert hast. Entscheidend ist: schnell, konkret, messbar — nicht perfekt.</p>
+<div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 2</div><p>Plane deine eigenen 72 Stunden: Was ist deine Tag-1-Ursachenliste? Welche Kostenposition passt du an Tag 2 an? Welche sichtbare Maßnahme startest du an Tag 3? Schreib alle drei Punkte konkret auf — mit Datum.</p></div>
+
+<div class="fazit"><div class="fazit-lbl">🎯 Das Wichtigste auf einen Blick</div><ul><li>3 Frühwarnsignale: Dauer, Richtung, Ursachenlosigkeit — je mehr zutreffen, desto ernster die Lage.</li><li>Ein einzelner schwacher Tag ist normal. Ein anhaltender, unerklärter Trend ist es nicht.</li><li>Die ersten 72 Stunden entscheiden über kontrollierte Reaktion oder Panikmodus.</li><li>Kürze bei einem Einbruch nie an Qualität oder Gästeerlebnis — das verschärft den Trend.</li></ul></div>
+<div class="checkliste"><div class="checkliste-lbl">✅ Sofort-Checkliste — Das kannst du heute noch tun</div><ul><li>Letzte 3 Wochenumsätze mit Vorjahr vergleichen</li><li>Alle 3 Frühwarnsignale ehrlich prüfen</li><li>Ursachenliste ohne Schuldzuweisung erstellen</li><li>Eine anpassbare Kostenposition identifizieren</li></ul></div>
+
+<h3>Wenn der Einbruch bereits Wochen andauert</h3>
+<p>Nicht jeder liest dieses Modul im Idealmoment — bei den ersten Anzeichen. Vielleicht dauert dein Einbruch schon 6 oder 8 Wochen an, und du fragst dich, ob der 72-Stunden-Plan jetzt noch sinnvoll ist. Die Antwort: Ja, unbedingt. Der Plan funktioniert unabhängig davon, wann du ihn startest — er strukturiert deine Reaktion ab dem Moment, in dem du ihn beginnst. Je länger du wartest, desto wichtiger wird er sogar, weil sich in einem längeren Einbruch oft mehrere Ursachen überlagern, die eine strukturierte Analyse erst wieder entwirrbar macht.</p>
+<h3>Die emotionale Seite eines Umsatzeinbruchs</h3>
+<p>Ein Umsatzeinbruch ist nicht nur eine betriebswirtschaftliche Situation — er ist auch eine emotionale Belastung. Selbstzweifel, Schlaflosigkeit, das Gefühl zu versagen, sind normale Reaktionen, keine Schwäche. Wichtig ist, diese Belastung nicht zu ignorieren, sondern bewusst zu steuern: Sprich mit Menschen, denen du vertraust. Trenn die Zahl vom eigenen Wert als Unternehmer. Ein schwacher Monat sagt nichts darüber aus, ob du ein guter Gastronom bist — er sagt etwas über die aktuelle Marktsituation deines Betriebs aus, und die lässt sich verändern.</p>
+<p>Betriebe, die einen Umsatzeinbruch erfolgreich gedreht haben, berichten fast immer dasselbe: Der Wendepunkt kam nicht durch eine einzelne geniale Idee, sondern durch die konsequente, ruhige Umsetzung eines klaren Plans — genau wie den, den du in dieser Lektion aufgebaut hast.</p>
+<div class="footer-lbl"><strong>GASTRO-OS</strong> &nbsp;|&nbsp; System · Strategie · Erfolg</div>
+
+<div class="nav-row"><a href="modul13-ankervideo.html" class="nav-btn secondary">← Ankervideo</a><a href="modul13-lektion2.html" class="nav-btn">Lektion 2 →</a></div>
+</div>
+<div class="footer-main"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+<script src="checklist-save.js"></script>
+</body></html>
