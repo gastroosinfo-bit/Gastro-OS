@@ -7,18 +7,25 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 function openModuleFromHash() {
+  let num = null;
   const hash = window.location.hash;
-  if (!hash) return;
   const m = hash.match(/#modul-(\d+)/);
-  if (!m) return;
-  const num = parseInt(m[1]);
+  if (m) {
+    num = parseInt(m[1]);
+  } else {
+    try {
+      const stored = localStorage.getItem('gastroos_last_module');
+      if (stored !== null) num = parseInt(stored);
+    } catch(e) {}
+  }
+  if (num === null || isNaN(num)) return;
   const content = document.getElementById('content-' + num);
   const arrow   = document.getElementById('arrow-' + num);
   const card    = document.getElementById('modul-card-' + num);
   if (!content) return;
   content.classList.add('open');
   if (arrow) arrow.classList.add('open');
-  setTimeout(() => { if (card) card.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 400);
+  if (m) { setTimeout(() => { if (card) card.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 400); }
 }
 window.addEventListener('DOMContentLoaded', openModuleFromHash);
 </script>
@@ -582,6 +589,10 @@ async function toggleCheck(m, i) {
   renderProgress(m);
 }
 
+function rememberModule(m) {
+  try { localStorage.setItem('gastroos_last_module', m); } catch(e) {}
+}
+
 function toggleModule(m) {
   const content = document.getElementById('content-' + m);
   const arrow   = document.getElementById('arrow-' + m);
@@ -589,7 +600,19 @@ function toggleModule(m) {
   const isOpen = content.classList.contains('open');
   content.classList.toggle('open', !isOpen);
   if (arrow) arrow.classList.toggle('open', !isOpen);
+  if (!isOpen) rememberModule(m);
 }
+
+// Merkt sich automatisch das Modul, aus dem heraus ein Inhalt (Lektion, Tool, Quiz ...) geöffnet wird —
+// unabhängig davon, ob die jeweilige Unterseite beim Zurückgehen den richtigen Link (#modul-N) mitgibt.
+document.addEventListener('click', function(e) {
+  const link = e.target.closest('.item-link');
+  if (!link) return;
+  const card = link.closest('.module-card');
+  if (!card) return;
+  const mm = card.id && card.id.match(/modul-card-(\d+)/);
+  if (mm) rememberModule(parseInt(mm[1]));
+});
 
 function renderLockedModules() {
   let unlockedUpTo = 1;
