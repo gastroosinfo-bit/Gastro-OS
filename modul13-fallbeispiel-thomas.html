@@ -1,0 +1,95 @@
+<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>GASTRO-OS – Modul 13 | Fallbeispiel Thomas</title><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:"Segoe UI",Arial,sans-serif;background:#f5f0e8;color:#1a2a4a;min-height:100vh}.header{background:#1a2a4a;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}.brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}.modul-label{font-size:11px;color:#a0b0c8;letter-spacing:3px;text-transform:uppercase;margin-top:4px}.gold-bar{height:3px;background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a)}.main{max-width:820px;margin:36px auto;padding:0 24px 60px}h1{font-family:Georgia,serif;font-size:26px;color:#1a2a4a;margin-bottom:8px}h2{font-family:Georgia,serif;font-size:18px;color:#1a2a4a;margin:24px 0 10px}.gold-rule{width:56px;height:2px;background:#d4af37;margin:10px 0 20px}p{font-size:15px;color:#2a3a5a;line-height:1.8;margin-bottom:14px}.highlight{background:#fff8e8;border-left:3px solid #d4af37;padding:14px 18px;margin:20px 0;font-size:14px;color:#5a4000;line-height:1.7}.nav-buttons{display:flex;gap:12px;margin-top:32px;flex-wrap:wrap}.btn{display:inline-block;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:600;font-size:14px;transition:opacity .15s}.btn-primary{background:#d4af37;color:#1a2a4a}.btn-secondary{background:#1a2a4a;color:#f5f0e8}.btn:hover{opacity:.85}.divider{border:none;border-top:1px solid #e8dfc8;margin:28px 0}.footer{background:#1a2a4a;margin-top:48px;padding:14px 40px;text-align:center;font-size:11px;color:#8090a8}.footer strong{color:#d4af37}.video-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #0a0f1e;
+  margin: 24px 0;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+}.video-wrap iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:24px 0}.stat-box{background:#fff;border:1px solid #e8dfc8;border-radius:8px;padding:16px;text-align:center}.stat-num{font-family:Georgia,serif;font-size:28px;color:#d4af37;font-weight:bold}.stat-label{font-size:12px;color:#8090a8;margin-top:4px}
+.btn-back-modul {
+  background: #d4af37;
+  color: #1a2a4a;
+  border: none;
+  padding: 9px 20px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.2s;
+  letter-spacing: 0.3px;
+}
+.btn-back-modul:hover { background: #c8a030; color: #1a2a4a; }
+
+mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
+
+@media (max-width: 768px) {
+  .header { padding: 12px 16px !important; }
+  .brand { font-size: 16px !important; }
+  .btn-back-modul { padding: 7px 12px !important; font-size: 12px !important; }
+  .main { padding: 0 12px 40px !important; margin: 16px auto !important; }
+  .card { padding: 16px !important; }
+  h1 { font-size: 20px !important; }
+  .video-wrap { margin: 12px 0 !important; }
+  .video-wrap iframe { top: 0 !important; height: 100% !important; }
+}
+</style></head><body>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function(){
+  // Rechtsklick & Tastenkürzel sperren
+  document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
+  document.addEventListener('keydown', function(e){
+    if (e.ctrlKey && ['s','u','p','a'].includes(e.key.toLowerCase())) e.preventDefault();
+    if (e.key === 'F12') e.preventDefault();
+  });
+
+  // Supabase Auth Check
+  const sb = supabase.createClient(
+    'https://hchlganbgjeciwhwaisj.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhjaGxnYW5iZ2plY2l3aHdhaXNqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYyMzA0NjAsImV4cCI6MjA5MTgwNjQ2MH0.mA6oAPJCCgFq5LIUPFDGM0WI_le6STHTuGiwLtGMgu8'
+  );
+  (async function(){
+    const res=await fetch('/api/verify-session');if(!res.ok){window.location.href='login.html';return;}const d=await res.json();if(!d.valid){window.location.href='login.html';return;}
+  })();
+})();
+</script>
+<div class="header">
+  <div class="brand">GASTRO-OS</div>
+  <a href="dashboard.html#modul-13" class="btn-back-modul">← Zurück zum Dashboard</a>
+</div>
+<div class="gold-bar"></div>
+<div class="main">
+<h1>Fallbeispiel Thomas — Wie er aus der Krise zurückkam</h1>
+<div class="gold-rule"></div>
+<div class="stats">
+<div class="stat-box"><div class="stat-num">72 Std.</div><div class="stat-label">bis zur ersten Reaktion</div></div>
+<div class="stat-box"><div class="stat-num">–40%</div><div class="stat-label">Umsatzeinbruch überwunden</div></div>
+<div class="stat-box"><div class="stat-num">6 Wo.</div><div class="stat-label">bis zum Comeback</div></div>
+</div>
+<p>Ein Umsatzeinbruch, der aus dem Nichts kam. Eine Liquidität, die plötzlich nicht mehr reichte. Und mittendrin ein Gastronom, der zwischen Panik und Handeln entscheiden musste.</p>
+<p>Das ist die Ausgangslage, in der sich Thomas wiederfand. Keine Vorwarnung, keine Zeit zum Nachdenken — nur die Frage, was in den nächsten 72 Stunden zu tun ist, damit aus einer Krise kein Ende wird.</p>
+<p>In diesem Video erzählt Thomas seine Geschichte. Ohne Beschönigung. Ohne perfekte Ausgangsbedingungen. Nur der ehrliche Blick auf einen Betrieb am Rand — und wie daraus ein Comeback wurde.</p>
+<div class="video-wrap">
+<iframe src="https://www.youtube.com/embed/paOpFTfJISg?rel=0" allow="autoplay; fullscreen; accelerometer; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+</div>
+<div class="highlight">💡 <strong>Das Wichtigste aus diesem Video:</strong> Nicht die Krise selbst entscheidet, ob ein Betrieb überlebt — sondern wie schnell und wie klar in den ersten Stunden reagiert wird. Ein Notfallplan, den du schon vorher kennst, ersetzt Panik durch Handeln.</div>
+<div class="nav-buttons">
+<a href="modul13-lektion4.html" class="btn btn-secondary">← Lektion 4</a>
+<a href="modul13-podcast.html" class="btn btn-primary">Zum Podcast →</a>
+</div>
+</div>
+<div class="gold-bar"></div><div class="footer" style="margin-top:40px;"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg &nbsp;·&nbsp; <a href="impressum.html" style="color:#ffffff;text-decoration:none;">Impressum</a> &nbsp;·&nbsp; <a href="datenschutz.html" style="color:#ffffff;text-decoration:none;">Datenschutz</a> &nbsp;·&nbsp; <a href="agb.html" style="color:#ffffff;text-decoration:none;">AGB</a></div><script src="checklist-save.js"></script>
+</body></html>
