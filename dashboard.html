@@ -56,6 +56,7 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 .badge-done     { background:#d4af37; color:#1a2a4a; border:1px solid #b8942a; }
 .badge-locked   { background:#f0ede8; color:#8090a8; border:1px solid #d0c8b8; }
 .badge-progress { background:#e8f0fb; color:#1a4a8a; border:1px solid #5a8ad0; }
+.badge-soon     { background:#fff3d6; color:#8a6400; border:1px solid #d4af37; }
 .module-arrow { font-size:16px; color:#d4af37; margin-left:10px; transition:transform 0.2s; }
 .module-arrow.open { transform:rotate(180deg); }
 .module-content { display:none; border-top:1px solid #e8dfc8; padding:8px 0; }
@@ -635,7 +636,7 @@ function renderLockedModules() {
     const locked = m > unlockedUpTo;
     const card = document.createElement('div');
     card.className = 'module-card' + (locked ? ' locked' : '');
-    card.innerHTML = `<div class="module-header no-click"><div class="module-left"><div class="module-number">${m}</div><div><div class="module-title">${MODUL_TITLES[m] || 'Modul ' + m}</div><div class="module-subtitle">${isNext ? '🎉 Es bleibt spannend — Inhalte folgen in Kürze.' : 'Schließe Modul ' + (m-1) + ' ab, um fortzufahren'}</div></div></div><span class="module-badge ${isNext ? 'badge-open' : 'badge-locked'}">${isNext ? 'Offen' : '🔒 Gesperrt'}</span></div>`;
+    card.innerHTML = `<div class="module-header no-click"><div class="module-left"><div class="module-number">${m}</div><div><div class="module-title">${MODUL_TITLES[m] || 'Modul ' + m}</div><div class="module-subtitle">${isNext ? '🎉 Es bleibt spannend — Inhalte folgen in Kürze.' : 'Schließe Modul ' + (m-1) + ' ab, um fortzufahren'}</div></div></div><span class="module-badge ${isNext ? 'badge-soon' : 'badge-locked'}">${isNext ? '⏳ Bald verfügbar' : '🔒 Gesperrt'}</span></div>`;
     container.appendChild(card);
   }
 }
