@@ -508,11 +508,9 @@ async function init() {
   document.getElementById('modul-card-10').style.display = 'block';
   document.getElementById('modul-card-11').style.display = 'block';
   document.getElementById('modul-card-12').style.display = 'block';
-  document.getElementById('modul-card-13').style.display = 'block';
   if (!quizBestanden[9])  lockCard(10);
   if (!quizBestanden[10]) lockCard(11);
   if (!quizBestanden[11]) lockCard(12);
-  if (!quizBestanden[12]) lockCard(13);
 
   for (const m of [0,1,2,3,4,5,6,7,8,9,10,11,12,13]) renderProgress(m);
   renderLockedModules();
