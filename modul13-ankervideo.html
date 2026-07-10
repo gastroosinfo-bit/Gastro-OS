@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ankervideo – Modul 13 | GASTRO-OS</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
+.header{background:#1a2a4a;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
+.brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+.main { max-width:960px; margin:40px auto; padding:0 24px 60px; }
+.modul-badge { display:inline-block; background:#1a2a4a; color:#d4af37; font-size:11px; font-weight:700; letter-spacing:2px; padding:4px 14px; border-radius:4px; margin-bottom:12px; }
+h1 { font-family:Georgia,serif; font-size:26px; color:#1a2a4a; margin-bottom:24px; }
+.card { background:#fff; border:1px solid #e8dfc8; border-radius:10px; padding:28px 32px; margin-bottom:24px; box-shadow:0 2px 8px rgba(0,0,0,0.04); }
+.welcome { font-size:14px; color:#8090a8; font-style:italic; margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid #f0ece4; }
+p { font-size:14px; line-height:1.8; color:#3a4a6a; margin-bottom:12px; }
+p:last-child { margin-bottom:0; }
+.gold-divider { height:2px; background:linear-gradient(90deg,#d4af37,transparent); margin:28px 0; }
+.video-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #0a0f1e;
+  margin: 24px 0;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+}
+.video-wrap iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+.footer { background:#1a2a4a; margin-top:60px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer strong { color:#d4af37; }
+.btn-back-modul {
+  background: #d4af37; color: #1a2a4a; border: none; padding: 9px 20px;
+  border-radius: 6px; font-size: 13px; font-weight: 700; cursor: pointer;
+  text-decoration: none; display: inline-block; transition: all 0.2s; letter-spacing: 0.3px;
+}
+.btn-back-modul:hover { background: #c8a030; color: #1a2a4a; }
+mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
+</style>
+</head>
+<body>
+<script>
+(function(){
+  document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
+  document.addEventListener('keydown', function(e){
+    if (e.ctrlKey && ['s','u','p','a'].includes(e.key.toLowerCase())) e.preventDefault();
+    if (e.key === 'F12') e.preventDefault();
+  });
+  const sb = supabase.createClient('https://hchlganbgjeciwhwaisj.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhjaGxnYW5iZ2plY2l3aHdhaXNqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYyMzA0NjAsImV4cCI6MjA5MTgwNjQ2MH0.mA6oAPJCCgFq5LIUPFDGM0WI_le6STHTuGiwLtGMgu8');
+  (async function(){
+    const res=await fetch('/api/verify-session');if(!res.ok){window.location.href='login.html';return;}const d=await res.json();if(!d.valid){window.location.href='login.html';return;}
+  })();
+})();
+</script>
+<div class="header">
+  <div class="brand">GASTRO-OS</div>
+  <a href="dashboard.html#modul-13" class="btn-back-modul">&#8592; Zurück zum Dashboard</a>
+</div>
+
+<div class="gold-bar"></div>
+<div class="main">
+  <div class="modul-badge">MODUL 13 · ANKERVIDEO</div>
+  <h1>🎬 Ankervideo — Krisen & Comeback</h1>
+  <div class="card">
+    <p class="welcome">Krisen & Comeback</p>
+    <p>Umsatzeinbruch, Liquiditätsengpass, Personalausfall — jeder Betrieb gerät früher oder später in eine Krise. Der Unterschied zwischen denen die daran zerbrechen und denen die stärker zurückkommen liegt selten am Glück. Er liegt an der Vorbereitung.</p>
+    <p>In diesem Modul lernst du wie du einen Umsatzeinbruch in den ersten 72 Stunden erkennst und richtig reagierst, wie du einen Liquiditätsengpass überbrückst ohne in Panik zu verfallen, und was zu tun ist wenn dir plötzlich Schlüsselpersonal fehlt.</p>
+    <p>Kein Krisenmanagement aus dem Lehrbuch. Sondern ein konkreter Notfallplan, den du dir schon jetzt zurechtlegst — bevor du ihn brauchst. Schau dir das Video in Ruhe an. Dann lies weiter.</p>
+    <div class="gold-divider"></div>
+    <div class="video-wrap">
+      <iframe src="https://www.youtube.com/embed/RoKg99XrtP0?rel=0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+  </div>
+  <div class="gold-divider"></div>
+  <p style="text-align:center; font-size:12px; color:#8090a8; letter-spacing:1px;">GASTRO-OS | System &middot; Strategie &middot; Erfolg</p>
+</div>
+<div class="gold-bar"></div>
+<div class="footer" style="margin-top:40px;"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg &nbsp;·&nbsp; <a href="impressum.html" style="color:#ffffff;text-decoration:none;">Impressum</a> &nbsp;·&nbsp; <a href="datenschutz.html" style="color:#ffffff;text-decoration:none;">Datenschutz</a> &nbsp;·&nbsp; <a href="agb.html" style="color:#ffffff;text-decoration:none;">AGB</a></div>
+<script src="checklist-save.js"></script>
+</body>
+</html>
