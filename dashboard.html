@@ -628,10 +628,9 @@ function renderLockedModules() {
   if (quizBestanden[10]) unlockedUpTo = 11;
   if (quizBestanden[11]) unlockedUpTo = 12;
   if (quizBestanden[12]) unlockedUpTo = 13;
-  if (quizBestanden[13]) unlockedUpTo = 14;
   const container = document.getElementById('locked-modules');
   container.innerHTML = '';
-  for (let m = 14; m <= 14; m++) {
+  for (let m = 13; m <= 13; m++) {
     const isNext = (m === unlockedUpTo);
     const locked = m > unlockedUpTo;
     const card = document.createElement('div');
