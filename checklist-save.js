@@ -1,7 +1,5 @@
 // GASTRO-OS — Checklisten-Speicherung + Navigation
 (function() {
-  const SUPABASE_URL = 'https://hchlganbgjeciwhwaisj.supabase.co';
-  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhjaGxnYW5iZ2plY2l3aHdhaXNqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYyMzA0NjAsImV4cCI6MjA5MTgwNjQ2MH0.mA6oAPJCCgFq5LIUPFDGM0WI_le6STHTuGiwLtGMgu8';
 
   // ─── Dashboard-Button ───────────────────────────────────────────────────────
   function addDashboardButton() {
@@ -40,65 +38,49 @@
     }
   }
 
-  // ─── Checklisten-Speicherung ───────────────────────────────────────────────
+  // ─── Checklisten-Speicherung (jetzt über eigene API-Route, kein direkter Supabase-Zugriff mehr) ──
   function getToolName() {
     const file = window.location.pathname.split('/').pop().replace('.html','').replace(/-/g,'_');
     return 'checklist_' + file;
   }
 
-  function sbHeaders() {
-    return {
-      'Content-Type': 'application/json',
-      'apikey': SUPABASE_KEY,
-      'Authorization': 'Bearer ' + SUPABASE_KEY
-    };
-  }
-
-  async function loadState(userId) {
+  async function loadState() {
     try {
-      const res = await fetch(
-        SUPABASE_URL + '/rest/v1/user_tool_data?user_id=eq.' + encodeURIComponent(userId) +
-        '&tool_name=eq.' + getToolName() + '&select=data',
-        { headers: sbHeaders() }
-      );
-      const rows = await res.json();
-      if (rows && rows.length > 0 && rows[0].data) return rows[0].data;
-    } catch(e) {}
+      const res = await fetch('/api/tool-data?tool=' + encodeURIComponent(getToolName()));
+      if (!res.ok) return {};
+      const d = await res.json();
+      return d.data || {};
+    } catch (e) {}
     return {};
   }
 
-  async function saveState(userId, state) {
+  async function saveState(state) {
     try {
-      await fetch(SUPABASE_URL + '/rest/v1/user_tool_data', {
+      await fetch('/api/tool-data', {
         method: 'POST',
-        headers: { ...sbHeaders(), 'Prefer': 'resolution=merge-duplicates' },
-        body: JSON.stringify({
-          user_id: userId,
-          tool_name: getToolName(),
-          data: state,
-          updated_at: new Date().toISOString()
-        })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tool: getToolName(), data: state })
       });
-    } catch(e) {}
+    } catch (e) {}
   }
 
   // ─── Init ──────────────────────────────────────────────────────────────────
   async function init() {
     addDashboardButton();
 
-    let userEmail = null;
+    // verify-session prüft nur, ob eingeloggt ist (für UI-Gating) —
+    // die eigentliche Identität/Berechtigung prüft /api/tool-data selbst über das Cookie.
     try {
       const res = await fetch('/api/verify-session');
       if (!res.ok) return;
       const d = await res.json();
       if (!d.valid) return;
-      userEmail = d.email;
-    } catch(e) { return; }
+    } catch (e) { return; }
 
     const checkboxes = document.querySelectorAll('.checkliste input[type=checkbox]');
     if (checkboxes.length === 0) return;
 
-    const state = await loadState(userEmail);
+    const state = await loadState();
     checkboxes.forEach(function(cb, i) {
       if (state['cb_' + i]) {
         cb.checked = true;
@@ -108,7 +90,7 @@
         cb.parentElement.classList.toggle('done', cb.checked);
         const s = {};
         checkboxes.forEach(function(c, j) { if (c.checked) s['cb_' + j] = true; });
-        await saveState(userEmail, s);
+        await saveState(s);
       });
     });
   }
