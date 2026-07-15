@@ -1,3 +1,4 @@
+// api/check-auth.js
 const crypto = require('crypto');
 
 const WHOP_API_KEY = process.env.WHOP_API_KEY;
@@ -8,8 +9,22 @@ const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
 const SESSION_DAYS = 30;
 
-function signSession(email) {
-  const expires = Date.now() + SESSION_DAYS * 24 * 60 * 60 * 1000;
+// Zeitlich begrenzte Demo-Zugänge (z.B. für Kooperationspartner)
+// expires im Format 'YYYY-MM-DD'
+const DEMO_ACCESS = {
+  'westerwinter@dehoga-nrw.de': { expires: '2026-08-15' }
+};
+
+function getDemoAccess(email) {
+  const entry = DEMO_ACCESS[email.toLowerCase()];
+  if (!entry) return null;
+  const expiryMs = new Date(entry.expires + 'T23:59:59').getTime();
+  if (Date.now() > expiryMs) return null; // abgelaufen
+  return { expiryMs };
+}
+
+function signSession(email, customExpiryMs) {
+  const expires = customExpiryMs || (Date.now() + SESSION_DAYS * 24 * 60 * 60 * 1000);
   const data = `${email}|${expires}`;
   const sig = crypto.createHmac('sha256', SESSION_SECRET).update(data).digest('hex');
   return Buffer.from(`${data}|${sig}`).toString('base64');
@@ -47,10 +62,13 @@ export default async function handler(req, res) {
 
   const bypassList = BYPASS_EMAILS.split(',').map(e => e.trim().toLowerCase());
   const isBypass = bypassList.includes(email.toLowerCase());
+  const demoAccess = getDemoAccess(email); // null wenn kein Demo-Zugang oder abgelaufen
+  const isDemo = !!demoAccess;
+  const hasFreeAccess = isBypass || isDemo;
 
   // SCHRITT: check_email
   if (step === 'check_email') {
-    if (!isBypass) {
+    if (!hasFreeAccess) {
       const membershipRes = await fetch(
 `https://api.whop.com/v5/company/memberships?product_id=${WHOP_PRODUCT_ID}`,
         { headers: { 'Authorization': `Bearer ${WHOP_API_KEY}`, 'Content-Type': 'application/json' } }
@@ -88,10 +106,14 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Passwort fehlt.' });
     }
 
-    if (isBypass) {
-      const token = signSession(email);
+    if (hasFreeAccess) {
+      const customExpiryMs = isDemo ? demoAccess.expiryMs : null;
+      const token = signSession(email, customExpiryMs);
+      const maxAge = isDemo
+        ? Math.floor((demoAccess.expiryMs - Date.now()) / 1000)
+        : SESSION_DAYS * 86400;
       res.setHeader('Set-Cookie',
-        `gastro_os_session=${token}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${SESSION_DAYS * 86400}`
+        `gastro_os_session=${token}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${maxAge}`
       );
       return res.status(200).json({ success: true });
     }
