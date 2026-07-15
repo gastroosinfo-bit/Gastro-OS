@@ -1,0 +1,327 @@
+name: Fix - Tool-Daten-Zugriff + Checklisten-Interaktivitaet
+
+on:
+  workflow_dispatch:
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repo auschecken
+        uses: actions/checkout@v4
+
+      - name: Fix injizieren
+        run: |
+          python3 << 'PYEOF2'
+          import re, os, sys
+
+          HELPER = """
+          // ─── GASTRO-OS: sichere Tool-Daten-Zugriffe ueber /api/tool-data statt direktem Supabase-Zugriff ───
+          async function sbToolSelect(tool) {
+            try {
+              const res = await fetch('/api/tool-data?tool=' + encodeURIComponent(tool));
+              if (!res.ok) return { data: null };
+              const d = await res.json();
+              const content = (d && d.data) ? d.data : null;
+              if (!content || Object.keys(content).length === 0) return { data: null };
+              return { data: { data: content } };
+            } catch(e) { return { data: null }; }
+          }
+          async function sbToolUpsert(tool, data) {
+            try {
+              await fetch('/api/tool-data', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ tool, data })
+              });
+            } catch(e) {}
+          }
+          """
+
+          SELECT_RE = re.compile(
+              r"(?:window\._sb|sb)\.from\('user_tool_data'\)\s*\.select\('data'\)\s*"
+              r"\.eq\('user_id',\s*(?:window\._currentUser|currentUser|user)\.id\)\s*"
+              r"\.eq\('tool_name',\s*'([^']+)'\)\s*\.maybeSingle\(\)",
+              re.DOTALL
+          )
+
+          UPSERT_RE = re.compile(
+              r"(?:window\._sb|sb)\.from\('user_tool_data'\)\s*\.upsert\(\s*\{\s*"
+              r"user_id:\s*(?:window\._currentUser|currentUser|user)\.id,\s*"
+              r"tool_name:\s*'([^']+)',\s*"
+              r"data:\s*(.*?)\s*,\s*"
+              r"updated_at:\s*new Date\(\)\.toISOString\(\)\s*\}\s*,\s*"
+              r"\{\s*onConflict:\s*'user_id,tool_name'\s*\}\s*\)",
+              re.DOTALL
+          )
+
+          CDN_SCRIPT_RE = re.compile(r'\s*<script src="https://cdn\.jsdelivr\.net/npm/@supabase/supabase-js@2"></script>\s*\n?')
+
+          SUPABASE_URL_CONST_RE = re.compile(r"[ \t]*const\s+SUPABASE_URL\s*=\s*'[^']*'\s*;\s*\n?")
+          SUPABASE_KEY_CONST_RE = re.compile(r"[ \t]*const\s+SUPABASE_KEY\s*=\s*'[^']*'\s*;\s*\n?")
+          DESTRUCTURE_RE = re.compile(r"[ \t]*const\s*\{\s*createClient\s*\}\s*=\s*supabase\s*;\s*\n?")
+
+          def remove_sb_creation(content):
+              """Entfernt SUPABASE_URL/KEY-Konstanten und den sb=createClient(...)-Aufruf
+              robust ueber Klammer-Balance, unabhaengig von Variante (direkt/destrukturiert,
+              literale Strings oder Variablen, ein- oder mehrzeilig, mit/ohne Options-Objekt)."""
+              content = SUPABASE_URL_CONST_RE.sub("", content)
+              content = SUPABASE_KEY_CONST_RE.sub("", content)
+              content = DESTRUCTURE_RE.sub("", content)
+
+              m = re.search(r"[ \t]*(?:const|var|let)\s+sb\s*=\s*(?:supabase\.)?createClient\s*\(", content)
+              if not m:
+                  return content, False
+              start = m.start()
+              paren_start = content.index('(', m.start())
+              depth = 0
+              i = paren_start
+              while i < len(content):
+                  if content[i] == '(':
+                      depth += 1
+                  elif content[i] == ')':
+                      depth -= 1
+                      if depth == 0:
+                          break
+                  i += 1
+              end = i + 1
+              while end < len(content) and content[end] in ';\n \t':
+                  was_semi = content[end] == ';'
+                  end += 1
+                  if was_semi:
+                      break
+              content = content[:start] + HELPER + content[end:]
+              return content, True
+
+          WINDOW_SB_ASSIGN_RE = re.compile(r"[ \t]*window\._sb\s*=\s*sb\s*;\s*\n?")
+
+          def transform(content):
+              orig = content
+              n_select = len(SELECT_RE.findall(content))
+              n_upsert = len(UPSERT_RE.findall(content))
+
+              content = SELECT_RE.sub(lambda m: f"sbToolSelect('{m.group(1)}')", content)
+              content = UPSERT_RE.sub(lambda m: f"sbToolUpsert('{m.group(1)}', {m.group(2)})", content)
+
+              # guard-Anpassungen fuer window._sb Referenzen (z.B. modul9-aktionsplan/marketingplan)
+              content = content.replace("window._sb && window._currentUser", "window._currentUser")
+              content = content.replace("!window._sb || !window._currentUser", "!window._currentUser")
+              content = WINDOW_SB_ASSIGN_RE.sub("", content)
+
+              # createClient-Erstellung (alle Varianten) entfernen, Helper-Funktionen an derselben Stelle einfuegen
+              content, found = remove_sb_creation(content)
+              if not found:
+                  # kein createClient gefunden (sollte nicht vorkommen) -> Helper vor erstem <script> einfuegen
+                  content = content.replace("<script>", "<script>" + HELPER, 1)
+
+              # CDN-Script-Tag entfernen
+              content = CDN_SCRIPT_RE.sub('\n', content)
+
+              remaining_sb = len(re.findall(r"(?<![a-zA-Z_])sb\.from\('user_tool_data'\)|window\._sb\.from\('user_tool_data'\)", content))
+
+              return content, n_select, n_upsert, remaining_sb, (content != orig)
+          import re, os, sys
+
+          CDN_SCRIPT_RE = re.compile(r'\s*<script src="https://cdn\.jsdelivr\.net/npm/@supabase/supabase-js@2"></script>\s*\n?')
+
+          OLD_CSS = (
+              ".checkliste li { font-size:14px; color:#2a3a54; padding:7px 0 7px 28px; position:relative; "
+              "border-bottom:1px solid #f0ece4; line-height:1.55; }\n"
+              ".checkliste li:last-child { border-bottom:none; }\n"
+              ".checkliste li::before { content:'\u2610'; position:absolute; left:0; color:#d4af37; font-size:16px; line-height:1.2; }"
+          )
+          NEW_CSS = (
+              ".checkliste li { font-size:14px; color:#2a3a54; padding:7px 0 7px 36px; position:relative; "
+              "border-bottom:1px solid #f0ece4; line-height:1.55; cursor:pointer; transition:color 0.2s; }\n"
+              ".checkliste li:last-child { border-bottom:none; }\n"
+              ".checkliste li input[type=checkbox] { position:absolute; left:0; top:50%; transform:translateY(-50%); "
+              "width:18px; height:18px; accent-color:#d4af37; cursor:pointer; }\n"
+              ".checkliste li.done { color:#8090a8; text-decoration:line-through; }\n"
+              ".checkliste-hint { font-size:11px; color:#8090a8; margin:-2px 0 10px; }"
+          )
+
+          CHECKLISTE_BLOCK_RE = re.compile(
+              r'<div class="checkliste"><div class="checkliste-lbl">([^<]*)</div><ul>(.*?)</ul></div>',
+              re.DOTALL
+          )
+
+          HINT_TEXT = "👉 Klicke die Punkte an, die du erledigt hast — dein Fortschritt wird automatisch gespeichert."
+
+          LI_RE = re.compile(r'<li>([^<]*)</li>')
+
+          def convert_checkliste_block(m):
+              label = m.group(1)
+              items = m.group(2)
+              def li_repl(im):
+                  text = im.group(1)
+                  return f'<li><input type="checkbox" onchange="this.parentElement.classList.toggle(\'done\',this.checked)"> {text}</li>'
+              new_items = LI_RE.sub(li_repl, items)
+              return (f'<div class="checkliste"><div class="checkliste-lbl">{label}</div>'
+                      f'<div class="checkliste-hint">{HINT_TEXT}</div><ul>{new_items}</ul></div>')
+
+          def add_hint_only(m):
+              """Fuer Dateien, die schon echte Checkboxen haben (Modul 0): nur Hinweistext ergaenzen, li unveraendert lassen."""
+              label = m.group(1)
+              items = m.group(2)
+              return (f'<div class="checkliste"><div class="checkliste-lbl">{label}</div>'
+                      f'<div class="checkliste-hint">{HINT_TEXT}</div><ul>{items}</ul></div>')
+
+          def transform_checkliste(content, already_interactive):
+              orig = content
+
+              if already_interactive:
+                  content = CHECKLISTE_BLOCK_RE.sub(add_hint_only, content, count=1)
+                  # CSS: nur .checkliste-hint Regel ergaenzen (Rest ist schon korrekt)
+                  if ".checkliste li.done { color:#8090a8; text-decoration:line-through; }" in content:
+                      content = content.replace(
+                          ".checkliste li.done { color:#8090a8; text-decoration:line-through; }",
+                          ".checkliste li.done { color:#8090a8; text-decoration:line-through; }\n"
+                          ".checkliste-hint { font-size:11px; color:#8090a8; margin:-2px 0 10px; }",
+                          1
+                      )
+              else:
+                  content = CHECKLISTE_BLOCK_RE.sub(convert_checkliste_block, content, count=1)
+                  if OLD_CSS in content:
+                      content = content.replace(OLD_CSS, NEW_CSS, 1)
+
+              content = CDN_SCRIPT_RE.sub('\n', content)
+
+              return content, (content != orig)
+
+          TOOL_FILES = [
+              'modul1-quiz.html',
+              'modul2-quiz.html',
+              'modul3-quiz.html',
+              'modul4-quiz.html',
+              'modul5-quiz.html',
+              'modul6-quiz.html',
+              'modul7-quiz.html',
+              'modul8-quiz.html',
+              'modul9-quiz.html',
+              'modul10-quiz.html',
+              'modul11-quiz.html',
+              'modul12-quiz.html',
+              'modul1-score.html',
+              'modul10-tool.html',
+              'modul11-reflexion.html',
+              'modul11-sterne.html',
+              'modul2-analyse.html',
+              'modul2-marge.html',
+              'modul3-einkauf.html',
+              'modul3-lieferanten.html',
+              'modul4-gewinn.html',
+              'modul4-kostentreiber.html',
+              'modul5-wochenplaner.html',
+              'modul6-feedback.html',
+              'modul6-personalstruktur.html',
+              'modul7-effizienzcheck.html',
+              'modul7-kostenanalyse.html',
+              'modul8-tracker.html',
+              'modul9-aktionsplan.html',
+              'modul9-marketingplan.html'
+          ]
+
+          LEKTION_FILES = [
+              'modul0-lektion1.html',
+              'modul0-lektion2.html',
+              'modul0-lektion3.html',
+              'modul1-lektion1.html',
+              'modul1-lektion2.html',
+              'modul1-lektion3.html',
+              'modul1-lektion4.html',
+              'modul2-lektion1.html',
+              'modul2-lektion2.html',
+              'modul2-lektion3.html',
+              'modul2-lektion4.html',
+              'modul2-lektion5.html',
+              'modul3-lektion1.html',
+              'modul3-lektion2.html',
+              'modul3-lektion3.html',
+              'modul3-lektion4.html',
+              'modul4-lektion1.html',
+              'modul4-lektion2.html',
+              'modul4-lektion3.html',
+              'modul4-lektion4.html',
+              'modul5-lektion1.html',
+              'modul5-lektion2.html',
+              'modul5-lektion3.html',
+              'modul5-lektion4.html',
+              'modul6-lektion1.html',
+              'modul6-lektion2.html',
+              'modul6-lektion3.html',
+              'modul6-lektion4.html',
+              'modul7-lektion1.html',
+              'modul7-lektion2.html',
+              'modul7-lektion3.html',
+              'modul7-lektion4.html',
+              'modul8-lektion1.html',
+              'modul8-lektion2.html',
+              'modul8-lektion3.html',
+              'modul8-lektion4.html',
+              'modul9-lektion1.html',
+              'modul9-lektion2.html',
+              'modul9-lektion3.html',
+              'modul9-lektion4.html',
+              'modul10-lektion1.html',
+              'modul10-lektion2.html',
+              'modul10-lektion3.html',
+              'modul10-lektion4.html',
+              'modul11-lektion1.html',
+              'modul11-lektion2.html',
+              'modul11-lektion3.html',
+              'modul11-lektion4.html',
+              'modul12-lektion1.html',
+              'modul12-lektion2.html',
+              'modul12-lektion3.html',
+              'modul12-lektion4.html'
+          ]
+
+          INTERACTIVE_FILES = {
+              'modul0-lektion1.html',
+              'modul0-lektion2.html',
+              'modul0-lektion3.html'
+          }
+
+          print("=== Teil 1: Tool- und Quiz-Dateien (kritisch, RLS-Fix) ===")
+          fixed = errors = 0
+          for fn in TOOL_FILES:
+              if not os.path.exists(fn):
+                  print(f"FEHLER: {fn} nicht gefunden"); errors += 1; continue
+              with open(fn, encoding="utf-8") as f:
+                  content = f.read()
+              new_content, ns, nu, rem, changed = transform(content)
+              if rem > 0:
+                  print(f"WARNUNG: {fn} hat {rem} nicht erkannte Supabase-Zugriffe - Datei NICHT gespeichert, bitte manuell pruefen")
+                  errors += 1
+                  continue
+              with open(fn, "w", encoding="utf-8") as f:
+                  f.write(new_content)
+              print(f"OK: {fn} (selects={ns} upserts={nu})")
+              fixed += 1
+          print(f"Teil 1 Ergebnis: {fixed} gefixt, {errors} Fehler")
+
+          print("=== Teil 2: Lektions-Checklisten (Interaktivitaet) ===")
+          fixed2 = errors2 = 0
+          for fn in LEKTION_FILES:
+              if not os.path.exists(fn):
+                  print(f"FEHLER: {fn} nicht gefunden"); errors2 += 1; continue
+              with open(fn, encoding="utf-8") as f:
+                  content = f.read()
+              already = fn in INTERACTIVE_FILES
+              new_content, changed = transform_checkliste(content, already)
+              if already:
+                  new_content, _ = remove_sb_creation(new_content)
+              with open(fn, "w", encoding="utf-8") as f:
+                  f.write(new_content)
+              print(f"OK: {fn} (already_interactive={already})")
+              fixed2 += 1
+          print(f"Teil 2 Ergebnis: {fixed2} gefixt, {errors2} Fehler")
+          PYEOF2
+
+      - name: Committen und pushen
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add *.html
+          git diff --staged --quiet || git commit -m "Fix: RLS-sicherer Tool-Datenzugriff + interaktive Checklisten in allen Lektionen"
+          git push
