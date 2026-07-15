@@ -50,7 +50,7 @@ export default async function handler(req, res) {
     try {
       const r = await fetch(
         SUPABASE_URL + '/rest/v1/user_tool_data?user_id=eq.' + encodeURIComponent(email) +
-        '&tool_name=eq.' + encodeURIComponent(tool) + '&select=data',
+        '&tool_name=eq.' + encodeURIComponent(tool) + '&select=data&order=updated_at.desc&limit=1',
         { headers: sbHeaders() }
       );
       const rows = await r.json();
@@ -62,21 +62,56 @@ export default async function handler(req, res) {
   }
 
   // ─── POST: Zustand speichern ──────────────────────────────────────────────
+  // Prüft explizit, ob schon eine Zeile existiert, und aktualisiert genau diese —
+  // verlässt sich NICHT auf einen Unique-Constraint in der Datenbank (merge-duplicates
+  // erzeugt sonst bei fehlendem Constraint bei jedem Speichern eine neue Zeile).
   if (req.method === 'POST') {
     const { tool, data } = req.body || {};
     if (!tool) return res.status(400).json({ error: 'tool fehlt.' });
 
     try {
-      await fetch(SUPABASE_URL + '/rest/v1/user_tool_data', {
-        method: 'POST',
-        headers: { ...sbHeaders(), 'Prefer': 'resolution=merge-duplicates' },
-        body: JSON.stringify({
-          user_id: email,
-          tool_name: tool,
-          data: data || {},
-          updated_at: new Date().toISOString()
-        })
-      });
+      const existingRes = await fetch(
+        SUPABASE_URL + '/rest/v1/user_tool_data?user_id=eq.' + encodeURIComponent(email) +
+        '&tool_name=eq.' + encodeURIComponent(tool) + '&select=id&order=updated_at.desc',
+        { headers: sbHeaders() }
+      );
+      const existingRows = await existingRes.json();
+
+      if (existingRows && existingRows.length > 0) {
+        // Zeile(n) existieren bereits — die neueste gezielt aktualisieren.
+        const id = existingRows[0].id;
+        await fetch(SUPABASE_URL + '/rest/v1/user_tool_data?id=eq.' + id, {
+          method: 'PATCH',
+          headers: sbHeaders(),
+          body: JSON.stringify({
+            data: data || {},
+            updated_at: new Date().toISOString()
+          })
+        });
+
+        // Falls durch den alten Bug bereits mehrere Zeilen für diesen Nutzer/Tool existieren,
+        // die überzähligen (älteren) Duplikate aufräumen.
+        if (existingRows.length > 1) {
+          for (let i = 1; i < existingRows.length; i++) {
+            await fetch(SUPABASE_URL + '/rest/v1/user_tool_data?id=eq.' + existingRows[i].id, {
+              method: 'DELETE',
+              headers: sbHeaders()
+            });
+          }
+        }
+      } else {
+        // Noch keine Zeile — neu anlegen.
+        await fetch(SUPABASE_URL + '/rest/v1/user_tool_data', {
+          method: 'POST',
+          headers: sbHeaders(),
+          body: JSON.stringify({
+            user_id: email,
+            tool_name: tool,
+            data: data || {},
+            updated_at: new Date().toISOString()
+          })
+        });
+      }
       return res.status(200).json({ success: true });
     } catch (e) {
       return res.status(500).json({ error: 'Fehler beim Speichern.' });
