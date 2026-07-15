@@ -169,7 +169,6 @@ html { font-size: clamp(12px, 3.5vw, 16px); }
 </style>
 </head>
 <body>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 (function(){
   // Rechtsklick & Tastenkürzel sperren
@@ -180,12 +179,29 @@ html { font-size: clamp(12px, 3.5vw, 16px); }
   });
 
   // Supabase Auth Check
-  const sb = supabase.createClient(
-    'https://hchlganbgjeciwhwaisj.supabase.co',
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhjaGxnYW5iZ2plY2l3aHdhaXNqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYyMzA0NjAsImV4cCI6MjA5MTgwNjQ2MH0.mA6oAPJCCgFq5LIUPFDGM0WI_le6STHTuGiwLtGMgu8'
-  );
-  window._sb = sb;
-  (async function(){
+
+// ─── GASTRO-OS: sichere Tool-Daten-Zugriffe ueber /api/tool-data statt direktem Supabase-Zugriff ───
+async function sbToolSelect(tool) {
+  try {
+    const res = await fetch('/api/tool-data?tool=' + encodeURIComponent(tool));
+    if (!res.ok) return { data: null };
+    const d = await res.json();
+    const content = (d && d.data) ? d.data : null;
+    if (!content || Object.keys(content).length === 0) return { data: null };
+    return { data: { data: content } };
+  } catch(e) { return { data: null }; }
+}
+async function sbToolUpsert(tool, data) {
+  try {
+    await fetch('/api/tool-data', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tool, data })
+    });
+  } catch(e) {}
+}
+
+(async function(){
     const res=await fetch('/api/verify-session');if(!res.ok){window.location.href='login.html';return;}const d=await res.json();if(!d.valid){window.location.href='login.html';return;}
     window._currentUser = { id: d.email, email: d.email };
     await loadData();
@@ -530,8 +546,8 @@ async function saveData() {
     inputs: Array.from(document.querySelectorAll('input[type=text], input[type=number]')).map(el => ({ id: el.id||'', val: el.value })),
     checks: Array.from(document.querySelectorAll('input[type=checkbox]')).map(el => el.checked)
   };
-  if (window._sb && window._currentUser) {
-    await window._sb.from('user_tool_data').upsert({ user_id: window._currentUser.id, tool_name: 'aktionsplan_m9', data: data, updated_at: new Date().toISOString() }, { onConflict: 'user_id,tool_name' });
+  if (window._currentUser) {
+    await sbToolUpsert('aktionsplan_m9', data);
   }
   const msg = document.getElementById('save-msg') || document.getElementById('saveMsg');
   if (msg) { msg.style.display = 'flex'; setTimeout(() => msg.style.display = 'none', 2500); }
@@ -539,8 +555,8 @@ async function saveData() {
 
 async function loadData() {
   try {
-    if (!window._sb || !window._currentUser) return;
-    const result = await window._sb.from('user_tool_data').select('data').eq('user_id', window._currentUser.id).eq('tool_name', 'aktionsplan_m9').maybeSingle();
+    if (!window._currentUser) return;
+    const result = await sbToolSelect('aktionsplan_m9');
     if (!result.data || !result.data.data) return;
     const d = result.data.data;
     if (d.zeitraum) document.getElementById('q-zeitraum').value = d.zeitraum;

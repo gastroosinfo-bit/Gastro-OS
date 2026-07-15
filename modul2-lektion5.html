@@ -43,9 +43,11 @@ p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
 .checkliste { background:#fff; border:1px solid #e8dfc8; border-radius:8px; padding:16px 20px; margin:20px 0 0; }
 .checkliste-lbl { font-size:11px; color:#1a2a4a; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
 .checkliste ul { list-style:none; padding:0; margin:0; }
-.checkliste li { font-size:14px; color:#2a3a54; padding:7px 0 7px 28px; position:relative; border-bottom:1px solid #f0ece4; line-height:1.55; }
+.checkliste li { font-size:14px; color:#2a3a54; padding:7px 0 7px 36px; position:relative; border-bottom:1px solid #f0ece4; line-height:1.55; cursor:pointer; transition:color 0.2s; }
 .checkliste li:last-child { border-bottom:none; }
-.checkliste li::before { content:'☐'; position:absolute; left:0; color:#d4af37; font-size:16px; line-height:1.2; }
+.checkliste li input[type=checkbox] { position:absolute; left:0; top:50%; transform:translateY(-50%); width:18px; height:18px; accent-color:#d4af37; cursor:pointer; }
+.checkliste li.done { color:#8090a8; text-decoration:line-through; }
+.checkliste-hint { font-size:11px; color:#8090a8; margin:-2px 0 10px; }
 .footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-lbl strong { color:#d4af37; }
 .footer-main { background:#1a2a4a; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
@@ -53,7 +55,6 @@ p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
 mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
 </style></head>
 <body>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 (function(){
   document.addEventListener('contextmenu',function(e){e.preventDefault();});
@@ -96,7 +97,7 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
 <div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 2</div><p>Plane jetzt dein nächstes Karten-Briefing: Wann? Welches Gericht wird vorgestellt? Wer probiert es vorher? Was ist die Botschaft an die Gäste? Schreib den Ablauf auf — 10 Minuten Vorbereitung für 100% mehr Team-Commitment.</p></div>
 
 <div class="fazit"><div class="fazit-lbl">🎯 Das Wichtigste auf einen Blick</div><ul><li>Karten-Optimierung ist kein Projekt das endet — es ist ein Kreislauf der immer läuft.</li><li>3 monatliche Karten-Kennzahlen: Ø DB/Portion · Ø Bon · Wareneinsatz%.</li><li>Das Team als Karten-Botschafter: Briefing + Verkosten + Begeisterung.</li><li>Nach 12 Monaten konsequenter Karten-Arbeit: eine komplett andere Marge.</li></ul></div>
-<div class="checkliste"><div class="checkliste-lbl">✅ Sofort-Checkliste — Das kannst du heute noch tun</div><ul><li>Monatliches Karten-Monitoring mit 3 Kennzahlen einrichten</li><li>Nächstes Team-Briefing zur aktuellen Karte planen</li><li>Team-Verkostung für nächstes saisonales Gericht einplanen</li><li>Modul 3 starten: systematischer Einkauf und Lieferantenmanagement</li></ul></div>
+<div class="checkliste"><div class="checkliste-lbl">✅ Sofort-Checkliste — Das kannst du heute noch tun</div><div class="checkliste-hint">👉 Klicke die Punkte an, die du erledigt hast — dein Fortschritt wird automatisch gespeichert.</div><ul><li><input type="checkbox" onchange="this.parentElement.classList.toggle('done',this.checked)"> Monatliches Karten-Monitoring mit 3 Kennzahlen einrichten</li><li><input type="checkbox" onchange="this.parentElement.classList.toggle('done',this.checked)"> Nächstes Team-Briefing zur aktuellen Karte planen</li><li><input type="checkbox" onchange="this.parentElement.classList.toggle('done',this.checked)"> Team-Verkostung für nächstes saisonales Gericht einplanen</li><li><input type="checkbox" onchange="this.parentElement.classList.toggle('done',this.checked)"> Modul 3 starten: systematischer Einkauf und Lieferantenmanagement</li></ul></div>
   
 <h3>Die Karte als Kommunikation deiner Marke</h3>
 <p>Deine Speisekarte kommuniziert mehr als Gerichte und Preise. Sie kommuniziert wer du bist. Eine Karte mit 60 Gerichten auf 8 Seiten kommuniziert: wir wollen für jeden etwas haben. Eine Karte mit 20 Gerichten auf 2 Seiten kommuniziert: wir wissen was wir können und stehen dazu.</p>

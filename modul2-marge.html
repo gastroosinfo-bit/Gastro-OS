@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Marge Tool — Deine Kalkulation auf einen Blick | GASTRO-OS</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
@@ -272,10 +271,28 @@ html { font-size: clamp(12px, 3.5vw, 16px); }
 <div class="footer-brand"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
 
 <script>
-const SUPABASE_URL = 'https://hchlganbgjeciwhwaisj.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhjaGxnYW5iZ2plY2l3aHdhaXNqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYyMzA0NjAsImV4cCI6MjA5MTgwNjQ2MH0.mA6oAPJCCgFq5LIUPFDGM0WI_le6STHTuGiwLtGMgu8';
-const { createClient } = supabase;
-const sb = createClient(SUPABASE_URL, SUPABASE_KEY, { global: { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } } });
+
+// ─── GASTRO-OS: sichere Tool-Daten-Zugriffe ueber /api/tool-data statt direktem Supabase-Zugriff ───
+async function sbToolSelect(tool) {
+  try {
+    const res = await fetch('/api/tool-data?tool=' + encodeURIComponent(tool));
+    if (!res.ok) return { data: null };
+    const d = await res.json();
+    const content = (d && d.data) ? d.data : null;
+    if (!content || Object.keys(content).length === 0) return { data: null };
+    return { data: { data: content } };
+  } catch(e) { return { data: null }; }
+}
+async function sbToolUpsert(tool, data) {
+  try {
+    await fetch('/api/tool-data', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tool, data })
+    });
+  } catch(e) {}
+}
+
 const NUM_ROWS = 50;
 let currentUser = null;
 
@@ -397,7 +414,7 @@ async function saveData(){
     top5[i]={gericht:document.getElementById('t5g-'+i)?.value||'',db:document.getElementById('t5d-'+i)?.value||'',menge:document.getElementById('t5m-'+i)?.value||''};
   }
   try {
-    await sb.from('user_tool_data').upsert({user_id:currentUser.id,tool_name:'marge_tool_modul2',data:{rows,top5,updated:new Date().toISOString()},updated_at:new Date().toISOString()},{onConflict:'user_id,tool_name'});
+    await sbToolUpsert('marge_tool_modul2', {rows,top5,updated:new Date().toISOString()});
   } catch(e){}
   ['save-msg','save-msg1','save-msg2'].forEach(id=>{const el=document.getElementById(id);if(el){el.style.display='inline';setTimeout(()=>el.style.display='none',2500);}});
 }
@@ -409,7 +426,7 @@ async function loadData(){
     const d=await res.json();
     if(!d.valid){ window.location.href='login.html'; return; }
     currentUser={id:d.email,email:d.email};
-    const {data}=await sb.from('user_tool_data').select('data').eq('user_id',currentUser.id).eq('tool_name','marge_tool_modul2').maybeSingle();
+    const {data}=await sbToolSelect('marge_tool_modul2');
     if(!data?.data) return;
     const dd=data.data;
     if(dd.rows){
@@ -443,7 +460,7 @@ async function resetData(){
     const d=await res.json();
     if(!d.valid) return;
     currentUser={id:d.email,email:d.email};
-    await sb.from('user_tool_data').upsert({user_id:currentUser.id,tool_name:'marge_tool_modul2',data:{rows:{},top5:{},updated:new Date().toISOString()},updated_at:new Date().toISOString()},{onConflict:'user_id,tool_name'});
+    await sbToolUpsert('marge_tool_modul2', {rows:{},top5:{},updated:new Date().toISOString()});
   } catch(e){}
   location.reload();
 }

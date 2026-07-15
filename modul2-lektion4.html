@@ -43,16 +43,17 @@ p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
 .checkliste { background:#fff; border:1px solid #e8dfc8; border-radius:8px; padding:16px 20px; margin:20px 0 0; }
 .checkliste-lbl { font-size:11px; color:#1a2a4a; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
 .checkliste ul { list-style:none; padding:0; margin:0; }
-.checkliste li { font-size:14px; color:#2a3a54; padding:7px 0 7px 28px; position:relative; border-bottom:1px solid #f0ece4; line-height:1.55; }
+.checkliste li { font-size:14px; color:#2a3a54; padding:7px 0 7px 36px; position:relative; border-bottom:1px solid #f0ece4; line-height:1.55; cursor:pointer; transition:color 0.2s; }
 .checkliste li:last-child { border-bottom:none; }
-.checkliste li::before { content:'☐'; position:absolute; left:0; color:#d4af37; font-size:16px; line-height:1.2; }
+.checkliste li input[type=checkbox] { position:absolute; left:0; top:50%; transform:translateY(-50%); width:18px; height:18px; accent-color:#d4af37; cursor:pointer; }
+.checkliste li.done { color:#8090a8; text-decoration:line-through; }
+.checkliste-hint { font-size:11px; color:#8090a8; margin:-2px 0 10px; }
 .footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-lbl strong { color:#d4af37; }
 .footer-main { background:#1a2a4a; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-main strong { color:#d4af37; }mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
 </style></head>
 <body>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 (function(){
   document.addEventListener('contextmenu',function(e){e.preventDefault();});
@@ -97,7 +98,7 @@ p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
 <div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 2</div><p>Erstelle deinen Karten-Kalender für das nächste Jahr: Wann sind die 4 Karten-Reviews? Wann kommen saisonale Specials? Trage alles in den Kalender ein — heute noch.</p></div>
 
 <div class="fazit"><div class="fazit-lbl">🎯 Das Wichtigste auf einen Blick</div><ul><li>Saisonale Karten: günstigere Waren + frischere Qualität + Abwechslung für Stammgäste.</li><li>Karten-Entscheidungen treffen Kassendaten — nicht Bauchgefühl oder Kochstolz.</li><li>Quartals-Review: 4 Stunden pro Jahr die Tausende Euro Mehrgewinn bringen.</li><li>Die Karte ist kein Dokument — sie ist dein profitabelster Mitarbeiter.</li></ul></div>
-<div class="checkliste"><div class="checkliste-lbl">✅ Sofort-Checkliste — Das kannst du heute noch tun</div><ul><li>Karten-Kalender für das nächste Jahr erstellen</li><li>Nächsten Karten-Review Termin im Kalender eintragen</li><li>Marge-Tool und Analyse-Guide für aktuelle Karte vollständig ausfüllen</li><li>Modul 3 starten: Einkauf und Lieferanten</li></ul></div>
+<div class="checkliste"><div class="checkliste-lbl">✅ Sofort-Checkliste — Das kannst du heute noch tun</div><div class="checkliste-hint">👉 Klicke die Punkte an, die du erledigt hast — dein Fortschritt wird automatisch gespeichert.</div><ul><li><input type="checkbox" onchange="this.parentElement.classList.toggle('done',this.checked)"> Karten-Kalender für das nächste Jahr erstellen</li><li><input type="checkbox" onchange="this.parentElement.classList.toggle('done',this.checked)"> Nächsten Karten-Review Termin im Kalender eintragen</li><li><input type="checkbox" onchange="this.parentElement.classList.toggle('done',this.checked)"> Marge-Tool und Analyse-Guide für aktuelle Karte vollständig ausfüllen</li><li><input type="checkbox" onchange="this.parentElement.classList.toggle('done',this.checked)"> Modul 3 starten: Einkauf und Lieferanten</li></ul></div>
   
 <h3>Die Karte als lebendiges Dokument</h3>
 <p>Die Speisekarte ist kein Dokument das einmal erstellt und dann jahrelang unverändert bleibt. Sie ist ein lebendiges Instrument das sich mit deinem Betrieb, deinen Gästen und den Marktbedingungen mitentwickelt. Ein Gastronom, der seine Karte zweimal im Jahr systematisch reviewt hat langfristig immer eine stärkere Marge als einer der das nicht tut.</p>

@@ -43,16 +43,17 @@ p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
 .checkliste { background:#fff; border:1px solid #e8dfc8; border-radius:8px; padding:16px 20px; margin:20px 0 0; }
 .checkliste-lbl { font-size:11px; color:#1a2a4a; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
 .checkliste ul { list-style:none; padding:0; margin:0; }
-.checkliste li { font-size:14px; color:#2a3a54; padding:7px 0 7px 28px; position:relative; border-bottom:1px solid #f0ece4; line-height:1.55; }
+.checkliste li { font-size:14px; color:#2a3a54; padding:7px 0 7px 36px; position:relative; border-bottom:1px solid #f0ece4; line-height:1.55; cursor:pointer; transition:color 0.2s; }
 .checkliste li:last-child { border-bottom:none; }
-.checkliste li::before { content:'☐'; position:absolute; left:0; color:#d4af37; font-size:16px; line-height:1.2; }
+.checkliste li input[type=checkbox] { position:absolute; left:0; top:50%; transform:translateY(-50%); width:18px; height:18px; accent-color:#d4af37; cursor:pointer; }
+.checkliste li.done { color:#8090a8; text-decoration:line-through; }
+.checkliste-hint { font-size:11px; color:#8090a8; margin:-2px 0 10px; }
 .footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-lbl strong { color:#d4af37; }
 .footer-main { background:#1a2a4a; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-main strong { color:#d4af37; }mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
 </style></head>
 <body>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 (function(){
   document.addEventListener('contextmenu',function(e){e.preventDefault();});
@@ -98,7 +99,7 @@ p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
 <div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 2</div><p>Definiere jetzt eine konkrete Grenze die du diese Woche einführst. Nicht drei — eine. Was ist es? Ab wann gilt sie? Was passiert wenn sie überschritten wird? Schreib sie auf und teile sie mit deinem Team.</p></div>
 
 <div class="fazit"><div class="fazit-lbl">🎯 Das Wichtigste auf einen Blick</div><ul><li>Dauerstress ist kein Engagement — er ist das Signal dass das System fehlt.</li><li>4 Faktoren: Erreichbarkeit · fehlende Unternehmerzeit · Unersetzlichkeit · fehlende Erholung.</li><li>Der Kreislauf dreht sich von selbst — aussteigen braucht einen bewussten Schritt.</li><li>Eine Grenze diese Woche einführen — nicht zwanzig.</li></ul></div>
-<div class="checkliste"><div class="checkliste-lbl">✅ Sofort-Checkliste — Das kannst du heute noch tun</div><ul><li>Stressfaktor-Check ausfüllen: welche 4 Faktoren, wie stark?</li><li>Eine konkrete Grenze definieren und aufschreiben</li><li>Grenze mit Team kommunizieren</li><li>7 Tage testen: Telefon ab 21 Uhr stumm</li></ul></div>
+<div class="checkliste"><div class="checkliste-lbl">✅ Sofort-Checkliste — Das kannst du heute noch tun</div><div class="checkliste-hint">👉 Klicke die Punkte an, die du erledigt hast — dein Fortschritt wird automatisch gespeichert.</div><ul><li><input type="checkbox" onchange="this.parentElement.classList.toggle('done',this.checked)"> Stressfaktor-Check ausfüllen: welche 4 Faktoren, wie stark?</li><li><input type="checkbox" onchange="this.parentElement.classList.toggle('done',this.checked)"> Eine konkrete Grenze definieren und aufschreiben</li><li><input type="checkbox" onchange="this.parentElement.classList.toggle('done',this.checked)"> Grenze mit Team kommunizieren</li><li><input type="checkbox" onchange="this.parentElement.classList.toggle('done',this.checked)"> 7 Tage testen: Telefon ab 21 Uhr stumm</li></ul></div>
   
 <h3>Der Unterschied zwischen Erschöpfung und Erfüllung</h3>
 <p>Es gibt Gastronomen, die 60 Stunden pro Woche arbeiten und am Ende des Jahres sagen: es war intensiv aber erfüllend. Und es gibt Gastronomen, die 55 Stunden arbeiten und am Ende sagen: ich kann nicht mehr. Der Unterschied liegt nicht in der Stundenzahl — er liegt in der Art wie diese Stunden erlebt werden.</p>

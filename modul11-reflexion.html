@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Monats Reflexion – Modul 11 | GASTRO-OS</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
@@ -274,10 +273,28 @@ html { font-size: clamp(12px, 3.5vw, 16px); }
 <div class="footer" style="margin-top:40px;"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg &nbsp;|&nbsp; Modul 11: Unternehmer-Freiheit &amp; Lebensqualität</div>
 
 <script>
-const SUPABASE_URL='https://hchlganbgjeciwhwaisj.supabase.co';
-const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhjaGxnYW5iZ2plY2l3aHdhaXNqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYyMzA0NjAsImV4cCI6MjA5MTgwNjQ2MH0.mA6oAPJCCgFq5LIUPFDGM0WI_le6STHTuGiwLtGMgu8';
-const{createClient}=supabase;
-const sb=createClient(SUPABASE_URL,SUPABASE_KEY);
+
+// ─── GASTRO-OS: sichere Tool-Daten-Zugriffe ueber /api/tool-data statt direktem Supabase-Zugriff ───
+async function sbToolSelect(tool) {
+  try {
+    const res = await fetch('/api/tool-data?tool=' + encodeURIComponent(tool));
+    if (!res.ok) return { data: null };
+    const d = await res.json();
+    const content = (d && d.data) ? d.data : null;
+    if (!content || Object.keys(content).length === 0) return { data: null };
+    return { data: { data: content } };
+  } catch(e) { return { data: null }; }
+}
+async function sbToolUpsert(tool, data) {
+  try {
+    await fetch('/api/tool-data', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tool, data })
+    });
+  } catch(e) {}
+}
+
 let currentUser=null,saveTimer=null;
 
 const FIELDS=['r_monat','r_datum','z_umsatz_ziel','z_umsatz_ist','z_umsatz_vor','z_umsatz_ver','z_umsatz_bew','z_gewinn_ziel','z_gewinn_ist','z_gewinn_vor','z_gewinn_ver','z_gewinn_bew','z_waren_ziel','z_waren_ist','z_waren_vor','z_waren_ver','z_waren_bew','z_personal_ziel','z_personal_ist','z_personal_vor','z_personal_ver','z_personal_bew','z_bon_ziel','z_bon_ist','z_bon_vor','z_bon_ver','z_bon_bew','z_gaeste_ziel','z_gaeste_ist','z_gaeste_vor','z_gaeste_ver','z_gaeste_bew','z_google_ziel','z_google_ist','z_google_vor','z_google_ver','z_google_bew','z_sterne_ziel','z_sterne_ist','z_sterne_vor','z_sterne_ver','z_sterne_bew','t_stimmung','t_konflikte','t_prozess_gut','t_prozess_schlecht','t_ohne_mich','e_stunden','e_energie','e_freizeit','e_praesent','e_energie_plus','e_energie_minus','l_gut','l_anders','l_erkenntnis','l_fokus','l_ziel','v_stunden_start','v_stunden_heute','v_stunden_ver','v_energie_start','v_energie_heute','v_energie_ver','v_betrieb_start','v_betrieb_heute','v_betrieb_ver','v_gewinn_start','v_gewinn_heute','v_gewinn_ver','v_waren_start','v_waren_heute','v_waren_ver','v_lq_start','v_lq_heute','v_lq_ver'];
@@ -287,7 +304,7 @@ function fillData(d){if(!d)return;FIELDS.forEach(f=>{const el=document.getElemen
 
 async function saveData(){
   if(!currentUser)return;
-  await sb.from('user_tool_data').upsert({user_id:currentUser.id,tool_name:'modul11_reflexion',data:collectData(),updated_at:new Date().toISOString()},{onConflict:'user_id,tool_name'});
+  await sbToolUpsert('modul11_reflexion', collectData());
   const el=document.getElementById('save-status');
   if(el){el.style.display='inline';setTimeout(()=>{el.style.display='none';},2000);}
 }
@@ -295,7 +312,7 @@ function autosave(){clearTimeout(saveTimer);saveTimer=setTimeout(saveData,1500);
 
 async function init(){
   try{const res=await fetch('/api/verify-session');if(!res.ok){window.location.href='login.html';return;}const d=await res.json();if(!d.valid){window.location.href='login.html';return;}currentUser={id:d.email,email:d.email};}catch(e){window.location.href='login.html';return;}
-  const{data:td}=await sb.from('user_tool_data').select('data').eq('user_id',currentUser.id).eq('tool_name','modul11_reflexion').maybeSingle();
+  const{data:td}=await sbToolSelect('modul11_reflexion');
   if(td&&td.data)fillData(td.data);
 }
 init();

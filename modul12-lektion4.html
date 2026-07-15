@@ -43,9 +43,11 @@ p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
 .checkliste { background:#fff; border:1px solid #e8dfc8; border-radius:8px; padding:16px 20px; margin:20px 0 0; }
 .checkliste-lbl { font-size:11px; color:#1a2a4a; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
 .checkliste ul { list-style:none; padding:0; margin:0; }
-.checkliste li { font-size:14px; color:#2a3a54; padding:7px 0 7px 28px; position:relative; border-bottom:1px solid #f0ece4; line-height:1.55; }
+.checkliste li { font-size:14px; color:#2a3a54; padding:7px 0 7px 36px; position:relative; border-bottom:1px solid #f0ece4; line-height:1.55; cursor:pointer; transition:color 0.2s; }
 .checkliste li:last-child { border-bottom:none; }
-.checkliste li::before { content:'☐'; position:absolute; left:0; color:#d4af37; font-size:16px; line-height:1.2; }
+.checkliste li input[type=checkbox] { position:absolute; left:0; top:50%; transform:translateY(-50%); width:18px; height:18px; accent-color:#d4af37; cursor:pointer; }
+.checkliste li.done { color:#8090a8; text-decoration:line-through; }
+.checkliste-hint { font-size:11px; color:#8090a8; margin:-2px 0 10px; }
 .footer-lbl { margin-top:48px; padding-top:20px; border-top:2px solid #e8dfc8; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-lbl strong { color:#d4af37; }
 .footer-main { background:#1a2a4a; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
@@ -53,7 +55,6 @@ p { font-size:15px; line-height:1.85; color:#2a3a54; margin-bottom:16px; }
 mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
 </style></head>
 <body>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 (function(){
   document.addEventListener('contextmenu',function(e){e.preventDefault();});
@@ -99,7 +100,7 @@ mark { background:#fff8d6; color:#1a2a4a; padding:1px 3px; border-radius:2px; }
 <div class="aufgabe"><div class="aufgabe-lbl">✏️ Deine Aufgabe — Kapitel 2</div><p>Schreibe jetzt deinen persönlichen Weiterführungs-Plan: Was sind deine 3 Prioritäten für die nächsten 3 Monate? Welches Modul oder Tool willst du vertiefen? Wann ist deine nächste monatliche Reflexion? Das ist der Anfang von allem was folgt.</p></div>
 
 <div class="fazit"><div class="fazit-lbl">🎯 Das Wichtigste auf einen Blick</div><ul><li>Recruiting-System: Analyse → Anzeige → Onboarding → Feedback-Routine.</li><li>3 Säulen die dauerhaft halten: monatliche Zahlen · wöchentliche Führung · quartalsweise Strategie.</li><li>Gastro-OS endet nicht — es ist ein System das mit dir wächst.</li><li>Was zählt: Richtung, nicht Perfektion. Jeden Monat einen Schritt besser.</li></ul></div>
-<div class="checkliste"><div class="checkliste-lbl">✅ Sofort-Checkliste — Das kannst du heute noch tun</div><ul><li>30-Tage-Recruiting-Plan konkret aufschreiben</li><li>3 Prioritäten für die nächsten 3 Monate festlegen</li><li>Nächste monatliche Reflexion im Kalender eintragen</li><li>Herzlichen Glückwunsch — du hast Gastro-OS abgeschlossen! 🎉</li></ul></div>
+<div class="checkliste"><div class="checkliste-lbl">✅ Sofort-Checkliste — Das kannst du heute noch tun</div><div class="checkliste-hint">👉 Klicke die Punkte an, die du erledigt hast — dein Fortschritt wird automatisch gespeichert.</div><ul><li><input type="checkbox" onchange="this.parentElement.classList.toggle('done',this.checked)"> 30-Tage-Recruiting-Plan konkret aufschreiben</li><li><input type="checkbox" onchange="this.parentElement.classList.toggle('done',this.checked)"> 3 Prioritäten für die nächsten 3 Monate festlegen</li><li><input type="checkbox" onchange="this.parentElement.classList.toggle('done',this.checked)"> Nächste monatliche Reflexion im Kalender eintragen</li><li><input type="checkbox" onchange="this.parentElement.classList.toggle('done',this.checked)"> Herzlichen Glückwunsch — du hast Gastro-OS abgeschlossen! 🎉</li></ul></div>
   
 <h3>Das Team als Fundament des Betriebs</h3>
 <p>Ein Betrieb ist nicht seine Einrichtung, nicht sein Konzept, nicht seine Lage — ein Betrieb ist sein Team. Das klingt nach Klischee. Es ist die Realität die jeder Gastronom nach ein paar Jahren erkennt. Die schönste Einrichtung bringt nichts wenn das Team nicht lebt. Das beste Konzept scheitert wenn das Team es nicht trägt. Und die beste Lage verschwendet ihr Potenzial wenn die Menschen darin nicht für das sorgen was sie sollten.</p>
