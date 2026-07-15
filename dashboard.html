@@ -130,6 +130,10 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 </div>
 <div class="main">
 
+<div style="background:#fff8e1;border:1px solid #d4af37;border-radius:8px;padding:12px 18px;font-size:12.5px;color:#6b5a1a;margin-bottom:16px;line-height:1.5;">
+  ℹ️ <strong>So schaltest du das nächste Modul frei:</strong> Jedes Modul öffnet sich automatisch, sobald du das <strong>Quiz</strong> des vorherigen Moduls bestanden hast (mindestens 6 von 8 richtigen Antworten). Lektionen und Tools allein reichen dafür nicht aus — das Quiz ist der Schlüssel.
+</div>
+
 <!-- MODUL 0 -->
 <div class="module-card" id="modul-card-0">
   <div class="module-header" onclick="toggleModule(0)">
@@ -542,7 +546,7 @@ function lockCard(m) {
   const badge = document.getElementById('badge-' + m);
   if (badge) { badge.textContent = '🔒 Gesperrt'; badge.className = 'module-badge badge-locked'; }
   const sub = document.getElementById('subtitle-' + m);
-  if (sub) sub.textContent = 'Schließe Modul ' + (m-1) + ' ab, um fortzufahren';
+  if (sub) sub.textContent = '🔒 Bestehe das Quiz aus Modul ' + (m-1) + ', um dieses Modul freizuschalten';
   const content = document.getElementById('content-' + m);
   if (content) content.style.display = 'none';
 }
@@ -647,7 +651,7 @@ function renderLockedModules() {
     const locked = m > unlockedUpTo;
     const card = document.createElement('div');
     card.className = 'module-card' + (locked ? ' locked' : '');
-    card.innerHTML = `<div class="module-header no-click"><div class="module-left"><div class="module-number">${m}</div><div><div class="module-title">${MODUL_TITLES[m] || 'Modul ' + m}</div><div class="module-subtitle">${isNext ? '🎉 Es bleibt spannend — Inhalte folgen in Kürze.' : 'Schließe Modul ' + (m-1) + ' ab, um fortzufahren'}</div></div></div><span class="module-badge ${isNext ? 'badge-soon' : 'badge-locked'}">${isNext ? '⏳ Bald verfügbar' : '🔒 Gesperrt'}</span></div>`;
+    card.innerHTML = `<div class="module-header no-click"><div class="module-left"><div class="module-number">${m}</div><div><div class="module-title">${MODUL_TITLES[m] || 'Modul ' + m}</div><div class="module-subtitle">${isNext ? '🎉 Es bleibt spannend — Inhalte folgen in Kürze.' : '🔒 Bestehe das Quiz aus Modul ' + (m-1) + ', um dieses Modul freizuschalten'}</div></div></div><span class="module-badge ${isNext ? 'badge-soon' : 'badge-locked'}">${isNext ? '⏳ Bald verfügbar' : '🔒 Gesperrt'}</span></div>`;
     container.appendChild(card);
   }
 }
