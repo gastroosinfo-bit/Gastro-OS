@@ -12,7 +12,8 @@ const SESSION_DAYS = 30;
 // Zeitlich begrenzte Demo-Zugänge (z.B. für Kooperationspartner)
 // expires im Format 'YYYY-MM-DD'
 const DEMO_ACCESS = {
-  'westerwinter@dehoga-nrw.de': { expires: '2026-08-15' }
+  'westerwinter@dehoga-nrw.de': { expires: '2026-08-15' },
+  'franz.perner@wkbgld.at': { expires: '2026-08-15' }
 };
 
 function getDemoAccess(email) {
@@ -66,11 +67,13 @@ export default async function handler(req, res) {
   const isDemo = !!demoAccess;
   const hasFreeAccess = isBypass || isDemo;
 
-  // SCHRITT: check_email
+  // SCHRITT: check_email — prüft Whop + ob Passwort bereits gesetzt
   if (step === 'check_email') {
+
     if (!hasFreeAccess) {
+      // Whop-Prüfung
       const membershipRes = await fetch(
-`https://api.whop.com/v5/company/memberships?product_id=${WHOP_PRODUCT_ID}`,
+        `https://api.whop.com/v5/company/memberships?product_id=${WHOP_PRODUCT_ID}`,
         { headers: { 'Authorization': `Bearer ${WHOP_API_KEY}`, 'Content-Type': 'application/json' } }
       );
       if (!membershipRes.ok) {
@@ -100,13 +103,14 @@ export default async function handler(req, res) {
     return res.status(200).json({ hasPassword });
   }
 
-  // SCHRITT: login
+  // SCHRITT: login — Passwort prüfen + Session setzen
   if (step === 'login') {
     if (!password) {
       return res.status(400).json({ error: 'Passwort fehlt.' });
     }
 
     if (hasFreeAccess) {
+      // Bei Demo-Zugang: Session darf nicht länger laufen als der Demo-Zeitraum
       const customExpiryMs = isDemo ? demoAccess.expiryMs : null;
       const token = signSession(email, customExpiryMs);
       const maxAge = isDemo
