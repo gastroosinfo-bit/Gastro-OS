@@ -50,6 +50,24 @@ async function getProfile(email) {
   return data && data.length > 0 ? data[0] : null;
 }
 
+// Protokolliert jeden erfolgreichen Login (auch Demo-/Bypass-Zugänge) in der Tabelle login_log.
+// Fehler beim Protokollieren dürfen den Login selbst niemals blockieren, daher try/catch ohne throw.
+async function logLogin(email) {
+  try {
+    await fetch(`${SUPABASE_URL}/rest/v1/login_log`, {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_SERVICE_KEY,
+        'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email: email.toLowerCase() }),
+    });
+  } catch (e) {
+    // bewusst stumm — Logging darf den Login nicht gefährden
+  }
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -119,6 +137,7 @@ export default async function handler(req, res) {
       res.setHeader('Set-Cookie',
         `gastro_os_session=${token}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${maxAge}`
       );
+      await logLogin(email);
       return res.status(200).json({ success: true });
     }
 
@@ -136,6 +155,7 @@ export default async function handler(req, res) {
     res.setHeader('Set-Cookie',
       `gastro_os_session=${token}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${SESSION_DAYS * 86400}`
     );
+    await logLogin(email);
     return res.status(200).json({ success: true });
   }
 
