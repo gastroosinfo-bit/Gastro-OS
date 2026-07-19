@@ -72,7 +72,7 @@
       font-size: clamp(15px, 2vw, 18px);
       color: rgba(255,255,255,0.7);
       max-width: 520px;
-      margin: 0 auto 40px;
+      margin: 0 auto;
       font-weight: 300;
     }
     .cta-btn {
@@ -87,18 +87,14 @@
       text-decoration: none;
       letter-spacing: 0.02em;
       transition: background 0.2s, transform 0.15s;
+      border: none;
+      cursor: pointer;
     }
     .cta-btn:hover { background: var(--gold-light); transform: translateY(-2px); }
     .price-note {
       margin-top: 16px;
       font-size: 13px;
       color: rgba(255,255,255,0.45);
-    }
-    .pain {
-      background: var(--white);
-      padding: 64px 24px;
-      max-width: 760px;
-      margin: 0 auto;
     }
     .section-tag {
       display: inline-block;
@@ -109,6 +105,125 @@
       color: var(--gold);
       margin-bottom: 12px;
     }
+
+    /* Decision section */
+    .decision {
+      background: var(--white);
+      padding: 72px 24px;
+    }
+    .decision-inner {
+      max-width: 1040px;
+      margin: 0 auto;
+    }
+    .decision-grid {
+      display: grid;
+      grid-template-columns: 0.85fr 1.15fr;
+      gap: 56px;
+      align-items: start;
+    }
+    .decision-text h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(22px, 3.5vw, 32px);
+      color: var(--navy);
+      margin-bottom: 20px;
+      line-height: 1.3;
+    }
+    .decision-text p {
+      font-size: 16px;
+      color: var(--gray);
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+    .decision-text .lede {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 8px;
+    }
+    .divider {
+      width: 48px;
+      height: 3px;
+      background: var(--gold);
+      margin: 28px 0;
+    }
+    .claim-highlight {
+      background: var(--cream-dark);
+      border-left: 3px solid var(--gold);
+      padding: 16px 20px;
+      font-size: 15px;
+      color: var(--navy);
+      border-radius: 4px;
+      margin: 0 0 28px;
+      line-height: 1.7;
+      text-align: left;
+    }
+    .origin-story {
+      font-size: 15px;
+      color: var(--gray);
+      background: var(--cream);
+      border-radius: 6px;
+      padding: 22px 24px;
+      line-height: 1.8;
+    }
+    .origin-story strong {
+      color: var(--navy);
+    }
+
+    /* Shared accordion styling (used by both info dropdowns and FAQ) */
+    .faq-item {
+      border: 1px solid rgba(28,35,64,0.1);
+      border-radius: 6px;
+      margin-bottom: 8px;
+      overflow: hidden;
+      background: var(--white);
+    }
+    .faq-q {
+      width: 100%;
+      background: var(--white);
+      border: none;
+      text-align: left;
+      padding: 18px 20px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: var(--navy);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      transition: background 0.15s;
+    }
+    .faq-q:hover { background: var(--cream); }
+    .faq-q .plus {
+      font-size: 20px;
+      color: var(--gold);
+      flex-shrink: 0;
+      transition: transform 0.2s;
+      font-weight: 300;
+    }
+    .faq-q.open { background: var(--navy); color: var(--white); }
+    .faq-q.open .plus { transform: rotate(45deg); color: var(--gold-light); }
+    .faq-a {
+      display: none;
+      padding: 14px 20px 18px;
+      background: var(--cream);
+      font-size: 14.5px;
+      color: var(--gray);
+      line-height: 1.7;
+    }
+    .faq-a.open { display: block; }
+
+    .decision-dropdowns .eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 14px;
+      display: block;
+    }
+
     .benefits {
       background: var(--navy);
       padding: 64px 24px;
@@ -170,20 +285,45 @@
       line-height: 1.75;
     }
     .growing p strong { color: var(--gold); }
-    .pricing {
-      background: var(--white);
+    .faq {
+      background: var(--cream);
       padding: 64px 24px;
+    }
+    .faq-inner {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .faq h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(22px, 3vw, 30px);
+      color: var(--navy);
+      margin-bottom: 40px;
+    }
+
+    .final-cta {
+      background: var(--navy);
+      padding: 72px 24px;
       text-align: center;
+    }
+    .final-cta .final-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(20px, 3vw, 30px);
+      color: var(--white);
+      margin-bottom: 32px;
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
     }
     .price-card {
       max-width: 480px;
       margin: 0 auto;
-      border: 2px solid var(--navy);
+      border: 2px solid var(--gold-light);
       border-radius: 8px;
       overflow: hidden;
+      text-align: center;
     }
     .price-card-header {
-      background: var(--navy);
+      background: rgba(255,255,255,0.06);
       padding: 28px 32px;
       color: var(--white);
     }
@@ -205,74 +345,18 @@
     }
     .price-card-body {
       padding: 28px 32px;
-      background: var(--cream);
-    }
-    .price-card-body p {
-      font-size: 15px;
-      color: var(--gray);
-      margin-bottom: 24px;
-      line-height: 1.65;
-    }
-    .price-card-body .cta-btn {
-      display: block;
-      text-align: center;
-    }
-    .faq {
-      background: var(--cream);
-      padding: 64px 24px;
-    }
-    .faq-inner {
-      max-width: 720px;
-      margin: 0 auto;
-    }
-    .faq h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(22px, 3vw, 30px);
-      color: var(--navy);
-      margin-bottom: 40px;
-    }
-    .faq-item {
-      border: 1px solid rgba(28,35,64,0.1);
-      border-radius: 6px;
-      margin-bottom: 8px;
-      overflow: hidden;
-    }
-    .faq-q {
-      width: 100%;
       background: var(--white);
-      border: none;
-      text-align: left;
-      padding: 20px 24px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--navy);
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      transition: background 0.15s;
     }
-    .faq-q:hover { background: var(--cream); }
-    .faq-q .plus {
-      font-size: 20px;
-      color: var(--gold);
-      flex-shrink: 0;
-      transition: transform 0.2s;
-      font-weight: 300;
-    }
-    .faq-q.open { background: var(--navy); color: var(--white); }
-    .faq-q.open .plus { transform: rotate(45deg); color: var(--gold-light); }
-    .faq-a {
-      display: none;
-      padding: 16px 24px 20px;
-      background: var(--cream);
+    .price-card-body > p {
       font-size: 15px;
       color: var(--gray);
-      line-height: 1.7;
+      line-height: 1.65;
+      margin-bottom: 20px;
     }
-    .faq-a.open { display: block; }
+    .price-card-body .claim-highlight {
+      text-align: left;
+      margin-bottom: 24px;
+    }
     .footer {
       background: var(--navy);
       color: rgba(255,255,255,0.5);
@@ -282,9 +366,16 @@
     }
     .footer a { color: var(--gold-light); text-decoration: none; }
     .footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 780px) {
+      .decision-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+    }
     @media (max-width: 600px) {
       .hero { padding: 48px 20px 64px; }
-      .benefits-inner, .faq-inner { padding-left: 0; padding-right: 0; }
+      .decision { padding: 56px 20px; }
     }
   </style>
   <!-- Google tag (gtag.js) -->
@@ -302,19 +393,76 @@
 <section class="hero">
   <div class="logo-badge">GASTRO-OS · System · Strategie · Erfolg</div>
   <h1>Die Schritt-für-Schritt-Anleitung für dein <em>automatisiertes</em> Gastronomie-Business</h1>
-  <p class="hero-sub">Für Inhaber von Restaurants, Cafés, Bistros und Gaststätten die bereit sind, ihren Betrieb wie ein Unternehmer zu führen.</p>
-  <a href="https://whop.com/gastro-os-81b8/starten/" class="cta-btn">Jetzt Zugriff erhalten</a>
-  <p class="price-note">299 € / Monat · Monatlich kündbar</p>
-  <p class="price-note" style="margin-top: 10px; font-size: 14px; color: var(--gold-light); opacity: 1;">💡 Mit den Strategien aus GASTRO-OS senken Betriebe ihren Wareneinsatz oft um 5% oder mehr – schon das reicht, um dein Abo komplett zu refinanzieren.</p>
+  <p class="hero-sub">Für Inhaber von Restaurants, Cafés, Bistros und Gaststätten, die ihren Betrieb noch strukturierter und profitabler führen wollen.</p>
 </section>
 
-<section style="background: var(--white); padding: 64px 24px;">
-  <div style="max-width: 720px; margin: 0 auto;">
-    <h2 style="font-family: 'Playfair Display', serif; font-size: clamp(20px,3.5vw,30px); color: var(--navy); margin-bottom: 16px;">Dein Restaurant läuft – aber du läufst hinterher.</h2>
-    <p style="font-size: 16px; color: var(--gray); line-height: 1.8;">Du arbeitest 12, 14, manchmal 16 Stunden am Tag. Und trotzdem bleibt am Ende des Monats zu wenig übrig. Nicht weil du nicht hart genug arbeitest – sondern weil dir niemand gezeigt hat wie ein Gastronomiebetrieb wirklich funktioniert.</p>
-    <div style="width: 48px; height: 3px; background: var(--gold); margin: 32px 0;"></div>
-    <p style="font-size: 16px; font-weight: 600; color: var(--navy); margin-bottom: 8px;">Gastro-OS ändert das.</p>
-    <p style="font-size: 16px; color: var(--gray); line-height: 1.8;">Kein theoretischer Kurs. Kein leeres Motivationsgerede. Ein komplettes Betriebssystem für deinen Betrieb – mit Modulen, Tools, Videos und Podcasts direkt aus der Praxis.</p>
+<section class="decision">
+  <div class="decision-inner">
+    <div class="decision-grid">
+
+      <div class="decision-dropdowns accordion-group">
+        <span class="eyebrow">Mehr dazu</span>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggle(this)">Was ist genau in GASTRO-OS enthalten? <span class="plus">+</span></button>
+          <div class="faq-a">Ein komplettes Betriebssystem mit aufeinander aufbauenden Modulen, interaktiven Tools und Checklisten, Ankervideos zu jeder Lektion und dem Küchenfunk-Podcast für unterwegs. Alles direkt im Browser nutzbar, kein Download nötig.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggle(this)">Für wen ist das gemacht? <span class="plus">+</span></button>
+          <div class="faq-a">Für alle – egal ob du gerade erst übernommen hast oder schon seit Jahren im Geschäft bist. Die Inhalte sind Schritt für Schritt aufgebaut, so dass sie für Neueinsteiger genauso funktionieren wie für erfahrene Betriebsleiter, die trotzdem an einem Punkt feststecken.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggle(this)">Wie viel Zeit muss ich investieren? <span class="plus">+</span></button>
+          <div class="faq-a">Es gibt kein festes Pensum. GASTRO-OS passt sich deinem Alltag an – du gehst die Module in deinem eigenen Tempo durch, dann wenn du Zeit dafür hast.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggle(this)">Was unterscheidet GASTRO-OS von einem Berater oder Kurs? <span class="plus">+</span></button>
+          <div class="faq-a">Ein Berater ist irgendwann wieder weg, ein Kurs ist irgendwann durch. GASTRO-OS ist ein System, das dauerhaft nutzbar bleibt und laufend um neue Module, Tools und Inhalte erweitert wird – als Mitglied bekommst du das automatisch dazu.</div>
+        </div>
+
+        <span class="eyebrow" style="margin-top: 32px;">Häufig gestellte Fragen</span>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggle(this)">Was genau bekomme ich nach dem Kauf? <span class="plus">+</span></button>
+          <div class="faq-a">Sofortigen Zugang zu allen Modulen auf mein-gastro-system.de – mit Videos, Lektionen, Praxistools, Quizzen und Podcasts. Alles direkt im Browser, kein Download nötig.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggle(this)">Wie lange ist die Mindestlaufzeit? <span class="plus">+</span></button>
+          <div class="faq-a">Es gibt keine Mindestlaufzeit. Du startest monatlich und kannst jederzeit verlängern oder pausieren.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggle(this)">Gibt es eine Geld-zurück-Garantie? <span class="plus">+</span></button>
+          <div class="faq-a">Da GASTRO-OS ein digitales Produkt ist, zu dem du sofort vollen Zugriff auf alle Inhalte bekommst, gibt es keine gesonderte Geld-zurück-Garantie. Dafür bist du durch die monatliche Kündbarkeit jederzeit flexibel – ohne dass du dich langfristig bindest.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggle(this)">Brauche ich Vorwissen, um zu starten? <span class="plus">+</span></button>
+          <div class="faq-a">Nein. Die Module bauen Schritt für Schritt aufeinander auf – egal auf welchem Stand du gerade bist.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggle(this)">Bekomme ich auch neue Inhalte wenn ich bereits Mitglied bin? <span class="plus">+</span></button>
+          <div class="faq-a">Ja. GASTRO-OS wird laufend erweitert – neue Module, Tools und Inhalte kommen regelmäßig dazu. Als Mitglied profitierst du automatisch davon.</div>
+        </div>
+      </div>
+
+      <div class="decision-text">
+        <h2>Dein Restaurant läuft – aber du läufst hinterher.</h2>
+        <p>Du arbeitest 12, 14, manchmal 16 Stunden am Tag. Und trotzdem bleibt am Ende des Monats zu wenig übrig. Nicht weil du nicht hart genug arbeitest – sondern weil dir niemand gezeigt hat wie ein Gastronomiebetrieb wirklich funktioniert.</p>
+
+        <div class="divider"></div>
+
+        <p class="lede">Gastro-OS ändert das.</p>
+        <p>Kein theoretischer Kurs. Kein leeres Motivationsgerede. Ein komplettes Betriebssystem für deinen Betrieb – mit Modulen, Tools, Videos und Podcasts direkt aus der Praxis.</p>
+
+        <div class="origin-story">
+          <strong>Wie GASTRO-OS entstanden ist:</strong><br><br>
+          Ich bin Sandra. Bevor es GASTRO-OS gab, stand ich selbst jahrelang jeden Tag im eigenen Laden – morgens rein, abends raus. Und wenn der Laden zu war, ging die Arbeit erst richtig los: Einkaufslisten, Kalkulationen, Eventplanung, alles noch nach Feierabend. Die Arbeit, die niemand sieht. Irgendwann war klar: Das muss nicht in zehn verschiedenen Tools und Excel-Listen verteilt sein – es geht auch gebündelt, an einem Ort. Weil ich technisch selbst ziemlich fit bin, habe ich genau das selbst entwickelt. So ist GASTRO-OS entstanden.
+        </div>
+      </div>
+
+    </div>
   </div>
 </section>
 
@@ -339,49 +487,19 @@
   </div>
 </section>
 
-<section class="pricing">
-  <p class="section-tag">Jetzt starten</p>
+<section class="final-cta">
+  <p class="final-heading">Bereit deinen Betrieb wirklich in den Griff zu kriegen?</p>
   <div class="price-card">
     <div class="price-card-header">
       <h3>Gastro-OS</h3>
       <div class="price-amount">299 € <span>/ Monat</span></div>
     </div>
     <div class="price-card-body">
-      <p>Monatlich kündbar. Sofortiger Zugang zu allen Inhalten.</p>
-      <a href="https://whop.com/gastro-os-81b8/starten/" class="cta-btn">Zugriff erhalten →</a>
+      <p>Monatlich kündbar. Sofortiger Zugang zu allen Inhalten. Keine Mindestlaufzeit.</p>
+      <div class="claim-highlight">💡 Mit den Strategien aus GASTRO-OS senken Betriebe ihren Wareneinsatz oft um 5% oder mehr – schon das reicht, um dein Abo komplett zu refinanzieren.</div>
+      <a href="https://whop.com/gastro-os-81b8/starten/" class="cta-btn">Jetzt Zugriff erhalten</a>
     </div>
   </div>
-</section>
-
-<section class="faq">
-  <div class="faq-inner">
-    <h2>Häufig gestellte Fragen</h2>
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggle(this)">Für wen ist GASTRO-OS geeignet? <span class="plus">+</span></button>
-      <div class="faq-a">Für selbstständige Gastronomen – Restaurants, Cafés, Bistros und Gaststätten im DACH-Raum, die ihren Betrieb profitabler und strukturierter führen wollen.</div>
-    </div>
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggle(this)">Was genau bekomme ich nach dem Kauf? <span class="plus">+</span></button>
-      <div class="faq-a">Sofortigen Zugang zu allen 12 Modulen auf mein-gastro-system.de – mit Videos, Lektionen, Praxistools, Quizzen und Podcasts. Alles direkt im Browser, kein Download nötig.</div>
-    </div>
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggle(this)">Wie lange ist die Mindestlaufzeit? <span class="plus">+</span></button>
-      <div class="faq-a">Es gibt keine Mindestlaufzeit. Du startest monatlich und kannst jederzeit verlängern oder pausieren.</div>
-    </div>
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggle(this)">Was ist der Unterschied zu einem normalen Online-Kurs? <span class="plus">+</span></button>
-      <div class="faq-a">GASTRO-OS ist kein Kurs – es ist ein digitales Betriebssystem mit Tools die du dauerhaft in deinem Alltag nutzt.</div>
-    </div>
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggle(this)">Bekomme ich auch neue Inhalte wenn ich bereits Mitglied bin? <span class="plus">+</span></button>
-      <div class="faq-a">Ja. GASTRO-OS wird laufend erweitert – neue Module, Tools und Inhalte kommen regelmäßig dazu. Als Mitglied profitierst du automatisch davon.</div>
-    </div>
-  </div>
-</section>
-
-<section style="background: var(--navy); padding: 64px 24px; text-align: center;">
-  <p style="font-family: 'Playfair Display', serif; font-size: clamp(20px,3vw,30px); color: var(--white); margin-bottom: 24px; max-width: 500px; margin-left: auto; margin-right: auto;">Bereit deinen Betrieb wirklich in den Griff zu kriegen?</p>
-  <a href="https://whop.com/gastro-os-81b8/starten/" class="cta-btn">Jetzt Zugriff erhalten</a>
 </section>
 
 <footer class="footer">
@@ -390,9 +508,10 @@
 
 <script>
   function toggle(btn) {
+    const group = btn.closest('.accordion-group');
     const answer = btn.nextElementSibling;
     const isOpen = btn.classList.contains('open');
-    document.querySelectorAll('.faq-q').forEach(b => { b.classList.remove('open'); b.nextElementSibling.classList.remove('open'); });
+    group.querySelectorAll('.faq-q').forEach(b => { b.classList.remove('open'); b.nextElementSibling.classList.remove('open'); });
     if (!isOpen) { btn.classList.add('open'); answer.classList.add('open'); }
   }
 </script>
