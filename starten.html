@@ -230,7 +230,7 @@
       color: var(--white);
     }
     .benefits-inner {
-      max-width: 760px;
+      max-width: 900px;
       margin: 0 auto;
     }
     .benefits h2 {
@@ -240,9 +240,14 @@
     }
     .benefit-list {
       list-style: none;
-      display: flex;
-      flex-direction: column;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       gap: 16px;
+    }
+    @media (max-width: 640px) {
+      .benefit-list {
+        grid-template-columns: 1fr;
+      }
     }
     .benefit-list li {
       display: flex;
@@ -269,16 +274,6 @@
     .benefit-list li span {
       color: rgba(255,255,255,0.7);
       font-size: 14px;
-    }
-    .video-teaser {
-      margin-top: 40px;
-    }
-    .video-teaser p {
-      font-size: 14.5px;
-      color: var(--gold-light);
-      font-weight: 500;
-      margin-bottom: 16px;
-      text-align: center;
     }
     .video-wrapper {
       position: relative;
@@ -476,6 +471,10 @@
         <p class="lede">Gastro-OS ändert das.</p>
         <p>Kein theoretischer Kurs. Kein leeres Motivationsgerede. Ein komplettes Betriebssystem für deinen Betrieb – mit Modulen, Tools, Videos und Podcasts direkt aus der Praxis.</p>
 
+        <div class="video-wrapper" style="margin: 24px 0;">
+          <iframe src="https://www.youtube.com/embed/_VoIn7k5EEE" title="GASTRO-OS Video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+
         <div class="origin-story">
           <strong>Wie GASTRO-OS entstanden ist:</strong><br><br>
           Ich bin Sandra. Bevor es GASTRO-OS gab, stand ich selbst jahrelang jeden Tag im eigenen Laden – morgens rein, abends raus. Und wenn der Laden zu war, ging die Arbeit erst richtig los: Einkaufslisten, Kalkulationen, Eventplanung, alles noch nach Feierabend. Die Arbeit, die niemand sieht. Irgendwann war klar: Das muss nicht in zehn verschiedenen Tools und Excel-Listen verteilt sein – es geht auch gebündelt, an einem Ort. Weil ich technisch selbst ziemlich fit bin, habe ich genau das selbst entwickelt. So ist GASTRO-OS entstanden.
@@ -503,13 +502,6 @@
       <li><span class="icon">❓</span><div><strong>Kurzes Quiz zu jedem Modul</strong><span>Bestehen schaltet das nächste Modul frei.</span></div></li>
       <li><span class="icon">🎙️</span><div><strong>Praktischer Podcast</strong><span>Für unterwegs, wenn du einen Moment hast.</span></div></li>
     </ul>
-
-    <div class="video-teaser">
-      <p>👉 Schau auch mal kurz hier rein:</p>
-      <div class="video-wrapper">
-        <iframe src="https://www.youtube.com/embed/_VoIn7k5EEE" title="GASTRO-OS Video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-      </div>
-    </div>
   </div>
 </section>
 
