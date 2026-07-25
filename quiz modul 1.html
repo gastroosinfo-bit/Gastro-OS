@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mein Quiz</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #f5f4f0;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 2rem 1rem;
+  }
+  .quiz-wrap {
+    max-width: 640px;
+    width: 100%;
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 2rem 2rem 1.5rem;
+    border: 0.5px solid #e2e0d8;
+  }
+  .quiz-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+  .quiz-counter {
+    font-size: 14px;
+    color: #888;
+  }
+  .progress-bar {
+    height: 3px;
+    background: #ece9e0;
+    border-radius: 2px;
+    margin-bottom: 1.5rem;
+  }
+  .progress-fill {
+    height: 100%;
+    background: #3b6be0;
+    border-radius: 2px;
+    transition: width 0.3s ease;
+  }
+  .quiz-question {
+    font-size: 19px;
+    font-weight: 500;
+    color: #1a1a1a;
+    line-height: 1.45;
+    margin-bottom: 1.5rem;
+  }
+  .option-card {
+    border: 0.5px solid #e2e0d8;
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .option-card:hover:not(.locked) { border-color: #bbb; }
+  .option-card.correct { background: #edfbf3; border-color: #4abe82; }
+  .option-card.wrong { background: #fff3f3; border-color: #e57373; }
+  .option-card.locked { cursor: default; }
+  .option-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .option-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #888;
+    min-width: 18px;
+    margin-top: 2px;
+  }
+  .option-text {
+    font-size: 15px;
+    color: #1a1a1a;
+    line-height: 1.45;
+  }
+  .option-badge {
+    font-size: 12px;
+    font-weight: 500;
+    margin: 8px 0 5px 30px;
+  }
+  .option-badge.ok { color: #1a7a44; }
+  .option-badge.nok { color: #c0392b; }
+  .option-explanation {
+    font-size: 13px;
+    color: #666;
+    line-height: 1.5;
+    margin-left: 30px;
+  }
+  .quiz-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-top: 1.5rem;
+  }
+  .tipp-area { flex: 1; }
+  .tipp-btn {
+    background: none;
+    border: none;
+    font-size: 14px;
+    color: #888;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 0;
+  }
+  .tipp-content {
+    font-size: 13px;
+    color: #666;
+    margin-top: 8px;
+    line-height: 1.5;
+    padding: 10px 14px;
+    background: #f5f4f0;
+    border-radius: 8px;
+    display: none;
+    max-width: 380px;
+  }
+  .tipp-content.open { display: block; }
+  .weiter-btn {
+    background: #3b6be0;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 9px 22px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    opacity: 0.35;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+    margin-left: 16px;
+  }
+  .weiter-btn.active { opacity: 1; pointer-events: all; }
+  .weiter-btn.active:hover { background: #2f5bc4; }
+
+  /* Result screen */
+  .result-screen {
+    text-align: center;
+    padding: 2.5rem 1rem;
+  }
+  .result-emoji { font-size: 48px; margin-bottom: 1rem; }
+  .result-score {
+    font-size: 52px;
+    font-weight: 500;
+    color: #1a1a1a;
+    margin-bottom: 6px;
+  }
+  .result-label {
+    font-size: 15px;
+    color: #888;
+    margin-bottom: 2rem;
+  }
+  .result-msg {
+    font-size: 16px;
+    color: #444;
+    margin-bottom: 2rem;
+    line-height: 1.5;
+  }
+  .restart-btn {
+    background: #3b6be0;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 28px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .restart-btn:hover { background: #2f5bc4; }
+</style>
+</head>
+<body>
+<div class="quiz-wrap" id="quiz"></div>
+
+<script>
+/* =============================================
+   QUIZ-DATEN – hier deine Fragen eintragen
+   ============================================= */
+const QUIZ_TITEL = "Gastronomie & Betriebswirtschaft";
+
+const quizData = [
+  {
+    question: "Was ist der entscheidende Unterschied zwischen Umsatz und Gewinn, den ein Gastronom verstehen muss?",
+    tipp: "Denke an die Reihenfolge: erst kommt das Geld rein, dann gehen die Kosten raus.",
+    options: [
+      {
+        label: "A",
+        text: "Umsatz ist das gesamte eingenommene Geld, während Gewinn der Betrag ist, der nach Abzug aller Kosten verbleibt.",
+        explanation: "Diese Definition trennt klar zwischen dem Brutto-Geldfluss und dem tatsächlichen wirtschaftlichen Ertrag eines Betriebs.",
+        correct: true
+      },
+      {
+        label: "B",
+        text: "Umsatz ist das Ergebnis bewusster Entscheidungen, während Gewinn lediglich eine Glückssache im täglichen Geschäft ist.",
+        explanation: "Gewinn ist kein Zufall, sondern das Ergebnis bewusster Planung und Steuerung.",
+        correct: false
+      },
+      {
+        label: "C",
+        text: "Umsatz zeigt das Wachstum des Betriebs an, während Gewinn nur für die Tilgung von Krediten verwendet wird.",
+        explanation: "Der Gewinn ist die grundlegende Kennzahl für Überlebensfähigkeit – nicht nur ein Mittel zur Schuldentilgung.",
+        correct: false
+      }
+    ]
+  },
+  {
+    question: "Welche Maßnahme verbessert die Gewinnmarge eines Restaurants am direktesten?",
+    tipp: "Es geht nicht nur darum, mehr zu verdienen – sondern auch darum, was man ausgibt.",
+    options: [
+      {
+        label: "A",
+        text: "Die Öffnungszeiten verlängern, um mehr Gäste anzuziehen.",
+        explanation: "Längere Öffnungszeiten erhöhen zwar den Umsatz, steigern aber gleichzeitig Personal- und Betriebskosten.",
+        correct: false
+      },
+      {
+        label: "B",
+        text: "Den Wareneinsatz optimieren und Lebensmittelverschwendung konsequent reduzieren.",
+        explanation: "Der Wareneinsatz ist eine der größten Kostenpositionen – seine Reduzierung wirkt sich direkt auf den Gewinn aus.",
+        correct: true
+      },
+      {
+        label: "C",
+        text: "Die Speisekarte möglichst umfangreich gestalten, um jeden Geschmack zu treffen.",
+        explanation: "Eine zu große Karte erhöht Einkauf, Lagerhaltung und Verschwendung – das schadet der Marge.",
+        correct: false
+      }
+    ]
+  },
+  {
+    question: "Was versteht man unter dem Break-even-Point in einem Gastronomiebetrieb?",
+    tipp: "Null ist hier kein schlechtes Ergebnis – es ist der Startpunkt.",
+    options: [
+      {
+        label: "A",
+        text: "Der Punkt, ab dem der Betrieb schließen muss, weil die Schulden zu hoch sind.",
+        explanation: "Der Break-even-Point ist kein Krisenpunkt, sondern ein Planungswerkzeug zur Erreichung der Kostendeckung.",
+        correct: false
+      },
+      {
+        label: "B",
+        text: "Der Umsatz, bei dem alle Kosten gedeckt sind und weder Gewinn noch Verlust entsteht.",
+        explanation: "Ab diesem Punkt beginnt ein Betrieb, tatsächlich Gewinn zu erzielen – alles darüber ist Ertrag.",
+        correct: true
+      },
+      {
+        label: "C",
+        text: "Die maximale Anzahl an Gästen, die ein Lokal pro Abend bedienen kann.",
+        explanation: "Das beschreibt die Kapazität eines Betriebs, nicht seine finanzielle Gewinnschwelle.",
+        correct: false
+      }
+    ]
+  },
+  {
+    question: "Welche Kennzahl zeigt an, wie viel Prozent des Umsatzes für Lebensmittel ausgegeben wird?",
+    tipp: "Diese Zahl sollte in der Gastronomie typischerweise unter 35 % liegen.",
+    options: [
+      {
+        label: "A",
+        text: "Die Personalquote – sie misst den Anteil der Lohnkosten am Umsatz.",
+        explanation: "Die Personalquote bezieht sich auf Löhne und Gehälter, nicht auf Lebensmittelkosten.",
+        correct: false
+      },
+      {
+        label: "B",
+        text: "Der Deckungsbeitrag – er zeigt, was nach den variablen Kosten übrig bleibt.",
+        explanation: "Der Deckungsbeitrag ist eine wichtige Kennzahl, beschreibt aber nicht speziell die Lebensmittelkosten.",
+        correct: false
+      },
+      {
+        label: "C",
+        text: "Die Food Cost Quote – sie gibt den prozentualen Anteil der Wareneinsatzkosten am Umsatz an.",
+        explanation: "Die Food Cost Quote ist eine zentrale Steuerungsgröße in der Gastronomie und sollte regelmäßig überwacht werden.",
+        correct: true
+      }
+    ]
+  },
+  {
+    question: "Warum ist die Liquidität wichtiger als der Gewinn, wenn es ums Überleben eines Restaurants geht?",
+    tipp: "Ein Unternehmen kann profitabel sein und trotzdem zahlungsunfähig werden.",
+    options: [
+      {
+        label: "A",
+        text: "Weil Liquidität bedeutet, jederzeit Rechnungen und Löhne bezahlen zu können – auch wenn auf dem Papier Gewinn steht.",
+        explanation: "Viele Betriebe gehen nicht wegen mangelndem Gewinn pleite, sondern weil Geld nicht zum richtigen Zeitpunkt verfügbar ist.",
+        correct: true
+      },
+      {
+        label: "B",
+        text: "Weil Gewinn nur für Investitionen relevant ist und nichts mit dem laufenden Betrieb zu tun hat.",
+        explanation: "Gewinn ist sehr wohl relevant – er bildet die Basis für Investitionen und Wachstum.",
+        correct: false
+      },
+      {
+        label: "C",
+        text: "Weil Banken nur die Liquidität und niemals den Gewinn prüfen, bevor sie Kredite vergeben.",
+        explanation: "Banken prüfen sowohl Liquidität als auch Rentabilität und Eigenkapital bei der Kreditvergabe.",
+        correct: false
+      }
+    ]
+  }
+];
+
+/* =============================================
+   QUIZ-LOGIK – nichts ändern nötig
+   ============================================= */
+let currentQ = 0;
+let score = 0;
+let answered = false;
+let tippOpen = false;
+
+function render() {
+  const app = document.getElementById('quiz');
+  if (currentQ >= quizData.length) {
+    const pct = Math.round((score / quizData.length) * 100);
+    const emoji = pct === 100 ? '🏆' : pct >= 60 ? '👍' : '💪';
+    const msg = pct === 100
+      ? 'Perfekt! Du hast alle Fragen richtig beantwortet.'
+      : pct >= 60
+      ? 'Gut gemacht! Mit etwas Übung schaffst du bald 100 %.'
+      : 'Noch etwas Luft nach oben – starte nochmal und übe weiter!';
+    app.innerHTML = `
+      <div class="result-screen">
+        <div class="result-emoji">${emoji}</div>
+        <div class="result-score">${score} / ${quizData.length}</div>
+        <div class="result-label">Richtige Antworten (${pct} %)</div>
+        <div class="result-msg">${msg}</div>
+        <button class="restart-btn" onclick="restart()">Nochmal starten</button>
+      </div>`;
+    return;
+  }
+
+  const q = quizData[currentQ];
+  const progress = ((currentQ) / quizData.length) * 100;
+
+  app.innerHTML = `
+    <div class="quiz-header">
+      <span class="quiz-counter">${currentQ + 1} / ${quizData.length}</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" style="width:${progress}%"></div></div>
+    <div class="quiz-question">${q.question}</div>
+    <div id="options">
+      ${q.options.map((opt, i) => `
+        <div class="option-card" id="opt-${i}" onclick="select(${i})">
+          <div class="option-top">
+            <span class="option-label">${opt.label}.</span>
+            <span class="option-text">${opt.text}</span>
+          </div>
+          <div id="badge-${i}" style="display:none"></div>
+          <div id="expl-${i}" class="option-explanation" style="display:none">${opt.explanation}</div>
+        </div>`).join('')}
+    </div>
+    <div class="quiz-footer">
+      <div class="tipp-area">
+        <button class="tipp-btn" onclick="toggleTipp()">Tipp <span id="tipp-arrow">▾</span></button>
+        <div class="tipp-content" id="tipp-box">${q.tipp}</div>
+      </div>
+      <button class="weiter-btn" id="weiter-btn" onclick="next()">Weiter</button>
+    </div>`;
+
+  answered = false;
+  tippOpen = false;
+}
+
+function select(idx) {
+  if (answered) return;
+  answered = true;
+  const q = quizData[currentQ];
+  q.options.forEach((opt, i) => {
+    const card = document.getElementById('opt-' + i);
+    const badge = document.getElementById('badge-' + i);
+    const expl = document.getElementById('expl-' + i);
+    card.classList.add('locked');
+    if (opt.correct) {
+      card.classList.add('correct');
+      badge.innerHTML = `<div class="option-badge ok">✓ Richtige Antwort</div>`;
+      badge.style.display = 'block';
+      expl.style.display = 'block';
+    } else if (i === idx) {
+      card.classList.add('wrong');
+      badge.innerHTML = `<div class="option-badge nok">✗ Falsche Antwort</div>`;
+      badge.style.display = 'block';
+      expl.style.display = 'block';
+    }
+  });
+  if (q.options[idx].correct) score++;
+  document.getElementById('weiter-btn').classList.add('active');
+}
+
+function next() { currentQ++; render(); }
+function restart() { currentQ = 0; score = 0; render(); }
+function toggleTipp() {
+  tippOpen = !tippOpen;
+  document.getElementById('tipp-box').classList.toggle('open', tippOpen);
+  document.getElementById('tipp-arrow').textContent = tippOpen ? '▴' : '▾';
+}
+
+render();
+</script>
+</body>
+</html>

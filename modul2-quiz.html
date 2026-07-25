@@ -223,7 +223,7 @@ async function submitQuiz() {
     const opt=document.getElementById(`q${i}${g.toLowerCase()}`).closest('.antwort-option');
     const fb=document.getElementById(`fb-${i}`);
     if(g===k){ok++;opt.classList.add('correct');fb.textContent='✓ Richtig!';fb.className='feedback correct';}
-    else{opt.classList.add('wrong');document.getElementById(`q${i}${k.toLowerCase()}`).closest('.antwort-option').classList.add('correct');fb.textContent='✗ Leider falsch. Die richtige Antwort ist markiert.';fb.className='feedback wrong';}
+    else{opt.classList.add('wrong');fb.textContent='✗ Leider falsch.';fb.className='feedback wrong';}
     fb.style.display='block';
   }
   document.querySelectorAll('.antwort-option').forEach(o=>o.style.pointerEvents='none');
