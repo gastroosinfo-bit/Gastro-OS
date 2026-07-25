@@ -132,22 +132,27 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 </div>
 <div class="main">
 
-<!-- TOOLBOX — auf breiten Bildschirmen fixiert links außerhalb der Spalte, sonst oberhalb der Infobox -->
-<div class="module-card toolbox-elegant toolbox-sidebar" id="toolbox-card">
-  <div class="module-header" onclick="toggleToolbox()" style="padding:18px 22px;">
-    <div class="module-left"><div class="module-number toolbox-icon-circle">🧰</div><div><div class="module-title" style="letter-spacing:0.3px;">Toolbox</div><div class="module-subtitle" id="toolbox-subtitle" style="margin-top:3px;">Wird geladen …</div></div></div>
-    <div style="display:flex;align-items:center;gap:8px;"><span class="module-arrow" id="toolbox-arrow" style="color:#d4af37;">▼</span></div>
-  </div>
-  <div class="module-content" id="toolbox-content"></div>
-</div>
+<!-- Wrapper: Infobox in normalem Fluss, Toolbox auf breiten Screens absolut daran verankert (garantiert gleiche Oberkante) -->
+<div style="position:relative;">
 
-<!-- INFO: Modul-Freischaltung — volle Breite wie die Modul-Karten -->
-<div class="toolbox-elegant" style="padding:18px 22px;display:flex;gap:14px;align-items:flex-start;margin-bottom:16px;">
-  <div class="toolbox-icon-circle" style="flex-shrink:0;">ℹ️</div>
-  <div style="font-size:12.5px;color:#5a6a85;line-height:1.65;padding-top:2px;">
-    <div style="font-family:Georgia,serif;font-size:14.5px;color:#1a2a4a;margin-bottom:4px;">So schaltest du das nächste Modul frei</div>
-    Jedes Modul öffnet sich automatisch, sobald du das <strong style="color:#1a2a4a;">Quiz</strong> des vorherigen Moduls bestanden hast (mindestens 6 von 8 richtigen Antworten). Lektionen und Tools allein reichen dafür nicht aus — das Quiz ist der Schlüssel.
+  <!-- TOOLBOX -->
+  <div class="module-card toolbox-elegant toolbox-sidebar" id="toolbox-card">
+    <div class="module-header" onclick="toggleToolbox()" style="padding:18px 22px;">
+      <div class="module-left"><div class="module-number toolbox-icon-circle">🧰</div><div><div class="module-title" style="letter-spacing:0.3px;">Toolbox</div><div class="module-subtitle" id="toolbox-subtitle" style="margin-top:3px;">Wird geladen …</div></div></div>
+      <div style="display:flex;align-items:center;gap:8px;"><span class="module-arrow" id="toolbox-arrow" style="color:#d4af37;">▼</span></div>
+    </div>
+    <div class="module-content" id="toolbox-content"></div>
   </div>
+
+  <!-- INFO: Modul-Freischaltung — volle Breite wie die Modul-Karten -->
+  <div class="toolbox-elegant" style="padding:18px 22px;display:flex;gap:14px;align-items:flex-start;margin-bottom:16px;">
+    <div class="toolbox-icon-circle" style="flex-shrink:0;">ℹ️</div>
+    <div style="font-size:12.5px;color:#5a6a85;line-height:1.65;padding-top:2px;">
+      <div style="font-family:Georgia,serif;font-size:14.5px;color:#1a2a4a;margin-bottom:4px;">So schaltest du das nächste Modul frei</div>
+      Jedes Modul öffnet sich automatisch, sobald du das <strong style="color:#1a2a4a;">Quiz</strong> des vorherigen Moduls bestanden hast (mindestens 6 von 8 richtigen Antworten). Lektionen und Tools allein reichen dafür nicht aus — das Quiz ist der Schlüssel.
+    </div>
+  </div>
+
 </div>
 
 <style>
@@ -181,12 +186,12 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
   max-width: 280px;
   margin-bottom: 16px;
 }
-/* Ab genug Platz rechts neben der zentrierten Spalte: Toolbox fix in die linke Lücke setzen */
+/* Ab genug Platz links neben der zentrierten Spalte: Toolbox exakt auf Höhe der Infobox-Oberkante, deutlich weiter links */
 @media (min-width: 1300px) {
   .toolbox-sidebar {
-    position: fixed;
-    top: 150px;
-    left: max(24px, calc((100vw - 860px) / 2 - 300px));
+    position: absolute;
+    top: 0;
+    right: calc(100% + 20px);
     margin-bottom: 0;
   }
 }
