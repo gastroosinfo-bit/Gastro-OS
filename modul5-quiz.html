@@ -305,14 +305,15 @@ async function sbToolUpsert(tool, data) {
         const sel = antworten[i] ? [...antworten[i]] : [];
         const korSet = new Set(kor);
         isCorrect = sel.length === korSet.size && sel.every(v => korSet.has(v));
-        // Färben
+        // Färben — nur eigene Auswahl markieren, nicht die nicht gewählten richtigen Antworten
         ['A','B','C','D'].forEach(l => {
           const el = document.getElementById(`q${i}${l.toLowerCase()}`);
           if (!el) return;
           const opt = el.closest('.antwort-option');
           el.disabled = true;
-          if (korSet.has(l)) opt.classList.add('correct');
-          else if (antworten[i] && antworten[i].has(l)) opt.classList.add('wrong');
+          const wasSelected = antworten[i] && antworten[i].has(l);
+          if (wasSelected && korSet.has(l)) opt.classList.add('correct');
+          else if (wasSelected && !korSet.has(l)) opt.classList.add('wrong');
         });
       } else {
         const gew = antworten[i];
@@ -322,12 +323,11 @@ async function sbToolUpsert(tool, data) {
           opt.classList.add('correct');
         } else {
           opt.classList.add('wrong');
-          document.getElementById(`q${i}${kor.toLowerCase()}`).closest('.antwort-option').classList.add('correct');
         }
       }
 
       if (isCorrect) richtig++;
-      fb.textContent = isCorrect ? '✓ Richtig!' : '✗ Leider falsch. Die richtige(n) Antwort(en) ist/sind markiert.';
+      fb.textContent = isCorrect ? '✓ Richtig!' : '✗ Leider falsch.';
       fb.className = 'feedback ' + (isCorrect ? 'correct' : 'wrong');
       fb.style.display = 'block';
     }
