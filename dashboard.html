@@ -133,7 +133,7 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 <div class="main">
 
 <!-- TOOLBOX -->
-<div class="module-card" id="toolbox-card" style="border-color:#d4af37;">
+<div class="module-card" id="toolbox-card" style="border-color:#d4af37;max-width:480px;">
   <div class="module-header" onclick="toggleToolbox()">
     <div class="module-left"><div class="module-number" style="background:#d4af37;color:#1a2a4a;">🧰</div><div><div class="module-title">Toolbox — Alle freigeschalteten Tools</div><div class="module-subtitle" id="toolbox-subtitle">Wird geladen …</div></div></div>
     <div style="display:flex;align-items:center;gap:8px;"><span class="module-arrow" id="toolbox-arrow">▼</span></div>
@@ -469,20 +469,20 @@ const QUIZ_TOOL_NAMES = { 1:'quiz_modul1', 2:'quiz_modul2', 3:'quiz_modul3', 4:'
 // ─── Toolbox — echte interaktive Tools je Modul (keine Videos/Anleitungen/Mindmaps) ───
 // Ein Tool aus Modul N erscheint hier, sobald quizBestanden[N] true ist.
 const TOOLS_BY_MODULE = {
-  0:  [{ icon:'🧭', title:'Start-Check: Wo steht dein Betrieb wirklich?', href:'modul0-reflexion.html' }],
-  1:  [{ icon:'📊', title:'Unternehmer-Score', href:'modul1-score.html' }],
-  2:  [{ icon:'📊', title:'Analyse-Tool', href:'modul2-analyse.html' }, { icon:'📊', title:'Margen-Tool', href:'modul2-marge.html' }],
-  3:  [{ icon:'📊', title:'Einkaufs-Tool', href:'modul3-einkauf.html' }, { icon:'📊', title:'Lieferanten-Tool', href:'modul3-lieferanten.html' }],
-  4:  [{ icon:'📊', title:'BWA-Guide', href:'modul4-bwa-guide.html' }, { icon:'📊', title:'Gewinn-Tool', href:'modul4-gewinn.html' }, { icon:'📊', title:'Kostentreiber-Tool', href:'modul4-kostentreiber.html' }],
-  5:  [{ icon:'📊', title:'Wochenplaner', href:'modul5-wochenplaner.html' }],
-  6:  [{ icon:'📊', title:'Personalstruktur-Tool', href:'modul6-personalstruktur.html' }, { icon:'📊', title:'Feedback-Tool', href:'modul6-feedback.html' }],
-  7:  [{ icon:'📊', title:'Effizienzcheck', href:'modul7-effizienzcheck.html' }, { icon:'📊', title:'Kostenanalyse', href:'modul7-kostenanalyse.html' }],
-  8:  [{ icon:'📊', title:'Upselling-Tracker', href:'modul8-tracker.html' }],
-  9:  [{ icon:'🛒', title:'Social Media Starter Kit', href:'modul9-startkit.html' }, { icon:'📊', title:'Marketingplan', href:'modul9-marketingplan.html' }, { icon:'📊', title:'Aktionsplan', href:'modul9-aktionsplan.html' }],
-  10: [{ icon:'📊', title:'Fehlerreport', href:'modul10-fehlerreport.html' }, { icon:'📊', title:'Tool', href:'modul10-tool.html' }],
-  11: [{ icon:'📊', title:'Reflexion', href:'modul11-reflexion.html' }, { icon:'📊', title:'Sterne-Tool', href:'modul11-sterne.html' }],
-  12: [{ icon:'📊', title:'Recruiting-Tool', href:'modul12-recruiting.html' }],
-  13: [{ icon:'📊', title:'Krisencheck', href:'modul13-krisencheck.html' }]
+  0:  [{ icon:'🧭', title:'Start-Check', desc:'Analysiert, wo dein Betrieb aktuell wirklich steht.', href:'modul0-reflexion.html' }],
+  1:  [{ icon:'📊', title:'Unternehmer-Score', desc:'Zeigt, wie unternehmerisch du deinen Betrieb aktuell führst.', href:'modul1-score.html' }],
+  2:  [{ icon:'📊', title:'Analyse-Tool', desc:'Wertet deine Speisekarte nach Umsatz und Marge aus.', href:'modul2-analyse.html' }, { icon:'📊', title:'Margen-Tool', desc:'Berechnet die Deckungsbeiträge deiner Gerichte.', href:'modul2-marge.html' }],
+  3:  [{ icon:'📊', title:'Einkaufs-Tool', desc:'Behält deinen Wareneinsatz und Einkauf im Blick.', href:'modul3-einkauf.html' }, { icon:'📊', title:'Lieferanten-Tool', desc:'Vergleicht und verwaltet deine Lieferanten.', href:'modul3-lieferanten.html' }],
+  4:  [{ icon:'📊', title:'BWA-Guide', desc:'Hilft dir, deine BWA endlich zu verstehen.', href:'modul4-bwa-guide.html' }, { icon:'📊', title:'Gewinn-Tool', desc:'Berechnet deinen tatsächlichen Gewinn.', href:'modul4-gewinn.html' }, { icon:'📊', title:'Kostentreiber-Tool', desc:'Zeigt dir, was in deinem Betrieb am meisten Geld kostet.', href:'modul4-kostentreiber.html' }],
+  5:  [{ icon:'📊', title:'Wochenplaner', desc:'Plant Personal und Schichten strukturiert für die Woche.', href:'modul5-wochenplaner.html' }],
+  6:  [{ icon:'📊', title:'Personalstruktur-Tool', desc:'Bildet die Struktur und Rollen deines Teams ab.', href:'modul6-personalstruktur.html' }, { icon:'📊', title:'Feedback-Tool', desc:'Strukturiert Mitarbeitergespräche und Feedback.', href:'modul6-feedback.html' }],
+  7:  [{ icon:'📊', title:'Effizienzcheck', desc:'Prüft, wo in deinem Betrieb Zeit und Geld verloren gehen.', href:'modul7-effizienzcheck.html' }, { icon:'📊', title:'Kostenanalyse', desc:'Schlüsselt deine laufenden Kosten im Detail auf.', href:'modul7-kostenanalyse.html' }],
+  8:  [{ icon:'📊', title:'Upselling-Tracker', desc:'Verfolgt, wie gut Upselling bei dir im Betrieb funktioniert.', href:'modul8-tracker.html' }],
+  9:  [{ icon:'🛒', title:'Social Media Starter Kit', desc:'Liefert fertige Vorlagen für deinen Social-Media-Start.', href:'modul9-startkit.html' }, { icon:'📊', title:'Marketingplan', desc:'Baut dir einen einfachen Marketingplan in 15 Minuten.', href:'modul9-marketingplan.html' }, { icon:'📊', title:'Aktionsplan', desc:'Hält deine nächsten Marketing-Schritte konkret fest.', href:'modul9-aktionsplan.html' }],
+  10: [{ icon:'📊', title:'Fehlerreport', desc:'Zeigt typische Wachstumsfehler und wie du sie vermeidest.', href:'modul10-fehlerreport.html' }, { icon:'📊', title:'Skalierungs-Tool', desc:'Unterstützt dich beim strukturierten Wachstum deines Betriebs.', href:'modul10-tool.html' }],
+  11: [{ icon:'📊', title:'Reflexions-Tool', desc:'Hilft dir, deine Lebensqualität als Unternehmer zu reflektieren.', href:'modul11-reflexion.html' }, { icon:'📊', title:'Sterne-Tool', desc:'Bewertet, wie ausgeglichen dein Unternehmer-Alltag aktuell ist.', href:'modul11-sterne.html' }],
+  12: [{ icon:'📊', title:'Recruiting-Tool', desc:'Unterstützt dich beim Finden und Halten von Mitarbeitern.', href:'modul12-recruiting.html' }],
+  13: [{ icon:'📊', title:'Krisencheck', desc:'Prüft, wie krisenfest dein Betrieb aktuell aufgestellt ist.', href:'modul13-krisencheck.html' }]
 };
 let currentUser = null;
 let progress = {};
@@ -680,7 +680,7 @@ function renderToolbox() {
       item.className = 'content-item';
       item.style.textDecoration = 'none';
       item.style.color = 'inherit';
-      item.innerHTML = `<span class="item-icon">${tool.icon}</span><div class="item-info"><div class="item-title">${tool.title}</div><div style="font-size:10.5px;color:#8090a8;">aus Modul ${mod}</div></div><span class="item-link">Öffnen →</span>`;
+      item.innerHTML = `<span class="item-icon">${tool.icon}</span><div class="item-info"><div class="item-title">${tool.title}</div><div style="font-size:11.5px;color:#5a6a85;margin-top:1px;">${tool.desc || ''}</div><div style="font-size:10px;color:#a0aabd;margin-top:2px;">aus Modul ${mod}</div></div><span class="item-link">Öffnen →</span>`;
       container.appendChild(item);
     }
   }
