@@ -132,6 +132,15 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 </div>
 <div class="main">
 
+<!-- TOOLBOX -->
+<div class="module-card" id="toolbox-card" style="border-color:#d4af37;">
+  <div class="module-header" onclick="toggleToolbox()">
+    <div class="module-left"><div class="module-number" style="background:#d4af37;color:#1a2a4a;">🧰</div><div><div class="module-title">Toolbox — Alle freigeschalteten Tools</div><div class="module-subtitle" id="toolbox-subtitle">Wird geladen …</div></div></div>
+    <div style="display:flex;align-items:center;gap:8px;"><span class="module-arrow" id="toolbox-arrow">▼</span></div>
+  </div>
+  <div class="module-content" id="toolbox-content"></div>
+</div>
+
 <div style="background:#fff8e1;border:1px solid #d4af37;border-radius:8px;padding:12px 18px;font-size:12.5px;color:#6b5a1a;margin-bottom:16px;line-height:1.5;">
   ℹ️ <strong>So schaltest du das nächste Modul frei:</strong> Jedes Modul öffnet sich automatisch, sobald du das <strong>Quiz</strong> des vorherigen Moduls bestanden hast (mindestens 6 von 8 richtigen Antworten). Lektionen und Tools allein reichen dafür nicht aus — das Quiz ist der Schlüssel.
 </div>
@@ -456,6 +465,25 @@ const MODULE_ITEMS = { 0:7, 1:10, 2:12, 3:11, 4:12, 5:11, 6:13, 7:11, 8:11, 9:12
 const MODUL_TITLES = ['Das Gastro OS Prinzip','Unternehmer-Denken & Gewinn-Fokus','Speisekarte & Angebotssystem','Einkauf & Wareneinsatz','Zahlen verstehen & kontrollieren','Struktur & Organisation','Mitarbeiter führen statt nur reagieren','Kostenkontrolle & Effizienz','Umsatz smart steigern','Marketing & Sichtbarkeit','Wachstum & Skalierung','Freiheit & Lebensqualität','Mitarbeiter finden & halten','Krisen & Comeback'];
 const QUIZ_KEYS = { 1:'1-9', 2:'2-11', 3:'3-10', 4:'4-11', 5:'5-10', 6:'6-12', 7:'7-10', 8:'8-10', 9:'9-11', 10:'10-9', 11:'11-10', 12:'12-8', 13:'13-10' };
 const QUIZ_TOOL_NAMES = { 1:'quiz_modul1', 2:'quiz_modul2', 3:'quiz_modul3', 4:'quiz_modul4', 5:'quiz_modul5', 6:'quiz_modul6', 7:'quiz_modul7', 8:'quiz_modul8', 9:'quiz_modul9', 10:'quiz_modul10', 11:'quiz_modul11', 12:'quiz_modul12', 13:'quiz_modul13' };
+
+// ─── Toolbox — echte interaktive Tools je Modul (keine Videos/Anleitungen/Mindmaps) ───
+// Ein Tool aus Modul N erscheint hier, sobald quizBestanden[N] true ist.
+const TOOLS_BY_MODULE = {
+  0:  [{ icon:'🧭', title:'Start-Check: Wo steht dein Betrieb wirklich?', href:'modul0-reflexion.html' }],
+  1:  [{ icon:'📊', title:'Unternehmer-Score', href:'modul1-score.html' }],
+  2:  [{ icon:'📊', title:'Analyse-Tool', href:'modul2-analyse.html' }, { icon:'📊', title:'Margen-Tool', href:'modul2-marge.html' }],
+  3:  [{ icon:'📊', title:'Einkaufs-Tool', href:'modul3-einkauf.html' }, { icon:'📊', title:'Lieferanten-Tool', href:'modul3-lieferanten.html' }],
+  4:  [{ icon:'📊', title:'BWA-Guide', href:'modul4-bwa-guide.html' }, { icon:'📊', title:'Gewinn-Tool', href:'modul4-gewinn.html' }, { icon:'📊', title:'Kostentreiber-Tool', href:'modul4-kostentreiber.html' }],
+  5:  [{ icon:'📊', title:'Wochenplaner', href:'modul5-wochenplaner.html' }],
+  6:  [{ icon:'📊', title:'Personalstruktur-Tool', href:'modul6-personalstruktur.html' }, { icon:'📊', title:'Feedback-Tool', href:'modul6-feedback.html' }],
+  7:  [{ icon:'📊', title:'Effizienzcheck', href:'modul7-effizienzcheck.html' }, { icon:'📊', title:'Kostenanalyse', href:'modul7-kostenanalyse.html' }],
+  8:  [{ icon:'📊', title:'Upselling-Tracker', href:'modul8-tracker.html' }],
+  9:  [{ icon:'🛒', title:'Social Media Starter Kit', href:'modul9-startkit.html' }, { icon:'📊', title:'Marketingplan', href:'modul9-marketingplan.html' }, { icon:'📊', title:'Aktionsplan', href:'modul9-aktionsplan.html' }],
+  10: [{ icon:'📊', title:'Fehlerreport', href:'modul10-fehlerreport.html' }, { icon:'📊', title:'Tool', href:'modul10-tool.html' }],
+  11: [{ icon:'📊', title:'Reflexion', href:'modul11-reflexion.html' }, { icon:'📊', title:'Sterne-Tool', href:'modul11-sterne.html' }],
+  12: [{ icon:'📊', title:'Recruiting-Tool', href:'modul12-recruiting.html' }],
+  13: [{ icon:'📊', title:'Krisencheck', href:'modul13-krisencheck.html' }]
+};
 let currentUser = null;
 let progress = {};
 let quizBestanden = {};
@@ -537,6 +565,7 @@ async function init() {
 
   for (const m of [0,1,2,3,4,5,6,7,8,9,10,11,12,13]) renderProgress(m);
   renderLockedModules();
+  renderToolbox();
   openModuleFromHash();
 }
 
@@ -623,6 +652,42 @@ function toggleModule(m) {
   content.classList.toggle('open', !isOpen);
   if (arrow) arrow.classList.toggle('open', !isOpen);
   if (!isOpen) rememberModule(m);
+}
+
+function toggleToolbox() {
+  const content = document.getElementById('toolbox-content');
+  const arrow   = document.getElementById('toolbox-arrow');
+  if (!content) return;
+  const isOpen = content.classList.contains('open');
+  content.classList.toggle('open', !isOpen);
+  if (arrow) arrow.classList.toggle('open', !isOpen);
+}
+
+function renderToolbox() {
+  const container = document.getElementById('toolbox-content');
+  const subtitle  = document.getElementById('toolbox-subtitle');
+  if (!container) return;
+  container.innerHTML = '';
+  let count = 0;
+  for (const [modStr, tools] of Object.entries(TOOLS_BY_MODULE)) {
+    const mod = parseInt(modStr);
+    const unlocked = (mod === 0) || quizBestanden[mod];
+    if (!unlocked) continue;
+    for (const tool of tools) {
+      count++;
+      const item = document.createElement('a');
+      item.href = tool.href;
+      item.className = 'content-item';
+      item.style.textDecoration = 'none';
+      item.style.color = 'inherit';
+      item.innerHTML = `<span class="item-icon">${tool.icon}</span><div class="item-info"><div class="item-title">${tool.title}</div><div style="font-size:10.5px;color:#8090a8;">aus Modul ${mod}</div></div><span class="item-link">Öffnen →</span>`;
+      container.appendChild(item);
+    }
+  }
+  if (subtitle) subtitle.textContent = count + (count === 1 ? ' Tool freigeschaltet' : ' Tools freigeschaltet');
+  if (count === 0) {
+    container.innerHTML = '<div class="content-item" style="color:#8090a8;font-size:12.5px;">Noch keine Tools freigeschaltet — bestehe das Quiz aus Modul 1, um dein erstes Tool freizuschalten.</div>';
+  }
 }
 
 // Merkt sich automatisch das Modul, aus dem heraus ein Inhalt (Lektion, Tool, Quiz ...) geöffnet wird —
