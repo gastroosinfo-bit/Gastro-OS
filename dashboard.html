@@ -186,6 +186,12 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
   max-width: 280px;
   margin-bottom: 16px;
 }
+#toolbox-content.open {
+  max-height: 460px;
+  overflow-y: auto;
+}
+#toolbox-content.open::-webkit-scrollbar { width: 6px; }
+#toolbox-content.open::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 3px; }
 /* Ab genug Platz links neben der zentrierten Spalte: Toolbox exakt auf Höhe der Infobox-Oberkante, deutlich weiter links */
 @media (min-width: 1300px) {
   .toolbox-sidebar {
