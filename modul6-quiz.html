@@ -258,8 +258,7 @@ async function sbToolUpsert(tool, data) {
         fb.className = 'feedback correct';
       } else {
         opt.classList.add('wrong');
-        document.getElementById(`q${i}${kor.toLowerCase()}`).closest('.antwort-option').classList.add('correct');
-        fb.textContent = '✗ Leider falsch. Die richtige Antwort ist markiert.';
+        fb.textContent = '✗ Leider falsch.';
         fb.className = 'feedback wrong';
       }
       fb.style.display = 'block';

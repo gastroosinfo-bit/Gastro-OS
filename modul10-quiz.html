@@ -274,8 +274,7 @@ async function submitQuiz() {
       fb.className = 'feedback correct';
     } else {
       opt.classList.add('wrong');
-      document.getElementById(`q${qi}${korr.toLowerCase()}`).closest('.antwort-option').classList.add('correct');
-      fb.textContent = `✗ Leider falsch. Die richtige Antwort ist ${korr}.`;
+      fb.textContent = '✗ Leider falsch.';
       fb.className = 'feedback wrong';
     }
     fb.style.display = 'block';
@@ -292,15 +291,15 @@ async function submitQuiz() {
       const el = document.getElementById(`q${qi}${letter.toLowerCase()}`);
       if (!el) return;
       const opt = el.closest('.antwort-option');
-      if (korrSet.has(letter)) opt.classList.add('correct');
-      else if (gewSet.has(letter)) opt.classList.add('wrong');
+      if (korrSet.has(letter) && gewSet.has(letter)) opt.classList.add('correct');
+      else if (!korrSet.has(letter) && gewSet.has(letter)) opt.classList.add('wrong');
     });
     if (isCorrect) {
       richtig++;
       fb.textContent = '✓ Richtig!';
       fb.className = 'feedback correct';
     } else {
-      fb.textContent = `✗ Leider nicht ganz richtig. Richtig wären: ${korrArr.join(', ')}`;
+      fb.textContent = '✗ Leider nicht ganz richtig.';
       fb.className = 'feedback wrong';
     }
     fb.style.display = 'block';
