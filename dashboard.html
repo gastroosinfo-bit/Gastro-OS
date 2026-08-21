@@ -600,7 +600,7 @@ async function init() {
   if (INTERNAL_EMAILS.includes(userEmail.toLowerCase())) { for (let n = 1; n <= 13; n++) quizBestanden[n] = true; }
 
   // Demo-Zugänge (z.B. Kooperationspartner) — alle Module direkt offen, ohne Quiz-Fortschritt
-  const DEMO_UNLOCK_EMAILS = ["westerwinter@dehoga-nrw.de", "franz.perner@wkbgld.at"];
+  const DEMO_UNLOCK_EMAILS = ["westerwinter@dehoga-nrw.de", "franz.perner@wkbgld.at", "z.asel@dehogabw.de"];
   if (DEMO_UNLOCK_EMAILS.includes(userEmail.toLowerCase())) { for (let n = 1; n <= 13; n++) quizBestanden[n] = true; }
 
   document.getElementById('modul-card-2').style.display = 'block';
