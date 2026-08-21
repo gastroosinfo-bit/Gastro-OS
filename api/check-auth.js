@@ -13,7 +13,8 @@ const SESSION_DAYS = 30;
 // expires im Format 'YYYY-MM-DD'
 const DEMO_ACCESS = {
   'westerwinter@dehoga-nrw.de': { expires: '2026-08-15' },
-  'franz.perner@wkbgld.at': { expires: '2026-08-15' }
+  'franz.perner@wkbgld.at': { expires: '2026-08-15' },
+  'z.asel@dehogabw.de': { expires: '2026-09-04' }
 };
 
 function getDemoAccess(email) {
