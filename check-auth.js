@@ -1,5 +1,5 @@
+// api/check-auth.js
 const crypto = require('crypto');
-const { createClient } = require('@supabase/supabase-js');
 
 const WHOP_API_KEY = process.env.WHOP_API_KEY;
 const WHOP_PRODUCT_ID = process.env.WHOP_PRODUCT_ID;
@@ -9,10 +9,25 @@ const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
 const SESSION_DAYS = 30;
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
+// Zeitlich begrenzte Demo-Zugänge (z.B. für Kooperationspartner)
+// expires im Format 'YYYY-MM-DD'
+const DEMO_ACCESS = {
+  'westerwinter@dehoga-nrw.de': { expires: '2026-08-15' },
+  'franz.perner@wkbgld.at': { expires: '2026-08-15' },
+  'z.asel@dehogabw.de': { expires: '2026-09-04' },
+  'natascha.kummer@wkbgld.at': { expires: '2026-09-02' }
+};
 
-function signSession(email) {
-  const expires = Date.now() + SESSION_DAYS * 24 * 60 * 60 * 1000;
+function getDemoAccess(email) {
+  const entry = DEMO_ACCESS[email.toLowerCase()];
+  if (!entry) return null;
+  const expiryMs = new Date(entry.expires + 'T23:59:59').getTime();
+  if (Date.now() > expiryMs) return null; // abgelaufen
+  return { expiryMs };
+}
+
+function signSession(email, customExpiryMs) {
+  const expires = customExpiryMs || (Date.now() + SESSION_DAYS * 24 * 60 * 60 * 1000);
   const data = `${email}|${expires}`;
   const sig = crypto.createHmac('sha256', SESSION_SECRET).update(data).digest('hex');
   return Buffer.from(`${data}|${sig}`).toString('base64');
@@ -20,6 +35,39 @@ function signSession(email) {
 
 function hashPassword(password) {
   return crypto.createHmac('sha256', SESSION_SECRET).update(password).digest('hex');
+}
+
+async function getProfile(email) {
+  const response = await fetch(
+    `${SUPABASE_URL}/rest/v1/profiles?email=eq.${encodeURIComponent(email.toLowerCase())}&select=password_hash`,
+    {
+      headers: {
+        'apikey': SUPABASE_SERVICE_KEY,
+        'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}`,
+      }
+    }
+  );
+  if (!response.ok) return null;
+  const data = await response.json();
+  return data && data.length > 0 ? data[0] : null;
+}
+
+// Protokolliert jeden erfolgreichen Login (auch Demo-/Bypass-Zugänge) in der Tabelle login_log.
+// Fehler beim Protokollieren dürfen den Login selbst niemals blockieren, daher try/catch ohne throw.
+async function logLogin(email) {
+  try {
+    await fetch(`${SUPABASE_URL}/rest/v1/login_log`, {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_SERVICE_KEY,
+        'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email: email.toLowerCase() }),
+    });
+  } catch (e) {
+    // bewusst stumm — Logging darf den Login nicht gefährden
+  }
 }
 
 export default async function handler(req, res) {
@@ -35,14 +83,17 @@ export default async function handler(req, res) {
 
   const bypassList = BYPASS_EMAILS.split(',').map(e => e.trim().toLowerCase());
   const isBypass = bypassList.includes(email.toLowerCase());
+  const demoAccess = getDemoAccess(email); // null wenn kein Demo-Zugang oder abgelaufen
+  const isDemo = !!demoAccess;
+  const hasFreeAccess = isBypass || isDemo;
 
   // SCHRITT: check_email — prüft Whop + ob Passwort bereits gesetzt
   if (step === 'check_email') {
 
-    if (!isBypass) {
+    if (!hasFreeAccess) {
       // Whop-Prüfung
       const membershipRes = await fetch(
-        `https://api.whop.com/v5/company/memberships?product_id=${WHOP_PRODUCT_ID}&valid=true`,
+        `https://api.whop.com/v5/company/memberships?product_id=${WHOP_PRODUCT_ID}`,
         { headers: { 'Authorization': `Bearer ${WHOP_API_KEY}`, 'Content-Type': 'application/json' } }
       );
       if (!membershipRes.ok) {
@@ -67,13 +118,7 @@ export default async function handler(req, res) {
       }
     }
 
-    // Supabase: hat dieser User bereits ein Passwort?
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('password_hash')
-      .eq('email', email.toLowerCase())
-      .single();
-
+    const profile = await getProfile(email);
     const hasPassword = !!(profile && profile.password_hash);
     return res.status(200).json({ hasPassword });
   }
@@ -84,20 +129,21 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Passwort fehlt.' });
     }
 
-    if (isBypass) {
-      const token = signSession(email);
+    if (hasFreeAccess) {
+      // Bei Demo-Zugang: Session darf nicht länger laufen als der Demo-Zeitraum
+      const customExpiryMs = isDemo ? demoAccess.expiryMs : null;
+      const token = signSession(email, customExpiryMs);
+      const maxAge = isDemo
+        ? Math.floor((demoAccess.expiryMs - Date.now()) / 1000)
+        : SESSION_DAYS * 86400;
       res.setHeader('Set-Cookie',
-        `gastro_os_session=${token}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${SESSION_DAYS * 86400}`
+        `gastro_os_session=${token}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${maxAge}`
       );
+      await logLogin(email);
       return res.status(200).json({ success: true });
     }
 
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('password_hash')
-      .eq('email', email.toLowerCase())
-      .single();
-
+    const profile = await getProfile(email);
     if (!profile || !profile.password_hash) {
       return res.status(403).json({ error: 'Kein Passwort gesetzt. Bitte neu anmelden.' });
     }
@@ -111,6 +157,7 @@ export default async function handler(req, res) {
     res.setHeader('Set-Cookie',
       `gastro_os_session=${token}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${SESSION_DAYS * 86400}`
     );
+    await logLogin(email);
     return res.status(200).json({ success: true });
   }
 
