@@ -91,16 +91,31 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
   <div class="tab-panel active" id="panel-kassenbuch">
     <div class="section">
       <div class="section-head">Tageseintrag <span id="kb-datum-anzeige"></span></div>
-      <div class="grid3" style="margin-bottom:16px;">
-        <div class="field-group"><label>Datum</label><input type="date" id="kb-datum"></div>
-        <div class="field-group"><label>Einnahmen Kasse (€)</label><input type="number" step="0.01" id="kb-kasse" placeholder="0,00"></div>
-        <div class="field-group"><label>Einnahmen Karte (€)</label><input type="number" step="0.01" id="kb-karte" placeholder="0,00"></div>
+      <div class="field-group" style="margin-bottom:16px;max-width:220px;"><label>Datum</label><input type="date" id="kb-datum"></div>
+
+      <div style="font-size:11px;font-weight:700;color:#8090a8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Einnahmen</div>
+      <div class="grid3" style="margin-bottom:8px;">
+        <div class="field-group"><label>Kasse (€)</label><input type="number" step="0.01" id="kb-kasse" placeholder="0,00" onchange="kbZwischensumme()"></div>
+        <div class="field-group"><label>Karte (€)</label><input type="number" step="0.01" id="kb-karte" placeholder="0,00" onchange="kbZwischensumme()"></div>
+        <div class="field-group"><label>Lieferdienste (€)</label><input type="number" step="0.01" id="kb-lieferdienste" placeholder="0,00" onchange="kbZwischensumme()"></div>
       </div>
-      <div class="grid3" style="margin-bottom:16px;">
-        <div class="field-group"><label>Einnahmen Lieferdienste (€)</label><input type="number" step="0.01" id="kb-lieferdienste" placeholder="0,00"></div>
-        <div class="field-group"><label>Ausgaben Wareneinkauf (€)</label><input type="number" step="0.01" id="kb-wareneinkauf" placeholder="0,00"></div>
-        <div class="field-group"><label>Sonstige Ausgaben (€)</label><input type="number" step="0.01" id="kb-sonstiges" placeholder="0,00"></div>
+      <div style="margin-bottom:18px;font-size:13px;background:#f5f0e8;border-radius:8px;padding:10px 14px;">
+        <strong>Einnahmen gesamt:</strong> <span id="kb-zwischensumme-einnahmen">0,00 €</span>
       </div>
+
+      <div style="font-size:11px;font-weight:700;color:#8090a8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Ausgaben</div>
+      <div class="grid3" style="margin-bottom:8px;">
+        <div class="field-group"><label>Wareneinkauf (€)</label><input type="number" step="0.01" id="kb-wareneinkauf" placeholder="0,00" onchange="kbZwischensumme()"></div>
+        <div class="field-group"><label>Sonstige Ausgaben (€)</label><input type="number" step="0.01" id="kb-sonstiges" placeholder="0,00" onchange="kbZwischensumme()"></div>
+      </div>
+      <div style="margin-bottom:18px;font-size:13px;background:#f5f0e8;border-radius:8px;padding:10px 14px;">
+        <strong>Ausgaben gesamt:</strong> <span id="kb-zwischensumme-ausgaben">0,00 €</span>
+      </div>
+
+      <div style="margin-bottom:18px;font-size:14px;background:#1a2a4a;color:#d4af37;border-radius:8px;padding:12px 16px;">
+        <strong>Tagesergebnis:</strong> <span id="kb-zwischensumme-ergebnis">0,00 €</span>
+      </div>
+
       <div class="field-group" style="margin-bottom:16px;"><label>Notiz (optional)</label><input type="text" id="kb-notiz" placeholder="z. B. Grund für ungewöhnliche Ausgabe"></div>
       <button class="btn-add" onclick="kbSpeichernTag()">💾 Tag speichern</button>
       <span class="save-msg" id="kb-save-msg">✓ Gespeichert</span>
@@ -254,6 +269,18 @@ async function kbInit() {
   kassenbuchDaten = await toolLoad('tagesgeschaeft-kassenbuch');
   document.getElementById('kb-datum').value = heute();
   kbRenderTabelle();
+}
+function kbZwischensumme() {
+  const kasse = parseFloat(document.getElementById('kb-kasse').value) || 0;
+  const karte = parseFloat(document.getElementById('kb-karte').value) || 0;
+  const lieferdienste = parseFloat(document.getElementById('kb-lieferdienste').value) || 0;
+  const wareneinkauf = parseFloat(document.getElementById('kb-wareneinkauf').value) || 0;
+  const sonstiges = parseFloat(document.getElementById('kb-sonstiges').value) || 0;
+  const einnahmen = kasse + karte + lieferdienste;
+  const ausgaben = wareneinkauf + sonstiges;
+  document.getElementById('kb-zwischensumme-einnahmen').textContent = euro(einnahmen);
+  document.getElementById('kb-zwischensumme-ausgaben').textContent = euro(ausgaben);
+  document.getElementById('kb-zwischensumme-ergebnis').textContent = euro(einnahmen - ausgaben);
 }
 async function kbSpeichernTag() {
   const datum = document.getElementById('kb-datum').value;
