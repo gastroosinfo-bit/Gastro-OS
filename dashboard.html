@@ -138,6 +138,9 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
   <!-- SIDEBAR-GRUPPE: tägliche Tools + Modul-Tools zusammen EIN Positionierungs-Element -->
   <div class="toolbox-sidebar">
 
+    <!-- NEUE-NACHRICHTEN-HINWEIS -->
+    <div id="unread-banner" style="display:none;background:#c0392b;color:#fff;border-radius:8px;padding:10px 16px;font-size:12.5px;font-weight:600;margin-bottom:12px;text-align:center;"></div>
+
     <!-- BENACHRICHTIGUNGEN -->
     <div class="module-card toolbox-elegant" id="push-card" style="padding:14px 20px;margin-bottom:12px;">
       <div style="display:flex;align-items:center;gap:12px;">
@@ -644,6 +647,7 @@ async function init() {
   for (const m of [0,1,2,3,4,5,6,7,8,9,10,11,12,13]) renderProgress(m);
   renderLockedModules();
   renderTaeglicheTools();
+  unreadPruefen();
   pushStatusPruefen();
   renderToolbox();
   openModuleFromHash();
@@ -747,9 +751,11 @@ function toggleToolbox() {
 const ALWAYS_UNLOCKED_TOOLS = [
   { icon: '🗓️', title: 'Tagesgeschäft', desc: 'Kassenbuch, Temperaturen & Wareneingang – die täglichen Einträge an einem Ort.', href: 'tagesgeschaeft.html' },
   { icon: '📋', title: 'Übergabebuch', desc: 'Schichtübergabe – auch per PIN für Mitarbeiter ohne eigenen Zugang.', href: 'uebergabe.html',
-    pin: { zugangTool: 'uebergabe-zugang', setupEndpoint: '/api/uebergabe-setup', linkPath: 'uebergabe.html' } },
+    pin: { zugangTool: 'uebergabe-zugang', setupEndpoint: '/api/uebergabe-setup', linkPath: 'uebergabe.html' },
+    unread: { dataTool: 'tagesgeschaeft-schicht', lastSeenKey: 'uebergabe' } },
   { icon: '📅', title: 'Reservierungsbuch', desc: 'Reservierungen erfassen – auch per PIN für Mitarbeiter ohne eigenen Zugang.', href: 'reservierung.html',
-    pin: { zugangTool: 'reservierung-zugang', setupEndpoint: '/api/reservierung-setup', linkPath: 'reservierung.html' } },
+    pin: { zugangTool: 'reservierung-zugang', setupEndpoint: '/api/reservierung-setup', linkPath: 'reservierung.html' },
+    unread: { dataTool: 'reservierungen', lastSeenKey: 'reservierung' } },
   { icon: '📎', title: 'Belege', desc: 'Rechnungen von Lieferdiensten und Lieferanten zentral ablegen.', href: 'belegablage.html' }
 ];
 
@@ -825,6 +831,55 @@ async function dashToolLoad(tool) {
   } catch (e) { return {}; }
 }
 
+// ─── NEUE-NACHRICHTEN-ZÄHLER (Übergabebuch/Reservierungsbuch) ──────────────
+let unreadStatusCache = null;
+async function unreadStatusLaden() {
+  if (!unreadStatusCache) unreadStatusCache = await dashToolLoad('unread-status');
+  return unreadStatusCache;
+}
+async function unreadPruefen() {
+  const status = await unreadStatusLaden();
+  let gesamt = 0;
+  for (const tool of ALWAYS_UNLOCKED_TOOLS) {
+    if (!tool.unread) continue;
+    const idx = ALWAYS_UNLOCKED_TOOLS.indexOf(tool);
+    const lastSeen = status[tool.unread.lastSeenKey] || 0;
+    const data = await dashToolLoad(tool.unread.dataTool);
+    let items = data.items || [];
+    if (tool.unread.lastSeenKey === 'uebergabe') items = items.filter(i => i.autor !== 'Du');
+    const anzahl = items.filter(i => i.id > lastSeen).length;
+    const badge = document.getElementById('badge-' + idx);
+    if (badge) {
+      if (anzahl > 0) { badge.textContent = anzahl; badge.style.display = 'block'; }
+      else { badge.style.display = 'none'; }
+    }
+    gesamt += anzahl;
+  }
+  const banner = document.getElementById('unread-banner');
+  if (banner) {
+    if (gesamt > 0) {
+      banner.textContent = '🔔 ' + gesamt + (gesamt === 1 ? ' neue Nachricht' : ' neue Nachrichten') + ' im Übergabe- und Reservierungsbuch';
+      banner.style.display = 'block';
+    } else {
+      banner.style.display = 'none';
+    }
+  }
+}
+async function markiereAlsGelesen(lastSeenKey) {
+  const status = await unreadStatusLaden();
+  status[lastSeenKey] = Date.now();
+  await toolSaveGeneric('unread-status', status);
+}
+async function toolSaveGeneric(tool, data) {
+  try {
+    await fetch('/api/tool-data', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tool, data })
+    });
+  } catch (e) {}
+}
+
 function renderTaeglicheTools() {
   const container = document.getElementById('taegliche-tools');
   if (!container) return;
@@ -839,8 +894,9 @@ function renderTaeglicheTools() {
 
     const topRow = document.createElement('a');
     topRow.href = tool.href;
-    topRow.style.cssText = 'display:flex;align-items:center;gap:14px;text-decoration:none;color:inherit;margin-bottom:12px;';
-    topRow.innerHTML = `<div class="toolbox-icon-circle" style="flex-shrink:0;">${tool.icon}</div><div style="flex:1;"><div class="module-title" style="font-size:14px;">${tool.title}</div><div style="font-size:11.5px;color:#5a6a85;margin-top:2px;">${tool.desc}</div></div>`;
+    topRow.style.cssText = 'display:flex;align-items:center;gap:14px;text-decoration:none;color:inherit;margin-bottom:12px;position:relative;';
+    topRow.innerHTML = `<div class="toolbox-icon-circle" style="flex-shrink:0;position:relative;">${tool.icon}<span id="badge-${idx}" style="display:none;position:absolute;top:-6px;right:-6px;background:#c0392b;color:#fff;font-size:10px;font-weight:700;border-radius:10px;min-width:18px;height:18px;line-height:18px;text-align:center;padding:0 4px;">0</span></div><div style="flex:1;"><div class="module-title" style="font-size:14px;">${tool.title}</div><div style="font-size:11.5px;color:#5a6a85;margin-top:2px;">${tool.desc}</div></div>`;
+    if (tool.unread) topRow.onclick = () => markiereAlsGelesen(tool.unread.lastSeenKey);
     row.appendChild(topRow);
 
     const rightBox = document.createElement('div');
@@ -850,6 +906,7 @@ function renderTaeglicheTools() {
     openBtn.className = 'item-link';
     openBtn.style.whiteSpace = 'nowrap';
     openBtn.textContent = 'Öffnen →';
+    if (tool.unread) openBtn.onclick = () => markiereAlsGelesen(tool.unread.lastSeenKey);
     rightBox.appendChild(openBtn);
 
     if (tool.pin) {
