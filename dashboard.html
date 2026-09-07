@@ -135,11 +135,13 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 <!-- Wrapper: Infobox in normalem Fluss, Toolbox auf breiten Screens absolut daran verankert (garantiert gleiche Oberkante) -->
 <div style="position:relative;">
 
-  <!-- TOOLBOX -->
-  <div class="module-card toolbox-elegant toolbox-sidebar" id="toolbox-card">
-    <div style="font-size:10.5px;color:#8090a8;padding:10px 22px 0;line-height:1.4;">Neues Quiz bestanden = neues Tool hier.</div>
-    <div class="module-header" onclick="toggleToolbox()" style="padding:10px 22px 18px;">
-      <div class="module-left"><div class="module-number toolbox-icon-circle">🧰</div><div><div class="module-title" style="letter-spacing:0.3px;">Toolbox</div><div class="module-subtitle" id="toolbox-subtitle" style="margin-top:3px;">Wird geladen …</div></div></div>
+  <!-- TÄGLICHE TOOLS: jedes für sich, keine Dropdown-Verschachtelung -->
+  <div class="toolbox-sidebar" id="taegliche-tools"></div>
+
+  <!-- FREIGESCHALTETE MODUL-TOOLS: bleibt als Dropdown, da abhängig vom Quiz-Fortschritt -->
+  <div class="module-card toolbox-elegant toolbox-sidebar" id="toolbox-card" style="margin-top:16px;">
+    <div class="module-header" onclick="toggleToolbox()" style="padding:14px 22px;">
+      <div class="module-left"><div class="module-number toolbox-icon-circle" style="width:32px;height:32px;font-size:14px;">🔓</div><div><div class="module-title" style="letter-spacing:0.3px;font-size:14px;">Freigeschaltete Modul-Tools</div><div class="module-subtitle" id="toolbox-subtitle" style="margin-top:2px;">Wird geladen …</div></div></div>
       <div style="display:flex;align-items:center;gap:8px;"><span class="module-arrow" id="toolbox-arrow" style="color:#d4af37;">▼</span></div>
     </div>
     <div class="module-content" id="toolbox-content"></div>
@@ -628,6 +630,7 @@ async function init() {
 
   for (const m of [0,1,2,3,4,5,6,7,8,9,10,11,12,13]) renderProgress(m);
   renderLockedModules();
+  renderTaeglicheTools();
   renderToolbox();
   openModuleFromHash();
 }
@@ -724,6 +727,27 @@ function toggleToolbox() {
   const isOpen = content.classList.contains('open');
   content.classList.toggle('open', !isOpen);
   if (arrow) arrow.classList.toggle('open', !isOpen);
+}
+
+// Immer sichtbar, unabhängig von Modulen/Quiz — die drei täglichen Tagesgeschäft-Tools
+const ALWAYS_UNLOCKED_TOOLS = [
+  { icon: '🗓️', title: 'Tagesgeschäft', desc: 'Kassenbuch, Temperaturen & Wareneingang – die täglichen Einträge an einem Ort.', href: 'tagesgeschaeft.html' },
+  { icon: '📋', title: 'Übergabebuch', desc: 'Schichtübergabe – auch für Mitarbeiter ohne eigenen GASTRO-OS-Zugang per PIN nutzbar.', href: 'uebergabe.html' },
+  { icon: '📎', title: 'Belege', desc: 'Rechnungen von Lieferdiensten und Lieferanten zentral ablegen.', href: 'belegablage.html' }
+];
+
+function renderTaeglicheTools() {
+  const container = document.getElementById('taegliche-tools');
+  if (!container) return;
+  container.innerHTML = '';
+  for (const tool of ALWAYS_UNLOCKED_TOOLS) {
+    const card = document.createElement('a');
+    card.href = tool.href;
+    card.className = 'module-card toolbox-elegant';
+    card.style.cssText = 'display:flex;align-items:center;gap:14px;padding:16px 20px;text-decoration:none;color:inherit;margin-bottom:12px;';
+    card.innerHTML = `<div class="toolbox-icon-circle" style="flex-shrink:0;">${tool.icon}</div><div style="flex:1;"><div class="module-title" style="font-size:14px;">${tool.title}</div><div style="font-size:11.5px;color:#5a6a85;margin-top:2px;">${tool.desc}</div></div><span class="item-link" style="white-space:nowrap;">Öffnen →</span>`;
+    container.appendChild(card);
+  }
 }
 
 function renderToolbox() {
