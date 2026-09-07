@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Übergabebuch – GASTRO-OS</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
+.header{background:#1a2a4a;padding:14px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
+.brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
+.btn-back { background:#d4af37; color:#1a2a4a; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.btn-back:hover { background:#c8a030; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+.wrap { max-width:700px; margin:0 auto; padding:28px 24px 60px; }
+.tool-label { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:4px; }
+.tool-title { font-family:Georgia,serif; font-size:22px; color:#1a2a4a; margin-bottom:4px; }
+.tool-sub { font-size:13px; color:#5a6a80; margin-bottom:20px; }
+
+.section { background:#fff; border:1px solid #e8dfc8; border-radius:10px; padding:22px 26px; margin-bottom:20px; box-shadow:0 2px 6px rgba(0,0,0,0.04); }
+.section-head { background:#1a2a4a; color:#d4af37; font-size:13px; font-weight:700; letter-spacing:1px; padding:10px 14px; border-radius:6px; margin-bottom:16px; }
+
+.field-group { display:flex; flex-direction:column; gap:5px; margin-bottom:14px; }
+.field-group label { font-size:11px; font-weight:700; color:#8090a8; text-transform:uppercase; letter-spacing:0.5px; }
+.field-group input, .field-group textarea { border:1px solid #e0d8c8; border-radius:6px; padding:10px 12px; font-size:14px; color:#1a2a4a; background:#eaf2ff; font-family:inherit; }
+.field-group input:focus, .field-group textarea:focus { outline:none; border-color:#d4af37; background:#fff; }
+
+.btn-add { background:#1a6640; color:#fff; border:none; padding:10px 20px; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; }
+.btn-add:hover { background:#d4af37; color:#1a2a4a; }
+.btn-del { background:transparent; border:1px solid #c0392b; color:#c0392b; padding:5px 10px; border-radius:5px; font-size:11px; font-weight:600; cursor:pointer; }
+.btn-del:hover { background:#c0392b; color:#fff; }
+.save-msg { font-size:12px; color:#4aaa60; margin-left:10px; display:none; }
+.error-msg { font-size:12.5px; color:#c0392b; margin-top:8px; display:none; }
+
+.notiz-item { border-bottom:1px solid #f0e8d4; padding:12px 0; }
+.notiz-item:last-child { border-bottom:none; }
+.notiz-meta { font-size:11px; color:#8090a8; margin-bottom:4px; }
+.notiz-text { font-size:13px; color:#2a3a4a; line-height:1.5; }
+
+.zugang-box { background:#fff8e0; border:1px solid #d4af37; border-radius:8px; padding:16px 20px; margin-bottom:14px; }
+.zugang-box code { background:#1a2a4a; color:#d4af37; padding:6px 10px; border-radius:5px; font-size:13px; display:inline-block; margin-top:6px; word-break:break-all; }
+.hint { font-size:11.5px; color:#8090a8; margin-top:6px; }
+
+.pin-screen { text-align:center; padding:40px 20px; }
+.pin-input { font-size:24px; letter-spacing:8px; text-align:center; width:160px; padding:12px; border:2px solid #d4af37; border-radius:8px; margin:16px auto; display:block; }
+
+.footer-brand { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-brand strong { color:#d4af37; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <span class="brand">GASTRO-OS</span>
+  <a href="dashboard.html" class="btn-back" id="btn-dashboard" style="display:none;">← Zurück zum Dashboard</a>
+</div>
+<div class="gold-bar"></div>
+
+<div class="wrap">
+  <div class="tool-label">Toolbox · Täglich nutzbar</div>
+  <div class="tool-title">📋 Übergabebuch</div>
+  <div class="tool-sub" id="tool-sub-text">Wird geladen …</div>
+
+  <!-- ═══ MITARBEITER: PIN-EINGABE ═══ -->
+  <div id="pin-screen" class="section pin-screen" style="display:none;">
+    <div style="font-size:15px;margin-bottom:6px;">Bitte PIN eingeben</div>
+    <input type="password" inputmode="numeric" maxlength="4" class="pin-input" id="pin-input" placeholder="••••">
+    <button class="btn-add" onclick="pinPruefen()">Entsperren</button>
+    <div class="error-msg" id="pin-error">Falsche PIN, bitte nochmal versuchen.</div>
+  </div>
+
+  <!-- ═══ MITARBEITER: ÜBERGABEBUCH (nach PIN) ═══ -->
+  <div id="mitarbeiter-bereich" style="display:none;">
+    <div class="section">
+      <div class="section-head">Neuer Übergabe-Eintrag</div>
+      <textarea id="ma-text" rows="3" style="width:100%;border:1px solid #e0d8c8;border-radius:6px;padding:10px 12px;font-size:14px;font-family:inherit;" placeholder="Was ist wichtig für die nächste Schicht?"></textarea>
+      <button class="btn-add" style="margin-top:10px;" onclick="maEintragen()">💾 Eintragen</button>
+      <span class="save-msg" id="ma-save-msg">✓ Gespeichert</span>
+    </div>
+    <div class="section">
+      <div class="section-head">Verlauf</div>
+      <div id="ma-liste"></div>
+    </div>
+  </div>
+
+  <!-- ═══ INHABER: EINSTELLUNGEN + EIGENES ÜBERGABEBUCH ═══ -->
+  <div id="inhaber-bereich" style="display:none;">
+    <div class="section">
+      <div class="section-head">Zugang für Mitarbeiter</div>
+      <div id="zugang-eingerichtet" style="display:none;">
+        <div class="zugang-box">
+          Link für Mitarbeiter (z. B. als Lesezeichen oder in eine WhatsApp-Gruppe teilen):<br>
+          <code id="zugang-link"></code>
+        </div>
+        <div class="field-group" style="max-width:200px;">
+          <label>PIN ändern (4-stellig)</label>
+          <input type="password" inputmode="numeric" maxlength="4" id="neue-pin" placeholder="Neue PIN">
+        </div>
+        <button class="btn-add" onclick="pinAendern()">PIN speichern</button>
+        <span class="save-msg" id="pin-save-msg">✓ Gespeichert</span>
+      </div>
+      <div id="zugang-einrichten">
+        <div class="hint" style="margin-bottom:10px;">Noch kein Zugang eingerichtet. Leg jetzt eine 4-stellige PIN fest, die du an deine Mitarbeiter weitergibst.</div>
+        <div class="field-group" style="max-width:200px;">
+          <label>PIN festlegen (4-stellig)</label>
+          <input type="password" inputmode="numeric" maxlength="4" id="erste-pin" placeholder="PIN wählen">
+        </div>
+        <button class="btn-add" onclick="zugangEinrichten()">Zugang einrichten</button>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head">Verlauf</div>
+      <div id="inhaber-liste"></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer-brand"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+
+<script>
+function flashSaved(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.style.display = 'inline';
+  setTimeout(() => { el.style.display = 'none'; }, 2000);
+}
+function renderListe(containerId, items) {
+  const el = document.getElementById(containerId);
+  el.innerHTML = '';
+  const sorted = [...items].sort((a, b) => b.id - a.id);
+  if (sorted.length === 0) { el.innerHTML = '<span style="color:#8090a8;font-size:13px;">Noch keine Einträge.</span>'; return; }
+  sorted.forEach(s => {
+    const d = new Date(s.zeitpunkt);
+    const div = document.createElement('div');
+    div.className = 'notiz-item';
+    div.innerHTML = `<div class="notiz-meta">${d.toLocaleString('de-DE')} — ${s.autor || 'Mitarbeiter'}</div><div class="notiz-text">${s.text}</div>`;
+    el.appendChild(div);
+  });
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// Zwei Modi: Mitarbeiter (?u=CODE in der URL) oder Inhaber (eingeloggt).
+// ─────────────────────────────────────────────────────────────────────────
+const urlParams = new URLSearchParams(window.location.search);
+const codeAusUrl = urlParams.get('u');
+
+if (codeAusUrl) {
+  initMitarbeiterModus(codeAusUrl);
+} else {
+  initInhaberModus();
+}
+
+// ═══════════════ MITARBEITER-MODUS ═══════════════
+function initMitarbeiterModus(code) {
+  document.getElementById('tool-sub-text').textContent = 'Gib deine PIN ein, um Einträge zu lesen und neue hinzuzufügen.';
+  document.getElementById('pin-screen').style.display = 'block';
+  document.getElementById('pin-input').focus();
+
+  window.pinPruefen = async function() {
+    const pin = document.getElementById('pin-input').value.trim();
+    if (pin.length !== 4) return;
+    try {
+      const res = await fetch('/api/uebergabe-public', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code, pin })
+      });
+      if (!res.ok) {
+        document.getElementById('pin-error').style.display = 'block';
+        return;
+      }
+      const d = await res.json();
+      document.getElementById('pin-screen').style.display = 'none';
+      document.getElementById('mitarbeiter-bereich').style.display = 'block';
+      document.getElementById('tool-sub-text').textContent = 'Trag hier ein, was für die nächste Schicht wichtig ist.';
+      renderListe('ma-liste', d.items || []);
+
+      window.maEintragen = async function() {
+        const text = document.getElementById('ma-text').value.trim();
+        if (!text) return;
+        const res2 = await fetch('/api/uebergabe-public', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code, pin, action: 'add', text })
+        });
+        const d2 = await res2.json();
+        document.getElementById('ma-text').value = '';
+        flashSaved('ma-save-msg');
+        renderListe('ma-liste', d2.items || []);
+      };
+    } catch (e) {
+      document.getElementById('pin-error').style.display = 'block';
+    }
+  };
+}
+
+// ═══════════════ INHABER-MODUS ═══════════════
+async function initInhaberModus() {
+  try {
+    const res = await fetch('/api/verify-session');
+    if (!res.ok) { window.location.href = 'login.html'; return; }
+    const d = await res.json();
+    if (!d.valid) { window.location.href = 'login.html'; return; }
+  } catch (e) { window.location.href = 'login.html'; return; }
+
+  document.getElementById('btn-dashboard').style.display = 'inline-block';
+  document.getElementById('tool-sub-text').textContent = 'Richte den Zugang für deine Mitarbeiter ein und sieh alle Einträge.';
+  document.getElementById('inhaber-bereich').style.display = 'block';
+
+  const zugang = await toolLoad('uebergabe-zugang');
+  const schicht = await toolLoad('tagesgeschaeft-schicht');
+  renderListe('inhaber-liste', schicht.items || []);
+
+  if (zugang && zugang.code && zugang.pinHash) {
+    document.getElementById('zugang-eingerichtet').style.display = 'block';
+    document.getElementById('zugang-einrichten').style.display = 'none';
+    const link = window.location.origin + '/uebergabe.html?u=' + zugang.code;
+    document.getElementById('zugang-link').textContent = link;
+  } else {
+    document.getElementById('zugang-eingerichtet').style.display = 'none';
+    document.getElementById('zugang-einrichten').style.display = 'block';
+  }
+}
+async function toolLoad(tool) {
+  try {
+    const res = await fetch('/api/tool-data?tool=' + encodeURIComponent(tool));
+    if (!res.ok) return {};
+    const d = await res.json();
+    return (d && d.data) ? d.data : {};
+  } catch (e) { return {}; }
+}
+async function toolSave(tool, data) {
+  try {
+    await fetch('/api/tool-data', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tool, data })
+    });
+  } catch (e) {}
+}
+function zufallsCode() {
+  return Math.random().toString(36).slice(2, 10) + Math.random().toString(36).slice(2, 6);
+}
+async function zugangEinrichten() {
+  const pin = document.getElementById('erste-pin').value.trim();
+  if (pin.length !== 4) { alert('Bitte eine 4-stellige PIN eingeben.'); return; }
+  const code = zufallsCode();
+  await fetch('/api/uebergabe-setup', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ code, pin })
+  });
+  location.reload();
+}
+async function pinAendern() {
+  const pin = document.getElementById('neue-pin').value.trim();
+  if (pin.length !== 4) { alert('Bitte eine 4-stellige PIN eingeben.'); return; }
+  const zugang = await toolLoad('uebergabe-zugang');
+  await fetch('/api/uebergabe-setup', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ code: zugang.code, pin })
+  });
+  document.getElementById('neue-pin').value = '';
+  flashSaved('pin-save-msg');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tagesgeschäft – GASTRO-OS</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
+.header{background:#1a2a4a;padding:14px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
+.brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
+.btn-back { background:#d4af37; color:#1a2a4a; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.btn-back:hover { background:#c8a030; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+.wrap { max-width:900px; margin:0 auto; padding:28px 24px 60px; }
+.tool-label { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:4px; }
+.tool-title { font-family:Georgia,serif; font-size:22px; color:#1a2a4a; margin-bottom:4px; }
+.tool-sub { font-size:13px; color:#5a6a80; margin-bottom:20px; }
+
+.tabs { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:20px; border-bottom:2px solid #e8dfc8; padding-bottom:0; }
+.tab-btn { background:transparent; border:none; padding:10px 16px; font-size:12.5px; font-weight:700; color:#8090a8; cursor:pointer; border-bottom:3px solid transparent; transition:all 0.15s; white-space:nowrap; }
+.tab-btn:hover { color:#1a2a4a; }
+.tab-btn.active { color:#1a2a4a; border-bottom-color:#d4af37; }
+.tab-panel { display:none; }
+.tab-panel.active { display:block; }
+
+.section { background:#fff; border:1px solid #e8dfc8; border-radius:10px; padding:22px 26px; margin-bottom:20px; box-shadow:0 2px 6px rgba(0,0,0,0.04); }
+.section-head { background:#1a2a4a; color:#d4af37; font-size:13px; font-weight:700; letter-spacing:1px; padding:10px 14px; border-radius:6px; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center; }
+.section-head span { color:#a0b0c8; font-size:11px; font-weight:400; }
+
+.field-group { display:flex; flex-direction:column; gap:5px; }
+.field-group label { font-size:11px; font-weight:700; color:#8090a8; text-transform:uppercase; letter-spacing:0.5px; }
+.field-group input, .field-group select, .field-group textarea { border:1px solid #e0d8c8; border-radius:6px; padding:8px 12px; font-size:13px; color:#1a2a4a; background:#eaf2ff; font-family:inherit; }
+.field-group input:focus, .field-group select:focus, .field-group textarea:focus { outline:none; border-color:#d4af37; background:#fff; }
+.grid2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
+@media(max-width:640px){ .grid2,.grid3{ grid-template-columns:1fr; } }
+
+.btn-save { background:#1a2a4a; color:#d4af37; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; }
+.btn-save:hover { background:#d4af37; color:#1a2a4a; }
+.btn-add { background:#1a6640; color:#fff; border:none; padding:10px 20px; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; }
+.btn-add:hover { background:#d4af37; color:#1a2a4a; }
+.btn-del { background:transparent; border:1px solid #c0392b; color:#c0392b; padding:5px 10px; border-radius:5px; font-size:11px; font-weight:600; cursor:pointer; }
+.btn-del:hover { background:#c0392b; color:#fff; }
+.save-msg { font-size:12px; color:#4aaa60; margin-left:10px; display:none; }
+
+table.data-table { width:100%; border-collapse:collapse; font-size:12.5px; margin-top:14px; }
+table.data-table th { background:#f5f0e8; padding:8px 10px; font-size:11px; font-weight:700; color:#1a2a4a; text-align:left; border:1px solid #e8dfc8; }
+table.data-table td { padding:8px 10px; border:1px solid #e8dfc8; }
+table.data-table tr:nth-child(even) td { background:#faf8f4; }
+.ok-badge { color:#1a6640; font-weight:700; }
+.warn-badge { color:#c0392b; font-weight:700; }
+
+.notiz-item { border-bottom:1px solid #f0e8d4; padding:12px 0; }
+.notiz-item:last-child { border-bottom:none; }
+.notiz-meta { font-size:11px; color:#8090a8; margin-bottom:4px; }
+.notiz-text { font-size:13px; color:#2a3a4a; line-height:1.5; }
+
+.upload-drop { border:2px dashed #d4af37; border-radius:10px; padding:24px; text-align:center; color:#8090a8; font-size:13px; cursor:pointer; transition:all 0.15s; }
+.upload-drop:hover { background:#fdf8ea; }
+.hint { font-size:11.5px; color:#8090a8; margin-top:6px; }
+
+.geraet-tag { display:inline-flex; align-items:center; gap:6px; background:#f0f4ff; border:1px solid #d0d8e8; border-radius:20px; padding:5px 12px; font-size:12px; margin:0 6px 6px 0; }
+.geraet-tag button { background:none; border:none; color:#c0392b; cursor:pointer; font-size:13px; }
+
+.footer-brand { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-brand strong { color:#d4af37; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <span class="brand">GASTRO-OS</span>
+  <a href="dashboard.html" class="btn-back">← Zurück zum Dashboard</a>
+</div>
+<div class="gold-bar"></div>
+
+<div class="wrap">
+  <div class="tool-label">Toolbox · Täglich nutzbar</div>
+  <div class="tool-title">🗓️ Tagesgeschäft</div>
+  <div class="tool-sub">Alles, was du täglich in deinem Betrieb erfassen und dokumentieren musst – an einem Ort.</div>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="kassenbuch" onclick="switchTab('kassenbuch')">💶 Kassenbuch</button>
+    <button class="tab-btn" data-tab="haccp" onclick="switchTab('haccp')">🌡️ Temperaturen</button>
+    <button class="tab-btn" data-tab="wareneingang" onclick="switchTab('wareneingang')">🚚 Wareneingang</button>
+    <button class="tab-btn" data-tab="notizen" onclick="switchTab('notizen')">📝 Notizen</button>
+  </div>
+
+  <!-- ═══════════ KASSENBUCH ═══════════ -->
+  <div class="tab-panel active" id="panel-kassenbuch">
+    <div class="section">
+      <div class="section-head">Tageseintrag <span id="kb-datum-anzeige"></span></div>
+      <div class="grid3" style="margin-bottom:16px;">
+        <div class="field-group"><label>Datum</label><input type="date" id="kb-datum"></div>
+        <div class="field-group"><label>Einnahmen Kasse (€)</label><input type="number" step="0.01" id="kb-kasse" placeholder="0,00"></div>
+        <div class="field-group"><label>Einnahmen Karte (€)</label><input type="number" step="0.01" id="kb-karte" placeholder="0,00"></div>
+      </div>
+      <div class="grid3" style="margin-bottom:16px;">
+        <div class="field-group"><label>Einnahmen Lieferdienste (€)</label><input type="number" step="0.01" id="kb-lieferdienste" placeholder="0,00"></div>
+        <div class="field-group"><label>Ausgaben Wareneinkauf (€)</label><input type="number" step="0.01" id="kb-wareneinkauf" placeholder="0,00"></div>
+        <div class="field-group"><label>Sonstige Ausgaben (€)</label><input type="number" step="0.01" id="kb-sonstiges" placeholder="0,00"></div>
+      </div>
+      <div class="field-group" style="margin-bottom:16px;"><label>Notiz (optional)</label><input type="text" id="kb-notiz" placeholder="z. B. Grund für ungewöhnliche Ausgabe"></div>
+      <button class="btn-add" onclick="kbSpeichernTag()">💾 Tag speichern</button>
+      <span class="save-msg" id="kb-save-msg">✓ Gespeichert</span>
+    </div>
+
+    <div class="section">
+      <div class="section-head">Übersicht <span id="kb-monat-label"></span></div>
+      <div class="grid3" style="margin-bottom:6px;">
+        <div><strong>Einnahmen gesamt:</strong> <span id="kb-sum-einnahmen">0,00 €</span></div>
+        <div><strong>Ausgaben gesamt:</strong> <span id="kb-sum-ausgaben">0,00 €</span></div>
+        <div><strong>Ergebnis:</strong> <span id="kb-sum-ergebnis">0,00 €</span></div>
+      </div>
+      <table class="data-table" id="kb-tabelle">
+        <thead><tr><th>Datum</th><th>Einnahmen</th><th>Ausgaben</th><th>Ergebnis</th><th>Notiz</th><th></th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ═══════════ HACCP TEMPERATUREN ═══════════ -->
+  <div class="tab-panel" id="panel-haccp">
+    <div class="section">
+      <div class="section-head">Deine Kühlgeräte</div>
+      <div id="geraete-liste" style="margin-bottom:12px;"></div>
+      <div class="grid2">
+        <input type="text" id="neues-geraet" placeholder="z. B. Kühlhaus 1, Tiefkühltruhe" style="border:1px solid #e0d8c8;border-radius:6px;padding:8px 12px;font-size:13px;">
+        <button class="btn-add" onclick="geraetHinzufuegen()">+ Gerät hinzufügen</button>
+      </div>
+      <div class="hint">Lege hier einmal deine Kühlgeräte an – danach kannst du täglich schnell die Werte eintragen.</div>
+    </div>
+
+    <div class="section">
+      <div class="section-head">Heutige Messung <span id="haccp-datum-anzeige"></span></div>
+      <div class="field-group" style="margin-bottom:14px;"><label>Datum</label><input type="date" id="haccp-datum"></div>
+      <div id="haccp-eingabe-liste"></div>
+      <button class="btn-add" onclick="haccpSpeichernTag()" style="margin-top:10px;">💾 Werte speichern</button>
+      <span class="save-msg" id="haccp-save-msg">✓ Gespeichert</span>
+    </div>
+
+    <div class="section">
+      <div class="section-head">Verlauf (letzte 14 Tage)</div>
+      <table class="data-table" id="haccp-tabelle">
+        <thead><tr><th>Datum</th><th>Gerät</th><th>Temperatur</th><th>Status</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+
+  <!-- ═══════════ WARENEINGANG ═══════════ -->
+  <div class="tab-panel" id="panel-wareneingang">
+    <div class="section">
+      <div class="section-head">Neue Lieferung prüfen</div>
+      <div class="grid3" style="margin-bottom:14px;">
+        <div class="field-group"><label>Datum</label><input type="date" id="we-datum"></div>
+        <div class="field-group"><label>Lieferant</label><input type="text" id="we-lieferant" placeholder="z. B. Metro, lokaler Fleischer"></div>
+        <div class="field-group"><label>Temperatur bei Anlieferung (°C)</label><input type="number" step="0.1" id="we-temp"></div>
+      </div>
+      <div class="grid3" style="margin-bottom:14px;">
+        <label style="display:flex;align-items:center;gap:8px;font-size:13px;"><input type="checkbox" id="we-menge-ok"> Menge korrekt</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:13px;"><input type="checkbox" id="we-mhd-ok"> MHD/Verfallsdatum in Ordnung</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:13px;"><input type="checkbox" id="we-zustand-ok"> Zustand einwandfrei</label>
+      </div>
+      <div class="field-group" style="margin-bottom:14px;"><label>Bemerkung (optional)</label><input type="text" id="we-bemerkung" placeholder="z. B. Reklamation, fehlende Ware"></div>
+      <button class="btn-add" onclick="weHinzufuegen()">💾 Eintrag speichern</button>
+      <span class="save-msg" id="we-save-msg">✓ Gespeichert</span>
+    </div>
+
+    <div class="section">
+      <div class="section-head">Letzte Einträge</div>
+      <table class="data-table" id="we-tabelle">
+        <thead><tr><th>Datum</th><th>Lieferant</th><th>Temp.</th><th>Status</th><th>Bemerkung</th><th></th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ═══════════ TAGESNOTIZEN ═══════════ -->
+  <div class="tab-panel" id="panel-notizen">
+    <div class="section">
+      <div class="section-head">Neue Notiz</div>
+      <textarea id="notiz-text" rows="3" style="width:100%;border:1px solid #e0d8c8;border-radius:6px;padding:10px 12px;font-size:13px;font-family:inherit;" placeholder="Beschwerde, Vorfall oder Verbesserungsidee aus dem Tagesgeschäft"></textarea>
+      <button class="btn-add" style="margin-top:10px;" onclick="notizHinzufuegen()">💾 Eintragen</button>
+      <span class="save-msg" id="notiz-save-msg">✓ Gespeichert</span>
+    </div>
+    <div class="section">
+      <div class="section-head">Verlauf</div>
+      <div id="notiz-liste"></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer-brand"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+
+<script>
+let currentUser = null;
+
+// ─── Auth-Check ───────────────────────────────────────────────────────────
+async function checkAuth() {
+  try {
+    const res = await fetch('/api/verify-session');
+    if (!res.ok) { window.location.href = 'login.html'; return false; }
+    const d = await res.json();
+    if (!d.valid) { window.location.href = 'login.html'; return false; }
+    currentUser = { email: d.email };
+    return true;
+  } catch (e) { window.location.href = 'login.html'; return false; }
+}
+
+// ─── Generische Tool-Daten Helfer (wie in den Modul-Tools) ────────────────
+async function toolLoad(tool) {
+  try {
+    const res = await fetch('/api/tool-data?tool=' + encodeURIComponent(tool));
+    if (!res.ok) return {};
+    const d = await res.json();
+    return (d && d.data) ? d.data : {};
+  } catch (e) { return {}; }
+}
+async function toolSave(tool, data) {
+  try {
+    await fetch('/api/tool-data', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tool, data })
+    });
+  } catch (e) {}
+}
+function flashSaved(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.style.display = 'inline';
+  setTimeout(() => { el.style.display = 'none'; }, 2000);
+}
+function heute() {
+  return new Date().toISOString().slice(0, 10);
+}
+function euro(n) {
+  return (Number(n) || 0).toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+}
+
+// ─── Tabs ──────────────────────────────────────────────────────────────
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === 'panel-' + tab));
+}
+
+// ─── KASSENBUCH ──────────────────────────────────────────────────────────
+let kassenbuchDaten = {};
+async function kbInit() {
+  kassenbuchDaten = await toolLoad('tagesgeschaeft-kassenbuch');
+  document.getElementById('kb-datum').value = heute();
+  kbRenderTabelle();
+}
+async function kbSpeichernTag() {
+  const datum = document.getElementById('kb-datum').value;
+  if (!datum) return;
+  kassenbuchDaten[datum] = {
+    kasse: parseFloat(document.getElementById('kb-kasse').value) || 0,
+    karte: parseFloat(document.getElementById('kb-karte').value) || 0,
+    lieferdienste: parseFloat(document.getElementById('kb-lieferdienste').value) || 0,
+    wareneinkauf: parseFloat(document.getElementById('kb-wareneinkauf').value) || 0,
+    sonstiges: parseFloat(document.getElementById('kb-sonstiges').value) || 0,
+    notiz: document.getElementById('kb-notiz').value || ''
+  };
+  await toolSave('tagesgeschaeft-kassenbuch', kassenbuchDaten);
+  flashSaved('kb-save-msg');
+  kbRenderTabelle();
+}
+function kbLoeschen(datum) {
+  delete kassenbuchDaten[datum];
+  toolSave('tagesgeschaeft-kassenbuch', kassenbuchDaten);
+  kbRenderTabelle();
+}
+function kbRenderTabelle() {
+  const tbody = document.querySelector('#kb-tabelle tbody');
+  tbody.innerHTML = '';
+  const tage = Object.keys(kassenbuchDaten).sort().reverse();
+  let sumEin = 0, sumAus = 0;
+  tage.forEach(datum => {
+    const t = kassenbuchDaten[datum];
+    const einnahmen = t.kasse + t.karte + t.lieferdienste;
+    const ausgaben = t.wareneinkauf + t.sonstiges;
+    sumEin += einnahmen; sumAus += ausgaben;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${datum}</td><td>${euro(einnahmen)}</td><td>${euro(ausgaben)}</td><td>${euro(einnahmen - ausgaben)}</td><td>${t.notiz || ''}</td><td><button class="btn-del" onclick="kbLoeschen('${datum}')">✕</button></td>`;
+    tbody.appendChild(tr);
+  });
+  document.getElementById('kb-sum-einnahmen').textContent = euro(sumEin);
+  document.getElementById('kb-sum-ausgaben').textContent = euro(sumAus);
+  document.getElementById('kb-sum-ergebnis').textContent = euro(sumEin - sumAus);
+}
+
+// ─── HACCP TEMPERATUREN ──────────────────────────────────────────────────
+let haccpDaten = { geraete: [], eintraege: {} };
+async function haccpInit() {
+  const loaded = await toolLoad('tagesgeschaeft-haccp');
+  haccpDaten = { geraete: loaded.geraete || [], eintraege: loaded.eintraege || {} };
+  document.getElementById('haccp-datum').value = heute();
+  haccpRenderGeraete();
+  haccpRenderEingabe();
+  haccpRenderVerlauf();
+}
+function geraetHinzufuegen() {
+  const input = document.getElementById('neues-geraet');
+  const name = input.value.trim();
+  if (!name) return;
+  haccpDaten.geraete.push(name);
+  input.value = '';
+  toolSave('tagesgeschaeft-haccp', haccpDaten);
+  haccpRenderGeraete();
+  haccpRenderEingabe();
+}
+function geraetEntfernen(name) {
+  haccpDaten.geraete = haccpDaten.geraete.filter(g => g !== name);
+  toolSave('tagesgeschaeft-haccp', haccpDaten);
+  haccpRenderGeraete();
+  haccpRenderEingabe();
+}
+function haccpRenderGeraete() {
+  const el = document.getElementById('geraete-liste');
+  el.innerHTML = '';
+  if (haccpDaten.geraete.length === 0) { el.innerHTML = '<span style="color:#8090a8;font-size:13px;">Noch keine Geräte angelegt.</span>'; return; }
+  haccpDaten.geraete.forEach(g => {
+    const span = document.createElement('span');
+    span.className = 'geraet-tag';
+    span.innerHTML = `${g} <button onclick="geraetEntfernen('${g.replace(/'/g, "\\'")}')">✕</button>`;
+    el.appendChild(span);
+  });
+}
+function haccpRenderEingabe() {
+  const el = document.getElementById('haccp-eingabe-liste');
+  el.innerHTML = '';
+  if (haccpDaten.geraete.length === 0) { el.innerHTML = '<span style="color:#8090a8;font-size:13px;">Leg zuerst oben ein Gerät an.</span>'; return; }
+  haccpDaten.geraete.forEach((g, idx) => {
+    const div = document.createElement('div');
+    div.className = 'grid2';
+    div.style.marginBottom = '10px';
+    div.innerHTML = `
+      <div class="field-group"><label>${g} — Temperatur (°C)</label><input type="number" step="0.1" id="haccp-temp-${idx}"></div>
+      <label style="display:flex;align-items:center;gap:8px;font-size:13px;margin-top:18px;"><input type="checkbox" id="haccp-ok-${idx}" checked> In Ordnung</label>
+    `;
+    el.appendChild(div);
+  });
+}
+async function haccpSpeichernTag() {
+  const datum = document.getElementById('haccp-datum').value;
+  if (!datum) return;
+  const tagesWerte = {};
+  haccpDaten.geraete.forEach((g, idx) => {
+    const temp = document.getElementById('haccp-temp-' + idx).value;
+    const ok = document.getElementById('haccp-ok-' + idx).checked;
+    if (temp !== '') tagesWerte[g] = { temp: parseFloat(temp), ok };
+  });
+  haccpDaten.eintraege[datum] = tagesWerte;
+  await toolSave('tagesgeschaeft-haccp', haccpDaten);
+  flashSaved('haccp-save-msg');
+  haccpRenderVerlauf();
+}
+function haccpRenderVerlauf() {
+  const tbody = document.querySelector('#haccp-tabelle tbody');
+  tbody.innerHTML = '';
+  const tage = Object.keys(haccpDaten.eintraege).sort().reverse().slice(0, 14);
+  tage.forEach(datum => {
+    const werte = haccpDaten.eintraege[datum];
+    Object.keys(werte).forEach(geraet => {
+      const w = werte[geraet];
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${datum}</td><td>${geraet}</td><td>${w.temp} °C</td><td>${w.ok ? '<span class="ok-badge">✓ OK</span>' : '<span class="warn-badge">⚠ Prüfen</span>'}</td>`;
+      tbody.appendChild(tr);
+    });
+  });
+}
+
+// ─── WARENEINGANG ────────────────────────────────────────────────────────
+let weDaten = [];
+async function weInit() {
+  const loaded = await toolLoad('tagesgeschaeft-wareneingang');
+  weDaten = loaded.items || [];
+  document.getElementById('we-datum').value = heute();
+  weRenderTabelle();
+}
+async function weHinzufuegen() {
+  const eintrag = {
+    id: Date.now(),
+    datum: document.getElementById('we-datum').value,
+    lieferant: document.getElementById('we-lieferant').value,
+    temp: parseFloat(document.getElementById('we-temp').value) || null,
+    mengeOk: document.getElementById('we-menge-ok').checked,
+    mhdOk: document.getElementById('we-mhd-ok').checked,
+    zustandOk: document.getElementById('we-zustand-ok').checked,
+    bemerkung: document.getElementById('we-bemerkung').value
+  };
+  weDaten.push(eintrag);
+  await toolSave('tagesgeschaeft-wareneingang', { items: weDaten });
+  flashSaved('we-save-msg');
+  document.getElementById('we-lieferant').value = '';
+  document.getElementById('we-temp').value = '';
+  document.getElementById('we-bemerkung').value = '';
+  document.getElementById('we-menge-ok').checked = false;
+  document.getElementById('we-mhd-ok').checked = false;
+  document.getElementById('we-zustand-ok').checked = false;
+  weRenderTabelle();
+}
+async function weLoeschen(id) {
+  weDaten = weDaten.filter(w => w.id !== id);
+  await toolSave('tagesgeschaeft-wareneingang', { items: weDaten });
+  weRenderTabelle();
+}
+function weRenderTabelle() {
+  const tbody = document.querySelector('#we-tabelle tbody');
+  tbody.innerHTML = '';
+  const sorted = [...weDaten].sort((a, b) => b.id - a.id);
+  sorted.forEach(w => {
+    const allOk = w.mengeOk && w.mhdOk && w.zustandOk;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${w.datum}</td><td>${w.lieferant}</td><td>${w.temp !== null ? w.temp + ' °C' : '–'}</td><td>${allOk ? '<span class="ok-badge">✓ OK</span>' : '<span class="warn-badge">⚠ Prüfen</span>'}</td><td>${w.bemerkung || ''}</td><td><button class="btn-del" onclick="weLoeschen(${w.id})">✕</button></td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+// ─── TAGESNOTIZEN ────────────────────────────────────────────────────────
+let notizDaten = [];
+async function notizInit() {
+  const loaded = await toolLoad('tagesgeschaeft-notizen');
+  notizDaten = loaded.items || [];
+  notizRenderListe();
+}
+async function notizHinzufuegen() {
+  const text = document.getElementById('notiz-text').value.trim();
+  if (!text) return;
+  notizDaten.push({ id: Date.now(), text, zeitpunkt: new Date().toISOString() });
+  await toolSave('tagesgeschaeft-notizen', { items: notizDaten });
+  flashSaved('notiz-save-msg');
+  document.getElementById('notiz-text').value = '';
+  notizRenderListe();
+}
+async function notizLoeschen(id) {
+  notizDaten = notizDaten.filter(n => n.id !== id);
+  await toolSave('tagesgeschaeft-notizen', { items: notizDaten });
+  notizRenderListe();
+}
+function notizRenderListe() {
+  const el = document.getElementById('notiz-liste');
+  el.innerHTML = '';
+  const sorted = [...notizDaten].sort((a, b) => b.id - a.id);
+  if (sorted.length === 0) { el.innerHTML = '<span style="color:#8090a8;font-size:13px;">Noch keine Einträge.</span>'; return; }
+  sorted.forEach(n => {
+    const d = new Date(n.zeitpunkt);
+    const div = document.createElement('div');
+    div.className = 'notiz-item';
+    div.innerHTML = `<div class="notiz-meta">${d.toLocaleString('de-DE')} <button class="btn-del" style="float:right;" onclick="notizLoeschen(${n.id})">✕</button></div><div class="notiz-text">${n.text}</div>`;
+    el.appendChild(div);
+  });
+}
+
+// ─── Start ───────────────────────────────────────────────────────────────
+(async function init() {
+  const ok = await checkAuth();
+  if (!ok) return;
+  await Promise.all([kbInit(), haccpInit(), weInit(), notizInit()]);
+})();
+</script>
+</body>
+</html>

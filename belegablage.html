@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Belege – GASTRO-OS</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
+.header{background:#1a2a4a;padding:14px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
+.brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
+.btn-back { background:#d4af37; color:#1a2a4a; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.btn-back:hover { background:#c8a030; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+.wrap { max-width:900px; margin:0 auto; padding:28px 24px 60px; }
+.tool-label { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:4px; }
+.tool-title { font-family:Georgia,serif; font-size:22px; color:#1a2a4a; margin-bottom:4px; }
+.tool-sub { font-size:13px; color:#5a6a80; margin-bottom:20px; }
+
+.section { background:#fff; border:1px solid #e8dfc8; border-radius:10px; padding:22px 26px; margin-bottom:20px; box-shadow:0 2px 6px rgba(0,0,0,0.04); }
+.section-head { background:#1a2a4a; color:#d4af37; font-size:13px; font-weight:700; letter-spacing:1px; padding:10px 14px; border-radius:6px; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center; }
+.section-head span { color:#a0b0c8; font-size:11px; font-weight:400; }
+
+.field-group { display:flex; flex-direction:column; gap:5px; }
+.field-group label { font-size:11px; font-weight:700; color:#8090a8; text-transform:uppercase; letter-spacing:0.5px; }
+.field-group input, .field-group select { border:1px solid #e0d8c8; border-radius:6px; padding:8px 12px; font-size:13px; color:#1a2a4a; background:#eaf2ff; font-family:inherit; }
+.field-group input:focus, .field-group select:focus { outline:none; border-color:#d4af37; background:#fff; }
+.grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
+@media(max-width:640px){ .grid3{ grid-template-columns:1fr; } }
+
+.btn-add { background:#1a6640; color:#fff; border:none; padding:10px 20px; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; }
+.btn-add:hover { background:#d4af37; color:#1a2a4a; }
+.btn-del { background:transparent; border:1px solid #c0392b; color:#c0392b; padding:5px 10px; border-radius:5px; font-size:11px; font-weight:600; cursor:pointer; }
+.btn-del:hover { background:#c0392b; color:#fff; }
+.save-msg { font-size:12px; color:#4aaa60; margin-left:10px; display:none; }
+
+table.data-table { width:100%; border-collapse:collapse; font-size:12.5px; margin-top:14px; }
+table.data-table th { background:#f5f0e8; padding:8px 10px; font-size:11px; font-weight:700; color:#1a2a4a; text-align:left; border:1px solid #e8dfc8; }
+table.data-table td { padding:8px 10px; border:1px solid #e8dfc8; }
+table.data-table tr:nth-child(even) td { background:#faf8f4; }
+
+.upload-drop { border:2px dashed #d4af37; border-radius:10px; padding:24px; text-align:center; color:#8090a8; font-size:13px; cursor:pointer; transition:all 0.15s; }
+.upload-drop:hover { background:#fdf8ea; }
+.hint { font-size:11.5px; color:#8090a8; margin-top:6px; }
+
+.footer-brand { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-brand strong { color:#d4af37; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <span class="brand">GASTRO-OS</span>
+  <a href="dashboard.html" class="btn-back">← Zurück zum Dashboard</a>
+</div>
+<div class="gold-bar"></div>
+
+<div class="wrap">
+  <div class="tool-label">Toolbox · Täglich nutzbar</div>
+  <div class="tool-title">📎 Belege</div>
+  <div class="tool-sub">Rechnungen und Abrechnungen von Lieferdiensten und Lieferanten zentral ablegen – Lieferando, Wolt, Metro, Getränkelieferant und mehr.</div>
+
+  <div class="section">
+    <div class="section-head">Neue Abrechnung hochladen</div>
+    <div class="grid3" style="margin-bottom:14px;">
+      <div class="field-group"><label>Datum</label><input type="date" id="beleg-datum"></div>
+      <div class="field-group"><label>Anbieter / Lieferant</label>
+        <select id="beleg-plattform">
+          <option value="Lieferando">Lieferando</option>
+          <option value="Wolt">Wolt</option>
+          <option value="Uber Eats">Uber Eats</option>
+          <option value="Metro">Metro</option>
+          <option value="Getränkelieferant">Getränkelieferant</option>
+          <option value="Sonstiger Lieferant">Sonstiger Lieferant</option>
+        </select>
+      </div>
+      <div class="field-group"><label>Betrag (€, optional)</label><input type="number" step="0.01" id="beleg-betrag" placeholder="0,00"></div>
+    </div>
+    <div class="upload-drop" onclick="document.getElementById('beleg-datei').click()">
+      📎 Klicken, um eine PDF-Datei auszuwählen<br>
+      <span id="beleg-datei-name" style="font-weight:600;color:#1a2a4a;"></span>
+    </div>
+    <input type="file" id="beleg-datei" accept="application/pdf" style="display:none;" onchange="belegDateiGewaehlt(event)">
+    <div class="hint">Max. 8 MB, nur PDF.</div>
+    <button class="btn-add" style="margin-top:14px;" onclick="belegHochladen()">⬆️ Hochladen</button>
+    <span class="save-msg" id="beleg-save-msg">✓ Hochgeladen</span>
+  </div>
+
+  <div class="section">
+    <div class="section-head">Hochgeladene Belege</div>
+    <div class="grid3" style="margin-bottom:10px;">
+      <div><strong>Diesen Monat gesamt:</strong> <span id="beleg-sum-monat">0,00 €</span></div>
+    </div>
+    <table class="data-table" id="beleg-tabelle">
+      <thead><tr><th>Datum</th><th>Anbieter</th><th>Betrag</th><th>Datei</th><th></th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="footer-brand"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+
+<script>
+let currentUser = null;
+
+async function checkAuth() {
+  try {
+    const res = await fetch('/api/verify-session');
+    if (!res.ok) { window.location.href = 'login.html'; return false; }
+    const d = await res.json();
+    if (!d.valid) { window.location.href = 'login.html'; return false; }
+    currentUser = { email: d.email };
+    return true;
+  } catch (e) { window.location.href = 'login.html'; return false; }
+}
+async function toolLoad(tool) {
+  try {
+    const res = await fetch('/api/tool-data?tool=' + encodeURIComponent(tool));
+    if (!res.ok) return {};
+    const d = await res.json();
+    return (d && d.data) ? d.data : {};
+  } catch (e) { return {}; }
+}
+async function toolSave(tool, data) {
+  try {
+    await fetch('/api/tool-data', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tool, data })
+    });
+  } catch (e) {}
+}
+function flashSaved(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.style.display = 'inline';
+  setTimeout(() => { el.style.display = 'none'; }, 2000);
+}
+function heute() { return new Date().toISOString().slice(0, 10); }
+function euro(n) { return (Number(n) || 0).toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €'; }
+
+let belegeDaten = [];
+let belegAusgewaehlteDatei = null;
+
+async function belegeInit() {
+  const loaded = await toolLoad('tagesgeschaeft-belege');
+  belegeDaten = loaded.items || [];
+  document.getElementById('beleg-datum').value = heute();
+  belegRenderTabelle();
+}
+function belegDateiGewaehlt(evt) {
+  const file = evt.target.files[0];
+  if (!file) return;
+  belegAusgewaehlteDatei = file;
+  document.getElementById('beleg-datei-name').textContent = file.name;
+}
+function dateiZuBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result.split(',')[1]);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+async function belegHochladen() {
+  if (!belegAusgewaehlteDatei) { alert('Bitte zuerst eine PDF-Datei auswählen.'); return; }
+  const datum = document.getElementById('beleg-datum').value;
+  const plattform = document.getElementById('beleg-plattform').value;
+  const betrag = parseFloat(document.getElementById('beleg-betrag').value) || 0;
+  try {
+    const base64 = await dateiZuBase64(belegAusgewaehlteDatei);
+    const res = await fetch('/api/beleg-upload', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ filename: belegAusgewaehlteDatei.name, contentBase64: base64, contentType: 'application/pdf' })
+    });
+    const result = await res.json();
+    if (!res.ok) { alert('Upload fehlgeschlagen: ' + (result.error || '')); return; }
+    belegeDaten.push({
+      id: Date.now(),
+      datum, plattform, betrag,
+      dateiname: belegAusgewaehlteDatei.name,
+      storagePath: result.path
+    });
+    await toolSave('tagesgeschaeft-belege', { items: belegeDaten });
+    flashSaved('beleg-save-msg');
+    belegAusgewaehlteDatei = null;
+    document.getElementById('beleg-datei-name').textContent = '';
+    document.getElementById('beleg-datei').value = '';
+    document.getElementById('beleg-betrag').value = '';
+    belegRenderTabelle();
+  } catch (e) {
+    alert('Fehler beim Hochladen.');
+  }
+}
+async function belegOeffnen(path) {
+  try {
+    const res = await fetch('/api/beleg-upload?path=' + encodeURIComponent(path));
+    const d = await res.json();
+    if (d.url) window.open(d.url, '_blank');
+  } catch (e) {}
+}
+async function belegLoeschen(id) {
+  const item = belegeDaten.find(b => b.id === id);
+  belegeDaten = belegeDaten.filter(b => b.id !== id);
+  await toolSave('tagesgeschaeft-belege', { items: belegeDaten });
+  if (item) {
+    fetch('/api/beleg-upload', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ path: item.storagePath }) }).catch(()=>{});
+  }
+  belegRenderTabelle();
+}
+function belegRenderTabelle() {
+  const tbody = document.querySelector('#beleg-tabelle tbody');
+  tbody.innerHTML = '';
+  const sorted = [...belegeDaten].sort((a, b) => b.datum.localeCompare(a.datum));
+  const aktMonat = heute().slice(0, 7);
+  let sumMonat = 0;
+  sorted.forEach(b => {
+    if (b.datum.slice(0, 7) === aktMonat) sumMonat += b.betrag;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${b.datum}</td><td>${b.plattform}</td><td>${euro(b.betrag)}</td><td><a href="#" onclick="belegOeffnen('${b.storagePath}');return false;">${b.dateiname}</a></td><td><button class="btn-del" onclick="belegLoeschen(${b.id})">✕</button></td>`;
+    tbody.appendChild(tr);
+  });
+  document.getElementById('beleg-sum-monat').textContent = euro(sumMonat);
+}
+
+(async function init() {
+  const ok = await checkAuth();
+  if (!ok) return;
+  await belegeInit();
+})();
+</script>
+</body>
+</html>
