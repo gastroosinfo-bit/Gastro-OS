@@ -76,6 +76,10 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
   <div id="reservierung-bereich" style="display:none;">
     <div class="section">
       <div class="section-head">Neue Reservierung</div>
+      <div class="field-group" id="res-erfasstvon-wrap" style="display:none;max-width:220px;">
+        <label>Dein Name</label>
+        <input type="text" id="res-erfasstvon" placeholder="z. B. Maria">
+      </div>
       <div class="grid3">
         <div class="field-group"><label>Name</label><input type="text" id="res-name" placeholder="Gastname"></div>
         <div class="field-group"><label>Datum</label><input type="date" id="res-datum"></div>
@@ -95,7 +99,7 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
       <div class="section-head">Kommende Reservierungen</div>
       <div style="overflow-x:auto;">
       <table class="data-table" id="res-tabelle">
-        <thead><tr><th>Datum</th><th>Uhrzeit</th><th>Name</th><th>Pers.</th><th>Telefon</th><th>Tisch</th><th>Notiz</th><th></th></tr></thead>
+        <thead><tr><th>Datum</th><th>Uhrzeit</th><th>Name</th><th>Pers.</th><th>Telefon</th><th>Tisch</th><th>Notiz</th><th>Erfasst von</th><th></th></tr></thead>
         <tbody></tbody>
       </table>
       </div>
@@ -122,7 +126,7 @@ function renderReservierungen(items) {
   const sorted = [...items].sort((a, b) => (a.datum + a.uhrzeit).localeCompare(b.datum + b.uhrzeit));
   sorted.forEach(r => {
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${r.datum}</td><td>${r.uhrzeit || ''}</td><td>${r.name}</td><td>${r.personen || ''}</td><td>${r.telefon || ''}</td><td>${r.tisch || ''}</td><td>${r.notiz || ''}</td><td><button class="btn-del" onclick="resLoeschen(${r.id})">✕</button></td>`;
+    tr.innerHTML = `<td>${r.datum}</td><td>${r.uhrzeit || ''}</td><td>${r.name}</td><td>${r.personen || ''}</td><td>${r.telefon || ''}</td><td>${r.tisch || ''}</td><td>${r.notiz || ''}</td><td>${r.erfasstVon || ''}</td><td><button class="btn-del" onclick="resLoeschen(${r.id})">✕</button></td>`;
     tbody.appendChild(tr);
   });
 }
@@ -160,8 +164,12 @@ function initMitarbeiterModus(code) {
       document.getElementById('tool-sub-text').textContent = 'Trag neue Reservierungen ein oder sieh die kommenden.';
       document.getElementById('res-datum').value = heute();
       renderReservierungen(d.items || []);
+      document.getElementById('res-erfasstvon-wrap').style.display = 'block';
+      document.getElementById('res-erfasstvon').value = localStorage.getItem('gastroos_ma_name_' + code) || '';
 
       window.resEintragen = async function() {
+        const erfasstVon = document.getElementById('res-erfasstvon').value.trim() || 'Mitarbeiter';
+        localStorage.setItem('gastroos_ma_name_' + code, erfasstVon);
         const eintrag = {
           name: document.getElementById('res-name').value.trim(),
           datum: document.getElementById('res-datum').value,
@@ -169,7 +177,8 @@ function initMitarbeiterModus(code) {
           personen: document.getElementById('res-personen').value,
           telefon: document.getElementById('res-telefon').value,
           tisch: document.getElementById('res-tisch').value,
-          notiz: document.getElementById('res-notiz').value
+          notiz: document.getElementById('res-notiz').value,
+          erfasstVon
         };
         if (!eintrag.name || !eintrag.datum) { alert('Bitte mindestens Name und Datum angeben.'); return; }
         const res2 = await fetch('/api/reservierung-public', {
@@ -224,7 +233,8 @@ async function initInhaberModus() {
       personen: document.getElementById('res-personen').value,
       telefon: document.getElementById('res-telefon').value,
       tisch: document.getElementById('res-tisch').value,
-      notiz: document.getElementById('res-notiz').value
+      notiz: document.getElementById('res-notiz').value,
+      erfasstVon: 'Chef'
     };
     if (!eintrag.name || !eintrag.datum) { alert('Bitte mindestens Name und Datum angeben.'); return; }
     window.resItems.push(eintrag);

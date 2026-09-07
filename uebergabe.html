@@ -72,6 +72,10 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
   <!-- ═══ MITARBEITER: ÜBERGABEBUCH (nach PIN) ═══ -->
   <div id="mitarbeiter-bereich" style="display:none;">
     <div class="section">
+      <div class="field-group" style="margin-bottom:14px;">
+        <label>Dein Name</label>
+        <input type="text" id="ma-name" placeholder="z. B. Maria">
+      </div>
       <div class="section-head">Neuer Übergabe-Eintrag</div>
       <textarea id="ma-text" rows="3" style="width:100%;border:1px solid #e0d8c8;border-radius:6px;padding:10px 12px;font-size:14px;font-family:inherit;" placeholder="Was ist wichtig für die nächste Schicht?"></textarea>
       <button class="btn-add" style="margin-top:10px;" onclick="maEintragen()">💾 Eintragen</button>
@@ -80,6 +84,7 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
     <div class="section">
       <div class="section-head">Verlauf</div>
       <div id="ma-liste"></div>
+
     </div>
   </div>
 
@@ -159,13 +164,18 @@ function initMitarbeiterModus(code) {
       document.getElementById('tool-sub-text').textContent = 'Trag hier ein, was für die nächste Schicht wichtig ist.';
       renderListe('ma-liste', d.items || []);
 
+      const gespeicherterName = localStorage.getItem('gastroos_ma_name_' + code) || '';
+      document.getElementById('ma-name').value = gespeicherterName;
+
       window.maEintragen = async function() {
         const text = document.getElementById('ma-text').value.trim();
+        const name = document.getElementById('ma-name').value.trim() || 'Mitarbeiter';
         if (!text) return;
+        localStorage.setItem('gastroos_ma_name_' + code, name);
         const res2 = await fetch('/api/uebergabe-public', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ code, pin, action: 'add', text })
+          body: JSON.stringify({ code, pin, action: 'add', text, autor: name })
         });
         const d2 = await res2.json();
         document.getElementById('ma-text').value = '';
@@ -198,7 +208,7 @@ async function initInhaberModus() {
   window.inhEintragen = async function() {
     const text = document.getElementById('inh-text').value.trim();
     if (!text) return;
-    inhaberItems.push({ id: Date.now(), text, zeitpunkt: new Date().toISOString(), autor: 'Du' });
+    inhaberItems.push({ id: Date.now(), text, zeitpunkt: new Date().toISOString(), autor: 'Chef' });
     await toolSave('tagesgeschaeft-schicht', { items: inhaberItems });
     document.getElementById('inh-text').value = '';
     flashSaved('inh-save-msg');

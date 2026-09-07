@@ -624,7 +624,7 @@ async function init() {
   if (INTERNAL_EMAILS.includes(userEmail.toLowerCase())) { for (let n = 1; n <= 13; n++) quizBestanden[n] = true; }
 
   // Demo-Zugänge (z.B. Kooperationspartner) — alle Module direkt offen, ohne Quiz-Fortschritt
-  const DEMO_UNLOCK_EMAILS = ["westerwinter@dehoga-nrw.de", "franz.perner@wkbgld.at", "z.asel@dehogabw.de", "natascha.kummer@wkbgld.at", "info@gastronomen.koeln", "koslowski@progres.de"];
+  const DEMO_UNLOCK_EMAILS = ["westerwinter@dehoga-nrw.de", "franz.perner@wkbgld.at", "z.asel@dehogabw.de", "natascha.kummer@wkbgld.at", "info@gastronomen.koeln"];
   if (DEMO_UNLOCK_EMAILS.includes(userEmail.toLowerCase())) { for (let n = 1; n <= 13; n++) quizBestanden[n] = true; }
 
   document.getElementById('modul-card-2').style.display = 'block';
@@ -852,7 +852,8 @@ async function unreadPruefen() {
     const lastSeen = status[tool.unread.lastSeenKey] || 0;
     const data = await dashToolLoad(tool.unread.dataTool);
     let items = data.items || [];
-    if (tool.unread.lastSeenKey === 'uebergabe') items = items.filter(i => i.autor !== 'Du');
+    if (tool.unread.lastSeenKey === 'uebergabe') items = items.filter(i => i.autor !== 'Chef');
+    if (tool.unread.lastSeenKey === 'reservierung') items = items.filter(i => i.erfasstVon !== 'Chef');
     const anzahl = items.filter(i => i.id > lastSeen).length;
     const badge = document.getElementById('badge-' + idx);
     if (badge) {
