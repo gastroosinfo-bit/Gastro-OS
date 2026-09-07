@@ -4,6 +4,7 @@
 // und im normalen, eingeloggten Bereich verwaltet (tool_name 'uebergabe-zugang' über /api/tool-data).
 
 const crypto = require('crypto');
+const { sendPushToOwner } = require('../lib/push-helper');
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
@@ -83,6 +84,7 @@ export default async function handler(req, res) {
     const items = await loadEntries(owner.user_id);
     items.push({ id: Date.now(), text: text.trim(), zeitpunkt: new Date().toISOString(), autor: 'Mitarbeiter' });
     await saveEntries(owner.user_id, items);
+    sendPushToOwner(owner.user_id, '📋 Neuer Übergabe-Eintrag', text.trim().slice(0, 120), '/uebergabe.html');
     return res.status(200).json({ items });
   }
 
