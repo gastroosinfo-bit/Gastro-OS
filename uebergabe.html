@@ -219,6 +219,11 @@ async function initInhaberModus() {
     if (!text) return;
     inhaberItems.push({ id: Date.now(), text, zeitpunkt: new Date().toISOString(), autor: 'Chef' });
     await toolSave('tagesgeschaeft-schicht', { items: inhaberItems });
+    fetch('/api/push-notify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title: '📋 Neuer Übergabe-Eintrag', body: text.slice(0, 120), url: '/uebergabe.html' })
+    }).catch(() => {});
     document.getElementById('inh-text').value = '';
     flashSaved('inh-save-msg');
     renderListe('inhaber-liste', inhaberItems);

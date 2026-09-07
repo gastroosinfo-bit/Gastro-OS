@@ -249,6 +249,11 @@ async function initInhaberModus() {
     if (!eintrag.name || !eintrag.datum) { alert('Bitte mindestens Name und Datum angeben.'); return; }
     window.resItems.push(eintrag);
     await toolSave('reservierungen', { items: window.resItems });
+    fetch('/api/push-notify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title: '📅 Neue Reservierung', body: `${eintrag.name}, ${eintrag.datum}${eintrag.uhrzeit ? ' ' + eintrag.uhrzeit : ''}`, url: '/reservierung.html' })
+    }).catch(() => {});
     ['res-name','res-uhrzeit','res-personen','res-telefon','res-tisch','res-notiz'].forEach(id => document.getElementById(id).value = '');
     flashSaved('res-save-msg');
     renderReservierungen(window.resItems);
