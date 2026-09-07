@@ -3,6 +3,7 @@
 // Gleicher Aufbau wie api/uebergabe-public.js, eigener tool_name für Zugang und Daten.
 
 const crypto = require('crypto');
+const { sendPushToOwner } = require('../lib/push-helper');
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
@@ -79,6 +80,7 @@ export default async function handler(req, res) {
     const items = await loadItems(owner.user_id);
     items.push({ id: Date.now(), ...eintrag });
     await saveItems(owner.user_id, items);
+    sendPushToOwner(owner.user_id, '📅 Neue Reservierung', `${eintrag.name}, ${eintrag.datum}${eintrag.uhrzeit ? ' ' + eintrag.uhrzeit : ''}${eintrag.personen ? ', ' + eintrag.personen + ' Personen' : ''}`, '/reservierung.html');
     return res.status(200).json({ items });
   }
 
