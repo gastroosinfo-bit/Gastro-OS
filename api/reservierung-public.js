@@ -80,7 +80,7 @@ export default async function handler(req, res) {
     const items = await loadItems(owner.user_id);
     items.push({ id: Date.now(), ...eintrag });
     await saveItems(owner.user_id, items);
-    sendPushToOwner(owner.user_id, '📅 Neue Reservierung', `${eintrag.name}, ${eintrag.datum}${eintrag.uhrzeit ? ' ' + eintrag.uhrzeit : ''}${eintrag.personen ? ', ' + eintrag.personen + ' Personen' : ''}`, '/reservierung.html');
+    sendPushToOwner(owner.user_id, '📅 Neue Reservierung', `${eintrag.name}, ${eintrag.datum}${eintrag.uhrzeit ? ' ' + eintrag.uhrzeit : ''}${eintrag.personen ? ', ' + eintrag.personen + ' Personen' : ''}`, '/reservierung.html?u=' + code);
     return res.status(200).json({ items });
   }
 
