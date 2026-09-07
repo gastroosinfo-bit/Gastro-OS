@@ -16,7 +16,8 @@ const DEMO_ACCESS = {
   'franz.perner@wkbgld.at': { expires: '2026-08-15' },
   'z.asel@dehogabw.de': { expires: '2026-09-04' },
   'natascha.kummer@wkbgld.at': { expires: '2026-09-02' },
-  'info@gastronomen.koeln': { expires: '2026-09-15' }
+  'info@gastronomen.koeln': { expires: '2026-09-15' },
+  'koslowski@progres.de': { expires: '2026-09-16' }
 };
 
 function getDemoAccess(email) {
