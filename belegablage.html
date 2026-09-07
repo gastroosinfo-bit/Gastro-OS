@@ -65,14 +65,15 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
     <div class="grid3" style="margin-bottom:14px;">
       <div class="field-group"><label>Datum</label><input type="date" id="beleg-datum"></div>
       <div class="field-group"><label>Anbieter / Lieferant</label>
-        <select id="beleg-plattform">
+        <select id="beleg-plattform" onchange="belegPlattformGeaendert()">
           <option value="Lieferando">Lieferando</option>
           <option value="Wolt">Wolt</option>
           <option value="Uber Eats">Uber Eats</option>
           <option value="Metro">Metro</option>
           <option value="Getränkelieferant">Getränkelieferant</option>
-          <option value="Sonstiger Lieferant">Sonstiger Lieferant</option>
+          <option value="__eigener__">+ Eigenen Lieferanten eingeben</option>
         </select>
+        <input type="text" id="beleg-plattform-eigen" placeholder="Name des Lieferanten" style="display:none;margin-top:8px;">
       </div>
       <div class="field-group"><label>Betrag (€, optional)</label><input type="number" step="0.01" id="beleg-betrag" placeholder="0,00"></div>
     </div>
@@ -141,12 +142,35 @@ function euro(n) { return (Number(n) || 0).toLocaleString('de-DE', { minimumFrac
 
 let belegeDaten = [];
 let belegAusgewaehlteDatei = null;
+let eigeneLieferanten = [];
 
 async function belegeInit() {
   const loaded = await toolLoad('tagesgeschaeft-belege');
   belegeDaten = loaded.items || [];
   document.getElementById('beleg-datum').value = heute();
   belegRenderTabelle();
+
+  const lieferantenLoaded = await toolLoad('tagesgeschaeft-belege-lieferanten');
+  eigeneLieferanten = lieferantenLoaded.namen || [];
+  belegLieferantenDropdownAktualisieren();
+}
+function belegLieferantenDropdownAktualisieren() {
+  const select = document.getElementById('beleg-plattform');
+  const eigenOption = select.querySelector('option[value="__eigener__"]');
+  eigeneLieferanten.forEach(name => {
+    if (![...select.options].some(o => o.value === name)) {
+      const opt = document.createElement('option');
+      opt.value = name;
+      opt.textContent = name;
+      select.insertBefore(opt, eigenOption);
+    }
+  });
+}
+function belegPlattformGeaendert() {
+  const select = document.getElementById('beleg-plattform');
+  const eigenFeld = document.getElementById('beleg-plattform-eigen');
+  eigenFeld.style.display = select.value === '__eigener__' ? 'block' : 'none';
+  if (select.value === '__eigener__') eigenFeld.focus();
 }
 function belegDateiGewaehlt(evt) {
   const file = evt.target.files[0];
@@ -165,7 +189,17 @@ function dateiZuBase64(file) {
 async function belegHochladen() {
   if (!belegAusgewaehlteDatei) { alert('Bitte zuerst eine PDF-Datei auswählen.'); return; }
   const datum = document.getElementById('beleg-datum').value;
-  const plattform = document.getElementById('beleg-plattform').value;
+  const select = document.getElementById('beleg-plattform');
+  let plattform = select.value;
+  if (plattform === '__eigener__') {
+    plattform = document.getElementById('beleg-plattform-eigen').value.trim();
+    if (!plattform) { alert('Bitte einen Namen für den Lieferanten eingeben.'); return; }
+    if (!eigeneLieferanten.includes(plattform)) {
+      eigeneLieferanten.push(plattform);
+      await toolSave('tagesgeschaeft-belege-lieferanten', { namen: eigeneLieferanten });
+      belegLieferantenDropdownAktualisieren();
+    }
+  }
   const betrag = parseFloat(document.getElementById('beleg-betrag').value) || 0;
   try {
     const base64 = await dateiZuBase64(belegAusgewaehlteDatei);
@@ -185,6 +219,9 @@ async function belegHochladen() {
     await toolSave('tagesgeschaeft-belege', { items: belegeDaten });
     flashSaved('beleg-save-msg');
     belegAusgewaehlteDatei = null;
+    select.value = 'Lieferando';
+    document.getElementById('beleg-plattform-eigen').value = '';
+    document.getElementById('beleg-plattform-eigen').style.display = 'none';
     document.getElementById('beleg-datei-name').textContent = '';
     document.getElementById('beleg-datei').value = '';
     document.getElementById('beleg-betrag').value = '';
