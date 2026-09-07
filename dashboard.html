@@ -138,6 +138,14 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
   <!-- SIDEBAR-GRUPPE: tägliche Tools + Modul-Tools zusammen EIN Positionierungs-Element -->
   <div class="toolbox-sidebar">
 
+    <!-- BENACHRICHTIGUNGEN -->
+    <div class="module-card toolbox-elegant" id="push-card" style="padding:14px 20px;margin-bottom:12px;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="flex:1;font-size:12.5px;color:#5a6a85;" id="push-status-text">Verpasse keine neue Übergabe oder Reservierung – Ton-Benachrichtigung direkt am Handy/PC.</div>
+        <button id="push-btn" onclick="pushAktivieren()" style="background:#1a6640;color:#fff;border:none;padding:8px 14px;border-radius:6px;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;">🔔 Aktivieren</button>
+      </div>
+    </div>
+
     <!-- TÄGLICHE TOOLS: jedes für sich, keine Dropdown-Verschachtelung -->
     <div id="taegliche-tools"></div>
 
@@ -190,8 +198,8 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 }
 /* Toolbox: auf schmaleren Bildschirmen normal im Textfluss, schmal & linksbündig, oberhalb der Infobox */
 .toolbox-sidebar {
-  width: 280px;
-  max-width: 280px;
+  width: 340px;
+  max-width: 340px;
   margin-bottom: 16px;
 }
 #toolbox-content.open {
@@ -636,6 +644,7 @@ async function init() {
   for (const m of [0,1,2,3,4,5,6,7,8,9,10,11,12,13]) renderProgress(m);
   renderLockedModules();
   renderTaeglicheTools();
+  pushStatusPruefen();
   renderToolbox();
   openModuleFromHash();
 }
@@ -737,12 +746,75 @@ function toggleToolbox() {
 // Immer sichtbar, unabhängig von Modulen/Quiz — die vier täglichen Tagesgeschäft-Tools
 const ALWAYS_UNLOCKED_TOOLS = [
   { icon: '🗓️', title: 'Tagesgeschäft', desc: 'Kassenbuch, Temperaturen & Wareneingang – die täglichen Einträge an einem Ort.', href: 'tagesgeschaeft.html' },
-  { icon: '📋', title: 'Übergabebuch', desc: 'Schichtübergabe – auch für Mitarbeiter ohne eigenen GASTRO-OS-Zugang per PIN nutzbar.', href: 'uebergabe.html',
+  { icon: '📋', title: 'Übergabebuch', desc: 'Schichtübergabe – auch per PIN für Mitarbeiter ohne eigenen Zugang.', href: 'uebergabe.html',
     pin: { zugangTool: 'uebergabe-zugang', setupEndpoint: '/api/uebergabe-setup', linkPath: 'uebergabe.html' } },
-  { icon: '📅', title: 'Reservierungsbuch', desc: 'Reservierungen erfassen – auch für Mitarbeiter ohne eigenen GASTRO-OS-Zugang per PIN nutzbar.', href: 'reservierung.html',
+  { icon: '📅', title: 'Reservierungsbuch', desc: 'Reservierungen erfassen – auch per PIN für Mitarbeiter ohne eigenen Zugang.', href: 'reservierung.html',
     pin: { zugangTool: 'reservierung-zugang', setupEndpoint: '/api/reservierung-setup', linkPath: 'reservierung.html' } },
   { icon: '📎', title: 'Belege', desc: 'Rechnungen von Lieferdiensten und Lieferanten zentral ablegen.', href: 'belegablage.html' }
 ];
+
+// ─── PUSH-BENACHRICHTIGUNGEN ────────────────────────────────────────────
+const VAPID_PUBLIC_KEY = 'BNLFO9QNrjxgwjx4XsJdMxKeF1WH5kUhAdTOcN3DHabt32CN6g3hB5l5KsSA-u8_6HCGzrKN4BzIS4aIcIVSYTE';
+
+function urlBase64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+  const rawData = window.atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+  for (let i = 0; i < rawData.length; ++i) outputArray[i] = rawData.charCodeAt(i);
+  return outputArray;
+}
+
+async function pushStatusPruefen() {
+  const btn = document.getElementById('push-btn');
+  const status = document.getElementById('push-status-text');
+  if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+    status.textContent = 'Dein Browser unterstützt leider keine Push-Benachrichtigungen.';
+    btn.style.display = 'none';
+    return;
+  }
+  if (Notification.permission === 'granted') {
+    try {
+      const reg = await navigator.serviceWorker.getRegistration();
+      const sub = reg && await reg.pushManager.getSubscription();
+      if (sub) {
+        status.textContent = '🔔 Benachrichtigungen sind aktiv.';
+        btn.textContent = '✓ Aktiv';
+        btn.disabled = true;
+        btn.style.opacity = '0.6';
+        return;
+      }
+    } catch (e) {}
+  }
+}
+
+async function pushAktivieren() {
+  const btn = document.getElementById('push-btn');
+  const status = document.getElementById('push-status-text');
+  try {
+    const reg = await navigator.serviceWorker.register('/sw.js');
+    const permission = await Notification.requestPermission();
+    if (permission !== 'granted') {
+      status.textContent = 'Benachrichtigungen wurden nicht erlaubt. Du kannst das später in den Browser-Einstellungen ändern.';
+      return;
+    }
+    const sub = await reg.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
+    });
+    await fetch('/api/push-subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ subscription: sub })
+    });
+    status.textContent = '🔔 Benachrichtigungen sind jetzt aktiv.';
+    btn.textContent = '✓ Aktiv';
+    btn.disabled = true;
+    btn.style.opacity = '0.6';
+  } catch (e) {
+    status.textContent = 'Aktivierung leider fehlgeschlagen. Bitte nochmal versuchen.';
+  }
+}
 
 async function dashToolLoad(tool) {
   try {
