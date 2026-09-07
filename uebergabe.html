@@ -89,8 +89,12 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
       <div class="section-head">Zugang für Mitarbeiter</div>
       <div id="zugang-eingerichtet" style="display:none;">
         <div class="zugang-box">
-          Link für Mitarbeiter (z. B. als Lesezeichen oder in eine WhatsApp-Gruppe teilen):<br>
+          Link für Mitarbeiter (z. B. als Lesezeichen oder per WhatsApp teilen):<br>
           <code id="zugang-link"></code>
+          <div style="margin-top:14px;">
+            <img id="zugang-qr" alt="QR-Code für Mitarbeiter-Zugang" style="width:140px;height:140px;border:1px solid #d4af37;border-radius:6px;background:#fff;padding:6px;">
+            <div class="hint">Zum Ausdrucken und Aufhängen: Mitarbeiter halten einfach die Handy-Kamera drauf.</div>
+          </div>
         </div>
         <div class="field-group" style="max-width:200px;">
           <label>PIN ändern (4-stellig)</label>
@@ -218,6 +222,7 @@ async function initInhaberModus() {
     document.getElementById('zugang-einrichten').style.display = 'none';
     const link = window.location.origin + '/uebergabe.html?u=' + zugang.code;
     document.getElementById('zugang-link').textContent = link;
+    document.getElementById('zugang-qr').src = 'https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=' + encodeURIComponent(link);
   } else {
     document.getElementById('zugang-eingerichtet').style.display = 'none';
     document.getElementById('zugang-einrichten').style.display = 'block';
