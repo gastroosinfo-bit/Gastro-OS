@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Reservierungsbuch – GASTRO-OS</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Reservierung">
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
@@ -74,6 +78,10 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
 
   <!-- ═══ GEMEINSAMER BEREICH (Mitarbeiter nach PIN ODER Inhaber direkt) ═══ -->
   <div id="reservierung-bereich" style="display:none;">
+    <div class="section" id="res-push-section" style="display:none;align-items:center;gap:12px;">
+      <div style="flex:1;font-size:12.5px;color:#5a6a85;" id="res-push-status-text">Bekomm eine Ton-Benachrichtigung, wenn jemand anderes hier was einträgt.</div>
+      <button id="res-push-btn" style="background:#1a6640;color:#fff;border:none;padding:8px 14px;border-radius:6px;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;">🔔 Aktivieren</button>
+    </div>
     <div class="section">
       <div class="section-head">Neue Reservierung</div>
       <div class="field-group" id="res-erfasstvon-wrap" style="display:none;max-width:220px;">
@@ -166,6 +174,8 @@ function initMitarbeiterModus(code) {
       renderReservierungen(d.items || []);
       document.getElementById('res-erfasstvon-wrap').style.display = 'block';
       document.getElementById('res-erfasstvon').value = localStorage.getItem('gastroos_ma_name_' + code) || '';
+      document.getElementById('res-push-section').style.display = 'flex';
+      resPushSetup(code, pin);
 
       window.resEintragen = async function() {
         const erfasstVon = document.getElementById('res-erfasstvon').value.trim() || 'Mitarbeiter';
@@ -265,6 +275,62 @@ async function toolSave(tool, data) {
       body: JSON.stringify({ tool, data })
     });
   } catch (e) {}
+}
+
+// ─── PUSH-BENACHRICHTIGUNGEN (Mitarbeiter, per Code+PIN statt Login) ───────
+const VAPID_PUBLIC_KEY = 'BNLFO9QNrjxgwjx4XsJdMxKeF1WH5kUhAdTOcN3DHabt32CN6g3hB5l5KsSA-u8_6HCGzrKN4BzIS4aIcIVSYTE';
+function urlBase64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+  const rawData = window.atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+  for (let i = 0; i < rawData.length; ++i) outputArray[i] = rawData.charCodeAt(i);
+  return outputArray;
+}
+async function resPushSetup(code, pin) {
+  const btn = document.getElementById('res-push-btn');
+  const status = document.getElementById('res-push-status-text');
+  if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+    status.textContent = 'Push-Benachrichtigungen werden auf diesem Ger\u00e4t/Browser nicht unterst\u00fctzt.';
+    btn.style.display = 'none';
+    return;
+  }
+  if (Notification.permission === 'granted') {
+    const reg = await navigator.serviceWorker.getRegistration();
+    const sub = reg && await reg.pushManager.getSubscription();
+    if (sub) {
+      status.textContent = '🔔 Benachrichtigungen sind aktiv.';
+      btn.textContent = '✓ Aktiv';
+      btn.disabled = true;
+      btn.style.opacity = '0.6';
+      return;
+    }
+  }
+  btn.onclick = async function() {
+    try {
+      const reg = await navigator.serviceWorker.register('/sw.js');
+      const permission = await Notification.requestPermission();
+      if (permission !== 'granted') {
+        status.textContent = 'Benachrichtigungen wurden nicht erlaubt.';
+        return;
+      }
+      const sub = await reg.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
+      });
+      await fetch('/api/push-subscribe-public', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code, pin, bookType: 'reservierung', subscription: sub })
+      });
+      status.textContent = '🔔 Benachrichtigungen sind jetzt aktiv.';
+      btn.textContent = '✓ Aktiv';
+      btn.disabled = true;
+      btn.style.opacity = '0.6';
+    } catch (e) {
+      status.textContent = 'Aktivierung leider fehlgeschlagen.';
+    }
+  };
 }
 </script>
 </body>
