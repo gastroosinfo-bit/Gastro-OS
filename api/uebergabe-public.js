@@ -68,7 +68,7 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Methode nicht erlaubt.' });
   if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) return res.status(500).json({ error: 'Server nicht konfiguriert.' });
 
-  const { code, pin, action, text } = req.body || {};
+  const { code, pin, action, text, autor } = req.body || {};
   if (!code || !pin) return res.status(400).json({ error: 'Code oder PIN fehlt.' });
 
   const owner = await findOwnerByCode(code);
@@ -82,7 +82,7 @@ export default async function handler(req, res) {
   if (action === 'add') {
     if (!text || !text.trim()) return res.status(400).json({ error: 'Text fehlt.' });
     const items = await loadEntries(owner.user_id);
-    items.push({ id: Date.now(), text: text.trim(), zeitpunkt: new Date().toISOString(), autor: 'Mitarbeiter' });
+    items.push({ id: Date.now(), text: text.trim(), zeitpunkt: new Date().toISOString(), autor: (autor && autor.trim()) || 'Mitarbeiter' });
     await saveEntries(owner.user_id, items);
     sendPushToOwner(owner.user_id, '📋 Neuer Übergabe-Eintrag', text.trim().slice(0, 120), '/uebergabe.html');
     return res.status(200).json({ items });
