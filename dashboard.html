@@ -135,16 +135,21 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 <!-- Wrapper: Infobox in normalem Fluss, Toolbox auf breiten Screens absolut daran verankert (garantiert gleiche Oberkante) -->
 <div style="position:relative;">
 
-  <!-- TÄGLICHE TOOLS: jedes für sich, keine Dropdown-Verschachtelung -->
-  <div class="toolbox-sidebar" id="taegliche-tools"></div>
+  <!-- SIDEBAR-GRUPPE: tägliche Tools + Modul-Tools zusammen EIN Positionierungs-Element -->
+  <div class="toolbox-sidebar">
 
-  <!-- FREIGESCHALTETE MODUL-TOOLS: bleibt als Dropdown, da abhängig vom Quiz-Fortschritt -->
-  <div class="module-card toolbox-elegant toolbox-sidebar" id="toolbox-card" style="margin-top:16px;">
-    <div class="module-header" onclick="toggleToolbox()" style="padding:14px 22px;">
-      <div class="module-left"><div class="module-number toolbox-icon-circle" style="width:32px;height:32px;font-size:14px;">🔓</div><div><div class="module-title" style="letter-spacing:0.3px;font-size:14px;">Freigeschaltete Modul-Tools</div><div class="module-subtitle" id="toolbox-subtitle" style="margin-top:2px;">Wird geladen …</div></div></div>
-      <div style="display:flex;align-items:center;gap:8px;"><span class="module-arrow" id="toolbox-arrow" style="color:#d4af37;">▼</span></div>
+    <!-- TÄGLICHE TOOLS: jedes für sich, keine Dropdown-Verschachtelung -->
+    <div id="taegliche-tools"></div>
+
+    <!-- FREIGESCHALTETE MODUL-TOOLS: bleibt als Dropdown, da abhängig vom Quiz-Fortschritt -->
+    <div class="module-card toolbox-elegant" id="toolbox-card" style="margin-top:4px;">
+      <div class="module-header" onclick="toggleToolbox()" style="padding:14px 22px;">
+        <div class="module-left"><div class="module-number toolbox-icon-circle" style="width:32px;height:32px;font-size:14px;">🔓</div><div><div class="module-title" style="letter-spacing:0.3px;font-size:14px;">Freigeschaltete Modul-Tools</div><div class="module-subtitle" id="toolbox-subtitle" style="margin-top:2px;">Wird geladen …</div></div></div>
+        <div style="display:flex;align-items:center;gap:8px;"><span class="module-arrow" id="toolbox-arrow" style="color:#d4af37;">▼</span></div>
+      </div>
+      <div class="module-content" id="toolbox-content"></div>
     </div>
-    <div class="module-content" id="toolbox-content"></div>
+
   </div>
 
   <!-- INFO: Modul-Freischaltung — volle Breite wie die Modul-Karten -->
