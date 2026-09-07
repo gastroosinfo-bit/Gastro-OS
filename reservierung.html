@@ -93,43 +93,16 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
 
     <div class="section">
       <div class="section-head">Kommende Reservierungen</div>
+      <div style="overflow-x:auto;">
       <table class="data-table" id="res-tabelle">
         <thead><tr><th>Datum</th><th>Uhrzeit</th><th>Name</th><th>Pers.</th><th>Telefon</th><th>Tisch</th><th>Notiz</th><th></th></tr></thead>
         <tbody></tbody>
       </table>
+      </div>
     </div>
   </div>
 
-  <!-- ═══ NUR INHABER: EINSTELLUNGEN ═══ -->
-  <div id="inhaber-einstellungen" style="display:none;">
-    <div class="section">
-      <div class="section-head">Zugang für Mitarbeiter</div>
-      <div id="zugang-eingerichtet" style="display:none;">
-        <div class="zugang-box">
-          Link für Mitarbeiter (z. B. als Lesezeichen oder per WhatsApp teilen):<br>
-          <code id="zugang-link"></code>
-          <div style="margin-top:14px;">
-            <img id="zugang-qr" alt="QR-Code für Mitarbeiter-Zugang" style="width:140px;height:140px;border:1px solid #d4af37;border-radius:6px;background:#fff;padding:6px;">
-            <div class="hint">Zum Ausdrucken und Aufhängen: Mitarbeiter halten einfach die Handy-Kamera drauf.</div>
-          </div>
-        </div>
-        <div class="field-group" style="max-width:200px;">
-          <label>PIN ändern (4-stellig)</label>
-          <input type="password" inputmode="numeric" maxlength="4" id="neue-pin" placeholder="Neue PIN">
-        </div>
-        <button class="btn-add" onclick="pinAendern()">PIN speichern</button>
-        <span class="save-msg" id="pin-save-msg">✓ Gespeichert</span>
-      </div>
-      <div id="zugang-einrichten">
-        <div class="hint" style="margin-bottom:10px;">Noch kein Zugang eingerichtet. Leg jetzt eine 4-stellige PIN fest, die du an deine Mitarbeiter weitergibst.</div>
-        <div class="field-group" style="max-width:200px;">
-          <label>PIN festlegen (4-stellig)</label>
-          <input type="password" inputmode="numeric" maxlength="4" id="erste-pin" placeholder="PIN wählen">
-        </div>
-        <button class="btn-add" onclick="zugangEinrichten()">Zugang einrichten</button>
-      </div>
-    </div>
-  </div>
+  <!-- Zugang/PIN-Verwaltung erfolgt im Dashboard unter der Kachel -->
 
 </div>
 
@@ -234,9 +207,8 @@ async function initInhaberModus() {
   } catch (e) { window.location.href = 'login.html'; return; }
 
   document.getElementById('btn-dashboard').style.display = 'inline-block';
-  document.getElementById('tool-sub-text').textContent = 'Reservierungen im Blick behalten und den Zugang für Mitarbeiter einrichten.';
+  document.getElementById('tool-sub-text').textContent = 'Dein eigenes Reservierungsbuch. Den Zugang für Mitarbeiter verwaltest du im Dashboard.';
   document.getElementById('reservierung-bereich').style.display = 'block';
-  document.getElementById('inhaber-einstellungen').style.display = 'block';
   document.getElementById('res-datum').value = heute();
 
   const data = await toolLoad('reservierungen');
@@ -266,18 +238,6 @@ async function initInhaberModus() {
     await toolSave('reservierungen', { items: window.resItems });
     renderReservierungen(window.resItems);
   };
-
-  const zugang = await toolLoad('reservierung-zugang');
-  if (zugang && zugang.code && zugang.pinHash) {
-    document.getElementById('zugang-eingerichtet').style.display = 'block';
-    document.getElementById('zugang-einrichten').style.display = 'none';
-    const link = window.location.origin + '/reservierung.html?u=' + zugang.code;
-    document.getElementById('zugang-link').textContent = link;
-    document.getElementById('zugang-qr').src = 'https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=' + encodeURIComponent(link);
-  } else {
-    document.getElementById('zugang-eingerichtet').style.display = 'none';
-    document.getElementById('zugang-einrichten').style.display = 'block';
-  }
 }
 async function toolLoad(tool) {
   try {
@@ -295,32 +255,6 @@ async function toolSave(tool, data) {
       body: JSON.stringify({ tool, data })
     });
   } catch (e) {}
-}
-function zufallsCode() {
-  return Math.random().toString(36).slice(2, 10) + Math.random().toString(36).slice(2, 6);
-}
-async function zugangEinrichten() {
-  const pin = document.getElementById('erste-pin').value.trim();
-  if (pin.length !== 4) { alert('Bitte eine 4-stellige PIN eingeben.'); return; }
-  const code = zufallsCode();
-  await fetch('/api/reservierung-setup', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ code, pin })
-  });
-  location.reload();
-}
-async function pinAendern() {
-  const pin = document.getElementById('neue-pin').value.trim();
-  if (pin.length !== 4) { alert('Bitte eine 4-stellige PIN eingeben.'); return; }
-  const zugang = await toolLoad('reservierung-zugang');
-  await fetch('/api/reservierung-setup', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ code: zugang.code, pin })
-  });
-  document.getElementById('neue-pin').value = '';
-  flashSaved('pin-save-msg');
 }
 </script>
 </body>

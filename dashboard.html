@@ -734,25 +734,129 @@ function toggleToolbox() {
   if (arrow) arrow.classList.toggle('open', !isOpen);
 }
 
-// Immer sichtbar, unabhängig von Modulen/Quiz — die drei täglichen Tagesgeschäft-Tools
+// Immer sichtbar, unabhängig von Modulen/Quiz — die vier täglichen Tagesgeschäft-Tools
 const ALWAYS_UNLOCKED_TOOLS = [
   { icon: '🗓️', title: 'Tagesgeschäft', desc: 'Kassenbuch, Temperaturen & Wareneingang – die täglichen Einträge an einem Ort.', href: 'tagesgeschaeft.html' },
-  { icon: '📋', title: 'Übergabebuch', desc: 'Schichtübergabe – auch für Mitarbeiter ohne eigenen GASTRO-OS-Zugang per PIN nutzbar.', href: 'uebergabe.html' },
-  { icon: '📅', title: 'Reservierungsbuch', desc: 'Reservierungen erfassen – auch für Mitarbeiter ohne eigenen GASTRO-OS-Zugang per PIN nutzbar.', href: 'reservierung.html' },
+  { icon: '📋', title: 'Übergabebuch', desc: 'Schichtübergabe – auch für Mitarbeiter ohne eigenen GASTRO-OS-Zugang per PIN nutzbar.', href: 'uebergabe.html',
+    pin: { zugangTool: 'uebergabe-zugang', setupEndpoint: '/api/uebergabe-setup', linkPath: 'uebergabe.html' } },
+  { icon: '📅', title: 'Reservierungsbuch', desc: 'Reservierungen erfassen – auch für Mitarbeiter ohne eigenen GASTRO-OS-Zugang per PIN nutzbar.', href: 'reservierung.html',
+    pin: { zugangTool: 'reservierung-zugang', setupEndpoint: '/api/reservierung-setup', linkPath: 'reservierung.html' } },
   { icon: '📎', title: 'Belege', desc: 'Rechnungen von Lieferdiensten und Lieferanten zentral ablegen.', href: 'belegablage.html' }
 ];
+
+async function dashToolLoad(tool) {
+  try {
+    const res = await fetch('/api/tool-data?tool=' + encodeURIComponent(tool));
+    if (!res.ok) return {};
+    const d = await res.json();
+    return (d && d.data) ? d.data : {};
+  } catch (e) { return {}; }
+}
 
 function renderTaeglicheTools() {
   const container = document.getElementById('taegliche-tools');
   if (!container) return;
   container.innerHTML = '';
-  for (const tool of ALWAYS_UNLOCKED_TOOLS) {
-    const card = document.createElement('a');
-    card.href = tool.href;
-    card.className = 'module-card toolbox-elegant';
-    card.style.cssText = 'display:flex;align-items:center;gap:14px;padding:16px 20px;text-decoration:none;color:inherit;margin-bottom:12px;';
-    card.innerHTML = `<div class="toolbox-icon-circle" style="flex-shrink:0;">${tool.icon}</div><div style="flex:1;"><div class="module-title" style="font-size:14px;">${tool.title}</div><div style="font-size:11.5px;color:#5a6a85;margin-top:2px;">${tool.desc}</div></div><span class="item-link" style="white-space:nowrap;">Öffnen →</span>`;
-    container.appendChild(card);
+  ALWAYS_UNLOCKED_TOOLS.forEach((tool, idx) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'module-card toolbox-elegant';
+    wrap.style.cssText = 'padding:0;margin-bottom:12px;overflow:visible;';
+
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;align-items:center;gap:14px;padding:16px 20px;';
+    const openLink = document.createElement('a');
+    openLink.href = tool.href;
+    openLink.style.cssText = 'display:flex;align-items:center;gap:14px;flex:1;text-decoration:none;color:inherit;';
+    openLink.innerHTML = `<div class="toolbox-icon-circle" style="flex-shrink:0;">${tool.icon}</div><div style="flex:1;"><div class="module-title" style="font-size:14px;">${tool.title}</div><div style="font-size:11.5px;color:#5a6a85;margin-top:2px;">${tool.desc}</div></div>`;
+    row.appendChild(openLink);
+
+    const rightBox = document.createElement('div');
+    rightBox.style.cssText = 'display:flex;align-items:center;gap:8px;';
+    const openBtn = document.createElement('a');
+    openBtn.href = tool.href;
+    openBtn.className = 'item-link';
+    openBtn.style.whiteSpace = 'nowrap';
+    openBtn.textContent = 'Öffnen →';
+    rightBox.appendChild(openBtn);
+
+    if (tool.pin) {
+      const gearBtn = document.createElement('button');
+      gearBtn.textContent = '⚙️ PIN';
+      gearBtn.style.cssText = 'background:transparent;border:1px solid #d4af37;color:#1a2a4a;border-radius:6px;padding:6px 10px;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;';
+      gearBtn.onclick = () => togglePinPanel(idx);
+      rightBox.appendChild(gearBtn);
+    }
+    row.appendChild(rightBox);
+    wrap.appendChild(row);
+
+    if (tool.pin) {
+      const panel = document.createElement('div');
+      panel.id = 'pin-panel-' + idx;
+      panel.style.cssText = 'display:none;padding:0 20px 18px;border-top:1px solid #f0e8d4;';
+      panel.innerHTML = `<div id="pin-panel-content-${idx}" style="padding-top:14px;font-size:12.5px;color:#5a6a85;">Wird geladen …</div>`;
+      wrap.appendChild(panel);
+    }
+
+    container.appendChild(wrap);
+  });
+}
+
+async function togglePinPanel(idx) {
+  const panel = document.getElementById('pin-panel-' + idx);
+  const isOpen = panel.style.display === 'block';
+  panel.style.display = isOpen ? 'none' : 'block';
+  if (isOpen) return;
+  await renderPinPanelContent(idx);
+}
+
+async function renderPinPanelContent(idx) {
+  const tool = ALWAYS_UNLOCKED_TOOLS[idx];
+  const content = document.getElementById('pin-panel-content-' + idx);
+  const zugang = await dashToolLoad(tool.pin.zugangTool);
+
+  if (zugang && zugang.code && zugang.pinHash) {
+    const link = window.location.origin + '/' + tool.pin.linkPath + '?u=' + zugang.code;
+    content.innerHTML = `
+      <div style="background:#fff8e0;border:1px solid #d4af37;border-radius:8px;padding:14px 16px;margin-bottom:12px;">
+        Link für Mitarbeiter (z. B. per WhatsApp teilen):<br>
+        <code style="background:#1a2a4a;color:#d4af37;padding:5px 8px;border-radius:5px;font-size:12px;display:inline-block;margin-top:6px;word-break:break-all;">${link}</code>
+        <div style="margin-top:10px;">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${encodeURIComponent(link)}" style="width:120px;height:120px;border:1px solid #d4af37;border-radius:6px;background:#fff;padding:5px;">
+          <div style="font-size:11px;color:#8090a8;margin-top:4px;">Zum Ausdrucken/Aufhängen für Mitarbeiter.</div>
+        </div>
+      </div>
+      <div style="max-width:180px;margin-bottom:8px;">
+        <label style="font-size:10.5px;font-weight:700;color:#8090a8;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:4px;">PIN ändern (4-stellig)</label>
+        <input type="password" inputmode="numeric" maxlength="4" id="dash-neue-pin-${idx}" placeholder="Neue PIN" style="border:1px solid #e0d8c8;border-radius:6px;padding:8px 10px;font-size:13px;width:100%;">
+      </div>
+      <button id="dash-pin-save-btn-${idx}" style="background:#1a6640;color:#fff;border:none;padding:8px 16px;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer;">PIN speichern</button>
+      <span id="dash-pin-msg-${idx}" style="font-size:11.5px;color:#4aaa60;margin-left:8px;display:none;">✓ Gespeichert</span>
+    `;
+    document.getElementById('dash-pin-save-btn-' + idx).onclick = async () => {
+      const pin = document.getElementById('dash-neue-pin-' + idx).value.trim();
+      if (!/^\d{4}$/.test(pin)) { alert('Bitte eine 4-stellige PIN eingeben.'); return; }
+      await fetch(tool.pin.setupEndpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code: zugang.code, pin }) });
+      document.getElementById('dash-neue-pin-' + idx).value = '';
+      const msg = document.getElementById('dash-pin-msg-' + idx);
+      msg.style.display = 'inline';
+      setTimeout(() => { msg.style.display = 'none'; }, 2000);
+    };
+  } else {
+    content.innerHTML = `
+      <div style="font-size:11.5px;color:#8090a8;margin-bottom:10px;">Noch kein Zugang eingerichtet. Leg eine 4-stellige PIN fest, die du an deine Mitarbeiter weitergibst.</div>
+      <div style="max-width:180px;margin-bottom:8px;">
+        <label style="font-size:10.5px;font-weight:700;color:#8090a8;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:4px;">PIN festlegen (4-stellig)</label>
+        <input type="password" inputmode="numeric" maxlength="4" id="dash-erste-pin-${idx}" placeholder="PIN wählen" style="border:1px solid #e0d8c8;border-radius:6px;padding:8px 10px;font-size:13px;width:100%;">
+      </div>
+      <button id="dash-pin-setup-btn-${idx}" style="background:#1a6640;color:#fff;border:none;padding:8px 16px;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer;">Zugang einrichten</button>
+    `;
+    document.getElementById('dash-pin-setup-btn-' + idx).onclick = async () => {
+      const pin = document.getElementById('dash-erste-pin-' + idx).value.trim();
+      if (!/^\d{4}$/.test(pin)) { alert('Bitte eine 4-stellige PIN eingeben.'); return; }
+      const code = Math.random().toString(36).slice(2, 10) + Math.random().toString(36).slice(2, 6);
+      await fetch(tool.pin.setupEndpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code, pin }) });
+      await renderPinPanelContent(idx);
+    };
   }
 }
 
