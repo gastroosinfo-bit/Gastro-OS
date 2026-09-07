@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reservierungsbuch – GASTRO-OS</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
+.header{background:#1a2a4a;padding:14px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
+.brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
+.btn-back { background:#d4af37; color:#1a2a4a; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.btn-back:hover { background:#c8a030; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+.wrap { max-width:760px; margin:0 auto; padding:28px 24px 60px; }
+.tool-label { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:4px; }
+.tool-title { font-family:Georgia,serif; font-size:22px; color:#1a2a4a; margin-bottom:4px; }
+.tool-sub { font-size:13px; color:#5a6a80; margin-bottom:20px; }
+
+.section { background:#fff; border:1px solid #e8dfc8; border-radius:10px; padding:22px 26px; margin-bottom:20px; box-shadow:0 2px 6px rgba(0,0,0,0.04); }
+.section-head { background:#1a2a4a; color:#d4af37; font-size:13px; font-weight:700; letter-spacing:1px; padding:10px 14px; border-radius:6px; margin-bottom:16px; }
+
+.field-group { display:flex; flex-direction:column; gap:5px; margin-bottom:14px; }
+.field-group label { font-size:11px; font-weight:700; color:#8090a8; text-transform:uppercase; letter-spacing:0.5px; }
+.field-group input, .field-group textarea { border:1px solid #e0d8c8; border-radius:6px; padding:10px 12px; font-size:14px; color:#1a2a4a; background:#eaf2ff; font-family:inherit; }
+.field-group input:focus, .field-group textarea:focus { outline:none; border-color:#d4af37; background:#fff; }
+.grid2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
+@media(max-width:600px){ .grid2,.grid3{ grid-template-columns:1fr; } }
+
+.btn-add { background:#1a6640; color:#fff; border:none; padding:10px 20px; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; }
+.btn-add:hover { background:#d4af37; color:#1a2a4a; }
+.btn-del { background:transparent; border:1px solid #c0392b; color:#c0392b; padding:5px 10px; border-radius:5px; font-size:11px; font-weight:600; cursor:pointer; }
+.btn-del:hover { background:#c0392b; color:#fff; }
+.save-msg { font-size:12px; color:#4aaa60; margin-left:10px; display:none; }
+.error-msg { font-size:12.5px; color:#c0392b; margin-top:8px; display:none; }
+
+table.data-table { width:100%; border-collapse:collapse; font-size:12.5px; margin-top:4px; }
+table.data-table th { background:#f5f0e8; padding:8px 10px; font-size:11px; font-weight:700; color:#1a2a4a; text-align:left; border:1px solid #e8dfc8; }
+table.data-table td { padding:8px 10px; border:1px solid #e8dfc8; }
+table.data-table tr:nth-child(even) td { background:#faf8f4; }
+
+.zugang-box { background:#fff8e0; border:1px solid #d4af37; border-radius:8px; padding:16px 20px; margin-bottom:14px; }
+.zugang-box code { background:#1a2a4a; color:#d4af37; padding:6px 10px; border-radius:5px; font-size:13px; display:inline-block; margin-top:6px; word-break:break-all; }
+.hint { font-size:11.5px; color:#8090a8; margin-top:6px; }
+
+.pin-screen { text-align:center; padding:40px 20px; }
+.pin-input { font-size:24px; letter-spacing:8px; text-align:center; width:160px; padding:12px; border:2px solid #d4af37; border-radius:8px; margin:16px auto; display:block; }
+
+.footer-brand { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-brand strong { color:#d4af37; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <span class="brand">GASTRO-OS</span>
+  <a href="dashboard.html" class="btn-back" id="btn-dashboard" style="display:none;">← Zurück zum Dashboard</a>
+</div>
+<div class="gold-bar"></div>
+
+<div class="wrap">
+  <div class="tool-label">Toolbox · Täglich nutzbar</div>
+  <div class="tool-title">📅 Reservierungsbuch</div>
+  <div class="tool-sub" id="tool-sub-text">Wird geladen …</div>
+
+  <!-- ═══ MITARBEITER: PIN-EINGABE ═══ -->
+  <div id="pin-screen" class="section pin-screen" style="display:none;">
+    <div style="font-size:15px;margin-bottom:6px;">Bitte PIN eingeben</div>
+    <input type="password" inputmode="numeric" maxlength="4" class="pin-input" id="pin-input" placeholder="••••">
+    <button class="btn-add" onclick="pinPruefen()">Entsperren</button>
+    <div class="error-msg" id="pin-error">Falsche PIN, bitte nochmal versuchen.</div>
+  </div>
+
+  <!-- ═══ GEMEINSAMER BEREICH (Mitarbeiter nach PIN ODER Inhaber direkt) ═══ -->
+  <div id="reservierung-bereich" style="display:none;">
+    <div class="section">
+      <div class="section-head">Neue Reservierung</div>
+      <div class="grid3">
+        <div class="field-group"><label>Name</label><input type="text" id="res-name" placeholder="Gastname"></div>
+        <div class="field-group"><label>Datum</label><input type="date" id="res-datum"></div>
+        <div class="field-group"><label>Uhrzeit</label><input type="time" id="res-uhrzeit"></div>
+      </div>
+      <div class="grid3">
+        <div class="field-group"><label>Personen</label><input type="number" min="1" id="res-personen" placeholder="z. B. 4"></div>
+        <div class="field-group"><label>Telefon</label><input type="text" id="res-telefon" placeholder="z. B. 0170 1234567"></div>
+        <div class="field-group"><label>Tisch / Bereich (optional)</label><input type="text" id="res-tisch" placeholder="z. B. Tisch 12, Terrasse"></div>
+      </div>
+      <div class="field-group"><label>Notiz (optional)</label><input type="text" id="res-notiz" placeholder="z. B. Allergie, Geburtstag"></div>
+      <button class="btn-add" onclick="resEintragen()">💾 Reservierung speichern</button>
+      <span class="save-msg" id="res-save-msg">✓ Gespeichert</span>
+    </div>
+
+    <div class="section">
+      <div class="section-head">Kommende Reservierungen</div>
+      <table class="data-table" id="res-tabelle">
+        <thead><tr><th>Datum</th><th>Uhrzeit</th><th>Name</th><th>Pers.</th><th>Telefon</th><th>Tisch</th><th>Notiz</th><th></th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ═══ NUR INHABER: EINSTELLUNGEN ═══ -->
+  <div id="inhaber-einstellungen" style="display:none;">
+    <div class="section">
+      <div class="section-head">Zugang für Mitarbeiter</div>
+      <div id="zugang-eingerichtet" style="display:none;">
+        <div class="zugang-box">
+          Link für Mitarbeiter (z. B. als Lesezeichen oder per WhatsApp teilen):<br>
+          <code id="zugang-link"></code>
+          <div style="margin-top:14px;">
+            <img id="zugang-qr" alt="QR-Code für Mitarbeiter-Zugang" style="width:140px;height:140px;border:1px solid #d4af37;border-radius:6px;background:#fff;padding:6px;">
+            <div class="hint">Zum Ausdrucken und Aufhängen: Mitarbeiter halten einfach die Handy-Kamera drauf.</div>
+          </div>
+        </div>
+        <div class="field-group" style="max-width:200px;">
+          <label>PIN ändern (4-stellig)</label>
+          <input type="password" inputmode="numeric" maxlength="4" id="neue-pin" placeholder="Neue PIN">
+        </div>
+        <button class="btn-add" onclick="pinAendern()">PIN speichern</button>
+        <span class="save-msg" id="pin-save-msg">✓ Gespeichert</span>
+      </div>
+      <div id="zugang-einrichten">
+        <div class="hint" style="margin-bottom:10px;">Noch kein Zugang eingerichtet. Leg jetzt eine 4-stellige PIN fest, die du an deine Mitarbeiter weitergibst.</div>
+        <div class="field-group" style="max-width:200px;">
+          <label>PIN festlegen (4-stellig)</label>
+          <input type="password" inputmode="numeric" maxlength="4" id="erste-pin" placeholder="PIN wählen">
+        </div>
+        <button class="btn-add" onclick="zugangEinrichten()">Zugang einrichten</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer-brand"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+
+<script>
+function flashSaved(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.style.display = 'inline';
+  setTimeout(() => { el.style.display = 'none'; }, 2000);
+}
+function heute() { return new Date().toISOString().slice(0, 10); }
+function renderReservierungen(items) {
+  const tbody = document.querySelector('#res-tabelle tbody');
+  tbody.innerHTML = '';
+  const sorted = [...items].sort((a, b) => (a.datum + a.uhrzeit).localeCompare(b.datum + b.uhrzeit));
+  sorted.forEach(r => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${r.datum}</td><td>${r.uhrzeit || ''}</td><td>${r.name}</td><td>${r.personen || ''}</td><td>${r.telefon || ''}</td><td>${r.tisch || ''}</td><td>${r.notiz || ''}</td><td><button class="btn-del" onclick="resLoeschen(${r.id})">✕</button></td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+const urlParams = new URLSearchParams(window.location.search);
+const codeAusUrl = urlParams.get('u');
+
+if (codeAusUrl) {
+  initMitarbeiterModus(codeAusUrl);
+} else {
+  initInhaberModus();
+}
+
+// ═══════════════ MITARBEITER-MODUS ═══════════════
+function initMitarbeiterModus(code) {
+  document.getElementById('tool-sub-text').textContent = 'Gib deine PIN ein, um Reservierungen zu sehen und einzutragen.';
+  document.getElementById('pin-screen').style.display = 'block';
+  document.getElementById('pin-input').focus();
+  let aktuellerPin = null;
+
+  window.pinPruefen = async function() {
+    const pin = document.getElementById('pin-input').value.trim();
+    if (pin.length !== 4) return;
+    try {
+      const res = await fetch('/api/reservierung-public', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code, pin })
+      });
+      if (!res.ok) { document.getElementById('pin-error').style.display = 'block'; return; }
+      const d = await res.json();
+      aktuellerPin = pin;
+      document.getElementById('pin-screen').style.display = 'none';
+      document.getElementById('reservierung-bereich').style.display = 'block';
+      document.getElementById('tool-sub-text').textContent = 'Trag neue Reservierungen ein oder sieh die kommenden.';
+      document.getElementById('res-datum').value = heute();
+      renderReservierungen(d.items || []);
+
+      window.resEintragen = async function() {
+        const eintrag = {
+          name: document.getElementById('res-name').value.trim(),
+          datum: document.getElementById('res-datum').value,
+          uhrzeit: document.getElementById('res-uhrzeit').value,
+          personen: document.getElementById('res-personen').value,
+          telefon: document.getElementById('res-telefon').value,
+          tisch: document.getElementById('res-tisch').value,
+          notiz: document.getElementById('res-notiz').value
+        };
+        if (!eintrag.name || !eintrag.datum) { alert('Bitte mindestens Name und Datum angeben.'); return; }
+        const res2 = await fetch('/api/reservierung-public', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code, pin: aktuellerPin, action: 'add', eintrag })
+        });
+        const d2 = await res2.json();
+        ['res-name','res-uhrzeit','res-personen','res-telefon','res-tisch','res-notiz'].forEach(id => document.getElementById(id).value = '');
+        flashSaved('res-save-msg');
+        renderReservierungen(d2.items || []);
+      };
+      window.resLoeschen = async function(id) {
+        const res3 = await fetch('/api/reservierung-public', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code, pin: aktuellerPin, action: 'delete', id })
+        });
+        const d3 = await res3.json();
+        renderReservierungen(d3.items || []);
+      };
+    } catch (e) {
+      document.getElementById('pin-error').style.display = 'block';
+    }
+  };
+}
+
+// ═══════════════ INHABER-MODUS ═══════════════
+async function initInhaberModus() {
+  try {
+    const res = await fetch('/api/verify-session');
+    if (!res.ok) { window.location.href = 'login.html'; return; }
+    const d = await res.json();
+    if (!d.valid) { window.location.href = 'login.html'; return; }
+  } catch (e) { window.location.href = 'login.html'; return; }
+
+  document.getElementById('btn-dashboard').style.display = 'inline-block';
+  document.getElementById('tool-sub-text').textContent = 'Reservierungen im Blick behalten und den Zugang für Mitarbeiter einrichten.';
+  document.getElementById('reservierung-bereich').style.display = 'block';
+  document.getElementById('inhaber-einstellungen').style.display = 'block';
+  document.getElementById('res-datum').value = heute();
+
+  const data = await toolLoad('reservierungen');
+  window.resItems = data.items || [];
+  renderReservierungen(window.resItems);
+
+  window.resEintragen = async function() {
+    const eintrag = {
+      id: Date.now(),
+      name: document.getElementById('res-name').value.trim(),
+      datum: document.getElementById('res-datum').value,
+      uhrzeit: document.getElementById('res-uhrzeit').value,
+      personen: document.getElementById('res-personen').value,
+      telefon: document.getElementById('res-telefon').value,
+      tisch: document.getElementById('res-tisch').value,
+      notiz: document.getElementById('res-notiz').value
+    };
+    if (!eintrag.name || !eintrag.datum) { alert('Bitte mindestens Name und Datum angeben.'); return; }
+    window.resItems.push(eintrag);
+    await toolSave('reservierungen', { items: window.resItems });
+    ['res-name','res-uhrzeit','res-personen','res-telefon','res-tisch','res-notiz'].forEach(id => document.getElementById(id).value = '');
+    flashSaved('res-save-msg');
+    renderReservierungen(window.resItems);
+  };
+  window.resLoeschen = async function(id) {
+    window.resItems = window.resItems.filter(r => r.id !== id);
+    await toolSave('reservierungen', { items: window.resItems });
+    renderReservierungen(window.resItems);
+  };
+
+  const zugang = await toolLoad('reservierung-zugang');
+  if (zugang && zugang.code && zugang.pinHash) {
+    document.getElementById('zugang-eingerichtet').style.display = 'block';
+    document.getElementById('zugang-einrichten').style.display = 'none';
+    const link = window.location.origin + '/reservierung.html?u=' + zugang.code;
+    document.getElementById('zugang-link').textContent = link;
+    document.getElementById('zugang-qr').src = 'https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=' + encodeURIComponent(link);
+  } else {
+    document.getElementById('zugang-eingerichtet').style.display = 'none';
+    document.getElementById('zugang-einrichten').style.display = 'block';
+  }
+}
+async function toolLoad(tool) {
+  try {
+    const res = await fetch('/api/tool-data?tool=' + encodeURIComponent(tool));
+    if (!res.ok) return {};
+    const d = await res.json();
+    return (d && d.data) ? d.data : {};
+  } catch (e) { return {}; }
+}
+async function toolSave(tool, data) {
+  try {
+    await fetch('/api/tool-data', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tool, data })
+    });
+  } catch (e) {}
+}
+function zufallsCode() {
+  return Math.random().toString(36).slice(2, 10) + Math.random().toString(36).slice(2, 6);
+}
+async function zugangEinrichten() {
+  const pin = document.getElementById('erste-pin').value.trim();
+  if (pin.length !== 4) { alert('Bitte eine 4-stellige PIN eingeben.'); return; }
+  const code = zufallsCode();
+  await fetch('/api/reservierung-setup', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ code, pin })
+  });
+  location.reload();
+}
+async function pinAendern() {
+  const pin = document.getElementById('neue-pin').value.trim();
+  if (pin.length !== 4) { alert('Bitte eine 4-stellige PIN eingeben.'); return; }
+  const zugang = await toolLoad('reservierung-zugang');
+  await fetch('/api/reservierung-setup', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ code: zugang.code, pin })
+  });
+  document.getElementById('neue-pin').value = '';
+  flashSaved('pin-save-msg');
+}
+</script>
+</body>
+</html>
