@@ -757,10 +757,10 @@ function toggleToolbox() {
 const ALWAYS_UNLOCKED_TOOLS = [
   { icon: '🗓️', title: 'Tagesgeschäft', desc: 'Kassenbuch, Temperaturen & Wareneingang – die täglichen Einträge an einem Ort.', href: 'tagesgeschaeft.html' },
   { icon: '📋', title: 'Übergabebuch', desc: 'Schichtübergabe – auch per PIN für Mitarbeiter ohne eigenen Zugang.', href: 'uebergabe.html',
-    pin: { zugangTool: 'uebergabe-zugang', setupEndpoint: '/api/uebergabe-setup', linkPath: 'uebergabe.html' },
+    pin: { zugangTool: 'uebergabe-zugang', setupEndpoint: '/api/zugang-setup', bookType: 'uebergabe', linkPath: 'uebergabe.html' },
     unread: { dataTool: 'tagesgeschaeft-schicht', lastSeenKey: 'uebergabe' } },
   { icon: '📅', title: 'Reservierungsbuch', desc: 'Reservierungen erfassen – auch per PIN für Mitarbeiter ohne eigenen Zugang.', href: 'reservierung.html',
-    pin: { zugangTool: 'reservierung-zugang', setupEndpoint: '/api/reservierung-setup', linkPath: 'reservierung.html' },
+    pin: { zugangTool: 'reservierung-zugang', setupEndpoint: '/api/zugang-setup', bookType: 'reservierung', linkPath: 'reservierung.html' },
     unread: { dataTool: 'reservierungen', lastSeenKey: 'reservierung' } },
   { icon: '📎', title: 'Belege', desc: 'Rechnungen von Lieferdiensten und Lieferanten zentral ablegen.', href: 'belegablage.html' }
 ];
@@ -972,7 +972,7 @@ async function renderPinPanelContent(idx) {
     document.getElementById('dash-pin-save-btn-' + idx).onclick = async () => {
       const pin = document.getElementById('dash-neue-pin-' + idx).value.trim();
       if (!/^\d{4}$/.test(pin)) { alert('Bitte eine 4-stellige PIN eingeben.'); return; }
-      await fetch(tool.pin.setupEndpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code: zugang.code, pin }) });
+      await fetch(tool.pin.setupEndpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code: zugang.code, pin, bookType: tool.pin.bookType }) });
       document.getElementById('dash-neue-pin-' + idx).value = '';
       const msg = document.getElementById('dash-pin-msg-' + idx);
       msg.style.display = 'inline';
@@ -991,7 +991,7 @@ async function renderPinPanelContent(idx) {
       const pin = document.getElementById('dash-erste-pin-' + idx).value.trim();
       if (!/^\d{4}$/.test(pin)) { alert('Bitte eine 4-stellige PIN eingeben.'); return; }
       const code = Math.random().toString(36).slice(2, 10) + Math.random().toString(36).slice(2, 6);
-      await fetch(tool.pin.setupEndpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code, pin }) });
+      await fetch(tool.pin.setupEndpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code, pin, bookType: tool.pin.bookType }) });
       await renderPinPanelContent(idx);
     };
   }
