@@ -763,12 +763,13 @@ function renderTaeglicheTools() {
     wrap.style.cssText = 'padding:0;margin-bottom:12px;overflow:visible;';
 
     const row = document.createElement('div');
-    row.style.cssText = 'display:flex;align-items:center;gap:14px;padding:16px 20px;';
-    const openLink = document.createElement('a');
-    openLink.href = tool.href;
-    openLink.style.cssText = 'display:flex;align-items:center;gap:14px;flex:1;text-decoration:none;color:inherit;';
-    openLink.innerHTML = `<div class="toolbox-icon-circle" style="flex-shrink:0;">${tool.icon}</div><div style="flex:1;"><div class="module-title" style="font-size:14px;">${tool.title}</div><div style="font-size:11.5px;color:#5a6a85;margin-top:2px;">${tool.desc}</div></div>`;
-    row.appendChild(openLink);
+    row.style.cssText = 'padding:16px 20px;';
+
+    const topRow = document.createElement('a');
+    topRow.href = tool.href;
+    topRow.style.cssText = 'display:flex;align-items:center;gap:14px;text-decoration:none;color:inherit;margin-bottom:12px;';
+    topRow.innerHTML = `<div class="toolbox-icon-circle" style="flex-shrink:0;">${tool.icon}</div><div style="flex:1;"><div class="module-title" style="font-size:14px;">${tool.title}</div><div style="font-size:11.5px;color:#5a6a85;margin-top:2px;">${tool.desc}</div></div>`;
+    row.appendChild(topRow);
 
     const rightBox = document.createElement('div');
     rightBox.style.cssText = 'display:flex;align-items:center;gap:8px;';
@@ -781,8 +782,8 @@ function renderTaeglicheTools() {
 
     if (tool.pin) {
       const gearBtn = document.createElement('button');
-      gearBtn.textContent = '⚙️ PIN';
-      gearBtn.style.cssText = 'background:transparent;border:1px solid #d4af37;color:#1a2a4a;border-radius:6px;padding:6px 10px;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;';
+      gearBtn.textContent = '⚙️ PIN verwalten';
+      gearBtn.style.cssText = 'background:transparent;border:1px solid #d4af37;color:#1a2a4a;border-radius:6px;padding:7px 12px;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;';
       gearBtn.onclick = () => togglePinPanel(idx);
       rightBox.appendChild(gearBtn);
     }
