@@ -264,6 +264,13 @@ async function maPushSetup(code, pin) {
     const reg = await navigator.serviceWorker.getRegistration();
     const sub = reg && await reg.pushManager.getSubscription();
     if (sub) {
+      // Bereits im Browser registriert — sicherheitshalber nochmal an den Server schicken,
+      // falls das beim letzten Mal (z. B. wegen eines Server-Fehlers) nicht angekommen ist.
+      fetch('/api/push-subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code, pin, bookType: 'uebergabe', subscription: sub })
+      }).catch(() => {});
       status.textContent = '🔔 Benachrichtigungen sind aktiv.';
       btn.textContent = '✓ Aktiv';
       btn.disabled = true;

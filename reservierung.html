@@ -299,6 +299,11 @@ async function resPushSetup(code, pin) {
     const reg = await navigator.serviceWorker.getRegistration();
     const sub = reg && await reg.pushManager.getSubscription();
     if (sub) {
+      fetch('/api/push-subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code, pin, bookType: 'reservierung', subscription: sub })
+      }).catch(() => {});
       status.textContent = '🔔 Benachrichtigungen sind aktiv.';
       btn.textContent = '✓ Aktiv';
       btn.disabled = true;
