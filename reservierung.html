@@ -318,7 +318,7 @@ async function resPushSetup(code, pin) {
         userVisibleOnly: true,
         applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
       });
-      await fetch('/api/push-subscribe-public', {
+      await fetch('/api/push-subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ code, pin, bookType: 'reservierung', subscription: sub })

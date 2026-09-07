@@ -1,98 +1,302 @@
-// api/reservierung-public.js
-// Öffentlicher Zugang zum Reservierungsbuch per Code + PIN — ohne normales GASTRO-OS-Login.
-// Gleicher Aufbau wie api/uebergabe-public.js, eigener tool_name für Zugang und Daten.
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Übergabebuch – GASTRO-OS</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Übergabebuch">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
+.header{background:#1a2a4a;padding:14px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
+.brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
+.btn-back { background:#d4af37; color:#1a2a4a; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.btn-back:hover { background:#c8a030; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+.wrap { max-width:700px; margin:0 auto; padding:28px 24px 60px; }
+.tool-label { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:4px; }
+.tool-title { font-family:Georgia,serif; font-size:22px; color:#1a2a4a; margin-bottom:4px; }
+.tool-sub { font-size:13px; color:#5a6a80; margin-bottom:20px; }
 
-const crypto = require('crypto');
-const { sendPushToAll } = require('../lib/push-helper');
+.section { background:#fff; border:1px solid #e8dfc8; border-radius:10px; padding:22px 26px; margin-bottom:20px; box-shadow:0 2px 6px rgba(0,0,0,0.04); }
+.section-head { background:#1a2a4a; color:#d4af37; font-size:13px; font-weight:700; letter-spacing:1px; padding:10px 14px; border-radius:6px; margin-bottom:16px; }
 
-const SUPABASE_URL = process.env.SUPABASE_URL;
-const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
+.field-group { display:flex; flex-direction:column; gap:5px; margin-bottom:14px; }
+.field-group label { font-size:11px; font-weight:700; color:#8090a8; text-transform:uppercase; letter-spacing:0.5px; }
+.field-group input, .field-group textarea { border:1px solid #e0d8c8; border-radius:6px; padding:10px 12px; font-size:14px; color:#1a2a4a; background:#eaf2ff; font-family:inherit; }
+.field-group input:focus, .field-group textarea:focus { outline:none; border-color:#d4af37; background:#fff; }
 
-function sbHeaders() {
-  return {
-    'Content-Type': 'application/json',
-    'apikey': SUPABASE_SERVICE_KEY,
-    'Authorization': 'Bearer ' + SUPABASE_SERVICE_KEY
+.btn-add { background:#1a6640; color:#fff; border:none; padding:10px 20px; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; }
+.btn-add:hover { background:#d4af37; color:#1a2a4a; }
+.btn-del { background:transparent; border:1px solid #c0392b; color:#c0392b; padding:5px 10px; border-radius:5px; font-size:11px; font-weight:600; cursor:pointer; }
+.btn-del:hover { background:#c0392b; color:#fff; }
+.save-msg { font-size:12px; color:#4aaa60; margin-left:10px; display:none; }
+.error-msg { font-size:12.5px; color:#c0392b; margin-top:8px; display:none; }
+
+.notiz-item { border-bottom:1px solid #f0e8d4; padding:12px 0; }
+.notiz-item:last-child { border-bottom:none; }
+.notiz-meta { font-size:11px; color:#8090a8; margin-bottom:4px; }
+.notiz-text { font-size:13px; color:#2a3a4a; line-height:1.5; }
+
+.zugang-box { background:#fff8e0; border:1px solid #d4af37; border-radius:8px; padding:16px 20px; margin-bottom:14px; }
+.zugang-box code { background:#1a2a4a; color:#d4af37; padding:6px 10px; border-radius:5px; font-size:13px; display:inline-block; margin-top:6px; word-break:break-all; }
+.hint { font-size:11.5px; color:#8090a8; margin-top:6px; }
+
+.pin-screen { text-align:center; padding:40px 20px; }
+.pin-input { font-size:24px; letter-spacing:8px; text-align:center; width:160px; padding:12px; border:2px solid #d4af37; border-radius:8px; margin:16px auto; display:block; }
+
+.footer-brand { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-brand strong { color:#d4af37; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <span class="brand">GASTRO-OS</span>
+  <a href="dashboard.html" class="btn-back" id="btn-dashboard" style="display:none;">← Zurück zum Dashboard</a>
+</div>
+<div class="gold-bar"></div>
+
+<div class="wrap">
+  <div class="tool-label">Toolbox · Täglich nutzbar</div>
+  <div class="tool-title">📋 Übergabebuch</div>
+  <div class="tool-sub" id="tool-sub-text">Wird geladen …</div>
+
+  <!-- ═══ MITARBEITER: PIN-EINGABE ═══ -->
+  <div id="pin-screen" class="section pin-screen" style="display:none;">
+    <div style="font-size:15px;margin-bottom:6px;">Bitte PIN eingeben</div>
+    <input type="password" inputmode="numeric" maxlength="4" class="pin-input" id="pin-input" placeholder="••••">
+    <button class="btn-add" onclick="pinPruefen()">Entsperren</button>
+    <div class="error-msg" id="pin-error">Falsche PIN, bitte nochmal versuchen.</div>
+  </div>
+
+  <!-- ═══ MITARBEITER: ÜBERGABEBUCH (nach PIN) ═══ -->
+  <div id="mitarbeiter-bereich" style="display:none;">
+    <div class="section" style="display:flex;align-items:center;gap:12px;">
+      <div style="flex:1;font-size:12.5px;color:#5a6a85;" id="ma-push-status-text">Bekomm eine Ton-Benachrichtigung, wenn jemand anderes hier was einträgt.</div>
+      <button id="ma-push-btn" style="background:#1a6640;color:#fff;border:none;padding:8px 14px;border-radius:6px;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;">🔔 Aktivieren</button>
+    </div>
+    <div class="section">
+      <div class="field-group" style="margin-bottom:14px;">
+        <label>Dein Name</label>
+        <input type="text" id="ma-name" placeholder="z. B. Maria">
+      </div>
+      <div class="section-head">Neuer Übergabe-Eintrag</div>
+      <textarea id="ma-text" rows="3" style="width:100%;border:1px solid #e0d8c8;border-radius:6px;padding:10px 12px;font-size:14px;font-family:inherit;" placeholder="Was ist wichtig für die nächste Schicht?"></textarea>
+      <button class="btn-add" style="margin-top:10px;" onclick="maEintragen()">💾 Eintragen</button>
+      <span class="save-msg" id="ma-save-msg">✓ Gespeichert</span>
+    </div>
+    <div class="section">
+      <div class="section-head">Verlauf</div>
+      <div id="ma-liste"></div>
+
+    </div>
+  </div>
+
+  <!-- ═══ INHABER: EIGENES ÜBERGABEBUCH (Zugang/PIN wird im Dashboard verwaltet) ═══ -->
+  <div id="inhaber-bereich" style="display:none;">
+    <div class="section">
+      <div class="section-head">Neuer Übergabe-Eintrag</div>
+      <textarea id="inh-text" rows="3" style="width:100%;border:1px solid #e0d8c8;border-radius:6px;padding:10px 12px;font-size:14px;font-family:inherit;" placeholder="Was ist wichtig für die nächste Schicht?"></textarea>
+      <button class="btn-add" style="margin-top:10px;" onclick="inhEintragen()">💾 Eintragen</button>
+      <span class="save-msg" id="inh-save-msg">✓ Gespeichert</span>
+    </div>
+    <div class="section">
+      <div class="section-head">Verlauf</div>
+      <div id="inhaber-liste"></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer-brand"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+
+<script>
+function flashSaved(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.style.display = 'inline';
+  setTimeout(() => { el.style.display = 'none'; }, 2000);
+}
+function renderListe(containerId, items) {
+  const el = document.getElementById(containerId);
+  el.innerHTML = '';
+  const sorted = [...items].sort((a, b) => b.id - a.id);
+  if (sorted.length === 0) { el.innerHTML = '<span style="color:#8090a8;font-size:13px;">Noch keine Einträge.</span>'; return; }
+  sorted.forEach(s => {
+    const d = new Date(s.zeitpunkt);
+    const div = document.createElement('div');
+    div.className = 'notiz-item';
+    div.innerHTML = `<div class="notiz-meta">${d.toLocaleString('de-DE')} — ${s.autor || 'Mitarbeiter'}</div><div class="notiz-text">${s.text}</div>`;
+    el.appendChild(div);
+  });
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// Zwei Modi: Mitarbeiter (?u=CODE in der URL) oder Inhaber (eingeloggt).
+// ─────────────────────────────────────────────────────────────────────────
+const urlParams = new URLSearchParams(window.location.search);
+const codeAusUrl = urlParams.get('u');
+
+if (codeAusUrl) {
+  initMitarbeiterModus(codeAusUrl);
+} else {
+  initInhaberModus();
+}
+
+// ═══════════════ MITARBEITER-MODUS ═══════════════
+function initMitarbeiterModus(code) {
+  document.getElementById('tool-sub-text').textContent = 'Gib deine PIN ein, um Einträge zu lesen und neue hinzuzufügen.';
+  document.getElementById('pin-screen').style.display = 'block';
+  document.getElementById('pin-input').focus();
+
+  window.pinPruefen = async function() {
+    const pin = document.getElementById('pin-input').value.trim();
+    if (pin.length !== 4) return;
+    try {
+      const res = await fetch('/api/uebergabe-public', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code, pin })
+      });
+      if (!res.ok) {
+        document.getElementById('pin-error').style.display = 'block';
+        return;
+      }
+      const d = await res.json();
+      document.getElementById('pin-screen').style.display = 'none';
+      document.getElementById('mitarbeiter-bereich').style.display = 'block';
+      document.getElementById('tool-sub-text').textContent = 'Trag hier ein, was für die nächste Schicht wichtig ist.';
+      renderListe('ma-liste', d.items || []);
+
+      const gespeicherterName = localStorage.getItem('gastroos_ma_name_' + code) || '';
+      document.getElementById('ma-name').value = gespeicherterName;
+      maPushSetup(code, pin);
+
+      window.maEintragen = async function() {
+        const text = document.getElementById('ma-text').value.trim();
+        const name = document.getElementById('ma-name').value.trim() || 'Mitarbeiter';
+        if (!text) return;
+        localStorage.setItem('gastroos_ma_name_' + code, name);
+        const res2 = await fetch('/api/uebergabe-public', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code, pin, action: 'add', text, autor: name })
+        });
+        const d2 = await res2.json();
+        document.getElementById('ma-text').value = '';
+        flashSaved('ma-save-msg');
+        renderListe('ma-liste', d2.items || []);
+      };
+    } catch (e) {
+      document.getElementById('pin-error').style.display = 'block';
+    }
   };
 }
-function pinHash(code, pin) {
-  return crypto.createHmac('sha256', SUPABASE_SERVICE_KEY || 'fallback').update('reservierung:' + code + ':' + pin).digest('hex');
-}
 
-async function findOwnerByCode(code) {
-  const r = await fetch(
-    SUPABASE_URL + '/rest/v1/user_tool_data?tool_name=eq.reservierung-zugang&data->>code=eq.' + encodeURIComponent(code) + '&select=user_id,data&limit=1',
-    { headers: sbHeaders() }
-  );
-  const rows = await r.json();
-  if (!rows || rows.length === 0) return null;
-  return rows[0];
-}
-async function loadItems(userId) {
-  const r = await fetch(
-    SUPABASE_URL + '/rest/v1/user_tool_data?user_id=eq.' + encodeURIComponent(userId) +
-    '&tool_name=eq.reservierungen&select=data&order=updated_at.desc&limit=1',
-    { headers: sbHeaders() }
-  );
-  const rows = await r.json();
-  const data = (rows && rows.length > 0 && rows[0].data) ? rows[0].data : {};
-  return data.items || [];
-}
-async function saveItems(userId, items) {
-  const existingRes = await fetch(
-    SUPABASE_URL + '/rest/v1/user_tool_data?user_id=eq.' + encodeURIComponent(userId) +
-    '&tool_name=eq.reservierungen&select=id&order=updated_at.desc',
-    { headers: sbHeaders() }
-  );
-  const existingRows = await existingRes.json();
-  const payload = { data: { items }, updated_at: new Date().toISOString() };
+// ═══════════════ INHABER-MODUS ═══════════════
+async function initInhaberModus() {
+  try {
+    const res = await fetch('/api/verify-session');
+    if (!res.ok) { window.location.href = 'login.html'; return; }
+    const d = await res.json();
+    if (!d.valid) { window.location.href = 'login.html'; return; }
+  } catch (e) { window.location.href = 'login.html'; return; }
 
-  if (existingRows && existingRows.length > 0) {
-    await fetch(SUPABASE_URL + '/rest/v1/user_tool_data?id=eq.' + existingRows[0].id, {
-      method: 'PATCH', headers: sbHeaders(), body: JSON.stringify(payload)
-    });
-  } else {
-    await fetch(SUPABASE_URL + '/rest/v1/user_tool_data', {
+  document.getElementById('btn-dashboard').style.display = 'inline-block';
+  document.getElementById('tool-sub-text').textContent = 'Dein eigenes Übergabebuch. Den Zugang für Mitarbeiter verwaltest du im Dashboard.';
+  document.getElementById('inhaber-bereich').style.display = 'block';
+
+  const schicht = await toolLoad('tagesgeschaeft-schicht');
+  let inhaberItems = schicht.items || [];
+  renderListe('inhaber-liste', inhaberItems);
+
+  window.inhEintragen = async function() {
+    const text = document.getElementById('inh-text').value.trim();
+    if (!text) return;
+    inhaberItems.push({ id: Date.now(), text, zeitpunkt: new Date().toISOString(), autor: 'Chef' });
+    await toolSave('tagesgeschaeft-schicht', { items: inhaberItems });
+    document.getElementById('inh-text').value = '';
+    flashSaved('inh-save-msg');
+    renderListe('inhaber-liste', inhaberItems);
+  };
+}
+async function toolLoad(tool) {
+  try {
+    const res = await fetch('/api/tool-data?tool=' + encodeURIComponent(tool));
+    if (!res.ok) return {};
+    const d = await res.json();
+    return (d && d.data) ? d.data : {};
+  } catch (e) { return {}; }
+}
+async function toolSave(tool, data) {
+  try {
+    await fetch('/api/tool-data', {
       method: 'POST',
-      headers: { ...sbHeaders(), 'Prefer': 'return=minimal' },
-      body: JSON.stringify({ user_id: userId, tool_name: 'reservierungen', data: { items } })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tool, data })
     });
-  }
+  } catch (e) {}
 }
 
-export default async function handler(req, res) {
-  if (req.method !== 'POST') return res.status(405).json({ error: 'Methode nicht erlaubt.' });
-  if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) return res.status(500).json({ error: 'Server nicht konfiguriert.' });
-
-  const { code, pin, action, eintrag, id } = req.body || {};
-  if (!code || !pin) return res.status(400).json({ error: 'Code oder PIN fehlt.' });
-
-  const owner = await findOwnerByCode(code);
-  if (!owner || !owner.data || !owner.data.pinHash) {
-    return res.status(401).json({ error: 'Ungültiger Code.' });
-  }
-  if (owner.data.pinHash !== pinHash(code, pin)) {
-    return res.status(401).json({ error: 'Falsche PIN.' });
-  }
-
-  if (action === 'add') {
-    if (!eintrag || !eintrag.name || !eintrag.datum) return res.status(400).json({ error: 'Name oder Datum fehlt.' });
-    const items = await loadItems(owner.user_id);
-    items.push({ id: Date.now(), ...eintrag });
-    await saveItems(owner.user_id, items);
-    sendPushToAll(owner.user_id, '📅 Neue Reservierung', `${eintrag.name}, ${eintrag.datum}${eintrag.uhrzeit ? ' ' + eintrag.uhrzeit : ''}${eintrag.personen ? ', ' + eintrag.personen + ' Personen' : ''}`, '/reservierung.html?u=' + code);
-    return res.status(200).json({ items });
-  }
-
-  if (action === 'delete') {
-    if (!id) return res.status(400).json({ error: 'id fehlt.' });
-    let items = await loadItems(owner.user_id);
-    items = items.filter(r => r.id !== id);
-    await saveItems(owner.user_id, items);
-    return res.status(200).json({ items });
-  }
-
-  // Default: nur Einträge lesen ("verify" / kein action-Wert)
-  const items = await loadItems(owner.user_id);
-  return res.status(200).json({ items });
+// ─── PUSH-BENACHRICHTIGUNGEN (Mitarbeiter, per Code+PIN statt Login) ───────
+const VAPID_PUBLIC_KEY = 'BNLFO9QNrjxgwjx4XsJdMxKeF1WH5kUhAdTOcN3DHabt32CN6g3hB5l5KsSA-u8_6HCGzrKN4BzIS4aIcIVSYTE';
+function urlBase64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+  const rawData = window.atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+  for (let i = 0; i < rawData.length; ++i) outputArray[i] = rawData.charCodeAt(i);
+  return outputArray;
 }
+async function maPushSetup(code, pin) {
+  const btn = document.getElementById('ma-push-btn');
+  const status = document.getElementById('ma-push-status-text');
+  if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+    status.textContent = 'Push-Benachrichtigungen werden auf diesem Ger\u00e4t/Browser nicht unterst\u00fctzt.';
+    btn.style.display = 'none';
+    return;
+  }
+  if (Notification.permission === 'granted') {
+    const reg = await navigator.serviceWorker.getRegistration();
+    const sub = reg && await reg.pushManager.getSubscription();
+    if (sub) {
+      status.textContent = '🔔 Benachrichtigungen sind aktiv.';
+      btn.textContent = '✓ Aktiv';
+      btn.disabled = true;
+      btn.style.opacity = '0.6';
+      return;
+    }
+  }
+  btn.onclick = async function() {
+    try {
+      const reg = await navigator.serviceWorker.register('/sw.js');
+      const permission = await Notification.requestPermission();
+      if (permission !== 'granted') {
+        status.textContent = 'Benachrichtigungen wurden nicht erlaubt.';
+        return;
+      }
+      const sub = await reg.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
+      });
+      await fetch('/api/push-subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code, pin, bookType: 'uebergabe', subscription: sub })
+      });
+      status.textContent = '🔔 Benachrichtigungen sind jetzt aktiv.';
+      btn.textContent = '✓ Aktiv';
+      btn.disabled = true;
+      btn.style.opacity = '0.6';
+    } catch (e) {
+      status.textContent = 'Aktivierung leider fehlgeschlagen.';
+    }
+  };
+}
+</script>
+</body>
+</html>
