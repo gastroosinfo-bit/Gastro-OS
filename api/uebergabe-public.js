@@ -84,7 +84,7 @@ export default async function handler(req, res) {
     const items = await loadEntries(owner.user_id);
     items.push({ id: Date.now(), text: text.trim(), zeitpunkt: new Date().toISOString(), autor: (autor && autor.trim()) || 'Mitarbeiter' });
     await saveEntries(owner.user_id, items);
-    sendPushToOwner(owner.user_id, '📋 Neuer Übergabe-Eintrag', text.trim().slice(0, 120), '/uebergabe.html');
+    sendPushToOwner(owner.user_id, '📋 Neuer Übergabe-Eintrag', text.trim().slice(0, 120), '/uebergabe.html?u=' + code);
     return res.status(200).json({ items });
   }
 
