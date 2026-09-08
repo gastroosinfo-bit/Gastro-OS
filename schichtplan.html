@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Schichtplan – GASTRO-OS</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Schichtplan">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
+.header{background:#1a2a4a;padding:14px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
+.brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
+.btn-back { background:#d4af37; color:#1a2a4a; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.btn-back:hover { background:#c8a030; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+.wrap { max-width:760px; margin:0 auto; padding:28px 24px 60px; }
+.tool-label { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:4px; }
+.tool-title { font-family:Georgia,serif; font-size:22px; color:#1a2a4a; margin-bottom:4px; }
+.tool-sub { font-size:13px; color:#5a6a80; margin-bottom:20px; }
+
+.section { background:#fff; border:1px solid #e8dfc8; border-radius:10px; padding:22px 26px; margin-bottom:20px; box-shadow:0 2px 6px rgba(0,0,0,0.04); }
+.section-head { background:#1a2a4a; color:#d4af37; font-size:13px; font-weight:700; letter-spacing:1px; padding:10px 14px; border-radius:6px; margin-bottom:16px; }
+
+.field-group { display:flex; flex-direction:column; gap:5px; margin-bottom:14px; }
+.field-group label { font-size:11px; font-weight:700; color:#8090a8; text-transform:uppercase; letter-spacing:0.5px; }
+.field-group input { border:1px solid #e0d8c8; border-radius:6px; padding:10px 12px; font-size:14px; color:#1a2a4a; background:#eaf2ff; font-family:inherit; }
+.field-group input:focus { outline:none; border-color:#d4af37; background:#fff; }
+.grid2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.grid4 { display:grid; grid-template-columns:1.2fr 1fr 0.8fr 0.8fr; gap:14px; }
+@media(max-width:600px){ .grid2,.grid4{ grid-template-columns:1fr; } }
+
+.btn-add { background:#1a6640; color:#fff; border:none; padding:10px 20px; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; }
+.btn-add:hover { background:#d4af37; color:#1a2a4a; }
+.btn-del { background:transparent; border:1px solid #c0392b; color:#c0392b; padding:5px 10px; border-radius:5px; font-size:11px; font-weight:600; cursor:pointer; }
+.btn-del:hover { background:#c0392b; color:#fff; }
+.save-msg { font-size:12px; color:#4aaa60; margin-left:10px; display:none; }
+.error-msg { font-size:12.5px; color:#c0392b; margin-top:8px; display:none; }
+
+table.data-table { width:100%; border-collapse:collapse; font-size:12.5px; margin-top:4px; }
+table.data-table th { background:#f5f0e8; padding:8px 10px; font-size:11px; font-weight:700; color:#1a2a4a; text-align:left; border:1px solid #e8dfc8; }
+table.data-table td { padding:8px 10px; border:1px solid #e8dfc8; }
+table.data-table tr:nth-child(even) td { background:#faf8f4; }
+
+.pin-screen { text-align:center; padding:40px 20px; }
+.pin-input { font-size:24px; letter-spacing:8px; text-align:center; width:160px; padding:12px; border:2px solid #d4af37; border-radius:8px; margin:16px auto; display:block; }
+.hinweis-box { background:#eaf2ff; border:1px solid #8ba8d0; border-radius:8px; padding:12px 16px; font-size:12px; color:#3a5578; margin-bottom:16px; }
+
+.footer-brand { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-brand strong { color:#d4af37; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <span class="brand">GASTRO-OS</span>
+  <a href="dashboard.html" class="btn-back" id="btn-dashboard" style="display:none;">← Zurück zum Dashboard</a>
+</div>
+<div class="gold-bar"></div>
+
+<div class="wrap">
+  <div class="tool-label">Toolbox · Intern</div>
+  <div class="tool-title">🗂️ Schichtplan</div>
+  <div class="tool-sub" id="tool-sub-text">Wird geladen …</div>
+
+  <!-- ═══ MITARBEITER: PIN-EINGABE ═══ -->
+  <div id="pin-screen" class="section pin-screen" style="display:none;">
+    <div style="font-size:15px;margin-bottom:6px;">Bitte PIN eingeben</div>
+    <input type="password" inputmode="numeric" maxlength="4" class="pin-input" id="pin-input" placeholder="••••">
+    <button class="btn-add" onclick="pinPruefen()">Entsperren</button>
+    <div class="error-msg" id="pin-error">Falsche PIN, bitte nochmal versuchen.</div>
+  </div>
+
+  <!-- ═══ MITARBEITER: SCHICHTPLAN NUR LESEND ═══ -->
+  <div id="mitarbeiter-bereich" style="display:none;">
+    <div class="section" style="display:flex;align-items:center;gap:12px;">
+      <div style="flex:1;font-size:12.5px;color:#5a6a85;" id="ma-push-status-text">Bekomm eine Ton-Benachrichtigung, wenn sich der Plan ändert.</div>
+      <button id="ma-push-btn" style="background:#1a6640;color:#fff;border:none;padding:8px 14px;border-radius:6px;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;">🔔 Aktivieren</button>
+    </div>
+    <div class="section">
+      <div class="section-head">Dienstplan</div>
+      <div style="overflow-x:auto;">
+      <table class="data-table" id="ma-tabelle">
+        <thead><tr><th>Name</th><th>Datum</th><th>Von</th><th>Bis</th><th>Notiz</th></tr></thead>
+        <tbody></tbody>
+      </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ INHABER: SCHICHTPLAN VERWALTEN ═══ -->
+  <div id="inhaber-bereich" style="display:none;">
+    <div class="hinweis-box">ℹ️ Nur du als Chef kannst hier Schichten eintragen, ändern oder löschen. Mitarbeiter sehen den Plan über ihren eigenen PIN-Link nur lesend.</div>
+    <div class="section">
+      <div class="section-head">Neue Schicht eintragen</div>
+      <div class="grid4">
+        <div class="field-group"><label>Name</label><input type="text" id="sp-name" placeholder="z. B. Maria"></div>
+        <div class="field-group"><label>Datum</label><input type="date" id="sp-datum"></div>
+        <div class="field-group"><label>Von</label><input type="time" id="sp-von"></div>
+        <div class="field-group"><label>Bis</label><input type="time" id="sp-bis"></div>
+      </div>
+      <div class="field-group"><label>Notiz (optional)</label><input type="text" id="sp-notiz" placeholder="z. B. Vertretung, Frühschicht"></div>
+      <button class="btn-add" onclick="spEintragen()">💾 Schicht speichern</button>
+      <span class="save-msg" id="sp-save-msg">✓ Gespeichert</span>
+    </div>
+
+    <div class="section">
+      <div class="section-head">Dienstplan</div>
+      <div style="overflow-x:auto;">
+      <table class="data-table" id="sp-tabelle">
+        <thead><tr><th>Name</th><th>Datum</th><th>Von</th><th>Bis</th><th>Notiz</th><th></th></tr></thead>
+        <tbody></tbody>
+      </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer-brand"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+
+<script>
+function flashSaved(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.style.display = 'inline';
+  setTimeout(() => { el.style.display = 'none'; }, 2000);
+}
+function heute() { return new Date().toISOString().slice(0, 10); }
+function renderMaTabelle(items) {
+  const tbody = document.querySelector('#ma-tabelle tbody');
+  tbody.innerHTML = '';
+  const sorted = [...items].sort((a, b) => (a.datum + a.von).localeCompare(b.datum + b.von));
+  if (sorted.length === 0) { tbody.innerHTML = '<tr><td colspan="5" style="color:#8090a8;">Noch keine Schichten eingetragen.</td></tr>'; return; }
+  sorted.forEach(s => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${s.name}</td><td>${s.datum}</td><td>${s.von || ''}</td><td>${s.bis || ''}</td><td>${s.notiz || ''}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+function renderSpTabelle(items) {
+  const tbody = document.querySelector('#sp-tabelle tbody');
+  tbody.innerHTML = '';
+  const sorted = [...items].sort((a, b) => (a.datum + a.von).localeCompare(b.datum + b.von));
+  sorted.forEach(s => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${s.name}</td><td>${s.datum}</td><td>${s.von || ''}</td><td>${s.bis || ''}</td><td>${s.notiz || ''}</td><td><button class="btn-del" onclick="spLoeschen(${s.id})">✕</button></td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+const urlParams = new URLSearchParams(window.location.search);
+const codeAusUrl = urlParams.get('u');
+
+if (codeAusUrl) {
+  initMitarbeiterModus(codeAusUrl);
+} else {
+  const gespeicherterCode = localStorage.getItem('gastroos_sp_code');
+  if (gespeicherterCode) {
+    initMitarbeiterModus(gespeicherterCode);
+  } else {
+    initInhaberModus();
+  }
+}
+
+// ═══════════════ MITARBEITER-MODUS (nur lesend) ═══════════════
+function initMitarbeiterModus(code) {
+  document.getElementById('tool-sub-text').textContent = 'Gib deine PIN ein, um den Schichtplan zu sehen.';
+  document.getElementById('pin-screen').style.display = 'block';
+  document.getElementById('pin-input').focus();
+
+  window.pinPruefen = async function() {
+    const pin = document.getElementById('pin-input').value.trim();
+    if (pin.length !== 4) return;
+    try {
+      const res = await fetch('/api/buch-public', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code, pin, bookType: 'schichtplan' })
+      });
+      if (!res.ok) { document.getElementById('pin-error').style.display = 'block'; return; }
+      const d = await res.json();
+      localStorage.setItem('gastroos_sp_code', code);
+      document.getElementById('pin-screen').style.display = 'none';
+      document.getElementById('mitarbeiter-bereich').style.display = 'block';
+      document.getElementById('tool-sub-text').textContent = 'Dein Dienstplan — Änderungen macht nur der Chef.';
+      renderMaTabelle(d.items || []);
+      maPushSetup(code, pin);
+    } catch (e) {
+      document.getElementById('pin-error').style.display = 'block';
+    }
+  };
+}
+
+// ═══════════════ INHABER-MODUS ═══════════════
+async function initInhaberModus() {
+  try {
+    const res = await fetch('/api/verify-session');
+    if (!res.ok) { window.location.href = 'login.html'; return; }
+    const d = await res.json();
+    if (!d.valid) { window.location.href = 'login.html'; return; }
+  } catch (e) { window.location.href = 'login.html'; return; }
+
+  document.getElementById('btn-dashboard').style.display = 'inline-block';
+  document.getElementById('tool-sub-text').textContent = 'Trag hier den Dienstplan für dein Team ein.';
+  document.getElementById('inhaber-bereich').style.display = 'block';
+  document.getElementById('sp-datum').value = heute();
+
+  const data = await toolLoad('schichtplaene');
+  window.spItems = data.items || [];
+  renderSpTabelle(window.spItems);
+
+  window.spEintragen = async function() {
+    const eintrag = {
+      id: Date.now(),
+      name: document.getElementById('sp-name').value.trim(),
+      datum: document.getElementById('sp-datum').value,
+      von: document.getElementById('sp-von').value,
+      bis: document.getElementById('sp-bis').value,
+      notiz: document.getElementById('sp-notiz').value
+    };
+    if (!eintrag.name || !eintrag.datum) { alert('Bitte mindestens Name und Datum angeben.'); return; }
+    window.spItems.push(eintrag);
+    await toolSave('schichtplaene', { items: window.spItems });
+    fetch('/api/push-notify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title: '🗂️ Schichtplan aktualisiert', body: `${eintrag.name}, ${eintrag.datum}${eintrag.von ? ' ' + eintrag.von : ''}${eintrag.bis ? '–' + eintrag.bis : ''}`, url: '/schichtplan.html', bookType: 'schichtplan' })
+    }).catch(() => {});
+    ['sp-name','sp-von','sp-bis','sp-notiz'].forEach(id => document.getElementById(id).value = '');
+    flashSaved('sp-save-msg');
+    renderSpTabelle(window.spItems);
+  };
+  window.spLoeschen = async function(id) {
+    window.spItems = window.spItems.filter(s => s.id !== id);
+    await toolSave('schichtplaene', { items: window.spItems });
+    fetch('/api/push-notify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title: '🗂️ Schichtplan aktualisiert', body: 'Eine Schicht wurde entfernt.', url: '/schichtplan.html', bookType: 'schichtplan' })
+    }).catch(() => {});
+    renderSpTabelle(window.spItems);
+  };
+}
+async function toolLoad(tool) {
+  try {
+    const res = await fetch('/api/tool-data?tool=' + encodeURIComponent(tool));
+    if (!res.ok) return {};
+    const d = await res.json();
+    return (d && d.data) ? d.data : {};
+  } catch (e) { return {}; }
+}
+async function toolSave(tool, data) {
+  try {
+    await fetch('/api/tool-data', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tool, data })
+    });
+  } catch (e) {}
+}
+
+// ─── PUSH-BENACHRICHTIGUNGEN (Mitarbeiter, per Code+PIN statt Login) ───────
+const VAPID_PUBLIC_KEY = 'BNLFO9QNrjxgwjx4XsJdMxKeF1WH5kUhAdTOcN3DHabt32CN6g3hB5l5KsSA-u8_6HCGzrKN4BzIS4aIcIVSYTE';
+function urlBase64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+  const rawData = window.atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+  for (let i = 0; i < rawData.length; ++i) outputArray[i] = rawData.charCodeAt(i);
+  return outputArray;
+}
+async function maPushSetup(code, pin) {
+  const btn = document.getElementById('ma-push-btn');
+  const status = document.getElementById('ma-push-status-text');
+  if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+    status.textContent = 'Push-Benachrichtigungen werden auf diesem Ger\u00e4t/Browser nicht unterst\u00fctzt.';
+    btn.style.display = 'none';
+    return;
+  }
+  if (Notification.permission === 'granted') {
+    const reg = await navigator.serviceWorker.getRegistration();
+    const sub = reg && await reg.pushManager.getSubscription();
+    if (sub) {
+      fetch('/api/push-subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code, pin, bookType: 'schichtplan', subscription: sub })
+      }).catch(() => {});
+      status.textContent = '🔔 Benachrichtigungen sind aktiv.';
+      btn.textContent = '✓ Aktiv';
+      btn.disabled = true;
+      btn.style.opacity = '0.6';
+      return;
+    }
+  }
+  btn.onclick = async function() {
+    try {
+      const reg = await navigator.serviceWorker.register('/sw.js');
+      const permission = await Notification.requestPermission();
+      if (permission !== 'granted') {
+        status.textContent = 'Benachrichtigungen wurden nicht erlaubt.';
+        return;
+      }
+      const sub = await reg.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
+      });
+      await fetch('/api/push-subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code, pin, bookType: 'schichtplan', subscription: sub })
+      });
+      status.textContent = '🔔 Benachrichtigungen sind jetzt aktiv.';
+      btn.textContent = '✓ Aktiv';
+      btn.disabled = true;
+      btn.style.opacity = '0.6';
+    } catch (e) {
+      status.textContent = 'Aktivierung leider fehlgeschlagen.';
+    }
+  };
+}
+</script>
+</body>
+</html>
