@@ -28,7 +28,7 @@ async function findOwnerByCode(code) {
   );
   const rows = await r.json();
   if (!rows || rows.length === 0) return null;
-  return rows[0]; // { user_id, data: { code, pinHash } }
+  return rows[0];
 }
 
 async function loadEntries(userId) {
@@ -84,7 +84,7 @@ export default async function handler(req, res) {
     const items = await loadEntries(owner.user_id);
     items.push({ id: Date.now(), text: text.trim(), zeitpunkt: new Date().toISOString(), autor: (autor && autor.trim()) || 'Mitarbeiter' });
     await saveEntries(owner.user_id, items);
-    sendPushToAll(owner.user_id, '📋 Neuer Übergabe-Eintrag', text.trim().slice(0, 120), '/uebergabe.html?u=' + code);
+    sendPushToAll(owner.user_id, '📋 Neuer Übergabe-Eintrag', text.trim().slice(0, 120), '/uebergabe.html?u=' + code, 'uebergabe');
     return res.status(200).json({ items });
   }
 
