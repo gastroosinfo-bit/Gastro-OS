@@ -80,7 +80,7 @@ export default async function handler(req, res) {
     const items = await loadItems(owner.user_id);
     items.push({ id: Date.now(), ...eintrag });
     await saveItems(owner.user_id, items);
-    sendPushToAll(owner.user_id, '📅 Neue Reservierung', `${eintrag.name}, ${eintrag.datum}${eintrag.uhrzeit ? ' ' + eintrag.uhrzeit : ''}${eintrag.personen ? ', ' + eintrag.personen + ' Personen' : ''}`, '/reservierung.html?u=' + code);
+    sendPushToAll(owner.user_id, '📅 Neue Reservierung', `${eintrag.name}, ${eintrag.datum}${eintrag.uhrzeit ? ' ' + eintrag.uhrzeit : ''}${eintrag.personen ? ', ' + eintrag.personen + ' Personen' : ''}`, '/reservierung.html?u=' + code, 'reservierung');
     return res.status(200).json({ items });
   }
 
@@ -92,7 +92,6 @@ export default async function handler(req, res) {
     return res.status(200).json({ items });
   }
 
-  // Default: nur Einträge lesen ("verify" / kein action-Wert)
   const items = await loadItems(owner.user_id);
   return res.status(200).json({ items });
 }
