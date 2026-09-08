@@ -145,7 +145,12 @@ const codeAusUrl = urlParams.get('u');
 if (codeAusUrl) {
   initMitarbeiterModus(codeAusUrl);
 } else {
-  initInhaberModus();
+  const gespeicherterCode = localStorage.getItem('gastroos_res_code');
+  if (gespeicherterCode) {
+    initMitarbeiterModus(gespeicherterCode);
+  } else {
+    initInhaberModus();
+  }
 }
 
 // ═══════════════ MITARBEITER-MODUS ═══════════════
@@ -167,6 +172,7 @@ function initMitarbeiterModus(code) {
       if (!res.ok) { document.getElementById('pin-error').style.display = 'block'; return; }
       const d = await res.json();
       aktuellerPin = pin;
+      localStorage.setItem('gastroos_res_code', code);
       document.getElementById('pin-screen').style.display = 'none';
       document.getElementById('reservierung-bereich').style.display = 'block';
       document.getElementById('tool-sub-text').textContent = 'Trag neue Reservierungen ein oder sieh die kommenden.';
