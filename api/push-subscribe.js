@@ -2,7 +2,7 @@
 // Registriert eine Push-Subscription — entweder vom eingeloggten INHABER (Session-Cookie)
 // oder von einem MITARBEITER (Code+PIN, kein Login). Landet in derselben gemeinsamen Liste,
 // damit bei neuen Einträgen alle benachrichtigt werden können. Der bookType sorgt dafür,
-// dass Mitarbeiter nur für ihr eigenes Buch (Übergabe ODER Reservierung) benachrichtigt werden.
+// dass Mitarbeiter nur für ihr eigenes Buch (Übergabe, Reservierung ODER Schichtplan) benachrichtigt werden.
 
 const crypto = require('crypto');
 const { addSubscription } = require('../lib/push-helper');
@@ -39,11 +39,11 @@ function sbHeaders() {
     'Authorization': 'Bearer ' + SUPABASE_SERVICE_KEY
   };
 }
-function pinHashUebergabe(code, pin) {
-  return crypto.createHmac('sha256', SUPABASE_SERVICE_KEY || 'fallback').update(code + ':' + pin).digest('hex');
-}
-function pinHashReservierung(code, pin) {
-  return crypto.createHmac('sha256', SUPABASE_SERVICE_KEY || 'fallback').update('reservierung:' + code + ':' + pin).digest('hex');
+function pinHash(bookType, code, pin) {
+  if (bookType === 'uebergabe') {
+    return crypto.createHmac('sha256', SUPABASE_SERVICE_KEY || 'fallback').update(code + ':' + pin).digest('hex');
+  }
+  return crypto.createHmac('sha256', SUPABASE_SERVICE_KEY || 'fallback').update(bookType + ':' + code + ':' + pin).digest('hex');
 }
 async function findOwnerByCode(zugangTool, code) {
   const r = await fetch(
@@ -67,7 +67,6 @@ export default async function handler(req, res) {
   const email = getEmailFromRequest(req);
   if (email) {
     try {
-      // Keine bookType-Zuordnung: die Chef-Subscription bekommt beide Bücher.
       await addSubscription(email, subscription);
       return res.status(200).json({ ok: true });
     } catch (e) {
@@ -76,16 +75,15 @@ export default async function handler(req, res) {
   }
 
   // ── Fall 2: Mitarbeiter per Code+PIN ─────────────────────────────────
-  if (!code || !pin || (bookType !== 'uebergabe' && bookType !== 'reservierung')) {
+  if (!code || !pin || !['uebergabe', 'reservierung', 'schichtplan'].includes(bookType)) {
     return res.status(401).json({ error: 'Nicht angemeldet.' });
   }
-  const zugangTool = bookType === 'uebergabe' ? 'uebergabe-zugang' : 'reservierung-zugang';
+  const zugangTool = bookType + '-zugang';
   const owner = await findOwnerByCode(zugangTool, code);
   if (!owner || !owner.data || !owner.data.pinHash) {
     return res.status(401).json({ error: 'Ungültiger Code.' });
   }
-  const erwarteterHash = bookType === 'uebergabe' ? pinHashUebergabe(code, pin) : pinHashReservierung(code, pin);
-  if (owner.data.pinHash !== erwarteterHash) {
+  if (owner.data.pinHash !== pinHash(bookType, code, pin)) {
     return res.status(401).json({ error: 'Falsche PIN.' });
   }
 
