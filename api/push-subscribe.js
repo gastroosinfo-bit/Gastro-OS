@@ -1,7 +1,8 @@
 // api/push-subscribe.js
 // Registriert eine Push-Subscription — entweder vom eingeloggten INHABER (Session-Cookie)
 // oder von einem MITARBEITER (Code+PIN, kein Login). Landet in derselben gemeinsamen Liste,
-// damit bei neuen Einträgen alle benachrichtigt werden können.
+// damit bei neuen Einträgen alle benachrichtigt werden können. Der bookType sorgt dafür,
+// dass Mitarbeiter nur für ihr eigenes Buch (Übergabe ODER Reservierung) benachrichtigt werden.
 
 const crypto = require('crypto');
 const { addSubscription } = require('../lib/push-helper');
@@ -66,6 +67,7 @@ export default async function handler(req, res) {
   const email = getEmailFromRequest(req);
   if (email) {
     try {
+      // Keine bookType-Zuordnung: die Chef-Subscription bekommt beide Bücher.
       await addSubscription(email, subscription);
       return res.status(200).json({ ok: true });
     } catch (e) {
@@ -88,7 +90,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    await addSubscription(owner.user_id, subscription);
+    await addSubscription(owner.user_id, subscription, bookType);
     return res.status(200).json({ ok: true });
   } catch (e) {
     return res.status(500).json({ error: 'Fehler beim Speichern.' });
