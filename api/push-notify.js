@@ -1,8 +1,7 @@
 // api/push-notify.js
 // Wird aufgerufen, wenn der eingeloggte INHABER selbst einen Übergabe- oder Reservierungs-
 // Eintrag macht (über die normale, authentifizierte Ansicht) — löst dieselbe Push-Benachrichtigung
-// an alle registrierten Geräte (Chef + Mitarbeiter) aus, wie es bei Mitarbeiter-Einträgen
-// bereits automatisch passiert.
+// an alle registrierten Geräte aus, die zu diesem Buch gehören (Chef + passende Mitarbeiter).
 
 const crypto = require('crypto');
 const { sendPushToAll } = require('../lib/push-helper');
@@ -36,11 +35,11 @@ export default async function handler(req, res) {
   if (!email) return res.status(401).json({ error: 'Nicht angemeldet.' });
   if (req.method !== 'POST') return res.status(405).json({ error: 'Methode nicht erlaubt.' });
 
-  const { title, body, url } = req.body || {};
+  const { title, body, url, bookType } = req.body || {};
   if (!title || !body) return res.status(400).json({ error: 'title oder body fehlt.' });
 
   try {
-    await sendPushToAll(email, title, body, url || '/dashboard.html');
+    await sendPushToAll(email, title, body, url || '/dashboard.html', bookType);
     return res.status(200).json({ ok: true });
   } catch (err) {
     console.error('Push-Versand fehlgeschlagen:', err);
