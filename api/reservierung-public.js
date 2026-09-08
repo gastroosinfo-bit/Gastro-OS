@@ -1,6 +1,8 @@
 // api/reservierung-public.js
 // Öffentlicher Zugang zum Reservierungsbuch per Code + PIN — ohne normales GASTRO-OS-Login.
 // Gleicher Aufbau wie api/uebergabe-public.js, eigener tool_name für Zugang und Daten.
+// Löschen ist bewusst NICHT über diesen öffentlichen Zugang möglich — nur der Inhaber
+// (eingeloggt, über /api/tool-data) darf Reservierungen entfernen.
 
 const crypto = require('crypto');
 const { sendPushToAll } = require('../lib/push-helper');
@@ -64,7 +66,7 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Methode nicht erlaubt.' });
   if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) return res.status(500).json({ error: 'Server nicht konfiguriert.' });
 
-  const { code, pin, action, eintrag, id } = req.body || {};
+  const { code, pin, action, eintrag } = req.body || {};
   if (!code || !pin) return res.status(400).json({ error: 'Code oder PIN fehlt.' });
 
   const owner = await findOwnerByCode(code);
@@ -84,14 +86,8 @@ export default async function handler(req, res) {
     return res.status(200).json({ items });
   }
 
-  if (action === 'delete') {
-    if (!id) return res.status(400).json({ error: 'id fehlt.' });
-    let items = await loadItems(owner.user_id);
-    items = items.filter(r => r.id !== id);
-    await saveItems(owner.user_id, items);
-    return res.status(200).json({ items });
-  }
-
+  // Löschen ist bewusst nicht implementiert — nur der Inhaber darf das (über /api/tool-data).
+  // Default: nur Einträge lesen ("verify" / kein action-Wert)
   const items = await loadItems(owner.user_id);
   return res.status(200).json({ items });
 }
