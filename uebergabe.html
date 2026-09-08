@@ -222,7 +222,7 @@ async function initInhaberModus() {
     fetch('/api/push-notify', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title: '📋 Neuer Übergabe-Eintrag', body: text.slice(0, 120), url: '/uebergabe.html' })
+      body: JSON.stringify({ title: '📋 Neuer Übergabe-Eintrag', body: text.slice(0, 120), url: '/uebergabe.html', bookType: 'uebergabe' })
     }).catch(() => {});
     document.getElementById('inh-text').value = '';
     flashSaved('inh-save-msg');
