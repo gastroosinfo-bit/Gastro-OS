@@ -1,9 +1,7 @@
 // api/zugang-setup.js
-// Ersetzt die früheren getrennten Dateien uebergabe-setup.js und reservierung-setup.js
-// (zusammengelegt, weil Vercel Hobby maximal 12 Serverless Functions erlaubt).
-// Nur für eingeloggte Abonnenten: legt Code+PIN für den Übergabe- ODER Reservierungsbuch-Zugang
-// fest (je nach "bookType") oder ändert die PIN. Die PIN wird nie im Klartext gespeichert,
-// nur als Hash (Code als Salt) — derselbe Algorithmus wie in uebergabe-public.js / reservierung-public.js.
+// Nur für eingeloggte Abonnenten: legt Code+PIN für den Übergabe-, Reservierungs- ODER
+// Schichtplan-Zugang fest (je nach "bookType") oder ändert die PIN. Die PIN wird nie im
+// Klartext gespeichert, nur als Hash (Code + bookType als Salt).
 
 const crypto = require('crypto');
 
@@ -39,12 +37,12 @@ function sbHeaders() {
     'Authorization': 'Bearer ' + SUPABASE_SERVICE_KEY
   };
 }
-// Gleiche Hash-Formeln wie in uebergabe-public.js / reservierung-public.js
-function pinHashUebergabe(code, pin) {
-  return crypto.createHmac('sha256', SUPABASE_SERVICE_KEY || 'fallback').update(code + ':' + pin).digest('hex');
-}
-function pinHashReservierung(code, pin) {
-  return crypto.createHmac('sha256', SUPABASE_SERVICE_KEY || 'fallback').update('reservierung:' + code + ':' + pin).digest('hex');
+// Gleiche Hash-Formel wie in api/buch-public.js
+function pinHash(bookType, code, pin) {
+  if (bookType === 'uebergabe') {
+    return crypto.createHmac('sha256', SUPABASE_SERVICE_KEY || 'fallback').update(code + ':' + pin).digest('hex');
+  }
+  return crypto.createHmac('sha256', SUPABASE_SERVICE_KEY || 'fallback').update(bookType + ':' + code + ':' + pin).digest('hex');
 }
 
 export default async function handler(req, res) {
@@ -56,12 +54,12 @@ export default async function handler(req, res) {
   if (!code || !pin || !/^\d{4}$/.test(pin)) {
     return res.status(400).json({ error: 'Code oder vierstellige PIN fehlt/ungültig.' });
   }
-  if (bookType !== 'uebergabe' && bookType !== 'reservierung') {
+  if (!['uebergabe', 'reservierung', 'schichtplan'].includes(bookType)) {
     return res.status(400).json({ error: 'Ungültiger bookType.' });
   }
 
-  const zugangTool = bookType === 'uebergabe' ? 'uebergabe-zugang' : 'reservierung-zugang';
-  const hash = bookType === 'uebergabe' ? pinHashUebergabe(code, pin) : pinHashReservierung(code, pin);
+  const zugangTool = bookType + '-zugang';
+  const hash = pinHash(bookType, code, pin);
   const data = { code, pinHash: hash };
 
   try {
