@@ -164,10 +164,10 @@ function initMitarbeiterModus(code) {
     const pin = document.getElementById('pin-input').value.trim();
     if (pin.length !== 4) return;
     try {
-      const res = await fetch('/api/reservierung-public', {
+      const res = await fetch('/api/buch-public', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code, pin })
+        body: JSON.stringify({ code, pin, bookType: 'reservierung' })
       });
       if (!res.ok) { document.getElementById('pin-error').style.display = 'block'; return; }
       const d = await res.json();
@@ -197,10 +197,10 @@ function initMitarbeiterModus(code) {
           erfasstVon
         };
         if (!eintrag.name || !eintrag.datum) { alert('Bitte mindestens Name und Datum angeben.'); return; }
-        const res2 = await fetch('/api/reservierung-public', {
+        const res2 = await fetch('/api/buch-public', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ code, pin: aktuellerPin, action: 'add', eintrag })
+          body: JSON.stringify({ code, pin: aktuellerPin, bookType: 'reservierung', action: 'add', eintrag })
         });
         const d2 = await res2.json();
         ['res-name','res-uhrzeit','res-personen','res-telefon','res-tisch','res-notiz'].forEach(id => document.getElementById(id).value = '');
