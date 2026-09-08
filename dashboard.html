@@ -150,13 +150,22 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
     <!-- BENACHRICHTIGUNGEN -->
     <div class="module-card toolbox-elegant" id="push-card" style="padding:14px 20px;margin-bottom:12px;">
       <div style="display:flex;align-items:center;gap:12px;">
-        <div style="flex:1;font-size:12.5px;color:#5a6a85;" id="push-status-text">Verpasse keine neue Übergabe oder Reservierung – Ton-Benachrichtigung direkt am Handy/PC.</div>
+        <div style="flex:1;font-size:12.5px;color:#5a6a85;" id="push-status-text">Verpasse keine neue Übergabe, Reservierung oder Schichtplan-Änderung – Ton-Benachrichtigung direkt am Handy/PC.</div>
         <button id="push-btn" onclick="pushAktivieren()" style="background:#1a6640;color:#fff;border:none;padding:8px 14px;border-radius:6px;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;">🔔 Aktivieren</button>
       </div>
     </div>
 
-    <!-- TÄGLICHE TOOLS: jedes für sich, keine Dropdown-Verschachtelung -->
+    <!-- TÄGLICHE TOOLS (ohne PIN-Zugang): Tagesgeschäft, Belege -->
     <div id="taegliche-tools"></div>
+
+    <!-- INTERN: Übergabebuch, Reservierungsbuch, Schichtplan — je mit eigenem Mitarbeiter-PIN-Zugang -->
+    <div class="module-card toolbox-elegant" id="intern-card" style="margin-top:4px;margin-bottom:12px;">
+      <div class="module-header" onclick="toggleIntern()" style="padding:14px 22px;">
+        <div class="module-left"><div class="module-number toolbox-icon-circle" style="width:32px;height:32px;font-size:14px;">🔒</div><div><div class="module-title" style="letter-spacing:0.3px;font-size:14px;">Intern</div><div class="module-subtitle" id="intern-subtitle" style="margin-top:2px;">Übergabe, Reservierung &amp; Schichtplan</div></div></div>
+        <div style="display:flex;align-items:center;gap:8px;"><span class="module-arrow" id="intern-arrow" style="color:#d4af37;">▼</span></div>
+      </div>
+      <div class="module-content" id="intern-content"></div>
+    </div>
 
     <!-- FREIGESCHALTETE MODUL-TOOLS: bleibt als Dropdown, da abhängig vom Quiz-Fortschritt -->
     <div class="module-card toolbox-elegant" id="toolbox-card" style="margin-top:4px;">
@@ -211,12 +220,12 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
   max-width: 340px;
   margin-bottom: 16px;
 }
-#toolbox-content.open {
+#toolbox-content.open, #intern-content.open {
   max-height: 460px;
   overflow-y: auto;
 }
-#toolbox-content.open::-webkit-scrollbar { width: 6px; }
-#toolbox-content.open::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 3px; }
+#toolbox-content.open::-webkit-scrollbar, #intern-content.open::-webkit-scrollbar { width: 6px; }
+#toolbox-content.open::-webkit-scrollbar-thumb, #intern-content.open::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 3px; }
 /* Ab genug Platz links neben der zentrierten Spalte: Toolbox exakt auf Höhe der Infobox-Oberkante, deutlich weiter links */
 @media (min-width: 1300px) {
   .toolbox-sidebar {
@@ -231,7 +240,6 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 }
 </style>
 
-<!-- MODUL 0 -->
 <!-- MODUL 0 -->
 <div class="module-card" id="modul-card-0">
   <div class="module-header" onclick="toggleModule(0)">
@@ -653,6 +661,7 @@ async function init() {
   for (const m of [0,1,2,3,4,5,6,7,8,9,10,11,12,13]) renderProgress(m);
   renderLockedModules();
   renderTaeglicheTools();
+  renderInternTools();
   unreadPruefen();
   pushStatusPruefen();
   renderToolbox();
@@ -753,16 +762,32 @@ function toggleToolbox() {
   if (arrow) arrow.classList.toggle('open', !isOpen);
 }
 
-// Immer sichtbar, unabhängig von Modulen/Quiz — die vier täglichen Tagesgeschäft-Tools
+function toggleIntern() {
+  const content = document.getElementById('intern-content');
+  const arrow   = document.getElementById('intern-arrow');
+  if (!content) return;
+  const isOpen = content.classList.contains('open');
+  content.classList.toggle('open', !isOpen);
+  if (arrow) arrow.classList.toggle('open', !isOpen);
+}
+
+// Immer sichtbar, unabhängig von Modulen/Quiz — die täglichen Tagesgeschäft-Tools OHNE PIN-Zugang
 const ALWAYS_UNLOCKED_TOOLS = [
   { icon: '🗓️', title: 'Tagesgeschäft', desc: 'Kassenbuch, Temperaturen & Wareneingang – die täglichen Einträge an einem Ort.', href: 'tagesgeschaeft.html' },
+  { icon: '📎', title: 'Belege', desc: 'Rechnungen von Lieferdiensten und Lieferanten zentral ablegen.', href: 'belegablage.html' }
+];
+
+// "Intern"-Bereich: Übergabebuch, Reservierungsbuch, Schichtplan — je mit eigenem Mitarbeiter-PIN-Zugang.
+// Schichtplan hat bewusst kein "unread" — nur der Chef trägt dort etwas ein.
+const INTERN_TOOLS = [
   { icon: '📋', title: 'Übergabebuch', desc: 'Schichtübergabe – auch per PIN für Mitarbeiter ohne eigenen Zugang.', href: 'uebergabe.html',
     pin: { zugangTool: 'uebergabe-zugang', setupEndpoint: '/api/zugang-setup', bookType: 'uebergabe', linkPath: 'uebergabe.html' },
     unread: { dataTool: 'tagesgeschaeft-schicht', lastSeenKey: 'uebergabe' } },
   { icon: '📅', title: 'Reservierungsbuch', desc: 'Reservierungen erfassen – auch per PIN für Mitarbeiter ohne eigenen Zugang.', href: 'reservierung.html',
     pin: { zugangTool: 'reservierung-zugang', setupEndpoint: '/api/zugang-setup', bookType: 'reservierung', linkPath: 'reservierung.html' },
     unread: { dataTool: 'reservierungen', lastSeenKey: 'reservierung' } },
-  { icon: '📎', title: 'Belege', desc: 'Rechnungen von Lieferdiensten und Lieferanten zentral ablegen.', href: 'belegablage.html' }
+  { icon: '🗂️', title: 'Schichtplan', desc: 'Dienstplan fürs Team – Mitarbeiter sehen ihn per PIN nur lesend, ändern kannst nur du.', href: 'schichtplan.html',
+    pin: { zugangTool: 'schichtplan-zugang', setupEndpoint: '/api/zugang-setup', bookType: 'schichtplan', linkPath: 'schichtplan.html' } }
 ];
 
 // ─── PUSH-BENACHRICHTIGUNGEN ────────────────────────────────────────────
@@ -842,7 +867,7 @@ async function dashToolLoad(tool) {
   } catch (e) { return {}; }
 }
 
-// ─── NEUE-NACHRICHTEN-ZÄHLER (Übergabebuch/Reservierungsbuch) ──────────────
+// ─── NEUE-NACHRICHTEN-ZÄHLER (Übergabebuch/Reservierungsbuch, in "Intern") ──────
 let unreadStatusCache = null;
 async function unreadStatusLaden() {
   if (!unreadStatusCache) unreadStatusCache = await dashToolLoad('unread-status');
@@ -851,24 +876,25 @@ async function unreadStatusLaden() {
 async function unreadPruefen() {
   const status = await unreadStatusLaden();
   let gesamt = 0;
-  for (const tool of ALWAYS_UNLOCKED_TOOLS) {
-    if (!tool.unread) continue;
-    const idx = ALWAYS_UNLOCKED_TOOLS.indexOf(tool);
+  INTERN_TOOLS.forEach(async (tool, idx) => {
+    if (!tool.unread) return;
     const lastSeen = status[tool.unread.lastSeenKey] || 0;
     const data = await dashToolLoad(tool.unread.dataTool);
     let items = data.items || [];
     if (tool.unread.lastSeenKey === 'uebergabe') items = items.filter(i => i.autor !== 'Chef');
     if (tool.unread.lastSeenKey === 'reservierung') items = items.filter(i => i.erfasstVon !== 'Chef');
     const anzahl = items.filter(i => i.id > lastSeen).length;
-    const badge = document.getElementById('badge-' + idx);
+    const badge = document.getElementById('intern-badge-' + idx);
     if (badge) {
       if (anzahl > 0) { badge.textContent = anzahl; badge.style.display = 'block'; }
       else { badge.style.display = 'none'; }
     }
     gesamt += anzahl;
-  }
-  const banner = document.getElementById('unread-banner');
-  if (banner) {
+    aktualisiereUnreadBanner();
+  });
+  function aktualisiereUnreadBanner() {
+    const banner = document.getElementById('unread-banner');
+    if (!banner) return;
     if (gesamt > 0) {
       banner.textContent = '🔔 ' + gesamt + (gesamt === 1 ? ' neue Nachricht' : ' neue Nachrichten') + ' im Übergabe- und Reservierungsbuch';
       banner.style.display = 'block';
@@ -896,7 +922,7 @@ function renderTaeglicheTools() {
   const container = document.getElementById('taegliche-tools');
   if (!container) return;
   container.innerHTML = '';
-  ALWAYS_UNLOCKED_TOOLS.forEach((tool, idx) => {
+  ALWAYS_UNLOCKED_TOOLS.forEach((tool) => {
     const wrap = document.createElement('div');
     wrap.className = 'module-card toolbox-elegant';
     wrap.style.cssText = 'padding:0;margin-bottom:12px;overflow:visible;';
@@ -907,7 +933,39 @@ function renderTaeglicheTools() {
     const topRow = document.createElement('a');
     topRow.href = tool.href;
     topRow.style.cssText = 'display:flex;align-items:center;gap:14px;text-decoration:none;color:inherit;margin-bottom:12px;position:relative;';
-    topRow.innerHTML = `<div class="toolbox-icon-circle" style="flex-shrink:0;position:relative;">${tool.icon}<span id="badge-${idx}" style="display:none;position:absolute;top:-6px;right:-6px;background:#c0392b;color:#fff;font-size:10px;font-weight:700;border-radius:10px;min-width:18px;height:18px;line-height:18px;text-align:center;padding:0 4px;">0</span></div><div style="flex:1;"><div class="module-title" style="font-size:14px;">${tool.title}</div><div style="font-size:11.5px;color:#5a6a85;margin-top:2px;">${tool.desc}</div></div>`;
+    topRow.innerHTML = `<div class="toolbox-icon-circle" style="flex-shrink:0;">${tool.icon}</div><div style="flex:1;"><div class="module-title" style="font-size:14px;">${tool.title}</div><div style="font-size:11.5px;color:#5a6a85;margin-top:2px;">${tool.desc}</div></div>`;
+    row.appendChild(topRow);
+
+    const rightBox = document.createElement('div');
+    rightBox.style.cssText = 'display:flex;align-items:center;gap:8px;';
+    const openBtn = document.createElement('a');
+    openBtn.href = tool.href;
+    openBtn.className = 'item-link';
+    openBtn.style.whiteSpace = 'nowrap';
+    openBtn.textContent = 'Öffnen →';
+    rightBox.appendChild(openBtn);
+    row.appendChild(rightBox);
+    wrap.appendChild(row);
+
+    container.appendChild(wrap);
+  });
+}
+
+function renderInternTools() {
+  const container = document.getElementById('intern-content');
+  if (!container) return;
+  container.innerHTML = '';
+  INTERN_TOOLS.forEach((tool, idx) => {
+    const wrap = document.createElement('div');
+    wrap.style.cssText = 'border-bottom:1px solid #f0e8d4;';
+
+    const row = document.createElement('div');
+    row.style.cssText = 'padding:14px 20px;';
+
+    const topRow = document.createElement('a');
+    topRow.href = tool.href;
+    topRow.style.cssText = 'display:flex;align-items:center;gap:14px;text-decoration:none;color:inherit;margin-bottom:10px;position:relative;';
+    topRow.innerHTML = `<span class="item-icon" style="position:relative;">${tool.icon}<span id="intern-badge-${idx}" style="display:none;position:absolute;top:-8px;right:-10px;background:#c0392b;color:#fff;font-size:10px;font-weight:700;border-radius:10px;min-width:18px;height:18px;line-height:18px;text-align:center;padding:0 4px;">0</span></span><div style="flex:1;"><div class="item-title">${tool.title}</div><div style="font-size:11.5px;color:#5a6a85;margin-top:1px;">${tool.desc}</div></div>`;
     if (tool.unread) topRow.onclick = () => markiereAlsGelesen(tool.unread.lastSeenKey);
     row.appendChild(topRow);
 
@@ -921,39 +979,35 @@ function renderTaeglicheTools() {
     if (tool.unread) openBtn.onclick = () => markiereAlsGelesen(tool.unread.lastSeenKey);
     rightBox.appendChild(openBtn);
 
-    if (tool.pin) {
-      const gearBtn = document.createElement('button');
-      gearBtn.textContent = '⚙️ PIN verwalten';
-      gearBtn.style.cssText = 'background:transparent;border:1px solid #d4af37;color:#1a2a4a;border-radius:6px;padding:7px 12px;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;';
-      gearBtn.onclick = () => togglePinPanel(idx);
-      rightBox.appendChild(gearBtn);
-    }
+    const gearBtn = document.createElement('button');
+    gearBtn.textContent = '⚙️ PIN verwalten';
+    gearBtn.style.cssText = 'background:transparent;border:1px solid #d4af37;color:#1a2a4a;border-radius:6px;padding:7px 12px;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;';
+    gearBtn.onclick = () => internTogglePinPanel(idx);
+    rightBox.appendChild(gearBtn);
     row.appendChild(rightBox);
     wrap.appendChild(row);
 
-    if (tool.pin) {
-      const panel = document.createElement('div');
-      panel.id = 'pin-panel-' + idx;
-      panel.style.cssText = 'display:none;padding:0 20px 18px;border-top:1px solid #f0e8d4;';
-      panel.innerHTML = `<div id="pin-panel-content-${idx}" style="padding-top:14px;font-size:12.5px;color:#5a6a85;">Wird geladen …</div>`;
-      wrap.appendChild(panel);
-    }
+    const panel = document.createElement('div');
+    panel.id = 'intern-pin-panel-' + idx;
+    panel.style.cssText = 'display:none;padding:0 20px 18px;';
+    panel.innerHTML = `<div id="intern-pin-panel-content-${idx}" style="padding-top:6px;font-size:12.5px;color:#5a6a85;">Wird geladen …</div>`;
+    wrap.appendChild(panel);
 
     container.appendChild(wrap);
   });
 }
 
-async function togglePinPanel(idx) {
-  const panel = document.getElementById('pin-panel-' + idx);
+async function internTogglePinPanel(idx) {
+  const panel = document.getElementById('intern-pin-panel-' + idx);
   const isOpen = panel.style.display === 'block';
   panel.style.display = isOpen ? 'none' : 'block';
   if (isOpen) return;
-  await renderPinPanelContent(idx);
+  await renderInternPinPanelContent(idx);
 }
 
-async function renderPinPanelContent(idx) {
-  const tool = ALWAYS_UNLOCKED_TOOLS[idx];
-  const content = document.getElementById('pin-panel-content-' + idx);
+async function renderInternPinPanelContent(idx) {
+  const tool = INTERN_TOOLS[idx];
+  const content = document.getElementById('intern-pin-panel-content-' + idx);
   const zugang = await dashToolLoad(tool.pin.zugangTool);
 
   if (zugang && zugang.code && zugang.pinHash) {
@@ -969,17 +1023,17 @@ async function renderPinPanelContent(idx) {
       </div>
       <div style="max-width:180px;margin-bottom:8px;">
         <label style="font-size:10.5px;font-weight:700;color:#8090a8;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:4px;">PIN ändern (4-stellig)</label>
-        <input type="password" inputmode="numeric" maxlength="4" id="dash-neue-pin-${idx}" placeholder="Neue PIN" style="border:1px solid #e0d8c8;border-radius:6px;padding:8px 10px;font-size:13px;width:100%;">
+        <input type="password" inputmode="numeric" maxlength="4" id="intern-neue-pin-${idx}" placeholder="Neue PIN" style="border:1px solid #e0d8c8;border-radius:6px;padding:8px 10px;font-size:13px;width:100%;">
       </div>
-      <button id="dash-pin-save-btn-${idx}" style="background:#1a6640;color:#fff;border:none;padding:8px 16px;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer;">PIN speichern</button>
-      <span id="dash-pin-msg-${idx}" style="font-size:11.5px;color:#4aaa60;margin-left:8px;display:none;">✓ Gespeichert</span>
+      <button id="intern-pin-save-btn-${idx}" style="background:#1a6640;color:#fff;border:none;padding:8px 16px;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer;">PIN speichern</button>
+      <span id="intern-pin-msg-${idx}" style="font-size:11.5px;color:#4aaa60;margin-left:8px;display:none;">✓ Gespeichert</span>
     `;
-    document.getElementById('dash-pin-save-btn-' + idx).onclick = async () => {
-      const pin = document.getElementById('dash-neue-pin-' + idx).value.trim();
+    document.getElementById('intern-pin-save-btn-' + idx).onclick = async () => {
+      const pin = document.getElementById('intern-neue-pin-' + idx).value.trim();
       if (!/^\d{4}$/.test(pin)) { alert('Bitte eine 4-stellige PIN eingeben.'); return; }
       await fetch(tool.pin.setupEndpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code: zugang.code, pin, bookType: tool.pin.bookType }) });
-      document.getElementById('dash-neue-pin-' + idx).value = '';
-      const msg = document.getElementById('dash-pin-msg-' + idx);
+      document.getElementById('intern-neue-pin-' + idx).value = '';
+      const msg = document.getElementById('intern-pin-msg-' + idx);
       msg.style.display = 'inline';
       setTimeout(() => { msg.style.display = 'none'; }, 2000);
     };
@@ -988,16 +1042,16 @@ async function renderPinPanelContent(idx) {
       <div style="font-size:11.5px;color:#8090a8;margin-bottom:10px;">Noch kein Zugang eingerichtet. Leg eine 4-stellige PIN fest, die du an deine Mitarbeiter weitergibst.</div>
       <div style="max-width:180px;margin-bottom:8px;">
         <label style="font-size:10.5px;font-weight:700;color:#8090a8;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:4px;">PIN festlegen (4-stellig)</label>
-        <input type="password" inputmode="numeric" maxlength="4" id="dash-erste-pin-${idx}" placeholder="PIN wählen" style="border:1px solid #e0d8c8;border-radius:6px;padding:8px 10px;font-size:13px;width:100%;">
+        <input type="password" inputmode="numeric" maxlength="4" id="intern-erste-pin-${idx}" placeholder="PIN wählen" style="border:1px solid #e0d8c8;border-radius:6px;padding:8px 10px;font-size:13px;width:100%;">
       </div>
-      <button id="dash-pin-setup-btn-${idx}" style="background:#1a6640;color:#fff;border:none;padding:8px 16px;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer;">Zugang einrichten</button>
+      <button id="intern-pin-setup-btn-${idx}" style="background:#1a6640;color:#fff;border:none;padding:8px 16px;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer;">Zugang einrichten</button>
     `;
-    document.getElementById('dash-pin-setup-btn-' + idx).onclick = async () => {
-      const pin = document.getElementById('dash-erste-pin-' + idx).value.trim();
+    document.getElementById('intern-pin-setup-btn-' + idx).onclick = async () => {
+      const pin = document.getElementById('intern-erste-pin-' + idx).value.trim();
       if (!/^\d{4}$/.test(pin)) { alert('Bitte eine 4-stellige PIN eingeben.'); return; }
       const code = Math.random().toString(36).slice(2, 10) + Math.random().toString(36).slice(2, 6);
       await fetch(tool.pin.setupEndpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code, pin, bookType: tool.pin.bookType }) });
-      await renderPinPanelContent(idx);
+      await renderInternPinPanelContent(idx);
     };
   }
 }
