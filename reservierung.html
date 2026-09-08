@@ -258,7 +258,7 @@ async function initInhaberModus() {
     fetch('/api/push-notify', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title: '📅 Neue Reservierung', body: `${eintrag.name}, ${eintrag.datum}${eintrag.uhrzeit ? ' ' + eintrag.uhrzeit : ''}`, url: '/reservierung.html' })
+      body: JSON.stringify({ title: '📅 Neue Reservierung', body: `${eintrag.name}, ${eintrag.datum}${eintrag.uhrzeit ? ' ' + eintrag.uhrzeit : ''}`, url: '/reservierung.html', bookType: 'reservierung' })
     }).catch(() => {});
     ['res-name','res-uhrzeit','res-personen','res-telefon','res-tisch','res-notiz'].forEach(id => document.getElementById(id).value = '');
     flashSaved('res-save-msg');
