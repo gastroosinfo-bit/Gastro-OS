@@ -128,13 +128,13 @@ function flashSaved(id) {
   setTimeout(() => { el.style.display = 'none'; }, 2000);
 }
 function heute() { return new Date().toISOString().slice(0, 10); }
-function renderReservierungen(items) {
+function renderReservierungen(items, mitLoeschen) {
   const tbody = document.querySelector('#res-tabelle tbody');
   tbody.innerHTML = '';
   const sorted = [...items].sort((a, b) => (a.datum + a.uhrzeit).localeCompare(b.datum + b.uhrzeit));
   sorted.forEach(r => {
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${r.datum}</td><td>${r.uhrzeit || ''}</td><td>${r.name}</td><td>${r.personen || ''}</td><td>${r.telefon || ''}</td><td>${r.tisch || ''}</td><td>${r.notiz || ''}</td><td>${r.erfasstVon || ''}</td><td><button class="btn-del" onclick="resLoeschen(${r.id})">✕</button></td>`;
+    tr.innerHTML = `<td>${r.datum}</td><td>${r.uhrzeit || ''}</td><td>${r.name}</td><td>${r.personen || ''}</td><td>${r.telefon || ''}</td><td>${r.tisch || ''}</td><td>${r.notiz || ''}</td><td>${r.erfasstVon || ''}</td><td>${mitLoeschen ? `<button class="btn-del" onclick="resLoeschen(${r.id})">✕</button>` : ''}</td>`;
     tbody.appendChild(tr);
   });
 }
@@ -177,7 +177,7 @@ function initMitarbeiterModus(code) {
       document.getElementById('reservierung-bereich').style.display = 'block';
       document.getElementById('tool-sub-text').textContent = 'Trag neue Reservierungen ein oder sieh die kommenden.';
       document.getElementById('res-datum').value = heute();
-      renderReservierungen(d.items || []);
+      renderReservierungen(d.items || [], false);
       document.getElementById('res-erfasstvon-wrap').style.display = 'block';
       document.getElementById('res-erfasstvon').value = localStorage.getItem('gastroos_ma_name_' + code) || '';
       document.getElementById('res-push-section').style.display = 'flex';
@@ -205,16 +205,7 @@ function initMitarbeiterModus(code) {
         const d2 = await res2.json();
         ['res-name','res-uhrzeit','res-personen','res-telefon','res-tisch','res-notiz'].forEach(id => document.getElementById(id).value = '');
         flashSaved('res-save-msg');
-        renderReservierungen(d2.items || []);
-      };
-      window.resLoeschen = async function(id) {
-        const res3 = await fetch('/api/reservierung-public', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ code, pin: aktuellerPin, action: 'delete', id })
-        });
-        const d3 = await res3.json();
-        renderReservierungen(d3.items || []);
+        renderReservierungen(d2.items || [], false);
       };
     } catch (e) {
       document.getElementById('pin-error').style.display = 'block';
@@ -238,7 +229,7 @@ async function initInhaberModus() {
 
   const data = await toolLoad('reservierungen');
   window.resItems = data.items || [];
-  renderReservierungen(window.resItems);
+  renderReservierungen(window.resItems, true);
 
   window.resEintragen = async function() {
     const eintrag = {
@@ -262,12 +253,12 @@ async function initInhaberModus() {
     }).catch(() => {});
     ['res-name','res-uhrzeit','res-personen','res-telefon','res-tisch','res-notiz'].forEach(id => document.getElementById(id).value = '');
     flashSaved('res-save-msg');
-    renderReservierungen(window.resItems);
+    renderReservierungen(window.resItems, true);
   };
   window.resLoeschen = async function(id) {
     window.resItems = window.resItems.filter(r => r.id !== id);
     await toolSave('reservierungen', { items: window.resItems });
-    renderReservierungen(window.resItems);
+    renderReservierungen(window.resItems, true);
   };
 }
 async function toolLoad(tool) {
