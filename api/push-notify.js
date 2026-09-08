@@ -39,6 +39,11 @@ export default async function handler(req, res) {
   const { title, body, url } = req.body || {};
   if (!title || !body) return res.status(400).json({ error: 'title oder body fehlt.' });
 
-  sendPushToAll(email, title, body, url || '/dashboard.html');
-  return res.status(200).json({ ok: true });
+  try {
+    await sendPushToAll(email, title, body, url || '/dashboard.html');
+    return res.status(200).json({ ok: true });
+  } catch (err) {
+    console.error('Push-Versand fehlgeschlagen:', err);
+    return res.status(200).json({ ok: true, warning: 'push_failed' });
+  }
 }
