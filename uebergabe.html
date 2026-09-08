@@ -92,7 +92,6 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
     <div class="section">
       <div class="section-head">Verlauf</div>
       <div id="ma-liste"></div>
-
     </div>
   </div>
 
@@ -136,9 +135,6 @@ function renderListe(containerId, items, mitLoeschen) {
   });
 }
 
-// ─────────────────────────────────────────────────────────────────────────
-// Zwei Modi: Mitarbeiter (?u=CODE in der URL) oder Inhaber (eingeloggt).
-// ─────────────────────────────────────────────────────────────────────────
 const urlParams = new URLSearchParams(window.location.search);
 const codeAusUrl = urlParams.get('u');
 
@@ -158,10 +154,10 @@ function initMitarbeiterModus(code) {
     const pin = document.getElementById('pin-input').value.trim();
     if (pin.length !== 4) return;
     try {
-      const res = await fetch('/api/uebergabe-public', {
+      const res = await fetch('/api/buch-public', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code, pin })
+        body: JSON.stringify({ code, pin, bookType: 'uebergabe' })
       });
       if (!res.ok) {
         document.getElementById('pin-error').style.display = 'block';
@@ -182,10 +178,10 @@ function initMitarbeiterModus(code) {
         const name = document.getElementById('ma-name').value.trim() || 'Mitarbeiter';
         if (!text) return;
         localStorage.setItem('gastroos_ma_name_' + code, name);
-        const res2 = await fetch('/api/uebergabe-public', {
+        const res2 = await fetch('/api/buch-public', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ code, pin, action: 'add', text, autor: name })
+          body: JSON.stringify({ code, pin, bookType: 'uebergabe', action: 'add', text, autor: name })
         });
         const d2 = await res2.json();
         document.getElementById('ma-text').value = '';
@@ -276,8 +272,6 @@ async function maPushSetup(code, pin) {
     const reg = await navigator.serviceWorker.getRegistration();
     const sub = reg && await reg.pushManager.getSubscription();
     if (sub) {
-      // Bereits im Browser registriert — sicherheitshalber nochmal an den Server schicken,
-      // falls das beim letzten Mal (z. B. wegen eines Server-Fehlers) nicht angekommen ist.
       fetch('/api/push-subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
