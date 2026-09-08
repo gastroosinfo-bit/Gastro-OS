@@ -121,7 +121,7 @@ function flashSaved(id) {
   el.style.display = 'inline';
   setTimeout(() => { el.style.display = 'none'; }, 2000);
 }
-function renderListe(containerId, items) {
+function renderListe(containerId, items, mitLoeschen) {
   const el = document.getElementById(containerId);
   el.innerHTML = '';
   const sorted = [...items].sort((a, b) => b.id - a.id);
@@ -130,7 +130,8 @@ function renderListe(containerId, items) {
     const d = new Date(s.zeitpunkt);
     const div = document.createElement('div');
     div.className = 'notiz-item';
-    div.innerHTML = `<div class="notiz-meta">${d.toLocaleString('de-DE')} — ${s.autor || 'Mitarbeiter'}</div><div class="notiz-text">${s.text}</div>`;
+    div.innerHTML = `<div class="notiz-meta">${d.toLocaleString('de-DE')} — ${s.autor || 'Mitarbeiter'}</div><div class="notiz-text">${s.text}</div>` +
+      (mitLoeschen ? `<div style="margin-top:8px;"><button class="btn-del" onclick="inhLoeschen(${s.id})">✕ Löschen</button></div>` : '');
     el.appendChild(div);
   });
 }
@@ -212,7 +213,7 @@ async function initInhaberModus() {
 
   const schicht = await toolLoad('tagesgeschaeft-schicht');
   let inhaberItems = schicht.items || [];
-  renderListe('inhaber-liste', inhaberItems);
+  renderListe('inhaber-liste', inhaberItems, true);
 
   window.inhEintragen = async function() {
     const text = document.getElementById('inh-text').value.trim();
@@ -226,7 +227,13 @@ async function initInhaberModus() {
     }).catch(() => {});
     document.getElementById('inh-text').value = '';
     flashSaved('inh-save-msg');
-    renderListe('inhaber-liste', inhaberItems);
+    renderListe('inhaber-liste', inhaberItems, true);
+  };
+
+  window.inhLoeschen = async function(id) {
+    inhaberItems = inhaberItems.filter(s => s.id !== id);
+    await toolSave('tagesgeschaeft-schicht', { items: inhaberItems });
+    renderListe('inhaber-liste', inhaberItems, true);
   };
 }
 async function toolLoad(tool) {
