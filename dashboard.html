@@ -42,6 +42,9 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 .welcome span { color:#d4af37; font-weight:600; }
 .btn-logout { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#a0b0c8; padding:7px 16px; border-radius:6px; font-size:12px; cursor:pointer; transition:all 0.2s; }
 .btn-logout:hover { border-color:#d4af37; color:#d4af37; }
+.btn-notify { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#d4af37; width:34px; height:34px; border-radius:50%; font-size:15px; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.btn-notify:hover { background:rgba(212,175,55,0.15); }
+.btn-notify.active { background:#1a6640; border-color:#1a6640; color:#fff; cursor:default; }
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
 .main { max-width:860px; margin:32px auto; padding:0 24px; }
 .module-card { background:#fff; border:1px solid #e8dfc8; border-radius:10px; margin-bottom:16px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
@@ -118,7 +121,10 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 <div class="header">
   <div class="brand">GASTRO-OS</div>
   <div class="welcome">Willkommen, <span id="user-name">...</span></div>
-  <button class="btn-logout" onclick="doLogout()">Abmelden</button>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <button id="push-btn" class="btn-notify" onclick="pushAktivieren()" title="Benachrichtigungen aktivieren">🔔</button>
+    <button class="btn-logout" onclick="doLogout()">Abmelden</button>
+  </div>
 </div>
 
 <div class="gold-bar"></div>
@@ -139,13 +145,6 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 
     <div id="unread-banner" style="display:none;background:#c0392b;color:#fff;border-radius:8px;padding:10px 16px;font-size:12.5px;font-weight:600;margin-bottom:12px;text-align:center;"></div>
 
-    <div class="module-card toolbox-elegant" id="push-card" style="padding:14px 20px;margin-bottom:12px;">
-      <div style="display:flex;align-items:center;gap:12px;">
-        <div style="flex:1;font-size:12.5px;color:#5a6a85;" id="push-status-text">Verpasse keine neue Übergabe, Reservierung oder Schichtplan-Änderung – Ton-Benachrichtigung direkt am Handy/PC.</div>
-        <button id="push-btn" onclick="pushAktivieren()" style="background:#1a6640;color:#fff;border:none;padding:8px 14px;border-radius:6px;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;">🔔 Aktivieren</button>
-      </div>
-    </div>
-
     <!-- HAUPT-TOOLBOX: enthält Tagesgeschäft, Belege (einfache Zeilen) sowie
          Intern und Freigeschaltete Modul-Tools (jeweils verschachtelte Unter-Dropdowns) -->
     <div class="module-card toolbox-elegant" id="haupt-toolbox-card">
@@ -165,7 +164,12 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
           </div>
           <span class="module-arrow" id="intern-arrow">▼</span>
         </div>
-        <div class="module-content" id="intern-content" style="border-top:none;"></div>
+        <div class="module-content" id="intern-content" style="border-top:none;">
+          <div style="padding:14px 20px;font-size:12px;color:#5a6a85;line-height:1.6;background:#fdf8ea;border-bottom:1px solid #f0e8d4;">
+            💡 <strong style="color:#1a2a4a;">So funktioniert der Mitarbeiter-Zugang:</strong> Für jedes Tool unten legst du über "⚙️ PIN verwalten" einmalig eine 4-stellige PIN fest. Alle deine Mitarbeiter nutzen denselben Link + dieselbe PIN — es gibt keine einzelnen Mitarbeiter-Konten. Den Link kannst du z. B. per WhatsApp teilen oder den QR-Code ausdrucken und aufhängen.
+          </div>
+          <div id="intern-tools-list"></div>
+        </div>
 
         <div class="content-item" style="cursor:pointer;" onclick="toggleToolbox()">
           <span class="item-icon">🔓</span>
@@ -811,9 +815,7 @@ function urlBase64ToUint8Array(base64String) {
 
 async function pushStatusPruefen() {
   const btn = document.getElementById('push-btn');
-  const status = document.getElementById('push-status-text');
   if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
-    status.textContent = 'Dein Browser unterstützt leider keine Push-Benachrichtigungen.';
     btn.style.display = 'none';
     return;
   }
@@ -827,10 +829,9 @@ async function pushStatusPruefen() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ subscription: sub })
         }).catch(() => {});
-        status.textContent = '🔔 Benachrichtigungen sind aktiv.';
-        btn.textContent = '✓ Aktiv';
-        btn.disabled = true;
-        btn.style.opacity = '0.6';
+        btn.classList.add('active');
+        btn.title = 'Benachrichtigungen sind aktiv — klicken zum Deaktivieren';
+        btn.onclick = pushDeaktivieren;
         return;
       }
     } catch (e) {}
@@ -839,12 +840,11 @@ async function pushStatusPruefen() {
 
 async function pushAktivieren() {
   const btn = document.getElementById('push-btn');
-  const status = document.getElementById('push-status-text');
   try {
     const reg = await navigator.serviceWorker.register('/sw.js');
     const permission = await Notification.requestPermission();
     if (permission !== 'granted') {
-      status.textContent = 'Benachrichtigungen wurden nicht erlaubt. Du kannst das später in den Browser-Einstellungen ändern.';
+      btn.title = 'Benachrichtigungen wurden nicht erlaubt. Du kannst das später in den Browser-Einstellungen ändern.';
       return;
     }
     const sub = await reg.pushManager.subscribe({
@@ -856,13 +856,31 @@ async function pushAktivieren() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ subscription: sub })
     });
-    status.textContent = '🔔 Benachrichtigungen sind jetzt aktiv.';
-    btn.textContent = '✓ Aktiv';
-    btn.disabled = true;
-    btn.style.opacity = '0.6';
+    btn.classList.add('active');
+    btn.title = 'Benachrichtigungen sind aktiv — klicken zum Deaktivieren';
+    btn.onclick = pushDeaktivieren;
   } catch (e) {
-    status.textContent = 'Aktivierung leider fehlgeschlagen. Bitte nochmal versuchen.';
+    btn.title = 'Aktivierung leider fehlgeschlagen. Bitte nochmal versuchen.';
   }
+}
+
+async function pushDeaktivieren() {
+  const btn = document.getElementById('push-btn');
+  try {
+    const reg = await navigator.serviceWorker.getRegistration();
+    const sub = reg && await reg.pushManager.getSubscription();
+    if (sub) {
+      await fetch('/api/push-subscribe', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ endpoint: sub.endpoint })
+      }).catch(() => {});
+      await sub.unsubscribe();
+    }
+  } catch (e) {}
+  btn.classList.remove('active');
+  btn.title = 'Benachrichtigungen aktivieren';
+  btn.onclick = pushAktivieren;
 }
 
 async function dashToolLoad(tool) {
@@ -940,7 +958,7 @@ function renderTaeglicheTools() {
 }
 
 function renderInternTools() {
-  const container = document.getElementById('intern-content');
+  const container = document.getElementById('intern-tools-list');
   if (!container) return;
   container.innerHTML = '';
   INTERN_TOOLS.forEach((tool, idx) => {
