@@ -4,13 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GASTRO-OS – Dashboard</title>
-<!-- Wichtig für iOS: Zum-Home-Bildschirm-Symbol öffnet die Seite nur dann OHNE Safari-Leiste
-     (und damit erst mit funktionierender Push-Unterstützung), wenn diese Tags vorhanden sind. -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="GASTRO-OS">
-<!-- Cookie-Consent + Google Analytics: ausgelagert in cookie-consent.js -->
 <script src="/cookie-consent.js"></script>
 <script>
 function openModuleFromHash() {
@@ -87,14 +84,12 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 .progress-fill { height:100%; background:linear-gradient(90deg,#1a2a4a,#d4af37); border-radius:3px; transition:width 0.4s ease; }
 .footer { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer strong { color:#d4af37; }
-/* ─── Gesamtfortschritt ─── */
 .overall-progress-bar { background:#1a2a4a; padding:14px 0 18px; }
 .op-inner { max-width:860px; margin:0 auto; padding:0 24px; }
 .op-stats { display:flex; justify-content:space-between; font-size:14px; color:#a0b0c8; margin-bottom:9px; }
 .op-stats span:first-child { color:#d4af37; font-weight:700; font-size:15px; }
 .op-track { height:10px; background:rgba(255,255,255,0.1); border-radius:5px; overflow:hidden; }
 .op-fill { height:100%; background:linear-gradient(90deg,#d4af37,#f0d060); border-radius:5px; transition:width 0.5s ease; }
-/* ─── Mobile ─── */
 @media (max-width: 768px) {
   .header { padding:12px 16px; }
   .brand { font-size:16px; }
@@ -138,16 +133,12 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 </div>
 <div class="main">
 
-<!-- Wrapper: Infobox in normalem Fluss, Toolbox auf breiten Screens absolut daran verankert (garantiert gleiche Oberkante) -->
 <div style="position:relative;">
 
-  <!-- SIDEBAR-GRUPPE: tägliche Tools + Modul-Tools zusammen EIN Positionierungs-Element -->
   <div class="toolbox-sidebar">
 
-    <!-- NEUE-NACHRICHTEN-HINWEIS -->
     <div id="unread-banner" style="display:none;background:#c0392b;color:#fff;border-radius:8px;padding:10px 16px;font-size:12.5px;font-weight:600;margin-bottom:12px;text-align:center;"></div>
 
-    <!-- BENACHRICHTIGUNGEN -->
     <div class="module-card toolbox-elegant" id="push-card" style="padding:14px 20px;margin-bottom:12px;">
       <div style="display:flex;align-items:center;gap:12px;">
         <div style="flex:1;font-size:12.5px;color:#5a6a85;" id="push-status-text">Verpasse keine neue Übergabe, Reservierung oder Schichtplan-Änderung – Ton-Benachrichtigung direkt am Handy/PC.</div>
@@ -155,30 +146,42 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
       </div>
     </div>
 
-    <!-- TÄGLICHE TOOLS (ohne PIN-Zugang): Tagesgeschäft, Belege -->
-    <div id="taegliche-tools"></div>
-
-    <!-- INTERN: Übergabebuch, Reservierungsbuch, Schichtplan — je mit eigenem Mitarbeiter-PIN-Zugang -->
-    <div class="module-card toolbox-elegant" id="intern-card" style="margin-top:4px;margin-bottom:12px;">
-      <div class="module-header" onclick="toggleIntern()" style="padding:14px 22px;">
-        <div class="module-left"><div class="module-number toolbox-icon-circle" style="width:32px;height:32px;font-size:14px;">🔒</div><div><div class="module-title" style="letter-spacing:0.3px;font-size:14px;">Intern</div><div class="module-subtitle" id="intern-subtitle" style="margin-top:2px;">Übergabe, Reservierung &amp; Schichtplan</div></div></div>
-        <div style="display:flex;align-items:center;gap:8px;"><span class="module-arrow" id="intern-arrow" style="color:#d4af37;">▼</span></div>
+    <!-- HAUPT-TOOLBOX: enthält Tagesgeschäft, Belege (einfache Zeilen) sowie
+         Intern und Freigeschaltete Modul-Tools (jeweils verschachtelte Unter-Dropdowns) -->
+    <div class="module-card toolbox-elegant" id="haupt-toolbox-card">
+      <div class="module-header" onclick="toggleHauptToolbox()" style="padding:14px 22px;">
+        <div class="module-left"><div class="module-number toolbox-icon-circle" style="width:32px;height:32px;font-size:14px;">🧰</div><div><div class="module-title" style="letter-spacing:0.3px;font-size:14px;">Toolbox</div><div class="module-subtitle" id="haupt-toolbox-subtitle" style="margin-top:2px;">Alle deine Tools an einem Ort</div></div></div>
+        <div style="display:flex;align-items:center;gap:8px;"><span class="module-arrow" id="haupt-toolbox-arrow" style="color:#d4af37;">▼</span></div>
       </div>
-      <div class="module-content" id="intern-content"></div>
-    </div>
+      <div class="module-content" id="haupt-toolbox-content">
 
-    <!-- FREIGESCHALTETE MODUL-TOOLS: bleibt als Dropdown, da abhängig vom Quiz-Fortschritt -->
-    <div class="module-card toolbox-elegant" id="toolbox-card" style="margin-top:4px;">
-      <div class="module-header" onclick="toggleToolbox()" style="padding:14px 22px;">
-        <div class="module-left"><div class="module-number toolbox-icon-circle" style="width:32px;height:32px;font-size:14px;">🔓</div><div><div class="module-title" style="letter-spacing:0.3px;font-size:14px;">Freigeschaltete Modul-Tools</div><div class="module-subtitle" id="toolbox-subtitle" style="margin-top:2px;">Wird geladen …</div></div></div>
-        <div style="display:flex;align-items:center;gap:8px;"><span class="module-arrow" id="toolbox-arrow" style="color:#d4af37;">▼</span></div>
+        <div id="taegliche-tools"></div>
+
+        <div class="content-item" style="cursor:pointer;" onclick="toggleIntern()">
+          <span class="item-icon">🔒</span>
+          <div class="item-info">
+            <div class="item-title">Intern</div>
+            <div style="font-size:11.5px;color:#5a6a85;margin-top:1px;" id="intern-subtitle">Übergabe, Reservierung &amp; Schichtplan</div>
+          </div>
+          <span class="module-arrow" id="intern-arrow">▼</span>
+        </div>
+        <div class="module-content" id="intern-content" style="border-top:none;"></div>
+
+        <div class="content-item" style="cursor:pointer;" onclick="toggleToolbox()">
+          <span class="item-icon">🔓</span>
+          <div class="item-info">
+            <div class="item-title">Freigeschaltete Modul-Tools</div>
+            <div style="font-size:11.5px;color:#5a6a85;margin-top:1px;" id="toolbox-subtitle">Wird geladen …</div>
+          </div>
+          <span class="module-arrow" id="toolbox-arrow">▼</span>
+        </div>
+        <div class="module-content" id="toolbox-content" style="border-top:none;"></div>
+
       </div>
-      <div class="module-content" id="toolbox-content"></div>
     </div>
 
   </div>
 
-  <!-- INFO: Modul-Freischaltung — volle Breite wie die Modul-Karten -->
   <div class="toolbox-elegant" style="padding:18px 22px;display:flex;gap:14px;align-items:flex-start;margin-bottom:16px;">
     <div class="toolbox-icon-circle" style="flex-shrink:0;">ℹ️</div>
     <div style="font-size:12.5px;color:#5a6a85;line-height:1.65;padding-top:2px;">
@@ -214,19 +217,24 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
   font-size: 16px;
   box-shadow: 0 2px 6px rgba(184,148,42,0.35);
 }
-/* Toolbox: auf schmaleren Bildschirmen normal im Textfluss, schmal & linksbündig, oberhalb der Infobox */
 .toolbox-sidebar {
   width: 340px;
   max-width: 340px;
   margin-bottom: 16px;
 }
-#toolbox-content.open, #intern-content.open {
-  max-height: 460px;
+#haupt-toolbox-content.open {
+  max-height: 620px;
   overflow-y: auto;
 }
-#toolbox-content.open::-webkit-scrollbar, #intern-content.open::-webkit-scrollbar { width: 6px; }
-#toolbox-content.open::-webkit-scrollbar-thumb, #intern-content.open::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 3px; }
-/* Ab genug Platz links neben der zentrierten Spalte: Toolbox exakt auf Höhe der Infobox-Oberkante, deutlich weiter links */
+#haupt-toolbox-content.open::-webkit-scrollbar { width: 6px; }
+#haupt-toolbox-content.open::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 3px; }
+#intern-content.open, #toolbox-content.open {
+  max-height: 420px;
+  overflow-y: auto;
+  background: #faf8f2;
+}
+#intern-content.open::-webkit-scrollbar, #toolbox-content.open::-webkit-scrollbar { width: 6px; }
+#intern-content.open::-webkit-scrollbar-thumb, #toolbox-content.open::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 3px; }
 @media (min-width: 1300px) {
   .toolbox-sidebar {
     position: absolute;
@@ -553,7 +561,6 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 <div class="footer" style="margin-top:40px;"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg &nbsp;·&nbsp; <a href="impressum.html" style="color:#ffffff;text-decoration:none;">Impressum</a> &nbsp;·&nbsp; <a href="datenschutz.html" style="color:#ffffff;text-decoration:none;">Datenschutz</a> &nbsp;·&nbsp; <a href="agb.html" style="color:#ffffff;text-decoration:none;">AGB</a></div>
 
 <script>
-// ─── Konfiguration — hier einfach anpassen wenn sich die Modulzahl ändert ───
 const TOTAL_MODULES = 13;
 
 const MODULE_ITEMS = { 0:7, 1:10, 2:12, 3:11, 4:12, 5:11, 6:13, 7:11, 8:11, 9:12, 10:10, 11:12, 12:10, 13:11 };
@@ -561,8 +568,6 @@ const MODUL_TITLES = ['Das Gastro OS Prinzip','Unternehmer-Denken & Gewinn-Fokus
 const QUIZ_KEYS = { 1:'1-9', 2:'2-11', 3:'3-10', 4:'4-11', 5:'5-10', 6:'6-12', 7:'7-10', 8:'8-10', 9:'9-11', 10:'10-9', 11:'11-10', 12:'12-8', 13:'13-10' };
 const QUIZ_TOOL_NAMES = { 1:'quiz_modul1', 2:'quiz_modul2', 3:'quiz_modul3', 4:'quiz_modul4', 5:'quiz_modul5', 6:'quiz_modul6', 7:'quiz_modul7', 8:'quiz_modul8', 9:'quiz_modul9', 10:'quiz_modul10', 11:'quiz_modul11', 12:'quiz_modul12', 13:'quiz_modul13' };
 
-// ─── Toolbox — echte interaktive Tools je Modul (keine Videos/Anleitungen/Mindmaps) ───
-// Ein Tool aus Modul N erscheint hier, sobald quizBestanden[N] true ist.
 const TOOLS_BY_MODULE = {
   0:  [{ icon:'🧭', title:'Start-Check', desc:'Analysiert, wo dein Betrieb aktuell wirklich steht.', href:'modul0-reflexion.html' }],
   1:  [{ icon:'📊', title:'Unternehmer-Score', desc:'Zeigt, wie unternehmerisch du deinen Betrieb aktuell führst.', href:'modul1-score.html' }],
@@ -584,8 +589,6 @@ let progress = {};
 let quizBestanden = {};
 let lockedModules = new Set();
 
-// ─── Zugriff auf Tool-Daten jetzt ausschließlich über die eigene, sichere API-Route ───
-// (kein direkter Supabase-Zugriff mit anon-Key mehr aus dem Browser)
 async function loadTool(tool) {
   try {
     const res = await fetch('/api/tool-data?tool=' + encodeURIComponent(tool));
@@ -631,7 +634,6 @@ async function init() {
   const INTERNAL_EMAILS = ["kistartklar24@web.de","gastro.os.info@gmail.com","m.pritchard1978@web.de"];
   if (INTERNAL_EMAILS.includes(userEmail.toLowerCase())) { for (let n = 1; n <= 13; n++) quizBestanden[n] = true; }
 
-  // Demo-Zugänge (z.B. Kooperationspartner) — alle Module direkt offen, ohne Quiz-Fortschritt
   const DEMO_UNLOCK_EMAILS = ["westerwinter@dehoga-nrw.de", "franz.perner@wkbgld.at", "z.asel@dehogabw.de", "natascha.kummer@wkbgld.at", "info@gastronomen.koeln"];
   if (DEMO_UNLOCK_EMAILS.includes(userEmail.toLowerCase())) { for (let n = 1; n <= 13; n++) quizBestanden[n] = true; }
 
@@ -753,6 +755,15 @@ function toggleModule(m) {
   if (!isOpen) rememberModule(m);
 }
 
+function toggleHauptToolbox() {
+  const content = document.getElementById('haupt-toolbox-content');
+  const arrow   = document.getElementById('haupt-toolbox-arrow');
+  if (!content) return;
+  const isOpen = content.classList.contains('open');
+  content.classList.toggle('open', !isOpen);
+  if (arrow) arrow.classList.toggle('open', !isOpen);
+}
+
 function toggleToolbox() {
   const content = document.getElementById('toolbox-content');
   const arrow   = document.getElementById('toolbox-arrow');
@@ -771,14 +782,11 @@ function toggleIntern() {
   if (arrow) arrow.classList.toggle('open', !isOpen);
 }
 
-// Immer sichtbar, unabhängig von Modulen/Quiz — die täglichen Tagesgeschäft-Tools OHNE PIN-Zugang
 const ALWAYS_UNLOCKED_TOOLS = [
   { icon: '🗓️', title: 'Tagesgeschäft', desc: 'Kassenbuch, Temperaturen & Wareneingang – die täglichen Einträge an einem Ort.', href: 'tagesgeschaeft.html' },
   { icon: '📎', title: 'Belege', desc: 'Rechnungen von Lieferdiensten und Lieferanten zentral ablegen.', href: 'belegablage.html' }
 ];
 
-// "Intern"-Bereich: Übergabebuch, Reservierungsbuch, Schichtplan — je mit eigenem Mitarbeiter-PIN-Zugang.
-// Schichtplan hat bewusst kein "unread" — nur der Chef trägt dort etwas ein.
 const INTERN_TOOLS = [
   { icon: '📋', title: 'Übergabebuch', desc: 'Schichtübergabe – auch per PIN für Mitarbeiter ohne eigenen Zugang.', href: 'uebergabe.html',
     pin: { zugangTool: 'uebergabe-zugang', setupEndpoint: '/api/zugang-setup', bookType: 'uebergabe', linkPath: 'uebergabe.html' },
@@ -790,7 +798,6 @@ const INTERN_TOOLS = [
     pin: { zugangTool: 'schichtplan-zugang', setupEndpoint: '/api/zugang-setup', bookType: 'schichtplan', linkPath: 'schichtplan.html' } }
 ];
 
-// ─── PUSH-BENACHRICHTIGUNGEN ────────────────────────────────────────────
 const VAPID_PUBLIC_KEY = 'BNLFO9QNrjxgwjx4XsJdMxKeF1WH5kUhAdTOcN3DHabt32CN6g3hB5l5KsSA-u8_6HCGzrKN4BzIS4aIcIVSYTE';
 
 function urlBase64ToUint8Array(base64String) {
@@ -867,7 +874,6 @@ async function dashToolLoad(tool) {
   } catch (e) { return {}; }
 }
 
-// ─── NEUE-NACHRICHTEN-ZÄHLER (Übergabebuch/Reservierungsbuch, in "Intern") ──────
 let unreadStatusCache = null;
 async function unreadStatusLaden() {
   if (!unreadStatusCache) unreadStatusCache = await dashToolLoad('unread-status');
@@ -923,31 +929,13 @@ function renderTaeglicheTools() {
   if (!container) return;
   container.innerHTML = '';
   ALWAYS_UNLOCKED_TOOLS.forEach((tool) => {
-    const wrap = document.createElement('div');
-    wrap.className = 'module-card toolbox-elegant';
-    wrap.style.cssText = 'padding:0;margin-bottom:12px;overflow:visible;';
-
-    const row = document.createElement('div');
-    row.style.cssText = 'padding:16px 20px;';
-
-    const topRow = document.createElement('a');
-    topRow.href = tool.href;
-    topRow.style.cssText = 'display:flex;align-items:center;gap:14px;text-decoration:none;color:inherit;margin-bottom:12px;position:relative;';
-    topRow.innerHTML = `<div class="toolbox-icon-circle" style="flex-shrink:0;">${tool.icon}</div><div style="flex:1;"><div class="module-title" style="font-size:14px;">${tool.title}</div><div style="font-size:11.5px;color:#5a6a85;margin-top:2px;">${tool.desc}</div></div>`;
-    row.appendChild(topRow);
-
-    const rightBox = document.createElement('div');
-    rightBox.style.cssText = 'display:flex;align-items:center;gap:8px;';
-    const openBtn = document.createElement('a');
-    openBtn.href = tool.href;
-    openBtn.className = 'item-link';
-    openBtn.style.whiteSpace = 'nowrap';
-    openBtn.textContent = 'Öffnen →';
-    rightBox.appendChild(openBtn);
-    row.appendChild(rightBox);
-    wrap.appendChild(row);
-
-    container.appendChild(wrap);
+    const item = document.createElement('a');
+    item.href = tool.href;
+    item.className = 'content-item';
+    item.style.textDecoration = 'none';
+    item.style.color = 'inherit';
+    item.innerHTML = `<span class="item-icon">${tool.icon}</span><div class="item-info"><div class="item-title">${tool.title}</div><div style="font-size:11.5px;color:#5a6a85;margin-top:1px;">${tool.desc}</div></div><span class="item-link">Öffnen →</span>`;
+    container.appendChild(item);
   });
 }
 
@@ -1083,8 +1071,6 @@ function renderToolbox() {
   }
 }
 
-// Merkt sich automatisch das Modul, aus dem heraus ein Inhalt (Lektion, Tool, Quiz ...) geöffnet wird —
-// unabhängig davon, ob die jeweilige Unterseite beim Zurückgehen den richtigen Link (#modul-N) mitgibt.
 document.addEventListener('click', function(e) {
   const link = e.target.closest('.item-link');
   if (!link) return;
