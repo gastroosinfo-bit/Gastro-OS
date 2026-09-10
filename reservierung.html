@@ -44,12 +44,10 @@ table.data-table th { background:#f5f0e8; padding:8px 10px; font-size:11px; font
 table.data-table td { padding:8px 10px; border:1px solid #e8dfc8; }
 table.data-table tr:nth-child(even) td { background:#faf8f4; }
 
-.zugang-box { background:#fff8e0; border:1px solid #d4af37; border-radius:8px; padding:16px 20px; margin-bottom:14px; }
-.zugang-box code { background:#1a2a4a; color:#d4af37; padding:6px 10px; border-radius:5px; font-size:13px; display:inline-block; margin-top:6px; word-break:break-all; }
-.hint { font-size:11.5px; color:#8090a8; margin-top:6px; }
-
 .pin-screen { text-align:center; padding:40px 20px; }
 .pin-input { font-size:24px; letter-spacing:8px; text-align:center; width:160px; padding:12px; border:2px solid #d4af37; border-radius:8px; margin:16px auto; display:block; }
+.notify-bar { background:#fff8e0; border:1px solid #d4af37; border-radius:8px; padding:12px 16px; margin-bottom:16px; display:none; align-items:center; justify-content:space-between; gap:12px; }
+.notify-bar span { font-size:12.5px; color:#5a6a85; }
 
 .footer-brand { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-brand strong { color:#d4af37; }
@@ -64,7 +62,7 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
 <div class="gold-bar"></div>
 
 <div class="wrap">
-  <div class="tool-label">Toolbox · Täglich nutzbar</div>
+  <div class="tool-label">Toolbox · Intern</div>
   <div class="tool-title">📅 Reservierungsbuch</div>
   <div class="tool-sub" id="tool-sub-text">Wird geladen …</div>
 
@@ -78,6 +76,10 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
 
   <!-- ═══ GEMEINSAMER BEREICH (Mitarbeiter nach PIN ODER Inhaber direkt) ═══ -->
   <div id="reservierung-bereich" style="display:none;">
+    <div class="notify-bar" id="notify-bar">
+      <span id="notify-text">0 Änderungen noch nicht gemeldet</span>
+      <button class="btn-add" onclick="reservierungBenachrichtigen()">🔔 Änderungen melden</button>
+    </div>
     <div class="section" id="res-push-section" style="display:none;align-items:center;gap:12px;">
       <div style="flex:1;font-size:12.5px;color:#5a6a85;" id="res-push-status-text">Bekomm eine Ton-Benachrichtigung, wenn jemand anderes hier was einträgt.</div>
       <button id="res-push-btn" style="background:#1a6640;color:#fff;border:none;padding:8px 14px;border-radius:6px;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;">🔔 Aktivieren</button>
@@ -113,8 +115,6 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
       </div>
     </div>
   </div>
-
-  <!-- Zugang/PIN-Verwaltung erfolgt im Dashboard unter der Kachel -->
 
 </div>
 
@@ -214,6 +214,45 @@ function initMitarbeiterModus(code) {
 }
 
 // ═══════════════ INHABER-MODUS ═══════════════
+let notifyPending = {};
+
+async function notifyPendingLaden() {
+  notifyPending = await toolLoad('notify-pending');
+  if (!notifyPending || typeof notifyPending !== 'object') notifyPending = {};
+}
+async function notifyPendingSpeichern() {
+  await toolSave('notify-pending', notifyPending);
+}
+function notifyBarAktualisieren() {
+  const bar = document.getElementById('notify-bar');
+  const text = document.getElementById('notify-text');
+  const n = notifyPending.reservierung || 0;
+  if (!bar) return;
+  if (n > 0) {
+    bar.style.display = 'flex';
+    text.textContent = n === 1 ? '1 Änderung noch nicht gemeldet' : n + ' Änderungen noch nicht gemeldet';
+  } else {
+    bar.style.display = 'none';
+  }
+}
+window.reservierungBenachrichtigen = async function() {
+  const n = notifyPending.reservierung || 0;
+  if (!n) return;
+  fetch('/api/push-notify', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      title: '📅 Reservierungsbuch aktualisiert',
+      body: n === 1 ? '1 Änderung im Reservierungsbuch' : n + ' Änderungen im Reservierungsbuch',
+      url: '/reservierung.html',
+      bookType: 'reservierung'
+    })
+  }).catch(() => {});
+  notifyPending.reservierung = 0;
+  await notifyPendingSpeichern();
+  notifyBarAktualisieren();
+};
+
 async function initInhaberModus() {
   try {
     const res = await fetch('/api/verify-session');
@@ -226,6 +265,9 @@ async function initInhaberModus() {
   document.getElementById('tool-sub-text').textContent = 'Dein eigenes Reservierungsbuch. Den Zugang für Mitarbeiter verwaltest du im Dashboard.';
   document.getElementById('reservierung-bereich').style.display = 'block';
   document.getElementById('res-datum').value = heute();
+
+  await notifyPendingLaden();
+  notifyBarAktualisieren();
 
   const data = await toolLoad('reservierungen');
   window.resItems = data.items || [];
@@ -246,11 +288,9 @@ async function initInhaberModus() {
     if (!eintrag.name || !eintrag.datum) { alert('Bitte mindestens Name und Datum angeben.'); return; }
     window.resItems.push(eintrag);
     await toolSave('reservierungen', { items: window.resItems });
-    fetch('/api/push-notify', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title: '📅 Neue Reservierung', body: `${eintrag.name}, ${eintrag.datum}${eintrag.uhrzeit ? ' ' + eintrag.uhrzeit : ''}`, url: '/reservierung.html', bookType: 'reservierung' })
-    }).catch(() => {});
+    notifyPending.reservierung = (notifyPending.reservierung || 0) + 1;
+    await notifyPendingSpeichern();
+    notifyBarAktualisieren();
     ['res-name','res-uhrzeit','res-personen','res-telefon','res-tisch','res-notiz'].forEach(id => document.getElementById(id).value = '');
     flashSaved('res-save-msg');
     renderReservierungen(window.resItems, true);
@@ -258,6 +298,9 @@ async function initInhaberModus() {
   window.resLoeschen = async function(id) {
     window.resItems = window.resItems.filter(r => r.id !== id);
     await toolSave('reservierungen', { items: window.resItems });
+    notifyPending.reservierung = (notifyPending.reservierung || 0) + 1;
+    await notifyPendingSpeichern();
+    notifyBarAktualisieren();
     renderReservierungen(window.resItems, true);
   };
 }

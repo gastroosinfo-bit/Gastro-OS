@@ -41,12 +41,10 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 .notiz-meta { font-size:11px; color:#8090a8; margin-bottom:4px; }
 .notiz-text { font-size:13px; color:#2a3a4a; line-height:1.5; }
 
-.zugang-box { background:#fff8e0; border:1px solid #d4af37; border-radius:8px; padding:16px 20px; margin-bottom:14px; }
-.zugang-box code { background:#1a2a4a; color:#d4af37; padding:6px 10px; border-radius:5px; font-size:13px; display:inline-block; margin-top:6px; word-break:break-all; }
-.hint { font-size:11.5px; color:#8090a8; margin-top:6px; }
-
 .pin-screen { text-align:center; padding:40px 20px; }
 .pin-input { font-size:24px; letter-spacing:8px; text-align:center; width:160px; padding:12px; border:2px solid #d4af37; border-radius:8px; margin:16px auto; display:block; }
+.notify-bar { background:#fff8e0; border:1px solid #d4af37; border-radius:8px; padding:12px 16px; margin-bottom:16px; display:none; align-items:center; justify-content:space-between; gap:12px; }
+.notify-bar span { font-size:12.5px; color:#5a6a85; }
 
 .footer-brand { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-brand strong { color:#d4af37; }
@@ -61,7 +59,7 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 <div class="gold-bar"></div>
 
 <div class="wrap">
-  <div class="tool-label">Toolbox · Täglich nutzbar</div>
+  <div class="tool-label">Toolbox · Intern</div>
   <div class="tool-title">📋 Übergabebuch</div>
   <div class="tool-sub" id="tool-sub-text">Wird geladen …</div>
 
@@ -97,6 +95,10 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 
   <!-- ═══ INHABER: EIGENES ÜBERGABEBUCH (Zugang/PIN wird im Dashboard verwaltet) ═══ -->
   <div id="inhaber-bereich" style="display:none;">
+    <div class="notify-bar" id="notify-bar">
+      <span id="notify-text">0 Änderungen noch nicht gemeldet</span>
+      <button class="btn-add" onclick="uebergabeBenachrichtigen()">🔔 Änderungen melden</button>
+    </div>
     <div class="section">
       <div class="section-head">Neuer Übergabe-Eintrag</div>
       <textarea id="inh-text" rows="3" style="width:100%;border:1px solid #e0d8c8;border-radius:6px;padding:10px 12px;font-size:14px;font-family:inherit;" placeholder="Was ist wichtig für die nächste Schicht?"></textarea>
@@ -195,6 +197,45 @@ function initMitarbeiterModus(code) {
 }
 
 // ═══════════════ INHABER-MODUS ═══════════════
+let notifyPending = {};
+
+async function notifyPendingLaden() {
+  notifyPending = await toolLoad('notify-pending');
+  if (!notifyPending || typeof notifyPending !== 'object') notifyPending = {};
+}
+async function notifyPendingSpeichern() {
+  await toolSave('notify-pending', notifyPending);
+}
+function notifyBarAktualisieren() {
+  const bar = document.getElementById('notify-bar');
+  const text = document.getElementById('notify-text');
+  const n = notifyPending.uebergabe || 0;
+  if (!bar) return;
+  if (n > 0) {
+    bar.style.display = 'flex';
+    text.textContent = n === 1 ? '1 Änderung noch nicht gemeldet' : n + ' Änderungen noch nicht gemeldet';
+  } else {
+    bar.style.display = 'none';
+  }
+}
+window.uebergabeBenachrichtigen = async function() {
+  const n = notifyPending.uebergabe || 0;
+  if (!n) return;
+  fetch('/api/push-notify', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      title: '📋 Übergabebuch aktualisiert',
+      body: n === 1 ? '1 Änderung im Übergabebuch' : n + ' Änderungen im Übergabebuch',
+      url: '/uebergabe.html',
+      bookType: 'uebergabe'
+    })
+  }).catch(() => {});
+  notifyPending.uebergabe = 0;
+  await notifyPendingSpeichern();
+  notifyBarAktualisieren();
+};
+
 async function initInhaberModus() {
   try {
     const res = await fetch('/api/verify-session');
@@ -207,6 +248,9 @@ async function initInhaberModus() {
   document.getElementById('tool-sub-text').textContent = 'Dein eigenes Übergabebuch. Den Zugang für Mitarbeiter verwaltest du im Dashboard.';
   document.getElementById('inhaber-bereich').style.display = 'block';
 
+  await notifyPendingLaden();
+  notifyBarAktualisieren();
+
   const schicht = await toolLoad('tagesgeschaeft-schicht');
   let inhaberItems = schicht.items || [];
   renderListe('inhaber-liste', inhaberItems, true);
@@ -216,11 +260,9 @@ async function initInhaberModus() {
     if (!text) return;
     inhaberItems.push({ id: Date.now(), text, zeitpunkt: new Date().toISOString(), autor: 'Chef' });
     await toolSave('tagesgeschaeft-schicht', { items: inhaberItems });
-    fetch('/api/push-notify', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title: '📋 Neuer Übergabe-Eintrag', body: text.slice(0, 120), url: '/uebergabe.html', bookType: 'uebergabe' })
-    }).catch(() => {});
+    notifyPending.uebergabe = (notifyPending.uebergabe || 0) + 1;
+    await notifyPendingSpeichern();
+    notifyBarAktualisieren();
     document.getElementById('inh-text').value = '';
     flashSaved('inh-save-msg');
     renderListe('inhaber-liste', inhaberItems, true);
@@ -229,6 +271,9 @@ async function initInhaberModus() {
   window.inhLoeschen = async function(id) {
     inhaberItems = inhaberItems.filter(s => s.id !== id);
     await toolSave('tagesgeschaeft-schicht', { items: inhaberItems });
+    notifyPending.uebergabe = (notifyPending.uebergabe || 0) + 1;
+    await notifyPendingSpeichern();
+    notifyBarAktualisieren();
     renderListe('inhaber-liste', inhaberItems, true);
   };
 }

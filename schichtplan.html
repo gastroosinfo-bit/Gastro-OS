@@ -97,6 +97,10 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
 
   <!-- ═══ INHABER: SCHICHTPLAN VERWALTEN ═══ -->
   <div id="inhaber-bereich" style="display:none;">
+    <div class="notify-bar" id="notify-bar" style="background:#fff8e0;border:1px solid #d4af37;border-radius:8px;padding:12px 16px;margin-bottom:16px;display:none;align-items:center;justify-content:space-between;gap:12px;">
+      <span id="notify-text" style="font-size:12.5px;color:#5a6a85;">0 Änderungen noch nicht gemeldet</span>
+      <button class="btn-add" onclick="schichtplanBenachrichtigen()">🔔 Änderungen melden</button>
+    </div>
     <div class="hinweis-box">ℹ️ Nur du als Chef kannst hier Schichten eintragen, ändern oder löschen. Mitarbeiter sehen den Plan über ihren eigenen PIN-Link nur lesend.</div>
 
     <div class="section">
@@ -224,6 +228,44 @@ function initMitarbeiterModus(code) {
 // ═══════════════ INHABER-MODUS ═══════════════
 let mitarbeiterNamen = [];
 let spRowCounter = 0;
+let notifyPending = {};
+
+async function notifyPendingLaden() {
+  notifyPending = await toolLoad('notify-pending');
+  if (!notifyPending || typeof notifyPending !== 'object') notifyPending = {};
+}
+async function notifyPendingSpeichern() {
+  await toolSave('notify-pending', notifyPending);
+}
+function notifyBarAktualisieren() {
+  const bar = document.getElementById('notify-bar');
+  const text = document.getElementById('notify-text');
+  const n = notifyPending.schichtplan || 0;
+  if (!bar) return;
+  if (n > 0) {
+    bar.style.display = 'flex';
+    text.textContent = n === 1 ? '1 Änderung noch nicht gemeldet' : n + ' Änderungen noch nicht gemeldet';
+  } else {
+    bar.style.display = 'none';
+  }
+}
+window.schichtplanBenachrichtigen = async function() {
+  const n = notifyPending.schichtplan || 0;
+  if (!n) return;
+  fetch('/api/push-notify', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      title: '🗂️ Schichtplan aktualisiert',
+      body: n === 1 ? '1 Änderung im Schichtplan' : n + ' Änderungen im Schichtplan',
+      url: '/schichtplan.html',
+      bookType: 'schichtplan'
+    })
+  }).catch(() => {});
+  notifyPending.schichtplan = 0;
+  await notifyPendingSpeichern();
+  notifyBarAktualisieren();
+};
 
 async function initInhaberModus() {
   try {
@@ -236,6 +278,9 @@ async function initInhaberModus() {
   document.getElementById('btn-dashboard').style.display = 'inline-block';
   document.getElementById('tool-sub-text').textContent = 'Trag hier den Dienstplan für dein Team ein.';
   document.getElementById('inhaber-bereich').style.display = 'block';
+
+  await notifyPendingLaden();
+  notifyBarAktualisieren();
 
   const mitarbeiterData = await toolLoad('schichtplan-mitarbeiter');
   mitarbeiterNamen = mitarbeiterData.namen || [];
@@ -250,11 +295,9 @@ async function initInhaberModus() {
   window.spLoeschen = async function(id) {
     window.spItems = window.spItems.filter(s => s.id !== id);
     await toolSave('schichtplaene', { items: window.spItems });
-    fetch('/api/push-notify', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title: '🗂️ Schichtplan aktualisiert', body: 'Eine Schicht wurde entfernt.', url: '/schichtplan.html', bookType: 'schichtplan' })
-    }).catch(() => {});
+    notifyPending.schichtplan = (notifyPending.schichtplan || 0) + 1;
+    await notifyPendingSpeichern();
+    notifyBarAktualisieren();
     renderSpTabelle(window.spItems);
   };
 }
@@ -351,16 +394,9 @@ window.spAlleSpeichern = async function() {
   window.spItems = window.spItems.concat(neueEintraege);
   await toolSave('schichtplaene', { items: window.spItems });
 
-  fetch('/api/push-notify', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      title: '🗂️ Schichtplan aktualisiert',
-      body: neueEintraege.length === 1 ? '1 neue Schicht eingetragen' : neueEintraege.length + ' neue Schichten eingetragen',
-      url: '/schichtplan.html',
-      bookType: 'schichtplan'
-    })
-  }).catch(() => {});
+  notifyPending.schichtplan = (notifyPending.schichtplan || 0) + neueEintraege.length;
+  await notifyPendingSpeichern();
+  notifyBarAktualisieren();
 
   document.getElementById('sp-rows').innerHTML = '';
   spZeileHinzufuegen();
