@@ -218,6 +218,7 @@ function initMitarbeiterModus(code) {
       document.getElementById('mitarbeiter-bereich').style.display = 'block';
       document.getElementById('tool-sub-text').textContent = 'Dein Dienstplan — Änderungen macht nur der Chef.';
       renderMaTabelle(d.items || []);
+      badgeBeimOeffnenZuruecksetzen();
       maPushSetup(code, pin);
     } catch (e) {
       document.getElementById('pin-error').style.display = 'block';
@@ -481,6 +482,19 @@ async function maPushSetup(code, pin) {
       status.textContent = 'Aktivierung leider fehlgeschlagen.';
     }
   };
+}
+// ─── Badge-Zähler zurücksetzen, wenn die Seite direkt geöffnet wird (nicht nur per Push-Klick) ───
+function badgeBeimOeffnenZuruecksetzen() {
+  if ('clearAppBadge' in navigator) { navigator.clearAppBadge().catch(() => {}); }
+  try {
+    const req = indexedDB.open('gastroos-badge', 1);
+    req.onupgradeneeded = () => { req.result.createObjectStore('zaehler'); };
+    req.onsuccess = () => {
+      const db = req.result;
+      const tx = db.transaction('zaehler', 'readwrite');
+      tx.objectStore('zaehler').put(0, 'count');
+    };
+  } catch (e) {}
 }
 </script>
 </body>

@@ -178,6 +178,7 @@ function initMitarbeiterModus(code) {
       document.getElementById('tool-sub-text').textContent = 'Trag neue Reservierungen ein oder sieh die kommenden.';
       document.getElementById('res-datum').value = heute();
       renderReservierungen(d.items || [], false);
+      badgeBeimOeffnenZuruecksetzen();
       document.getElementById('res-erfasstvon-wrap').style.display = 'block';
       document.getElementById('res-erfasstvon').value = localStorage.getItem('gastroos_ma_name_' + code) || '';
       document.getElementById('res-push-section').style.display = 'flex';
@@ -381,6 +382,19 @@ async function resPushSetup(code, pin) {
       status.textContent = 'Aktivierung leider fehlgeschlagen.';
     }
   };
+}
+// ─── Badge-Zähler zurücksetzen, wenn die Seite direkt geöffnet wird (nicht nur per Push-Klick) ───
+function badgeBeimOeffnenZuruecksetzen() {
+  if ('clearAppBadge' in navigator) { navigator.clearAppBadge().catch(() => {}); }
+  try {
+    const req = indexedDB.open('gastroos-badge', 1);
+    req.onupgradeneeded = () => { req.result.createObjectStore('zaehler'); };
+    req.onsuccess = () => {
+      const db = req.result;
+      const tx = db.transaction('zaehler', 'readwrite');
+      tx.objectStore('zaehler').put(0, 'count');
+    };
+  } catch (e) {}
 }
 </script>
 </body>
