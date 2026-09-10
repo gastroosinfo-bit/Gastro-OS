@@ -3,9 +3,13 @@
 // oder von einem MITARBEITER (Code+PIN, kein Login). Landet in derselben gemeinsamen Liste,
 // damit bei neuen Einträgen alle benachrichtigt werden können. Der bookType sorgt dafür,
 // dass Mitarbeiter nur für ihr eigenes Buch (Übergabe, Reservierung ODER Schichtplan) benachrichtigt werden.
+//
+// DELETE: Nur der eingeloggte Inhaber kann seine eigene Subscription wieder entfernen
+// (z. B. wenn er Benachrichtigungen im Dashboard deaktiviert). Mitarbeiter haben dafür
+// bewusst keine eigene Möglichkeit.
 
 const crypto = require('crypto');
-const { addSubscription } = require('../lib/push-helper');
+const { addSubscription, removeSubscription } = require('../lib/push-helper');
 
 const SESSION_SECRET = process.env.SESSION_SECRET;
 const SUPABASE_URL = process.env.SUPABASE_URL;
@@ -56,6 +60,20 @@ async function findOwnerByCode(zugangTool, code) {
 }
 
 export default async function handler(req, res) {
+  // ── DELETE: Chef deaktiviert seine eigene Subscription ──────────────────
+  if (req.method === 'DELETE') {
+    const email = getEmailFromRequest(req);
+    if (!email) return res.status(401).json({ error: 'Nicht angemeldet.' });
+    const { endpoint } = req.body || {};
+    if (!endpoint) return res.status(400).json({ error: 'endpoint fehlt.' });
+    try {
+      await removeSubscription(email, endpoint);
+      return res.status(200).json({ ok: true });
+    } catch (e) {
+      return res.status(500).json({ error: 'Fehler beim Entfernen.' });
+    }
+  }
+
   if (req.method !== 'POST') return res.status(405).json({ error: 'Methode nicht erlaubt.' });
 
   const { subscription, code, pin, bookType } = req.body || {};
