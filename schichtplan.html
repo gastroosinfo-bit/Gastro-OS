@@ -16,7 +16,7 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 .btn-back { background:#d4af37; color:#1a2a4a; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
 .btn-back:hover { background:#c8a030; }
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
-.wrap { max-width:760px; margin:0 auto; padding:28px 24px 60px; }
+.wrap { max-width:860px; margin:0 auto; padding:28px 24px 60px; }
 .tool-label { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:4px; }
 .tool-title { font-family:Georgia,serif; font-size:22px; color:#1a2a4a; margin-bottom:4px; }
 .tool-sub { font-size:13px; color:#5a6a80; margin-bottom:20px; }
@@ -26,14 +26,13 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 
 .field-group { display:flex; flex-direction:column; gap:5px; margin-bottom:14px; }
 .field-group label { font-size:11px; font-weight:700; color:#8090a8; text-transform:uppercase; letter-spacing:0.5px; }
-.field-group input { border:1px solid #e0d8c8; border-radius:6px; padding:10px 12px; font-size:14px; color:#1a2a4a; background:#eaf2ff; font-family:inherit; }
-.field-group input:focus { outline:none; border-color:#d4af37; background:#fff; }
-.grid2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-.grid4 { display:grid; grid-template-columns:1.2fr 1fr 0.8fr 0.8fr; gap:14px; }
-@media(max-width:600px){ .grid2,.grid4{ grid-template-columns:1fr; } }
+.field-group input, .field-group select { border:1px solid #e0d8c8; border-radius:6px; padding:9px 10px; font-size:13.5px; color:#1a2a4a; background:#eaf2ff; font-family:inherit; width:100%; }
+.field-group input:focus, .field-group select:focus { outline:none; border-color:#d4af37; background:#fff; }
 
 .btn-add { background:#1a6640; color:#fff; border:none; padding:10px 20px; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; }
 .btn-add:hover { background:#d4af37; color:#1a2a4a; }
+.btn-add.secondary { background:transparent; color:#1a6640; border:1px solid #1a6640; }
+.btn-add.secondary:hover { background:#1a6640; color:#fff; }
 .btn-del { background:transparent; border:1px solid #c0392b; color:#c0392b; padding:5px 10px; border-radius:5px; font-size:11px; font-weight:600; cursor:pointer; }
 .btn-del:hover { background:#c0392b; color:#fff; }
 .save-msg { font-size:12px; color:#4aaa60; margin-left:10px; display:none; }
@@ -47,6 +46,12 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
 .pin-screen { text-align:center; padding:40px 20px; }
 .pin-input { font-size:24px; letter-spacing:8px; text-align:center; width:160px; padding:12px; border:2px solid #d4af37; border-radius:8px; margin:16px auto; display:block; }
 .hinweis-box { background:#eaf2ff; border:1px solid #8ba8d0; border-radius:8px; padding:12px 16px; font-size:12px; color:#3a5578; margin-bottom:16px; }
+
+.sp-row { display:grid; grid-template-columns:1.3fr 1fr 0.8fr 0.8fr 1.2fr auto; gap:10px; align-items:end; margin-bottom:12px; }
+@media(max-width:760px){ .sp-row{ grid-template-columns:1fr 1fr; } .sp-row .btn-del{ grid-column:span 2; justify-self:end; } }
+
+.chip { display:inline-flex; align-items:center; gap:6px; background:#eaf2ff; border:1px solid #cddbee; border-radius:14px; padding:5px 6px 5px 12px; margin:3px; font-size:12.5px; }
+.chip button { border:none; background:none; color:#c0392b; cursor:pointer; font-weight:700; font-size:13px; padding:2px 4px; }
 
 .footer-brand { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-brand strong { color:#d4af37; }
@@ -93,16 +98,24 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
   <!-- ═══ INHABER: SCHICHTPLAN VERWALTEN ═══ -->
   <div id="inhaber-bereich" style="display:none;">
     <div class="hinweis-box">ℹ️ Nur du als Chef kannst hier Schichten eintragen, ändern oder löschen. Mitarbeiter sehen den Plan über ihren eigenen PIN-Link nur lesend.</div>
+
     <div class="section">
-      <div class="section-head">Neue Schicht eintragen</div>
-      <div class="grid4">
-        <div class="field-group"><label>Name</label><input type="text" id="sp-name" placeholder="z. B. Maria"></div>
-        <div class="field-group"><label>Datum</label><input type="date" id="sp-datum"></div>
-        <div class="field-group"><label>Von</label><input type="time" id="sp-von"></div>
-        <div class="field-group"><label>Bis</label><input type="time" id="sp-bis"></div>
+      <div class="section-head">Mitarbeiter verwalten</div>
+      <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;">
+        <div class="field-group" style="max-width:220px;margin-bottom:0;">
+          <label>Neuer Mitarbeitername</label>
+          <input type="text" id="sp-neuer-mitarbeiter" placeholder="z. B. Maria">
+        </div>
+        <button class="btn-add" onclick="mitarbeiterHinzufuegen()">+ Hinzufügen</button>
       </div>
-      <div class="field-group"><label>Notiz (optional)</label><input type="text" id="sp-notiz" placeholder="z. B. Vertretung, Frühschicht"></div>
-      <button class="btn-add" onclick="spEintragen()">💾 Schicht speichern</button>
+      <div id="sp-mitarbeiter-liste" style="margin-top:14px;"></div>
+    </div>
+
+    <div class="section">
+      <div class="section-head">Neue Schichten eintragen</div>
+      <div id="sp-rows"></div>
+      <button class="btn-add secondary" onclick="spZeileHinzufuegen()">+ Weitere Person</button>
+      <button class="btn-add" style="margin-left:8px;" onclick="spAlleSpeichern()">💾 Alle speichern</button>
       <span class="save-msg" id="sp-save-msg">✓ Gespeichert</span>
     </div>
 
@@ -151,19 +164,33 @@ function renderSpTabelle(items) {
   });
 }
 
-const urlParams = new URLSearchParams(window.location.search);
-const codeAusUrl = urlParams.get('u');
+// ─────────────────────────────────────────────────────────────────────────
+// Entscheidung Chef- vs. Mitarbeiter-Modus:
+// 1) ?u=CODE in der URL -> immer Mitarbeiter (expliziter Link)
+// 2) sonst: gültige Chef-Session? -> immer Chef-Modus (auch wenn auf diesem
+//    Gerät vorher mal ein Mitarbeiter-Code gespeichert wurde, z.B. beim Testen)
+// 3) sonst: gespeicherter Mitarbeiter-Code auf diesem Gerät? -> Mitarbeiter
+// 4) sonst: Chef-Modus (führt zum Login, falls keine Session besteht)
+// ─────────────────────────────────────────────────────────────────────────
+(async function modusEntscheiden() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const codeAusUrl = urlParams.get('u');
 
-if (codeAusUrl) {
-  initMitarbeiterModus(codeAusUrl);
-} else {
+  if (codeAusUrl) { initMitarbeiterModus(codeAusUrl); return; }
+
+  try {
+    const res = await fetch('/api/verify-session');
+    if (res.ok) {
+      const d = await res.json();
+      if (d.valid) { initInhaberModus(); return; }
+    }
+  } catch (e) {}
+
   const gespeicherterCode = localStorage.getItem('gastroos_sp_code');
-  if (gespeicherterCode) {
-    initMitarbeiterModus(gespeicherterCode);
-  } else {
-    initInhaberModus();
-  }
-}
+  if (gespeicherterCode) { initMitarbeiterModus(gespeicherterCode); return; }
+
+  initInhaberModus();
+})();
 
 // ═══════════════ MITARBEITER-MODUS (nur lesend) ═══════════════
 function initMitarbeiterModus(code) {
@@ -195,6 +222,9 @@ function initMitarbeiterModus(code) {
 }
 
 // ═══════════════ INHABER-MODUS ═══════════════
+let mitarbeiterNamen = [];
+let spRowCounter = 0;
+
 async function initInhaberModus() {
   try {
     const res = await fetch('/api/verify-session');
@@ -206,33 +236,17 @@ async function initInhaberModus() {
   document.getElementById('btn-dashboard').style.display = 'inline-block';
   document.getElementById('tool-sub-text').textContent = 'Trag hier den Dienstplan für dein Team ein.';
   document.getElementById('inhaber-bereich').style.display = 'block';
-  document.getElementById('sp-datum').value = heute();
+
+  const mitarbeiterData = await toolLoad('schichtplan-mitarbeiter');
+  mitarbeiterNamen = mitarbeiterData.namen || [];
+  renderMitarbeiterListe();
 
   const data = await toolLoad('schichtplaene');
   window.spItems = data.items || [];
   renderSpTabelle(window.spItems);
 
-  window.spEintragen = async function() {
-    const eintrag = {
-      id: Date.now(),
-      name: document.getElementById('sp-name').value.trim(),
-      datum: document.getElementById('sp-datum').value,
-      von: document.getElementById('sp-von').value,
-      bis: document.getElementById('sp-bis').value,
-      notiz: document.getElementById('sp-notiz').value
-    };
-    if (!eintrag.name || !eintrag.datum) { alert('Bitte mindestens Name und Datum angeben.'); return; }
-    window.spItems.push(eintrag);
-    await toolSave('schichtplaene', { items: window.spItems });
-    fetch('/api/push-notify', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title: '🗂️ Schichtplan aktualisiert', body: `${eintrag.name}, ${eintrag.datum}${eintrag.von ? ' ' + eintrag.von : ''}${eintrag.bis ? '–' + eintrag.bis : ''}`, url: '/schichtplan.html', bookType: 'schichtplan' })
-    }).catch(() => {});
-    ['sp-name','sp-von','sp-bis','sp-notiz'].forEach(id => document.getElementById(id).value = '');
-    flashSaved('sp-save-msg');
-    renderSpTabelle(window.spItems);
-  };
+  spZeileHinzufuegen();
+
   window.spLoeschen = async function(id) {
     window.spItems = window.spItems.filter(s => s.id !== id);
     await toolSave('schichtplaene', { items: window.spItems });
@@ -244,6 +258,116 @@ async function initInhaberModus() {
     renderSpTabelle(window.spItems);
   };
 }
+
+// ─── Mitarbeiter-Verwaltung (Namensliste fürs Dropdown) ────────────────────
+function mitarbeiterSelectHtml() {
+  const options = mitarbeiterNamen.map(n => `<option value="${n}">${n}</option>`).join('');
+  return `<option value="">– wählen –</option>${options}`;
+}
+function mitarbeiterOptionenAktualisieren() {
+  document.querySelectorAll('[id^="sp-row-name-"]').forEach(select => {
+    const currentVal = select.value;
+    const vorhandene = [...select.options].map(o => o.value);
+    mitarbeiterNamen.forEach(n => {
+      if (!vorhandene.includes(n)) {
+        const opt = document.createElement('option');
+        opt.value = n;
+        opt.textContent = n;
+        select.appendChild(opt);
+      }
+    });
+    select.value = currentVal;
+  });
+}
+function renderMitarbeiterListe() {
+  const el = document.getElementById('sp-mitarbeiter-liste');
+  if (!mitarbeiterNamen.length) { el.innerHTML = '<span style="font-size:12.5px;color:#8090a8;">Noch keine Mitarbeiter hinzugefügt.</span>'; return; }
+  el.innerHTML = mitarbeiterNamen.map(n =>
+    `<span class="chip">${n}<button onclick="mitarbeiterEntfernen('${n.replace(/'/g, "\\'")}')" title="Entfernen">✕</button></span>`
+  ).join('');
+}
+window.mitarbeiterHinzufuegen = async function() {
+  const input = document.getElementById('sp-neuer-mitarbeiter');
+  const name = input.value.trim();
+  if (!name) return;
+  if (!mitarbeiterNamen.includes(name)) {
+    mitarbeiterNamen.push(name);
+    await toolSave('schichtplan-mitarbeiter', { namen: mitarbeiterNamen });
+  }
+  input.value = '';
+  renderMitarbeiterListe();
+  mitarbeiterOptionenAktualisieren();
+};
+window.mitarbeiterEntfernen = async function(name) {
+  mitarbeiterNamen = mitarbeiterNamen.filter(n => n !== name);
+  await toolSave('schichtplan-mitarbeiter', { namen: mitarbeiterNamen });
+  renderMitarbeiterListe();
+};
+
+// ─── Mehrzeilige Schicht-Eintragung ─────────────────────────────────────────
+function spZeileHinzufuegen() {
+  spRowCounter++;
+  const rowId = spRowCounter;
+  const rowsContainer = document.getElementById('sp-rows');
+  const row = document.createElement('div');
+  row.className = 'sp-row';
+  row.id = 'sp-row-' + rowId;
+  row.innerHTML = `
+    <div class="field-group" style="margin-bottom:0;"><label>Name</label><select id="sp-row-name-${rowId}">${mitarbeiterSelectHtml()}</select></div>
+    <div class="field-group" style="margin-bottom:0;"><label>Datum</label><input type="date" id="sp-row-datum-${rowId}"></div>
+    <div class="field-group" style="margin-bottom:0;"><label>Von</label><input type="time" id="sp-row-von-${rowId}"></div>
+    <div class="field-group" style="margin-bottom:0;"><label>Bis</label><input type="time" id="sp-row-bis-${rowId}"></div>
+    <div class="field-group" style="margin-bottom:0;"><label>Notiz</label><input type="text" id="sp-row-notiz-${rowId}" placeholder="optional"></div>
+    <button class="btn-del" style="height:38px;" onclick="spZeileEntfernen(${rowId})">✕</button>
+  `;
+  rowsContainer.appendChild(row);
+  document.getElementById('sp-row-datum-' + rowId).value = heute();
+}
+window.spZeileHinzufuegen = spZeileHinzufuegen;
+
+window.spZeileEntfernen = function(rowId) {
+  const rowsContainer = document.getElementById('sp-rows');
+  if (rowsContainer.children.length <= 1) return; // mindestens eine Zeile behalten
+  const row = document.getElementById('sp-row-' + rowId);
+  if (row) row.remove();
+};
+
+window.spAlleSpeichern = async function() {
+  const rows = [...document.querySelectorAll('.sp-row')];
+  const neueEintraege = [];
+  rows.forEach(row => {
+    const rowId = row.id.replace('sp-row-', '');
+    const name = document.getElementById('sp-row-name-' + rowId).value;
+    const datum = document.getElementById('sp-row-datum-' + rowId).value;
+    const von = document.getElementById('sp-row-von-' + rowId).value;
+    const bis = document.getElementById('sp-row-bis-' + rowId).value;
+    const notiz = document.getElementById('sp-row-notiz-' + rowId).value;
+    if (name && datum) {
+      neueEintraege.push({ id: Date.now() + Math.floor(Math.random() * 1000), name, datum, von, bis, notiz });
+    }
+  });
+  if (!neueEintraege.length) { alert('Bitte bei mindestens einer Zeile Name und Datum angeben.'); return; }
+
+  window.spItems = window.spItems.concat(neueEintraege);
+  await toolSave('schichtplaene', { items: window.spItems });
+
+  fetch('/api/push-notify', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      title: '🗂️ Schichtplan aktualisiert',
+      body: neueEintraege.length === 1 ? '1 neue Schicht eingetragen' : neueEintraege.length + ' neue Schichten eingetragen',
+      url: '/schichtplan.html',
+      bookType: 'schichtplan'
+    })
+  }).catch(() => {});
+
+  document.getElementById('sp-rows').innerHTML = '';
+  spZeileHinzufuegen();
+  flashSaved('sp-save-msg');
+  renderSpTabelle(window.spItems);
+};
+
 async function toolLoad(tool) {
   try {
     const res = await fetch('/api/tool-data?tool=' + encodeURIComponent(tool));
