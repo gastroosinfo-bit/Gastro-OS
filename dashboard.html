@@ -956,10 +956,18 @@ async function belegeFaelligBadgePruefen() {
   const items = data.items || [];
   const heuteDatum = new Date(); heuteDatum.setHours(0,0,0,0);
   const heuteStr = heuteDatum.toISOString().slice(0, 10);
+  const LIEFERDIENSTE = ['Lieferando', 'Wolt', 'Uber Eats'];
   let anzahl = 0;
   items.forEach(b => {
     if (b.plattform === 'Z-Bon') {
       if (b.status !== 'abgeglichen' && b.datum && b.datum < heuteStr) anzahl++;
+      return;
+    }
+    if (LIEFERDIENSTE.includes(b.plattform)) {
+      if (b.status === 'erhalten' || !b.faelligkeit) return;
+      const erwartetDatum = new Date(b.faelligkeit + 'T00:00:00');
+      const diffTage = Math.round((erwartetDatum - heuteDatum) / 86400000);
+      if (diffTage <= 7) anzahl++;
       return;
     }
     if (b.status !== 'faellig' || !b.faelligkeit) return;
@@ -1151,8 +1159,10 @@ async function faelligeRechnungenPruefen() {
   const items = data.items || [];
   const heuteDatum = new Date(); heuteDatum.setHours(0,0,0,0);
   const heuteStr = heuteDatum.toISOString().slice(0, 10);
+  const LIEFERDIENSTE = ['Lieferando', 'Wolt', 'Uber Eats'];
   const relevante = [];
   items.forEach(b => {
+    if (LIEFERDIENSTE.includes(b.plattform)) return;
     if (b.status !== 'faellig' || !b.faelligkeit) return;
     const faelligDatum = new Date(b.faelligkeit + 'T00:00:00');
     const diffTage = Math.round((faelligDatum - heuteDatum) / 86400000);
@@ -1162,7 +1172,16 @@ async function faelligeRechnungenPruefen() {
   const offeneZBons = items.filter(b => b.plattform === 'Z-Bon' && b.status !== 'abgeglichen' && b.datum && b.datum < heuteStr);
   offeneZBons.sort((a, b) => a.datum.localeCompare(b.datum));
 
-  if (!relevante.length && !offeneZBons.length) return;
+  const offeneAuszahlungen = [];
+  items.forEach(b => {
+    if (!LIEFERDIENSTE.includes(b.plattform) || b.status === 'erhalten' || !b.faelligkeit) return;
+    const erwartetDatum = new Date(b.faelligkeit + 'T00:00:00');
+    const diffTage = Math.round((erwartetDatum - heuteDatum) / 86400000);
+    if (diffTage <= 7) offeneAuszahlungen.push({ ...b, diffTage });
+  });
+  offeneAuszahlungen.sort((a, b) => a.diffTage - b.diffTage);
+
+  if (!relevante.length && !offeneZBons.length && !offeneAuszahlungen.length) return;
 
   relevante.sort((a, b) => a.diffTage - b.diffTage);
   const liste = document.getElementById('faellig-liste');
@@ -1184,6 +1203,19 @@ async function faelligeRechnungenPruefen() {
     html += `<div style="padding:14px 0 6px;font-size:11.5px;font-weight:700;color:#8090a8;text-transform:uppercase;letter-spacing:0.5px;">Noch zu prüfende Z-Bons</div>`;
     html += offeneZBons.map(b => {
       return `<div style="padding:10px 0;border-bottom:1px solid #f0e8d4;font-size:13.5px;color:#8a6400;line-height:1.5;">Der Z-Bon vom <strong>${b.datum}</strong> wurde noch nicht mit dem Kassenbuch abgeglichen.</div>`;
+    }).join('');
+  }
+
+  if (offeneAuszahlungen.length) {
+    html += `<div style="padding:14px 0 6px;font-size:11.5px;font-weight:700;color:#8090a8;text-transform:uppercase;letter-spacing:0.5px;">Ausstehende Auszahlungen</div>`;
+    html += offeneAuszahlungen.map(b => {
+      const betragText = euro(b.betrag);
+      let satzText;
+      if (b.diffTage < 0) satzText = `Die Auszahlung von <strong>${b.plattform}</strong> über <strong>${betragText}</strong> wurde vor ${Math.abs(b.diffTage)} ${Math.abs(b.diffTage) === 1 ? 'Tag' : 'Tagen'} erwartet — noch nicht als erhalten markiert.`;
+      else if (b.diffTage === 0) satzText = `Heute wird die Auszahlung von <strong>${b.plattform}</strong> über <strong>${betragText}</strong> erwartet.`;
+      else satzText = `In ${b.diffTage} ${b.diffTage === 1 ? 'Tag' : 'Tagen'} wird die Auszahlung von <strong>${b.plattform}</strong> über <strong>${betragText}</strong> erwartet.`;
+      const farbe = b.diffTage <= 0 ? '#a01818' : '#8a6400';
+      return `<div style="padding:10px 0;border-bottom:1px solid #f0e8d4;font-size:13.5px;color:${farbe};line-height:1.5;">${satzText}</div>`;
     }).join('');
   }
 
