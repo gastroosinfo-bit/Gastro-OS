@@ -50,6 +50,7 @@ table.data-table { width:100%; border-collapse:collapse; font-size:12.5px; margi
 table.data-table th { background:#f5f0e8; padding:8px 10px; font-size:11px; font-weight:700; color:#1a2a4a; text-align:left; border:1px solid #e8dfc8; }
 table.data-table td { padding:8px 10px; border:1px solid #e8dfc8; }
 table.data-table tr:nth-child(even) td { background:#faf8f4; }
+.kb-klickbare-zeile:hover td { background:#fdf3d6 !important; }
 .ok-badge { color:#1a6640; font-weight:700; }
 .warn-badge { color:#c0392b; font-weight:700; }
 
@@ -141,8 +142,9 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
         <div><strong>Ausgaben gesamt:</strong> <span id="kb-sum-ausgaben">0,00 €</span></div>
         <div><strong>Ergebnis:</strong> <span id="kb-sum-ergebnis">0,00 €</span></div>
       </div>
+      <div style="font-size:11.5px;color:#8090a8;margin-bottom:8px;">💡 Zeile antippen, um alle Details des Tages zu sehen</div>
       <table class="data-table" id="kb-tabelle">
-        <thead><tr><th>Datum</th><th>Einnahmen</th><th>Ausgaben</th><th>Ergebnis</th><th>Notiz</th><th></th></tr></thead>
+        <thead><tr><th>Datum</th><th>Einnahmen</th><th>Ausgaben</th><th>Ergebnis</th><th>Notiz</th><th></th><th></th></tr></thead>
         <tbody></tbody>
       </table>
     </div>
@@ -379,9 +381,10 @@ function kbRenderTabelle() {
     const ausgaben = kbWareneinkaufGesamt(t) + kbSonstigesGesamt(t);
     sumEin += einnahmen; sumAus += ausgaben;
     const tr = document.createElement('tr');
+    tr.className = 'kb-klickbare-zeile';
     tr.style.cursor = 'pointer';
     tr.onclick = () => kbDetailAnzeigen(datum);
-    tr.innerHTML = `<td>${datum}</td><td>${euro(einnahmen)}</td><td>${euro(ausgaben)}</td><td>${euro(einnahmen - ausgaben)}</td><td>${t.notiz || ''}</td><td><button class="btn-del" onclick="event.stopPropagation();kbLoeschen('${datum}')">✕</button></td>`;
+    tr.innerHTML = `<td>${datum}</td><td>${euro(einnahmen)}</td><td>${euro(ausgaben)}</td><td>${euro(einnahmen - ausgaben)}</td><td>${t.notiz || ''}</td><td style="text-align:center;color:#d4af37;font-size:13px;">🔍</td><td><button class="btn-del" onclick="event.stopPropagation();kbLoeschen('${datum}')">✕</button></td>`;
     tbody.appendChild(tr);
   });
   document.getElementById('kb-sum-einnahmen').textContent = euro(sumEin);
