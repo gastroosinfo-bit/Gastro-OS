@@ -227,24 +227,39 @@ export default async function handler(req, res) {
       for (const item of items) {
         if (!item.storagePath || !item.storagePath.startsWith(altesPraefix)) continue;
         gefundeneKandidaten++;
-        const neuerPfad = neuesPraefix + item.storagePath.slice(altesPraefix.length);
-        try {
-          const moveRes = await fetch(SUPABASE_URL + '/storage/v1/object/move', {
-            method: 'POST',
-            headers: sbHeaders(),
-            body: JSON.stringify({ bucketId: BUCKET, sourceKey: item.storagePath, destinationKey: neuerPfad })
-          });
-          const moveAntwortText = await moveRes.text();
-          if (debugVersuche.length < 5) {
-            debugVersuche.push({ von: item.storagePath, nach: neuerPfad, status: moveRes.status, ok: moveRes.ok, antwort: moveAntwortText });
-          }
-          if (moveRes.ok) {
-            item.storagePath = neuerPfad;
-            repariert++;
-          }
-        } catch (e) {
-          if (debugVersuche.length < 5) {
-            debugVersuche.push({ von: item.storagePath, nach: neuerPfad, fehler: String((e && e.message) || e) });
+        const restPfad = item.storagePath.slice(altesPraefix.length);
+        const neuerPfad = neuesPraefix + restPfad;
+        // Der eigentliche Objekt-Schlüssel in Supabase Storage wurde beim alten
+        // Upload-Code mit dem rohen (unenkodierten) E-Mail-String gebildet — die
+        // Browser/Fetch-URL hat %40 dabei automatisch wieder zu @ dekodiert.
+        // Der in der Datenbank gespeicherte Pfad (mit %40) stimmt daher NICHT
+        // mit dem echten Speicherort überein. Wir versuchen zuerst den echten,
+        // rohen Pfad (mit @) und fallen nur zur Sicherheit auf den
+        // gespeicherten Pfad zurück, falls der erste Versuch fehlschlägt.
+        const roherQuellPfad = email + '/' + restPfad;
+        const kandidaten = [roherQuellPfad, item.storagePath];
+        let erfolgreich = false;
+        for (const quelle of kandidaten) {
+          try {
+            const moveRes = await fetch(SUPABASE_URL + '/storage/v1/object/move', {
+              method: 'POST',
+              headers: sbHeaders(),
+              body: JSON.stringify({ bucketId: BUCKET, sourceKey: quelle, destinationKey: neuerPfad })
+            });
+            const moveAntwortText = await moveRes.text();
+            if (debugVersuche.length < 8) {
+              debugVersuche.push({ von: quelle, nach: neuerPfad, status: moveRes.status, ok: moveRes.ok, antwort: moveAntwortText });
+            }
+            if (moveRes.ok) {
+              item.storagePath = neuerPfad;
+              repariert++;
+              erfolgreich = true;
+              break;
+            }
+          } catch (e) {
+            if (debugVersuche.length < 8) {
+              debugVersuche.push({ von: quelle, nach: neuerPfad, fehler: String((e && e.message) || e) });
+            }
           }
         }
       }
