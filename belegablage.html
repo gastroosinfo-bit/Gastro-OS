@@ -89,6 +89,7 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
           <option value="Uber Eats">Uber Eats</option>
           <option value="Metro">Metro</option>
           <option value="Getränkelieferant">Getränkelieferant</option>
+          <option value="Z-Bon">Z-Bon (Tagesabschluss)</option>
           <option value="__eigener__">+ Eigenen Lieferanten eingeben</option>
         </select>
         <input type="text" id="beleg-plattform-eigen" placeholder="Name des Lieferanten" style="display:none;margin-top:8px;">
@@ -109,6 +110,10 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
         <label>Fällig am</label>
         <input type="date" id="beleg-faelligkeit">
       </div>
+    </div>
+    <div class="grid4" id="beleg-barkarte-wrap" style="margin-top:14px;display:none;">
+      <div class="field-group"><label>Bar (€)</label><input type="number" step="0.01" id="beleg-bar" placeholder="0,00"></div>
+      <div class="field-group"><label>Kartenzahlung (€)</label><input type="number" step="0.01" id="beleg-karte" placeholder="0,00"></div>
     </div>
 
     <button class="btn-add" style="margin-top:16px;" onclick="belegHochladen()">⬆️ Hochladen</button>
@@ -263,6 +268,7 @@ function belegPlattformGeaendert() {
   const eigenFeld = document.getElementById('beleg-plattform-eigen');
   eigenFeld.style.display = select.value === '__eigener__' ? 'block' : 'none';
   if (select.value === '__eigener__') eigenFeld.focus();
+  document.getElementById('beleg-barkarte-wrap').style.display = select.value === 'Z-Bon' ? 'grid' : 'none';
 }
 function belegStatusGeaendert() {
   const status = document.getElementById('beleg-status').value;
@@ -313,7 +319,13 @@ async function belegDateiGewaehlt(evt) {
       document.getElementById('beleg-betrag').value = extracted.betrag.toFixed(2);
       erkannt.push('Betrag');
     }
-    if (extracted.plattform) {
+    if (extracted.istZBon) {
+      const select = document.getElementById('beleg-plattform');
+      select.value = 'Z-Bon';
+      belegPlattformGeaendert();
+      erkannt.push('Z-Bon erkannt');
+    }
+    if (extracted.plattform && !extracted.istZBon) {
       const select = document.getElementById('beleg-plattform');
       const eigenOption = select.querySelector('option[value="__eigener__"]');
       let passendeOption = [...select.options].find(o => o.value === extracted.plattform);
@@ -332,6 +344,14 @@ async function belegDateiGewaehlt(evt) {
       select.value = extracted.plattform;
       belegPlattformGeaendert();
       erkannt.push('Anbieter');
+    }
+    if (extracted.barBetrag != null) {
+      document.getElementById('beleg-bar').value = extracted.barBetrag.toFixed(2);
+      erkannt.push('Bar-Betrag');
+    }
+    if (extracted.kartenBetrag != null) {
+      document.getElementById('beleg-karte').value = extracted.kartenBetrag.toFixed(2);
+      erkannt.push('Karten-Betrag');
     }
     if (extracted.mwst19Betrag != null) {
       document.getElementById('beleg-mwst19').value = extracted.mwst19Betrag.toFixed(2);
@@ -376,6 +396,8 @@ async function belegHochladen() {
   const betrag = parseFloat(document.getElementById('beleg-betrag').value) || 0;
   const mwst19 = document.getElementById('beleg-mwst19').value ? parseFloat(document.getElementById('beleg-mwst19').value) : null;
   const mwst7 = document.getElementById('beleg-mwst7').value ? parseFloat(document.getElementById('beleg-mwst7').value) : null;
+  const bar = (plattform === 'Z-Bon' && document.getElementById('beleg-bar').value) ? parseFloat(document.getElementById('beleg-bar').value) : null;
+  const karte = (plattform === 'Z-Bon' && document.getElementById('beleg-karte').value) ? parseFloat(document.getElementById('beleg-karte').value) : null;
   const status = document.getElementById('beleg-status').value;
   const faelligkeit = status === 'faellig' ? document.getElementById('beleg-faelligkeit').value : null;
 
@@ -392,7 +414,7 @@ async function belegHochladen() {
     belegeDaten.push({
       id: Date.now(),
       datum, plattform, betrag,
-      rechnungsnr, mwst19, mwst7, status, faelligkeit,
+      rechnungsnr, mwst19, mwst7, bar, karte, status, faelligkeit,
       dateiname: belegAusgewaehlteDatei.name,
       storagePath: result.path
     });
@@ -402,6 +424,9 @@ async function belegHochladen() {
     select.value = 'Lieferando';
     document.getElementById('beleg-plattform-eigen').value = '';
     document.getElementById('beleg-plattform-eigen').style.display = 'none';
+    document.getElementById('beleg-barkarte-wrap').style.display = 'none';
+    document.getElementById('beleg-bar').value = '';
+    document.getElementById('beleg-karte').value = '';
     document.getElementById('beleg-datei-name').textContent = '';
     document.getElementById('beleg-datei').value = '';
     document.getElementById('beleg-betrag').value = '';
@@ -541,10 +566,24 @@ function belegMonatsberichtErstellen() {
       headStyles: { fillColor: [26, 42, 74], textColor: [212, 175, 55] },
       margin: { left: 14, right: 14 }
     });
-    const naechsteY = doc.lastAutoTable.finalY + 8;
+    let naechsteY = doc.lastAutoTable.finalY + 8;
     doc.setFontSize(10);
     doc.setTextColor(26, 42, 74);
     doc.text('Betrag gesamt: ' + euro(sumBetrag) + '   ·   MwSt. 19% gesamt: ' + euro(sumMwst19) + '   ·   MwSt. 7% gesamt: ' + euro(sumMwst7), 14, naechsteY);
+
+    const zBons = gefiltert.filter(b => b.plattform === 'Z-Bon' && (b.bar != null || b.karte != null));
+    if (zBons.length) {
+      const sumBar = zBons.reduce((s, b) => s + (b.bar || 0), 0);
+      const sumKarte = zBons.reduce((s, b) => s + (b.karte || 0), 0);
+      naechsteY += 8;
+      doc.setFontSize(10);
+      doc.setTextColor(26, 42, 74);
+      doc.text('Z-Bon-Zusammenfassung (' + zBons.length + ' Tagesabschlüsse):', 14, naechsteY);
+      naechsteY += 6;
+      doc.setFontSize(9);
+      doc.setTextColor(90, 106, 128);
+      doc.text('Bar gesamt: ' + euro(sumBar) + '   ·   Karte gesamt: ' + euro(sumKarte), 14, naechsteY);
+    }
   } else {
     doc.setFontSize(10);
     doc.setTextColor(140, 140, 140);
