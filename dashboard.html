@@ -170,7 +170,7 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
     <!-- KACHEL 2: DEIN INTERNER BEREICH -->
     <div class="module-card toolbox-elegant" id="intern-card">
       <div class="module-header" onclick="toggleIntern()" style="padding:14px 22px;">
-        <div class="module-left"><div class="module-number toolbox-icon-circle" style="width:32px;height:32px;font-size:14px;">🔒</div><div><div class="module-title" style="letter-spacing:0.3px;font-size:14px;">Dein interner Bereich</div><div class="module-subtitle" style="margin-top:2px;">Tagesgeschäft, Belege, Übergabe, Reservierung &amp; Schichtplan</div></div></div>
+        <div class="module-left"><div class="module-number toolbox-icon-circle" style="width:32px;height:32px;font-size:14px;position:relative;">🔒<span id="intern-card-badge" style="display:none;position:absolute;top:-6px;right:-8px;background:#c0392b;color:#fff;font-size:10px;font-weight:700;border-radius:10px;min-width:18px;height:18px;line-height:18px;text-align:center;padding:0 4px;box-shadow:0 0 0 2px #fff;">0</span></div><div><div class="module-title" style="letter-spacing:0.3px;font-size:14px;">Dein interner Bereich</div><div class="module-subtitle" style="margin-top:2px;">Tagesgeschäft, Belege, Übergabe, Reservierung &amp; Schichtplan</div></div></div>
         <div style="display:flex;align-items:center;gap:8px;"><span class="module-arrow" id="intern-arrow" style="color:#d4af37;">▼</span></div>
       </div>
       <div class="module-content" id="intern-content">
@@ -959,7 +959,7 @@ async function belegeFaelligBadgePruefen() {
   let anzahl = 0;
   items.forEach(b => {
     if (b.plattform === 'Z-Bon') {
-      if (b.status === 'offen' && b.datum && b.datum < heuteStr) anzahl++;
+      if (b.status !== 'abgeglichen' && b.datum && b.datum < heuteStr) anzahl++;
       return;
     }
     if (b.status !== 'faellig' || !b.faelligkeit) return;
@@ -968,9 +968,15 @@ async function belegeFaelligBadgePruefen() {
     if (diffTage <= 7) anzahl++;
   });
   const badge = document.getElementById('belege-faellig-badge');
-  if (!badge) return;
-  if (anzahl > 0) { badge.textContent = anzahl; badge.style.display = 'block'; }
-  else { badge.style.display = 'none'; }
+  if (badge) {
+    if (anzahl > 0) { badge.textContent = anzahl; badge.style.display = 'block'; }
+    else { badge.style.display = 'none'; }
+  }
+  const tileBadge = document.getElementById('intern-card-badge');
+  if (tileBadge) {
+    if (anzahl > 0) { tileBadge.textContent = anzahl; tileBadge.style.display = 'block'; }
+    else { tileBadge.style.display = 'none'; }
+  }
 }
 
 function renderInternTools() {
@@ -1153,7 +1159,7 @@ async function faelligeRechnungenPruefen() {
     if (diffTage <= 7) relevante.push({ ...b, diffTage });
   });
 
-  const offeneZBons = items.filter(b => b.plattform === 'Z-Bon' && b.status === 'offen' && b.datum && b.datum < heuteStr);
+  const offeneZBons = items.filter(b => b.plattform === 'Z-Bon' && b.status !== 'abgeglichen' && b.datum && b.datum < heuteStr);
   offeneZBons.sort((a, b) => a.datum.localeCompare(b.datum));
 
   if (!relevante.length && !offeneZBons.length) return;
