@@ -99,20 +99,24 @@ async function belegAuslesenPdf(buffer) {
 }
 
 // ─── Automatische Auslese aus Fotos via Claude/Anthropic (kostenpflichtig) ──
-async function belegAuslesenFoto(buffer, contentType) {
+// ─── Automatische Auslese via Claude/Anthropic (Fotos UND PDFs ohne Textschicht) ──
+async function belegAuslesenClaude(buffer, contentType) {
   if (!ANTHROPIC_API_KEY) {
     return { datum: null, betrag: null, plattform: null, mwst19Betrag: null, mwst7Betrag: null, rechnungsnummer: null };
   }
   try {
     const base64 = buffer.toString('base64');
-    const mediaType = contentType || 'image/jpeg';
-    const prompt = 'Das ist ein Foto einer Rechnung oder eines Kassenbons aus der Gastronomie oder einem Einzelhandel/Großhandel (z. B. Lidl, Metro). ' +
+    const istPdf = contentType === 'application/pdf';
+    const contentBlock = istPdf
+      ? { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: base64 } }
+      : { type: 'image', source: { type: 'base64', media_type: contentType || 'image/jpeg', data: base64 } };
+    const prompt = 'Das ist eine Rechnung oder ein Kassenbon aus der Gastronomie oder einem Einzelhandel/Großhandel (z. B. Lidl, Metro, Medimax). ' +
       'Lies daraus folgende Angaben aus und antworte AUSSCHLIESSLICH mit einem JSON-Objekt, ohne weiteren Text, ohne Markdown-Codeblock: ' +
-      '{"datum": "YYYY-MM-DD oder null", "betrag": Zahl (Gesamt-Bruttobetrag) oder null, "plattform": "Name des Lieferanten/Geschäfts (z. B. Lidl, Metro, Lieferando) oder null", ' +
+      '{"datum": "YYYY-MM-DD oder null", "betrag": Zahl (Gesamt-Bruttobetrag) oder null, "plattform": "Name des Lieferanten/Geschäfts oder null", ' +
       '"mwst19Betrag": Zahl (nur der MwSt-Betrag bei 19%, falls auf dem Beleg separat ausgewiesen, sonst null) oder null, ' +
       '"mwst7Betrag": Zahl (nur der MwSt-Betrag bei 7%, falls auf dem Beleg separat ausgewiesen, sonst null) oder null, ' +
       '"rechnungsnummer": "Rechnungs-, Beleg- oder Liefernummer oder null"}. ' +
-      'Viele Kassenbons (z. B. Supermärkte) weisen BEIDE MwSt-Sätze getrennt aus (z. B. "A=19%" und "B=7%" mit jeweils eigenem Betrag) — trag dann beide Werte ein. ' +
+      'Viele Kassenbons weisen BEIDE MwSt-Sätze getrennt aus — trag dann beide Werte ein. ' +
       'Falls ein Wert nicht eindeutig erkennbar ist, setze null statt zu raten.';
 
     const res = await fetch('https://api.anthropic.com/v1/messages', {
@@ -125,13 +129,7 @@ async function belegAuslesenFoto(buffer, contentType) {
       body: JSON.stringify({
         model: 'claude-haiku-4-5-20251001',
         max_tokens: 400,
-        messages: [{
-          role: 'user',
-          content: [
-            { type: 'image', source: { type: 'base64', media_type: mediaType, data: base64 } },
-            { type: 'text', text: prompt }
-          ]
-        }]
+        messages: [{ role: 'user', content: [contentBlock, { type: 'text', text: prompt }] }]
       })
     });
 
@@ -155,12 +153,21 @@ async function belegAuslesenFoto(buffer, contentType) {
   }
 }
 
+function belegErgebnisLeer(erg) {
+  return !erg.datum && erg.betrag == null && !erg.plattform && erg.mwst19Betrag == null && erg.mwst7Betrag == null && !erg.rechnungsnummer;
+}
+
 async function belegAuslesen(buffer, contentType) {
   if (contentType === 'application/pdf') {
-    return belegAuslesenPdf(buffer);
+    const perText = await belegAuslesenPdf(buffer);
+    // Kein Text gefunden (z. B. eingescannte PDF) — zusätzlich über Claude versuchen.
+    if (belegErgebnisLeer(perText)) {
+      return belegAuslesenClaude(buffer, contentType);
+    }
+    return perText;
   }
   if (contentType && contentType.startsWith('image/')) {
-    return belegAuslesenFoto(buffer, contentType);
+    return belegAuslesenClaude(buffer, contentType);
   }
   return { datum: null, betrag: null, plattform: null, mwst19Betrag: null, mwst7Betrag: null, rechnungsnummer: null };
 }
