@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Belege – GASTRO-OS</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
@@ -144,6 +146,34 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
       <thead><tr><th>Datum</th><th>Anbieter</th><th>Rechnungsnr.</th><th>Betrag</th><th>MwSt. 19%</th><th>MwSt. 7%</th><th>Status</th><th>Datei</th><th></th></tr></thead>
       <tbody></tbody>
     </table>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-head">📄 Monatsbericht (PDF)</div>
+    <div style="font-size:12.5px;color:#5a6a85;margin-bottom:14px;">Erzeugt ein druckfertiges PDF mit allen Belegen des gewählten Monats — zum Ausdrucken oder für den Steuerberater.</div>
+    <div class="grid3" style="align-items:end;">
+      <div class="field-group">
+        <label>Monat</label>
+        <select id="mb-monat">
+          <option value="01">Januar</option>
+          <option value="02">Februar</option>
+          <option value="03">März</option>
+          <option value="04">April</option>
+          <option value="05">Mai</option>
+          <option value="06">Juni</option>
+          <option value="07">Juli</option>
+          <option value="08">August</option>
+          <option value="09">September</option>
+          <option value="10">Oktober</option>
+          <option value="11">November</option>
+          <option value="12">Dezember</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <label>Jahr</label>
+        <select id="mb-jahr"></select>
+      </div>
+      <button class="btn-add" onclick="belegMonatsberichtErstellen()">📄 PDF erstellen</button>
     </div>
   </div>
 </div>
@@ -454,7 +484,75 @@ function belegRenderTabelle() {
   const ok = await checkAuth();
   if (!ok) return;
   await belegeInit();
+  mbAuswahlInitialisieren();
 })();
+
+// ─── MONATSBERICHT (PDF) ─────────────────────────────────────────────────
+function mbAuswahlInitialisieren() {
+  const aktJahr = parseInt(heute().slice(0, 4));
+  const jahrSelect = document.getElementById('mb-jahr');
+  jahrSelect.innerHTML = '';
+  for (let j = aktJahr - 3; j <= aktJahr + 1; j++) {
+    const opt = document.createElement('option');
+    opt.value = String(j);
+    opt.textContent = String(j);
+    if (j === aktJahr) opt.selected = true;
+    jahrSelect.appendChild(opt);
+  }
+  document.getElementById('mb-monat').value = heute().slice(5, 7);
+}
+const MONATSNAMEN = ['', 'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+
+function belegMonatsberichtErstellen() {
+  const monat = document.getElementById('mb-monat').value;
+  const jahr = document.getElementById('mb-jahr').value;
+  const monatSchluessel = jahr + '-' + monat;
+  const monatName = MONATSNAMEN[parseInt(monat)];
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  doc.setFontSize(16);
+  doc.setTextColor(26, 42, 74);
+  doc.text('GASTRO-OS – Belege-Monatsbericht', 14, 18);
+  doc.setFontSize(11);
+  doc.setTextColor(90, 106, 128);
+  doc.text(monatName + ' ' + jahr, 14, 25);
+
+  const gefiltert = belegeDaten
+    .filter(b => b.datum && b.datum.slice(0, 7) === monatSchluessel)
+    .sort((a, b) => a.datum.localeCompare(b.datum));
+
+  let sumBetrag = 0, sumMwst19 = 0, sumMwst7 = 0;
+  const zeilen = gefiltert.map(b => {
+    sumBetrag += b.betrag || 0;
+    sumMwst19 += b.mwst19 || 0;
+    sumMwst7 += b.mwst7 || 0;
+    const statusText = b.status === 'bezahlt' ? 'Bezahlt' : ('Fällig am ' + (b.faelligkeit || '–'));
+    return [b.datum, b.plattform, b.rechnungsnr || '–', euro(b.betrag), b.mwst19 != null ? euro(b.mwst19) : '–', b.mwst7 != null ? euro(b.mwst7) : '–', statusText];
+  });
+
+  if (zeilen.length) {
+    doc.autoTable({
+      startY: 32,
+      head: [['Datum', 'Anbieter', 'Rechnungsnr.', 'Betrag', 'MwSt. 19%', 'MwSt. 7%', 'Status']],
+      body: zeilen,
+      styles: { fontSize: 8.5 },
+      headStyles: { fillColor: [26, 42, 74], textColor: [212, 175, 55] },
+      margin: { left: 14, right: 14 }
+    });
+    const naechsteY = doc.lastAutoTable.finalY + 8;
+    doc.setFontSize(10);
+    doc.setTextColor(26, 42, 74);
+    doc.text('Betrag gesamt: ' + euro(sumBetrag) + '   ·   MwSt. 19% gesamt: ' + euro(sumMwst19) + '   ·   MwSt. 7% gesamt: ' + euro(sumMwst7), 14, naechsteY);
+  } else {
+    doc.setFontSize(10);
+    doc.setTextColor(140, 140, 140);
+    doc.text('Keine Belege in diesem Monat.', 14, 40);
+  }
+
+  doc.save('Belege-Monatsbericht-' + monatSchluessel + '.pdf');
+}
 </script>
 </body>
 </html>
