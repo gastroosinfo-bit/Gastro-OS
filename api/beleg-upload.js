@@ -1,5 +1,7 @@
 // api/beleg-upload.js
-// Upload und signierter Abruf von Beleg-PDFs (Lieferdienst-Abrechnungen etc.) über Supabase Storage.
+// Upload und signierter Abruf von Beleg-Dateien (PDF oder Foto) über Supabase Storage.
+// Automatische Auslese: PDFs werden per Text-Extraktion (pdf-parse, kostenlos) ausgelesen,
+// Fotos werden per Claude/Anthropic-Bilderkennung ausgelesen (kostenpflichtig, ANTHROPIC_API_KEY).
 // Nutzt denselben Session-Cookie-Auth-Mechanismus wie api/tool-data.js.
 
 const crypto = require('crypto');
@@ -7,6 +9,7 @@ const crypto = require('crypto');
 const SESSION_SECRET = process.env.SESSION_SECRET;
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
+const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
 const BUCKET = 'belege';
 
 function verifySession(token) {
@@ -36,24 +39,164 @@ function safeFileName(name) {
   return String(name || 'beleg.pdf').replace(/[^a-zA-Z0-9._-]/g, '_').slice(-120);
 }
 
+// ─── Automatische Auslese aus PDF-Text (kostenlos) ───────────────────────
+function belegDatumFinden(text) {
+  const match = text.match(/(\d{1,2})[.\/](\d{1,2})[.\/](\d{2,4})/);
+  if (!match) return null;
+  let [, tag, monat, jahr] = match;
+  if (jahr.length === 2) jahr = '20' + jahr;
+  const jahrNum = parseInt(jahr, 10);
+  if (jahrNum < 2015 || jahrNum > 2035) return null;
+  tag = tag.padStart(2, '0');
+  monat = monat.padStart(2, '0');
+  return `${jahr}-${monat}-${tag}`;
+}
+function belegBetragFinden(text) {
+  const keywordMatch = text.match(/(Gesamtbetrag|Gesamtsumme|Rechnungsbetrag|Endbetrag|Zu\s*zahlen|Gesamt)[^\d]{0,25}(\d{1,4}[.,]\d{2})/i);
+  if (keywordMatch) return parseFloat(keywordMatch[2].replace(',', '.'));
+  const alle = [...text.matchAll(/(\d{1,4})[,.](\d{2})(?!\d)/g)].map(m => parseFloat(m[1] + '.' + m[2]));
+  if (alle.length) return Math.max(...alle);
+  return null;
+}
+function belegPlattformFinden(text) {
+  const bekannte = ['Lieferando', 'Wolt', 'Uber Eats', 'Metro'];
+  const lower = text.toLowerCase();
+  for (const name of bekannte) {
+    if (lower.includes(name.toLowerCase())) return name;
+  }
+  return null;
+}
+function belegMwstFinden(text) {
+  if (/19\s*%/.test(text)) return 19;
+  if (/7\s*%/.test(text)) return 7;
+  return null;
+}
+function belegRechnungsnrFinden(text) {
+  const match = text.match(/(Rechnungs-?(?:nr|nummer)|Liefer(?:schein)?-?(?:nr|nummer))[.:\s]{0,5}([A-Za-z0-9\-\/]{3,20})/i);
+  return match ? match[2] : null;
+}
+
+async function belegAuslesenPdf(buffer) {
+  try {
+    const pdfParse = require('pdf-parse');
+    const data = await pdfParse(buffer);
+    const text = data.text || '';
+    return {
+      datum: belegDatumFinden(text),
+      betrag: belegBetragFinden(text),
+      plattform: belegPlattformFinden(text),
+      mwstSatz: belegMwstFinden(text),
+      rechnungsnummer: belegRechnungsnrFinden(text)
+    };
+  } catch (e) {
+    return { datum: null, betrag: null, plattform: null, mwstSatz: null, rechnungsnummer: null };
+  }
+}
+
+// ─── Automatische Auslese aus Fotos via Claude/Anthropic (kostenpflichtig) ──
+async function belegAuslesenFoto(buffer, contentType) {
+  if (!ANTHROPIC_API_KEY) {
+    return { datum: null, betrag: null, plattform: null, mwstSatz: null, rechnungsnummer: null };
+  }
+  try {
+    const base64 = buffer.toString('base64');
+    const mediaType = contentType || 'image/jpeg';
+    const prompt = 'Das ist ein Foto einer Rechnung oder eines Lieferscheins aus der Gastronomie. ' +
+      'Lies daraus folgende Angaben aus und antworte AUSSCHLIESSLICH mit einem JSON-Objekt, ohne weiteren Text, ohne Markdown-Codeblock: ' +
+      '{"datum": "YYYY-MM-DD oder null", "betrag": Zahl (Gesamtbetrag) oder null, "plattform": "Name des Lieferanten oder null", ' +
+      '"mwstSatz": 19 oder 7 oder null, "rechnungsnummer": "Rechnungs- oder Liefernummer oder null"}. ' +
+      'Falls ein Wert nicht eindeutig erkennbar ist, setze null statt zu raten.';
+
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': ANTHROPIC_API_KEY,
+        'anthropic-version': '2023-06-01'
+      },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 400,
+        messages: [{
+          role: 'user',
+          content: [
+            { type: 'image', source: { type: 'base64', media_type: mediaType, data: base64 } },
+            { type: 'text', text: prompt }
+          ]
+        }]
+      })
+    });
+
+    if (!res.ok) {
+      return { datum: null, betrag: null, plattform: null, mwstSatz: null, rechnungsnummer: null };
+    }
+    const data = await res.json();
+    const textAntwort = (data.content && data.content[0] && data.content[0].text) || '';
+    const bereinigt = textAntwort.replace(/```json|```/g, '').trim();
+    const geparst = JSON.parse(bereinigt);
+    return {
+      datum: geparst.datum || null,
+      betrag: (typeof geparst.betrag === 'number') ? geparst.betrag : null,
+      plattform: geparst.plattform || null,
+      mwstSatz: (geparst.mwstSatz === 19 || geparst.mwstSatz === 7) ? geparst.mwstSatz : null,
+      rechnungsnummer: geparst.rechnungsnummer || null
+    };
+  } catch (e) {
+    return { datum: null, betrag: null, plattform: null, mwstSatz: null, rechnungsnummer: null };
+  }
+}
+
+async function belegAuslesen(buffer, contentType) {
+  if (contentType === 'application/pdf') {
+    return belegAuslesenPdf(buffer);
+  }
+  if (contentType && contentType.startsWith('image/')) {
+    return belegAuslesenFoto(buffer, contentType);
+  }
+  return { datum: null, betrag: null, plattform: null, mwstSatz: null, rechnungsnummer: null };
+}
+
+function sbHeaders() {
+  return {
+    'Content-Type': 'application/json',
+    'apikey': SUPABASE_SERVICE_KEY,
+    'Authorization': 'Bearer ' + SUPABASE_SERVICE_KEY
+  };
+}
+
 export default async function handler(req, res) {
   const email = getEmailFromRequest(req);
   if (!email) {
     return res.status(401).json({ error: 'Nicht angemeldet.' });
   }
 
-  // ─── POST: Datei hochladen ─────────────────────────────────────────────
+  // ─── POST: Datei hochladen (oder nur analysieren) ──────────────────────
   if (req.method === 'POST') {
-    const { filename, contentBase64, contentType } = req.body || {};
-    if (!filename || !contentBase64) {
-      return res.status(400).json({ error: 'filename oder contentBase64 fehlt.' });
+    const { filename, contentBase64, contentType, analyzeOnly } = req.body || {};
+    if (!contentBase64) {
+      return res.status(400).json({ error: 'contentBase64 fehlt.' });
     }
+
+    let buffer;
     try {
-      const buffer = Buffer.from(contentBase64, 'base64');
-      // ~8MB Sicherheitsgrenze, damit die Vercel Function nicht am Body-Limit scheitert
-      if (buffer.length > 8 * 1024 * 1024) {
-        return res.status(413).json({ error: 'Datei zu groß (max. 8 MB).' });
-      }
+      buffer = Buffer.from(contentBase64, 'base64');
+    } catch (e) {
+      return res.status(400).json({ error: 'Ungültige Datei.' });
+    }
+    if (buffer.length > 8 * 1024 * 1024) {
+      return res.status(413).json({ error: 'Datei zu groß (max. 8 MB).' });
+    }
+
+    if (analyzeOnly) {
+      const extracted = await belegAuslesen(buffer, contentType);
+      return res.status(200).json({ extracted });
+    }
+
+    if (!filename) {
+      return res.status(400).json({ error: 'filename fehlt.' });
+    }
+
+    try {
       const path = `${encodeURIComponent(email)}/${Date.now()}-${safeFileName(filename)}`;
       const uploadRes = await fetch(
         `${SUPABASE_URL}/storage/v1/object/${BUCKET}/${path}`,
@@ -71,7 +214,8 @@ export default async function handler(req, res) {
         const errText = await uploadRes.text();
         return res.status(502).json({ error: 'Upload fehlgeschlagen.', detail: errText });
       }
-      return res.status(200).json({ path });
+      const extracted = await belegAuslesen(buffer, contentType);
+      return res.status(200).json({ path, extracted });
     } catch (e) {
       return res.status(500).json({ error: 'Fehler beim Hochladen.' });
     }
@@ -81,7 +225,6 @@ export default async function handler(req, res) {
   if (req.method === 'GET') {
     const path = req.query.path;
     if (!path) return res.status(400).json({ error: 'path fehlt.' });
-    // Nur Dateien im eigenen Ordner (email-Präfix) dürfen abgerufen werden
     if (!path.startsWith(encodeURIComponent(email) + '/')) {
       return res.status(403).json({ error: 'Kein Zugriff.' });
     }
