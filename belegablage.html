@@ -12,7 +12,7 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 .btn-back { background:#d4af37; color:#1a2a4a; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
 .btn-back:hover { background:#c8a030; }
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
-.wrap { max-width:900px; margin:0 auto; padding:28px 24px 60px; }
+.wrap { max-width:920px; margin:0 auto; padding:28px 24px 60px; }
 .tool-label { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:4px; }
 .tool-title { font-family:Georgia,serif; font-size:22px; color:#1a2a4a; margin-bottom:4px; }
 .tool-sub { font-size:13px; color:#5a6a80; margin-bottom:20px; }
@@ -26,18 +26,26 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 .field-group input, .field-group select { border:1px solid #e0d8c8; border-radius:6px; padding:8px 12px; font-size:13px; color:#1a2a4a; background:#eaf2ff; font-family:inherit; }
 .field-group input:focus, .field-group select:focus { outline:none; border-color:#d4af37; background:#fff; }
 .grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
-@media(max-width:640px){ .grid3{ grid-template-columns:1fr; } }
+.grid4 { display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:14px; }
+@media(max-width:720px){ .grid3,.grid4{ grid-template-columns:1fr 1fr; } }
+@media(max-width:480px){ .grid3,.grid4{ grid-template-columns:1fr; } }
 
 .btn-add { background:#1a6640; color:#fff; border:none; padding:10px 20px; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; }
 .btn-add:hover { background:#d4af37; color:#1a2a4a; }
 .btn-del { background:transparent; border:1px solid #c0392b; color:#c0392b; padding:5px 10px; border-radius:5px; font-size:11px; font-weight:600; cursor:pointer; }
 .btn-del:hover { background:#c0392b; color:#fff; }
 .save-msg { font-size:12px; color:#4aaa60; margin-left:10px; display:none; }
+.auto-hinweis { font-size:11.5px; color:#1a6640; margin-top:8px; display:none; }
+.auto-hinweis.loading { color:#8090a8; }
 
-table.data-table { width:100%; border-collapse:collapse; font-size:12.5px; margin-top:14px; }
-table.data-table th { background:#f5f0e8; padding:8px 10px; font-size:11px; font-weight:700; color:#1a2a4a; text-align:left; border:1px solid #e8dfc8; }
-table.data-table td { padding:8px 10px; border:1px solid #e8dfc8; }
+table.data-table { width:100%; border-collapse:collapse; font-size:12px; margin-top:14px; }
+table.data-table th { background:#f5f0e8; padding:7px 8px; font-size:10.5px; font-weight:700; color:#1a2a4a; text-align:left; border:1px solid #e8dfc8; white-space:nowrap; }
+table.data-table td { padding:7px 8px; border:1px solid #e8dfc8; }
 table.data-table tr:nth-child(even) td { background:#faf8f4; }
+.status-badge { font-size:10.5px; font-weight:700; padding:3px 8px; border-radius:10px; white-space:nowrap; }
+.status-bezahlt { background:#e4f5e8; color:#1a6030; }
+.status-faellig { background:#fff3d6; color:#8a6400; }
+.status-ueberfaellig { background:#fbe4e4; color:#a01818; }
 
 .upload-drop { border:2px dashed #d4af37; border-radius:10px; padding:24px; text-align:center; color:#8090a8; font-size:13px; cursor:pointer; transition:all 0.15s; }
 .upload-drop:hover { background:#fdf8ea; }
@@ -62,7 +70,15 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
 
   <div class="section">
     <div class="section-head">Neue Abrechnung hochladen</div>
-    <div class="grid3" style="margin-bottom:14px;">
+    <div class="upload-drop" onclick="document.getElementById('beleg-datei').click()">
+      📎 Klicken, um eine PDF-Datei oder ein Foto auszuwählen<br>
+      <span id="beleg-datei-name" style="font-weight:600;color:#1a2a4a;"></span>
+    </div>
+    <input type="file" id="beleg-datei" accept="application/pdf,image/*" capture="environment" style="display:none;" onchange="belegDateiGewaehlt(event)">
+    <div class="hint">Max. 8 MB, PDF oder Foto (JPG/PNG). Auf dem Handy kann direkt die Kamera genutzt werden.</div>
+    <div class="auto-hinweis" id="beleg-auto-hinweis"></div>
+
+    <div class="grid4" style="margin-top:16px;">
       <div class="field-group"><label>Datum</label><input type="date" id="beleg-datum"></div>
       <div class="field-group"><label>Anbieter / Lieferant</label>
         <select id="beleg-plattform" onchange="belegPlattformGeaendert()">
@@ -75,15 +91,30 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
         </select>
         <input type="text" id="beleg-plattform-eigen" placeholder="Name des Lieferanten" style="display:none;margin-top:8px;">
       </div>
-      <div class="field-group"><label>Betrag (€, optional)</label><input type="number" step="0.01" id="beleg-betrag" placeholder="0,00"></div>
+      <div class="field-group"><label>Rechnungs-/Liefernr.</label><input type="text" id="beleg-rechnungsnr" placeholder="optional"></div>
+      <div class="field-group"><label>Betrag (€)</label><input type="number" step="0.01" id="beleg-betrag" placeholder="0,00"></div>
     </div>
-    <div class="upload-drop" onclick="document.getElementById('beleg-datei').click()">
-      📎 Klicken, um eine PDF-Datei auszuwählen<br>
-      <span id="beleg-datei-name" style="font-weight:600;color:#1a2a4a;"></span>
+    <div class="grid4" style="margin-top:14px;">
+      <div class="field-group"><label>MwSt.</label>
+        <select id="beleg-mwst">
+          <option value="">– nicht angegeben –</option>
+          <option value="19">19 %</option>
+          <option value="7">7 %</option>
+        </select>
+      </div>
+      <div class="field-group"><label>Status</label>
+        <select id="beleg-status" onchange="belegStatusGeaendert()">
+          <option value="bezahlt">Bezahlt</option>
+          <option value="faellig">Fällig am …</option>
+        </select>
+      </div>
+      <div class="field-group" id="beleg-faelligkeit-wrap" style="display:none;">
+        <label>Fällig am</label>
+        <input type="date" id="beleg-faelligkeit">
+      </div>
     </div>
-    <input type="file" id="beleg-datei" accept="application/pdf" style="display:none;" onchange="belegDateiGewaehlt(event)">
-    <div class="hint">Max. 8 MB, nur PDF.</div>
-    <button class="btn-add" style="margin-top:14px;" onclick="belegHochladen()">⬆️ Hochladen</button>
+
+    <button class="btn-add" style="margin-top:16px;" onclick="belegHochladen()">⬆️ Hochladen</button>
     <span class="save-msg" id="beleg-save-msg">✓ Hochgeladen</span>
   </div>
 
@@ -92,10 +123,12 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
     <div class="grid3" style="margin-bottom:10px;">
       <div><strong>Diesen Monat gesamt:</strong> <span id="beleg-sum-monat">0,00 €</span></div>
     </div>
+    <div style="overflow-x:auto;">
     <table class="data-table" id="beleg-tabelle">
-      <thead><tr><th>Datum</th><th>Anbieter</th><th>Betrag</th><th>Datei</th><th></th></tr></thead>
+      <thead><tr><th>Datum</th><th>Anbieter</th><th>Rechnungsnr.</th><th>Betrag</th><th>MwSt.</th><th>Status</th><th>Datei</th><th></th></tr></thead>
       <tbody></tbody>
     </table>
+    </div>
   </div>
 </div>
 
@@ -172,12 +205,15 @@ function belegPlattformGeaendert() {
   eigenFeld.style.display = select.value === '__eigener__' ? 'block' : 'none';
   if (select.value === '__eigener__') eigenFeld.focus();
 }
-function belegDateiGewaehlt(evt) {
-  const file = evt.target.files[0];
-  if (!file) return;
-  belegAusgewaehlteDatei = file;
-  document.getElementById('beleg-datei-name').textContent = file.name;
+function belegStatusGeaendert() {
+  const status = document.getElementById('beleg-status').value;
+  const wrap = document.getElementById('beleg-faelligkeit-wrap');
+  wrap.style.display = status === 'faellig' ? 'flex' : 'none';
+  if (status === 'faellig' && !document.getElementById('beleg-faelligkeit').value) {
+    document.getElementById('beleg-faelligkeit').value = heute();
+  }
 }
+
 function dateiZuBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -186,8 +222,70 @@ function dateiZuBase64(file) {
     reader.readAsDataURL(file);
   });
 }
+
+async function belegDateiGewaehlt(evt) {
+  const file = evt.target.files[0];
+  if (!file) return;
+  belegAusgewaehlteDatei = file;
+  document.getElementById('beleg-datei-name').textContent = file.name;
+
+  const hinweis = document.getElementById('beleg-auto-hinweis');
+  const istFoto = file.type.startsWith('image/');
+  hinweis.className = 'auto-hinweis loading';
+  hinweis.style.display = 'block';
+  hinweis.textContent = istFoto ? '🔍 Foto wird analysiert (Claude/Anthropic) …' : '🔍 Beleg wird automatisch ausgelesen …';
+
+  try {
+    const base64 = await dateiZuBase64(file);
+    const res = await fetch('/api/beleg-upload', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ contentBase64: base64, contentType: file.type || 'application/pdf', analyzeOnly: true })
+    });
+    const d = await res.json();
+    const extracted = (d && d.extracted) || {};
+    let erkannt = [];
+
+    if (extracted.datum) {
+      document.getElementById('beleg-datum').value = extracted.datum;
+      erkannt.push('Datum');
+    }
+    if (extracted.betrag != null) {
+      document.getElementById('beleg-betrag').value = extracted.betrag.toFixed(2);
+      erkannt.push('Betrag');
+    }
+    if (extracted.plattform) {
+      const select = document.getElementById('beleg-plattform');
+      const passendeOption = [...select.options].find(o => o.value === extracted.plattform);
+      if (passendeOption) {
+        select.value = extracted.plattform;
+        belegPlattformGeaendert();
+      }
+      erkannt.push('Anbieter');
+    }
+    if (extracted.mwstSatz) {
+      document.getElementById('beleg-mwst').value = String(extracted.mwstSatz);
+      erkannt.push('MwSt.');
+    }
+    if (extracted.rechnungsnummer) {
+      document.getElementById('beleg-rechnungsnr').value = extracted.rechnungsnummer;
+      erkannt.push('Rechnungsnr.');
+    }
+
+    hinweis.className = 'auto-hinweis';
+    if (erkannt.length) {
+      hinweis.textContent = '✓ Automatisch erkannt: ' + erkannt.join(', ') + ' — bitte kurz prüfen.';
+    } else {
+      hinweis.textContent = 'ℹ️ Konnte nichts automatisch auslesen — bitte Felder manuell ausfüllen.';
+    }
+  } catch (e) {
+    hinweis.className = 'auto-hinweis';
+    hinweis.textContent = 'ℹ️ Konnte nichts automatisch auslesen — bitte Felder manuell ausfüllen.';
+  }
+}
+
 async function belegHochladen() {
-  if (!belegAusgewaehlteDatei) { alert('Bitte zuerst eine PDF-Datei auswählen.'); return; }
+  if (!belegAusgewaehlteDatei) { alert('Bitte zuerst eine Datei auswählen.'); return; }
   const datum = document.getElementById('beleg-datum').value;
   const select = document.getElementById('beleg-plattform');
   let plattform = select.value;
@@ -200,19 +298,26 @@ async function belegHochladen() {
       belegLieferantenDropdownAktualisieren();
     }
   }
+  const rechnungsnr = document.getElementById('beleg-rechnungsnr').value.trim();
   const betrag = parseFloat(document.getElementById('beleg-betrag').value) || 0;
+  const mwstSatz = document.getElementById('beleg-mwst').value || null;
+  const status = document.getElementById('beleg-status').value;
+  const faelligkeit = status === 'faellig' ? document.getElementById('beleg-faelligkeit').value : null;
+
   try {
     const base64 = await dateiZuBase64(belegAusgewaehlteDatei);
+    const contentType = belegAusgewaehlteDatei.type || 'application/pdf';
     const res = await fetch('/api/beleg-upload', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ filename: belegAusgewaehlteDatei.name, contentBase64: base64, contentType: 'application/pdf' })
+      body: JSON.stringify({ filename: belegAusgewaehlteDatei.name, contentBase64: base64, contentType })
     });
     const result = await res.json();
     if (!res.ok) { alert('Upload fehlgeschlagen: ' + (result.error || '')); return; }
     belegeDaten.push({
       id: Date.now(),
       datum, plattform, betrag,
+      rechnungsnr, mwstSatz, status, faelligkeit,
       dateiname: belegAusgewaehlteDatei.name,
       storagePath: result.path
     });
@@ -225,6 +330,11 @@ async function belegHochladen() {
     document.getElementById('beleg-datei-name').textContent = '';
     document.getElementById('beleg-datei').value = '';
     document.getElementById('beleg-betrag').value = '';
+    document.getElementById('beleg-rechnungsnr').value = '';
+    document.getElementById('beleg-mwst').value = '';
+    document.getElementById('beleg-status').value = 'bezahlt';
+    document.getElementById('beleg-faelligkeit-wrap').style.display = 'none';
+    document.getElementById('beleg-auto-hinweis').style.display = 'none';
     belegRenderTabelle();
   } catch (e) {
     alert('Fehler beim Hochladen.');
@@ -246,6 +356,16 @@ async function belegLoeschen(id) {
   }
   belegRenderTabelle();
 }
+function belegStatusBadge(b) {
+  if (b.status === 'bezahlt') return '<span class="status-badge status-bezahlt">✓ Bezahlt</span>';
+  if (b.status === 'faellig' && b.faelligkeit) {
+    const ueberfaellig = b.faelligkeit < heute();
+    const klasse = ueberfaellig ? 'status-ueberfaellig' : 'status-faellig';
+    const text = ueberfaellig ? 'Überfällig seit ' + b.faelligkeit : 'Fällig am ' + b.faelligkeit;
+    return `<span class="status-badge ${klasse}">${text}</span>`;
+  }
+  return '<span class="status-badge status-faellig">Fällig</span>';
+}
 function belegRenderTabelle() {
   const tbody = document.querySelector('#beleg-tabelle tbody');
   tbody.innerHTML = '';
@@ -255,7 +375,7 @@ function belegRenderTabelle() {
   sorted.forEach(b => {
     if (b.datum.slice(0, 7) === aktMonat) sumMonat += b.betrag;
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${b.datum}</td><td>${b.plattform}</td><td>${euro(b.betrag)}</td><td><a href="#" onclick="belegOeffnen('${b.storagePath}');return false;">${b.dateiname}</a></td><td><button class="btn-del" onclick="belegLoeschen(${b.id})">✕</button></td>`;
+    tr.innerHTML = `<td>${b.datum}</td><td>${b.plattform}</td><td>${b.rechnungsnr || '–'}</td><td>${euro(b.betrag)}</td><td>${b.mwstSatz ? b.mwstSatz + ' %' : '–'}</td><td>${belegStatusBadge(b)}</td><td><a href="#" onclick="belegOeffnen('${b.storagePath}');return false;">${b.dateiname}</a></td><td><button class="btn-del" onclick="belegLoeschen(${b.id})">✕</button></td>`;
     tbody.appendChild(tr);
   });
   document.getElementById('beleg-sum-monat').textContent = euro(sumMonat);
