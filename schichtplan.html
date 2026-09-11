@@ -12,12 +12,13 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
 <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png">
-<link rel="manifest" href="/manifest-schichtplan.json" id="manifest-link">
 <script>
   (function() {
     var code = new URLSearchParams(window.location.search).get('u');
     if (code) {
-      document.getElementById('manifest-link').setAttribute('href', '/api/manifest?type=schichtplan&code=' + encodeURIComponent(code));
+      document.write('<link rel="manifest" href="/api/manifest?type=schichtplan&code=' + encodeURIComponent(code) + '">');
+    } else {
+      document.write('<link rel="manifest" href="/manifest-schichtplan.json">');
     }
   })();
 </script>
