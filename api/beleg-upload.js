@@ -85,6 +85,17 @@ function belegRechnungsnrFinden(text) {
   const match = text.match(/(Rechnungs-?(?:nr|nummer)|Liefer(?:schein)?-?(?:nr|nummer))[.:\s]{0,5}([A-Za-z0-9\-\/]{3,20})/i);
   return match ? match[2] : null;
 }
+function belegIstZBon(text) {
+  return /(Z-?BON|TAGESABSCHLUSS|KASSENABSCHLUSS)/i.test(text);
+}
+function belegBarKarteFinden(text) {
+  const bar = text.match(/(Bar)[^\d]{0,15}(\d{1,4}[,.]\d{2})/i);
+  const karte = text.match(/(Karte|Kartenzahlung|EC-?Karte)[^\d]{0,15}(\d{1,4}[,.]\d{2})/i);
+  return {
+    barBetrag: bar ? parseFloat(bar[2].replace(',', '.')) : null,
+    kartenBetrag: karte ? parseFloat(karte[2].replace(',', '.')) : null
+  };
+}
 
 async function belegAuslesenPdf(buffer) {
   try {
@@ -92,16 +103,20 @@ async function belegAuslesenPdf(buffer) {
     const data = await pdfParse(buffer);
     const text = data.text || '';
     const mwst = belegMwstFinden(text);
+    const barKarte = belegBarKarteFinden(text);
     return {
       datum: belegDatumFinden(text),
       betrag: belegBetragFinden(text),
       plattform: belegPlattformFinden(text),
       mwst19Betrag: mwst.mwst19Betrag,
       mwst7Betrag: mwst.mwst7Betrag,
+      istZBon: belegIstZBon(text),
+      barBetrag: barKarte.barBetrag,
+      kartenBetrag: barKarte.kartenBetrag,
       rechnungsnummer: belegRechnungsnrFinden(text)
     };
   } catch (e) {
-    return { datum: null, betrag: null, plattform: null, mwst19Betrag: null, mwst7Betrag: null, rechnungsnummer: null };
+    return { datum: null, betrag: null, plattform: null, mwst19Betrag: null, mwst7Betrag: null, istZBon: false, barBetrag: null, kartenBetrag: null, rechnungsnummer: null };
   }
 }
 
@@ -109,7 +124,7 @@ async function belegAuslesenPdf(buffer) {
 // ─── Automatische Auslese via Claude/Anthropic (Fotos UND PDFs ohne Textschicht) ──
 async function belegAuslesenClaude(buffer, contentType) {
   if (!ANTHROPIC_API_KEY) {
-    return { datum: null, betrag: null, plattform: null, mwst19Betrag: null, mwst7Betrag: null, rechnungsnummer: null };
+    return { datum: null, betrag: null, plattform: null, mwst19Betrag: null, mwst7Betrag: null, istZBon: false, barBetrag: null, kartenBetrag: null, rechnungsnummer: null };
   }
   try {
     const base64 = buffer.toString('base64');
@@ -117,12 +132,15 @@ async function belegAuslesenClaude(buffer, contentType) {
     const contentBlock = istPdf
       ? { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: base64 } }
       : { type: 'image', source: { type: 'base64', media_type: contentType || 'image/jpeg', data: base64 } };
-    const prompt = 'Das ist eine Rechnung oder ein Kassenbon aus der Gastronomie oder einem Einzelhandel/Großhandel (z. B. Lidl, Metro, Medimax). ' +
+    const prompt = 'Das ist eine Rechnung, ein Kassenbon oder ein Kassen-Tagesabschluss (Z-Bon) aus der Gastronomie oder einem Einzelhandel/Großhandel (z. B. Lidl, Metro, Medimax). ' +
       'Lies daraus folgende Angaben aus und antworte AUSSCHLIESSLICH mit einem JSON-Objekt, ohne weiteren Text, ohne Markdown-Codeblock: ' +
-      '{"datum": "YYYY-MM-DD oder null", "betrag": Zahl (Gesamt-Bruttobetrag) oder null, "plattform": "Name des Lieferanten/Geschäfts oder null", ' +
+      '{"datum": "YYYY-MM-DD oder null", "betrag": Zahl (Gesamt-Bruttobetrag bzw. Gesamtumsatz) oder null, "plattform": "Name des Lieferanten/Geschäfts oder null", ' +
       '"mwst19Betrag": Zahl (nur der MwSt-Betrag bei 19%, falls auf dem Beleg separat ausgewiesen, sonst null) oder null, ' +
       '"mwst7Betrag": Zahl (nur der MwSt-Betrag bei 7%, falls auf dem Beleg separat ausgewiesen, sonst null) oder null, ' +
-      '"rechnungsnummer": "Rechnungs-, Beleg- oder Liefernummer oder null"}. ' +
+      '"istZBon": true oder false (true nur, wenn es sich klar um einen Kassen-Tagesabschluss/Z-Bon handelt, erkennbar an Begriffen wie "Z-Bon", "Tagesabschluss" oder "Kassenabschluss"), ' +
+      '"barBetrag": Zahl (Bar-Anteil des Umsatzes, nur bei Z-Bons relevant) oder null, ' +
+      '"kartenBetrag": Zahl (Kartenzahlungs-Anteil des Umsatzes, nur bei Z-Bons relevant) oder null, ' +
+      '"rechnungsnummer": "Rechnungs-, Beleg-, Liefer- oder Bon-Nummer oder null"}. ' +
       'Viele Kassenbons weisen BEIDE MwSt-Sätze getrennt aus — trag dann beide Werte ein. ' +
       'Falls ein Wert nicht eindeutig erkennbar ist, setze null statt zu raten.';
 
@@ -141,7 +159,7 @@ async function belegAuslesenClaude(buffer, contentType) {
     });
 
     if (!res.ok) {
-      return { datum: null, betrag: null, plattform: null, mwst19Betrag: null, mwst7Betrag: null, rechnungsnummer: null };
+      return { datum: null, betrag: null, plattform: null, mwst19Betrag: null, mwst7Betrag: null, istZBon: false, barBetrag: null, kartenBetrag: null, rechnungsnummer: null };
     }
     const data = await res.json();
     const textAntwort = (data.content && data.content[0] && data.content[0].text) || '';
@@ -153,10 +171,13 @@ async function belegAuslesenClaude(buffer, contentType) {
       plattform: geparst.plattform || null,
       mwst19Betrag: (typeof geparst.mwst19Betrag === 'number') ? geparst.mwst19Betrag : null,
       mwst7Betrag: (typeof geparst.mwst7Betrag === 'number') ? geparst.mwst7Betrag : null,
+      istZBon: geparst.istZBon === true,
+      barBetrag: (typeof geparst.barBetrag === 'number') ? geparst.barBetrag : null,
+      kartenBetrag: (typeof geparst.kartenBetrag === 'number') ? geparst.kartenBetrag : null,
       rechnungsnummer: geparst.rechnungsnummer || null
     };
   } catch (e) {
-    return { datum: null, betrag: null, plattform: null, mwst19Betrag: null, mwst7Betrag: null, rechnungsnummer: null };
+    return { datum: null, betrag: null, plattform: null, mwst19Betrag: null, mwst7Betrag: null, istZBon: false, barBetrag: null, kartenBetrag: null, rechnungsnummer: null };
   }
 }
 
