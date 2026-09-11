@@ -193,6 +193,56 @@ export default async function handler(req, res) {
     return res.status(401).json({ error: 'Nicht angemeldet.' });
   }
 
+  // ─── PATCH: Einmalige Reparatur alter Beleg-Pfade (Sonderzeichen-Problem) ──
+  // Verschiebt Dateien serverseitig vom alten (fehleranfälligen) Pfad-Format
+  // auf das neue, sichere Format und aktualisiert die gespeicherten Pfade —
+  // ohne dass Dateien neu hochgeladen werden müssen.
+  if (req.method === 'PATCH') {
+    try {
+      const dataRes = await fetch(
+        SUPABASE_URL + '/rest/v1/user_tool_data?user_id=eq.' + encodeURIComponent(email) +
+        '&tool_name=eq.tagesgeschaeft-belege&select=id,data&order=updated_at.desc&limit=1',
+        { headers: sbHeaders() }
+      );
+      const rows = await dataRes.json();
+      if (!rows || rows.length === 0) {
+        return res.status(200).json({ repariert: 0, gesamt: 0 });
+      }
+      const row = rows[0];
+      const items = (row.data && row.data.items) || [];
+      const altesPraefix = encodeURIComponent(email) + '/';
+      const neuesPraefix = safeUserFolder(email) + '/';
+
+      let repariert = 0;
+      for (const item of items) {
+        if (!item.storagePath || !item.storagePath.startsWith(altesPraefix)) continue;
+        const neuerPfad = neuesPraefix + item.storagePath.slice(altesPraefix.length);
+        try {
+          const moveRes = await fetch(SUPABASE_URL + '/storage/v1/object/move', {
+            method: 'POST',
+            headers: sbHeaders(),
+            body: JSON.stringify({ bucketId: BUCKET, sourceKey: item.storagePath, destinationKey: neuerPfad })
+          });
+          if (moveRes.ok) {
+            item.storagePath = neuerPfad;
+            repariert++;
+          }
+        } catch (e) {}
+      }
+
+      if (repariert > 0) {
+        await fetch(SUPABASE_URL + '/rest/v1/user_tool_data?id=eq.' + row.id, {
+          method: 'PATCH',
+          headers: sbHeaders(),
+          body: JSON.stringify({ data: { items }, updated_at: new Date().toISOString() })
+        });
+      }
+      return res.status(200).json({ repariert, gesamt: items.length });
+    } catch (e) {
+      return res.status(500).json({ error: 'Fehler bei der Reparatur.' });
+    }
+  }
+
   // ─── POST: Datei hochladen (oder nur analysieren) ──────────────────────
   if (req.method === 'POST') {
     const { filename, contentBase64, contentType, analyzeOnly } = req.body || {};
