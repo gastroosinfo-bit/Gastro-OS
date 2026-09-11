@@ -197,7 +197,10 @@ export default async function handler(req, res) {
   // Verschiebt Dateien serverseitig vom alten (fehleranfälligen) Pfad-Format
   // auf das neue, sichere Format und aktualisiert die gespeicherten Pfade —
   // ohne dass Dateien neu hochgeladen werden müssen.
+  // Gibt zusätzlich Debug-Infos zurück, damit sichtbar wird, welches Pfad-
+  // Format tatsächlich gespeichert ist, falls nichts erkannt/repariert wird.
   if (req.method === 'PATCH') {
+    const altesPraefix = encodeURIComponent(email) + '/';
     try {
       const dataRes = await fetch(
         SUPABASE_URL + '/rest/v1/user_tool_data?user_id=eq.' + encodeURIComponent(email) +
@@ -206,11 +209,16 @@ export default async function handler(req, res) {
       );
       const rows = await dataRes.json();
       if (!rows || rows.length === 0) {
-        return res.status(200).json({ repariert: 0, gesamt: 0 });
+        return res.status(200).json({
+          repariert: 0,
+          gesamt: 0,
+          debugAltesPraefix: altesPraefix,
+          debugErstePfade: [],
+          debugHinweis: 'Keine Zeile in user_tool_data für diesen Nutzer/Tool gefunden.'
+        });
       }
       const row = rows[0];
       const items = (row.data && row.data.items) || [];
-      const altesPraefix = encodeURIComponent(email) + '/';
       const neuesPraefix = safeUserFolder(email) + '/';
 
       let repariert = 0;
@@ -237,9 +245,14 @@ export default async function handler(req, res) {
           body: JSON.stringify({ data: { items }, updated_at: new Date().toISOString() })
         });
       }
-      return res.status(200).json({ repariert, gesamt: items.length });
+      return res.status(200).json({
+        repariert,
+        gesamt: items.length,
+        debugAltesPraefix: altesPraefix,
+        debugErstePfade: items.slice(0, 5).map(i => i.storagePath || '(kein storagePath)')
+      });
     } catch (e) {
-      return res.status(500).json({ error: 'Fehler bei der Reparatur.' });
+      return res.status(500).json({ error: 'Fehler bei der Reparatur.', debugFehler: String((e && e.message) || e) });
     }
   }
 
