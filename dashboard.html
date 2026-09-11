@@ -524,7 +524,7 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
     <div class="content-item"><div class="check-box" id="chk-12-1" onclick="toggleCheck(12,1)"></div><span class="item-icon">🎬</span><div class="item-info"><div class="item-title" id="title-12-1">Ankervideo — Mitarbeiter finden &amp; halten</div></div><a href="modul12-ankervideo.html" class="item-link">Öffnen →</a></div>
     <div class="content-item"><div class="check-box" id="chk-12-2" onclick="toggleCheck(12,2)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-12-2">Lektion 1 — Warum gute Leute gehen</div></div><a href="modul12-lektion1.html" class="item-link">Öffnen →</a></div>
     <div class="content-item"><div class="check-box" id="chk-12-3" onclick="toggleCheck(12,3)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-12-3">Lektion 2 — Die richtige Stellenanzeige</div></div><a href="modul12-lektion2.html" class="item-link">Öffnen →</a></div>
-    <div class="content-item"><div class="check-box" id="chk-12-4" onclick="toggleCheck(12,4)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-12-4">Lektion 3 — Onboarding mit System</div></div><a href="modul12-lektion3.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-12-4" onclick="toggleCheck(12,4)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-12-4">Lektion 3 — Onboarding mit System</div></div><a href="modul12-lektion4.html" class="item-link">Öffnen →</a></div>
     <div class="content-item"><div class="check-box" id="chk-12-5" onclick="toggleCheck(12,5)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-12-5">Lektion 4 — Vom Plan zur Umsetzung</div></div><a href="modul12-lektion4.html" class="item-link">Öffnen →</a></div>
     <div class="content-item"><div class="check-box" id="chk-12-6" onclick="toggleCheck(12,6)"></div><span class="item-icon">🎙️</span><div class="item-info"><div class="item-title" id="title-12-6">Podcast Küchenfunk #6 — Modul 12</div></div><a href="modul12-podcast.html" class="item-link">Öffnen →</a></div>
     <div class="content-item"><div class="check-box" id="chk-12-7" onclick="toggleCheck(12,7)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title" id="title-12-7">So nutzt du den Mitarbeiter-Recruiting-Plan</div></div><a href="modul12-recruiting-video.html" class="item-link">Öffnen →</a></div>
@@ -955,8 +955,13 @@ async function belegeFaelligBadgePruefen() {
   const data = await dashToolLoad('tagesgeschaeft-belege');
   const items = data.items || [];
   const heuteDatum = new Date(); heuteDatum.setHours(0,0,0,0);
+  const heuteStr = heuteDatum.toISOString().slice(0, 10);
   let anzahl = 0;
   items.forEach(b => {
+    if (b.plattform === 'Z-Bon') {
+      if (b.status === 'offen' && b.datum && b.datum < heuteStr) anzahl++;
+      return;
+    }
     if (b.status !== 'faellig' || !b.faelligkeit) return;
     const faelligDatum = new Date(b.faelligkeit + 'T00:00:00');
     const diffTage = Math.round((faelligDatum - heuteDatum) / 86400000);
@@ -1139,6 +1144,7 @@ async function faelligeRechnungenPruefen() {
   const data = await dashToolLoad('tagesgeschaeft-belege');
   const items = data.items || [];
   const heuteDatum = new Date(); heuteDatum.setHours(0,0,0,0);
+  const heuteStr = heuteDatum.toISOString().slice(0, 10);
   const relevante = [];
   items.forEach(b => {
     if (b.status !== 'faellig' || !b.faelligkeit) return;
@@ -1146,19 +1152,36 @@ async function faelligeRechnungenPruefen() {
     const diffTage = Math.round((faelligDatum - heuteDatum) / 86400000);
     if (diffTage <= 7) relevante.push({ ...b, diffTage });
   });
-  if (!relevante.length) return;
+
+  const offeneZBons = items.filter(b => b.plattform === 'Z-Bon' && b.status === 'offen' && b.datum && b.datum < heuteStr);
+  offeneZBons.sort((a, b) => a.datum.localeCompare(b.datum));
+
+  if (!relevante.length && !offeneZBons.length) return;
 
   relevante.sort((a, b) => a.diffTage - b.diffTage);
   const liste = document.getElementById('faellig-liste');
-  liste.innerHTML = relevante.map(b => {
-    const betragText = euro(b.betrag);
-    let satzText;
-    if (b.diffTage < 0) satzText = `Die Rechnung von <strong>${b.plattform}</strong> über <strong>${betragText}</strong> war vor ${Math.abs(b.diffTage)} ${Math.abs(b.diffTage) === 1 ? 'Tag' : 'Tagen'} fällig.`;
-    else if (b.diffTage === 0) satzText = `Heute ist die Rechnung von <strong>${b.plattform}</strong> über <strong>${betragText}</strong> fällig.`;
-    else satzText = `In ${b.diffTage} ${b.diffTage === 1 ? 'Tag' : 'Tagen'} ist die Rechnung von <strong>${b.plattform}</strong> über <strong>${betragText}</strong> fällig.`;
-    const farbe = b.diffTage <= 0 ? '#a01818' : (b.diffTage <= 2 ? '#8a6400' : '#1a2a4a');
-    return `<div style="padding:10px 0;border-bottom:1px solid #f0e8d4;font-size:13.5px;color:${farbe};line-height:1.5;">${satzText}</div>`;
-  }).join('');
+  let html = '';
+
+  if (relevante.length) {
+    html += relevante.map(b => {
+      const betragText = euro(b.betrag);
+      let satzText;
+      if (b.diffTage < 0) satzText = `Die Rechnung von <strong>${b.plattform}</strong> über <strong>${betragText}</strong> war vor ${Math.abs(b.diffTage)} ${Math.abs(b.diffTage) === 1 ? 'Tag' : 'Tagen'} fällig.`;
+      else if (b.diffTage === 0) satzText = `Heute ist die Rechnung von <strong>${b.plattform}</strong> über <strong>${betragText}</strong> fällig.`;
+      else satzText = `In ${b.diffTage} ${b.diffTage === 1 ? 'Tag' : 'Tagen'} ist die Rechnung von <strong>${b.plattform}</strong> über <strong>${betragText}</strong> fällig.`;
+      const farbe = b.diffTage <= 0 ? '#a01818' : (b.diffTage <= 2 ? '#8a6400' : '#1a2a4a');
+      return `<div style="padding:10px 0;border-bottom:1px solid #f0e8d4;font-size:13.5px;color:${farbe};line-height:1.5;">${satzText}</div>`;
+    }).join('');
+  }
+
+  if (offeneZBons.length) {
+    html += `<div style="padding:14px 0 6px;font-size:11.5px;font-weight:700;color:#8090a8;text-transform:uppercase;letter-spacing:0.5px;">Noch zu prüfende Z-Bons</div>`;
+    html += offeneZBons.map(b => {
+      return `<div style="padding:10px 0;border-bottom:1px solid #f0e8d4;font-size:13.5px;color:#8a6400;line-height:1.5;">Der Z-Bon vom <strong>${b.datum}</strong> wurde noch nicht mit dem Kassenbuch abgeglichen.</div>`;
+    }).join('');
+  }
+
+  liste.innerHTML = html;
   document.getElementById('faellig-overlay').style.display = 'flex';
 }
 function euro(n) { return (Number(n) || 0).toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €'; }
