@@ -117,6 +117,10 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
 
   <div class="section">
     <div class="section-head">Hochgeladene Belege</div>
+    <div style="margin-bottom:12px;">
+      <button class="btn-add" style="background:transparent;color:#8090a8;border:1px solid #d0c8b8;" onclick="belegeReparieren()">🔧 Alte Belege reparieren (einmalig)</button>
+      <span id="beleg-reparatur-status" style="font-size:12px;color:#5a6a85;margin-left:10px;"></span>
+    </div>
     <div class="grid3" style="margin-bottom:10px;align-items:center;">
       <div><strong id="beleg-sum-label">Diesen Monat gesamt:</strong> <span id="beleg-sum-monat">0,00 €</span></div>
       <div class="field-group" style="margin-bottom:0;">
@@ -486,6 +490,25 @@ function belegRenderTabelle() {
   await belegeInit();
   mbAuswahlInitialisieren();
 })();
+
+async function belegeReparieren() {
+  const status = document.getElementById('beleg-reparatur-status');
+  status.textContent = 'Wird repariert …';
+  try {
+    const res = await fetch('/api/beleg-upload', { method: 'PATCH' });
+    const d = await res.json();
+    if (d.repariert > 0) {
+      status.textContent = '✓ ' + d.repariert + ' von ' + d.gesamt + ' Belegen repariert.';
+      const loaded = await toolLoad('tagesgeschaeft-belege');
+      belegeDaten = loaded.items || [];
+      belegRenderTabelle();
+    } else {
+      status.textContent = 'Nichts zu reparieren gefunden.';
+    }
+  } catch (e) {
+    status.textContent = 'Fehler bei der Reparatur.';
+  }
+}
 
 // ─── MONATSBERICHT (PDF) ─────────────────────────────────────────────────
 function mbAuswahlInitialisieren() {
