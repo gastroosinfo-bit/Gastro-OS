@@ -67,9 +67,12 @@ function belegPlattformFinden(text) {
   return null;
 }
 function belegMwstFinden(text) {
-  if (/19\s*%/.test(text)) return 19;
-  if (/7\s*%/.test(text)) return 7;
-  return null;
+  const m19 = text.match(/(19\s*%[^\d]{0,20}|MwSt\.?\s*19\s*%[^\d]{0,20})(\d{1,4}[,.]\d{2})/i);
+  const m7 = text.match(/(7\s*%[^\d]{0,20}|MwSt\.?\s*7\s*%[^\d]{0,20})(\d{1,4}[,.]\d{2})/i);
+  return {
+    mwst19Betrag: m19 ? parseFloat(m19[2].replace(',', '.')) : null,
+    mwst7Betrag: m7 ? parseFloat(m7[2].replace(',', '.')) : null
+  };
 }
 function belegRechnungsnrFinden(text) {
   const match = text.match(/(Rechnungs-?(?:nr|nummer)|Liefer(?:schein)?-?(?:nr|nummer))[.:\s]{0,5}([A-Za-z0-9\-\/]{3,20})/i);
@@ -81,30 +84,35 @@ async function belegAuslesenPdf(buffer) {
     const pdfParse = require('pdf-parse');
     const data = await pdfParse(buffer);
     const text = data.text || '';
+    const mwst = belegMwstFinden(text);
     return {
       datum: belegDatumFinden(text),
       betrag: belegBetragFinden(text),
       plattform: belegPlattformFinden(text),
-      mwstSatz: belegMwstFinden(text),
+      mwst19Betrag: mwst.mwst19Betrag,
+      mwst7Betrag: mwst.mwst7Betrag,
       rechnungsnummer: belegRechnungsnrFinden(text)
     };
   } catch (e) {
-    return { datum: null, betrag: null, plattform: null, mwstSatz: null, rechnungsnummer: null };
+    return { datum: null, betrag: null, plattform: null, mwst19Betrag: null, mwst7Betrag: null, rechnungsnummer: null };
   }
 }
 
 // ─── Automatische Auslese aus Fotos via Claude/Anthropic (kostenpflichtig) ──
 async function belegAuslesenFoto(buffer, contentType) {
   if (!ANTHROPIC_API_KEY) {
-    return { datum: null, betrag: null, plattform: null, mwstSatz: null, rechnungsnummer: null };
+    return { datum: null, betrag: null, plattform: null, mwst19Betrag: null, mwst7Betrag: null, rechnungsnummer: null };
   }
   try {
     const base64 = buffer.toString('base64');
     const mediaType = contentType || 'image/jpeg';
-    const prompt = 'Das ist ein Foto einer Rechnung oder eines Lieferscheins aus der Gastronomie. ' +
+    const prompt = 'Das ist ein Foto einer Rechnung oder eines Kassenbons aus der Gastronomie oder einem Einzelhandel/Großhandel (z. B. Lidl, Metro). ' +
       'Lies daraus folgende Angaben aus und antworte AUSSCHLIESSLICH mit einem JSON-Objekt, ohne weiteren Text, ohne Markdown-Codeblock: ' +
-      '{"datum": "YYYY-MM-DD oder null", "betrag": Zahl (Gesamtbetrag) oder null, "plattform": "Name des Lieferanten oder null", ' +
-      '"mwstSatz": 19 oder 7 oder null, "rechnungsnummer": "Rechnungs- oder Liefernummer oder null"}. ' +
+      '{"datum": "YYYY-MM-DD oder null", "betrag": Zahl (Gesamt-Bruttobetrag) oder null, "plattform": "Name des Lieferanten/Geschäfts (z. B. Lidl, Metro, Lieferando) oder null", ' +
+      '"mwst19Betrag": Zahl (nur der MwSt-Betrag bei 19%, falls auf dem Beleg separat ausgewiesen, sonst null) oder null, ' +
+      '"mwst7Betrag": Zahl (nur der MwSt-Betrag bei 7%, falls auf dem Beleg separat ausgewiesen, sonst null) oder null, ' +
+      '"rechnungsnummer": "Rechnungs-, Beleg- oder Liefernummer oder null"}. ' +
+      'Viele Kassenbons (z. B. Supermärkte) weisen BEIDE MwSt-Sätze getrennt aus (z. B. "A=19%" und "B=7%" mit jeweils eigenem Betrag) — trag dann beide Werte ein. ' +
       'Falls ein Wert nicht eindeutig erkennbar ist, setze null statt zu raten.';
 
     const res = await fetch('https://api.anthropic.com/v1/messages', {
@@ -128,7 +136,7 @@ async function belegAuslesenFoto(buffer, contentType) {
     });
 
     if (!res.ok) {
-      return { datum: null, betrag: null, plattform: null, mwstSatz: null, rechnungsnummer: null };
+      return { datum: null, betrag: null, plattform: null, mwst19Betrag: null, mwst7Betrag: null, rechnungsnummer: null };
     }
     const data = await res.json();
     const textAntwort = (data.content && data.content[0] && data.content[0].text) || '';
@@ -138,11 +146,12 @@ async function belegAuslesenFoto(buffer, contentType) {
       datum: geparst.datum || null,
       betrag: (typeof geparst.betrag === 'number') ? geparst.betrag : null,
       plattform: geparst.plattform || null,
-      mwstSatz: (geparst.mwstSatz === 19 || geparst.mwstSatz === 7) ? geparst.mwstSatz : null,
+      mwst19Betrag: (typeof geparst.mwst19Betrag === 'number') ? geparst.mwst19Betrag : null,
+      mwst7Betrag: (typeof geparst.mwst7Betrag === 'number') ? geparst.mwst7Betrag : null,
       rechnungsnummer: geparst.rechnungsnummer || null
     };
   } catch (e) {
-    return { datum: null, betrag: null, plattform: null, mwstSatz: null, rechnungsnummer: null };
+    return { datum: null, betrag: null, plattform: null, mwst19Betrag: null, mwst7Betrag: null, rechnungsnummer: null };
   }
 }
 
@@ -153,7 +162,7 @@ async function belegAuslesen(buffer, contentType) {
   if (contentType && contentType.startsWith('image/')) {
     return belegAuslesenFoto(buffer, contentType);
   }
-  return { datum: null, betrag: null, plattform: null, mwstSatz: null, rechnungsnummer: null };
+  return { datum: null, betrag: null, plattform: null, mwst19Betrag: null, mwst7Betrag: null, rechnungsnummer: null };
 }
 
 function sbHeaders() {
