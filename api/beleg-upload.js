@@ -39,6 +39,13 @@ function safeFileName(name) {
   return String(name || 'beleg.pdf').replace(/[^a-zA-Z0-9._-]/g, '_').slice(-120);
 }
 
+// Sonderzeichen wie "@" führten bei Supabase Storage zu ungültigen Signaturen
+// bei signierten URLs — deshalb wird der Ordnername pro Nutzer jetzt bereinigt,
+// statt die E-Mail nur URL-zu-encodieren.
+function safeUserFolder(email) {
+  return String(email || '').toLowerCase().replace(/[^a-z0-9]/g, '_');
+}
+
 // ─── Automatische Auslese aus PDF-Text (kostenlos) ───────────────────────
 function belegDatumFinden(text) {
   const match = text.match(/(\d{1,2})[.\/](\d{1,2})[.\/](\d{2,4})/);
@@ -213,7 +220,7 @@ export default async function handler(req, res) {
     }
 
     try {
-      const path = `${encodeURIComponent(email)}/${Date.now()}-${safeFileName(filename)}`;
+      const path = `${safeUserFolder(email)}/${Date.now()}-${safeFileName(filename)}`;
       const uploadRes = await fetch(
         `${SUPABASE_URL}/storage/v1/object/${BUCKET}/${path}`,
         {
@@ -241,7 +248,7 @@ export default async function handler(req, res) {
   if (req.method === 'GET') {
     const path = req.query.path;
     if (!path) return res.status(400).json({ error: 'path fehlt.' });
-    if (!path.startsWith(encodeURIComponent(email) + '/')) {
+    if (!path.startsWith(safeUserFolder(email) + '/') && !path.startsWith(encodeURIComponent(email) + '/')) {
       return res.status(403).json({ error: 'Kein Zugriff.' });
     }
     try {
@@ -271,7 +278,7 @@ export default async function handler(req, res) {
   if (req.method === 'DELETE') {
     const { path } = req.body || {};
     if (!path) return res.status(400).json({ error: 'path fehlt.' });
-    if (!path.startsWith(encodeURIComponent(email) + '/')) {
+    if (!path.startsWith(safeUserFolder(email) + '/') && !path.startsWith(encodeURIComponent(email) + '/')) {
       return res.status(403).json({ error: 'Kein Zugriff.' });
     }
     try {
