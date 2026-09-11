@@ -379,12 +379,57 @@ function kbRenderTabelle() {
     const ausgaben = kbWareneinkaufGesamt(t) + kbSonstigesGesamt(t);
     sumEin += einnahmen; sumAus += ausgaben;
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${datum}</td><td>${euro(einnahmen)}</td><td>${euro(ausgaben)}</td><td>${euro(einnahmen - ausgaben)}</td><td>${t.notiz || ''}</td><td><button class="btn-del" onclick="kbLoeschen('${datum}')">✕</button></td>`;
+    tr.style.cursor = 'pointer';
+    tr.onclick = () => kbDetailAnzeigen(datum);
+    tr.innerHTML = `<td>${datum}</td><td>${euro(einnahmen)}</td><td>${euro(ausgaben)}</td><td>${euro(einnahmen - ausgaben)}</td><td>${t.notiz || ''}</td><td><button class="btn-del" onclick="event.stopPropagation();kbLoeschen('${datum}')">✕</button></td>`;
     tbody.appendChild(tr);
   });
   document.getElementById('kb-sum-einnahmen').textContent = euro(sumEin);
   document.getElementById('kb-sum-ausgaben').textContent = euro(sumAus);
   document.getElementById('kb-sum-ergebnis').textContent = euro(sumEin - sumAus);
+}
+
+function kbDetailAnzeigen(datum) {
+  const t = kassenbuchDaten[datum];
+  if (!t) return;
+  const zeile = (label, wert) => `<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f0e8d4;font-size:13px;"><span style="color:#5a6a85;">${label}</span><span style="font-weight:600;color:#1a2a4a;">${euro(wert)}</span></div>`;
+
+  const wareneinkaufBar = t.wareneinkaufBar != null ? t.wareneinkaufBar : (t.wareneinkaufKarte == null && t.wareneinkaufUeberweisung == null ? (t.wareneinkauf || 0) : 0);
+  const wareneinkaufKarte = t.wareneinkaufKarte || 0;
+  const wareneinkaufUeberweisung = t.wareneinkaufUeberweisung || 0;
+  const sonstigesBar = t.sonstigesBar != null ? t.sonstigesBar : (t.sonstigesKarte == null && t.sonstigesUeberweisung == null ? (t.sonstiges || 0) : 0);
+  const sonstigesKarte = t.sonstigesKarte || 0;
+  const sonstigesUeberweisung = t.sonstigesUeberweisung || 0;
+
+  let html = '';
+  html += '<div style="font-size:11px;font-weight:700;color:#8090a8;text-transform:uppercase;letter-spacing:0.5px;margin:14px 0 4px;">Einnahmen</div>';
+  html += zeile('Kasse', t.kasse || 0);
+  html += zeile('Karte', t.karte || 0);
+  html += zeile('Lieferdienste', t.lieferdienste || 0);
+  html += zeile('Überweisung', t.ueberweisung || 0);
+  html += '<div style="font-size:11px;font-weight:700;color:#8090a8;text-transform:uppercase;letter-spacing:0.5px;margin:16px 0 4px;">Ausgaben — Wareneinkauf</div>';
+  html += zeile('Bar', wareneinkaufBar);
+  html += zeile('Karte', wareneinkaufKarte);
+  html += zeile('Überweisung', wareneinkaufUeberweisung);
+  html += '<div style="font-size:11px;font-weight:700;color:#8090a8;text-transform:uppercase;letter-spacing:0.5px;margin:16px 0 4px;">Ausgaben — Sonstiges</div>';
+  html += zeile('Bar', sonstigesBar);
+  html += zeile('Karte', sonstigesKarte);
+  html += zeile('Überweisung', sonstigesUeberweisung);
+
+  const einnahmenGesamt = (t.kasse || 0) + (t.karte || 0) + (t.lieferdienste || 0) + (t.ueberweisung || 0);
+  const ausgabenGesamt = kbWareneinkaufGesamt(t) + kbSonstigesGesamt(t);
+  html += `<div style="margin-top:16px;padding:10px 14px;background:#1a2a4a;color:#d4af37;border-radius:8px;font-size:13.5px;display:flex;justify-content:space-between;"><span>Tagesergebnis</span><strong>${euro(einnahmenGesamt - ausgabenGesamt)}</strong></div>`;
+
+  if (t.notiz) {
+    html += `<div style="margin-top:14px;font-size:12.5px;color:#5a6a85;"><strong style="color:#1a2a4a;">Notiz:</strong> ${t.notiz}</div>`;
+  }
+
+  document.getElementById('kb-detail-datum').textContent = datum;
+  document.getElementById('kb-detail-inhalt').innerHTML = html;
+  document.getElementById('kb-detail-overlay').style.display = 'flex';
+}
+function kbDetailSchliessen() {
+  document.getElementById('kb-detail-overlay').style.display = 'none';
 }
 
 // ─── MONATSBERICHT (PDF) ─────────────────────────────────────────────────
@@ -661,5 +706,19 @@ function notizRenderListe() {
   mbAuswahlInitialisieren();
 })();
 </script>
+
+<!-- KASSENBUCH-TAGESDETAIL-POPUP -->
+<div id="kb-detail-overlay" style="display:none;position:fixed;inset:0;background:rgba(26,42,74,0.55);z-index:500;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#fff;border-radius:14px;max-width:420px;width:100%;box-shadow:0 12px 40px rgba(0,0,0,0.3);overflow:hidden;">
+    <div style="background:#1a2a4a;padding:16px 22px;display:flex;align-items:center;justify-content:space-between;">
+      <div style="font-family:Georgia,serif;font-size:16px;color:#d4af37;">Tageseintrag <span id="kb-detail-datum" style="color:#fff;"></span></div>
+    </div>
+    <div id="kb-detail-inhalt" style="padding:18px 22px;max-height:70vh;overflow-y:auto;"></div>
+    <div style="padding:14px 22px 20px;text-align:right;">
+      <button onclick="kbDetailSchliessen()" style="background:#1a6640;color:#fff;border:none;padding:9px 20px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;">Schließen</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>

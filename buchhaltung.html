@@ -131,6 +131,22 @@ function heute() { return new Date().toISOString().slice(0, 10); }
 function euro(n) { return (Number(n) || 0).toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €'; }
 const MONATSNAMEN = ['', 'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
 
+// Hilfsfunktionen: unterstützen sowohl das neue Kassenbuch-Format (Ausgaben
+// nach Bar/Karte/Überweisung getrennt) als auch ältere Einträge (nur ein
+// Gesamtwert für Wareneinkauf bzw. Sonstiges).
+function kbWareneinkaufGesamt(t) {
+  if (t.wareneinkaufBar != null || t.wareneinkaufKarte != null || t.wareneinkaufUeberweisung != null) {
+    return (t.wareneinkaufBar || 0) + (t.wareneinkaufKarte || 0) + (t.wareneinkaufUeberweisung || 0);
+  }
+  return t.wareneinkauf || 0;
+}
+function kbSonstigesGesamt(t) {
+  if (t.sonstigesBar != null || t.sonstigesKarte != null || t.sonstigesUeberweisung != null) {
+    return (t.sonstigesBar || 0) + (t.sonstigesKarte || 0) + (t.sonstigesUeberweisung || 0);
+  }
+  return t.sonstiges || 0;
+}
+
 function bhAuswahlInitialisieren() {
   const aktJahr = parseInt(heute().slice(0, 4));
   const jahrSelect = document.getElementById('bh-jahr');
@@ -157,7 +173,7 @@ function bhUebersichtAktualisieren() {
   Object.keys(kassenbuchDaten).filter(d => d.slice(0, 7) === monatSchluessel).forEach(datum => {
     const t = kassenbuchDaten[datum];
     sumEin += t.kasse + t.karte + t.lieferdienste + (t.ueberweisung || 0);
-    sumAus += t.wareneinkauf + t.sonstiges;
+    sumAus += kbWareneinkaufGesamt(t) + kbSonstigesGesamt(t);
   });
   document.getElementById('bh-sum-einnahmen').textContent = euro(sumEin);
   document.getElementById('bh-sum-ausgaben').textContent = euro(sumAus);
@@ -235,7 +251,7 @@ function bhKompletterBericht() {
   const kbZeilen = kbTage.map(datum => {
     const t = kassenbuchDaten[datum];
     const einnahmen = t.kasse + t.karte + t.lieferdienste + (t.ueberweisung || 0);
-    const ausgaben = t.wareneinkauf + t.sonstiges;
+    const ausgaben = kbWareneinkaufGesamt(t) + kbSonstigesGesamt(t);
     sumEin += einnahmen; sumAus += ausgaben;
     return [datum, euro(einnahmen), euro(ausgaben), euro(einnahmen - ausgaben), t.notiz || ''];
   });
