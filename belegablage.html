@@ -408,9 +408,16 @@ function belegStatusBadge(b) {
     const ueberfaellig = b.faelligkeit < heute();
     const klasse = ueberfaellig ? 'status-ueberfaellig' : 'status-faellig';
     const text = ueberfaellig ? 'Überfällig seit ' + b.faelligkeit : 'Fällig am ' + b.faelligkeit;
-    return `<span class="status-badge ${klasse}">${text}</span>`;
+    return `<span class="status-badge ${klasse}">${text}</span><br><button class="btn-del" style="border-color:#1a6640;color:#1a6640;margin-top:4px;" onclick="belegAlsBezahltMarkieren(${b.id})">✓ Als bezahlt markieren</button>`;
   }
   return '<span class="status-badge status-faellig">Fällig</span>';
+}
+async function belegAlsBezahltMarkieren(id) {
+  const item = belegeDaten.find(b => b.id === id);
+  if (!item) return;
+  item.status = 'bezahlt';
+  await toolSave('tagesgeschaeft-belege', { items: belegeDaten });
+  belegRenderTabelle();
 }
 function belegRenderTabelle() {
   const tbody = document.querySelector('#beleg-tabelle tbody');
