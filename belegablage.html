@@ -402,20 +402,32 @@ async function belegLoeschen(id) {
   }
   belegRenderTabelle();
 }
-function belegStatusBadge(b) {
-  if (b.status === 'bezahlt') return '<span class="status-badge status-bezahlt">✓ Bezahlt</span>';
-  if (b.status === 'faellig' && b.faelligkeit) {
-    const ueberfaellig = b.faelligkeit < heute();
-    const klasse = ueberfaellig ? 'status-ueberfaellig' : 'status-faellig';
-    const text = ueberfaellig ? 'Überfällig seit ' + b.faelligkeit : 'Fällig am ' + b.faelligkeit;
-    return `<span class="status-badge ${klasse}">${text}</span><br><button class="btn-del" style="border-color:#1a6640;color:#1a6640;margin-top:4px;" onclick="belegAlsBezahltMarkieren(${b.id})">✓ Als bezahlt markieren</button>`;
-  }
-  return '<span class="status-badge status-faellig">Fällig</span>';
+function belegStatusZelle(b) {
+  const ueberfaellig = b.status === 'faellig' && b.faelligkeit && b.faelligkeit < heute();
+  const rahmenFarbe = b.status === 'bezahlt' ? '#4aaa60' : (ueberfaellig ? '#c0392b' : '#d4af37');
+  return `
+    <div style="display:flex;flex-direction:column;gap:4px;min-width:140px;">
+      <select onchange="belegStatusInlineGeaendert(${b.id}, this.value)" style="border:1px solid ${rahmenFarbe};border-radius:5px;padding:4px 6px;font-size:11.5px;background:#fff;">
+        <option value="bezahlt" ${b.status === 'bezahlt' ? 'selected' : ''}>✓ Bezahlt</option>
+        <option value="faellig" ${b.status === 'faellig' ? 'selected' : ''}>Fällig am …</option>
+      </select>
+      ${b.status === 'faellig' ? `<input type="date" value="${b.faelligkeit || ''}" onchange="belegFaelligkeitInlineGeaendert(${b.id}, this.value)" style="border:1px solid #e0d8c8;border-radius:5px;padding:3px 6px;font-size:11.5px;">` : ''}
+      ${ueberfaellig ? '<span style="font-size:10.5px;color:#c0392b;font-weight:700;">⚠ überfällig</span>' : ''}
+    </div>
+  `;
 }
-async function belegAlsBezahltMarkieren(id) {
+async function belegStatusInlineGeaendert(id, neuerStatus) {
   const item = belegeDaten.find(b => b.id === id);
   if (!item) return;
-  item.status = 'bezahlt';
+  item.status = neuerStatus;
+  if (neuerStatus === 'faellig' && !item.faelligkeit) item.faelligkeit = heute();
+  await toolSave('tagesgeschaeft-belege', { items: belegeDaten });
+  belegRenderTabelle();
+}
+async function belegFaelligkeitInlineGeaendert(id, neuesDatum) {
+  const item = belegeDaten.find(b => b.id === id);
+  if (!item) return;
+  item.faelligkeit = neuesDatum;
   await toolSave('tagesgeschaeft-belege', { items: belegeDaten });
   belegRenderTabelle();
 }
@@ -432,7 +444,7 @@ function belegRenderTabelle() {
   sorted.forEach(b => {
     if (b.datum.slice(0, 7) === aktMonat) sumMonat += b.betrag;
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${b.datum}</td><td>${b.plattform}</td><td>${b.rechnungsnr || '–'}</td><td>${euro(b.betrag)}</td><td>${b.mwst19 != null ? euro(b.mwst19) : '–'}</td><td>${b.mwst7 != null ? euro(b.mwst7) : '–'}</td><td>${belegStatusBadge(b)}</td><td><a href="#" onclick="belegOeffnen('${b.storagePath}');return false;">${b.dateiname}</a></td><td><button class="btn-del" onclick="belegLoeschen(${b.id})">✕</button></td>`;
+    tr.innerHTML = `<td>${b.datum}</td><td>${b.plattform}</td><td>${b.rechnungsnr || '–'}</td><td>${euro(b.betrag)}</td><td>${b.mwst19 != null ? euro(b.mwst19) : '–'}</td><td>${b.mwst7 != null ? euro(b.mwst7) : '–'}</td><td>${belegStatusZelle(b)}</td><td><a href="#" onclick="belegOeffnen('${b.storagePath}');return false;">${b.dateiname}</a></td><td><button class="btn-del" onclick="belegLoeschen(${b.id})">✕</button></td>`;
     tbody.appendChild(tr);
   });
   document.getElementById('beleg-sum-monat').textContent = euro(sumMonat);
