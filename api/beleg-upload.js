@@ -222,8 +222,11 @@ export default async function handler(req, res) {
       const neuesPraefix = safeUserFolder(email) + '/';
 
       let repariert = 0;
+      let gefundeneKandidaten = 0;
+      const debugVersuche = [];
       for (const item of items) {
         if (!item.storagePath || !item.storagePath.startsWith(altesPraefix)) continue;
+        gefundeneKandidaten++;
         const neuerPfad = neuesPraefix + item.storagePath.slice(altesPraefix.length);
         try {
           const moveRes = await fetch(SUPABASE_URL + '/storage/v1/object/move', {
@@ -231,11 +234,19 @@ export default async function handler(req, res) {
             headers: sbHeaders(),
             body: JSON.stringify({ bucketId: BUCKET, sourceKey: item.storagePath, destinationKey: neuerPfad })
           });
+          const moveAntwortText = await moveRes.text();
+          if (debugVersuche.length < 5) {
+            debugVersuche.push({ von: item.storagePath, nach: neuerPfad, status: moveRes.status, ok: moveRes.ok, antwort: moveAntwortText });
+          }
           if (moveRes.ok) {
             item.storagePath = neuerPfad;
             repariert++;
           }
-        } catch (e) {}
+        } catch (e) {
+          if (debugVersuche.length < 5) {
+            debugVersuche.push({ von: item.storagePath, nach: neuerPfad, fehler: String((e && e.message) || e) });
+          }
+        }
       }
 
       if (repariert > 0) {
@@ -249,7 +260,9 @@ export default async function handler(req, res) {
         repariert,
         gesamt: items.length,
         debugAltesPraefix: altesPraefix,
-        debugErstePfade: items.slice(0, 5).map(i => i.storagePath || '(kein storagePath)')
+        debugErstePfade: items.slice(0, 5).map(i => i.storagePath || '(kein storagePath)'),
+        debugGefundeneKandidaten: gefundeneKandidaten,
+        debugVersuche
       });
     } catch (e) {
       return res.status(500).json({ error: 'Fehler bei der Reparatur.', debugFehler: String((e && e.message) || e) });
