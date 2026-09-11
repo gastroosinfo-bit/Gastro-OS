@@ -150,42 +150,27 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 
     <div id="unread-banner" style="display:none;background:#c0392b;color:#fff;border-radius:8px;padding:10px 16px;font-size:12.5px;font-weight:600;margin-bottom:12px;text-align:center;"></div>
 
-    <!-- HAUPT-TOOLBOX: enthält Tagesgeschäft, Belege (einfache Zeilen) sowie
-         Intern und Freigeschaltete Modul-Tools (jeweils verschachtelte Unter-Dropdowns) -->
-    <div class="module-card toolbox-elegant" id="haupt-toolbox-card">
-      <div class="module-header" onclick="toggleHauptToolbox()" style="padding:14px 22px;">
-        <div class="module-left"><div class="module-number toolbox-icon-circle" style="width:32px;height:32px;font-size:14px;">🧰</div><div><div class="module-title" style="letter-spacing:0.3px;font-size:14px;">Toolbox</div><div class="module-subtitle" id="haupt-toolbox-subtitle" style="margin-top:2px;">Alle deine Tools an einem Ort</div></div></div>
-        <div style="display:flex;align-items:center;gap:8px;"><span class="module-arrow" id="haupt-toolbox-arrow" style="color:#d4af37;">▼</span></div>
+    <!-- KACHEL 1: DEINE MODUL-TOOLS -->
+    <div class="module-card toolbox-elegant" id="modultools-card" style="margin-bottom:12px;">
+      <div class="module-header" onclick="toggleToolbox()" style="padding:14px 22px;">
+        <div class="module-left"><div class="module-number toolbox-icon-circle" style="width:32px;height:32px;font-size:14px;">🎓</div><div><div class="module-title" style="letter-spacing:0.3px;font-size:14px;">Deine Modul-Tools</div><div class="module-subtitle" id="toolbox-subtitle" style="margin-top:2px;">Wird geladen …</div></div></div>
+        <div style="display:flex;align-items:center;gap:8px;"><span class="module-arrow" id="toolbox-arrow" style="color:#d4af37;">▼</span></div>
       </div>
-      <div class="module-content" id="haupt-toolbox-content">
+      <div class="module-content" id="toolbox-content"></div>
+    </div>
 
+    <!-- KACHEL 2: DEIN INTERNER BEREICH -->
+    <div class="module-card toolbox-elegant" id="intern-card">
+      <div class="module-header" onclick="toggleIntern()" style="padding:14px 22px;">
+        <div class="module-left"><div class="module-number toolbox-icon-circle" style="width:32px;height:32px;font-size:14px;">🔒</div><div><div class="module-title" style="letter-spacing:0.3px;font-size:14px;">Dein interner Bereich</div><div class="module-subtitle" style="margin-top:2px;">Tagesgeschäft, Belege, Übergabe, Reservierung &amp; Schichtplan</div></div></div>
+        <div style="display:flex;align-items:center;gap:8px;"><span class="module-arrow" id="intern-arrow" style="color:#d4af37;">▼</span></div>
+      </div>
+      <div class="module-content" id="intern-content">
         <div id="taegliche-tools"></div>
-
-        <div class="content-item" style="cursor:pointer;" onclick="toggleIntern()">
-          <span class="item-icon">🔒</span>
-          <div class="item-info">
-            <div class="item-title">Intern</div>
-            <div style="font-size:11.5px;color:#5a6a85;margin-top:1px;" id="intern-subtitle">Übergabe, Reservierung &amp; Schichtplan</div>
-          </div>
-          <span class="module-arrow" id="intern-arrow">▼</span>
+        <div style="padding:14px 20px;font-size:12px;color:#5a6a85;line-height:1.6;background:#fdf8ea;border-bottom:1px solid #f0e8d4;">
+          💡 <strong style="color:#1a2a4a;">So funktioniert der Mitarbeiter-Zugang:</strong> Für Übergabe, Reservierung und Schichtplan legst du über "⚙️ PIN verwalten" einmalig eine 4-stellige PIN fest. Alle deine Mitarbeiter nutzen denselben Link + dieselbe PIN — es gibt keine einzelnen Mitarbeiter-Konten. Den Link kannst du z. B. per WhatsApp teilen oder den QR-Code ausdrucken und aufhängen.
         </div>
-        <div class="module-content" id="intern-content" style="border-top:none;">
-          <div style="padding:14px 20px;font-size:12px;color:#5a6a85;line-height:1.6;background:#fdf8ea;border-bottom:1px solid #f0e8d4;">
-            💡 <strong style="color:#1a2a4a;">So funktioniert der Mitarbeiter-Zugang:</strong> Für jedes Tool unten legst du über "⚙️ PIN verwalten" einmalig eine 4-stellige PIN fest. Alle deine Mitarbeiter nutzen denselben Link + dieselbe PIN — es gibt keine einzelnen Mitarbeiter-Konten. Den Link kannst du z. B. per WhatsApp teilen oder den QR-Code ausdrucken und aufhängen.
-          </div>
-          <div id="intern-tools-list"></div>
-        </div>
-
-        <div class="content-item" style="cursor:pointer;" onclick="toggleToolbox()">
-          <span class="item-icon">🔓</span>
-          <div class="item-info">
-            <div class="item-title">Freigeschaltete Modul-Tools</div>
-            <div style="font-size:11.5px;color:#5a6a85;margin-top:1px;" id="toolbox-subtitle">Wird geladen …</div>
-          </div>
-          <span class="module-arrow" id="toolbox-arrow">▼</span>
-        </div>
-        <div class="module-content" id="toolbox-content" style="border-top:none;"></div>
-
+        <div id="intern-tools-list"></div>
       </div>
     </div>
 
@@ -231,19 +216,18 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
   max-width: 340px;
   margin-bottom: 16px;
 }
-#haupt-toolbox-content.open {
+#toolbox-content.open {
+  max-height: 460px;
+  overflow-y: auto;
+}
+#toolbox-content.open::-webkit-scrollbar { width: 6px; }
+#toolbox-content.open::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 3px; }
+#intern-content.open {
   max-height: 620px;
   overflow-y: auto;
 }
-#haupt-toolbox-content.open::-webkit-scrollbar { width: 6px; }
-#haupt-toolbox-content.open::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 3px; }
-#intern-content.open, #toolbox-content.open {
-  max-height: 420px;
-  overflow-y: auto;
-  background: #faf8f2;
-}
-#intern-content.open::-webkit-scrollbar, #toolbox-content.open::-webkit-scrollbar { width: 6px; }
-#intern-content.open::-webkit-scrollbar-thumb, #toolbox-content.open::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 3px; }
+#intern-content.open::-webkit-scrollbar { width: 6px; }
+#intern-content.open::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 3px; }
 @media (min-width: 1300px) {
   .toolbox-sidebar {
     position: absolute;
@@ -762,15 +746,6 @@ function toggleModule(m) {
   content.classList.toggle('open', !isOpen);
   if (arrow) arrow.classList.toggle('open', !isOpen);
   if (!isOpen) rememberModule(m);
-}
-
-function toggleHauptToolbox() {
-  const content = document.getElementById('haupt-toolbox-content');
-  const arrow   = document.getElementById('haupt-toolbox-arrow');
-  if (!content) return;
-  const isOpen = content.classList.contains('open');
-  content.classList.toggle('open', !isOpen);
-  if (arrow) arrow.classList.toggle('open', !isOpen);
 }
 
 function toggleToolbox() {
