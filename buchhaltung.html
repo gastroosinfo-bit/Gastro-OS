@@ -6,6 +6,7 @@
 <title>Deine Buchhaltung – GASTRO-OS</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
@@ -91,6 +92,13 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
       <div class="summary-box"><div class="label">Wareneingänge</div><div class="value" id="bh-anzahl-we">0</div></div>
     </div>
   </div>
+
+  <div class="section">
+    <div class="section-head">Original-Belegdateien</div>
+    <div style="font-size:12.5px;color:#5a6a85;margin-bottom:14px;">Lädt alle hochgeladenen PDF-/Foto-Dateien der Belege des gewählten Monats gesammelt als ZIP-Datei herunter.</div>
+    <button class="btn-add" onclick="bhBelegeAlsZip(this)">📦 <span id="bh-zip-anzahl-text">Alle Belegdateien des Monats</span> als ZIP herunterladen</button>
+    <span style="font-size:12px;color:#4aaa60;margin-left:10px;display:none;" id="bh-zip-status">✓ Heruntergeladen</span>
+  </div>
 </div>
 
 <div class="footer-brand"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
@@ -160,6 +168,49 @@ function bhUebersichtAktualisieren() {
 
   const weDesMonats = weDaten.filter(w => w.datum && w.datum.slice(0, 7) === monatSchluessel);
   document.getElementById('bh-anzahl-we').textContent = String(weDesMonats.length);
+
+  const anzahlBelegdateien = belegeDesMonats.filter(b => b.storagePath).length;
+  document.getElementById('bh-zip-anzahl-text').textContent = anzahlBelegdateien + (anzahlBelegdateien === 1 ? ' Belegdatei' : ' Belegdateien') + ' des Monats';
+}
+
+async function bhBelegeAlsZip(btn) {
+  const monatSchluessel = bhAktuellerMonatSchluessel();
+  const belegeDesMonats = belegeDaten.filter(b => b.datum && b.datum.slice(0, 7) === monatSchluessel && b.storagePath);
+  if (!belegeDesMonats.length) { alert('Keine Belegdateien in diesem Monat gefunden.'); return; }
+
+  const urspruenglicherText = btn.innerHTML;
+  btn.textContent = 'Wird vorbereitet …';
+  btn.disabled = true;
+
+  try {
+    const zip = new JSZip();
+    let zaehler = 1;
+    for (const b of belegeDesMonats) {
+      try {
+        const signRes = await fetch('/api/beleg-upload?path=' + encodeURIComponent(b.storagePath));
+        const signData = await signRes.json();
+        if (!signData.url) continue;
+        const dateiRes = await fetch(signData.url);
+        const blob = await dateiRes.blob();
+        const endung = (b.dateiname && b.dateiname.includes('.')) ? b.dateiname.slice(b.dateiname.lastIndexOf('.')) : '';
+        const dateiname = String(zaehler).padStart(2, '0') + '_' + b.datum + '_' + (b.plattform || 'Beleg').replace(/[^a-zA-Z0-9äöüÄÖÜß_-]/g, '_') + endung;
+        zip.file(dateiname, blob);
+        zaehler++;
+      } catch (e) {}
+    }
+    const inhalt = await zip.generateAsync({ type: 'blob' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(inhalt);
+    link.download = 'Belegdateien-' + monatSchluessel + '.zip';
+    link.click();
+    document.getElementById('bh-zip-status').style.display = 'inline';
+    setTimeout(() => { document.getElementById('bh-zip-status').style.display = 'none'; }, 3000);
+  } catch (e) {
+    alert('Fehler beim Erstellen der ZIP-Datei.');
+  } finally {
+    btn.innerHTML = urspruenglicherText;
+    btn.disabled = false;
+  }
 }
 
 function bhKompletterBericht() {
