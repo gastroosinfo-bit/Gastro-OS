@@ -115,8 +115,12 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
 
   <div class="section">
     <div class="section-head">Hochgeladene Belege</div>
-    <div class="grid3" style="margin-bottom:10px;">
-      <div><strong>Diesen Monat gesamt:</strong> <span id="beleg-sum-monat">0,00 €</span></div>
+    <div class="grid3" style="margin-bottom:10px;align-items:center;">
+      <div><strong id="beleg-sum-label">Diesen Monat gesamt:</strong> <span id="beleg-sum-monat">0,00 €</span></div>
+      <div class="field-group" style="margin-bottom:0;">
+        <label>Monat anzeigen</label>
+        <input type="month" id="beleg-monat-auswahl" onchange="belegRenderTabelle()">
+      </div>
     </div>
     <div style="overflow-x:auto;">
     <table class="data-table" id="beleg-tabelle">
@@ -176,6 +180,7 @@ async function belegeInit() {
   const loaded = await toolLoad('tagesgeschaeft-belege');
   belegeDaten = loaded.items || [];
   document.getElementById('beleg-datum').value = heute();
+  document.getElementById('beleg-monat-auswahl').value = heute().slice(0, 7);
   belegRenderTabelle();
 
   const lieferantenLoaded = await toolLoad('tagesgeschaeft-belege-lieferanten');
@@ -382,7 +387,10 @@ function belegRenderTabelle() {
   const tbody = document.querySelector('#beleg-tabelle tbody');
   tbody.innerHTML = '';
   const sorted = [...belegeDaten].sort((a, b) => b.datum.localeCompare(a.datum));
-  const aktMonat = heute().slice(0, 7);
+  const monatFeld = document.getElementById('beleg-monat-auswahl');
+  const aktMonat = monatFeld.value || heute().slice(0, 7);
+  const istAktuellerMonat = aktMonat === heute().slice(0, 7);
+  document.getElementById('beleg-sum-label').textContent = istAktuellerMonat ? 'Diesen Monat gesamt:' : aktMonat + ' gesamt:';
   let sumMonat = 0;
   sorted.forEach(b => {
     if (b.datum.slice(0, 7) === aktMonat) sumMonat += b.betrag;
