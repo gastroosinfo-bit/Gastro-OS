@@ -118,8 +118,25 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
     <div class="grid3" style="margin-bottom:10px;align-items:center;">
       <div><strong id="beleg-sum-label">Diesen Monat gesamt:</strong> <span id="beleg-sum-monat">0,00 €</span></div>
       <div class="field-group" style="margin-bottom:0;">
-        <label>Monat anzeigen</label>
-        <input type="month" id="beleg-monat-auswahl" onchange="belegRenderTabelle()">
+        <label>Monat</label>
+        <select id="beleg-monat-auswahl" onchange="belegRenderTabelle()">
+          <option value="01">Januar</option>
+          <option value="02">Februar</option>
+          <option value="03">März</option>
+          <option value="04">April</option>
+          <option value="05">Mai</option>
+          <option value="06">Juni</option>
+          <option value="07">Juli</option>
+          <option value="08">August</option>
+          <option value="09">September</option>
+          <option value="10">Oktober</option>
+          <option value="11">November</option>
+          <option value="12">Dezember</option>
+        </select>
+      </div>
+      <div class="field-group" style="margin-bottom:0;">
+        <label>Jahr</label>
+        <select id="beleg-jahr-auswahl" onchange="belegRenderTabelle()"></select>
       </div>
     </div>
     <div style="overflow-x:auto;">
@@ -180,7 +197,19 @@ async function belegeInit() {
   const loaded = await toolLoad('tagesgeschaeft-belege');
   belegeDaten = loaded.items || [];
   document.getElementById('beleg-datum').value = heute();
-  document.getElementById('beleg-monat-auswahl').value = heute().slice(0, 7);
+
+  const aktJahr = parseInt(heute().slice(0, 4));
+  const jahrSelect = document.getElementById('beleg-jahr-auswahl');
+  jahrSelect.innerHTML = '';
+  for (let j = aktJahr - 3; j <= aktJahr + 1; j++) {
+    const opt = document.createElement('option');
+    opt.value = String(j);
+    opt.textContent = String(j);
+    if (j === aktJahr) opt.selected = true;
+    jahrSelect.appendChild(opt);
+  }
+  document.getElementById('beleg-monat-auswahl').value = heute().slice(5, 7);
+
   belegRenderTabelle();
 
   const lieferantenLoaded = await toolLoad('tagesgeschaeft-belege-lieferanten');
@@ -387,8 +416,9 @@ function belegRenderTabelle() {
   const tbody = document.querySelector('#beleg-tabelle tbody');
   tbody.innerHTML = '';
   const sorted = [...belegeDaten].sort((a, b) => b.datum.localeCompare(a.datum));
-  const monatFeld = document.getElementById('beleg-monat-auswahl');
-  const aktMonat = monatFeld.value || heute().slice(0, 7);
+  const monatWert = document.getElementById('beleg-monat-auswahl').value;
+  const jahrWert = document.getElementById('beleg-jahr-auswahl').value;
+  const aktMonat = jahrWert + '-' + monatWert;
   const istAktuellerMonat = aktMonat === heute().slice(0, 7);
   document.getElementById('beleg-sum-label').textContent = istAktuellerMonat ? 'Diesen Monat gesamt:' : aktMonat + ' gesamt:';
   let sumMonat = 0;
