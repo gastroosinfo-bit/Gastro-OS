@@ -236,13 +236,15 @@ function notifyBarAktualisieren() {
 window.uebergabeBenachrichtigen = async function() {
   const n = notifyPending.uebergabe || 0;
   if (!n) return;
+  const zugang = await toolLoad('uebergabe-zugang');
+  const zielUrl = (zugang && zugang.code) ? ('/uebergabe.html?u=' + zugang.code) : '/uebergabe.html';
   fetch('/api/push-notify', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       title: '📋 Übergabebuch aktualisiert',
       body: n === 1 ? '1 Änderung im Übergabebuch' : n + ' Änderungen im Übergabebuch',
-      url: '/uebergabe.html',
+      url: zielUrl,
       bookType: 'uebergabe'
     })
   }).catch(() => {});

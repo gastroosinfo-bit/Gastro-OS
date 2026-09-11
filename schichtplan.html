@@ -267,13 +267,15 @@ function notifyBarAktualisieren() {
 window.schichtplanBenachrichtigen = async function() {
   const n = notifyPending.schichtplan || 0;
   if (!n) return;
+  const zugang = await toolLoad('schichtplan-zugang');
+  const zielUrl = (zugang && zugang.code) ? ('/schichtplan.html?u=' + zugang.code) : '/schichtplan.html';
   fetch('/api/push-notify', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       title: '🗂️ Schichtplan aktualisiert',
       body: n === 1 ? '1 Änderung im Schichtplan' : n + ' Änderungen im Schichtplan',
-      url: '/schichtplan.html',
+      url: zielUrl,
       bookType: 'schichtplan'
     })
   }).catch(() => {});

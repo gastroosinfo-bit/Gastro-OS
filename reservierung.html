@@ -253,13 +253,15 @@ function notifyBarAktualisieren() {
 window.reservierungBenachrichtigen = async function() {
   const n = notifyPending.reservierung || 0;
   if (!n) return;
+  const zugang = await toolLoad('reservierung-zugang');
+  const zielUrl = (zugang && zugang.code) ? ('/reservierung.html?u=' + zugang.code) : '/reservierung.html';
   fetch('/api/push-notify', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       title: '📅 Reservierungsbuch aktualisiert',
       body: n === 1 ? '1 Änderung im Reservierungsbuch' : n + ' Änderungen im Reservierungsbuch',
-      url: '/reservierung.html',
+      url: zielUrl,
       bookType: 'reservierung'
     })
   }).catch(() => {});
