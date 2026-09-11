@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tagesgeschäft – GASTRO-OS</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
@@ -132,6 +134,35 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
         <thead><tr><th>Datum</th><th>Einnahmen</th><th>Ausgaben</th><th>Ergebnis</th><th>Notiz</th><th></th></tr></thead>
         <tbody></tbody>
       </table>
+    </div>
+
+    <div class="section">
+      <div class="section-head">📄 Monatsbericht (PDF)</div>
+      <div style="font-size:12.5px;color:#5a6a85;margin-bottom:14px;">Erzeugt ein druckfertiges PDF mit Kassenbuch und Wareneingang für den gewählten Monat.</div>
+      <div class="grid3" style="align-items:end;">
+        <div class="field-group">
+          <label>Monat</label>
+          <select id="mb-monat">
+            <option value="01">Januar</option>
+            <option value="02">Februar</option>
+            <option value="03">März</option>
+            <option value="04">April</option>
+            <option value="05">Mai</option>
+            <option value="06">Juni</option>
+            <option value="07">Juli</option>
+            <option value="08">August</option>
+            <option value="09">September</option>
+            <option value="10">Oktober</option>
+            <option value="11">November</option>
+            <option value="12">Dezember</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label>Jahr</label>
+          <select id="mb-jahr"></select>
+        </div>
+        <button class="btn-add" onclick="monatsberichtErstellen()">📄 PDF erstellen</button>
+      </div>
     </div>
   </div>
 
@@ -321,6 +352,109 @@ function kbRenderTabelle() {
   document.getElementById('kb-sum-ergebnis').textContent = euro(sumEin - sumAus);
 }
 
+// ─── MONATSBERICHT (PDF) ─────────────────────────────────────────────────
+function mbAuswahlInitialisieren() {
+  const aktJahr = parseInt(heute().slice(0, 4));
+  const jahrSelect = document.getElementById('mb-jahr');
+  jahrSelect.innerHTML = '';
+  for (let j = aktJahr - 3; j <= aktJahr + 1; j++) {
+    const opt = document.createElement('option');
+    opt.value = String(j);
+    opt.textContent = String(j);
+    if (j === aktJahr) opt.selected = true;
+    jahrSelect.appendChild(opt);
+  }
+  document.getElementById('mb-monat').value = heute().slice(5, 7);
+}
+const MONATSNAMEN = ['', 'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+
+function monatsberichtErstellen() {
+  const monat = document.getElementById('mb-monat').value;
+  const jahr = document.getElementById('mb-jahr').value;
+  const monatSchluessel = jahr + '-' + monat;
+  const monatName = MONATSNAMEN[parseInt(monat)];
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  doc.setFontSize(16);
+  doc.setTextColor(26, 42, 74);
+  doc.text('GASTRO-OS – Monatsbericht', 14, 18);
+  doc.setFontSize(11);
+  doc.setTextColor(90, 106, 128);
+  doc.text(monatName + ' ' + jahr, 14, 25);
+
+  let naechsteY = 34;
+
+  // ── Kassenbuch ──
+  const kbTage = Object.keys(kassenbuchDaten).filter(d => d.slice(0, 7) === monatSchluessel).sort();
+  let sumEin = 0, sumAus = 0;
+  const kbZeilen = kbTage.map(datum => {
+    const t = kassenbuchDaten[datum];
+    const einnahmen = t.kasse + t.karte + t.lieferdienste;
+    const ausgaben = t.wareneinkauf + t.sonstiges;
+    sumEin += einnahmen; sumAus += ausgaben;
+    return [datum, euro(einnahmen), euro(ausgaben), euro(einnahmen - ausgaben), t.notiz || ''];
+  });
+
+  doc.setFontSize(13);
+  doc.setTextColor(26, 42, 74);
+  doc.text('Kassenbuch', 14, naechsteY);
+  naechsteY += 4;
+
+  if (kbZeilen.length) {
+    doc.autoTable({
+      startY: naechsteY,
+      head: [['Datum', 'Einnahmen', 'Ausgaben', 'Ergebnis', 'Notiz']],
+      body: kbZeilen,
+      styles: { fontSize: 9 },
+      headStyles: { fillColor: [26, 42, 74], textColor: [212, 175, 55] },
+      margin: { left: 14, right: 14 }
+    });
+    naechsteY = doc.lastAutoTable.finalY + 8;
+    doc.setFontSize(10);
+    doc.setTextColor(26, 42, 74);
+    doc.text('Einnahmen gesamt: ' + euro(sumEin) + '   ·   Ausgaben gesamt: ' + euro(sumAus) + '   ·   Ergebnis: ' + euro(sumEin - sumAus), 14, naechsteY);
+    naechsteY += 12;
+  } else {
+    doc.setFontSize(10);
+    doc.setTextColor(140, 140, 140);
+    doc.text('Keine Kassenbuch-Einträge in diesem Monat.', 14, naechsteY + 4);
+    naechsteY += 16;
+  }
+
+  // ── Wareneingang ──
+  const weZeilen = weDaten
+    .filter(w => w.datum && w.datum.slice(0, 7) === monatSchluessel)
+    .sort((a, b) => a.datum.localeCompare(b.datum))
+    .map(w => {
+      const allOk = w.mengeOk && w.mhdOk && w.zustandOk;
+      return [w.datum, w.lieferant || '', w.temp !== null ? w.temp + ' °C' : '–', allOk ? 'OK' : 'Prüfen', w.bemerkung || ''];
+    });
+
+  doc.setFontSize(13);
+  doc.setTextColor(26, 42, 74);
+  doc.text('Wareneingang', 14, naechsteY);
+  naechsteY += 4;
+
+  if (weZeilen.length) {
+    doc.autoTable({
+      startY: naechsteY,
+      head: [['Datum', 'Lieferant', 'Temp.', 'Status', 'Bemerkung']],
+      body: weZeilen,
+      styles: { fontSize: 9 },
+      headStyles: { fillColor: [26, 42, 74], textColor: [212, 175, 55] },
+      margin: { left: 14, right: 14 }
+    });
+  } else {
+    doc.setFontSize(10);
+    doc.setTextColor(140, 140, 140);
+    doc.text('Keine Wareneingang-Einträge in diesem Monat.', 14, naechsteY + 4);
+  }
+
+  doc.save('Monatsbericht-' + monatSchluessel + '.pdf');
+}
+
 // ─── HACCP TEMPERATUREN ──────────────────────────────────────────────────
 let haccpDaten = { geraete: [], eintraege: {} };
 async function haccpInit() {
@@ -489,6 +623,7 @@ function notizRenderListe() {
   const ok = await checkAuth();
   if (!ok) return;
   await Promise.all([kbInit(), haccpInit(), weInit(), notizInit()]);
+  mbAuswahlInitialisieren();
 })();
 </script>
 </body>
