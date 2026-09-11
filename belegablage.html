@@ -518,7 +518,9 @@ async function belegeReparieren() {
       let text = '';
       if (d.error) text += 'FEHLER: ' + d.error + (d.debugFehler ? ' (' + d.debugFehler + ')' : '') + '\n';
       text += 'debugAltesPraefix: ' + JSON.stringify(d.debugAltesPraefix ?? null) + '\n';
-      text += 'debugErstePfade: ' + JSON.stringify(d.debugErstePfade ?? [], null, 2);
+      text += 'debugGefundeneKandidaten: ' + JSON.stringify(d.debugGefundeneKandidaten ?? null) + '\n';
+      text += 'debugErstePfade: ' + JSON.stringify(d.debugErstePfade ?? [], null, 2) + '\n';
+      text += 'debugVersuche: ' + JSON.stringify(d.debugVersuche ?? [], null, 2);
       if (d.debugHinweis) text += '\ndebugHinweis: ' + d.debugHinweis;
       debugBox.textContent = text;
       debugBox.style.display = 'block';
