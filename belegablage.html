@@ -74,7 +74,7 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
       📎 Klicken, um eine PDF-Datei oder ein Foto auszuwählen<br>
       <span id="beleg-datei-name" style="font-weight:600;color:#1a2a4a;"></span>
     </div>
-    <input type="file" id="beleg-datei" accept="application/pdf,image/*" capture="environment" style="display:none;" onchange="belegDateiGewaehlt(event)">
+    <input type="file" id="beleg-datei" accept="application/pdf,image/*" style="display:none;" onchange="belegDateiGewaehlt(event)">
     <div class="hint">Max. 8 MB, PDF oder Foto (JPG/PNG). Auf dem Handy kann direkt die Kamera genutzt werden.</div>
     <div class="auto-hinweis" id="beleg-auto-hinweis"></div>
 
@@ -95,13 +95,8 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
       <div class="field-group"><label>Betrag (€)</label><input type="number" step="0.01" id="beleg-betrag" placeholder="0,00"></div>
     </div>
     <div class="grid4" style="margin-top:14px;">
-      <div class="field-group"><label>MwSt.</label>
-        <select id="beleg-mwst">
-          <option value="">– nicht angegeben –</option>
-          <option value="19">19 %</option>
-          <option value="7">7 %</option>
-        </select>
-      </div>
+      <div class="field-group"><label>MwSt. 19% (€)</label><input type="number" step="0.01" id="beleg-mwst19" placeholder="optional"></div>
+      <div class="field-group"><label>MwSt. 7% (€)</label><input type="number" step="0.01" id="beleg-mwst7" placeholder="optional"></div>
       <div class="field-group"><label>Status</label>
         <select id="beleg-status" onchange="belegStatusGeaendert()">
           <option value="bezahlt">Bezahlt</option>
@@ -125,7 +120,7 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
     </div>
     <div style="overflow-x:auto;">
     <table class="data-table" id="beleg-tabelle">
-      <thead><tr><th>Datum</th><th>Anbieter</th><th>Rechnungsnr.</th><th>Betrag</th><th>MwSt.</th><th>Status</th><th>Datei</th><th></th></tr></thead>
+      <thead><tr><th>Datum</th><th>Anbieter</th><th>Rechnungsnr.</th><th>Betrag</th><th>MwSt. 19%</th><th>MwSt. 7%</th><th>Status</th><th>Datei</th><th></th></tr></thead>
       <tbody></tbody>
     </table>
     </div>
@@ -256,16 +251,31 @@ async function belegDateiGewaehlt(evt) {
     }
     if (extracted.plattform) {
       const select = document.getElementById('beleg-plattform');
-      const passendeOption = [...select.options].find(o => o.value === extracted.plattform);
-      if (passendeOption) {
-        select.value = extracted.plattform;
-        belegPlattformGeaendert();
+      const eigenOption = select.querySelector('option[value="__eigener__"]');
+      let passendeOption = [...select.options].find(o => o.value === extracted.plattform);
+      if (!passendeOption) {
+        // Unbekannter Lieferant (z. B. "Lidl") — automatisch zur Liste hinzufügen
+        if (!eigeneLieferanten.includes(extracted.plattform)) {
+          eigeneLieferanten.push(extracted.plattform);
+          await toolSave('tagesgeschaeft-belege-lieferanten', { namen: eigeneLieferanten });
+        }
+        const opt = document.createElement('option');
+        opt.value = extracted.plattform;
+        opt.textContent = extracted.plattform;
+        select.insertBefore(opt, eigenOption);
+        passendeOption = opt;
       }
+      select.value = extracted.plattform;
+      belegPlattformGeaendert();
       erkannt.push('Anbieter');
     }
-    if (extracted.mwstSatz) {
-      document.getElementById('beleg-mwst').value = String(extracted.mwstSatz);
-      erkannt.push('MwSt.');
+    if (extracted.mwst19Betrag != null) {
+      document.getElementById('beleg-mwst19').value = extracted.mwst19Betrag.toFixed(2);
+      erkannt.push('MwSt. 19%');
+    }
+    if (extracted.mwst7Betrag != null) {
+      document.getElementById('beleg-mwst7').value = extracted.mwst7Betrag.toFixed(2);
+      erkannt.push('MwSt. 7%');
     }
     if (extracted.rechnungsnummer) {
       document.getElementById('beleg-rechnungsnr').value = extracted.rechnungsnummer;
@@ -300,7 +310,8 @@ async function belegHochladen() {
   }
   const rechnungsnr = document.getElementById('beleg-rechnungsnr').value.trim();
   const betrag = parseFloat(document.getElementById('beleg-betrag').value) || 0;
-  const mwstSatz = document.getElementById('beleg-mwst').value || null;
+  const mwst19 = document.getElementById('beleg-mwst19').value ? parseFloat(document.getElementById('beleg-mwst19').value) : null;
+  const mwst7 = document.getElementById('beleg-mwst7').value ? parseFloat(document.getElementById('beleg-mwst7').value) : null;
   const status = document.getElementById('beleg-status').value;
   const faelligkeit = status === 'faellig' ? document.getElementById('beleg-faelligkeit').value : null;
 
@@ -317,7 +328,7 @@ async function belegHochladen() {
     belegeDaten.push({
       id: Date.now(),
       datum, plattform, betrag,
-      rechnungsnr, mwstSatz, status, faelligkeit,
+      rechnungsnr, mwst19, mwst7, status, faelligkeit,
       dateiname: belegAusgewaehlteDatei.name,
       storagePath: result.path
     });
@@ -331,7 +342,8 @@ async function belegHochladen() {
     document.getElementById('beleg-datei').value = '';
     document.getElementById('beleg-betrag').value = '';
     document.getElementById('beleg-rechnungsnr').value = '';
-    document.getElementById('beleg-mwst').value = '';
+    document.getElementById('beleg-mwst19').value = '';
+    document.getElementById('beleg-mwst7').value = '';
     document.getElementById('beleg-status').value = 'bezahlt';
     document.getElementById('beleg-faelligkeit-wrap').style.display = 'none';
     document.getElementById('beleg-auto-hinweis').style.display = 'none';
@@ -375,7 +387,7 @@ function belegRenderTabelle() {
   sorted.forEach(b => {
     if (b.datum.slice(0, 7) === aktMonat) sumMonat += b.betrag;
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${b.datum}</td><td>${b.plattform}</td><td>${b.rechnungsnr || '–'}</td><td>${euro(b.betrag)}</td><td>${b.mwstSatz ? b.mwstSatz + ' %' : '–'}</td><td>${belegStatusBadge(b)}</td><td><a href="#" onclick="belegOeffnen('${b.storagePath}');return false;">${b.dateiname}</a></td><td><button class="btn-del" onclick="belegLoeschen(${b.id})">✕</button></td>`;
+    tr.innerHTML = `<td>${b.datum}</td><td>${b.plattform}</td><td>${b.rechnungsnr || '–'}</td><td>${euro(b.betrag)}</td><td>${b.mwst19 != null ? euro(b.mwst19) : '–'}</td><td>${b.mwst7 != null ? euro(b.mwst7) : '–'}</td><td>${belegStatusBadge(b)}</td><td><a href="#" onclick="belegOeffnen('${b.storagePath}');return false;">${b.dateiname}</a></td><td><button class="btn-del" onclick="belegLoeschen(${b.id})">✕</button></td>`;
     tbody.appendChild(tr);
   });
   document.getElementById('beleg-sum-monat').textContent = euro(sumMonat);
