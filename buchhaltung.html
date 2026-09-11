@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deine Buchhaltung – GASTRO-OS</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
+.header{background:#1a2a4a;padding:14px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
+.brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
+.btn-back { background:#d4af37; color:#1a2a4a; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.btn-back:hover { background:#c8a030; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+.wrap { max-width:860px; margin:0 auto; padding:28px 24px 60px; }
+.tool-label { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:4px; }
+.tool-title { font-family:Georgia,serif; font-size:22px; color:#1a2a4a; margin-bottom:4px; }
+.tool-sub { font-size:13px; color:#5a6a80; margin-bottom:20px; }
+
+.section { background:#fff; border:1px solid #e8dfc8; border-radius:10px; padding:22px 26px; margin-bottom:20px; box-shadow:0 2px 6px rgba(0,0,0,0.04); }
+.section-head { background:#1a2a4a; color:#d4af37; font-size:13px; font-weight:700; letter-spacing:1px; padding:10px 14px; border-radius:6px; margin-bottom:16px; }
+
+.field-group { display:flex; flex-direction:column; gap:5px; }
+.field-group label { font-size:11px; font-weight:700; color:#8090a8; text-transform:uppercase; letter-spacing:0.5px; }
+.field-group select { border:1px solid #e0d8c8; border-radius:6px; padding:8px 12px; font-size:13px; color:#1a2a4a; background:#eaf2ff; font-family:inherit; }
+.field-group select:focus { outline:none; border-color:#d4af37; background:#fff; }
+.grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
+.grid4 { display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:14px; }
+@media(max-width:640px){ .grid3,.grid4{ grid-template-columns:1fr 1fr; } }
+
+.btn-add { background:#1a6640; color:#fff; border:none; padding:10px 20px; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; }
+.btn-add:hover { background:#d4af37; color:#1a2a4a; }
+
+.summary-box { background:#f5f0e8; border-radius:8px; padding:14px 18px; text-align:center; }
+.summary-box .label { font-size:10.5px; font-weight:700; color:#8090a8; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px; }
+.summary-box .value { font-size:18px; font-weight:700; color:#1a2a4a; }
+
+.footer-brand { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-brand strong { color:#d4af37; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <span class="brand">GASTRO-OS</span>
+  <a href="dashboard.html" class="btn-back">← Zurück zum Dashboard</a>
+</div>
+<div class="gold-bar"></div>
+
+<div class="wrap">
+  <div class="tool-label">Toolbox · Buchhaltung</div>
+  <div class="tool-title">📊 Deine Buchhaltung</div>
+  <div class="tool-sub">Kassenbuch, Belege und Wareneingang an einem Ort — alles für einen Monat gebündelt als PDF, bereit für den Steuerberater.</div>
+
+  <div class="section">
+    <div class="section-head">Monat auswählen</div>
+    <div class="grid3" style="align-items:end;">
+      <div class="field-group">
+        <label>Monat</label>
+        <select id="bh-monat" onchange="bhUebersichtAktualisieren()">
+          <option value="01">Januar</option>
+          <option value="02">Februar</option>
+          <option value="03">März</option>
+          <option value="04">April</option>
+          <option value="05">Mai</option>
+          <option value="06">Juni</option>
+          <option value="07">Juli</option>
+          <option value="08">August</option>
+          <option value="09">September</option>
+          <option value="10">Oktober</option>
+          <option value="11">November</option>
+          <option value="12">Dezember</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <label>Jahr</label>
+        <select id="bh-jahr" onchange="bhUebersichtAktualisieren()"></select>
+      </div>
+      <button class="btn-add" onclick="bhKompletterBericht()">📄 Kompletten Bericht als PDF</button>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">Übersicht <span id="bh-monat-label" style="color:#a0b0c8;font-weight:400;"></span></div>
+    <div class="grid4">
+      <div class="summary-box"><div class="label">Einnahmen</div><div class="value" id="bh-sum-einnahmen">0,00 €</div></div>
+      <div class="summary-box"><div class="label">Ausgaben</div><div class="value" id="bh-sum-ausgaben">0,00 €</div></div>
+      <div class="summary-box"><div class="label">Belege gesamt</div><div class="value" id="bh-sum-belege">0,00 €</div></div>
+      <div class="summary-box"><div class="label">Wareneingänge</div><div class="value" id="bh-anzahl-we">0</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="footer-brand"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+
+<script>
+let currentUser = null;
+let kassenbuchDaten = {};
+let weDaten = [];
+let belegeDaten = [];
+
+async function checkAuth() {
+  try {
+    const res = await fetch('/api/verify-session');
+    if (!res.ok) { window.location.href = 'login.html'; return false; }
+    const d = await res.json();
+    if (!d.valid) { window.location.href = 'login.html'; return false; }
+    currentUser = { email: d.email };
+    return true;
+  } catch (e) { window.location.href = 'login.html'; return false; }
+}
+async function toolLoad(tool) {
+  try {
+    const res = await fetch('/api/tool-data?tool=' + encodeURIComponent(tool));
+    if (!res.ok) return {};
+    const d = await res.json();
+    return (d && d.data) ? d.data : {};
+  } catch (e) { return {}; }
+}
+function heute() { return new Date().toISOString().slice(0, 10); }
+function euro(n) { return (Number(n) || 0).toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €'; }
+const MONATSNAMEN = ['', 'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+
+function bhAuswahlInitialisieren() {
+  const aktJahr = parseInt(heute().slice(0, 4));
+  const jahrSelect = document.getElementById('bh-jahr');
+  jahrSelect.innerHTML = '';
+  for (let j = aktJahr - 3; j <= aktJahr + 1; j++) {
+    const opt = document.createElement('option');
+    opt.value = String(j);
+    opt.textContent = String(j);
+    if (j === aktJahr) opt.selected = true;
+    jahrSelect.appendChild(opt);
+  }
+  document.getElementById('bh-monat').value = heute().slice(5, 7);
+}
+
+function bhAktuellerMonatSchluessel() {
+  return document.getElementById('bh-jahr').value + '-' + document.getElementById('bh-monat').value;
+}
+
+function bhUebersichtAktualisieren() {
+  const monatSchluessel = bhAktuellerMonatSchluessel();
+  document.getElementById('bh-monat-label').textContent = '· ' + MONATSNAMEN[parseInt(monatSchluessel.slice(5,7))] + ' ' + monatSchluessel.slice(0,4);
+
+  let sumEin = 0, sumAus = 0;
+  Object.keys(kassenbuchDaten).filter(d => d.slice(0, 7) === monatSchluessel).forEach(datum => {
+    const t = kassenbuchDaten[datum];
+    sumEin += t.kasse + t.karte + t.lieferdienste + (t.ueberweisung || 0);
+    sumAus += t.wareneinkauf + t.sonstiges;
+  });
+  document.getElementById('bh-sum-einnahmen').textContent = euro(sumEin);
+  document.getElementById('bh-sum-ausgaben').textContent = euro(sumAus);
+
+  const belegeDesMonats = belegeDaten.filter(b => b.datum && b.datum.slice(0, 7) === monatSchluessel);
+  const sumBelege = belegeDesMonats.reduce((sum, b) => sum + (b.betrag || 0), 0);
+  document.getElementById('bh-sum-belege').textContent = euro(sumBelege);
+
+  const weDesMonats = weDaten.filter(w => w.datum && w.datum.slice(0, 7) === monatSchluessel);
+  document.getElementById('bh-anzahl-we').textContent = String(weDesMonats.length);
+}
+
+function bhKompletterBericht() {
+  const monatSchluessel = bhAktuellerMonatSchluessel();
+  const monatName = MONATSNAMEN[parseInt(monatSchluessel.slice(5,7))];
+  const jahr = monatSchluessel.slice(0, 4);
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  doc.setFontSize(17);
+  doc.setTextColor(26, 42, 74);
+  doc.text('GASTRO-OS – Buchhaltungsbericht', 14, 18);
+  doc.setFontSize(11);
+  doc.setTextColor(90, 106, 128);
+  doc.text(monatName + ' ' + jahr, 14, 25);
+  let y = 34;
+
+  // ── Kassenbuch ──
+  const kbTage = Object.keys(kassenbuchDaten).filter(d => d.slice(0, 7) === monatSchluessel).sort();
+  let sumEin = 0, sumAus = 0;
+  const kbZeilen = kbTage.map(datum => {
+    const t = kassenbuchDaten[datum];
+    const einnahmen = t.kasse + t.karte + t.lieferdienste + (t.ueberweisung || 0);
+    const ausgaben = t.wareneinkauf + t.sonstiges;
+    sumEin += einnahmen; sumAus += ausgaben;
+    return [datum, euro(einnahmen), euro(ausgaben), euro(einnahmen - ausgaben), t.notiz || ''];
+  });
+  doc.setFontSize(13);
+  doc.setTextColor(26, 42, 74);
+  doc.text('Kassenbuch', 14, y);
+  y += 4;
+  if (kbZeilen.length) {
+    doc.autoTable({
+      startY: y,
+      head: [['Datum', 'Einnahmen', 'Ausgaben', 'Ergebnis', 'Notiz']],
+      body: kbZeilen,
+      styles: { fontSize: 9 },
+      headStyles: { fillColor: [26, 42, 74], textColor: [212, 175, 55] },
+      margin: { left: 14, right: 14 }
+    });
+    y = doc.lastAutoTable.finalY + 6;
+    doc.setFontSize(10);
+    doc.setTextColor(26, 42, 74);
+    doc.text('Einnahmen gesamt: ' + euro(sumEin) + '   ·   Ausgaben gesamt: ' + euro(sumAus) + '   ·   Ergebnis: ' + euro(sumEin - sumAus), 14, y);
+    y += 14;
+  } else {
+    doc.setFontSize(10);
+    doc.setTextColor(140, 140, 140);
+    doc.text('Keine Kassenbuch-Einträge in diesem Monat.', 14, y + 4);
+    y += 16;
+  }
+
+  // ── Belege ──
+  const belegeZeilen = belegeDaten
+    .filter(b => b.datum && b.datum.slice(0, 7) === monatSchluessel)
+    .sort((a, b) => a.datum.localeCompare(b.datum))
+    .map(b => {
+      const statusText = b.status === 'bezahlt' ? 'Bezahlt' : ('Fällig am ' + (b.faelligkeit || '–'));
+      return [b.datum, b.plattform, b.rechnungsnr || '–', euro(b.betrag), b.mwst19 != null ? euro(b.mwst19) : '–', b.mwst7 != null ? euro(b.mwst7) : '–', statusText];
+    });
+  if (y > 250) { doc.addPage(); y = 20; }
+  doc.setFontSize(13);
+  doc.setTextColor(26, 42, 74);
+  doc.text('Belege', 14, y);
+  y += 4;
+  if (belegeZeilen.length) {
+    let sumBetrag = 0, sumMwst19 = 0, sumMwst7 = 0;
+    belegeDaten.filter(b => b.datum && b.datum.slice(0, 7) === monatSchluessel).forEach(b => {
+      sumBetrag += b.betrag || 0; sumMwst19 += b.mwst19 || 0; sumMwst7 += b.mwst7 || 0;
+    });
+    doc.autoTable({
+      startY: y,
+      head: [['Datum', 'Anbieter', 'Rechnungsnr.', 'Betrag', 'MwSt. 19%', 'MwSt. 7%', 'Status']],
+      body: belegeZeilen,
+      styles: { fontSize: 8.5 },
+      headStyles: { fillColor: [26, 42, 74], textColor: [212, 175, 55] },
+      margin: { left: 14, right: 14 }
+    });
+    y = doc.lastAutoTable.finalY + 6;
+    doc.setFontSize(10);
+    doc.setTextColor(26, 42, 74);
+    doc.text('Betrag gesamt: ' + euro(sumBetrag) + '   ·   MwSt. 19%: ' + euro(sumMwst19) + '   ·   MwSt. 7%: ' + euro(sumMwst7), 14, y);
+    y += 14;
+  } else {
+    doc.setFontSize(10);
+    doc.setTextColor(140, 140, 140);
+    doc.text('Keine Belege in diesem Monat.', 14, y + 4);
+    y += 16;
+  }
+
+  // ── Wareneingang ──
+  const weZeilen = weDaten
+    .filter(w => w.datum && w.datum.slice(0, 7) === monatSchluessel)
+    .sort((a, b) => a.datum.localeCompare(b.datum))
+    .map(w => {
+      const allOk = w.mengeOk && w.mhdOk && w.zustandOk;
+      return [w.datum, w.lieferant || '', w.temp !== null ? w.temp + ' °C' : '–', allOk ? 'OK' : 'Prüfen', w.bemerkung || ''];
+    });
+  if (y > 250) { doc.addPage(); y = 20; }
+  doc.setFontSize(13);
+  doc.setTextColor(26, 42, 74);
+  doc.text('Wareneingang', 14, y);
+  y += 4;
+  if (weZeilen.length) {
+    doc.autoTable({
+      startY: y,
+      head: [['Datum', 'Lieferant', 'Temp.', 'Status', 'Bemerkung']],
+      body: weZeilen,
+      styles: { fontSize: 9 },
+      headStyles: { fillColor: [26, 42, 74], textColor: [212, 175, 55] },
+      margin: { left: 14, right: 14 }
+    });
+  } else {
+    doc.setFontSize(10);
+    doc.setTextColor(140, 140, 140);
+    doc.text('Keine Wareneingang-Einträge in diesem Monat.', 14, y + 4);
+  }
+
+  doc.save('Buchhaltung-' + monatSchluessel + '.pdf');
+}
+
+(async function init() {
+  const ok = await checkAuth();
+  if (!ok) return;
+  const [kb, we, bel] = await Promise.all([
+    toolLoad('tagesgeschaeft-kassenbuch'),
+    toolLoad('tagesgeschaeft-wareneingang'),
+    toolLoad('tagesgeschaeft-belege')
+  ]);
+  kassenbuchDaten = kb || {};
+  weDaten = (we && we.items) || [];
+  belegeDaten = (bel && bel.items) || [];
+  bhAuswahlInitialisieren();
+  bhUebersichtAktualisieren();
+})();
+</script>
+</body>
+</html>
