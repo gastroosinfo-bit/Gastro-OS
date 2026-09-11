@@ -661,6 +661,7 @@ async function init() {
   pushStatusPruefen();
   renderToolbox();
   openModuleFromHash();
+  faelligeRechnungenPruefen();
 }
 
 function lockCard(m) {
@@ -1104,6 +1105,34 @@ function renderLockedModules() {
   }
 }
 
+async function faelligeRechnungenPruefen() {
+  const data = await dashToolLoad('tagesgeschaeft-belege');
+  const items = data.items || [];
+  const heuteDatum = new Date(); heuteDatum.setHours(0,0,0,0);
+  const relevante = [];
+  items.forEach(b => {
+    if (b.status !== 'faellig' || !b.faelligkeit) return;
+    const faelligDatum = new Date(b.faelligkeit + 'T00:00:00');
+    const diffTage = Math.round((faelligDatum - heuteDatum) / 86400000);
+    if (diffTage <= 7) relevante.push({ ...b, diffTage });
+  });
+  if (!relevante.length) return;
+
+  relevante.sort((a, b) => a.diffTage - b.diffTage);
+  const liste = document.getElementById('faellig-liste');
+  liste.innerHTML = relevante.map(b => {
+    const betragText = euro(b.betrag);
+    let satzText;
+    if (b.diffTage < 0) satzText = `Die Rechnung von <strong>${b.plattform}</strong> über <strong>${betragText}</strong> war vor ${Math.abs(b.diffTage)} ${Math.abs(b.diffTage) === 1 ? 'Tag' : 'Tagen'} fällig.`;
+    else if (b.diffTage === 0) satzText = `Heute ist die Rechnung von <strong>${b.plattform}</strong> über <strong>${betragText}</strong> fällig.`;
+    else satzText = `In ${b.diffTage} ${b.diffTage === 1 ? 'Tag' : 'Tagen'} ist die Rechnung von <strong>${b.plattform}</strong> über <strong>${betragText}</strong> fällig.`;
+    const farbe = b.diffTage < 0 ? '#a01818' : (b.diffTage <= 2 ? '#8a6400' : '#1a2a4a');
+    return `<div style="padding:10px 0;border-bottom:1px solid #f0e8d4;font-size:13.5px;color:${farbe};line-height:1.5;">${satzText}</div>`;
+  }).join('');
+  document.getElementById('faellig-overlay').style.display = 'flex';
+}
+function euro(n) { return (Number(n) || 0).toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €'; }
+
 async function doLogout() {
   document.cookie = 'gastro_os_session=; Path=/; Max-Age=0';
   window.location.href = 'login.html';
@@ -1111,6 +1140,20 @@ async function doLogout() {
 
 init().catch(err => console.error('Dashboard init error:', err));
 </script>
+<!-- FÄLLIGKEITS-POPUP -->
+<div id="faellig-overlay" style="display:none;position:fixed;inset:0;background:rgba(26,42,74,0.55);z-index:500;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#fff;border-radius:14px;max-width:480px;width:100%;box-shadow:0 12px 40px rgba(0,0,0,0.3);overflow:hidden;">
+    <div style="background:#1a2a4a;padding:18px 24px;display:flex;align-items:center;gap:12px;">
+      <span style="font-size:22px;">⏰</span>
+      <div style="font-family:Georgia,serif;font-size:17px;color:#d4af37;">Fällige Rechnungen</div>
+    </div>
+    <div id="faellig-liste" style="padding:20px 24px;max-height:360px;overflow-y:auto;"></div>
+    <div style="padding:14px 24px 20px;text-align:right;">
+      <button onclick="document.getElementById('faellig-overlay').style.display='none';" style="background:#1a6640;color:#fff;border:none;padding:9px 20px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;">Verstanden</button>
+    </div>
+  </div>
+</div>
+
 <script src="checklist-save.js"></script>
 </body>
 </html>
