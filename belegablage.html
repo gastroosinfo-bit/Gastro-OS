@@ -148,7 +148,7 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
     </div>
     <div style="overflow-x:auto;">
     <table class="data-table" id="beleg-tabelle">
-      <thead><tr><th>Datum</th><th>Anbieter</th><th>Rechnungsnr.</th><th>Betrag</th><th>MwSt. 19%</th><th>MwSt. 7%</th><th>Status</th><th>Datei</th><th></th></tr></thead>
+      <thead><tr><th></th><th>Datum</th><th>Anbieter</th><th>Rechnungsnr.</th><th>Betrag</th><th>MwSt. 19%</th><th>MwSt. 7%</th><th>Status</th><th>Datei</th><th></th></tr></thead>
       <tbody></tbody>
     </table>
     </div>
@@ -513,6 +513,11 @@ async function belegFaelligkeitInlineGeaendert(id, neuesDatum) {
   await toolSave('tagesgeschaeft-belege', { items: belegeDaten });
   belegRenderTabelle();
 }
+function belegBrauchtHandlung(b) {
+  if (b.plattform === 'Z-Bon') return b.status !== 'abgeglichen';
+  if (b.status === 'faellig' && b.faelligkeit && b.faelligkeit <= heute()) return true;
+  return false;
+}
 function belegRenderTabelle() {
   const tbody = document.querySelector('#beleg-tabelle tbody');
   tbody.innerHTML = '';
@@ -526,7 +531,9 @@ function belegRenderTabelle() {
   sorted.forEach(b => {
     if (b.datum.slice(0, 7) === aktMonat) sumMonat += b.betrag;
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${b.datum}</td><td>${b.plattform}</td><td>${b.rechnungsnr || '–'}</td><td>${euro(b.betrag)}</td><td>${b.mwst19 != null ? euro(b.mwst19) : '–'}</td><td>${b.mwst7 != null ? euro(b.mwst7) : '–'}</td><td>${belegStatusZelle(b)}</td><td><a href="#" onclick="belegOeffnen('${b.storagePath}');return false;">${b.dateiname}</a></td><td><button class="btn-del" onclick="belegLoeschen(${b.id})">✕</button></td>`;
+    const handlungHinweis = b.plattform === 'Z-Bon' ? 'Noch abzugleichen' : 'Zahlung fällig';
+    const warnZelle = belegBrauchtHandlung(b) ? `<span title="${handlungHinweis}" style="font-size:15px;">⚠️</span>` : '';
+    tr.innerHTML = `<td style="text-align:center;">${warnZelle}</td><td>${b.datum}</td><td>${b.plattform}</td><td>${b.rechnungsnr || '–'}</td><td>${euro(b.betrag)}</td><td>${b.mwst19 != null ? euro(b.mwst19) : '–'}</td><td>${b.mwst7 != null ? euro(b.mwst7) : '–'}</td><td>${belegStatusZelle(b)}</td><td><a href="#" onclick="belegOeffnen('${b.storagePath}');return false;">${b.dateiname}</a></td><td><button class="btn-del" onclick="belegLoeschen(${b.id})">✕</button></td>`;
     tbody.appendChild(tr);
   });
   document.getElementById('beleg-sum-monat').textContent = euro(sumMonat);
