@@ -12,7 +12,15 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
 <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png">
-<link rel="manifest" href="/manifest-reservierung.json">
+<link rel="manifest" href="/manifest-reservierung.json" id="manifest-link">
+<script>
+  (function() {
+    var code = new URLSearchParams(window.location.search).get('u');
+    if (code) {
+      document.getElementById('manifest-link').setAttribute('href', '/api/manifest?type=reservierung&code=' + encodeURIComponent(code));
+    }
+  })();
+</script>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
