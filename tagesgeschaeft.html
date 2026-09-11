@@ -101,6 +101,9 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
         <div class="field-group"><label>Karte (€)</label><input type="number" step="0.01" id="kb-karte" placeholder="0,00" onchange="kbZwischensumme()"></div>
         <div class="field-group"><label>Lieferdienste (€)</label><input type="number" step="0.01" id="kb-lieferdienste" placeholder="0,00" onchange="kbZwischensumme()"></div>
       </div>
+      <div class="grid3" style="margin-bottom:8px;">
+        <div class="field-group"><label>Überweisung (€)</label><input type="number" step="0.01" id="kb-ueberweisung" placeholder="0,00" onchange="kbZwischensumme()"></div>
+      </div>
       <div style="margin-bottom:18px;font-size:13px;background:#f5f0e8;border-radius:8px;padding:10px 14px;">
         <strong>Einnahmen gesamt:</strong> <span id="kb-zwischensumme-einnahmen">0,00 €</span>
       </div>
@@ -305,9 +308,10 @@ function kbZwischensumme() {
   const kasse = parseFloat(document.getElementById('kb-kasse').value) || 0;
   const karte = parseFloat(document.getElementById('kb-karte').value) || 0;
   const lieferdienste = parseFloat(document.getElementById('kb-lieferdienste').value) || 0;
+  const ueberweisung = parseFloat(document.getElementById('kb-ueberweisung').value) || 0;
   const wareneinkauf = parseFloat(document.getElementById('kb-wareneinkauf').value) || 0;
   const sonstiges = parseFloat(document.getElementById('kb-sonstiges').value) || 0;
-  const einnahmen = kasse + karte + lieferdienste;
+  const einnahmen = kasse + karte + lieferdienste + ueberweisung;
   const ausgaben = wareneinkauf + sonstiges;
   document.getElementById('kb-zwischensumme-einnahmen').textContent = euro(einnahmen);
   document.getElementById('kb-zwischensumme-ausgaben').textContent = euro(ausgaben);
@@ -320,6 +324,7 @@ async function kbSpeichernTag() {
     kasse: parseFloat(document.getElementById('kb-kasse').value) || 0,
     karte: parseFloat(document.getElementById('kb-karte').value) || 0,
     lieferdienste: parseFloat(document.getElementById('kb-lieferdienste').value) || 0,
+    ueberweisung: parseFloat(document.getElementById('kb-ueberweisung').value) || 0,
     wareneinkauf: parseFloat(document.getElementById('kb-wareneinkauf').value) || 0,
     sonstiges: parseFloat(document.getElementById('kb-sonstiges').value) || 0,
     notiz: document.getElementById('kb-notiz').value || ''
@@ -340,7 +345,7 @@ function kbRenderTabelle() {
   let sumEin = 0, sumAus = 0;
   tage.forEach(datum => {
     const t = kassenbuchDaten[datum];
-    const einnahmen = t.kasse + t.karte + t.lieferdienste;
+    const einnahmen = t.kasse + t.karte + t.lieferdienste + (t.ueberweisung || 0);
     const ausgaben = t.wareneinkauf + t.sonstiges;
     sumEin += einnahmen; sumAus += ausgaben;
     const tr = document.createElement('tr');
@@ -391,7 +396,7 @@ function monatsberichtErstellen() {
   let sumEin = 0, sumAus = 0;
   const kbZeilen = kbTage.map(datum => {
     const t = kassenbuchDaten[datum];
-    const einnahmen = t.kasse + t.karte + t.lieferdienste;
+    const einnahmen = t.kasse + t.karte + t.lieferdienste + (t.ueberweisung || 0);
     const ausgaben = t.wareneinkauf + t.sonstiges;
     sumEin += einnahmen; sumAus += ausgaben;
     return [datum, euro(einnahmen), euro(ausgaben), euro(einnahmen - ausgaben), t.notiz || ''];
