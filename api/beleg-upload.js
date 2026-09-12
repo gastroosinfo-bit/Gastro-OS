@@ -318,8 +318,12 @@ export default async function handler(req, res) {
     } catch (e) {
       return res.status(400).json({ error: 'Ungültige Datei.' });
     }
-    if (buffer.length > 8 * 1024 * 1024) {
-      return res.status(413).json({ error: 'Datei zu groß (max. 8 MB).' });
+    // Vercel begrenzt den gesamten Request-Body auf ca. 4,5 MB — durch die
+    // Base64-Kodierung wird eine Datei beim Hochladen ca. 33% größer, daher
+    // hier bewusst deutlich niedriger ansetzen, damit die Anfrage sicher
+    // durchkommt (statt von Vercel mit 413 abgewiesen zu werden).
+    if (buffer.length > 3 * 1024 * 1024) {
+      return res.status(413).json({ error: 'Datei zu groß (max. 3 MB, wegen Vercel-Upload-Grenze).' });
     }
 
     // ── Speisekarte: immer nur eine aktuelle Version pro Nutzer ──────────
@@ -351,7 +355,7 @@ export default async function handler(req, res) {
         }
         return res.status(200).json({ path });
       } catch (e) {
-        return res.status(500).json({ error: 'Fehler beim Hochladen der Speisekarte.' });
+        return res.status(500).json({ error: 'Fehler beim Hochladen der Speisekarte.', detail: String((e && e.message) || e) });
       }
     }
 
