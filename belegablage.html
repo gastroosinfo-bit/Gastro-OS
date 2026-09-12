@@ -264,6 +264,49 @@ function belegLieferantenDropdownAktualisieren() {
   });
 }
 const LIEFERDIENSTE = ['Lieferando', 'Wolt', 'Uber Eats'];
+// Die KI liest oft Varianten aus dem Dokumentenkopf aus (z. B. "Lieferando.de",
+// "Wolt Enterprises Oy", "Uber Eats / Uber Germany GmbH") — hier auf die
+// exakten Dropdown-Werte normalisieren, damit z. B. der passende Status-
+// Vorschlag zuverlässig greift.
+function belegNormalisierePlattform(name) {
+  if (!name) return name;
+  const n = name.toLowerCase();
+  if (n.includes('lieferando')) return 'Lieferando';
+  if (n.includes('wolt')) return 'Wolt';
+  if (n.includes('uber eats') || n.includes('ubereats') || n.includes('uber germany')) return 'Uber Eats';
+  if (n.includes('metro')) return 'Metro';
+  return name;
+}
+
+// Alle Status-Möglichkeiten stehen immer zur Auswahl — das System schlägt
+// beim Hochladen nur den passenden Wert vor, schränkt die Auswahl aber
+// nicht ein, damit der Nutzer jederzeit frei umschalten kann.
+const STATUS_OPTIONEN_ALLE = [
+  { value: 'bezahlt', label: '✓ Bezahlt' },
+  { value: 'faellig', label: 'Fällig am …' },
+  { value: 'ausstehend', label: 'Auszahlung ausstehend' },
+  { value: 'erhalten', label: '✓ Auszahlung erhalten' },
+  { value: 'offen', label: 'Noch zu prüfen' },
+  { value: 'abgeglichen', label: '✓ Abgeglichen' }
+];
+function belegStatusOptionenHtml(ausgewaehlterWert) {
+  return STATUS_OPTIONEN_ALLE.map(o => `<option value="${o.value}" ${o.value === ausgewaehlterWert ? 'selected' : ''}>${o.label}</option>`).join('');
+}
+function belegDatumFeldNoetig(status) {
+  return status === 'faellig' || status === 'ausstehend';
+}
+function belegStatusText(b) {
+  switch (b.status) {
+    case 'bezahlt': return 'Bezahlt';
+    case 'erhalten': return 'Geld erhalten';
+    case 'abgeglichen': return 'Abgeglichen';
+    case 'offen': return 'Noch zu prüfen';
+    case 'faellig': return 'Fällig am ' + (b.faelligkeit || '–');
+    case 'ausstehend': return 'Ausstehend, erwartet ' + (b.faelligkeit || '–');
+    default: return b.status || '–';
+  }
+}
+
 function belegPlattformGeaendert() {
   const select = document.getElementById('beleg-plattform');
   const eigenFeld = document.getElementById('beleg-plattform-eigen');
@@ -276,29 +319,21 @@ function belegPlattformGeaendert() {
   const statusSelect = document.getElementById('beleg-status');
   const statusLabel = document.getElementById('beleg-status-label');
   const faelligkeitLabel = document.getElementById('beleg-faelligkeit-label');
-  if (istZBon) {
-    statusLabel.textContent = 'Abgleich';
-    statusSelect.innerHTML = '<option value="offen">Noch zu prüfen</option><option value="abgeglichen">✓ OK – Abgeglichen</option>';
-    statusSelect.value = 'offen';
-  } else if (istLieferdienst) {
-    statusLabel.textContent = 'Auszahlung';
-    statusSelect.innerHTML = '<option value="ausstehend">Ausstehend</option><option value="erhalten">✓ Geld erhalten</option>';
-    statusSelect.value = 'ausstehend';
-    faelligkeitLabel.textContent = 'Erwartet am';
-  } else {
-    statusLabel.textContent = 'Status';
-    statusSelect.innerHTML = '<option value="bezahlt">Bezahlt</option><option value="faellig">Fällig am …</option>';
-    statusSelect.value = 'bezahlt';
-    faelligkeitLabel.textContent = 'Fällig am';
-  }
-  document.getElementById('beleg-faelligkeit-wrap').style.display = istLieferdienst ? 'flex' : 'none';
+  // Label und Vorauswahl passen sich dem Anbieter an — die Optionsliste selbst bleibt immer vollständig.
+  let vorschlag = 'bezahlt';
+  if (istZBon) { statusLabel.textContent = 'Abgleich'; vorschlag = 'offen'; faelligkeitLabel.textContent = 'Fällig am'; }
+  else if (istLieferdienst) { statusLabel.textContent = 'Auszahlung'; vorschlag = 'ausstehend'; faelligkeitLabel.textContent = 'Erwartet am'; }
+  else { statusLabel.textContent = 'Status'; vorschlag = 'bezahlt'; faelligkeitLabel.textContent = 'Fällig am'; }
+  statusSelect.innerHTML = belegStatusOptionenHtml(vorschlag);
+  document.getElementById('beleg-faelligkeit-wrap').style.display = belegDatumFeldNoetig(vorschlag) ? 'flex' : 'none';
 }
 function belegStatusGeaendert() {
   const status = document.getElementById('beleg-status').value;
   const wrap = document.getElementById('beleg-faelligkeit-wrap');
-  const istLieferdienst = LIEFERDIENSTE.includes(document.getElementById('beleg-plattform').value);
-  wrap.style.display = (status === 'faellig' || (istLieferdienst && status === 'ausstehend')) ? 'flex' : 'none';
-  if ((status === 'faellig' || status === 'ausstehend') && !document.getElementById('beleg-faelligkeit').value) {
+  const faelligkeitLabel = document.getElementById('beleg-faelligkeit-label');
+  wrap.style.display = belegDatumFeldNoetig(status) ? 'flex' : 'none';
+  faelligkeitLabel.textContent = status === 'ausstehend' ? 'Erwartet am' : 'Fällig am';
+  if (belegDatumFeldNoetig(status) && !document.getElementById('beleg-faelligkeit').value) {
     document.getElementById('beleg-faelligkeit').value = heute();
   }
 }
@@ -350,22 +385,23 @@ async function belegDateiGewaehlt(evt) {
       erkannt.push('Z-Bon erkannt');
     }
     if (extracted.plattform && !extracted.istZBon) {
+      const plattformNormalisiert = belegNormalisierePlattform(extracted.plattform);
       const select = document.getElementById('beleg-plattform');
       const eigenOption = select.querySelector('option[value="__eigener__"]');
-      let passendeOption = [...select.options].find(o => o.value === extracted.plattform);
+      let passendeOption = [...select.options].find(o => o.value === plattformNormalisiert);
       if (!passendeOption) {
         // Unbekannter Lieferant (z. B. "Lidl") — automatisch zur Liste hinzufügen
-        if (!eigeneLieferanten.includes(extracted.plattform)) {
-          eigeneLieferanten.push(extracted.plattform);
+        if (!eigeneLieferanten.includes(plattformNormalisiert)) {
+          eigeneLieferanten.push(plattformNormalisiert);
           await toolSave('tagesgeschaeft-belege-lieferanten', { namen: eigeneLieferanten });
         }
         const opt = document.createElement('option');
-        opt.value = extracted.plattform;
-        opt.textContent = extracted.plattform;
+        opt.value = plattformNormalisiert;
+        opt.textContent = plattformNormalisiert;
         select.insertBefore(opt, eigenOption);
         passendeOption = opt;
       }
-      select.value = extracted.plattform;
+      select.value = plattformNormalisiert;
       belegPlattformGeaendert();
       erkannt.push('Anbieter');
     }
@@ -481,44 +517,22 @@ async function belegLoeschen(id) {
   }
   belegRenderTabelle();
 }
+const STATUS_ERLEDIGT_WERTE = ['bezahlt', 'erhalten', 'abgeglichen'];
 function belegStatusZelle(b) {
-  if (b.plattform === 'Z-Bon') {
-    const istAbgeglichen = b.status === 'abgeglichen';
-    const rahmenFarbe = istAbgeglichen ? '#4aaa60' : '#d4af37';
-    return `
-      <div style="display:flex;flex-direction:column;gap:4px;min-width:140px;">
-        <select onchange="belegStatusInlineGeaendert(${b.id}, this.value)" style="border:1px solid ${rahmenFarbe};border-radius:5px;padding:4px 6px;font-size:11.5px;background:#fff;">
-          <option value="offen" ${!istAbgeglichen ? 'selected' : ''}>Noch zu prüfen</option>
-          <option value="abgeglichen" ${istAbgeglichen ? 'selected' : ''}>✓ OK – Abgeglichen</option>
-        </select>
-        ${!istAbgeglichen ? '<span style="font-size:10.5px;color:#8a6400;font-weight:700;">⏳ noch zu prüfen</span>' : ''}
-      </div>
-    `;
-  }
-  if (LIEFERDIENSTE.includes(b.plattform)) {
-    const erhalten = b.status === 'erhalten';
-    const rahmenFarbe = erhalten ? '#4aaa60' : '#d4af37';
-    return `
-      <div style="display:flex;flex-direction:column;gap:4px;min-width:140px;">
-        <select onchange="belegStatusInlineGeaendert(${b.id}, this.value)" style="border:1px solid ${rahmenFarbe};border-radius:5px;padding:4px 6px;font-size:11.5px;background:#fff;">
-          <option value="ausstehend" ${!erhalten ? 'selected' : ''}>Ausstehend</option>
-          <option value="erhalten" ${erhalten ? 'selected' : ''}>✓ Geld erhalten</option>
-        </select>
-        ${!erhalten ? `<input type="date" value="${b.faelligkeit || ''}" onchange="belegFaelligkeitInlineGeaendert(${b.id}, this.value)" style="border:1px solid #e0d8c8;border-radius:5px;padding:3px 6px;font-size:11.5px;">` : ''}
-        ${!erhalten ? '<span style="font-size:10.5px;color:#8a6400;font-weight:700;">⏳ ausstehend</span>' : ''}
-      </div>
-    `;
-  }
-  const ueberfaellig = b.status === 'faellig' && b.faelligkeit && b.faelligkeit < heute();
-  const rahmenFarbe = b.status === 'bezahlt' ? '#4aaa60' : (ueberfaellig ? '#c0392b' : '#d4af37');
+  const erledigt = STATUS_ERLEDIGT_WERTE.includes(b.status);
+  const ueberfaellig = belegDatumFeldNoetig(b.status) && b.faelligkeit && b.faelligkeit < heute();
+  const rahmenFarbe = erledigt ? '#4aaa60' : (ueberfaellig ? '#c0392b' : '#d4af37');
+  let warnLabel = '';
+  if (b.status === 'offen') warnLabel = '⏳ noch zu prüfen';
+  else if (b.status === 'ausstehend') warnLabel = ueberfaellig ? '⚠ überfällig' : '⏳ ausstehend';
+  else if (b.status === 'faellig' && ueberfaellig) warnLabel = '⚠ überfällig';
   return `
-    <div style="display:flex;flex-direction:column;gap:4px;min-width:140px;">
+    <div style="display:flex;flex-direction:column;gap:4px;min-width:170px;">
       <select onchange="belegStatusInlineGeaendert(${b.id}, this.value)" style="border:1px solid ${rahmenFarbe};border-radius:5px;padding:4px 6px;font-size:11.5px;background:#fff;">
-        <option value="bezahlt" ${b.status === 'bezahlt' ? 'selected' : ''}>✓ Bezahlt</option>
-        <option value="faellig" ${b.status === 'faellig' ? 'selected' : ''}>Fällig am …</option>
+        ${belegStatusOptionenHtml(b.status)}
       </select>
-      ${b.status === 'faellig' ? `<input type="date" value="${b.faelligkeit || ''}" onchange="belegFaelligkeitInlineGeaendert(${b.id}, this.value)" style="border:1px solid #e0d8c8;border-radius:5px;padding:3px 6px;font-size:11.5px;">` : ''}
-      ${ueberfaellig ? '<span style="font-size:10.5px;color:#c0392b;font-weight:700;">⚠ überfällig</span>' : ''}
+      ${belegDatumFeldNoetig(b.status) ? `<input type="date" value="${b.faelligkeit || ''}" onchange="belegFaelligkeitInlineGeaendert(${b.id}, this.value)" style="border:1px solid #e0d8c8;border-radius:5px;padding:3px 6px;font-size:11.5px;">` : ''}
+      ${warnLabel ? `<span style="font-size:10.5px;color:${ueberfaellig ? '#c0392b' : '#8a6400'};font-weight:700;">${warnLabel}</span>` : ''}
     </div>
   `;
 }
@@ -526,7 +540,7 @@ async function belegStatusInlineGeaendert(id, neuerStatus) {
   const item = belegeDaten.find(b => b.id === id);
   if (!item) return;
   item.status = neuerStatus;
-  if ((neuerStatus === 'faellig' || neuerStatus === 'ausstehend') && !item.faelligkeit) item.faelligkeit = heute();
+  if (belegDatumFeldNoetig(neuerStatus) && !item.faelligkeit) item.faelligkeit = heute();
   await toolSave('tagesgeschaeft-belege', { items: belegeDaten });
   belegRenderTabelle();
 }
@@ -538,8 +552,8 @@ async function belegFaelligkeitInlineGeaendert(id, neuesDatum) {
   belegRenderTabelle();
 }
 function belegBrauchtHandlung(b) {
-  if (b.plattform === 'Z-Bon') return b.status !== 'abgeglichen';
-  if (LIEFERDIENSTE.includes(b.plattform)) return b.status !== 'erhalten';
+  if (STATUS_ERLEDIGT_WERTE.includes(b.status)) return false;
+  if (b.status === 'offen' || b.status === 'ausstehend') return true;
   if (b.status === 'faellig' && b.faelligkeit && b.faelligkeit <= heute()) return true;
   return false;
 }
@@ -556,7 +570,7 @@ function belegRenderTabelle() {
   sorted.forEach(b => {
     if (b.datum.slice(0, 7) === aktMonat) sumMonat += b.betrag;
     const tr = document.createElement('tr');
-    const handlungHinweis = b.plattform === 'Z-Bon' ? 'Noch abzugleichen' : (LIEFERDIENSTE.includes(b.plattform) ? 'Auszahlung ausstehend' : 'Zahlung fällig');
+    const handlungHinweis = b.status === 'offen' ? 'Noch abzugleichen' : (b.status === 'ausstehend' ? 'Auszahlung ausstehend' : 'Zahlung fällig');
     const warnZelle = belegBrauchtHandlung(b) ? `<span title="${handlungHinweis}" style="font-size:15px;">⚠️</span>` : '';
     tr.innerHTML = `<td style="text-align:center;">${warnZelle}</td><td>${b.datum}</td><td>${b.plattform}</td><td>${b.rechnungsnr || '–'}</td><td>${euro(b.betrag)}</td><td>${b.mwst19 != null ? euro(b.mwst19) : '–'}</td><td>${b.mwst7 != null ? euro(b.mwst7) : '–'}</td><td>${belegStatusZelle(b)}</td><td><a href="#" onclick="belegOeffnen('${b.storagePath}');return false;">${b.dateiname}</a></td><td><button class="btn-del" onclick="belegLoeschen(${b.id})">✕</button></td>`;
     tbody.appendChild(tr);
@@ -612,11 +626,7 @@ function belegMonatsberichtErstellen() {
     sumBetrag += b.betrag || 0;
     sumMwst19 += b.mwst19 || 0;
     sumMwst7 += b.mwst7 || 0;
-    const statusText = b.plattform === 'Z-Bon'
-      ? (b.status === 'abgeglichen' ? 'Abgeglichen' : 'Noch zu prüfen')
-      : LIEFERDIENSTE.includes(b.plattform)
-      ? (b.status === 'erhalten' ? 'Geld erhalten' : ('Ausstehend, erwartet ' + (b.faelligkeit || '–')))
-      : (b.status === 'bezahlt' ? 'Bezahlt' : ('Fällig am ' + (b.faelligkeit || '–')));
+    const statusText = belegStatusText(b);
     return [b.datum, b.plattform, b.rechnungsnr || '–', euro(b.betrag), b.mwst19 != null ? euro(b.mwst19) : '–', b.mwst7 != null ? euro(b.mwst7) : '–', statusText];
   });
 

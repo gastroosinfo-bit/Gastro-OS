@@ -956,24 +956,18 @@ async function belegeFaelligBadgePruefen() {
   const items = data.items || [];
   const heuteDatum = new Date(); heuteDatum.setHours(0,0,0,0);
   const heuteStr = heuteDatum.toISOString().slice(0, 10);
-  const LIEFERDIENSTE = ['Lieferando', 'Wolt', 'Uber Eats'];
   let anzahl = 0;
   items.forEach(b => {
-    if (b.plattform === 'Z-Bon') {
-      if (b.status !== 'abgeglichen' && b.datum && b.datum < heuteStr) anzahl++;
+    if (b.status === 'offen') {
+      if (b.datum && b.datum < heuteStr) anzahl++;
       return;
     }
-    if (LIEFERDIENSTE.includes(b.plattform)) {
-      if (b.status === 'erhalten' || !b.faelligkeit) return;
-      const erwartetDatum = new Date(b.faelligkeit + 'T00:00:00');
-      const diffTage = Math.round((erwartetDatum - heuteDatum) / 86400000);
+    if (b.status === 'ausstehend' || b.status === 'faellig') {
+      if (!b.faelligkeit) return;
+      const bezugsDatum = new Date(b.faelligkeit + 'T00:00:00');
+      const diffTage = Math.round((bezugsDatum - heuteDatum) / 86400000);
       if (diffTage <= 7) anzahl++;
-      return;
     }
-    if (b.status !== 'faellig' || !b.faelligkeit) return;
-    const faelligDatum = new Date(b.faelligkeit + 'T00:00:00');
-    const diffTage = Math.round((faelligDatum - heuteDatum) / 86400000);
-    if (diffTage <= 7) anzahl++;
   });
   const badge = document.getElementById('belege-faellig-badge');
   if (badge) {
@@ -1159,22 +1153,20 @@ async function faelligeRechnungenPruefen() {
   const items = data.items || [];
   const heuteDatum = new Date(); heuteDatum.setHours(0,0,0,0);
   const heuteStr = heuteDatum.toISOString().slice(0, 10);
-  const LIEFERDIENSTE = ['Lieferando', 'Wolt', 'Uber Eats'];
   const relevante = [];
   items.forEach(b => {
-    if (LIEFERDIENSTE.includes(b.plattform)) return;
     if (b.status !== 'faellig' || !b.faelligkeit) return;
     const faelligDatum = new Date(b.faelligkeit + 'T00:00:00');
     const diffTage = Math.round((faelligDatum - heuteDatum) / 86400000);
     if (diffTage <= 7) relevante.push({ ...b, diffTage });
   });
 
-  const offeneZBons = items.filter(b => b.plattform === 'Z-Bon' && b.status !== 'abgeglichen' && b.datum && b.datum < heuteStr);
+  const offeneZBons = items.filter(b => b.status === 'offen' && b.datum && b.datum < heuteStr);
   offeneZBons.sort((a, b) => a.datum.localeCompare(b.datum));
 
   const offeneAuszahlungen = [];
   items.forEach(b => {
-    if (!LIEFERDIENSTE.includes(b.plattform) || b.status === 'erhalten' || !b.faelligkeit) return;
+    if (b.status !== 'ausstehend' || !b.faelligkeit) return;
     const erwartetDatum = new Date(b.faelligkeit + 'T00:00:00');
     const diffTage = Math.round((erwartetDatum - heuteDatum) / 86400000);
     if (diffTage <= 7) offeneAuszahlungen.push({ ...b, diffTage });
