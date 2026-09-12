@@ -448,6 +448,35 @@ export default async function handler(req, res) {
       }
     }
 
+    // ── Stornobelege: reiner Datei-Upload ohne KI-Auslese ────────────────
+    if (zweck === 'storno') {
+      if (!filename) {
+        return res.status(400).json({ error: 'filename fehlt.' });
+      }
+      try {
+        const path = `${safeUserFolder(email)}/${Date.now()}-${safeFileName(filename)}`;
+        const uploadRes = await fetch(
+          `${SUPABASE_URL}/storage/v1/object/${BUCKET}/${path}`,
+          {
+            method: 'POST',
+            headers: {
+              'apikey': SUPABASE_SERVICE_KEY,
+              'Authorization': 'Bearer ' + SUPABASE_SERVICE_KEY,
+              'Content-Type': contentType || 'application/pdf'
+            },
+            body: buffer
+          }
+        );
+        if (!uploadRes.ok) {
+          const errText = await uploadRes.text();
+          return res.status(502).json({ error: 'Upload fehlgeschlagen.', detail: errText });
+        }
+        return res.status(200).json({ path });
+      } catch (e) {
+        return res.status(500).json({ error: 'Fehler beim Hochladen des Stornobelegs.', detail: String((e && e.message) || e) });
+      }
+    }
+
     if (analyzeOnly) {
       const extracted = await belegAuslesen(buffer, contentType);
       return res.status(200).json({ extracted });
