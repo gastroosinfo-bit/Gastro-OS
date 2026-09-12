@@ -255,16 +255,22 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
 
   <div class="tab-panel" id="panel-speisekarte">
     <div class="section">
-      <div class="section-head">Aktuelle Speisekarte</div>
-      <div id="sk-aktuell-anzeige" style="margin-bottom:16px;font-size:13px;color:#5a6a85;">Wird geladen …</div>
+      <div class="section-head">Speisekarte hochladen</div>
       <div class="upload-drop" onclick="document.getElementById('sk-datei').click()" style="border:2px dashed #d4af37;border-radius:10px;padding:24px;text-align:center;color:#8090a8;font-size:13px;cursor:pointer;">
-        📋 Klicken, um eine neue Speisekarte (Foto oder PDF) hochzuladen<br>
+        📋 Klicken, um eine oder mehrere Seiten (Fotos oder PDFs) hochzuladen<br>
         <span id="sk-datei-name" style="font-weight:600;color:#1a2a4a;"></span>
       </div>
-      <input type="file" id="sk-datei" accept="application/pdf,image/*" style="display:none;" onchange="skDateiGewaehlt(event)">
-      <div style="font-size:11.5px;color:#8090a8;margin-top:6px;">Max. 3 MB, PDF oder Foto (JPG/PNG). Auf dem Handy kann direkt die Kamera genutzt werden. Eine neue Speisekarte ersetzt automatisch die alte — du musst nichts vorher löschen.</div>
-      <button class="btn-add" id="sk-upload-btn" style="margin-top:16px;display:none;" onclick="skHochladen()">⬆️ Neue Speisekarte hochladen</button>
+      <input type="file" id="sk-datei" accept="application/pdf,image/*" multiple style="display:none;" onchange="skDateiGewaehlt(event)">
+      <div style="font-size:11.5px;color:#8090a8;margin-top:6px;">Max. 3 MB pro Datei, PDF oder Foto (JPG/PNG). Bei mehrseitigen Speisekarten einfach mehrere Fotos/PDFs auf einmal auswählen — sie werden alle einzeln aufgelistet und ersetzen nichts automatisch. Alte Versionen kannst du selbst über das ✕ entfernen, wenn du magst.</div>
+      <button class="btn-add" id="sk-upload-btn" style="margin-top:16px;display:none;" onclick="skHochladen()">⬆️ Hochladen</button>
       <span class="save-msg" id="sk-save-msg">✓ Hochgeladen</span>
+    </div>
+    <div class="section">
+      <div class="section-head">Hochgeladene Speisekarten-Dateien</div>
+      <table class="data-table" id="sk-tabelle">
+        <thead><tr><th>Datei</th><th>Hochgeladen am</th><th></th></tr></thead>
+        <tbody></tbody>
+      </table>
     </div>
   </div>
 
@@ -285,7 +291,7 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
 
       <div id="ab-artikel-liste" style="margin-top:16px;display:none;">
         <table class="data-table" style="margin-top:0;">
-          <thead><tr><th>Gericht</th><th>Menge</th><th></th></tr></thead>
+          <thead><tr><th>Gericht</th><th>Menge</th><th>Kategorie</th><th>Kanal</th><th></th></tr></thead>
           <tbody id="ab-artikel-tbody"></tbody>
         </table>
         <button class="btn-add" style="background:transparent;color:#1a6640;border:1px solid #1a6640;margin-top:10px;" onclick="abZeileHinzufuegen()">+ Zeile hinzufügen</button>
@@ -783,7 +789,8 @@ function notizRenderListe() {
 }
 
 // ─── SPEISEKARTE ─────────────────────────────────────────────────────────
-let skAusgewaehlteDatei = null;
+let skAusgewaehlteDateien = [];
+let skDaten = { items: [] };
 
 function dateiZuBase64Sk(file) {
   return new Promise((resolve, reject) => {
@@ -795,73 +802,91 @@ function dateiZuBase64Sk(file) {
 }
 
 async function skInit() {
-  await skAnzeigeAktualisieren();
+  const geladen = await toolLoad('tagesgeschaeft-speisekarte');
+  skDaten = (geladen && Array.isArray(geladen.items)) ? geladen : { items: [] };
+  skRenderTabelle();
 }
 
-async function skAnzeigeAktualisieren() {
-  const daten = await toolLoad('tagesgeschaeft-speisekarte');
-  const anzeige = document.getElementById('sk-aktuell-anzeige');
-  if (daten && daten.path) {
-    const datumText = daten.hochgeladenAm ? new Date(daten.hochgeladenAm).toLocaleString('de-DE') : '';
-    anzeige.innerHTML = `📋 Aktuelle Speisekarte: <a href="#" onclick="skOeffnen();return false;" style="color:#1a6640;font-weight:600;">${daten.dateiname || 'Speisekarte öffnen'}</a>` + (datumText ? ` <span style="color:#8090a8;">— hochgeladen am ${datumText}</span>` : '');
-  } else {
-    anzeige.textContent = 'Noch keine Speisekarte hochgeladen.';
-  }
+function skRenderTabelle() {
+  const tbody = document.querySelector('#sk-tabelle tbody');
+  tbody.innerHTML = '';
+  const items = [...skDaten.items].sort((a, b) => (b.hochgeladenAm || '').localeCompare(a.hochgeladenAm || ''));
+  items.forEach(item => {
+    const datumText = item.hochgeladenAm ? new Date(item.hochgeladenAm).toLocaleString('de-DE') : '–';
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td><a href="#" onclick="skOeffnen('${item.id}');return false;">${item.dateiname || 'Datei öffnen'}</a></td><td>${datumText}</td><td><button class="btn-del" onclick="skLoeschen('${item.id}')">✕</button></td>`;
+    tbody.appendChild(tr);
+  });
 }
 
 function skDateiGewaehlt(evt) {
-  const file = evt.target.files[0];
-  if (!file) return;
-  if (file.size > 3 * 1024 * 1024) {
-    alert('Diese Datei ist zu groß (' + (file.size / 1024 / 1024).toFixed(1) + ' MB). Bitte max. 3 MB — z. B. das Foto etwas komprimieren oder in geringerer Auflösung neu aufnehmen.');
+  const dateien = [...evt.target.files];
+  if (!dateien.length) return;
+  const zuGross = dateien.find(f => f.size > 3 * 1024 * 1024);
+  if (zuGross) {
+    alert('Die Datei "' + zuGross.name + '" ist zu groß (' + (zuGross.size / 1024 / 1024).toFixed(1) + ' MB). Bitte max. 3 MB pro Datei — z. B. das Foto etwas komprimieren oder in geringerer Auflösung neu aufnehmen.');
     evt.target.value = '';
     return;
   }
-  skAusgewaehlteDatei = file;
-  document.getElementById('sk-datei-name').textContent = file.name;
+  skAusgewaehlteDateien = dateien;
+  document.getElementById('sk-datei-name').textContent = dateien.length === 1 ? dateien[0].name : dateien.length + ' Dateien ausgewählt';
   document.getElementById('sk-upload-btn').style.display = 'inline-block';
 }
 
 async function skHochladen() {
-  if (!skAusgewaehlteDatei) return;
+  if (!skAusgewaehlteDateien.length) return;
   try {
-    const base64 = await dateiZuBase64Sk(skAusgewaehlteDatei);
-    const contentType = skAusgewaehlteDatei.type || 'application/pdf';
-    const res = await fetch('/api/beleg-upload', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ zweck: 'speisekarte', filename: skAusgewaehlteDatei.name, contentBase64: base64, contentType })
-    });
-    const result = await res.json().catch(() => ({}));
-    if (!res.ok) {
-      alert('Upload fehlgeschlagen (Status ' + res.status + '): ' + (result.error || 'Unbekannter Fehler') + (result.detail ? '\n\nDetail: ' + result.detail : ''));
-      return;
+    for (const datei of skAusgewaehlteDateien) {
+      const base64 = await dateiZuBase64Sk(datei);
+      const contentType = datei.type || 'application/pdf';
+      const res = await fetch('/api/beleg-upload', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ zweck: 'speisekarte', filename: datei.name, contentBase64: base64, contentType })
+      });
+      const result = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        alert('Upload von "' + datei.name + '" fehlgeschlagen (Status ' + res.status + '): ' + (result.error || 'Unbekannter Fehler') + (result.detail ? '\n\nDetail: ' + result.detail : ''));
+        continue;
+      }
+      skDaten.items.push({
+        id: Date.now() + '-' + Math.random().toString(36).slice(2, 8),
+        path: result.path,
+        contentType,
+        dateiname: datei.name,
+        hochgeladenAm: new Date().toISOString()
+      });
     }
-    await toolSave('tagesgeschaeft-speisekarte', {
-      path: result.path,
-      contentType,
-      dateiname: skAusgewaehlteDatei.name,
-      hochgeladenAm: new Date().toISOString()
-    });
+    await toolSave('tagesgeschaeft-speisekarte', skDaten);
     flashSaved('sk-save-msg');
-    skAusgewaehlteDatei = null;
+    skAusgewaehlteDateien = [];
     document.getElementById('sk-datei-name').textContent = '';
     document.getElementById('sk-datei').value = '';
     document.getElementById('sk-upload-btn').style.display = 'none';
-    await skAnzeigeAktualisieren();
+    skRenderTabelle();
   } catch (e) {
     alert('Fehler beim Hochladen: ' + (e && e.message ? e.message : e));
   }
 }
 
-async function skOeffnen() {
-  const daten = await toolLoad('tagesgeschaeft-speisekarte');
-  if (!daten || !daten.path) return;
+async function skOeffnen(id) {
+  const item = skDaten.items.find(i => i.id === id);
+  if (!item) return;
   try {
-    const res = await fetch('/api/beleg-upload?path=' + encodeURIComponent(daten.path));
+    const res = await fetch('/api/beleg-upload?path=' + encodeURIComponent(item.path));
     const d = await res.json();
     if (d.url) window.open(d.url, '_blank');
   } catch (e) {}
+}
+
+async function skLoeschen(id) {
+  const item = skDaten.items.find(i => i.id === id);
+  skDaten.items = skDaten.items.filter(i => i.id !== id);
+  await toolSave('tagesgeschaeft-speisekarte', skDaten);
+  if (item) {
+    fetch('/api/beleg-upload', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ path: item.path }) }).catch(() => {});
+  }
+  skRenderTabelle();
 }
 
 // ─── ARTIKELBERICHT ──────────────────────────────────────────────────────
@@ -896,16 +921,17 @@ async function abInit() {
   document.getElementById('ab-rank-monat').value = heute().slice(5, 7);
 }
 
-function abZeileRendern(gericht, menge) {
+function abZeileRendern(gericht, menge, kategorie, kanal) {
   const tbody = document.getElementById('ab-artikel-tbody');
   const tr = document.createElement('tr');
-  tr.innerHTML = `<td><input type="text" value="${(gericht || '').replace(/"/g, '&quot;')}" style="width:100%;border:1px solid #e0d8c8;border-radius:5px;padding:5px 7px;font-size:12.5px;"></td><td><input type="number" value="${menge != null ? menge : ''}" style="width:80px;border:1px solid #e0d8c8;border-radius:5px;padding:5px 7px;font-size:12.5px;"></td><td><button class="btn-del" onclick="this.closest('tr').remove()">✕</button></td>`;
+  const istGetraenk = kategorie === 'getraenk';
+  tr.innerHTML = `<td><input type="text" value="${(gericht || '').replace(/"/g, '&quot;')}" style="width:100%;border:1px solid #e0d8c8;border-radius:5px;padding:5px 7px;font-size:12.5px;"></td><td><input type="number" value="${menge != null ? menge : ''}" style="width:70px;border:1px solid #e0d8c8;border-radius:5px;padding:5px 7px;font-size:12.5px;"></td><td><select style="border:1px solid #e0d8c8;border-radius:5px;padding:5px 7px;font-size:12.5px;"><option value="speise" ${!istGetraenk ? 'selected' : ''}>🍽️ Speise</option><option value="getraenk" ${istGetraenk ? 'selected' : ''}>🥤 Getränk</option></select></td><td><input type="text" value="${(kanal || '').replace(/"/g, '&quot;')}" placeholder="optional" style="width:100px;border:1px solid #e0d8c8;border-radius:5px;padding:5px 7px;font-size:12.5px;"></td><td><button class="btn-del" onclick="this.closest('tr').remove()">✕</button></td>`;
   tbody.appendChild(tr);
 }
 function abZeileHinzufuegen() {
   document.getElementById('ab-artikel-liste').style.display = 'block';
   document.getElementById('ab-speichern-btn').style.display = 'inline-block';
-  abZeileRendern('', '');
+  abZeileRendern('', '', 'speise', '');
 }
 
 async function abDateiGewaehlt(evt) {
@@ -937,7 +963,7 @@ async function abDateiGewaehlt(evt) {
     document.getElementById('ab-artikel-liste').style.display = 'block';
     document.getElementById('ab-speichern-btn').style.display = 'inline-block';
     if (artikel.length) {
-      artikel.forEach(a => abZeileRendern(a.gericht, a.menge));
+      artikel.forEach(a => abZeileRendern(a.gericht, a.menge, a.kategorie, a.kanal));
       hinweis.textContent = '✓ ' + artikel.length + ' Artikel-Zeilen erkannt — bitte kurz prüfen.';
     } else {
       hinweis.textContent = 'ℹ️ Konnte nichts automatisch auslesen — bitte Zeilen manuell mit "+ Zeile hinzufügen" eintragen.';
@@ -955,7 +981,13 @@ async function abBerichtSpeichern() {
   const zeilen = [...document.querySelectorAll('#ab-artikel-tbody tr')];
   const items = zeilen.map(tr => {
     const inputs = tr.querySelectorAll('input');
-    return { gericht: inputs[0].value.trim(), menge: parseFloat(inputs[1].value) || 0 };
+    const select = tr.querySelector('select');
+    return {
+      gericht: inputs[0].value.trim(),
+      menge: parseFloat(inputs[1].value) || 0,
+      kategorie: select ? select.value : 'speise',
+      kanal: inputs[2] && inputs[2].value.trim() ? inputs[2].value.trim() : null
+    };
   }).filter(a => a.gericht);
 
   if (!items.length) { alert('Bitte mindestens ein Gericht mit Menge eintragen.'); return; }
@@ -1015,11 +1047,15 @@ function abDetailAnzeigen(datum) {
   const eintrag = artikelberichteDaten[datum];
   if (!eintrag) return;
   const items = [...(eintrag.items || [])].sort((a, b) => (b.menge || 0) - (a.menge || 0));
-  let html = items.map(a => `
+  let html = items.map(a => {
+    const icon = a.kategorie === 'getraenk' ? '🥤' : '🍽️';
+    const kanalText = a.kanal ? ` <span style="color:#a0aabd;">· ${a.kanal}</span>` : '';
+    return `
     <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f0e8d4;font-size:13px;">
-      <span style="color:#5a6a85;">${a.gericht}</span>
+      <span style="color:#5a6a85;">${icon} ${a.gericht}${kanalText}</span>
       <span style="font-weight:600;color:#1a2a4a;">${a.menge}x</span>
-    </div>`).join('');
+    </div>`;
+  }).join('');
   if (eintrag.dateiname) {
     html += `<div style="margin-top:14px;font-size:12px;color:#8090a8;">Quelle: ${eintrag.dateiname}</div>`;
   }
@@ -1037,40 +1073,49 @@ function abMonatSchluessel() {
 
 function abRankingBerechnen() {
   const monatSchluessel = abMonatSchluessel();
-  const summen = {};
+  const summenSpeisen = {};
+  const summenGetraenke = {};
   Object.keys(artikelberichteDaten).forEach(datum => {
     if (datum.slice(0, 7) !== monatSchluessel) return;
     (artikelberichteDaten[datum].items || []).forEach(a => {
       const key = a.gericht.trim();
-      summen[key] = (summen[key] || 0) + (a.menge || 0);
+      const ziel = a.kategorie === 'getraenk' ? summenGetraenke : summenSpeisen;
+      ziel[key] = (ziel[key] || 0) + (a.menge || 0);
     });
   });
-  return Object.entries(summen)
+  const sortiert = (summen) => Object.entries(summen)
     .map(([gericht, menge]) => ({ gericht, menge }))
     .sort((a, b) => b.menge - a.menge);
+  return { speisen: sortiert(summenSpeisen), getraenke: sortiert(summenGetraenke) };
+}
+
+function abRankingTabelleHtml(titel, liste) {
+  if (!liste.length) return '';
+  let html = `<div style="font-size:12px;font-weight:700;color:#8090a8;text-transform:uppercase;letter-spacing:0.5px;margin:14px 0 8px;">${titel}</div>`;
+  html += '<table class="data-table" style="margin-top:0;"><thead><tr><th>Rang</th><th>Gericht</th><th>Menge verkauft</th></tr></thead><tbody>';
+  liste.forEach((r, i) => {
+    html += `<tr><td>${i + 1}.</td><td>${r.gericht}</td><td>${r.menge}x</td></tr>`;
+  });
+  html += '</tbody></table>';
+  return html;
 }
 
 function abRankingAnzeigen() {
-  const ranking = abRankingBerechnen();
+  const { speisen, getraenke } = abRankingBerechnen();
   const container = document.getElementById('ab-ranking-ergebnis');
   const pdfBtn = document.getElementById('ab-pdf-btn');
-  if (!ranking.length) {
+  if (!speisen.length && !getraenke.length) {
     container.innerHTML = '<div style="color:#8090a8;font-size:13px;padding:10px 0;">Keine Artikelberichte für diesen Monat gefunden.</div>';
     pdfBtn.style.display = 'none';
     return;
   }
-  let html = '<table class="data-table"><thead><tr><th>Rang</th><th>Gericht</th><th>Menge verkauft</th></tr></thead><tbody>';
-  ranking.forEach((r, i) => {
-    html += `<tr><td>${i + 1}.</td><td>${r.gericht}</td><td>${r.menge}x</td></tr>`;
-  });
-  html += '</tbody></table>';
-  container.innerHTML = html;
+  container.innerHTML = abRankingTabelleHtml('🍽️ Speisen', speisen) + abRankingTabelleHtml('🥤 Getränke', getraenke);
   pdfBtn.style.display = 'inline-block';
 }
 
 function abRankingPdf() {
-  const ranking = abRankingBerechnen();
-  if (!ranking.length) return;
+  const { speisen, getraenke } = abRankingBerechnen();
+  if (!speisen.length && !getraenke.length) return;
   const monatSchluessel = abMonatSchluessel();
   const monatName = MONATSNAMEN[parseInt(monatSchluessel.slice(5, 7))];
   const jahr = monatSchluessel.slice(0, 4);
@@ -1079,20 +1124,39 @@ function abRankingPdf() {
   const doc = new jsPDF();
   doc.setFontSize(16);
   doc.setTextColor(26, 42, 74);
-  doc.text('GASTRO-OS – Monats-Ranking meistverkaufter Gerichte', 14, 18);
+  doc.text('GASTRO-OS – Monats-Ranking meistverkaufter Artikel', 14, 18);
   doc.setFontSize(11);
   doc.setTextColor(90, 106, 128);
   doc.text(monatName + ' ' + jahr, 14, 25);
 
-  const zeilen = ranking.map((r, i) => [String(i + 1) + '.', r.gericht, r.menge + 'x']);
-  doc.autoTable({
-    startY: 32,
-    head: [['Rang', 'Gericht', 'Menge verkauft']],
-    body: zeilen,
-    styles: { fontSize: 9.5 },
-    headStyles: { fillColor: [26, 42, 74], textColor: [212, 175, 55] },
-    margin: { left: 14, right: 14 }
-  });
+  let y = 32;
+  if (speisen.length) {
+    doc.setFontSize(12);
+    doc.setTextColor(26, 42, 74);
+    doc.text('Speisen', 14, y);
+    doc.autoTable({
+      startY: y + 4,
+      head: [['Rang', 'Gericht', 'Menge verkauft']],
+      body: speisen.map((r, i) => [String(i + 1) + '.', r.gericht, r.menge + 'x']),
+      styles: { fontSize: 9.5 },
+      headStyles: { fillColor: [26, 42, 74], textColor: [212, 175, 55] },
+      margin: { left: 14, right: 14 }
+    });
+    y = doc.lastAutoTable.finalY + 12;
+  }
+  if (getraenke.length) {
+    doc.setFontSize(12);
+    doc.setTextColor(26, 42, 74);
+    doc.text('Getränke', 14, y);
+    doc.autoTable({
+      startY: y + 4,
+      head: [['Rang', 'Gericht', 'Menge verkauft']],
+      body: getraenke.map((r, i) => [String(i + 1) + '.', r.gericht, r.menge + 'x']),
+      styles: { fontSize: 9.5 },
+      headStyles: { fillColor: [26, 42, 74], textColor: [212, 175, 55] },
+      margin: { left: 14, right: 14 }
+    });
+  }
 
   doc.save('Artikel-Ranking-' + monatSchluessel + '.pdf');
 }
