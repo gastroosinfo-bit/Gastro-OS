@@ -90,6 +90,7 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
     <button class="tab-btn" data-tab="notizen" onclick="switchTab('notizen')">📝 Notizen</button>
     <button class="tab-btn" data-tab="speisekarte" onclick="switchTab('speisekarte')">📋 Speisekarte</button>
     <button class="tab-btn" data-tab="artikelbericht" onclick="switchTab('artikelbericht')">📊 Artikelbericht</button>
+    <button class="tab-btn" data-tab="abweichungen" onclick="switchTab('abweichungen')">⚠️ Abweichungen</button>
   </div>
 
   <!-- ═══════════ KASSENBUCH ═══════════ -->
@@ -330,6 +331,72 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
       </div>
       <div id="ab-ranking-ergebnis"></div>
       <button class="btn-add" id="ab-pdf-btn" style="margin-top:14px;display:none;background:transparent;color:#1a2a4a;border:1px solid #d4af37;" onclick="abRankingPdf()">📄 Als PDF exportieren</button>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="panel-abweichungen">
+    <div class="section">
+      <div class="section-head">🍹 Freigetränke</div>
+      <div class="grid4" style="margin-bottom:12px;">
+        <div class="field-group"><label>Datum</label><input type="date" id="fg-datum"></div>
+        <div class="field-group"><label>Getränk</label><input type="text" id="fg-getraenk" placeholder="z. B. Bier 0,3L"></div>
+        <div class="field-group"><label>Menge</label><input type="number" id="fg-menge" placeholder="1"></div>
+        <div class="field-group"><label>Wert (€)</label><input type="number" step="0.01" id="fg-wert" placeholder="0,00"></div>
+      </div>
+      <div class="field-group" style="margin-bottom:12px;"><label>Grund (optional)</label><input type="text" id="fg-grund" placeholder="z. B. Stammgast, Beschwerde-Ausgleich"></div>
+      <button class="btn-add" onclick="fgHinzufuegen()">💾 Eintragen</button>
+      <span class="save-msg" id="fg-save-msg">✓ Gespeichert</span>
+      <div style="margin-top:12px;font-size:13px;"><strong>Gesamt bisher:</strong> <span id="fg-gesamt">0,00 €</span></div>
+      <table class="data-table" style="margin-top:10px;">
+        <thead><tr><th>Datum</th><th>Getränk</th><th>Menge</th><th>Wert</th><th>Grund</th><th></th></tr></thead>
+        <tbody id="fg-tbody"></tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <div class="section-head">🗑️ Abschreibungen</div>
+      <div class="grid4" style="margin-bottom:12px;">
+        <div class="field-group"><label>Datum</label><input type="date" id="ac-datum"></div>
+        <div class="field-group"><label>Artikel</label><input type="text" id="ac-artikel" placeholder="z. B. Salat, Fleisch"></div>
+        <div class="field-group"><label>Menge</label><input type="number" id="ac-menge" placeholder="optional"></div>
+        <div class="field-group"><label>Wert (€)</label><input type="number" step="0.01" id="ac-wert" placeholder="0,00"></div>
+      </div>
+      <div class="field-group" style="margin-bottom:12px;">
+        <label>Grund</label>
+        <input type="text" id="ac-grund" list="ac-grund-vorschlaege" placeholder="z. B. Verdorben">
+        <datalist id="ac-grund-vorschlaege">
+          <option value="Verdorben"><option value="Abgelaufen"><option value="Beschädigt"><option value="Fehlproduktion">
+        </datalist>
+      </div>
+      <button class="btn-add" onclick="acHinzufuegen()">💾 Eintragen</button>
+      <span class="save-msg" id="ac-save-msg">✓ Gespeichert</span>
+      <div style="margin-top:12px;font-size:13px;"><strong>Gesamt bisher:</strong> <span id="ac-gesamt">0,00 €</span></div>
+      <table class="data-table" style="margin-top:10px;">
+        <thead><tr><th>Datum</th><th>Artikel</th><th>Menge</th><th>Wert</th><th>Grund</th><th></th></tr></thead>
+        <tbody id="ac-tbody"></tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <div class="section-head">🧾 Stornobelege</div>
+      <div class="grid3" style="margin-bottom:12px;">
+        <div class="field-group"><label>Datum</label><input type="date" id="sb-datum"></div>
+        <div class="field-group"><label>Betrag (€)</label><input type="number" step="0.01" id="sb-betrag" placeholder="0,00"></div>
+        <div class="field-group"><label>Grund</label><input type="text" id="sb-grund" placeholder="z. B. Fehleingabe Kasse"></div>
+      </div>
+      <div class="upload-drop" onclick="document.getElementById('sb-datei').click()" style="border:2px dashed #d4af37;border-radius:10px;padding:24px;text-align:center;color:#8090a8;font-size:13px;cursor:pointer;">
+        📎 Klicken, um den Stornobeleg (Foto oder PDF) hochzuladen — optional<br>
+        <span id="sb-datei-name" style="font-weight:600;color:#1a2a4a;"></span>
+      </div>
+      <input type="file" id="sb-datei" accept="application/pdf,image/*" style="display:none;" onchange="sbDateiGewaehlt(event)">
+      <div style="font-size:11.5px;color:#8090a8;margin-top:6px;">Max. 3 MB, PDF oder Foto (JPG/PNG).</div>
+      <button class="btn-add" style="margin-top:14px;" onclick="sbHinzufuegen()">💾 Eintragen</button>
+      <span class="save-msg" id="sb-save-msg">✓ Gespeichert</span>
+      <div style="margin-top:12px;font-size:13px;"><strong>Gesamt bisher:</strong> <span id="sb-gesamt">0,00 €</span></div>
+      <table class="data-table" style="margin-top:10px;">
+        <thead><tr><th>Datum</th><th>Betrag</th><th>Grund</th><th>Datei</th><th></th></tr></thead>
+        <tbody id="sb-tbody"></tbody>
+      </table>
     </div>
   </div>
 
@@ -1173,11 +1240,211 @@ function abRankingPdf() {
   doc.save('Artikel-Ranking-' + monatSchluessel + '.pdf');
 }
 
+// ─── ABWEICHUNGEN: FREIGETRÄNKE ─────────────────────────────────────────
+let freigetraenkeDaten = { items: [] };
+
+async function fgInit() {
+  const geladen = await toolLoad('tagesgeschaeft-freigetraenke');
+  freigetraenkeDaten = (geladen && Array.isArray(geladen.items)) ? geladen : { items: [] };
+  document.getElementById('fg-datum').value = heute();
+  fgRender();
+}
+
+function fgRender() {
+  const tbody = document.getElementById('fg-tbody');
+  tbody.innerHTML = '';
+  const items = [...freigetraenkeDaten.items].sort((a, b) => b.datum.localeCompare(a.datum));
+  let gesamt = 0;
+  items.forEach(i => {
+    gesamt += i.wert || 0;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${i.datum}</td><td>${i.getraenk}</td><td>${i.menge || '–'}</td><td>${euro(i.wert)}</td><td>${i.grund || '–'}</td><td><button class="btn-del" onclick="fgLoeschen('${i.id}')">✕</button></td>`;
+    tbody.appendChild(tr);
+  });
+  document.getElementById('fg-gesamt').textContent = euro(gesamt);
+}
+
+async function fgHinzufuegen() {
+  const datum = document.getElementById('fg-datum').value;
+  const getraenk = document.getElementById('fg-getraenk').value.trim();
+  const menge = parseFloat(document.getElementById('fg-menge').value) || null;
+  const wert = parseFloat(document.getElementById('fg-wert').value) || 0;
+  const grund = document.getElementById('fg-grund').value.trim();
+  if (!datum || !getraenk) { alert('Bitte mindestens Datum und Getränk angeben.'); return; }
+
+  freigetraenkeDaten.items.push({ id: Date.now() + '-' + Math.random().toString(36).slice(2, 8), datum, getraenk, menge, wert, grund });
+  await toolSave('tagesgeschaeft-freigetraenke', freigetraenkeDaten);
+  flashSaved('fg-save-msg');
+  document.getElementById('fg-getraenk').value = '';
+  document.getElementById('fg-menge').value = '';
+  document.getElementById('fg-wert').value = '';
+  document.getElementById('fg-grund').value = '';
+  fgRender();
+}
+
+async function fgLoeschen(id) {
+  freigetraenkeDaten.items = freigetraenkeDaten.items.filter(i => i.id !== id);
+  await toolSave('tagesgeschaeft-freigetraenke', freigetraenkeDaten);
+  fgRender();
+}
+
+// ─── ABWEICHUNGEN: ABSCHREIBUNGEN ────────────────────────────────────────
+let abschreibungenDaten = { items: [] };
+
+async function acInit() {
+  const geladen = await toolLoad('tagesgeschaeft-abschreibungen');
+  abschreibungenDaten = (geladen && Array.isArray(geladen.items)) ? geladen : { items: [] };
+  document.getElementById('ac-datum').value = heute();
+  acRender();
+}
+
+function acRender() {
+  const tbody = document.getElementById('ac-tbody');
+  tbody.innerHTML = '';
+  const items = [...abschreibungenDaten.items].sort((a, b) => b.datum.localeCompare(a.datum));
+  let gesamt = 0;
+  items.forEach(i => {
+    gesamt += i.wert || 0;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${i.datum}</td><td>${i.artikel}</td><td>${i.menge || '–'}</td><td>${euro(i.wert)}</td><td>${i.grund || '–'}</td><td><button class="btn-del" onclick="acLoeschen('${i.id}')">✕</button></td>`;
+    tbody.appendChild(tr);
+  });
+  document.getElementById('ac-gesamt').textContent = euro(gesamt);
+}
+
+async function acHinzufuegen() {
+  const datum = document.getElementById('ac-datum').value;
+  const artikel = document.getElementById('ac-artikel').value.trim();
+  const menge = parseFloat(document.getElementById('ac-menge').value) || null;
+  const wert = parseFloat(document.getElementById('ac-wert').value) || 0;
+  const grund = document.getElementById('ac-grund').value.trim();
+  if (!datum || !artikel) { alert('Bitte mindestens Datum und Artikel angeben.'); return; }
+
+  abschreibungenDaten.items.push({ id: Date.now() + '-' + Math.random().toString(36).slice(2, 8), datum, artikel, menge, wert, grund });
+  await toolSave('tagesgeschaeft-abschreibungen', abschreibungenDaten);
+  flashSaved('ac-save-msg');
+  document.getElementById('ac-artikel').value = '';
+  document.getElementById('ac-menge').value = '';
+  document.getElementById('ac-wert').value = '';
+  document.getElementById('ac-grund').value = '';
+  acRender();
+}
+
+async function acLoeschen(id) {
+  abschreibungenDaten.items = abschreibungenDaten.items.filter(i => i.id !== id);
+  await toolSave('tagesgeschaeft-abschreibungen', abschreibungenDaten);
+  acRender();
+}
+
+// ─── ABWEICHUNGEN: STORNOBELEGE ──────────────────────────────────────────
+let stornoDaten = { items: [] };
+let sbAusgewaehlteDatei = null;
+
+function dateiZuBase64Sb(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result.split(',')[1]);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+async function sbInit() {
+  const geladen = await toolLoad('tagesgeschaeft-stornos');
+  stornoDaten = (geladen && Array.isArray(geladen.items)) ? geladen : { items: [] };
+  document.getElementById('sb-datum').value = heute();
+  sbRender();
+}
+
+function sbRender() {
+  const tbody = document.getElementById('sb-tbody');
+  tbody.innerHTML = '';
+  const items = [...stornoDaten.items].sort((a, b) => b.datum.localeCompare(a.datum));
+  let gesamt = 0;
+  items.forEach(i => {
+    gesamt += i.betrag || 0;
+    const dateiLink = i.storagePath ? `<a href="#" onclick="sbOeffnen('${i.id}');return false;">${i.dateiname || 'Datei öffnen'}</a>` : '–';
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${i.datum}</td><td>${euro(i.betrag)}</td><td>${i.grund || '–'}</td><td>${dateiLink}</td><td><button class="btn-del" onclick="sbLoeschen('${i.id}')">✕</button></td>`;
+    tbody.appendChild(tr);
+  });
+  document.getElementById('sb-gesamt').textContent = euro(gesamt);
+}
+
+function sbDateiGewaehlt(evt) {
+  const file = evt.target.files[0];
+  if (!file) return;
+  if (file.size > 3 * 1024 * 1024) {
+    alert('Diese Datei ist zu groß (' + (file.size / 1024 / 1024).toFixed(1) + ' MB). Bitte max. 3 MB.');
+    evt.target.value = '';
+    return;
+  }
+  sbAusgewaehlteDatei = file;
+  document.getElementById('sb-datei-name').textContent = file.name;
+}
+
+async function sbHinzufuegen() {
+  const datum = document.getElementById('sb-datum').value;
+  const betrag = parseFloat(document.getElementById('sb-betrag').value) || 0;
+  const grund = document.getElementById('sb-grund').value.trim();
+  if (!datum) { alert('Bitte ein Datum angeben.'); return; }
+
+  let storagePath = null, dateiname = null;
+  if (sbAusgewaehlteDatei) {
+    try {
+      const base64 = await dateiZuBase64Sb(sbAusgewaehlteDatei);
+      const contentType = sbAusgewaehlteDatei.type || 'application/pdf';
+      const res = await fetch('/api/beleg-upload', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ zweck: 'storno', filename: sbAusgewaehlteDatei.name, contentBase64: base64, contentType })
+      });
+      const result = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        alert('Upload fehlgeschlagen (Status ' + res.status + '): ' + (result.error || 'Unbekannter Fehler'));
+      } else {
+        storagePath = result.path;
+        dateiname = sbAusgewaehlteDatei.name;
+      }
+    } catch (e) {}
+  }
+
+  stornoDaten.items.push({ id: Date.now() + '-' + Math.random().toString(36).slice(2, 8), datum, betrag, grund, storagePath, dateiname });
+  await toolSave('tagesgeschaeft-stornos', stornoDaten);
+  flashSaved('sb-save-msg');
+  sbAusgewaehlteDatei = null;
+  document.getElementById('sb-betrag').value = '';
+  document.getElementById('sb-grund').value = '';
+  document.getElementById('sb-datei-name').textContent = '';
+  document.getElementById('sb-datei').value = '';
+  sbRender();
+}
+
+async function sbOeffnen(id) {
+  const item = stornoDaten.items.find(i => i.id === id);
+  if (!item || !item.storagePath) return;
+  try {
+    const res = await fetch('/api/beleg-upload?path=' + encodeURIComponent(item.storagePath));
+    const d = await res.json();
+    if (d.url) window.open(d.url, '_blank');
+  } catch (e) {}
+}
+
+async function sbLoeschen(id) {
+  const item = stornoDaten.items.find(i => i.id === id);
+  stornoDaten.items = stornoDaten.items.filter(i => i.id !== id);
+  await toolSave('tagesgeschaeft-stornos', stornoDaten);
+  if (item && item.storagePath) {
+    fetch('/api/beleg-upload', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ path: item.storagePath }) }).catch(() => {});
+  }
+  sbRender();
+}
+
 // ─── Start ───────────────────────────────────────────────────────────────
 (async function init() {
   const ok = await checkAuth();
   if (!ok) return;
-  await Promise.all([kbInit(), haccpInit(), weInit(), notizInit(), skInit(), abInit()]);
+  await Promise.all([kbInit(), haccpInit(), weInit(), notizInit(), skInit(), abInit(), fgInit(), acInit(), sbInit()]);
   mbAuswahlInitialisieren();
 })();
 </script>

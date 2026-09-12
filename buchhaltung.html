@@ -91,6 +91,11 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
       <div class="summary-box"><div class="label">Belege gesamt</div><div class="value" id="bh-sum-belege">0,00 €</div></div>
       <div class="summary-box"><div class="label">Wareneingänge</div><div class="value" id="bh-anzahl-we">0</div></div>
     </div>
+    <div class="grid4" style="margin-top:12px;">
+      <div class="summary-box"><div class="label">Freigetränke</div><div class="value" id="bh-sum-freigetraenke">0,00 €</div></div>
+      <div class="summary-box"><div class="label">Abschreibungen</div><div class="value" id="bh-sum-abschreibungen">0,00 €</div></div>
+      <div class="summary-box"><div class="label">Stornobelege</div><div class="value" id="bh-sum-stornos">0,00 €</div></div>
+    </div>
   </div>
 
   <div class="section">
@@ -108,6 +113,9 @@ let currentUser = null;
 let kassenbuchDaten = {};
 let weDaten = [];
 let belegeDaten = [];
+let freigetraenkeDaten = [];
+let abschreibungenDaten = [];
+let stornoDaten = [];
 
 async function checkAuth() {
   try {
@@ -193,6 +201,15 @@ function bhUebersichtAktualisieren() {
 
   const anzahlBelegdateien = belegeDesMonats.filter(b => b.storagePath).length;
   document.getElementById('bh-zip-anzahl-text').textContent = anzahlBelegdateien + (anzahlBelegdateien === 1 ? ' Belegdatei' : ' Belegdateien') + ' des Monats';
+
+  const fgDesMonats = freigetraenkeDaten.filter(f => f.datum && f.datum.slice(0, 7) === monatSchluessel);
+  document.getElementById('bh-sum-freigetraenke').textContent = euro(fgDesMonats.reduce((s, f) => s + (f.wert || 0), 0));
+
+  const acDesMonats = abschreibungenDaten.filter(a => a.datum && a.datum.slice(0, 7) === monatSchluessel);
+  document.getElementById('bh-sum-abschreibungen').textContent = euro(acDesMonats.reduce((s, a) => s + (a.wert || 0), 0));
+
+  const sbDesMonats = stornoDaten.filter(s => s.datum && s.datum.slice(0, 7) === monatSchluessel);
+  document.getElementById('bh-sum-stornos').textContent = euro(sbDesMonats.reduce((s, x) => s + (x.betrag || 0), 0));
 }
 
 async function bhBelegeAlsZip(btn) {
@@ -346,10 +363,78 @@ function bhKompletterBericht() {
       headStyles: { fillColor: [26, 42, 74], textColor: [212, 175, 55] },
       margin: { left: 14, right: 14 }
     });
+    y = doc.lastAutoTable.finalY + 14;
   } else {
     doc.setFontSize(10);
     doc.setTextColor(140, 140, 140);
     doc.text('Keine Wareneingang-Einträge in diesem Monat.', 14, y + 4);
+    y += 16;
+  }
+
+  // ── Abweichungen: Freigetränke, Abschreibungen, Stornobelege ──
+  const fgZeilen = freigetraenkeDaten
+    .filter(f => f.datum && f.datum.slice(0, 7) === monatSchluessel)
+    .sort((a, b) => a.datum.localeCompare(b.datum))
+    .map(f => [f.datum, f.getraenk, f.menge != null ? String(f.menge) : '–', euro(f.wert), f.grund || '–']);
+  const acZeilen = abschreibungenDaten
+    .filter(a => a.datum && a.datum.slice(0, 7) === monatSchluessel)
+    .sort((a, b) => a.datum.localeCompare(b.datum))
+    .map(a => [a.datum, a.artikel, a.menge != null ? String(a.menge) : '–', euro(a.wert), a.grund || '–']);
+  const sbZeilen = stornoDaten
+    .filter(s => s.datum && s.datum.slice(0, 7) === monatSchluessel)
+    .sort((a, b) => a.datum.localeCompare(b.datum))
+    .map(s => [s.datum, euro(s.betrag), s.grund || '–', s.dateiname || '–']);
+
+  if (fgZeilen.length || acZeilen.length || sbZeilen.length) {
+    if (y > 250) { doc.addPage(); y = 20; }
+    doc.setFontSize(13);
+    doc.setTextColor(26, 42, 74);
+    doc.text('Abweichungen', 14, y);
+    y += 4;
+
+    if (fgZeilen.length) {
+      doc.setFontSize(10.5);
+      doc.setTextColor(90, 106, 128);
+      doc.text('Freigetränke', 14, y + 4);
+      doc.autoTable({
+        startY: y + 7,
+        head: [['Datum', 'Getränk', 'Menge', 'Wert', 'Grund']],
+        body: fgZeilen,
+        styles: { fontSize: 8.5 },
+        headStyles: { fillColor: [26, 42, 74], textColor: [212, 175, 55] },
+        margin: { left: 14, right: 14 }
+      });
+      y = doc.lastAutoTable.finalY + 10;
+    }
+    if (acZeilen.length) {
+      if (y > 250) { doc.addPage(); y = 20; }
+      doc.setFontSize(10.5);
+      doc.setTextColor(90, 106, 128);
+      doc.text('Abschreibungen', 14, y + 4);
+      doc.autoTable({
+        startY: y + 7,
+        head: [['Datum', 'Artikel', 'Menge', 'Wert', 'Grund']],
+        body: acZeilen,
+        styles: { fontSize: 8.5 },
+        headStyles: { fillColor: [26, 42, 74], textColor: [212, 175, 55] },
+        margin: { left: 14, right: 14 }
+      });
+      y = doc.lastAutoTable.finalY + 10;
+    }
+    if (sbZeilen.length) {
+      if (y > 250) { doc.addPage(); y = 20; }
+      doc.setFontSize(10.5);
+      doc.setTextColor(90, 106, 128);
+      doc.text('Stornobelege', 14, y + 4);
+      doc.autoTable({
+        startY: y + 7,
+        head: [['Datum', 'Betrag', 'Grund', 'Datei']],
+        body: sbZeilen,
+        styles: { fontSize: 8.5 },
+        headStyles: { fillColor: [26, 42, 74], textColor: [212, 175, 55] },
+        margin: { left: 14, right: 14 }
+      });
+    }
   }
 
   doc.save('Buchhaltung-' + monatSchluessel + '.pdf');
@@ -358,14 +443,20 @@ function bhKompletterBericht() {
 (async function init() {
   const ok = await checkAuth();
   if (!ok) return;
-  const [kb, we, bel] = await Promise.all([
+  const [kb, we, bel, fg, ac, sb] = await Promise.all([
     toolLoad('tagesgeschaeft-kassenbuch'),
     toolLoad('tagesgeschaeft-wareneingang'),
-    toolLoad('tagesgeschaeft-belege')
+    toolLoad('tagesgeschaeft-belege'),
+    toolLoad('tagesgeschaeft-freigetraenke'),
+    toolLoad('tagesgeschaeft-abschreibungen'),
+    toolLoad('tagesgeschaeft-stornos')
   ]);
   kassenbuchDaten = kb || {};
   weDaten = (we && we.items) || [];
   belegeDaten = (bel && bel.items) || [];
+  freigetraenkeDaten = (fg && fg.items) || [];
+  abschreibungenDaten = (ac && ac.items) || [];
+  stornoDaten = (sb && sb.items) || [];
   bhAuswahlInitialisieren();
   bhUebersichtAktualisieren();
 })();
