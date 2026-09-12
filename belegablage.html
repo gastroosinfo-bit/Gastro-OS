@@ -77,7 +77,7 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
       <span id="beleg-datei-name" style="font-weight:600;color:#1a2a4a;"></span>
     </div>
     <input type="file" id="beleg-datei" accept="application/pdf,image/*" style="display:none;" onchange="belegDateiGewaehlt(event)">
-    <div class="hint">Max. 8 MB, PDF oder Foto (JPG/PNG). Auf dem Handy kann direkt die Kamera genutzt werden.</div>
+    <div class="hint">Max. 3 MB, PDF oder Foto (JPG/PNG). Auf dem Handy kann direkt die Kamera genutzt werden.</div>
     <div class="auto-hinweis" id="beleg-auto-hinweis"></div>
 
     <div class="grid4" style="margin-top:16px;">
@@ -356,6 +356,11 @@ function dateiZuBase64(file) {
 async function belegDateiGewaehlt(evt) {
   const file = evt.target.files[0];
   if (!file) return;
+  if (file.size > 3 * 1024 * 1024) {
+    alert('Diese Datei ist zu groß (' + (file.size / 1024 / 1024).toFixed(1) + ' MB). Bitte max. 3 MB — z. B. das Foto etwas komprimieren oder in geringerer Auflösung neu aufnehmen.');
+    evt.target.value = '';
+    return;
+  }
   belegAusgewaehlteDatei = file;
   document.getElementById('beleg-datei-name').textContent = file.name;
 

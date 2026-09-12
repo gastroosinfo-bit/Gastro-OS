@@ -261,7 +261,7 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
         <span id="sk-datei-name" style="font-weight:600;color:#1a2a4a;"></span>
       </div>
       <input type="file" id="sk-datei" accept="application/pdf,image/*" style="display:none;" onchange="skDateiGewaehlt(event)">
-      <div style="font-size:11.5px;color:#8090a8;margin-top:6px;">Max. 8 MB, PDF oder Foto (JPG/PNG). Auf dem Handy kann direkt die Kamera genutzt werden. Eine neue Speisekarte ersetzt automatisch die alte — du musst nichts vorher löschen.</div>
+      <div style="font-size:11.5px;color:#8090a8;margin-top:6px;">Max. 3 MB, PDF oder Foto (JPG/PNG). Auf dem Handy kann direkt die Kamera genutzt werden. Eine neue Speisekarte ersetzt automatisch die alte — du musst nichts vorher löschen.</div>
       <button class="btn-add" id="sk-upload-btn" style="margin-top:16px;display:none;" onclick="skHochladen()">⬆️ Neue Speisekarte hochladen</button>
       <span class="save-msg" id="sk-save-msg">✓ Hochgeladen</span>
     </div>
@@ -751,6 +751,11 @@ async function skAnzeigeAktualisieren() {
 function skDateiGewaehlt(evt) {
   const file = evt.target.files[0];
   if (!file) return;
+  if (file.size > 3 * 1024 * 1024) {
+    alert('Diese Datei ist zu groß (' + (file.size / 1024 / 1024).toFixed(1) + ' MB). Bitte max. 3 MB — z. B. das Foto etwas komprimieren oder in geringerer Auflösung neu aufnehmen.');
+    evt.target.value = '';
+    return;
+  }
   skAusgewaehlteDatei = file;
   document.getElementById('sk-datei-name').textContent = file.name;
   document.getElementById('sk-upload-btn').style.display = 'inline-block';
@@ -766,8 +771,11 @@ async function skHochladen() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ zweck: 'speisekarte', filename: skAusgewaehlteDatei.name, contentBase64: base64, contentType })
     });
-    const result = await res.json();
-    if (!res.ok) { alert('Upload fehlgeschlagen: ' + (result.error || '')); return; }
+    const result = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      alert('Upload fehlgeschlagen (Status ' + res.status + '): ' + (result.error || 'Unbekannter Fehler') + (result.detail ? '\n\nDetail: ' + result.detail : ''));
+      return;
+    }
     await toolSave('tagesgeschaeft-speisekarte', {
       path: result.path,
       contentType,
@@ -781,7 +789,7 @@ async function skHochladen() {
     document.getElementById('sk-upload-btn').style.display = 'none';
     await skAnzeigeAktualisieren();
   } catch (e) {
-    alert('Fehler beim Hochladen.');
+    alert('Fehler beim Hochladen: ' + (e && e.message ? e.message : e));
   }
 }
 
