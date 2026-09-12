@@ -307,7 +307,7 @@ export default async function handler(req, res) {
 
   // ─── POST: Datei hochladen (oder nur analysieren) ──────────────────────
   if (req.method === 'POST') {
-    const { filename, contentBase64, contentType, analyzeOnly } = req.body || {};
+    const { filename, contentBase64, contentType, analyzeOnly, zweck } = req.body || {};
     if (!contentBase64) {
       return res.status(400).json({ error: 'contentBase64 fehlt.' });
     }
@@ -320,6 +320,39 @@ export default async function handler(req, res) {
     }
     if (buffer.length > 8 * 1024 * 1024) {
       return res.status(413).json({ error: 'Datei zu groß (max. 8 MB).' });
+    }
+
+    // ── Speisekarte: immer nur eine aktuelle Version pro Nutzer ──────────
+    // Fester Speicherort statt Zeitstempel-Dateiname — eine neue Speisekarte
+    // ersetzt die alte automatisch (vorheriges Löschen wird versucht, ein
+    // Fehler dabei ist unkritisch, falls einfach noch keine existierte).
+    if (zweck === 'speisekarte') {
+      try {
+        const path = `${safeUserFolder(email)}/speisekarte-aktuell`;
+        await fetch(`${SUPABASE_URL}/storage/v1/object/${BUCKET}/${path}`, {
+          method: 'DELETE',
+          headers: { 'apikey': SUPABASE_SERVICE_KEY, 'Authorization': 'Bearer ' + SUPABASE_SERVICE_KEY }
+        }).catch(() => {});
+        const uploadRes = await fetch(
+          `${SUPABASE_URL}/storage/v1/object/${BUCKET}/${path}`,
+          {
+            method: 'POST',
+            headers: {
+              'apikey': SUPABASE_SERVICE_KEY,
+              'Authorization': 'Bearer ' + SUPABASE_SERVICE_KEY,
+              'Content-Type': contentType || 'application/pdf'
+            },
+            body: buffer
+          }
+        );
+        if (!uploadRes.ok) {
+          const errText = await uploadRes.text();
+          return res.status(502).json({ error: 'Upload fehlgeschlagen.', detail: errText });
+        }
+        return res.status(200).json({ path });
+      } catch (e) {
+        return res.status(500).json({ error: 'Fehler beim Hochladen der Speisekarte.' });
+      }
     }
 
     if (analyzeOnly) {
