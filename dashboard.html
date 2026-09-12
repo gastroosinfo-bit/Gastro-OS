@@ -829,6 +829,7 @@ async function pushStatusPruefen() {
 }
 
 async function pushAktivieren() {
+  if (!confirm('Benachrichtigungen jetzt aktivieren?')) return;
   const btn = document.getElementById('push-btn');
   try {
     const reg = await navigator.serviceWorker.register('/sw.js');
@@ -855,6 +856,7 @@ async function pushAktivieren() {
 }
 
 async function pushDeaktivieren() {
+  if (!confirm('Benachrichtigungen jetzt deaktivieren?')) return;
   const btn = document.getElementById('push-btn');
   try {
     const reg = await navigator.serviceWorker.getRegistration();
