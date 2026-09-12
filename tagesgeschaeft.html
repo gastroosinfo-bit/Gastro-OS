@@ -353,10 +353,11 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
           </select>
         </div>
       </div>
-      <div class="grid2" style="margin-bottom:12px;">
-        <div class="field-group"><label>Einkaufspreis pro Einheit (€)</label><input type="number" step="0.01" id="fg-wert" placeholder="0,00"></div>
+      <div class="grid2" style="margin-bottom:4px;">
+        <div class="field-group"><label>Wert gesamt (€)</label><input type="number" step="0.01" id="fg-wert" placeholder="0,00"></div>
         <div class="field-group"><label>Grund (optional)</label><input type="text" id="fg-grund" placeholder="z. B. Stammgast, Beschwerde-Ausgleich"></div>
       </div>
+      <div style="font-size:11.5px;color:#8090a8;margin-bottom:12px;">💡 Der anteilige Einkaufswert der Menge, nicht der Verkaufspreis (z. B. 360g von einer 500g-Packung à 4,99 € → 3,59 €)</div>
       <button class="btn-add" onclick="fgHinzufuegen()">💾 Eintragen</button>
       <span class="save-msg" id="fg-save-msg">✓ Gespeichert</span>
       <div style="margin-top:12px;font-size:13px;"><strong>Gesamt bisher:</strong> <span id="fg-gesamt">0,00 €</span></div>
@@ -383,8 +384,8 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
           </select>
         </div>
       </div>
-      <div class="grid2" style="margin-bottom:12px;">
-        <div class="field-group"><label>Einkaufspreis pro Einheit (€)</label><input type="number" step="0.01" id="ac-wert" placeholder="0,00"></div>
+      <div class="grid2" style="margin-bottom:4px;">
+        <div class="field-group"><label>Wert gesamt (€)</label><input type="number" step="0.01" id="ac-wert" placeholder="0,00"></div>
         <div class="field-group">
           <label>Grund</label>
           <input type="text" id="ac-grund" list="ac-grund-vorschlaege" placeholder="z. B. Verdorben">
@@ -393,6 +394,7 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
           </datalist>
         </div>
       </div>
+      <div style="font-size:11.5px;color:#8090a8;margin-bottom:12px;">💡 Der anteilige Einkaufswert der Menge, nicht der Verkaufspreis (z. B. 360g von einer 500g-Packung à 4,99 € → 3,59 €)</div>
       <button class="btn-add" onclick="acHinzufuegen()">💾 Eintragen</button>
       <span class="save-msg" id="ac-save-msg">✓ Gespeichert</span>
       <div style="margin-top:12px;font-size:13px;"><strong>Gesamt bisher:</strong> <span id="ac-gesamt">0,00 €</span></div>
@@ -1302,7 +1304,7 @@ async function fgInit() {
 }
 
 function fgGesamtZeile(i) {
-  return (i.menge != null ? i.menge : 1) * (i.wert || 0);
+  return i.wert || 0;
 }
 
 function fgRender() {
@@ -1330,8 +1332,7 @@ function fgDetailAnzeigen(id) {
   html += abwDetailZeile('Datum', i.datum);
   html += abwDetailZeile('Getränk', i.getraenk);
   html += abwDetailZeile('Menge', (i.menge != null ? i.menge : 1) + ' ' + (i.einheit || ''));
-  html += abwDetailZeile('Einkaufspreis/Einheit', euro(i.wert));
-  html += abwDetailZeile('Gesamt', euro(fgGesamtZeile(i)));
+  html += abwDetailZeile('Wert', euro(fgGesamtZeile(i)));
   html += abwDetailZeile('Grund', i.grund || '–');
   abwDetailOeffnen('Freigetränk ' + i.datum, html);
 }
@@ -1372,7 +1373,7 @@ async function acInit() {
 }
 
 function acGesamtZeile(i) {
-  return (i.menge != null ? i.menge : 1) * (i.wert || 0);
+  return i.wert || 0;
 }
 
 function acRender() {
@@ -1400,8 +1401,7 @@ function acDetailAnzeigen(id) {
   html += abwDetailZeile('Datum', i.datum);
   html += abwDetailZeile('Artikel', i.artikel);
   html += abwDetailZeile('Menge', (i.menge != null ? i.menge : 1) + ' ' + (i.einheit || ''));
-  html += abwDetailZeile('Einkaufspreis/Einheit', euro(i.wert));
-  html += abwDetailZeile('Gesamt', euro(acGesamtZeile(i)));
+  html += abwDetailZeile('Wert', euro(acGesamtZeile(i)));
   html += abwDetailZeile('Grund', i.grund || '–');
   abwDetailOeffnen('Abschreibung ' + i.datum, html);
 }
