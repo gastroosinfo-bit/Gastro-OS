@@ -88,6 +88,7 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
     <button class="tab-btn" data-tab="haccp" onclick="switchTab('haccp')">🌡️ Temperaturen</button>
     <button class="tab-btn" data-tab="wareneingang" onclick="switchTab('wareneingang')">🚚 Wareneingang</button>
     <button class="tab-btn" data-tab="notizen" onclick="switchTab('notizen')">📝 Notizen</button>
+    <button class="tab-btn" data-tab="speisekarte" onclick="switchTab('speisekarte')">📋 Speisekarte</button>
   </div>
 
   <!-- ═══════════ KASSENBUCH ═══════════ -->
@@ -248,6 +249,21 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
     <div class="section">
       <div class="section-head">Verlauf</div>
       <div id="notiz-liste"></div>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="panel-speisekarte">
+    <div class="section">
+      <div class="section-head">Aktuelle Speisekarte</div>
+      <div id="sk-aktuell-anzeige" style="margin-bottom:16px;font-size:13px;color:#5a6a85;">Wird geladen …</div>
+      <div class="upload-drop" onclick="document.getElementById('sk-datei').click()" style="border:2px dashed #d4af37;border-radius:10px;padding:24px;text-align:center;color:#8090a8;font-size:13px;cursor:pointer;">
+        📋 Klicken, um eine neue Speisekarte (Foto oder PDF) hochzuladen<br>
+        <span id="sk-datei-name" style="font-weight:600;color:#1a2a4a;"></span>
+      </div>
+      <input type="file" id="sk-datei" accept="application/pdf,image/*" style="display:none;" onchange="skDateiGewaehlt(event)">
+      <div style="font-size:11.5px;color:#8090a8;margin-top:6px;">Max. 8 MB, PDF oder Foto (JPG/PNG). Auf dem Handy kann direkt die Kamera genutzt werden. Eine neue Speisekarte ersetzt automatisch die alte — du musst nichts vorher löschen.</div>
+      <button class="btn-add" id="sk-upload-btn" style="margin-top:16px;display:none;" onclick="skHochladen()">⬆️ Neue Speisekarte hochladen</button>
+      <span class="save-msg" id="sk-save-msg">✓ Hochgeladen</span>
     </div>
   </div>
 
@@ -705,11 +721,85 @@ function notizRenderListe() {
   });
 }
 
+// ─── SPEISEKARTE ─────────────────────────────────────────────────────────
+let skAusgewaehlteDatei = null;
+
+function dateiZuBase64Sk(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result.split(',')[1]);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+async function skInit() {
+  await skAnzeigeAktualisieren();
+}
+
+async function skAnzeigeAktualisieren() {
+  const daten = await toolLoad('tagesgeschaeft-speisekarte');
+  const anzeige = document.getElementById('sk-aktuell-anzeige');
+  if (daten && daten.path) {
+    const datumText = daten.hochgeladenAm ? new Date(daten.hochgeladenAm).toLocaleString('de-DE') : '';
+    anzeige.innerHTML = `📋 Aktuelle Speisekarte: <a href="#" onclick="skOeffnen();return false;" style="color:#1a6640;font-weight:600;">${daten.dateiname || 'Speisekarte öffnen'}</a>` + (datumText ? ` <span style="color:#8090a8;">— hochgeladen am ${datumText}</span>` : '');
+  } else {
+    anzeige.textContent = 'Noch keine Speisekarte hochgeladen.';
+  }
+}
+
+function skDateiGewaehlt(evt) {
+  const file = evt.target.files[0];
+  if (!file) return;
+  skAusgewaehlteDatei = file;
+  document.getElementById('sk-datei-name').textContent = file.name;
+  document.getElementById('sk-upload-btn').style.display = 'inline-block';
+}
+
+async function skHochladen() {
+  if (!skAusgewaehlteDatei) return;
+  try {
+    const base64 = await dateiZuBase64Sk(skAusgewaehlteDatei);
+    const contentType = skAusgewaehlteDatei.type || 'application/pdf';
+    const res = await fetch('/api/beleg-upload', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ zweck: 'speisekarte', filename: skAusgewaehlteDatei.name, contentBase64: base64, contentType })
+    });
+    const result = await res.json();
+    if (!res.ok) { alert('Upload fehlgeschlagen: ' + (result.error || '')); return; }
+    await toolSave('tagesgeschaeft-speisekarte', {
+      path: result.path,
+      contentType,
+      dateiname: skAusgewaehlteDatei.name,
+      hochgeladenAm: new Date().toISOString()
+    });
+    flashSaved('sk-save-msg');
+    skAusgewaehlteDatei = null;
+    document.getElementById('sk-datei-name').textContent = '';
+    document.getElementById('sk-datei').value = '';
+    document.getElementById('sk-upload-btn').style.display = 'none';
+    await skAnzeigeAktualisieren();
+  } catch (e) {
+    alert('Fehler beim Hochladen.');
+  }
+}
+
+async function skOeffnen() {
+  const daten = await toolLoad('tagesgeschaeft-speisekarte');
+  if (!daten || !daten.path) return;
+  try {
+    const res = await fetch('/api/beleg-upload?path=' + encodeURIComponent(daten.path));
+    const d = await res.json();
+    if (d.url) window.open(d.url, '_blank');
+  } catch (e) {}
+}
+
 // ─── Start ───────────────────────────────────────────────────────────────
 (async function init() {
   const ok = await checkAuth();
   if (!ok) return;
-  await Promise.all([kbInit(), haccpInit(), weInit(), notizInit()]);
+  await Promise.all([kbInit(), haccpInit(), weInit(), notizInit(), skInit()]);
   mbAuswahlInitialisieren();
 })();
 </script>
