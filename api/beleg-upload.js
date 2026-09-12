@@ -450,6 +450,10 @@ export default async function handler(req, res) {
 
     // ── Stornobelege: reiner Datei-Upload ohne KI-Auslese ────────────────
     if (zweck === 'storno') {
+      if (analyzeOnly) {
+        const extracted = await belegAuslesen(buffer, contentType);
+        return res.status(200).json({ extracted });
+      }
       if (!filename) {
         return res.status(400).json({ error: 'filename fehlt.' });
       }
