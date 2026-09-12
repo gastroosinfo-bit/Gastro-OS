@@ -213,8 +213,10 @@ async function artikelberichtAuslesen(buffer, contentType) {
       : { type: 'image', source: { type: 'base64', media_type: contentType || 'image/jpeg', data: base64 } };
     const prompt = 'Das ist ein Artikel- bzw. Verkaufsbericht aus einem Kassensystem einer Gastronomie. Er zeigt, welche Gerichte/Artikel wie oft verkauft wurden. ' +
       'Lies JEDE Zeile mit einem Gericht/Artikel und der dazugehörigen verkauften Menge (Anzahl) aus. ' +
+      'Ordne jeden Artikel zusätzlich einer Kategorie zu: "speise" für Essen, "getraenk" für alle Getränke (auch alkoholische). ' +
+      'Falls auf dem Bericht erkennbar ist, über welchen Kanal verkauft wurde (z. B. "Vor Ort", "Abholung"/"Take-away", "Lieferung"/"Delivery"), trage das als "kanal" ein — steht sowas NICHT auf dem Bericht, setze "kanal" auf null, rate NICHT. ' +
       'Antworte AUSSCHLIESSLICH mit einem JSON-Array, ohne weiteren Text, ohne Markdown-Codeblock, in genau diesem Format: ' +
-      '[{"gericht":"Name des Gerichts","menge": Zahl}, {"gericht":"...","menge": Zahl}]. ' +
+      '[{"gericht":"Name des Gerichts","menge": Zahl, "kategorie":"speise" oder "getraenk", "kanal":"Vor Ort/Abholung/Lieferung oder null"}]. ' +
       'Überspringe Kopfzeilen, Summen-/Gesamtzeilen und Spaltentitel — nur echte Artikel-Zeilen mit Name und Menge. ' +
       'Falls die Menge bei einer Zeile nicht eindeutig lesbar ist, überspringe diese Zeile lieber, als zu raten.';
 
@@ -240,7 +242,12 @@ async function artikelberichtAuslesen(buffer, contentType) {
     if (!Array.isArray(geparst)) return { artikel: [] };
     const artikel = geparst
       .filter(a => a && typeof a.gericht === 'string' && a.gericht.trim() && typeof a.menge === 'number')
-      .map(a => ({ gericht: a.gericht.trim(), menge: a.menge }));
+      .map(a => ({
+        gericht: a.gericht.trim(),
+        menge: a.menge,
+        kategorie: a.kategorie === 'getraenk' ? 'getraenk' : 'speise',
+        kanal: (typeof a.kanal === 'string' && a.kanal.trim()) ? a.kanal.trim() : null
+      }));
     return { artikel };
   } catch (e) {
     return { artikel: [] };
@@ -373,17 +380,17 @@ export default async function handler(req, res) {
       return res.status(413).json({ error: 'Datei zu groß (max. 3 MB, wegen Vercel-Upload-Grenze).' });
     }
 
-    // ── Speisekarte: immer nur eine aktuelle Version pro Nutzer ──────────
-    // Fester Speicherort statt Zeitstempel-Dateiname — eine neue Speisekarte
-    // ersetzt die alte automatisch (vorheriges Löschen wird versucht, ein
-    // Fehler dabei ist unkritisch, falls einfach noch keine existierte).
+    // ── Speisekarte: mehrere Dateien möglich (z. B. mehrseitige Karte) ───
+    // Zeitstempel-Pfad wie bei den Belegen — neue Uploads ersetzen NICHT
+    // automatisch alte, damit mehrseitige Speisekarten und Versionswechsel
+    // nicht versehentlich verloren gehen. Löschen erfolgt bewusst manuell
+    // über den bestehenden DELETE-Endpunkt.
     if (zweck === 'speisekarte') {
+      if (!filename) {
+        return res.status(400).json({ error: 'filename fehlt.' });
+      }
       try {
-        const path = `${safeUserFolder(email)}/speisekarte-aktuell`;
-        await fetch(`${SUPABASE_URL}/storage/v1/object/${BUCKET}/${path}`, {
-          method: 'DELETE',
-          headers: { 'apikey': SUPABASE_SERVICE_KEY, 'Authorization': 'Bearer ' + SUPABASE_SERVICE_KEY }
-        }).catch(() => {});
+        const path = `${safeUserFolder(email)}/speisekarte-${Date.now()}-${safeFileName(filename)}`;
         const uploadRes = await fetch(
           `${SUPABASE_URL}/storage/v1/object/${BUCKET}/${path}`,
           {
