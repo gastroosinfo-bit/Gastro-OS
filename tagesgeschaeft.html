@@ -89,6 +89,7 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
     <button class="tab-btn" data-tab="wareneingang" onclick="switchTab('wareneingang')">🚚 Wareneingang</button>
     <button class="tab-btn" data-tab="notizen" onclick="switchTab('notizen')">📝 Notizen</button>
     <button class="tab-btn" data-tab="speisekarte" onclick="switchTab('speisekarte')">📋 Speisekarte</button>
+    <button class="tab-btn" data-tab="artikelbericht" onclick="switchTab('artikelbericht')">📊 Artikelbericht</button>
   </div>
 
   <!-- ═══════════ KASSENBUCH ═══════════ -->
@@ -267,7 +268,67 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
     </div>
   </div>
 
+  <div class="tab-panel" id="panel-artikelbericht">
+    <div class="section">
+      <div class="section-head">Neuer Artikelbericht</div>
+      <div class="field-group" style="max-width:220px;margin-bottom:14px;">
+        <label>Datum</label>
+        <input type="date" id="ab-datum">
+      </div>
+      <div class="upload-drop" onclick="document.getElementById('ab-datei').click()" style="border:2px dashed #d4af37;border-radius:10px;padding:24px;text-align:center;color:#8090a8;font-size:13px;cursor:pointer;">
+        📊 Klicken, um den Artikel-/Verkaufsbericht (Foto oder PDF) hochzuladen<br>
+        <span id="ab-datei-name" style="font-weight:600;color:#1a2a4a;"></span>
+      </div>
+      <input type="file" id="ab-datei" accept="application/pdf,image/*" style="display:none;" onchange="abDateiGewaehlt(event)">
+      <div style="font-size:11.5px;color:#8090a8;margin-top:6px;">Max. 3 MB, PDF oder Foto (JPG/PNG). Die KI liest Gericht und verkaufte Menge automatisch aus — bitte danach kurz prüfen.</div>
+      <div class="auto-hinweis" id="ab-auto-hinweis" style="font-size:11.5px;color:#1a6640;margin-top:8px;display:none;"></div>
+
+      <div id="ab-artikel-liste" style="margin-top:16px;display:none;">
+        <table class="data-table" style="margin-top:0;">
+          <thead><tr><th>Gericht</th><th>Menge</th><th></th></tr></thead>
+          <tbody id="ab-artikel-tbody"></tbody>
+        </table>
+        <button class="btn-add" style="background:transparent;color:#1a6640;border:1px solid #1a6640;margin-top:10px;" onclick="abZeileHinzufuegen()">+ Zeile hinzufügen</button>
+      </div>
+
+      <button class="btn-add" id="ab-speichern-btn" style="margin-top:16px;display:none;" onclick="abBerichtSpeichern()">💾 Bericht speichern</button>
+      <span class="save-msg" id="ab-save-msg">✓ Gespeichert</span>
+    </div>
+
+    <div class="section">
+      <div class="section-head">Verlauf</div>
+      <div style="font-size:11.5px;color:#8090a8;margin-bottom:8px;">💡 Zeile antippen, um die Artikel des Tages im Detail zu sehen</div>
+      <table class="data-table" id="ab-verlauf-tabelle">
+        <thead><tr><th>Datum</th><th>Anzahl Artikel-Zeilen</th><th>Menge gesamt</th><th></th><th></th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <div class="section-head">📊 Monats-Ranking (meistverkaufte Gerichte)</div>
+      <div class="grid3" style="align-items:end;margin-bottom:14px;">
+        <div class="field-group">
+          <label>Monat</label>
+          <select id="ab-rank-monat">
+            <option value="01">Januar</option><option value="02">Februar</option><option value="03">März</option>
+            <option value="04">April</option><option value="05">Mai</option><option value="06">Juni</option>
+            <option value="07">Juli</option><option value="08">August</option><option value="09">September</option>
+            <option value="10">Oktober</option><option value="11">November</option><option value="12">Dezember</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label>Jahr</label>
+          <select id="ab-rank-jahr"></select>
+        </div>
+        <button class="btn-add" onclick="abRankingAnzeigen()">📊 Ranking anzeigen</button>
+      </div>
+      <div id="ab-ranking-ergebnis"></div>
+      <button class="btn-add" id="ab-pdf-btn" style="margin-top:14px;display:none;background:transparent;color:#1a2a4a;border:1px solid #d4af37;" onclick="abRankingPdf()">📄 Als PDF exportieren</button>
+    </div>
+  </div>
+
 </div>
+
 
 <div class="footer-brand"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
 
@@ -803,11 +864,244 @@ async function skOeffnen() {
   } catch (e) {}
 }
 
+// ─── ARTIKELBERICHT ──────────────────────────────────────────────────────
+let artikelberichteDaten = {};
+let abAusgewaehlteDatei = null;
+let abAktuelleArtikel = [];
+
+function dateiZuBase64Ab(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result.split(',')[1]);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+async function abInit() {
+  artikelberichteDaten = await toolLoad('tagesgeschaeft-artikelberichte');
+  document.getElementById('ab-datum').value = heute();
+  abRenderVerlauf();
+
+  const aktJahr = parseInt(heute().slice(0, 4));
+  const jahrSelect = document.getElementById('ab-rank-jahr');
+  jahrSelect.innerHTML = '';
+  for (let j = aktJahr - 3; j <= aktJahr + 1; j++) {
+    const opt = document.createElement('option');
+    opt.value = String(j);
+    opt.textContent = String(j);
+    if (j === aktJahr) opt.selected = true;
+    jahrSelect.appendChild(opt);
+  }
+  document.getElementById('ab-rank-monat').value = heute().slice(5, 7);
+}
+
+function abZeileRendern(gericht, menge) {
+  const tbody = document.getElementById('ab-artikel-tbody');
+  const tr = document.createElement('tr');
+  tr.innerHTML = `<td><input type="text" value="${(gericht || '').replace(/"/g, '&quot;')}" style="width:100%;border:1px solid #e0d8c8;border-radius:5px;padding:5px 7px;font-size:12.5px;"></td><td><input type="number" value="${menge != null ? menge : ''}" style="width:80px;border:1px solid #e0d8c8;border-radius:5px;padding:5px 7px;font-size:12.5px;"></td><td><button class="btn-del" onclick="this.closest('tr').remove()">✕</button></td>`;
+  tbody.appendChild(tr);
+}
+function abZeileHinzufuegen() {
+  document.getElementById('ab-artikel-liste').style.display = 'block';
+  document.getElementById('ab-speichern-btn').style.display = 'inline-block';
+  abZeileRendern('', '');
+}
+
+async function abDateiGewaehlt(evt) {
+  const file = evt.target.files[0];
+  if (!file) return;
+  if (file.size > 3 * 1024 * 1024) {
+    alert('Diese Datei ist zu groß (' + (file.size / 1024 / 1024).toFixed(1) + ' MB). Bitte max. 3 MB.');
+    evt.target.value = '';
+    return;
+  }
+  abAusgewaehlteDatei = file;
+  document.getElementById('ab-datei-name').textContent = file.name;
+
+  const hinweis = document.getElementById('ab-auto-hinweis');
+  hinweis.style.display = 'block';
+  hinweis.textContent = '🔍 Artikelbericht wird ausgelesen …';
+
+  document.getElementById('ab-artikel-tbody').innerHTML = '';
+
+  try {
+    const base64 = await dateiZuBase64Ab(file);
+    const res = await fetch('/api/beleg-upload', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ zweck: 'artikelbericht', contentBase64: base64, contentType: file.type || 'application/pdf', analyzeOnly: true })
+    });
+    const d = await res.json();
+    const artikel = (d && d.artikel) || [];
+    document.getElementById('ab-artikel-liste').style.display = 'block';
+    document.getElementById('ab-speichern-btn').style.display = 'inline-block';
+    if (artikel.length) {
+      artikel.forEach(a => abZeileRendern(a.gericht, a.menge));
+      hinweis.textContent = '✓ ' + artikel.length + ' Artikel-Zeilen erkannt — bitte kurz prüfen.';
+    } else {
+      hinweis.textContent = 'ℹ️ Konnte nichts automatisch auslesen — bitte Zeilen manuell mit "+ Zeile hinzufügen" eintragen.';
+    }
+  } catch (e) {
+    hinweis.textContent = 'ℹ️ Konnte nichts automatisch auslesen — bitte Zeilen manuell eintragen.';
+    document.getElementById('ab-artikel-liste').style.display = 'block';
+    document.getElementById('ab-speichern-btn').style.display = 'inline-block';
+  }
+}
+
+async function abBerichtSpeichern() {
+  const datum = document.getElementById('ab-datum').value;
+  if (!datum) { alert('Bitte ein Datum auswählen.'); return; }
+  const zeilen = [...document.querySelectorAll('#ab-artikel-tbody tr')];
+  const items = zeilen.map(tr => {
+    const inputs = tr.querySelectorAll('input');
+    return { gericht: inputs[0].value.trim(), menge: parseFloat(inputs[1].value) || 0 };
+  }).filter(a => a.gericht);
+
+  if (!items.length) { alert('Bitte mindestens ein Gericht mit Menge eintragen.'); return; }
+
+  let storagePath = null, dateiname = null;
+  if (abAusgewaehlteDatei) {
+    try {
+      const base64 = await dateiZuBase64Ab(abAusgewaehlteDatei);
+      const contentType = abAusgewaehlteDatei.type || 'application/pdf';
+      const res = await fetch('/api/beleg-upload', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ zweck: 'artikelbericht', filename: abAusgewaehlteDatei.name, contentBase64: base64, contentType })
+      });
+      const result = await res.json();
+      if (res.ok) { storagePath = result.path; dateiname = abAusgewaehlteDatei.name; }
+    } catch (e) {}
+  }
+
+  artikelberichteDaten[datum] = { items, storagePath, dateiname, hochgeladenAm: new Date().toISOString() };
+  await toolSave('tagesgeschaeft-artikelberichte', artikelberichteDaten);
+  flashSaved('ab-save-msg');
+
+  abAusgewaehlteDatei = null;
+  document.getElementById('ab-datei-name').textContent = '';
+  document.getElementById('ab-datei').value = '';
+  document.getElementById('ab-auto-hinweis').style.display = 'none';
+  document.getElementById('ab-artikel-tbody').innerHTML = '';
+  document.getElementById('ab-artikel-liste').style.display = 'none';
+  document.getElementById('ab-speichern-btn').style.display = 'none';
+  abRenderVerlauf();
+}
+
+function abRenderVerlauf() {
+  const tbody = document.querySelector('#ab-verlauf-tabelle tbody');
+  tbody.innerHTML = '';
+  const tage = Object.keys(artikelberichteDaten).sort().reverse();
+  tage.forEach(datum => {
+    const eintrag = artikelberichteDaten[datum];
+    const items = (eintrag && eintrag.items) || [];
+    const mengeGesamt = items.reduce((s, a) => s + (a.menge || 0), 0);
+    const tr = document.createElement('tr');
+    tr.style.cursor = 'pointer';
+    tr.onclick = () => abDetailAnzeigen(datum);
+    tr.innerHTML = `<td>${datum}</td><td>${items.length}</td><td>${mengeGesamt}</td><td style="text-align:center;color:#d4af37;">🔍</td><td><button class="btn-del" onclick="event.stopPropagation();abLoeschen('${datum}')">✕</button></td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+async function abLoeschen(datum) {
+  delete artikelberichteDaten[datum];
+  await toolSave('tagesgeschaeft-artikelberichte', artikelberichteDaten);
+  abRenderVerlauf();
+}
+
+function abDetailAnzeigen(datum) {
+  const eintrag = artikelberichteDaten[datum];
+  if (!eintrag) return;
+  const items = [...(eintrag.items || [])].sort((a, b) => (b.menge || 0) - (a.menge || 0));
+  let html = items.map(a => `
+    <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f0e8d4;font-size:13px;">
+      <span style="color:#5a6a85;">${a.gericht}</span>
+      <span style="font-weight:600;color:#1a2a4a;">${a.menge}x</span>
+    </div>`).join('');
+  if (eintrag.dateiname) {
+    html += `<div style="margin-top:14px;font-size:12px;color:#8090a8;">Quelle: ${eintrag.dateiname}</div>`;
+  }
+  document.getElementById('ab-detail-datum').textContent = datum;
+  document.getElementById('ab-detail-inhalt').innerHTML = html || '<div style="color:#8090a8;font-size:13px;">Keine Artikel erfasst.</div>';
+  document.getElementById('ab-detail-overlay').style.display = 'flex';
+}
+function abDetailSchliessen() {
+  document.getElementById('ab-detail-overlay').style.display = 'none';
+}
+
+function abMonatSchluessel() {
+  return document.getElementById('ab-rank-jahr').value + '-' + document.getElementById('ab-rank-monat').value;
+}
+
+function abRankingBerechnen() {
+  const monatSchluessel = abMonatSchluessel();
+  const summen = {};
+  Object.keys(artikelberichteDaten).forEach(datum => {
+    if (datum.slice(0, 7) !== monatSchluessel) return;
+    (artikelberichteDaten[datum].items || []).forEach(a => {
+      const key = a.gericht.trim();
+      summen[key] = (summen[key] || 0) + (a.menge || 0);
+    });
+  });
+  return Object.entries(summen)
+    .map(([gericht, menge]) => ({ gericht, menge }))
+    .sort((a, b) => b.menge - a.menge);
+}
+
+function abRankingAnzeigen() {
+  const ranking = abRankingBerechnen();
+  const container = document.getElementById('ab-ranking-ergebnis');
+  const pdfBtn = document.getElementById('ab-pdf-btn');
+  if (!ranking.length) {
+    container.innerHTML = '<div style="color:#8090a8;font-size:13px;padding:10px 0;">Keine Artikelberichte für diesen Monat gefunden.</div>';
+    pdfBtn.style.display = 'none';
+    return;
+  }
+  let html = '<table class="data-table"><thead><tr><th>Rang</th><th>Gericht</th><th>Menge verkauft</th></tr></thead><tbody>';
+  ranking.forEach((r, i) => {
+    html += `<tr><td>${i + 1}.</td><td>${r.gericht}</td><td>${r.menge}x</td></tr>`;
+  });
+  html += '</tbody></table>';
+  container.innerHTML = html;
+  pdfBtn.style.display = 'inline-block';
+}
+
+function abRankingPdf() {
+  const ranking = abRankingBerechnen();
+  if (!ranking.length) return;
+  const monatSchluessel = abMonatSchluessel();
+  const monatName = MONATSNAMEN[parseInt(monatSchluessel.slice(5, 7))];
+  const jahr = monatSchluessel.slice(0, 4);
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  doc.setFontSize(16);
+  doc.setTextColor(26, 42, 74);
+  doc.text('GASTRO-OS – Monats-Ranking meistverkaufter Gerichte', 14, 18);
+  doc.setFontSize(11);
+  doc.setTextColor(90, 106, 128);
+  doc.text(monatName + ' ' + jahr, 14, 25);
+
+  const zeilen = ranking.map((r, i) => [String(i + 1) + '.', r.gericht, r.menge + 'x']);
+  doc.autoTable({
+    startY: 32,
+    head: [['Rang', 'Gericht', 'Menge verkauft']],
+    body: zeilen,
+    styles: { fontSize: 9.5 },
+    headStyles: { fillColor: [26, 42, 74], textColor: [212, 175, 55] },
+    margin: { left: 14, right: 14 }
+  });
+
+  doc.save('Artikel-Ranking-' + monatSchluessel + '.pdf');
+}
+
 // ─── Start ───────────────────────────────────────────────────────────────
 (async function init() {
   const ok = await checkAuth();
   if (!ok) return;
-  await Promise.all([kbInit(), haccpInit(), weInit(), notizInit(), skInit()]);
+  await Promise.all([kbInit(), haccpInit(), weInit(), notizInit(), skInit(), abInit()]);
   mbAuswahlInitialisieren();
 })();
 </script>
@@ -821,6 +1115,19 @@ async function skOeffnen() {
     <div id="kb-detail-inhalt" style="padding:18px 22px;max-height:70vh;overflow-y:auto;"></div>
     <div style="padding:14px 22px 20px;text-align:right;">
       <button onclick="kbDetailSchliessen()" style="background:#1a6640;color:#fff;border:none;padding:9px 20px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;">Schließen</button>
+    </div>
+  </div>
+</div>
+
+<!-- ARTIKELBERICHT-TAGESDETAIL-POPUP -->
+<div id="ab-detail-overlay" style="display:none;position:fixed;inset:0;background:rgba(26,42,74,0.55);z-index:500;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#fff;border-radius:14px;max-width:420px;width:100%;box-shadow:0 12px 40px rgba(0,0,0,0.3);overflow:hidden;">
+    <div style="background:#1a2a4a;padding:16px 22px;display:flex;align-items:center;justify-content:space-between;">
+      <div style="font-family:Georgia,serif;font-size:16px;color:#d4af37;">Artikelbericht <span id="ab-detail-datum" style="color:#fff;"></span></div>
+    </div>
+    <div id="ab-detail-inhalt" style="padding:18px 22px;max-height:70vh;overflow-y:auto;"></div>
+    <div style="padding:14px 22px 20px;text-align:right;">
+      <button onclick="abDetailSchliessen()" style="background:#1a6640;color:#fff;border:none;padding:9px 20px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;">Schließen</button>
     </div>
   </div>
 </div>
