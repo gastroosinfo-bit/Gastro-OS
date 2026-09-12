@@ -200,6 +200,53 @@ async function belegAuslesen(buffer, contentType) {
   return { datum: null, betrag: null, plattform: null, mwst19Betrag: null, mwst7Betrag: null, rechnungsnummer: null };
 }
 
+// ─── Artikelbericht: Gericht + verkaufte Menge auslesen (immer via Claude) ──
+async function artikelberichtAuslesen(buffer, contentType) {
+  if (!ANTHROPIC_API_KEY) {
+    return { artikel: [] };
+  }
+  try {
+    const base64 = buffer.toString('base64');
+    const istPdf = contentType === 'application/pdf';
+    const contentBlock = istPdf
+      ? { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: base64 } }
+      : { type: 'image', source: { type: 'base64', media_type: contentType || 'image/jpeg', data: base64 } };
+    const prompt = 'Das ist ein Artikel- bzw. Verkaufsbericht aus einem Kassensystem einer Gastronomie. Er zeigt, welche Gerichte/Artikel wie oft verkauft wurden. ' +
+      'Lies JEDE Zeile mit einem Gericht/Artikel und der dazugehörigen verkauften Menge (Anzahl) aus. ' +
+      'Antworte AUSSCHLIESSLICH mit einem JSON-Array, ohne weiteren Text, ohne Markdown-Codeblock, in genau diesem Format: ' +
+      '[{"gericht":"Name des Gerichts","menge": Zahl}, {"gericht":"...","menge": Zahl}]. ' +
+      'Überspringe Kopfzeilen, Summen-/Gesamtzeilen und Spaltentitel — nur echte Artikel-Zeilen mit Name und Menge. ' +
+      'Falls die Menge bei einer Zeile nicht eindeutig lesbar ist, überspringe diese Zeile lieber, als zu raten.';
+
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': ANTHROPIC_API_KEY,
+        'anthropic-version': '2023-06-01'
+      },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 2000,
+        messages: [{ role: 'user', content: [contentBlock, { type: 'text', text: prompt }] }]
+      })
+    });
+
+    if (!res.ok) return { artikel: [] };
+    const data = await res.json();
+    const textAntwort = (data.content && data.content[0] && data.content[0].text) || '';
+    const bereinigt = textAntwort.replace(/```json|```/g, '').trim();
+    const geparst = JSON.parse(bereinigt);
+    if (!Array.isArray(geparst)) return { artikel: [] };
+    const artikel = geparst
+      .filter(a => a && typeof a.gericht === 'string' && a.gericht.trim() && typeof a.menge === 'number')
+      .map(a => ({ gericht: a.gericht.trim(), menge: a.menge }));
+    return { artikel };
+  } catch (e) {
+    return { artikel: [] };
+  }
+}
+
 function sbHeaders() {
   return {
     'Content-Type': 'application/json',
@@ -356,6 +403,41 @@ export default async function handler(req, res) {
         return res.status(200).json({ path });
       } catch (e) {
         return res.status(500).json({ error: 'Fehler beim Hochladen der Speisekarte.', detail: String((e && e.message) || e) });
+      }
+    }
+
+    // ── Artikelbericht: Gericht+Menge auslesen, danach Datei wie gewohnt ──
+    // ablegen (Zeitstempel-Pfad, mehrere Berichte bleiben nebeneinander
+    // erhalten — anders als bei der Speisekarte).
+    if (zweck === 'artikelbericht') {
+      if (analyzeOnly) {
+        const ergebnis = await artikelberichtAuslesen(buffer, contentType);
+        return res.status(200).json(ergebnis);
+      }
+      if (!filename) {
+        return res.status(400).json({ error: 'filename fehlt.' });
+      }
+      try {
+        const path = `${safeUserFolder(email)}/${Date.now()}-${safeFileName(filename)}`;
+        const uploadRes = await fetch(
+          `${SUPABASE_URL}/storage/v1/object/${BUCKET}/${path}`,
+          {
+            method: 'POST',
+            headers: {
+              'apikey': SUPABASE_SERVICE_KEY,
+              'Authorization': 'Bearer ' + SUPABASE_SERVICE_KEY,
+              'Content-Type': contentType || 'application/pdf'
+            },
+            body: buffer
+          }
+        );
+        if (!uploadRes.ok) {
+          const errText = await uploadRes.text();
+          return res.status(502).json({ error: 'Upload fehlgeschlagen.', detail: errText });
+        }
+        return res.status(200).json({ path });
+      } catch (e) {
+        return res.status(500).json({ error: 'Fehler beim Hochladen des Artikelberichts.', detail: String((e && e.message) || e) });
       }
     }
 
