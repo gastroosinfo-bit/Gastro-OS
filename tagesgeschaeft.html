@@ -36,7 +36,9 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 .field-group input:focus, .field-group select:focus, .field-group textarea:focus { outline:none; border-color:#d4af37; background:#fff; }
 .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
 .grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
-@media(max-width:640px){ .grid2,.grid3{ grid-template-columns:1fr; } }
+.grid4 { display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:14px; }
+@media(max-width:640px){ .grid2,.grid3,.grid4{ grid-template-columns:1fr; } }
+@media(max-width:900px){ .grid4{ grid-template-columns:1fr 1fr; } }
 
 .btn-save { background:#1a2a4a; color:#d4af37; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; }
 .btn-save:hover { background:#d4af37; color:#1a2a4a; }
@@ -340,15 +342,27 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
       <div class="grid4" style="margin-bottom:12px;">
         <div class="field-group"><label>Datum</label><input type="date" id="fg-datum"></div>
         <div class="field-group"><label>Getränk</label><input type="text" id="fg-getraenk" placeholder="z. B. Bier 0,3L"></div>
-        <div class="field-group"><label>Menge</label><input type="number" id="fg-menge" placeholder="1"></div>
-        <div class="field-group"><label>Wert (€)</label><input type="number" step="0.01" id="fg-wert" placeholder="0,00"></div>
+        <div class="field-group"><label>Menge</label><input type="number" id="fg-menge" placeholder="1" value="1"></div>
+        <div class="field-group"><label>Einheit</label>
+          <select id="fg-einheit">
+            <option value="Stück">Stück</option>
+            <option value="ml">ml</option>
+            <option value="l">l</option>
+            <option value="g">g</option>
+            <option value="kg">kg</option>
+          </select>
+        </div>
       </div>
-      <div class="field-group" style="margin-bottom:12px;"><label>Grund (optional)</label><input type="text" id="fg-grund" placeholder="z. B. Stammgast, Beschwerde-Ausgleich"></div>
+      <div class="grid2" style="margin-bottom:12px;">
+        <div class="field-group"><label>Einkaufspreis pro Einheit (€)</label><input type="number" step="0.01" id="fg-wert" placeholder="0,00"></div>
+        <div class="field-group"><label>Grund (optional)</label><input type="text" id="fg-grund" placeholder="z. B. Stammgast, Beschwerde-Ausgleich"></div>
+      </div>
       <button class="btn-add" onclick="fgHinzufuegen()">💾 Eintragen</button>
       <span class="save-msg" id="fg-save-msg">✓ Gespeichert</span>
       <div style="margin-top:12px;font-size:13px;"><strong>Gesamt bisher:</strong> <span id="fg-gesamt">0,00 €</span></div>
-      <table class="data-table" style="margin-top:10px;">
-        <thead><tr><th>Datum</th><th>Getränk</th><th>Menge</th><th>Wert</th><th>Grund</th><th></th></tr></thead>
+      <div style="font-size:11.5px;color:#8090a8;margin:8px 0;">💡 Zeile antippen für Details</div>
+      <table class="data-table" style="margin-top:0;">
+        <thead><tr><th>Datum</th><th>Getränk</th><th>Menge</th><th>Gesamt</th><th>Grund</th><th></th><th></th></tr></thead>
         <tbody id="fg-tbody"></tbody>
       </table>
     </div>
@@ -358,48 +372,75 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
       <div class="grid4" style="margin-bottom:12px;">
         <div class="field-group"><label>Datum</label><input type="date" id="ac-datum"></div>
         <div class="field-group"><label>Artikel</label><input type="text" id="ac-artikel" placeholder="z. B. Salat, Fleisch"></div>
-        <div class="field-group"><label>Menge</label><input type="number" id="ac-menge" placeholder="optional"></div>
-        <div class="field-group"><label>Wert (€)</label><input type="number" step="0.01" id="ac-wert" placeholder="0,00"></div>
+        <div class="field-group"><label>Menge</label><input type="number" id="ac-menge" placeholder="1" value="1"></div>
+        <div class="field-group"><label>Einheit</label>
+          <select id="ac-einheit">
+            <option value="Stück">Stück</option>
+            <option value="ml">ml</option>
+            <option value="l">l</option>
+            <option value="g">g</option>
+            <option value="kg">kg</option>
+          </select>
+        </div>
       </div>
-      <div class="field-group" style="margin-bottom:12px;">
-        <label>Grund</label>
-        <input type="text" id="ac-grund" list="ac-grund-vorschlaege" placeholder="z. B. Verdorben">
-        <datalist id="ac-grund-vorschlaege">
-          <option value="Verdorben"><option value="Abgelaufen"><option value="Beschädigt"><option value="Fehlproduktion">
-        </datalist>
+      <div class="grid2" style="margin-bottom:12px;">
+        <div class="field-group"><label>Einkaufspreis pro Einheit (€)</label><input type="number" step="0.01" id="ac-wert" placeholder="0,00"></div>
+        <div class="field-group">
+          <label>Grund</label>
+          <input type="text" id="ac-grund" list="ac-grund-vorschlaege" placeholder="z. B. Verdorben">
+          <datalist id="ac-grund-vorschlaege">
+            <option value="Verdorben"><option value="Abgelaufen"><option value="Beschädigt"><option value="Fehlproduktion">
+          </datalist>
+        </div>
       </div>
       <button class="btn-add" onclick="acHinzufuegen()">💾 Eintragen</button>
       <span class="save-msg" id="ac-save-msg">✓ Gespeichert</span>
       <div style="margin-top:12px;font-size:13px;"><strong>Gesamt bisher:</strong> <span id="ac-gesamt">0,00 €</span></div>
-      <table class="data-table" style="margin-top:10px;">
-        <thead><tr><th>Datum</th><th>Artikel</th><th>Menge</th><th>Wert</th><th>Grund</th><th></th></tr></thead>
+      <div style="font-size:11.5px;color:#8090a8;margin:8px 0;">💡 Zeile antippen für Details</div>
+      <table class="data-table" style="margin-top:0;">
+        <thead><tr><th>Datum</th><th>Artikel</th><th>Menge</th><th>Gesamt</th><th>Grund</th><th></th><th></th></tr></thead>
         <tbody id="ac-tbody"></tbody>
       </table>
     </div>
 
     <div class="section">
       <div class="section-head">🧾 Stornobelege</div>
+      <div class="upload-drop" onclick="document.getElementById('sb-datei').click()" style="border:2px dashed #d4af37;border-radius:10px;padding:24px;text-align:center;color:#8090a8;font-size:13px;cursor:pointer;margin-bottom:14px;">
+        📎 Klicken, um den Stornobeleg (Foto oder PDF) hochzuladen — optional, liest Datum &amp; Betrag automatisch aus<br>
+        <span id="sb-datei-name" style="font-weight:600;color:#1a2a4a;"></span>
+      </div>
+      <input type="file" id="sb-datei" accept="application/pdf,image/*" style="display:none;" onchange="sbDateiGewaehlt(event)">
+      <div class="auto-hinweis" id="sb-auto-hinweis" style="font-size:11.5px;color:#1a6640;margin-bottom:10px;display:none;"></div>
+      <div style="font-size:11.5px;color:#8090a8;margin-bottom:12px;">Max. 3 MB, PDF oder Foto (JPG/PNG).</div>
       <div class="grid3" style="margin-bottom:12px;">
         <div class="field-group"><label>Datum</label><input type="date" id="sb-datum"></div>
         <div class="field-group"><label>Betrag (€)</label><input type="number" step="0.01" id="sb-betrag" placeholder="0,00"></div>
         <div class="field-group"><label>Grund</label><input type="text" id="sb-grund" placeholder="z. B. Fehleingabe Kasse"></div>
       </div>
-      <div class="upload-drop" onclick="document.getElementById('sb-datei').click()" style="border:2px dashed #d4af37;border-radius:10px;padding:24px;text-align:center;color:#8090a8;font-size:13px;cursor:pointer;">
-        📎 Klicken, um den Stornobeleg (Foto oder PDF) hochzuladen — optional<br>
-        <span id="sb-datei-name" style="font-weight:600;color:#1a2a4a;"></span>
-      </div>
-      <input type="file" id="sb-datei" accept="application/pdf,image/*" style="display:none;" onchange="sbDateiGewaehlt(event)">
-      <div style="font-size:11.5px;color:#8090a8;margin-top:6px;">Max. 3 MB, PDF oder Foto (JPG/PNG).</div>
-      <button class="btn-add" style="margin-top:14px;" onclick="sbHinzufuegen()">💾 Eintragen</button>
+      <button class="btn-add" onclick="sbHinzufuegen()">💾 Eintragen</button>
       <span class="save-msg" id="sb-save-msg">✓ Gespeichert</span>
       <div style="margin-top:12px;font-size:13px;"><strong>Gesamt bisher:</strong> <span id="sb-gesamt">0,00 €</span></div>
-      <table class="data-table" style="margin-top:10px;">
-        <thead><tr><th>Datum</th><th>Betrag</th><th>Grund</th><th>Datei</th><th></th></tr></thead>
+      <div style="font-size:11.5px;color:#8090a8;margin:8px 0;">💡 Zeile antippen für Details</div>
+      <table class="data-table" style="margin-top:0;">
+        <thead><tr><th>Datum</th><th>Betrag</th><th>Grund</th><th>Datei</th><th></th><th></th></tr></thead>
         <tbody id="sb-tbody"></tbody>
       </table>
     </div>
   </div>
 
+</div>
+
+<!-- ABWEICHUNGEN-DETAIL-POPUP -->
+<div id="abw-detail-overlay" style="display:none;position:fixed;inset:0;background:rgba(26,42,74,0.55);z-index:500;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#fff;border-radius:14px;max-width:420px;width:100%;box-shadow:0 12px 40px rgba(0,0,0,0.3);overflow:hidden;">
+    <div style="background:#1a2a4a;padding:16px 22px;">
+      <div id="abw-detail-titel" style="font-family:Georgia,serif;font-size:16px;color:#d4af37;"></div>
+    </div>
+    <div id="abw-detail-inhalt" style="padding:18px 22px;max-height:70vh;overflow-y:auto;"></div>
+    <div style="padding:14px 22px 20px;text-align:right;">
+      <button onclick="document.getElementById('abw-detail-overlay').style.display='none';" style="background:#1a6640;color:#fff;border:none;padding:9px 20px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;">Schließen</button>
+    </div>
+  </div>
 </div>
 
 
@@ -1240,6 +1281,16 @@ function abRankingPdf() {
   doc.save('Artikel-Ranking-' + monatSchluessel + '.pdf');
 }
 
+// ─── ABWEICHUNGEN: GEMEINSAME DETAIL-POPUP-HILFSFUNKTIONEN ──────────────
+function abwDetailZeile(label, wert) {
+  return `<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f0e8d4;font-size:13px;"><span style="color:#5a6a85;">${label}</span><span style="font-weight:600;color:#1a2a4a;">${wert}</span></div>`;
+}
+function abwDetailOeffnen(titel, html) {
+  document.getElementById('abw-detail-titel').textContent = titel;
+  document.getElementById('abw-detail-inhalt').innerHTML = html;
+  document.getElementById('abw-detail-overlay').style.display = 'flex';
+}
+
 // ─── ABWEICHUNGEN: FREIGETRÄNKE ─────────────────────────────────────────
 let freigetraenkeDaten = { items: [] };
 
@@ -1250,33 +1301,55 @@ async function fgInit() {
   fgRender();
 }
 
+function fgGesamtZeile(i) {
+  return (i.menge != null ? i.menge : 1) * (i.wert || 0);
+}
+
 function fgRender() {
   const tbody = document.getElementById('fg-tbody');
   tbody.innerHTML = '';
   const items = [...freigetraenkeDaten.items].sort((a, b) => b.datum.localeCompare(a.datum));
   let gesamt = 0;
   items.forEach(i => {
-    gesamt += i.wert || 0;
+    const zeilenGesamt = fgGesamtZeile(i);
+    gesamt += zeilenGesamt;
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${i.datum}</td><td>${i.getraenk}</td><td>${i.menge || '–'}</td><td>${euro(i.wert)}</td><td>${i.grund || '–'}</td><td><button class="btn-del" onclick="fgLoeschen('${i.id}')">✕</button></td>`;
+    tr.className = 'kb-klickbare-zeile';
+    tr.style.cursor = 'pointer';
+    tr.onclick = () => fgDetailAnzeigen(i.id);
+    tr.innerHTML = `<td>${i.datum}</td><td>${i.getraenk}</td><td>${i.menge != null ? i.menge : 1} ${i.einheit || ''}</td><td>${euro(zeilenGesamt)}</td><td>${i.grund || '–'}</td><td style="text-align:center;color:#d4af37;">🔍</td><td><button class="btn-del" onclick="event.stopPropagation();fgLoeschen('${i.id}')">✕</button></td>`;
     tbody.appendChild(tr);
   });
   document.getElementById('fg-gesamt').textContent = euro(gesamt);
 }
 
+function fgDetailAnzeigen(id) {
+  const i = freigetraenkeDaten.items.find(x => x.id === id);
+  if (!i) return;
+  let html = '';
+  html += abwDetailZeile('Datum', i.datum);
+  html += abwDetailZeile('Getränk', i.getraenk);
+  html += abwDetailZeile('Menge', (i.menge != null ? i.menge : 1) + ' ' + (i.einheit || ''));
+  html += abwDetailZeile('Einkaufspreis/Einheit', euro(i.wert));
+  html += abwDetailZeile('Gesamt', euro(fgGesamtZeile(i)));
+  html += abwDetailZeile('Grund', i.grund || '–');
+  abwDetailOeffnen('Freigetränk ' + i.datum, html);
+}
+
 async function fgHinzufuegen() {
   const datum = document.getElementById('fg-datum').value;
   const getraenk = document.getElementById('fg-getraenk').value.trim();
-  const menge = parseFloat(document.getElementById('fg-menge').value) || null;
+  const menge = parseFloat(document.getElementById('fg-menge').value) || 1;
+  const einheit = document.getElementById('fg-einheit').value;
   const wert = parseFloat(document.getElementById('fg-wert').value) || 0;
   const grund = document.getElementById('fg-grund').value.trim();
   if (!datum || !getraenk) { alert('Bitte mindestens Datum und Getränk angeben.'); return; }
 
-  freigetraenkeDaten.items.push({ id: Date.now() + '-' + Math.random().toString(36).slice(2, 8), datum, getraenk, menge, wert, grund });
+  freigetraenkeDaten.items.push({ id: Date.now() + '-' + Math.random().toString(36).slice(2, 8), datum, getraenk, menge, einheit, wert, grund });
   await toolSave('tagesgeschaeft-freigetraenke', freigetraenkeDaten);
   flashSaved('fg-save-msg');
   document.getElementById('fg-getraenk').value = '';
-  document.getElementById('fg-menge').value = '';
+  document.getElementById('fg-menge').value = '1';
   document.getElementById('fg-wert').value = '';
   document.getElementById('fg-grund').value = '';
   fgRender();
@@ -1298,33 +1371,55 @@ async function acInit() {
   acRender();
 }
 
+function acGesamtZeile(i) {
+  return (i.menge != null ? i.menge : 1) * (i.wert || 0);
+}
+
 function acRender() {
   const tbody = document.getElementById('ac-tbody');
   tbody.innerHTML = '';
   const items = [...abschreibungenDaten.items].sort((a, b) => b.datum.localeCompare(a.datum));
   let gesamt = 0;
   items.forEach(i => {
-    gesamt += i.wert || 0;
+    const zeilenGesamt = acGesamtZeile(i);
+    gesamt += zeilenGesamt;
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${i.datum}</td><td>${i.artikel}</td><td>${i.menge || '–'}</td><td>${euro(i.wert)}</td><td>${i.grund || '–'}</td><td><button class="btn-del" onclick="acLoeschen('${i.id}')">✕</button></td>`;
+    tr.className = 'kb-klickbare-zeile';
+    tr.style.cursor = 'pointer';
+    tr.onclick = () => acDetailAnzeigen(i.id);
+    tr.innerHTML = `<td>${i.datum}</td><td>${i.artikel}</td><td>${i.menge != null ? i.menge : 1} ${i.einheit || ''}</td><td>${euro(zeilenGesamt)}</td><td>${i.grund || '–'}</td><td style="text-align:center;color:#d4af37;">🔍</td><td><button class="btn-del" onclick="event.stopPropagation();acLoeschen('${i.id}')">✕</button></td>`;
     tbody.appendChild(tr);
   });
   document.getElementById('ac-gesamt').textContent = euro(gesamt);
 }
 
+function acDetailAnzeigen(id) {
+  const i = abschreibungenDaten.items.find(x => x.id === id);
+  if (!i) return;
+  let html = '';
+  html += abwDetailZeile('Datum', i.datum);
+  html += abwDetailZeile('Artikel', i.artikel);
+  html += abwDetailZeile('Menge', (i.menge != null ? i.menge : 1) + ' ' + (i.einheit || ''));
+  html += abwDetailZeile('Einkaufspreis/Einheit', euro(i.wert));
+  html += abwDetailZeile('Gesamt', euro(acGesamtZeile(i)));
+  html += abwDetailZeile('Grund', i.grund || '–');
+  abwDetailOeffnen('Abschreibung ' + i.datum, html);
+}
+
 async function acHinzufuegen() {
   const datum = document.getElementById('ac-datum').value;
   const artikel = document.getElementById('ac-artikel').value.trim();
-  const menge = parseFloat(document.getElementById('ac-menge').value) || null;
+  const menge = parseFloat(document.getElementById('ac-menge').value) || 1;
+  const einheit = document.getElementById('ac-einheit').value;
   const wert = parseFloat(document.getElementById('ac-wert').value) || 0;
   const grund = document.getElementById('ac-grund').value.trim();
   if (!datum || !artikel) { alert('Bitte mindestens Datum und Artikel angeben.'); return; }
 
-  abschreibungenDaten.items.push({ id: Date.now() + '-' + Math.random().toString(36).slice(2, 8), datum, artikel, menge, wert, grund });
+  abschreibungenDaten.items.push({ id: Date.now() + '-' + Math.random().toString(36).slice(2, 8), datum, artikel, menge, einheit, wert, grund });
   await toolSave('tagesgeschaeft-abschreibungen', abschreibungenDaten);
   flashSaved('ac-save-msg');
   document.getElementById('ac-artikel').value = '';
-  document.getElementById('ac-menge').value = '';
+  document.getElementById('ac-menge').value = '1';
   document.getElementById('ac-wert').value = '';
   document.getElementById('ac-grund').value = '';
   acRender();
@@ -1363,15 +1458,31 @@ function sbRender() {
   let gesamt = 0;
   items.forEach(i => {
     gesamt += i.betrag || 0;
-    const dateiLink = i.storagePath ? `<a href="#" onclick="sbOeffnen('${i.id}');return false;">${i.dateiname || 'Datei öffnen'}</a>` : '–';
+    const dateiLink = i.storagePath ? `<a href="#" onclick="event.stopPropagation();sbOeffnen('${i.id}');return false;">${i.dateiname || 'Datei öffnen'}</a>` : '–';
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${i.datum}</td><td>${euro(i.betrag)}</td><td>${i.grund || '–'}</td><td>${dateiLink}</td><td><button class="btn-del" onclick="sbLoeschen('${i.id}')">✕</button></td>`;
+    tr.className = 'kb-klickbare-zeile';
+    tr.style.cursor = 'pointer';
+    tr.onclick = () => sbDetailAnzeigen(i.id);
+    tr.innerHTML = `<td>${i.datum}</td><td>${euro(i.betrag)}</td><td>${i.grund || '–'}</td><td>${dateiLink}</td><td style="text-align:center;color:#d4af37;">🔍</td><td><button class="btn-del" onclick="event.stopPropagation();sbLoeschen('${i.id}')">✕</button></td>`;
     tbody.appendChild(tr);
   });
   document.getElementById('sb-gesamt').textContent = euro(gesamt);
 }
 
-function sbDateiGewaehlt(evt) {
+function sbDetailAnzeigen(id) {
+  const i = stornoDaten.items.find(x => x.id === id);
+  if (!i) return;
+  let html = '';
+  html += abwDetailZeile('Datum', i.datum);
+  html += abwDetailZeile('Betrag', euro(i.betrag));
+  html += abwDetailZeile('Grund', i.grund || '–');
+  if (i.dateiname) {
+    html += `<div style="margin-top:14px;font-size:12px;color:#8090a8;">Datei: <a href="#" onclick="sbOeffnen('${i.id}');return false;">${i.dateiname}</a></div>`;
+  }
+  abwDetailOeffnen('Stornobeleg ' + i.datum, html);
+}
+
+async function sbDateiGewaehlt(evt) {
   const file = evt.target.files[0];
   if (!file) return;
   if (file.size > 3 * 1024 * 1024) {
@@ -1381,6 +1492,26 @@ function sbDateiGewaehlt(evt) {
   }
   sbAusgewaehlteDatei = file;
   document.getElementById('sb-datei-name').textContent = file.name;
+
+  const hinweis = document.getElementById('sb-auto-hinweis');
+  hinweis.style.display = 'block';
+  hinweis.textContent = '🔍 Beleg wird ausgelesen …';
+  try {
+    const base64 = await dateiZuBase64Sb(file);
+    const res = await fetch('/api/beleg-upload', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ zweck: 'storno', contentBase64: base64, contentType: file.type || 'application/pdf', analyzeOnly: true })
+    });
+    const d = await res.json();
+    const extracted = (d && d.extracted) || {};
+    let erkannt = [];
+    if (extracted.datum) { document.getElementById('sb-datum').value = extracted.datum; erkannt.push('Datum'); }
+    if (extracted.betrag != null) { document.getElementById('sb-betrag').value = extracted.betrag.toFixed(2); erkannt.push('Betrag'); }
+    hinweis.textContent = erkannt.length ? ('✓ Automatisch erkannt: ' + erkannt.join(', ') + ' — bitte kurz prüfen.') : 'ℹ️ Konnte nichts automatisch auslesen — bitte Felder manuell ausfüllen.';
+  } catch (e) {
+    hinweis.textContent = 'ℹ️ Konnte nichts automatisch auslesen — bitte Felder manuell ausfüllen.';
+  }
 }
 
 async function sbHinzufuegen() {
@@ -1417,6 +1548,7 @@ async function sbHinzufuegen() {
   document.getElementById('sb-grund').value = '';
   document.getElementById('sb-datei-name').textContent = '';
   document.getElementById('sb-datei').value = '';
+  document.getElementById('sb-auto-hinweis').style.display = 'none';
   sbRender();
 }
 

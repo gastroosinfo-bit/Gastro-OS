@@ -203,10 +203,10 @@ function bhUebersichtAktualisieren() {
   document.getElementById('bh-zip-anzahl-text').textContent = anzahlBelegdateien + (anzahlBelegdateien === 1 ? ' Belegdatei' : ' Belegdateien') + ' des Monats';
 
   const fgDesMonats = freigetraenkeDaten.filter(f => f.datum && f.datum.slice(0, 7) === monatSchluessel);
-  document.getElementById('bh-sum-freigetraenke').textContent = euro(fgDesMonats.reduce((s, f) => s + (f.wert || 0), 0));
+  document.getElementById('bh-sum-freigetraenke').textContent = euro(fgDesMonats.reduce((s, f) => s + (f.menge != null ? f.menge : 1) * (f.wert || 0), 0));
 
   const acDesMonats = abschreibungenDaten.filter(a => a.datum && a.datum.slice(0, 7) === monatSchluessel);
-  document.getElementById('bh-sum-abschreibungen').textContent = euro(acDesMonats.reduce((s, a) => s + (a.wert || 0), 0));
+  document.getElementById('bh-sum-abschreibungen').textContent = euro(acDesMonats.reduce((s, a) => s + (a.menge != null ? a.menge : 1) * (a.wert || 0), 0));
 
   const sbDesMonats = stornoDaten.filter(s => s.datum && s.datum.slice(0, 7) === monatSchluessel);
   document.getElementById('bh-sum-stornos').textContent = euro(sbDesMonats.reduce((s, x) => s + (x.betrag || 0), 0));
@@ -375,11 +375,11 @@ function bhKompletterBericht() {
   const fgZeilen = freigetraenkeDaten
     .filter(f => f.datum && f.datum.slice(0, 7) === monatSchluessel)
     .sort((a, b) => a.datum.localeCompare(b.datum))
-    .map(f => [f.datum, f.getraenk, f.menge != null ? String(f.menge) : '–', euro(f.wert), f.grund || '–']);
+    .map(f => [f.datum, f.getraenk, (f.menge != null ? f.menge : 1) + ' ' + (f.einheit || ''), euro((f.menge != null ? f.menge : 1) * (f.wert || 0)), f.grund || '–']);
   const acZeilen = abschreibungenDaten
     .filter(a => a.datum && a.datum.slice(0, 7) === monatSchluessel)
     .sort((a, b) => a.datum.localeCompare(b.datum))
-    .map(a => [a.datum, a.artikel, a.menge != null ? String(a.menge) : '–', euro(a.wert), a.grund || '–']);
+    .map(a => [a.datum, a.artikel, (a.menge != null ? a.menge : 1) + ' ' + (a.einheit || ''), euro((a.menge != null ? a.menge : 1) * (a.wert || 0)), a.grund || '–']);
   const sbZeilen = stornoDaten
     .filter(s => s.datum && s.datum.slice(0, 7) === monatSchluessel)
     .sort((a, b) => a.datum.localeCompare(b.datum))
@@ -398,7 +398,7 @@ function bhKompletterBericht() {
       doc.text('Freigetränke', 14, y + 4);
       doc.autoTable({
         startY: y + 7,
-        head: [['Datum', 'Getränk', 'Menge', 'Wert', 'Grund']],
+        head: [['Datum', 'Getränk', 'Menge', 'Gesamt', 'Grund']],
         body: fgZeilen,
         styles: { fontSize: 8.5 },
         headStyles: { fillColor: [26, 42, 74], textColor: [212, 175, 55] },
@@ -413,7 +413,7 @@ function bhKompletterBericht() {
       doc.text('Abschreibungen', 14, y + 4);
       doc.autoTable({
         startY: y + 7,
-        head: [['Datum', 'Artikel', 'Menge', 'Wert', 'Grund']],
+        head: [['Datum', 'Artikel', 'Menge', 'Gesamt', 'Grund']],
         body: acZeilen,
         styles: { fontSize: 8.5 },
         headStyles: { fillColor: [26, 42, 74], textColor: [212, 175, 55] },
