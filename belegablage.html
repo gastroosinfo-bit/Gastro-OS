@@ -221,7 +221,13 @@ function flashSaved(id) {
   el.style.display = 'inline';
   setTimeout(() => { el.style.display = 'none'; }, 2000);
 }
-function heute() { return new Date().toISOString().slice(0, 10); }
+function heute() {
+  const d = new Date();
+  const j = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const t = String(d.getDate()).padStart(2, '0');
+  return `${j}-${m}-${t}`;
+}
 function euro(n) { return (Number(n) || 0).toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €'; }
 
 let belegeDaten = [];

@@ -951,11 +951,19 @@ function renderTaeglicheTools() {
   });
 }
 
+function heutigesDatumString() {
+  const d = new Date();
+  const j = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const t = String(d.getDate()).padStart(2, '0');
+  return `${j}-${m}-${t}`;
+}
+
 async function belegeFaelligBadgePruefen() {
   const data = await dashToolLoad('tagesgeschaeft-belege');
   const items = data.items || [];
   const heuteDatum = new Date(); heuteDatum.setHours(0,0,0,0);
-  const heuteStr = heuteDatum.toISOString().slice(0, 10);
+  const heuteStr = heutigesDatumString();
   let anzahl = 0;
   items.forEach(b => {
     if (b.status === 'offen') {
@@ -1152,7 +1160,7 @@ async function faelligeRechnungenPruefen() {
   const data = await dashToolLoad('tagesgeschaeft-belege');
   const items = data.items || [];
   const heuteDatum = new Date(); heuteDatum.setHours(0,0,0,0);
-  const heuteStr = heuteDatum.toISOString().slice(0, 10);
+  const heuteStr = heutigesDatumString();
   const relevante = [];
   items.forEach(b => {
     if (b.status !== 'faellig' || !b.faelligkeit) return;
