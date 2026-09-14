@@ -75,6 +75,7 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
     <div class="upload-drop" onclick="document.getElementById('beleg-datei').click()">
       📎 Klicken, um eine PDF-Datei oder ein Foto auszuwählen<br>
       <span id="beleg-datei-name" style="font-weight:600;color:#1a2a4a;"></span>
+      <span id="beleg-datei-entfernen" onclick="event.stopPropagation();belegDateiEntfernen();" style="display:none;margin-left:10px;color:#c0392b;font-weight:700;cursor:pointer;">✕ entfernen</span>
     </div>
     <input type="file" id="beleg-datei" accept="application/pdf,image/*" style="display:none;" onchange="belegDateiGewaehlt(event)">
     <div class="hint">Max. 3 MB, PDF oder Foto (JPG/PNG). Auf dem Handy kann direkt die Kamera genutzt werden.</div>
@@ -353,6 +354,13 @@ function dateiZuBase64(file) {
   });
 }
 
+function belegDateiEntfernen() {
+  belegAusgewaehlteDatei = null;
+  document.getElementById('beleg-datei').value = '';
+  document.getElementById('beleg-datei-name').textContent = '';
+  document.getElementById('beleg-datei-entfernen').style.display = 'none';
+  document.getElementById('beleg-auto-hinweis').style.display = 'none';
+}
 async function belegDateiGewaehlt(evt) {
   const file = evt.target.files[0];
   if (!file) return;
@@ -363,6 +371,7 @@ async function belegDateiGewaehlt(evt) {
   }
   belegAusgewaehlteDatei = file;
   document.getElementById('beleg-datei-name').textContent = file.name;
+  document.getElementById('beleg-datei-entfernen').style.display = 'inline';
 
   const hinweis = document.getElementById('beleg-auto-hinweis');
   const istFoto = file.type.startsWith('image/');
@@ -505,6 +514,7 @@ async function belegHochladen() {
     document.getElementById('beleg-bar').value = '';
     document.getElementById('beleg-karte').value = '';
     document.getElementById('beleg-datei-name').textContent = '';
+    document.getElementById('beleg-datei-entfernen').style.display = 'none';
     document.getElementById('beleg-datei').value = '';
     document.getElementById('beleg-betrag').value = '';
     document.getElementById('beleg-rechnungsnr').value = '';
