@@ -508,10 +508,43 @@ async function belegHochladen() {
     document.getElementById('beleg-faelligkeit-wrap').style.display = 'none';
     document.getElementById('beleg-auto-hinweis').style.display = 'none';
     belegRenderTabelle();
+
+    if (plattform === 'Z-Bon' && (bar != null || karte != null)) {
+      await zBonKassenbuchAbgleich(datum, bar, karte);
+    }
   } catch (e) {
     alert('Fehler beim Hochladen.');
   }
 }
+
+// Gleicht einen hochgeladenen Z-Bon automatisch mit dem Kassenbuch ab:
+// Gibt es für den Tag noch KEINEN Kassenbuch-Eintrag, wird er aus dem
+// Z-Bon (Bar/Karte) automatisch angelegt. Existiert schon einer, wird er
+// nicht angetastet — nur ein Hinweis zum manuellen Abgleich angezeigt.
+async function zBonKassenbuchAbgleich(datum, bar, karte) {
+  const kassenbuchDaten = await toolLoad('tagesgeschaeft-kassenbuch');
+  const hinweis = document.getElementById('beleg-auto-hinweis');
+  if (kassenbuchDaten[datum]) {
+    hinweis.className = 'auto-hinweis';
+    hinweis.style.display = 'block';
+    hinweis.textContent = 'ℹ️ Für den ' + datum + ' gibt es bereits einen Kassenbuch-Eintrag — bitte im Tagesgeschäft-Tab manuell mit dem Z-Bon abgleichen.';
+    return;
+  }
+  kassenbuchDaten[datum] = {
+    kasse: bar || 0,
+    karte: karte || 0,
+    lieferdienste: 0,
+    ueberweisung: 0,
+    wareneinkaufBar: 0, wareneinkaufKarte: 0, wareneinkaufUeberweisung: 0,
+    sonstigesBar: 0, sonstigesKarte: 0, sonstigesUeberweisung: 0,
+    notiz: 'Automatisch aus Z-Bon übernommen'
+  };
+  await toolSave('tagesgeschaeft-kassenbuch', kassenbuchDaten);
+  hinweis.className = 'auto-hinweis';
+  hinweis.style.display = 'block';
+  hinweis.textContent = '✓ Kassenbuch für den ' + datum + ' automatisch aus dem Z-Bon befüllt (Kasse: ' + euro(bar) + ', Karte: ' + euro(karte) + ').';
+}
+
 async function belegOeffnen(path) {
   try {
     const res = await fetch('/api/beleg-upload?path=' + encodeURIComponent(path));
