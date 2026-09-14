@@ -79,23 +79,50 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
         <label>Jahr</label>
         <select id="bh-jahr" onchange="bhUebersichtAktualisieren()"></select>
       </div>
-      <button class="btn-add" onclick="bhKompletterBericht()">📄 Kompletten Bericht als PDF</button>
     </div>
   </div>
 
   <div class="section">
     <div class="section-head">Übersicht <span id="bh-monat-label" style="color:#a0b0c8;font-weight:400;"></span></div>
-    <div class="grid4">
+    <div style="font-size:11px;font-weight:700;color:#8090a8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Kassenbuch</div>
+    <div class="grid3">
       <div class="summary-box"><div class="label">Einnahmen</div><div class="value" id="bh-sum-einnahmen">0,00 €</div></div>
       <div class="summary-box"><div class="label">Ausgaben</div><div class="value" id="bh-sum-ausgaben">0,00 €</div></div>
-      <div class="summary-box"><div class="label">Belege gesamt</div><div class="value" id="bh-sum-belege">0,00 €</div></div>
       <div class="summary-box"><div class="label">Wareneingänge</div><div class="value" id="bh-anzahl-we">0</div></div>
     </div>
-    <div class="grid4" style="margin-top:12px;">
+    <div style="font-size:11px;font-weight:700;color:#8090a8;text-transform:uppercase;letter-spacing:0.5px;margin:16px 0 8px;">Belege</div>
+    <div class="grid3">
+      <div class="summary-box"><div class="label">Einnahmen (Belege)</div><div class="value" id="bh-sum-belege-einnahmen">0,00 €</div></div>
+      <div class="summary-box"><div class="label">Ausgaben (Belege)</div><div class="value" id="bh-sum-belege-ausgaben">0,00 €</div></div>
+      <div class="summary-box"><div class="label">Belege gesamt</div><div class="value" id="bh-sum-belege">0,00 €</div></div>
+    </div>
+    <div style="font-size:11px;font-weight:700;color:#8090a8;text-transform:uppercase;letter-spacing:0.5px;margin:16px 0 8px;">Abweichungen</div>
+    <div class="grid3">
       <div class="summary-box"><div class="label">Freigetränke</div><div class="value" id="bh-sum-freigetraenke">0,00 €</div></div>
       <div class="summary-box"><div class="label">Abschreibungen</div><div class="value" id="bh-sum-abschreibungen">0,00 €</div></div>
       <div class="summary-box"><div class="label">Stornobelege</div><div class="value" id="bh-sum-stornos">0,00 €</div></div>
     </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">📄 Monatsbericht zusammenstellen</div>
+    <div style="font-size:12.5px;color:#5a6a85;margin-bottom:14px;">Wähl aus, was in die PDF-Datei soll — z. B. nur das, was dein Steuerberater braucht, oder nur das für dich selbst.</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
+      <button class="btn-add" style="background:transparent;color:#1a2a4a;border:1px solid #d4af37;" onclick="bhAuswahlPreset('steuerberater')">Für Steuerberater</button>
+      <button class="btn-add" style="background:transparent;color:#1a2a4a;border:1px solid #d4af37;" onclick="bhAuswahlPreset('intern')">Für mich</button>
+      <button class="btn-add" style="background:transparent;color:#1a2a4a;border:1px solid #d4af37;" onclick="bhAuswahlPreset('alles')">Alles</button>
+      <button class="btn-add" style="background:transparent;color:#8090a8;border:1px solid #d0c8b8;" onclick="bhAuswahlPreset('nichts')">Nichts</button>
+    </div>
+    <div class="grid3" style="row-gap:14px;margin-bottom:18px;">
+      <label style="display:flex;align-items:center;gap:8px;font-size:13.5px;cursor:pointer;"><input type="checkbox" id="bh-check-kassenbuch" checked> Kassenbuch</label>
+      <label style="display:flex;align-items:center;gap:8px;font-size:13.5px;cursor:pointer;"><input type="checkbox" id="bh-check-belege" checked> Belege</label>
+      <label style="display:flex;align-items:center;gap:8px;font-size:13.5px;cursor:pointer;"><input type="checkbox" id="bh-check-wareneingang" checked> Wareneingang</label>
+      <label style="display:flex;align-items:center;gap:8px;font-size:13.5px;cursor:pointer;"><input type="checkbox" id="bh-check-abweichungen" checked> Abweichungen</label>
+      <label style="display:flex;align-items:center;gap:8px;font-size:13.5px;cursor:pointer;"><input type="checkbox" id="bh-check-temperaturen"> Temperaturen</label>
+      <label style="display:flex;align-items:center;gap:8px;font-size:13.5px;cursor:pointer;"><input type="checkbox" id="bh-check-notizen"> Notizen</label>
+      <label style="display:flex;align-items:center;gap:8px;font-size:13.5px;cursor:pointer;"><input type="checkbox" id="bh-check-artikelbericht"> Artikelbericht</label>
+    </div>
+    <button class="btn-add" onclick="bhBerichtErstellen()">📄 Ausgewählte Bereiche als PDF</button>
   </div>
 
   <div class="section">
@@ -116,6 +143,9 @@ let belegeDaten = [];
 let freigetraenkeDaten = [];
 let abschreibungenDaten = [];
 let stornoDaten = [];
+let haccpDaten = { geraete: [], eintraege: {} };
+let notizDaten = [];
+let artikelberichteDaten = {};
 
 async function checkAuth() {
   try {
@@ -161,6 +191,17 @@ function kbSonstigesGesamt(t) {
   return t.sonstiges || 0;
 }
 
+// Lieferdienste zahlen aus (Einnahme), ein Z-Bon dokumentiert den Tagesumsatz
+// (ebenfalls Einnahme) — alle anderen Anbieter sind Lieferanten-Rechnungen (Ausgabe).
+const LIEFERDIENSTE_BH = ['Lieferando', 'Wolt', 'Uber Eats'];
+function belegRichtung(b) {
+  if (LIEFERDIENSTE_BH.includes(b.plattform) || b.plattform === 'Z-Bon') return 'einnahme';
+  return 'ausgabe';
+}
+function belegRichtungText(b) {
+  return belegRichtung(b) === 'einnahme' ? 'Einnahme' : 'Ausgabe';
+}
+
 function bhAuswahlInitialisieren() {
   const aktJahr = parseInt(heute().slice(0, 4));
   const jahrSelect = document.getElementById('bh-jahr');
@@ -195,6 +236,10 @@ function bhUebersichtAktualisieren() {
   const belegeDesMonats = belegeDaten.filter(b => b.datum && b.datum.slice(0, 7) === monatSchluessel);
   const sumBelege = belegeDesMonats.reduce((sum, b) => sum + (b.betrag || 0), 0);
   document.getElementById('bh-sum-belege').textContent = euro(sumBelege);
+  const sumBelegeEinnahmen = belegeDesMonats.filter(b => belegRichtung(b) === 'einnahme').reduce((s, b) => s + (b.betrag || 0), 0);
+  const sumBelegeAusgaben = belegeDesMonats.filter(b => belegRichtung(b) === 'ausgabe').reduce((s, b) => s + (b.betrag || 0), 0);
+  document.getElementById('bh-sum-belege-einnahmen').textContent = euro(sumBelegeEinnahmen);
+  document.getElementById('bh-sum-belege-ausgaben').textContent = euro(sumBelegeAusgaben);
 
   const weDesMonats = weDaten.filter(w => w.datum && w.datum.slice(0, 7) === monatSchluessel);
   document.getElementById('bh-anzahl-we').textContent = String(weDesMonats.length);
@@ -203,10 +248,10 @@ function bhUebersichtAktualisieren() {
   document.getElementById('bh-zip-anzahl-text').textContent = anzahlBelegdateien + (anzahlBelegdateien === 1 ? ' Belegdatei' : ' Belegdateien') + ' des Monats';
 
   const fgDesMonats = freigetraenkeDaten.filter(f => f.datum && f.datum.slice(0, 7) === monatSchluessel);
-  document.getElementById('bh-sum-freigetraenke').textContent = euro(fgDesMonats.reduce((s, f) => s + (f.menge != null ? f.menge : 1) * (f.wert || 0), 0));
+  document.getElementById('bh-sum-freigetraenke').textContent = euro(fgDesMonats.reduce((s, f) => s + (f.wert || 0), 0));
 
   const acDesMonats = abschreibungenDaten.filter(a => a.datum && a.datum.slice(0, 7) === monatSchluessel);
-  document.getElementById('bh-sum-abschreibungen').textContent = euro(acDesMonats.reduce((s, a) => s + (a.menge != null ? a.menge : 1) * (a.wert || 0), 0));
+  document.getElementById('bh-sum-abschreibungen').textContent = euro(acDesMonats.reduce((s, a) => s + (a.wert || 0), 0));
 
   const sbDesMonats = stornoDaten.filter(s => s.datum && s.datum.slice(0, 7) === monatSchluessel);
   document.getElementById('bh-sum-stornos').textContent = euro(sbDesMonats.reduce((s, x) => s + (x.betrag || 0), 0));
@@ -252,23 +297,23 @@ async function bhBelegeAlsZip(btn) {
   }
 }
 
-function bhKompletterBericht() {
-  const monatSchluessel = bhAktuellerMonatSchluessel();
-  const monatName = MONATSNAMEN[parseInt(monatSchluessel.slice(5,7))];
-  const jahr = monatSchluessel.slice(0, 4);
+function bhAuswahlPreset(preset) {
+  const alle = ['kassenbuch', 'belege', 'wareneingang', 'abweichungen', 'temperaturen', 'notizen', 'artikelbericht'];
+  const steuerberater = ['kassenbuch', 'belege', 'wareneingang', 'abweichungen'];
+  const intern = ['temperaturen', 'notizen', 'artikelbericht'];
+  let aktiv = [];
+  if (preset === 'steuerberater') aktiv = steuerberater;
+  else if (preset === 'intern') aktiv = intern;
+  else if (preset === 'alles') aktiv = alle;
+  else if (preset === 'nichts') aktiv = [];
+  alle.forEach(name => {
+    document.getElementById('bh-check-' + name).checked = aktiv.includes(name);
+  });
+}
 
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
+// ── Einzelne Berichtsabschnitte: jede Funktion zeichnet ihren Teil und gibt die neue Y-Position zurück ──
 
-  doc.setFontSize(17);
-  doc.setTextColor(26, 42, 74);
-  doc.text('GASTRO-OS – Buchhaltungsbericht', 14, 18);
-  doc.setFontSize(11);
-  doc.setTextColor(90, 106, 128);
-  doc.text(monatName + ' ' + jahr, 14, 25);
-  let y = 34;
-
-  // ── Kassenbuch ──
+function bhAbschnittKassenbuch(doc, y, monatSchluessel) {
   const kbTage = Object.keys(kassenbuchDaten).filter(d => d.slice(0, 7) === monatSchluessel).sort();
   let sumEin = 0, sumAus = 0;
   const kbZeilen = kbTage.map(datum => {
@@ -302,37 +347,42 @@ function bhKompletterBericht() {
     doc.text('Keine Kassenbuch-Einträge in diesem Monat.', 14, y + 4);
     y += 16;
   }
+  return y;
+}
 
-  // ── Belege ──
-  const belegeZeilen = belegeDaten
-    .filter(b => b.datum && b.datum.slice(0, 7) === monatSchluessel)
-    .sort((a, b) => a.datum.localeCompare(b.datum))
-    .map(b => {
-      const statusText = b.status === 'bezahlt' ? 'Bezahlt' : ('Fällig am ' + (b.faelligkeit || '–'));
-      return [b.datum, b.plattform, b.rechnungsnr || '–', euro(b.betrag), b.mwst19 != null ? euro(b.mwst19) : '–', b.mwst7 != null ? euro(b.mwst7) : '–', statusText];
-    });
-  if (y > 250) { doc.addPage(); y = 20; }
+function bhAbschnittBelege(doc, y, monatSchluessel) {
+  const belegeDesMonats = belegeDaten.filter(b => b.datum && b.datum.slice(0, 7) === monatSchluessel).sort((a, b) => a.datum.localeCompare(b.datum));
+  const belegeZeilen = belegeDesMonats.map(b => {
+    const statusText = b.status === 'bezahlt' ? 'Bezahlt' : ('Fällig am ' + (b.faelligkeit || '–'));
+    return [b.datum, b.plattform, belegRichtungText(b), euro(b.betrag), b.mwst19 != null ? euro(b.mwst19) : '–', b.mwst7 != null ? euro(b.mwst7) : '–', statusText];
+  });
   doc.setFontSize(13);
   doc.setTextColor(26, 42, 74);
   doc.text('Belege', 14, y);
   y += 4;
   if (belegeZeilen.length) {
-    let sumBetrag = 0, sumMwst19 = 0, sumMwst7 = 0;
-    belegeDaten.filter(b => b.datum && b.datum.slice(0, 7) === monatSchluessel).forEach(b => {
-      sumBetrag += b.betrag || 0; sumMwst19 += b.mwst19 || 0; sumMwst7 += b.mwst7 || 0;
+    let sumEinnahmen = 0, sumAusgaben = 0, sumMwst19 = 0, sumMwst7 = 0;
+    belegeDesMonats.forEach(b => {
+      if (belegRichtung(b) === 'einnahme') sumEinnahmen += b.betrag || 0; else sumAusgaben += b.betrag || 0;
+      sumMwst19 += b.mwst19 || 0; sumMwst7 += b.mwst7 || 0;
     });
     doc.autoTable({
       startY: y,
-      head: [['Datum', 'Anbieter', 'Rechnungsnr.', 'Betrag', 'MwSt. 19%', 'MwSt. 7%', 'Status']],
+      head: [['Datum', 'Anbieter', 'Einnahme/Ausgabe', 'Betrag', 'MwSt. 19%', 'MwSt. 7%', 'Status']],
       body: belegeZeilen,
       styles: { fontSize: 8.5 },
       headStyles: { fillColor: [26, 42, 74], textColor: [212, 175, 55] },
-      margin: { left: 14, right: 14 }
+      margin: { left: 14, right: 14 },
+      didParseCell: function(data) {
+        if (data.section === 'body' && data.column.index === 2) {
+          data.cell.styles.textColor = data.cell.raw === 'Einnahme' ? [26, 102, 64] : [160, 24, 24];
+        }
+      }
     });
     y = doc.lastAutoTable.finalY + 6;
     doc.setFontSize(10);
     doc.setTextColor(26, 42, 74);
-    doc.text('Betrag gesamt: ' + euro(sumBetrag) + '   ·   MwSt. 19%: ' + euro(sumMwst19) + '   ·   MwSt. 7%: ' + euro(sumMwst7), 14, y);
+    doc.text('Einnahmen: ' + euro(sumEinnahmen) + '   ·   Ausgaben: ' + euro(sumAusgaben) + '   ·   MwSt. 19%: ' + euro(sumMwst19) + '   ·   MwSt. 7%: ' + euro(sumMwst7), 14, y);
     y += 14;
   } else {
     doc.setFontSize(10);
@@ -340,8 +390,10 @@ function bhKompletterBericht() {
     doc.text('Keine Belege in diesem Monat.', 14, y + 4);
     y += 16;
   }
+  return y;
+}
 
-  // ── Wareneingang ──
+function bhAbschnittWareneingang(doc, y, monatSchluessel) {
   const weZeilen = weDaten
     .filter(w => w.datum && w.datum.slice(0, 7) === monatSchluessel)
     .sort((a, b) => a.datum.localeCompare(b.datum))
@@ -349,7 +401,6 @@ function bhKompletterBericht() {
       const allOk = w.mengeOk && w.mhdOk && w.zustandOk;
       return [w.datum, w.lieferant || '', w.temp !== null ? w.temp + ' °C' : '–', allOk ? 'OK' : 'Prüfen', w.bemerkung || ''];
     });
-  if (y > 250) { doc.addPage(); y = 20; }
   doc.setFontSize(13);
   doc.setTextColor(26, 42, 74);
   doc.text('Wareneingang', 14, y);
@@ -370,72 +421,234 @@ function bhKompletterBericht() {
     doc.text('Keine Wareneingang-Einträge in diesem Monat.', 14, y + 4);
     y += 16;
   }
+  return y;
+}
 
-  // ── Abweichungen: Freigetränke, Abschreibungen, Stornobelege ──
+function bhAbschnittAbweichungen(doc, y, monatSchluessel) {
   const fgZeilen = freigetraenkeDaten
     .filter(f => f.datum && f.datum.slice(0, 7) === monatSchluessel)
     .sort((a, b) => a.datum.localeCompare(b.datum))
-    .map(f => [f.datum, f.getraenk, (f.menge != null ? f.menge : 1) + ' ' + (f.einheit || ''), euro((f.menge != null ? f.menge : 1) * (f.wert || 0)), f.grund || '–']);
+    .map(f => [f.datum, f.getraenk, (f.menge != null ? f.menge : 1) + ' ' + (f.einheit || ''), euro(f.wert), f.grund || '–']);
   const acZeilen = abschreibungenDaten
     .filter(a => a.datum && a.datum.slice(0, 7) === monatSchluessel)
     .sort((a, b) => a.datum.localeCompare(b.datum))
-    .map(a => [a.datum, a.artikel, (a.menge != null ? a.menge : 1) + ' ' + (a.einheit || ''), euro((a.menge != null ? a.menge : 1) * (a.wert || 0)), a.grund || '–']);
+    .map(a => [a.datum, a.artikel, (a.menge != null ? a.menge : 1) + ' ' + (a.einheit || ''), euro(a.wert), a.grund || '–']);
   const sbZeilen = stornoDaten
     .filter(s => s.datum && s.datum.slice(0, 7) === monatSchluessel)
     .sort((a, b) => a.datum.localeCompare(b.datum))
     .map(s => [s.datum, euro(s.betrag), s.grund || '–', s.dateiname || '–']);
 
-  if (fgZeilen.length || acZeilen.length || sbZeilen.length) {
-    if (y > 250) { doc.addPage(); y = 20; }
-    doc.setFontSize(13);
-    doc.setTextColor(26, 42, 74);
-    doc.text('Abweichungen', 14, y);
-    y += 4;
+  doc.setFontSize(13);
+  doc.setTextColor(26, 42, 74);
+  doc.text('Abweichungen', 14, y);
+  y += 4;
 
-    if (fgZeilen.length) {
-      doc.setFontSize(10.5);
-      doc.setTextColor(90, 106, 128);
-      doc.text('Freigetränke', 14, y + 4);
-      doc.autoTable({
-        startY: y + 7,
-        head: [['Datum', 'Getränk', 'Menge', 'Gesamt', 'Grund']],
-        body: fgZeilen,
-        styles: { fontSize: 8.5 },
-        headStyles: { fillColor: [26, 42, 74], textColor: [212, 175, 55] },
-        margin: { left: 14, right: 14 }
-      });
-      y = doc.lastAutoTable.finalY + 10;
-    }
-    if (acZeilen.length) {
-      if (y > 250) { doc.addPage(); y = 20; }
-      doc.setFontSize(10.5);
-      doc.setTextColor(90, 106, 128);
-      doc.text('Abschreibungen', 14, y + 4);
-      doc.autoTable({
-        startY: y + 7,
-        head: [['Datum', 'Artikel', 'Menge', 'Gesamt', 'Grund']],
-        body: acZeilen,
-        styles: { fontSize: 8.5 },
-        headStyles: { fillColor: [26, 42, 74], textColor: [212, 175, 55] },
-        margin: { left: 14, right: 14 }
-      });
-      y = doc.lastAutoTable.finalY + 10;
-    }
-    if (sbZeilen.length) {
-      if (y > 250) { doc.addPage(); y = 20; }
-      doc.setFontSize(10.5);
-      doc.setTextColor(90, 106, 128);
-      doc.text('Stornobelege', 14, y + 4);
-      doc.autoTable({
-        startY: y + 7,
-        head: [['Datum', 'Betrag', 'Grund', 'Datei']],
-        body: sbZeilen,
-        styles: { fontSize: 8.5 },
-        headStyles: { fillColor: [26, 42, 74], textColor: [212, 175, 55] },
-        margin: { left: 14, right: 14 }
-      });
-    }
+  if (!fgZeilen.length && !acZeilen.length && !sbZeilen.length) {
+    doc.setFontSize(10);
+    doc.setTextColor(140, 140, 140);
+    doc.text('Keine Abweichungen in diesem Monat.', 14, y + 4);
+    return y + 16;
   }
+
+  if (fgZeilen.length) {
+    doc.setFontSize(10.5);
+    doc.setTextColor(90, 106, 128);
+    doc.text('Freigetränke', 14, y + 4);
+    doc.autoTable({
+      startY: y + 7,
+      head: [['Datum', 'Getränk', 'Menge', 'Wert', 'Grund']],
+      body: fgZeilen,
+      styles: { fontSize: 8.5 },
+      headStyles: { fillColor: [26, 42, 74], textColor: [212, 175, 55] },
+      margin: { left: 14, right: 14 }
+    });
+    y = doc.lastAutoTable.finalY + 10;
+  }
+  if (acZeilen.length) {
+    if (y > 250) { doc.addPage(); y = 20; }
+    doc.setFontSize(10.5);
+    doc.setTextColor(90, 106, 128);
+    doc.text('Abschreibungen', 14, y + 4);
+    doc.autoTable({
+      startY: y + 7,
+      head: [['Datum', 'Artikel', 'Menge', 'Wert', 'Grund']],
+      body: acZeilen,
+      styles: { fontSize: 8.5 },
+      headStyles: { fillColor: [26, 42, 74], textColor: [212, 175, 55] },
+      margin: { left: 14, right: 14 }
+    });
+    y = doc.lastAutoTable.finalY + 10;
+  }
+  if (sbZeilen.length) {
+    if (y > 250) { doc.addPage(); y = 20; }
+    doc.setFontSize(10.5);
+    doc.setTextColor(90, 106, 128);
+    doc.text('Stornobelege', 14, y + 4);
+    doc.autoTable({
+      startY: y + 7,
+      head: [['Datum', 'Betrag', 'Grund', 'Datei']],
+      body: sbZeilen,
+      styles: { fontSize: 8.5 },
+      headStyles: { fillColor: [26, 42, 74], textColor: [212, 175, 55] },
+      margin: { left: 14, right: 14 }
+    });
+    y = doc.lastAutoTable.finalY + 14;
+  }
+  return y;
+}
+
+function bhAbschnittTemperaturen(doc, y, monatSchluessel) {
+  const zeilen = [];
+  Object.keys(haccpDaten.eintraege || {}).filter(d => d.slice(0, 7) === monatSchluessel).sort().forEach(datum => {
+    const werte = haccpDaten.eintraege[datum];
+    Object.keys(werte).forEach(geraet => {
+      const w = werte[geraet];
+      zeilen.push([datum, geraet, w.temp + ' °C', w.ok ? 'OK' : 'Prüfen']);
+    });
+  });
+  doc.setFontSize(13);
+  doc.setTextColor(26, 42, 74);
+  doc.text('Temperaturen', 14, y);
+  y += 4;
+  if (zeilen.length) {
+    doc.autoTable({
+      startY: y,
+      head: [['Datum', 'Gerät', 'Temperatur', 'Status']],
+      body: zeilen,
+      styles: { fontSize: 9 },
+      headStyles: { fillColor: [26, 42, 74], textColor: [212, 175, 55] },
+      margin: { left: 14, right: 14 }
+    });
+    y = doc.lastAutoTable.finalY + 14;
+  } else {
+    doc.setFontSize(10);
+    doc.setTextColor(140, 140, 140);
+    doc.text('Keine Temperatur-Einträge in diesem Monat.', 14, y + 4);
+    y += 16;
+  }
+  return y;
+}
+
+function bhAbschnittNotizen(doc, y, monatSchluessel) {
+  const zeilen = notizDaten
+    .filter(n => n.zeitpunkt && n.zeitpunkt.slice(0, 7) === monatSchluessel)
+    .sort((a, b) => a.zeitpunkt.localeCompare(b.zeitpunkt))
+    .map(n => [new Date(n.zeitpunkt).toLocaleDateString('de-DE'), n.text]);
+  doc.setFontSize(13);
+  doc.setTextColor(26, 42, 74);
+  doc.text('Notizen', 14, y);
+  y += 4;
+  if (zeilen.length) {
+    doc.autoTable({
+      startY: y,
+      head: [['Datum', 'Notiz']],
+      body: zeilen,
+      styles: { fontSize: 9 },
+      headStyles: { fillColor: [26, 42, 74], textColor: [212, 175, 55] },
+      margin: { left: 14, right: 14 },
+      columnStyles: { 1: { cellWidth: 150 } }
+    });
+    y = doc.lastAutoTable.finalY + 14;
+  } else {
+    doc.setFontSize(10);
+    doc.setTextColor(140, 140, 140);
+    doc.text('Keine Notizen in diesem Monat.', 14, y + 4);
+    y += 16;
+  }
+  return y;
+}
+
+function bhAbschnittArtikelbericht(doc, y, monatSchluessel) {
+  doc.setFontSize(13);
+  doc.setTextColor(26, 42, 74);
+  doc.text('Artikelbericht — Monats-Ranking', 14, y);
+  y += 4;
+
+  const summenSpeisen = {}, summenGetraenke = {};
+  Object.keys(artikelberichteDaten).forEach(datum => {
+    if (datum.slice(0, 7) !== monatSchluessel) return;
+    (artikelberichteDaten[datum].items || []).forEach(a => {
+      const ziel = a.kategorie === 'getraenk' ? summenGetraenke : summenSpeisen;
+      ziel[a.gericht] = (ziel[a.gericht] || 0) + (a.menge || 0);
+    });
+  });
+  const sortiert = (obj) => Object.entries(obj).map(([g, m]) => [g, m + 'x']).sort((a, b) => parseInt(b[1]) - parseInt(a[1]));
+  const speisen = sortiert(summenSpeisen);
+  const getraenke = sortiert(summenGetraenke);
+
+  if (!speisen.length && !getraenke.length) {
+    doc.setFontSize(10);
+    doc.setTextColor(140, 140, 140);
+    doc.text('Keine Artikelberichte in diesem Monat.', 14, y + 4);
+    return y + 16;
+  }
+
+  if (speisen.length) {
+    doc.setFontSize(10.5);
+    doc.setTextColor(90, 106, 128);
+    doc.text('Speisen', 14, y + 4);
+    doc.autoTable({
+      startY: y + 7,
+      head: [['Gericht', 'Menge verkauft']],
+      body: speisen,
+      styles: { fontSize: 8.5 },
+      headStyles: { fillColor: [26, 42, 74], textColor: [212, 175, 55] },
+      margin: { left: 14, right: 14 }
+    });
+    y = doc.lastAutoTable.finalY + 10;
+  }
+  if (getraenke.length) {
+    if (y > 250) { doc.addPage(); y = 20; }
+    doc.setFontSize(10.5);
+    doc.setTextColor(90, 106, 128);
+    doc.text('Getränke', 14, y + 4);
+    doc.autoTable({
+      startY: y + 7,
+      head: [['Gericht', 'Menge verkauft']],
+      body: getraenke,
+      styles: { fontSize: 8.5 },
+      headStyles: { fillColor: [26, 42, 74], textColor: [212, 175, 55] },
+      margin: { left: 14, right: 14 }
+    });
+    y = doc.lastAutoTable.finalY + 14;
+  }
+  return y;
+}
+
+function bhBerichtErstellen() {
+  const monatSchluessel = bhAktuellerMonatSchluessel();
+  const monatName = MONATSNAMEN[parseInt(monatSchluessel.slice(5,7))];
+  const jahr = monatSchluessel.slice(0, 4);
+
+  const ausgewaehlt = {
+    kassenbuch: document.getElementById('bh-check-kassenbuch').checked,
+    belege: document.getElementById('bh-check-belege').checked,
+    wareneingang: document.getElementById('bh-check-wareneingang').checked,
+    abweichungen: document.getElementById('bh-check-abweichungen').checked,
+    temperaturen: document.getElementById('bh-check-temperaturen').checked,
+    notizen: document.getElementById('bh-check-notizen').checked,
+    artikelbericht: document.getElementById('bh-check-artikelbericht').checked
+  };
+  if (!Object.values(ausgewaehlt).some(v => v)) { alert('Bitte mindestens einen Bereich auswählen.'); return; }
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  doc.setFontSize(17);
+  doc.setTextColor(26, 42, 74);
+  doc.text('GASTRO-OS – Buchhaltungsbericht', 14, 18);
+  doc.setFontSize(11);
+  doc.setTextColor(90, 106, 128);
+  doc.text(monatName + ' ' + jahr, 14, 25);
+  let y = 34;
+
+  if (ausgewaehlt.kassenbuch) { y = bhAbschnittKassenbuch(doc, y, monatSchluessel); if (y > 250) { doc.addPage(); y = 20; } }
+  if (ausgewaehlt.belege) { y = bhAbschnittBelege(doc, y, monatSchluessel); if (y > 250) { doc.addPage(); y = 20; } }
+  if (ausgewaehlt.wareneingang) { y = bhAbschnittWareneingang(doc, y, monatSchluessel); if (y > 250) { doc.addPage(); y = 20; } }
+  if (ausgewaehlt.abweichungen) { y = bhAbschnittAbweichungen(doc, y, monatSchluessel); if (y > 250) { doc.addPage(); y = 20; } }
+  if (ausgewaehlt.temperaturen) { y = bhAbschnittTemperaturen(doc, y, monatSchluessel); if (y > 250) { doc.addPage(); y = 20; } }
+  if (ausgewaehlt.notizen) { y = bhAbschnittNotizen(doc, y, monatSchluessel); if (y > 250) { doc.addPage(); y = 20; } }
+  if (ausgewaehlt.artikelbericht) { y = bhAbschnittArtikelbericht(doc, y, monatSchluessel); }
 
   doc.save('Buchhaltung-' + monatSchluessel + '.pdf');
 }
@@ -443,13 +656,16 @@ function bhKompletterBericht() {
 (async function init() {
   const ok = await checkAuth();
   if (!ok) return;
-  const [kb, we, bel, fg, ac, sb] = await Promise.all([
+  const [kb, we, bel, fg, ac, sb, hc, nz, ab] = await Promise.all([
     toolLoad('tagesgeschaeft-kassenbuch'),
     toolLoad('tagesgeschaeft-wareneingang'),
     toolLoad('tagesgeschaeft-belege'),
     toolLoad('tagesgeschaeft-freigetraenke'),
     toolLoad('tagesgeschaeft-abschreibungen'),
-    toolLoad('tagesgeschaeft-stornos')
+    toolLoad('tagesgeschaeft-stornos'),
+    toolLoad('tagesgeschaeft-haccp'),
+    toolLoad('tagesgeschaeft-notizen'),
+    toolLoad('tagesgeschaeft-artikelberichte')
   ]);
   kassenbuchDaten = kb || {};
   weDaten = (we && we.items) || [];
@@ -457,6 +673,9 @@ function bhKompletterBericht() {
   freigetraenkeDaten = (fg && fg.items) || [];
   abschreibungenDaten = (ac && ac.items) || [];
   stornoDaten = (sb && sb.items) || [];
+  haccpDaten = { geraete: (hc && hc.geraete) || [], eintraege: (hc && hc.eintraege) || {} };
+  notizDaten = (nz && nz.items) || [];
+  artikelberichteDaten = ab || {};
   bhAuswahlInitialisieren();
   bhUebersichtAktualisieren();
 })();
