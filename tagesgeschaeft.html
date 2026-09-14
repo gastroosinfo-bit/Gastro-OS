@@ -85,14 +85,23 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
   <div class="tool-title">🗓️ Tagesgeschäft</div>
   <div class="tool-sub">Alles, was du täglich in deinem Betrieb erfassen und dokumentieren musst – an einem Ort.</div>
 
-  <div class="tabs">
-    <button class="tab-btn active" data-tab="kassenbuch" onclick="switchTab('kassenbuch')">💶 Kassenbuch</button>
-    <button class="tab-btn" data-tab="haccp" onclick="switchTab('haccp')">🌡️ Temperaturen</button>
-    <button class="tab-btn" data-tab="wareneingang" onclick="switchTab('wareneingang')">🚚 Wareneingang</button>
-    <button class="tab-btn" data-tab="notizen" onclick="switchTab('notizen')">📝 Notizen</button>
-    <button class="tab-btn" data-tab="speisekarte" onclick="switchTab('speisekarte')">📋 Speisekarte</button>
-    <button class="tab-btn" data-tab="artikelbericht" onclick="switchTab('artikelbericht')">📊 Artikelbericht</button>
-    <button class="tab-btn" data-tab="abweichungen" onclick="switchTab('abweichungen')">⚠️ Abweichungen</button>
+  <div class="field-group" style="max-width:320px;margin-bottom:20px;">
+    <label>Bereich</label>
+    <select id="tg-tab-select" onchange="switchTab(this.value)" style="border:1px solid #e0d8c8;border-radius:6px;padding:10px 12px;font-size:14px;color:#1a2a4a;background:#eaf2ff;font-family:inherit;font-weight:600;">
+      <optgroup label="💰 Finanzen">
+        <option value="kassenbuch">💶 Kassenbuch</option>
+        <option value="abweichungen">⚠️ Abweichungen</option>
+      </optgroup>
+      <optgroup label="🏭 Betrieb">
+        <option value="haccp">🌡️ Temperaturen</option>
+        <option value="wareneingang">🚚 Wareneingang</option>
+        <option value="notizen">📝 Notizen</option>
+      </optgroup>
+      <optgroup label="🍽️ Sonstiges">
+        <option value="speisekarte">📋 Speisekarte</option>
+        <option value="artikelbericht">📊 Artikelbericht</option>
+      </optgroup>
+    </select>
   </div>
 
   <!-- ═══════════ KASSENBUCH ═══════════ -->
@@ -500,8 +509,9 @@ function euro(n) {
 
 // ─── Tabs ──────────────────────────────────────────────────────────────
 function switchTab(tab) {
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === 'panel-' + tab));
+  const select = document.getElementById('tg-tab-select');
+  if (select && select.value !== tab) select.value = tab;
 }
 
 // ─── KASSENBUCH ──────────────────────────────────────────────────────────

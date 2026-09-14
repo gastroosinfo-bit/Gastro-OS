@@ -159,22 +159,24 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
       <div class="module-content" id="toolbox-content"></div>
     </div>
 
-    <!-- KACHEL: DEINE BUCHHALTUNG (eigenständig, kein Dropdown) -->
-    <a href="buchhaltung.html" class="module-card toolbox-elegant" style="margin-bottom:12px;display:block;text-decoration:none;color:inherit;">
-      <div style="padding:14px 22px;display:flex;align-items:center;justify-content:space-between;">
-        <div class="module-left"><div class="module-number toolbox-icon-circle" style="width:32px;height:32px;font-size:14px;">📊</div><div><div class="module-title" style="letter-spacing:0.3px;font-size:14px;">Deine Buchhaltung</div><div class="module-subtitle" style="margin-top:2px;">Kassenbuch, Belege &amp; Wareneingang — als PDF für den Steuerberater</div></div></div>
-        <span class="item-link" style="white-space:nowrap;">Öffnen →</span>
+    <!-- KACHEL: DEINE BUCHHALTUNG -->
+    <div class="module-card toolbox-elegant" id="buchhaltung-card" style="margin-bottom:12px;">
+      <div class="module-header" onclick="toggleBuchhaltung()" style="padding:14px 22px;">
+        <div class="module-left"><div class="module-number toolbox-icon-circle" style="width:32px;height:32px;font-size:14px;position:relative;">📊<span id="buchhaltung-card-badge" style="display:none;position:absolute;top:-6px;right:-8px;background:#c0392b;color:#fff;font-size:10px;font-weight:700;border-radius:10px;min-width:18px;height:18px;line-height:18px;text-align:center;padding:0 4px;box-shadow:0 0 0 2px #fff;">0</span></div><div><div class="module-title" style="letter-spacing:0.3px;font-size:14px;">Deine Buchhaltung</div><div class="module-subtitle" style="margin-top:2px;">Tagesgeschäft, Belege &amp; Monatsberichte</div></div></div>
+        <div style="display:flex;align-items:center;gap:8px;"><span class="module-arrow" id="buchhaltung-arrow" style="color:#d4af37;">▼</span></div>
       </div>
-    </a>
+      <div class="module-content" id="buchhaltung-content">
+        <div id="buchhaltung-tools-list"></div>
+      </div>
+    </div>
 
-    <!-- KACHEL 2: DEIN INTERNER BEREICH -->
+    <!-- KACHEL 2: DEIN TEAM -->
     <div class="module-card toolbox-elegant" id="intern-card">
       <div class="module-header" onclick="toggleIntern()" style="padding:14px 22px;">
-        <div class="module-left"><div class="module-number toolbox-icon-circle" style="width:32px;height:32px;font-size:14px;position:relative;">🔒<span id="intern-card-badge" style="display:none;position:absolute;top:-6px;right:-8px;background:#c0392b;color:#fff;font-size:10px;font-weight:700;border-radius:10px;min-width:18px;height:18px;line-height:18px;text-align:center;padding:0 4px;box-shadow:0 0 0 2px #fff;">0</span></div><div><div class="module-title" style="letter-spacing:0.3px;font-size:14px;">Dein interner Bereich</div><div class="module-subtitle" style="margin-top:2px;">Tagesgeschäft, Belege, Übergabe, Reservierung &amp; Schichtplan</div></div></div>
+        <div class="module-left"><div class="module-number toolbox-icon-circle" style="width:32px;height:32px;font-size:14px;">🔒</div><div><div class="module-title" style="letter-spacing:0.3px;font-size:14px;">Dein Team</div><div class="module-subtitle" style="margin-top:2px;">Übergabe, Reservierung &amp; Schichtplan</div></div></div>
         <div style="display:flex;align-items:center;gap:8px;"><span class="module-arrow" id="intern-arrow" style="color:#d4af37;">▼</span></div>
       </div>
       <div class="module-content" id="intern-content">
-        <div id="taegliche-tools"></div>
         <div style="padding:14px 20px;font-size:12px;color:#5a6a85;line-height:1.6;background:#fdf8ea;border-bottom:1px solid #f0e8d4;">
           💡 <strong style="color:#1a2a4a;">So funktioniert der Mitarbeiter-Zugang:</strong> Für Übergabe, Reservierung und Schichtplan legst du über "⚙️ PIN verwalten" einmalig eine 4-stellige PIN fest. Alle deine Mitarbeiter nutzen denselben Link + dieselbe PIN — es gibt keine einzelnen Mitarbeiter-Konten. Den Link kannst du z. B. per WhatsApp teilen oder den QR-Code ausdrucken und aufhängen.
         </div>
@@ -236,6 +238,12 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 }
 #intern-content.open::-webkit-scrollbar { width: 6px; }
 #intern-content.open::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 3px; }
+#buchhaltung-content.open {
+  max-height: 460px;
+  overflow-y: auto;
+}
+#buchhaltung-content.open::-webkit-scrollbar { width: 6px; }
+#buchhaltung-content.open::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 3px; }
 @media (min-width: 1300px) {
   .toolbox-sidebar {
     position: absolute;
@@ -776,9 +784,19 @@ function toggleIntern() {
   if (arrow) arrow.classList.toggle('open', !isOpen);
 }
 
+function toggleBuchhaltung() {
+  const content = document.getElementById('buchhaltung-content');
+  const arrow   = document.getElementById('buchhaltung-arrow');
+  if (!content) return;
+  const isOpen = content.classList.contains('open');
+  content.classList.toggle('open', !isOpen);
+  if (arrow) arrow.classList.toggle('open', !isOpen);
+}
+
 const ALWAYS_UNLOCKED_TOOLS = [
   { icon: '🗓️', title: 'Tagesgeschäft', desc: 'Kassenbuch, Temperaturen & Wareneingang – die täglichen Einträge an einem Ort.', href: 'tagesgeschaeft.html' },
-  { icon: '📎', title: 'Belege', desc: 'Rechnungen von Lieferdiensten und Lieferanten zentral ablegen.', href: 'belegablage.html' }
+  { icon: '📎', title: 'Belege', desc: 'Rechnungen von Lieferdiensten und Lieferanten zentral ablegen.', href: 'belegablage.html' },
+  { icon: '📊', title: 'Monatsberichte', desc: 'Kassenbuch, Belege & mehr als PDF für den Steuerberater oder dich selbst.', href: 'buchhaltung.html' }
 ];
 
 const INTERN_TOOLS = [
@@ -935,7 +953,7 @@ async function toolSaveGeneric(tool, data) {
 }
 
 function renderTaeglicheTools() {
-  const container = document.getElementById('taegliche-tools');
+  const container = document.getElementById('buchhaltung-tools-list');
   if (!container) return;
   container.innerHTML = '';
   ALWAYS_UNLOCKED_TOOLS.forEach((tool) => {
@@ -984,7 +1002,7 @@ async function belegeFaelligBadgePruefen() {
     if (anzahl > 0) { badge.textContent = anzahl; badge.style.display = 'block'; }
     else { badge.style.display = 'none'; }
   }
-  const tileBadge = document.getElementById('intern-card-badge');
+  const tileBadge = document.getElementById('buchhaltung-card-badge');
   if (tileBadge) {
     if (anzahl > 0) { tileBadge.textContent = anzahl; tileBadge.style.display = 'block'; }
     else { tileBadge.style.display = 'none'; }
