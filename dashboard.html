@@ -150,15 +150,6 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 
     <div id="unread-banner" style="display:none;background:#c0392b;color:#fff;border-radius:8px;padding:10px 16px;font-size:12.5px;font-weight:600;margin-bottom:12px;text-align:center;"></div>
 
-    <!-- KACHEL 1: DEINE MODUL-TOOLS -->
-    <div class="module-card toolbox-elegant" id="modultools-card" style="margin-bottom:12px;">
-      <div class="module-header" onclick="toggleToolbox()" style="padding:14px 22px;">
-        <div class="module-left"><div class="module-number toolbox-icon-circle" style="width:32px;height:32px;font-size:14px;">🎓</div><div><div class="module-title" style="letter-spacing:0.3px;font-size:14px;">Deine Modul-Tools</div><div class="module-subtitle" id="toolbox-subtitle" style="margin-top:2px;">Wird geladen …</div></div></div>
-        <div style="display:flex;align-items:center;gap:8px;"><span class="module-arrow" id="toolbox-arrow" style="color:#d4af37;">▼</span></div>
-      </div>
-      <div class="module-content" id="toolbox-content"></div>
-    </div>
-
     <!-- KACHEL: DEINE BUCHHALTUNG -->
     <div class="module-card toolbox-elegant" id="buchhaltung-card" style="margin-bottom:12px;">
       <div class="module-header" onclick="toggleBuchhaltung()" style="padding:14px 22px;">
@@ -186,11 +177,22 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 
   </div>
 
-  <div class="toolbox-elegant" style="padding:18px 22px;display:flex;gap:14px;align-items:flex-start;margin-bottom:16px;">
-    <div class="toolbox-icon-circle" style="flex-shrink:0;">ℹ️</div>
-    <div style="font-size:12.5px;color:#5a6a85;line-height:1.65;padding-top:2px;">
-      <div style="font-family:Georgia,serif;font-size:14.5px;color:#1a2a4a;margin-bottom:4px;">So schaltest du das nächste Modul frei</div>
-      Jedes Modul öffnet sich automatisch, sobald du das <strong style="color:#1a2a4a;">Quiz</strong> des vorherigen Moduls bestanden hast (mindestens 6 von 8 richtigen Antworten). Lektionen und Tools allein reichen dafür nicht aus — das Quiz ist der Schlüssel.
+  <div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;margin-bottom:16px;">
+    <div class="toolbox-elegant" style="flex:1;min-width:280px;padding:18px 22px;display:flex;gap:14px;align-items:flex-start;">
+      <div class="toolbox-icon-circle" style="flex-shrink:0;">ℹ️</div>
+      <div style="font-size:12.5px;color:#5a6a85;line-height:1.65;padding-top:2px;">
+        <div style="font-family:Georgia,serif;font-size:14.5px;color:#1a2a4a;margin-bottom:4px;">So schaltest du das nächste Modul frei</div>
+        Jedes Modul öffnet sich automatisch, sobald du das <strong style="color:#1a2a4a;">Quiz</strong> des vorherigen Moduls bestanden hast (mindestens 6 von 8 richtigen Antworten). Lektionen und Tools allein reichen dafür nicht aus — das Quiz ist der Schlüssel.
+      </div>
+    </div>
+
+    <!-- KACHEL 1: DEINE MODUL-TOOLS -->
+    <div class="module-card toolbox-elegant" id="modultools-card" style="flex:1;min-width:280px;margin-bottom:0;">
+      <div class="module-header" onclick="toggleToolbox()" style="padding:14px 22px;">
+        <div class="module-left"><div class="module-number toolbox-icon-circle" style="width:32px;height:32px;font-size:14px;">🎓</div><div><div class="module-title" style="letter-spacing:0.3px;font-size:14px;">Deine Modul-Tools</div><div class="module-subtitle" id="toolbox-subtitle" style="margin-top:2px;">Wird geladen …</div></div></div>
+        <div style="display:flex;align-items:center;gap:8px;"><span class="module-arrow" id="toolbox-arrow" style="color:#d4af37;">▼</span></div>
+      </div>
+      <div class="module-content" id="toolbox-content"></div>
     </div>
   </div>
 
