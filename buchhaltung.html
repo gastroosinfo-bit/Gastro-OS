@@ -96,7 +96,7 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
       <div class="summary-box"><div class="label">Ausgaben (Belege)</div><div class="value" id="bh-sum-belege-ausgaben">0,00 €</div></div>
       <div class="summary-box"><div class="label">Belege gesamt</div><div class="value" id="bh-sum-belege">0,00 €</div></div>
     </div>
-    <div style="font-size:11px;font-weight:700;color:#8090a8;text-transform:uppercase;letter-spacing:0.5px;margin:16px 0 8px;">Abweichungen</div>
+    <div style="font-size:11px;font-weight:700;color:#8090a8;text-transform:uppercase;letter-spacing:0.5px;margin:16px 0 8px;">Abschreibungen und Co.</div>
     <div class="grid3">
       <div class="summary-box"><div class="label">Freigetränke</div><div class="value" id="bh-sum-freigetraenke">0,00 €</div></div>
       <div class="summary-box"><div class="label">Abschreibungen</div><div class="value" id="bh-sum-abschreibungen">0,00 €</div></div>
@@ -117,7 +117,7 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
       <label style="display:flex;align-items:center;gap:8px;font-size:13.5px;cursor:pointer;"><input type="checkbox" id="bh-check-kassenbuch" checked> Kassenbuch</label>
       <label style="display:flex;align-items:center;gap:8px;font-size:13.5px;cursor:pointer;"><input type="checkbox" id="bh-check-belege" checked> Belege</label>
       <label style="display:flex;align-items:center;gap:8px;font-size:13.5px;cursor:pointer;"><input type="checkbox" id="bh-check-wareneingang" checked> Wareneingang</label>
-      <label style="display:flex;align-items:center;gap:8px;font-size:13.5px;cursor:pointer;"><input type="checkbox" id="bh-check-abweichungen" checked> Abweichungen</label>
+      <label style="display:flex;align-items:center;gap:8px;font-size:13.5px;cursor:pointer;"><input type="checkbox" id="bh-check-abweichungen" checked> Abschreibungen und Co.</label>
       <label style="display:flex;align-items:center;gap:8px;font-size:13.5px;cursor:pointer;"><input type="checkbox" id="bh-check-temperaturen"> Temperaturen</label>
       <label style="display:flex;align-items:center;gap:8px;font-size:13.5px;cursor:pointer;"><input type="checkbox" id="bh-check-notizen"> Notizen</label>
       <label style="display:flex;align-items:center;gap:8px;font-size:13.5px;cursor:pointer;"><input type="checkbox" id="bh-check-artikelbericht"> Artikelbericht</label>
@@ -451,13 +451,13 @@ function bhAbschnittAbweichungen(doc, y, monatSchluessel) {
 
   doc.setFontSize(13);
   doc.setTextColor(26, 42, 74);
-  doc.text('Abweichungen', 14, y);
+  doc.text('Abschreibungen und Co.', 14, y);
   y += 4;
 
   if (!fgZeilen.length && !acZeilen.length && !sbZeilen.length) {
     doc.setFontSize(10);
     doc.setTextColor(140, 140, 140);
-    doc.text('Keine Abweichungen in diesem Monat.', 14, y + 4);
+    doc.text('Keine Einträge bei Abschreibungen und Co. in diesem Monat.', 14, y + 4);
     return y + 16;
   }
 
@@ -626,6 +626,30 @@ function bhAbschnittArtikelbericht(doc, y, monatSchluessel) {
   return y;
 }
 
+function bhGesamtErgebnisBerechnen(monatSchluessel, ausgewaehlt) {
+  let einnahmen = 0, ausgaben = 0;
+
+  if (ausgewaehlt.kassenbuch) {
+    Object.keys(kassenbuchDaten).filter(d => d.slice(0, 7) === monatSchluessel).forEach(datum => {
+      const t = kassenbuchDaten[datum];
+      einnahmen += t.kasse + t.karte + t.lieferdienste + (t.ueberweisung || 0);
+      ausgaben += kbWareneinkaufGesamt(t) + kbSonstigesGesamt(t);
+    });
+  }
+  if (ausgewaehlt.belege) {
+    belegeDaten.filter(b => b.datum && b.datum.slice(0, 7) === monatSchluessel).forEach(b => {
+      if (belegRichtung(b) === 'einnahme') einnahmen += b.betrag || 0; else ausgaben += b.betrag || 0;
+    });
+  }
+  if (ausgewaehlt.abweichungen) {
+    freigetraenkeDaten.filter(f => f.datum && f.datum.slice(0, 7) === monatSchluessel).forEach(f => { ausgaben += f.wert || 0; });
+    abschreibungenDaten.filter(a => a.datum && a.datum.slice(0, 7) === monatSchluessel).forEach(a => { ausgaben += a.wert || 0; });
+    // Stornobelege fließen bewusst NICHT in die Summe ein — da nichts bezahlt wurde,
+    // ist kein tatsächlicher Geldbetrag geflossen (weder Einnahme noch Ausgabe).
+  }
+  return { einnahmen, ausgaben };
+}
+
 function bhBerichtErstellen() {
   const monatSchluessel = bhAktuellerMonatSchluessel();
   const monatName = MONATSNAMEN[parseInt(monatSchluessel.slice(5,7))];
@@ -660,6 +684,22 @@ function bhBerichtErstellen() {
   if (ausgewaehlt.temperaturen) { y = bhAbschnittTemperaturen(doc, y, monatSchluessel); if (y > 250) { doc.addPage(); y = 20; } }
   if (ausgewaehlt.notizen) { y = bhAbschnittNotizen(doc, y, monatSchluessel); if (y > 250) { doc.addPage(); y = 20; } }
   if (ausgewaehlt.artikelbericht) { y = bhAbschnittArtikelbericht(doc, y, monatSchluessel); }
+
+  // ── Gesamtergebnis: nur wenn mindestens ein finanzieller Bereich gewählt wurde ──
+  if (ausgewaehlt.kassenbuch || ausgewaehlt.belege || ausgewaehlt.abweichungen) {
+    const { einnahmen, ausgaben } = bhGesamtErgebnisBerechnen(monatSchluessel, ausgewaehlt);
+    const ergebnis = einnahmen - ausgaben;
+    if (y > 250) { doc.addPage(); y = 20; }
+    y += 6;
+    doc.setFillColor(26, 42, 74);
+    doc.rect(14, y, 182, 22, 'F');
+    doc.setFontSize(11);
+    doc.setTextColor(212, 175, 55);
+    doc.text('Gesamtergebnis (aus den ausgewählten Bereichen)', 20, y + 8);
+    doc.setFontSize(13);
+    doc.setTextColor(...(ergebnis >= 0 ? [120, 220, 160] : [240, 140, 140]));
+    doc.text((ergebnis >= 0 ? '+ ' : '– ') + euro(Math.abs(ergebnis)) + '   (Einnahmen: ' + euro(einnahmen) + ' · Ausgaben: ' + euro(ausgaben) + ')', 20, y + 17);
+  }
 
   doc.save('Buchhaltung-' + monatSchluessel + '.pdf');
 }
