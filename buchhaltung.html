@@ -201,6 +201,17 @@ function belegRichtung(b) {
 function belegRichtungText(b) {
   return belegRichtung(b) === 'einnahme' ? 'Einnahme' : 'Ausgabe';
 }
+function belegStatusText(b) {
+  switch (b.status) {
+    case 'bezahlt': return 'Bezahlt';
+    case 'erhalten': return 'Geld erhalten';
+    case 'abgeglichen': return 'Abgeglichen';
+    case 'offen': return 'Noch zu prüfen';
+    case 'faellig': return 'Fällig am ' + (b.faelligkeit || '–');
+    case 'ausstehend': return 'Ausstehend, erwartet ' + (b.faelligkeit || '–');
+    default: return b.status || '–';
+  }
+}
 
 function bhAuswahlInitialisieren() {
   const aktJahr = parseInt(heute().slice(0, 4));
@@ -353,7 +364,7 @@ function bhAbschnittKassenbuch(doc, y, monatSchluessel) {
 function bhAbschnittBelege(doc, y, monatSchluessel) {
   const belegeDesMonats = belegeDaten.filter(b => b.datum && b.datum.slice(0, 7) === monatSchluessel).sort((a, b) => a.datum.localeCompare(b.datum));
   const belegeZeilen = belegeDesMonats.map(b => {
-    const statusText = b.status === 'bezahlt' ? 'Bezahlt' : ('Fällig am ' + (b.faelligkeit || '–'));
+    const statusText = belegStatusText(b);
     return [b.datum, b.plattform, belegRichtungText(b), euro(b.betrag), b.mwst19 != null ? euro(b.mwst19) : '–', b.mwst7 != null ? euro(b.mwst7) : '–', statusText];
   });
   doc.setFontSize(13);
