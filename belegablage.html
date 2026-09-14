@@ -472,6 +472,12 @@ async function belegHochladen() {
   const status = document.getElementById('beleg-status').value;
   const faelligkeit = status === 'faellig' ? document.getElementById('beleg-faelligkeit').value : null;
 
+  const duplikat = belegeDaten.find(b => b.plattform === plattform && b.datum === datum && Math.abs((b.betrag || 0) - betrag) < 0.01);
+  if (duplikat) {
+    const weiter = confirm('⚠️ Es gibt bereits einen Beleg von "' + plattform + '" am ' + datum + ' über ' + euro(betrag) + '.\n\nMöglicherweise ein Duplikat. Trotzdem hochladen?');
+    if (!weiter) return;
+  }
+
   try {
     const base64 = await dateiZuBase64(belegAusgewaehlteDatei);
     const contentType = belegAusgewaehlteDatei.type || 'application/pdf';
