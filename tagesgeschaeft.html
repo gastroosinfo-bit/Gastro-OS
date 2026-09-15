@@ -316,6 +316,9 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
       <div style="font-size:11.5px;color:#8090a8;margin-top:6px;">Max. 3 MB, PDF oder Foto (JPG/PNG). Die KI liest Gericht und verkaufte Menge automatisch aus — bitte danach kurz prüfen.</div>
       <div class="auto-hinweis" id="ab-auto-hinweis" style="font-size:11.5px;color:#1a6640;margin-top:8px;display:none;"></div>
 
+      <div style="text-align:center;margin:12px 0;font-size:11.5px;color:#8090a8;">— oder —</div>
+      <button class="btn-add" style="background:transparent;color:#1a2a4a;border:1px solid #d4af37;width:100%;" onclick="abManuellStarten()">✏️ Kein Bericht zum Hochladen? Verkaufte Menge selbst eintragen</button>
+
       <div id="ab-artikel-liste" style="margin-top:16px;display:none;">
         <table class="data-table" style="margin-top:0;">
           <thead><tr><th>Gericht</th><th>Menge</th><th>Kategorie</th><th>Kanal</th><th></th></tr></thead>
@@ -1084,6 +1087,12 @@ function abZeileRendern(gericht, menge, kategorie, kanal) {
   tbody.appendChild(tr);
 }
 function abZeileHinzufuegen() {
+  document.getElementById('ab-artikel-liste').style.display = 'block';
+  document.getElementById('ab-speichern-btn').style.display = 'inline-block';
+  abZeileRendern('', '', 'speise', '');
+}
+function abManuellStarten() {
+  document.getElementById('ab-artikel-tbody').innerHTML = '';
   document.getElementById('ab-artikel-liste').style.display = 'block';
   document.getElementById('ab-speichern-btn').style.display = 'inline-block';
   abZeileRendern('', '', 'speise', '');
