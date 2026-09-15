@@ -127,6 +127,9 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
   <div class="brand">GASTRO-OS</div>
   <div class="welcome">Willkommen, <span id="user-name">...</span></div>
   <div style="display:flex;align-items:center;gap:10px;">
+    <span style="font-size:12px;color:#a0b0c8;letter-spacing:0.3px;">Kontakt</span>
+    <a href="mailto:info@mein-gastro-system.de" title="E-Mail: info@mein-gastro-system.de" style="width:34px;height:34px;border-radius:50%;border:1px solid rgba(212,175,55,0.4);color:#d4af37;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:15px;transition:all 0.2s;flex-shrink:0;">✉️</a>
+    <a href="https://wa.me/4915755880690" target="_blank" rel="noopener" title="WhatsApp: 0157-55880690" style="width:34px;height:34px;border-radius:50%;border:1px solid rgba(212,175,55,0.4);color:#d4af37;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:15px;transition:all 0.2s;flex-shrink:0;">📱</a>
     <button id="push-btn" class="btn-notify" onclick="pushAktivieren()" title="Benachrichtigungen aktivieren">🔔</button>
     <button class="btn-logout" onclick="doLogout()">Abmelden</button>
   </div>
@@ -690,6 +693,11 @@ async function init() {
   for (const m of [0,1,2,3,4,5,6,7,8,9,10,11,12,13]) renderProgress(m);
   renderLockedModules();
   renderModulKacheln();
+  for (let i = 0; i <= 13; i++) {
+    const card = document.getElementById('modul-card-' + i);
+    const content = document.getElementById('content-' + i);
+    if (card) card.style.display = (content && content.classList.contains('open')) ? 'block' : 'none';
+  }
   renderTaeglicheTools();
   renderInternTools();
   unreadPruefen();
@@ -782,8 +790,10 @@ function toggleModule(m) {
   for (let i = 0; i <= 13; i++) {
     const c = document.getElementById('content-' + i);
     const a = document.getElementById('arrow-' + i);
+    const card = document.getElementById('modul-card-' + i);
     if (c) c.classList.remove('open');
     if (a) a.classList.remove('open');
+    if (card) card.style.display = 'none';
   }
   if (!isOpen) {
     content.classList.add('open');
@@ -791,7 +801,10 @@ function toggleModule(m) {
     if (arrow) arrow.classList.add('open');
     rememberModule(m);
     const card = document.getElementById('modul-card-' + m);
-    if (card) setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+    if (card) {
+      card.style.display = 'block';
+      setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+    }
   }
   renderModulKacheln();
 }
