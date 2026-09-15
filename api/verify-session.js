@@ -18,6 +18,21 @@ function verifySession(token) {
   }
 }
 
+// Zeitlich befristete Zugänge (z. B. kostenlose Testzugänge): ab dem
+// hinterlegten Datum (inklusive) gilt die Sitzung als ungültig — greift
+// zentral hier, also auf jeder Seite, die /api/verify-session nutzt.
+const BEFRISTETE_ZUGAENGE = {
+  'koslowski@progres.de': '2026-09-22'
+};
+
+function heutigesDatumString() {
+  const d = new Date();
+  const j = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const t = String(d.getDate()).padStart(2, '0');
+  return `${j}-${m}-${t}`;
+}
+
 export default function handler(req, res) {
   const cookie = req.headers.cookie || '';
   const match = cookie.match(/gastro_os_session=([^;]+)/);
@@ -25,6 +40,11 @@ export default function handler(req, res) {
 
   const email = verifySession(decodeURIComponent(match[1]));
   if (!email) return res.status(401).json({ valid: false });
+
+  const ablaufDatum = BEFRISTETE_ZUGAENGE[email.toLowerCase()];
+  if (ablaufDatum && heutigesDatumString() >= ablaufDatum) {
+    return res.status(401).json({ valid: false, zugangAbgelaufen: true });
+  }
 
   return res.status(200).json({ valid: true, email });
 }
