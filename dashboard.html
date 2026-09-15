@@ -128,8 +128,8 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
   <div class="welcome">Willkommen, <span id="user-name">...</span></div>
   <div style="display:flex;align-items:center;gap:10px;">
     <span style="font-size:12px;color:#a0b0c8;letter-spacing:0.3px;">Kontakt</span>
-    <a href="mailto:info@mein-gastro-system.de" title="E-Mail: info@mein-gastro-system.de" style="width:34px;height:34px;border-radius:50%;border:1px solid rgba(212,175,55,0.4);color:#d4af37;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:15px;transition:all 0.2s;flex-shrink:0;">✉️</a>
-    <a href="https://wa.me/4915755880690" target="_blank" rel="noopener" title="WhatsApp: 0157-55880690" style="width:34px;height:34px;border-radius:50%;border:1px solid rgba(212,175,55,0.4);color:#d4af37;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:15px;transition:all 0.2s;flex-shrink:0;">📱</a>
+    <a href="mailto:info@mein-gastro-system.de" style="font-size:12px;color:#d4af37;text-decoration:none;white-space:nowrap;">Mail: info@mein-gastro-system.de</a>
+    <a href="https://wa.me/4915755880690" target="_blank" rel="noopener" style="font-size:12px;color:#d4af37;text-decoration:none;white-space:nowrap;">WhatsApp: 0157-55880690</a>
     <button id="push-btn" class="btn-notify" onclick="pushAktivieren()" title="Benachrichtigungen aktivieren">🔔</button>
     <button class="btn-logout" onclick="doLogout()">Abmelden</button>
   </div>
@@ -277,6 +277,7 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 
 <div style="font-family:Georgia,serif;font-size:16px;color:#1a2a4a;margin:8px 0 12px;">Deine Module</div>
 <div id="modul-kachel-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:24px;"></div>
+<div id="modul-schliessen-leiste" style="display:none;background:#1a2a4a;border-radius:10px;padding:12px 18px;margin-bottom:16px;align-items:center;justify-content:space-between;"></div>
 
 <!-- MODUL 0 -->
 <div class="module-card" id="modul-card-0">
@@ -787,6 +788,7 @@ function toggleModule(m) {
   const content = document.getElementById('content-' + m);
   if (!content) return;
   const isOpen = content.classList.contains('open');
+  const leiste = document.getElementById('modul-schliessen-leiste');
   for (let i = 0; i <= 13; i++) {
     const c = document.getElementById('content-' + i);
     const a = document.getElementById('arrow-' + i);
@@ -803,8 +805,15 @@ function toggleModule(m) {
     const card = document.getElementById('modul-card-' + m);
     if (card) {
       card.style.display = 'block';
-      setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
     }
+    if (leiste) {
+      leiste.innerHTML = `<span style="color:#d4af37;font-family:Georgia,serif;font-size:14px;">📖 ${MODUL_TITLES[m] || ('Modul ' + m)}</span><button onclick="toggleModule(${m})" style="background:transparent;border:1px solid rgba(212,175,55,0.5);color:#d4af37;padding:6px 14px;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer;">✕ Schließen</button>`;
+      leiste.style.display = 'flex';
+      setTimeout(() => leiste.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+    }
+  } else if (leiste) {
+    leiste.style.display = 'none';
+    leiste.innerHTML = '';
   }
   renderModulKacheln();
 }
@@ -854,9 +863,11 @@ function renderModulKacheln() {
       textColor = '#fff'; subColor = '#a0b0c8'; statusText = 'Abgeschlossen';
     } else {
       tile.style.background = '#1a2a4a';
-      tile.style.border = istAktiv ? '2px solid #d4af37' : '1px solid rgba(212,175,55,0.25)';
+      tile.style.border = istAktiv ? '3px solid #d4af37' : '1px solid rgba(212,175,55,0.25)';
+      tile.style.boxShadow = istAktiv ? '0 0 0 3px rgba(212,175,55,0.25)' : 'none';
       iconHtml = `<div style="width:28px;height:28px;border-radius:50%;background:#d4af37;display:flex;align-items:center;justify-content:center;color:#1a2a4a;font-size:12px;font-weight:700;margin-bottom:8px;">${m}</div>`;
-      textColor = '#fff'; subColor = '#a0b0c8'; statusText = total ? (done + '/' + total) : '';
+      textColor = '#fff'; subColor = istAktiv ? '#d4af37' : '#a0b0c8';
+      statusText = istAktiv ? '▲ Geöffnet — antippen zum Schließen' : (total ? (done + '/' + total) : '');
     }
     tile.innerHTML = iconHtml + `<p style="font-size:13px;font-weight:500;color:${textColor};margin:0;">${titel}</p><p style="font-size:11px;color:${subColor};margin:4px 0 0;">${statusText}</p>`;
     grid.appendChild(tile);
