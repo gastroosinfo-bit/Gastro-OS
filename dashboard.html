@@ -177,22 +177,22 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 
   </div>
 
-  <div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;margin-bottom:16px;">
-    <div class="toolbox-elegant" style="flex:1;min-width:280px;padding:18px 22px;display:flex;gap:14px;align-items:flex-start;">
-      <div class="toolbox-icon-circle" style="flex-shrink:0;">ℹ️</div>
-      <div style="font-size:12.5px;color:#5a6a85;line-height:1.65;padding-top:2px;">
-        <div style="font-family:Georgia,serif;font-size:14.5px;color:#1a2a4a;margin-bottom:4px;">So schaltest du das nächste Modul frei</div>
-        Jedes Modul öffnet sich automatisch, sobald du das <strong style="color:#1a2a4a;">Quiz</strong> des vorherigen Moduls bestanden hast (mindestens 6 von 8 richtigen Antworten). Lektionen und Tools allein reichen dafür nicht aus — das Quiz ist der Schlüssel.
-      </div>
-    </div>
-
-    <!-- KACHEL 1: DEINE MODUL-TOOLS -->
-    <div class="module-card toolbox-elegant" id="modultools-card" style="flex:1;min-width:280px;margin-bottom:0;">
+  <div class="toolbox-sidebar toolbox-sidebar-right">
+    <!-- KACHEL: DEINE MODUL-TOOLS -->
+    <div class="module-card toolbox-elegant" id="modultools-card">
       <div class="module-header" onclick="toggleToolbox()" style="padding:14px 22px;">
         <div class="module-left"><div class="module-number toolbox-icon-circle" style="width:32px;height:32px;font-size:14px;">🎓</div><div><div class="module-title" style="letter-spacing:0.3px;font-size:14px;">Deine Modul-Tools</div><div class="module-subtitle" id="toolbox-subtitle" style="margin-top:2px;">Wird geladen …</div></div></div>
         <div style="display:flex;align-items:center;gap:8px;"><span class="module-arrow" id="toolbox-arrow" style="color:#d4af37;">▼</span></div>
       </div>
       <div class="module-content" id="toolbox-content"></div>
+    </div>
+  </div>
+
+  <div class="toolbox-elegant" style="padding:18px 22px;display:flex;gap:14px;align-items:flex-start;margin-bottom:16px;">
+    <div class="toolbox-icon-circle" style="flex-shrink:0;">ℹ️</div>
+    <div style="font-size:12.5px;color:#5a6a85;line-height:1.65;padding-top:2px;">
+      <div style="font-family:Georgia,serif;font-size:14.5px;color:#1a2a4a;margin-bottom:4px;">So schaltest du das nächste Modul frei</div>
+      Jedes Modul öffnet sich automatisch, sobald du das <strong style="color:#1a2a4a;">Quiz</strong> des vorherigen Moduls bestanden hast (mindestens 6 von 8 richtigen Antworten). Lektionen und Tools allein reichen dafür nicht aus — das Quiz ist der Schlüssel.
     </div>
   </div>
 
@@ -254,8 +254,20 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
     margin-bottom: 0;
   }
 }
+@media (min-width: 1650px) {
+  .toolbox-sidebar-right {
+    position: absolute;
+    top: 0;
+    left: calc(100% + 20px);
+    right: auto;
+    margin-bottom: 0;
+  }
+}
+@media (max-width: 1649px) {
+  .toolbox-sidebar-right { margin-bottom: 16px; }
+}
 @media (max-width: 640px) {
-  .toolbox-sidebar { width:100%; max-width:100%; }
+  .toolbox-sidebar, .toolbox-sidebar-right { width:100%; max-width:100%; }
 }
 </style>
 
@@ -645,7 +657,7 @@ async function init() {
   const INTERNAL_EMAILS = ["kistartklar24@web.de","gastro.os.info@gmail.com","m.pritchard1978@web.de"];
   if (INTERNAL_EMAILS.includes(userEmail.toLowerCase())) { for (let n = 1; n <= 13; n++) quizBestanden[n] = true; }
 
-  const DEMO_UNLOCK_EMAILS = ["westerwinter@dehoga-nrw.de", "franz.perner@wkbgld.at", "z.asel@dehogabw.de", "natascha.kummer@wkbgld.at", "info@gastronomen.koeln"];
+  const DEMO_UNLOCK_EMAILS = ["westerwinter@dehoga-nrw.de", "franz.perner@wkbgld.at", "z.asel@dehogabw.de", "natascha.kummer@wkbgld.at", "info@gastronomen.koeln", "koslowski@progres.de"];
   if (DEMO_UNLOCK_EMAILS.includes(userEmail.toLowerCase())) { for (let n = 1; n <= 13; n++) quizBestanden[n] = true; }
 
   document.getElementById('modul-card-2').style.display = 'block';
