@@ -21,6 +21,7 @@ a:hover { text-decoration:underline; }
 .back-btn { background:#d4af37; color:#1a2a4a; border:none; padding:9px 20px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; }
 .footer { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer strong { color:#d4af37; }
+.hinweisbox { background:#fdf8ea; border:1px solid #e8dfc8; border-radius:8px; padding:14px 18px; margin-bottom:24px; font-size:12.5px; color:#5a6a85; line-height:1.6; }
 </style>
 </head>
 <body>
@@ -28,7 +29,6 @@ a:hover { text-decoration:underline; }
   <div class="brand">GASTRO-OS</div>
   <a href="dashboard.html" class="back-btn">← Zurück</a>
 </div>
-
 <div class="gold-bar"></div>
 <div class="main">
   <div class="card">
@@ -45,16 +45,23 @@ a:hover { text-decoration:underline; }
     <p>Wir erheben und verarbeiten folgende personenbezogene Daten:</p>
     <p>• <strong>E-Mail-Adresse:</strong> Wird bei der Anmeldung über Whop erfasst und zur Authentifizierung genutzt.<br>
     • <strong>Lernfortschritt und Tool-Daten:</strong> Deine Eingaben in den Tools und Quiz-Ergebnisse werden in unserer Datenbank (Supabase) gespeichert, um deinen Fortschritt zu sichern.<br>
-    • <strong>Session-Cookie:</strong> Ein verschlüsselter Cookie wird gesetzt um dich eingeloggt zu halten (läuft nach 30 Tagen ab).</p>
+    • <strong>Session-Cookie:</strong> Ein verschlüsselter Cookie wird gesetzt um dich eingeloggt zu halten (läuft nach 30 Tagen ab).<br>
+    • <strong>Geschäftsdaten aus dem Tagesgeschäft-Bereich:</strong> Belege, Rechnungen, Kassenbuch-Einträge, Speisekarten-Fotos, Artikel-/Verkaufsberichte, Temperaturprotokolle und Notizen, die du im Rahmen der Nutzung der Buchhaltungs- und Tagesgeschäft-Tools hochlädst oder einträgst.<br>
+    • <strong>Mitarbeiter- und Gästedaten:</strong> Namen, Uhrzeiten und ggf. Kontaktdaten, die im Übergabebuch, Reservierungsbuch oder Schichtplan von dir oder deinem Team eingetragen werden (siehe Ziffer 4a).</p>
 
     <h2>3. Zweck der Datenverarbeitung</h2>
-    <p>Die Daten werden ausschließlich zur Bereitstellung der GASTRO-OS Lernplattform verwendet. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung).</p>
+    <p>Die Daten werden ausschließlich zur Bereitstellung der GASTRO-OS Lernplattform und der zugehörigen Betriebs-Tools verwendet. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung).</p>
 
     <h2>4. Datenweitergabe</h2>
-    <p>Deine Daten werden nicht an Dritte verkauft oder weitergegeben. Folgende Dienstleister werden eingesetzt:</p>
+    <p>Deine Daten werden nicht an Dritte verkauft oder weitergegeben. Folgende Dienstleister (Auftragsverarbeiter) werden eingesetzt:</p>
     <p>• <strong>Whop.com:</strong> Zahlungsabwicklung und Mitgliederverwaltung (<a href="https://whop.com/privacy" target="_blank">Datenschutz Whop</a>)<br>
-    • <strong>Supabase Inc.:</strong> Datenbankspeicherung (Server in der EU) (<a href="https://supabase.com/privacy" target="_blank">Datenschutz Supabase</a>)<br>
-    • <strong>Vercel Inc.:</strong> Hosting der Plattform (<a href="https://vercel.com/legal/privacy-policy" target="_blank">Datenschutz Vercel</a>)</p>
+    • <strong>Supabase Inc.:</strong> Datenbank- und Dateispeicherung (Server in der EU) (<a href="https://supabase.com/privacy" target="_blank">Datenschutz Supabase</a>)<br>
+    • <strong>Vercel Inc.:</strong> Hosting der Plattform (<a href="https://vercel.com/legal/privacy-policy" target="_blank">Datenschutz Vercel</a>)<br>
+    • <strong>Anthropic, PBC:</strong> Wird zur automatischen Auslese von hochgeladenen Belegen, Fotos und Berichten (z. B. Datum, Betrag, Artikel) im Rahmen der Buchhaltungs- und Tagesgeschäft-Tools eingesetzt. Die hochgeladenen Bilder/PDFs werden zu diesem Zweck an die Anthropic-API übermittelt (<a href="https://www.anthropic.com/legal/privacy" target="_blank">Datenschutz Anthropic</a>)</p>
+
+    <h2>4a. Auftragsverarbeitung für Mitarbeiter- und Gästedaten</h2>
+    <p>Wenn du über die Tools Übergabebuch, Reservierungsbuch oder Schichtplan Daten deiner Mitarbeiter oder Gäste einträgst (z. B. Namen, Reservierungszeiten, Schichtzeiten), handelst du selbst als datenschutzrechtlich Verantwortlicher für diese Daten. Wir verarbeiten diese Daten in deinem Auftrag als Auftragsverarbeiter im Sinne von Art. 28 DSGVO. Die Einzelheiten dazu regelt der Auftragsverarbeitungsvertrag (AVV), der Bestandteil unserer <a href="agb.html">Allgemeinen Geschäftsbedingungen</a> ist und mit Abschluss deines Abonnements automatisch zustande kommt.</p>
+    <p>Du bist dafür verantwortlich, dass die Erhebung dieser Daten (z. B. gegenüber deinen Mitarbeitern) selbst rechtmäßig erfolgt, etwa durch entsprechende Information deiner Mitarbeiter über die Datenverarbeitung.</p>
 
     <h2>5. Speicherdauer</h2>
     <p>Deine Daten werden gespeichert solange dein Abonnement aktiv ist. Nach Kündigung werden deine Daten auf Anfrage gelöscht.</p>
@@ -67,10 +74,13 @@ a:hover { text-decoration:underline; }
 
     <h2>8. Beschwerderecht</h2>
     <p>Du hast das Recht, dich bei einer Datenschutzbehörde zu beschweren. Zuständig ist die Landesbeauftragte für Datenschutz und Informationsfreiheit Nordrhein-Westfalen: <a href="https://www.ldi.nrw.de" target="_blank">www.ldi.nrw.de</a></p>
+
+    <div class="hinweisbox" style="margin-top:32px;">
+      <strong style="color:#1a2a4a;">Hinweis:</strong> Dieser Entwurf wurde mit KI-Unterstützung erstellt und dient als Ausgangspunkt. Vor der Veröffentlichung sollte er von einer Anwältin oder einem Anwalt für IT-/Datenschutzrecht geprüft werden.
+    </div>
   </div>
 </div>
 <div class="gold-bar"></div>
-<div class="footer" style="margin-top:40px;"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
-<script src="checklist-save.js"></script>
+<div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
 </body>
 </html>
