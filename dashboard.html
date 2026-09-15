@@ -269,7 +269,11 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 @media (max-width: 640px) {
   .toolbox-sidebar, .toolbox-sidebar-right { width:100%; max-width:100%; }
 }
+[id^="modul-card-"] > .module-header { display: none; }
 </style>
+
+<div style="font-family:Georgia,serif;font-size:16px;color:#1a2a4a;margin:8px 0 12px;">Deine Module</div>
+<div id="modul-kachel-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:24px;"></div>
 
 <!-- MODUL 0 -->
 <div class="module-card" id="modul-card-0">
@@ -685,6 +689,7 @@ async function init() {
 
   for (const m of [0,1,2,3,4,5,6,7,8,9,10,11,12,13]) renderProgress(m);
   renderLockedModules();
+  renderModulKacheln();
   renderTaeglicheTools();
   renderInternTools();
   unreadPruefen();
@@ -772,12 +777,67 @@ function rememberModule(m) {
 
 function toggleModule(m) {
   const content = document.getElementById('content-' + m);
-  const arrow   = document.getElementById('arrow-' + m);
   if (!content) return;
   const isOpen = content.classList.contains('open');
-  content.classList.toggle('open', !isOpen);
-  if (arrow) arrow.classList.toggle('open', !isOpen);
-  if (!isOpen) rememberModule(m);
+  for (let i = 0; i <= 13; i++) {
+    const c = document.getElementById('content-' + i);
+    const a = document.getElementById('arrow-' + i);
+    if (c) c.classList.remove('open');
+    if (a) a.classList.remove('open');
+  }
+  if (!isOpen) {
+    content.classList.add('open');
+    const arrow = document.getElementById('arrow-' + m);
+    if (arrow) arrow.classList.add('open');
+    rememberModule(m);
+    const card = document.getElementById('modul-card-' + m);
+    if (card) setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+  }
+  renderModulKacheln();
+}
+
+function renderModulKacheln() {
+  const grid = document.getElementById('modul-kachel-grid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  for (let m = 0; m <= 13; m++) {
+    const total = MODULE_ITEMS[m];
+    let done = 0;
+    if (progress && total) {
+      for (let i = 0; i < total; i++) { if (progress[m + '-' + i]) done++; }
+    }
+    const istGesperrt = lockedModules.has(m);
+    const istFertig = total && done === total;
+    const contentEl = document.getElementById('content-' + m);
+    const istAktiv = contentEl && contentEl.classList.contains('open');
+    const titel = MODUL_TITLES[m] || ('Modul ' + m);
+
+    const tile = document.createElement('div');
+    tile.style.borderRadius = '12px';
+    tile.style.padding = '14px';
+    tile.style.transition = 'all 0.15s';
+    tile.style.cursor = istGesperrt ? 'default' : 'pointer';
+    if (!istGesperrt) tile.onclick = () => toggleModule(m);
+
+    let iconHtml, textColor, subColor, statusText;
+    if (istGesperrt) {
+      tile.style.background = '#f0ede8';
+      tile.style.opacity = '0.6';
+      iconHtml = '<div style="width:28px;height:28px;border-radius:50%;background:#e0dcd0;display:flex;align-items:center;justify-content:center;color:#a0a090;font-size:13px;margin-bottom:8px;">🔒</div>';
+      textColor = '#a0a090'; subColor = '#a0a090'; statusText = 'Gesperrt';
+    } else if (istFertig) {
+      tile.style.background = '#1a2a4a';
+      iconHtml = '<div style="width:28px;height:28px;border-radius:50%;background:#d4af37;display:flex;align-items:center;justify-content:center;color:#1a2a4a;font-size:12px;font-weight:700;margin-bottom:8px;">✓</div>';
+      textColor = '#fff'; subColor = '#a0b0c8'; statusText = 'Abgeschlossen';
+    } else {
+      tile.style.background = '#fff';
+      tile.style.border = istAktiv ? '2px solid #d4af37' : '1px solid #e8dfc8';
+      iconHtml = `<div style="width:28px;height:28px;border-radius:50%;background:#eaf2ff;display:flex;align-items:center;justify-content:center;color:#1a2a4a;font-size:12px;font-weight:700;margin-bottom:8px;">${m}</div>`;
+      textColor = '#1a2a4a'; subColor = '#8090a8'; statusText = total ? (done + '/' + total) : '';
+    }
+    tile.innerHTML = iconHtml + `<p style="font-size:13px;font-weight:500;color:${textColor};margin:0;">${titel}</p><p style="font-size:11px;color:${subColor};margin:4px 0 0;">${statusText}</p>`;
+    grid.appendChild(tile);
+  }
 }
 
 function toggleToolbox() {
