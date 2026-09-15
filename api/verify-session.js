@@ -22,7 +22,12 @@ function verifySession(token) {
 // hinterlegten Datum (inklusive) gilt die Sitzung als ungültig — greift
 // zentral hier, also auf jeder Seite, die /api/verify-session nutzt.
 const BEFRISTETE_ZUGAENGE = {
-  'koslowski@progres.de': '2026-09-22'
+  'koslowski@progres.de': '2026-09-22',
+  'z.asel@dehogabw.de': '2026-09-15',
+  'natascha.kummer@wkbgld.at': '2026-09-15',
+  'westerwinter@dehoga-nrw.de': '2026-09-15',
+  'franz.perner@wkbgld.at': '2026-09-15',
+  'info@gastronomen.koeln': '2026-09-16'
 };
 
 function heutigesDatumString() {
