@@ -800,6 +800,10 @@ function renderModulKacheln() {
   const grid = document.getElementById('modul-kachel-grid');
   if (!grid) return;
   grid.innerHTML = '';
+
+  let unlockedUpTo = 1;
+  for (let n = 1; n <= 11; n++) { if (quizBestanden[n]) unlockedUpTo = n + 1; }
+
   for (let m = 0; m <= 13; m++) {
     const total = MODULE_ITEMS[m];
     let done = 0;
@@ -811,29 +815,35 @@ function renderModulKacheln() {
     const contentEl = document.getElementById('content-' + m);
     const istAktiv = contentEl && contentEl.classList.contains('open');
     const titel = MODUL_TITLES[m] || ('Modul ' + m);
+    const istBaldVerfuegbar = (m === 13 && unlockedUpTo === 13 && !istFertig);
 
     const tile = document.createElement('div');
     tile.style.borderRadius = '12px';
     tile.style.padding = '14px';
     tile.style.transition = 'all 0.15s';
-    tile.style.cursor = istGesperrt ? 'default' : 'pointer';
-    if (!istGesperrt) tile.onclick = () => toggleModule(m);
+    tile.style.cursor = (istGesperrt || istBaldVerfuegbar) ? 'default' : 'pointer';
+    if (!istGesperrt && !istBaldVerfuegbar) tile.onclick = () => toggleModule(m);
 
     let iconHtml, textColor, subColor, statusText;
     if (istGesperrt) {
-      tile.style.background = '#f0ede8';
-      tile.style.opacity = '0.6';
-      iconHtml = '<div style="width:28px;height:28px;border-radius:50%;background:#e0dcd0;display:flex;align-items:center;justify-content:center;color:#a0a090;font-size:13px;margin-bottom:8px;">🔒</div>';
-      textColor = '#a0a090'; subColor = '#a0a090'; statusText = 'Gesperrt';
+      tile.style.background = '#2a3a5a';
+      tile.style.opacity = '0.55';
+      iconHtml = '<div style="width:28px;height:28px;border-radius:50%;background:#3a4a6a;display:flex;align-items:center;justify-content:center;color:#8a97b5;font-size:13px;margin-bottom:8px;">🔒</div>';
+      textColor = '#c0c8d8'; subColor = '#8a97b5'; statusText = 'Gesperrt';
+    } else if (istBaldVerfuegbar) {
+      tile.style.background = '#2a3a5a';
+      tile.style.opacity = '0.75';
+      iconHtml = '<div style="width:28px;height:28px;border-radius:50%;background:#d4af37;display:flex;align-items:center;justify-content:center;color:#1a2a4a;font-size:13px;margin-bottom:8px;">⏳</div>';
+      textColor = '#fff'; subColor = '#d4af37'; statusText = 'Bald verfügbar';
     } else if (istFertig) {
       tile.style.background = '#1a2a4a';
       iconHtml = '<div style="width:28px;height:28px;border-radius:50%;background:#d4af37;display:flex;align-items:center;justify-content:center;color:#1a2a4a;font-size:12px;font-weight:700;margin-bottom:8px;">✓</div>';
       textColor = '#fff'; subColor = '#a0b0c8'; statusText = 'Abgeschlossen';
     } else {
-      tile.style.background = '#fff';
-      tile.style.border = istAktiv ? '2px solid #d4af37' : '1px solid #e8dfc8';
-      iconHtml = `<div style="width:28px;height:28px;border-radius:50%;background:#eaf2ff;display:flex;align-items:center;justify-content:center;color:#1a2a4a;font-size:12px;font-weight:700;margin-bottom:8px;">${m}</div>`;
-      textColor = '#1a2a4a'; subColor = '#8090a8'; statusText = total ? (done + '/' + total) : '';
+      tile.style.background = '#1a2a4a';
+      tile.style.border = istAktiv ? '2px solid #d4af37' : '1px solid rgba(212,175,55,0.25)';
+      iconHtml = `<div style="width:28px;height:28px;border-radius:50%;background:#d4af37;display:flex;align-items:center;justify-content:center;color:#1a2a4a;font-size:12px;font-weight:700;margin-bottom:8px;">${m}</div>`;
+      textColor = '#fff'; subColor = '#a0b0c8'; statusText = total ? (done + '/' + total) : '';
     }
     tile.innerHTML = iconHtml + `<p style="font-size:13px;font-weight:500;color:${textColor};margin:0;">${titel}</p><p style="font-size:11px;color:${subColor};margin:4px 0 0;">${statusText}</p>`;
     grid.appendChild(tile);
@@ -1225,29 +1235,8 @@ document.addEventListener('click', function(e) {
 });
 
 function renderLockedModules() {
-  let unlockedUpTo = 1;
-  if (quizBestanden[1])  unlockedUpTo = 2;
-  if (quizBestanden[2])  unlockedUpTo = 3;
-  if (quizBestanden[3])  unlockedUpTo = 4;
-  if (quizBestanden[4])  unlockedUpTo = 5;
-  if (quizBestanden[5])  unlockedUpTo = 6;
-  if (quizBestanden[6])  unlockedUpTo = 7;
-  if (quizBestanden[7])  unlockedUpTo = 8;
-  if (quizBestanden[8])  unlockedUpTo = 9;
-  if (quizBestanden[9])  unlockedUpTo = 10;
-  if (quizBestanden[10]) unlockedUpTo = 11;
-  if (quizBestanden[11]) unlockedUpTo = 12;
-  if (quizBestanden[12]) unlockedUpTo = 13;
   const container = document.getElementById('locked-modules');
   container.innerHTML = '';
-  for (let m = 13; m <= 13; m++) {
-    const isNext = (m === unlockedUpTo);
-    const locked = m > unlockedUpTo;
-    const card = document.createElement('div');
-    card.className = 'module-card' + (locked ? ' locked' : '');
-    card.innerHTML = `<div class="module-header no-click"><div class="module-left"><div class="module-number">${m}</div><div><div class="module-title">${MODUL_TITLES[m] || 'Modul ' + m}</div><div class="module-subtitle">${isNext ? '🎉 Es bleibt spannend — Inhalte folgen in Kürze.' : '🔒 Bestehe das Quiz aus Modul ' + (m-1) + ', um dieses Modul freizuschalten'}</div></div></div><span class="module-badge ${isNext ? 'badge-soon' : 'badge-locked'}">${isNext ? '⏳ Bald verfügbar' : '🔒 Gesperrt'}</span></div>`;
-    container.appendChild(card);
-  }
 }
 
 async function faelligeRechnungenPruefen() {
