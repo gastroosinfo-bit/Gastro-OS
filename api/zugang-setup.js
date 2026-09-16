@@ -49,7 +49,7 @@ export default async function handler(req, res) {
   if (!code || code.length < 6) {
     return res.status(400).json({ error: 'Code fehlt/ungültig.' });
   }
-  if (!['uebergabe', 'reservierung', 'schichtplan', 'zeiterfassung'].includes(bookType)) {
+  if (!['uebergabe', 'reservierung', 'schichtplan', 'zeiterfassung', 'team'].includes(bookType)) {
     return res.status(400).json({ error: 'Ungültiger bookType.' });
   }
 
