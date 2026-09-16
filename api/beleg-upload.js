@@ -2,9 +2,13 @@
 // Upload und signierter Abruf von Beleg-Dateien (PDF oder Foto) über Supabase Storage.
 // Automatische Auslese: PDFs werden per Text-Extraktion (pdf-parse, kostenlos) ausgelesen,
 // Fotos werden per Claude/Anthropic-Bilderkennung ausgelesen (kostenpflichtig, ANTHROPIC_API_KEY).
-// Nutzt denselben Session-Cookie-Auth-Mechanismus wie api/tool-data.js.
+// Nutzt denselben Session-Cookie-Auth-Mechanismus wie api/tool-data.js — ZUSÄTZLICH
+// akzeptiert der Upload (POST) auch den Mitarbeiter-Code+PIN-Zugang (siehe
+// lib/pin-auth.js), damit Mitarbeiter mit "Belege"-Recht selbst hochladen können.
+// Ansehen/Löschen bleibt bewusst dem eingeloggten Chef vorbehalten.
 
 const crypto = require('crypto');
+const { pruefeZugang } = require('../lib/pin-auth');
 
 const SESSION_SECRET = process.env.SESSION_SECRET;
 const SUPABASE_URL = process.env.SUPABASE_URL;
@@ -263,7 +267,18 @@ function sbHeaders() {
 }
 
 export default async function handler(req, res) {
-  const email = getEmailFromRequest(req);
+  let email = getEmailFromRequest(req);
+
+  // Kein Chef-Login — beim Hochladen zusätzlich den Mitarbeiter-PIN-Zugang
+  // versuchen (Ansehen/Löschen bleibt bewusst nur dem Chef vorbehalten).
+  if (!email && req.method === 'POST') {
+    const { code, pin } = req.body || {};
+    if (code && pin) {
+      const zugang = await pruefeZugang('belege', code, pin);
+      if (zugang && zugang.owner) email = zugang.owner.user_id;
+    }
+  }
+
   if (!email) {
     return res.status(401).json({ error: 'Nicht angemeldet.' });
   }
