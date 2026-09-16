@@ -1,7 +1,9 @@
 // api/zugang-setup.js
-// Nur für eingeloggte Abonnenten: legt Code+PIN für den Übergabe-, Reservierungs- ODER
-// Schichtplan-Zugang fest (je nach "bookType") oder ändert die PIN. Die PIN wird nie im
-// Klartext gespeichert, nur als Hash (Code + bookType als Salt).
+// Nur für eingeloggte Abonnenten: legt den Zugangs-Code für den Übergabe-,
+// Reservierungs-, Schichtplan- ODER Zeiterfassungs-Bereich fest (je nach "bookType").
+// Der Code identifiziert nur noch den Betrieb/Bereich (per Link/QR-Code geteilt) —
+// die eigentliche Identifikation läuft über die persönliche PIN jedes Mitarbeiters,
+// die bei "Team-Mitarbeiter" im Dashboard verwaltet wird (siehe api/buch-public.js).
 
 const crypto = require('crypto');
 
@@ -37,30 +39,22 @@ function sbHeaders() {
     'Authorization': 'Bearer ' + SUPABASE_SERVICE_KEY
   };
 }
-// Gleiche Hash-Formel wie in api/buch-public.js
-function pinHash(bookType, code, pin) {
-  if (bookType === 'uebergabe') {
-    return crypto.createHmac('sha256', SUPABASE_SERVICE_KEY || 'fallback').update(code + ':' + pin).digest('hex');
-  }
-  return crypto.createHmac('sha256', SUPABASE_SERVICE_KEY || 'fallback').update(bookType + ':' + code + ':' + pin).digest('hex');
-}
 
 export default async function handler(req, res) {
   const email = getEmailFromRequest(req);
   if (!email) return res.status(401).json({ error: 'Nicht angemeldet.' });
   if (req.method !== 'POST') return res.status(405).json({ error: 'Methode nicht erlaubt.' });
 
-  const { code, pin, bookType } = req.body || {};
-  if (!code || !pin || !/^\d{4}$/.test(pin)) {
-    return res.status(400).json({ error: 'Code oder vierstellige PIN fehlt/ungültig.' });
+  const { code, bookType } = req.body || {};
+  if (!code || code.length < 6) {
+    return res.status(400).json({ error: 'Code fehlt/ungültig.' });
   }
   if (!['uebergabe', 'reservierung', 'schichtplan', 'zeiterfassung'].includes(bookType)) {
     return res.status(400).json({ error: 'Ungültiger bookType.' });
   }
 
   const zugangTool = bookType + '-zugang';
-  const hash = pinHash(bookType, code, pin);
-  const data = { code, pinHash: hash };
+  const data = { code };
 
   try {
     const existingRes = await fetch(
