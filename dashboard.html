@@ -1041,7 +1041,14 @@ async function dashToolSave(tool, data) {
 
 // ─── Team-Mitarbeiter: Name + persönliche PIN + Rechte pro Bereich ─────────
 // Wird mit Schichtplan/Zeiterfassung geteilt (gleicher Tool-Name 'schichtplan-mitarbeiter').
-const TEAM_BEREICHE = [['uebergabe', 'Übergabe'], ['reservierung', 'Reservierung'], ['schichtplan', 'Schichtplan'], ['zeiterfassung', 'Zeiterfassung']];
+const TEAM_BEREICHE = [
+  ['uebergabe', 'Ü', 'Übergabe'],
+  ['reservierung', 'R', 'Reservierung'],
+  ['schichtplan', 'S', 'Schichtplan'],
+  ['zeiterfassung', 'Z', 'Zeiterfassung'],
+  ['belege', 'B', 'Belege'],
+  ['temperaturen', 'T', 'Temperaturen']
+];
 let teamMitarbeiterListe = [];
 async function teamMitarbeiterLaden() {
   const data = await dashToolLoad('schichtplan-mitarbeiter');
@@ -1050,7 +1057,7 @@ async function teamMitarbeiterLaden() {
   } else if (Array.isArray(data.namen) && data.namen.length) {
     // Altformat (nur Namen, keine persönlichen PINs) — automatisch umwandeln, nichts geht verloren.
     // Rechte erstmal für alle Bereiche an, PIN ist leer und muss noch vergeben werden.
-    teamMitarbeiterListe = data.namen.map(n => ({ name: n, pin: '', rechte: { uebergabe: true, reservierung: true, schichtplan: true, zeiterfassung: true } }));
+    teamMitarbeiterListe = data.namen.map(n => ({ name: n, pin: '', rechte: { uebergabe: true, reservierung: true, schichtplan: true, zeiterfassung: true, belege: true, temperaturen: true } }));
     await teamMitarbeiterSpeichern();
   } else {
     teamMitarbeiterListe = [];
@@ -1064,14 +1071,28 @@ function teamMitarbeiterRender() {
   const el = document.getElementById('team-mitarbeiter-liste');
   if (!el) return;
   if (!teamMitarbeiterListe.length) { el.innerHTML = '<div style="font-size:12px;color:#8090a8;">Noch keine Mitarbeiter angelegt.</div>'; return; }
-  el.innerHTML = teamMitarbeiterListe.map((m, i) => `
-    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:9px 0;border-bottom:1px solid #f0e8d4;">
-      <input type="text" value="${(m.name || '').replace(/"/g, '&quot;')}" onchange="teamMitarbeiterFeldGeaendert(${i},'name',this.value)" style="border:1px solid #e0d8c8;border-radius:6px;padding:6px 8px;font-size:12.5px;width:110px;">
-      <input type="text" inputmode="numeric" maxlength="4" value="${m.pin || ''}" placeholder="PIN fehlt" onchange="teamMitarbeiterFeldGeaendert(${i},'pin',this.value)" style="border:1px solid ${m.pin ? '#e0d8c8' : '#c0392b'};border-radius:6px;padding:6px 8px;font-size:12.5px;width:70px;">
-      ${TEAM_BEREICHE.map(([key, label]) => `<label style="font-size:11px;display:flex;align-items:center;gap:4px;cursor:pointer;color:#3a5578;"><input type="checkbox" ${m.rechte && m.rechte[key] ? 'checked' : ''} onchange="teamMitarbeiterRechtGeaendert(${i},'${key}',this.checked)"> ${label}</label>`).join('')}
-      <button onclick="teamMitarbeiterLoeschen(${i})" style="background:transparent;border:1px solid #c0392b;color:#c0392b;padding:4px 8px;border-radius:5px;font-size:10.5px;cursor:pointer;margin-left:auto;">✕</button>
-    </div>
+  const kopf = TEAM_BEREICHE.map(([key, kurz, titel]) => `<th title="${titel}">${kurz}</th>`).join('');
+  const zeilen = teamMitarbeiterListe.map((m, i) => `
+    <tr>
+      <td><input type="text" value="${(m.name || '').replace(/"/g, '&quot;')}" onchange="teamMitarbeiterFeldGeaendert(${i},'name',this.value)" style="border:1px solid #e0d8c8;border-radius:5px;padding:5px 6px;font-size:12px;width:78px;"></td>
+      <td><input type="text" inputmode="numeric" maxlength="4" value="${m.pin || ''}" placeholder="fehlt" onchange="teamMitarbeiterFeldGeaendert(${i},'pin',this.value)" style="border:1px solid ${m.pin ? '#e0d8c8' : '#c0392b'};border-radius:5px;padding:5px 4px;font-size:12px;width:48px;text-align:center;"></td>
+      ${TEAM_BEREICHE.map(([key, kurz, titel]) => `<td title="${titel}"><input type="checkbox" ${m.rechte && m.rechte[key] ? 'checked' : ''} onchange="teamMitarbeiterRechtGeaendert(${i},'${key}',this.checked)" style="width:16px;height:16px;cursor:pointer;"></td>`).join('')}
+      <td><button onclick="teamMitarbeiterLoeschen(${i})" style="background:transparent;border:1px solid #c0392b;color:#c0392b;padding:3px 7px;border-radius:5px;font-size:10px;cursor:pointer;">✕</button></td>
+    </tr>
   `).join('');
+  el.innerHTML = `
+    <div style="overflow-x:auto;">
+    <table style="border-collapse:collapse;font-size:12px;width:100%;">
+      <thead>
+        <tr style="color:#8090a8;font-size:10px;text-transform:uppercase;font-weight:700;">
+          <th style="text-align:left;padding:3px 6px;">Name</th><th style="padding:3px 6px;">PIN</th>${kopf}<th></th>
+        </tr>
+      </thead>
+      <tbody>${zeilen}</tbody>
+    </table>
+    </div>
+    <div style="font-size:10.5px;color:#8090a8;margin-top:6px;">Ü Übergabe · R Reservierung · S Schichtplan · Z Zeiterfassung · B Belege · T Temperaturen</div>
+  `;
 }
 window.teamMitarbeiterFeldGeaendert = function(i, feld, wert) {
   teamMitarbeiterListe[i][feld] = wert.trim();
@@ -1095,7 +1116,7 @@ window.teamMitarbeiterHinzufuegen = async function() {
   if (!name) return;
   if (pin && !/^\d{4}$/.test(pin)) { alert('Die PIN muss 4-stellig sein (oder erstmal leer lassen).'); return; }
   if (pin && teamMitarbeiterListe.some(m => m.pin === pin)) { alert('Diese PIN ist schon an einen anderen Mitarbeiter vergeben — bitte eine andere wählen.'); return; }
-  teamMitarbeiterListe.push({ name, pin, rechte: { uebergabe: true, reservierung: true, schichtplan: true, zeiterfassung: true } });
+  teamMitarbeiterListe.push({ name, pin, rechte: { uebergabe: true, reservierung: true, schichtplan: true, zeiterfassung: true, belege: true, temperaturen: true } });
   await teamMitarbeiterSpeichern();
   document.getElementById('team-neu-name').value = '';
   document.getElementById('team-neu-pin').value = '';
@@ -1279,7 +1300,7 @@ async function renderTeamZugangPanel() {
     `;
     document.getElementById('team-zugang-setup-btn').onclick = async () => {
       const code = Math.random().toString(36).slice(2, 10) + Math.random().toString(36).slice(2, 6);
-      const bereiche = ['team', 'uebergabe', 'reservierung', 'schichtplan', 'zeiterfassung'];
+      const bereiche = ['team', 'uebergabe', 'reservierung', 'schichtplan', 'zeiterfassung', 'belege', 'temperaturen'];
       await Promise.all(bereiche.map(bookType =>
         fetch('/api/zugang-setup', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code, bookType }) })
       ));
