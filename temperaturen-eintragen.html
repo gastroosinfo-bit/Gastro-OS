@@ -150,7 +150,13 @@ async function pinPruefenMitWert(pin, stillLaden) {
       body: JSON.stringify({ code: tCode, pin, bookType: 'temperaturen' })
     });
     if (!res.ok) {
-      if (!stillLaden) { document.getElementById('pin-error').style.display = 'block'; }
+      let fehlertext = 'Falsche PIN, bitte nochmal versuchen.';
+      try { const fehlerDaten = await res.json(); if (fehlerDaten && fehlerDaten.error) fehlertext = fehlerDaten.error; } catch (e) {}
+      if (!stillLaden) {
+        const errEl = document.getElementById('pin-error');
+        errEl.textContent = fehlertext;
+        errEl.style.display = 'block';
+      }
       else { zeigePinScreen(); }
       return;
     }

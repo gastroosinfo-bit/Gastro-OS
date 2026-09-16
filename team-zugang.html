@@ -136,7 +136,13 @@ async function pinPruefenMitWert(pin, stillLaden) {
     });
     if (!res.ok) {
       localStorage.removeItem('gastroos_team_pin');
-      if (!stillLaden) { document.getElementById('pin-error').style.display = 'block'; }
+      let fehlertext = 'Falsche PIN, bitte nochmal versuchen.';
+      try { const fehlerDaten = await res.json(); if (fehlerDaten && fehlerDaten.error) fehlertext = fehlerDaten.error; } catch (e) {}
+      if (!stillLaden) {
+        const errEl = document.getElementById('pin-error');
+        errEl.textContent = fehlertext;
+        errEl.style.display = 'block';
+      }
       else { zeigePinScreen(); }
       return;
     }
