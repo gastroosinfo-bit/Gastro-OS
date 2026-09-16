@@ -245,6 +245,11 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
 <div class="footer-brand"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
 
 <script>
+// State-Variablen ganz oben deklariert — werden vom Mitarbeiter-Modus sofort
+// gebraucht (der ohne Wartezeit startet), müssen also vor dessen Aufruf existieren.
+let zeCode = null, zePin = null, zeName = null, zeItems = [];
+let mitarbeiterNamen = [], alleZeiten = [];
+
 // ─── Allgemeine Helfer ──────────────────────────────────────────────────────
 function flashSaved(id) {
   const el = document.getElementById(id);
@@ -352,8 +357,6 @@ function zeitraumSetzen(prefix, art) {
 })();
 
 // ═══════════════ MITARBEITER-MODUS ═══════════════
-let zeCode = null, zePin = null, zeName = null, zeItems = [];
-
 function initMitarbeiterModus(code) {
   zeCode = code;
   document.getElementById('tool-sub-text').textContent = 'Gib deine PIN ein, um deine Zeit einzutragen.';
@@ -502,9 +505,6 @@ function maPdfErstellen() {
 }
 
 // ═══════════════ INHABER-MODUS ═══════════════
-let mitarbeiterNamen = [];
-let alleZeiten = [];
-
 async function toolLoad(tool) {
   try {
     const res = await fetch('/api/tool-data?tool=' + encodeURIComponent(tool));
