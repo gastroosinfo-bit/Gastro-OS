@@ -167,7 +167,11 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
       </div>
       <div class="module-content" id="intern-content">
         <div style="padding:14px 20px;font-size:12px;color:#5a6a85;line-height:1.6;background:#fdf8ea;border-bottom:1px solid #f0e8d4;">
-          💡 <strong style="color:#1a2a4a;">So funktioniert der Mitarbeiter-Zugang:</strong> Jeder Mitarbeiter bekommt unten bei "Team-Mitarbeiter" eine eigene, persönliche PIN — damit niemand sich für einen Kollegen ausgeben kann. Den Link/QR-Code pro Bereich kannst du einmal aushängen oder teilen, jeder meldet sich dort mit seiner eigenen PIN an. Am besten die Seite auf dem Handy zum Homebildschirm hinzufügen und Push-Benachrichtigungen aktivieren, dann bekommt man Neues sofort mit.
+          💡 <strong style="color:#1a2a4a;">So funktioniert der Mitarbeiter-Zugang:</strong> Jeder Mitarbeiter bekommt unten bei "Team-Mitarbeiter" eine eigene, persönliche PIN — damit niemand sich für einen Kollegen ausgeben kann. Den EINEN Team-Link/QR-Code weiter unten kannst du einmal aushängen oder teilen; jeder meldet sich dort mit seiner eigenen PIN an und sieht automatisch nur die Bereiche, die für ihn freigeschaltet sind. Am besten die Seite auf dem Handy zum Homebildschirm hinzufügen und Push-Benachrichtigungen aktivieren, dann bekommt man Neues sofort mit.
+        </div>
+        <div style="padding:16px 20px;border-bottom:1px solid #f0e8d4;">
+          <div style="font-weight:700;font-size:13px;color:#1a2a4a;margin-bottom:10px;">🔗 Team-Zugang (ein Link für alle Bereiche)</div>
+          <div id="team-zugang-content" style="font-size:12.5px;color:#5a6a85;">Wird geladen …</div>
         </div>
         <div style="padding:16px 20px;border-bottom:1px solid #f0e8d4;">
           <div style="font-weight:700;font-size:13px;color:#1a2a4a;margin-bottom:4px;">👥 Team-Mitarbeiter verwalten</div>
@@ -713,6 +717,7 @@ async function init() {
   renderTaeglicheTools();
   renderInternTools();
   teamMitarbeiterLaden();
+  renderTeamZugangPanel();
   unreadPruefen();
   pushStatusPruefen();
   renderToolbox();
@@ -1228,73 +1233,57 @@ function renderInternTools() {
 
     const topRow = document.createElement('a');
     topRow.href = tool.href;
-    topRow.style.cssText = 'display:flex;align-items:center;gap:14px;text-decoration:none;color:inherit;margin-bottom:10px;position:relative;';
+    topRow.style.cssText = 'display:flex;align-items:center;gap:14px;text-decoration:none;color:inherit;position:relative;';
     topRow.innerHTML = `<span class="item-icon" style="position:relative;">${tool.icon}<span id="intern-badge-${idx}" style="display:none;position:absolute;top:-8px;right:-10px;background:#c0392b;color:#fff;font-size:10px;font-weight:700;border-radius:10px;min-width:18px;height:18px;line-height:18px;text-align:center;padding:0 4px;">0</span></span><div style="flex:1;"><div class="item-title">${tool.title}</div><div style="font-size:11.5px;color:#5a6a85;margin-top:1px;">${tool.desc}</div></div>`;
     if (tool.unread) topRow.onclick = () => markiereAlsGelesen(tool.unread.lastSeenKey);
     row.appendChild(topRow);
 
-    const rightBox = document.createElement('div');
-    rightBox.style.cssText = 'display:flex;align-items:center;gap:8px;';
     const openBtn = document.createElement('a');
     openBtn.href = tool.href;
     openBtn.className = 'item-link';
-    openBtn.style.whiteSpace = 'nowrap';
+    openBtn.style.cssText = 'white-space:nowrap;margin-top:10px;display:inline-block;';
     openBtn.textContent = 'Öffnen →';
     if (tool.unread) openBtn.onclick = () => markiereAlsGelesen(tool.unread.lastSeenKey);
-    rightBox.appendChild(openBtn);
-
-    const gearBtn = document.createElement('button');
-    gearBtn.textContent = '⚙️ PIN verwalten';
-    gearBtn.style.cssText = 'background:transparent;border:1px solid #d4af37;color:#1a2a4a;border-radius:6px;padding:7px 12px;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;';
-    gearBtn.onclick = () => internTogglePinPanel(idx);
-    rightBox.appendChild(gearBtn);
-    row.appendChild(rightBox);
+    row.appendChild(openBtn);
     wrap.appendChild(row);
-
-    const panel = document.createElement('div');
-    panel.id = 'intern-pin-panel-' + idx;
-    panel.style.cssText = 'display:none;padding:0 20px 18px;';
-    panel.innerHTML = `<div id="intern-pin-panel-content-${idx}" style="padding-top:6px;font-size:12.5px;color:#5a6a85;">Wird geladen …</div>`;
-    wrap.appendChild(panel);
 
     container.appendChild(wrap);
   });
 }
 
-async function internTogglePinPanel(idx) {
-  const panel = document.getElementById('intern-pin-panel-' + idx);
-  const isOpen = panel.style.display === 'block';
-  panel.style.display = isOpen ? 'none' : 'block';
-  if (isOpen) return;
-  await renderInternPinPanelContent(idx);
-}
-
-async function renderInternPinPanelContent(idx) {
-  const tool = INTERN_TOOLS[idx];
-  const content = document.getElementById('intern-pin-panel-content-' + idx);
-  const zugang = await dashToolLoad(tool.pin.zugangTool);
+// ─── Team-Zugang: EIN gemeinsamer Code für alle vier Bereiche + team-zugang.html ──
+// als Startseite mit Bereichs-Buttons. Der gleiche Code wird beim Einrichten
+// gleichzeitig für 'team' und alle vier Bereiche hinterlegt, damit die direkten
+// Links (z. B. aus Push-Benachrichtigungen) weiterhin unverändert funktionieren.
+async function renderTeamZugangPanel() {
+  const content = document.getElementById('team-zugang-content');
+  if (!content) return;
+  const zugang = await dashToolLoad('team-zugang');
 
   if (zugang && zugang.code) {
-    const link = window.location.origin + '/' + tool.pin.linkPath + '?u=' + zugang.code;
+    const link = window.location.origin + '/team-zugang.html?u=' + zugang.code;
     content.innerHTML = `
       <div style="background:#fff8e0;border:1px solid #d4af37;border-radius:8px;padding:14px 16px;">
-        Link für Mitarbeiter (z. B. per WhatsApp teilen oder aufhängen) — jeder meldet sich dort mit seiner <strong>eigenen persönlichen PIN</strong> an (siehe "Team-Mitarbeiter" oben):<br>
+        Ein Link für dein ganzes Team (z. B. per WhatsApp teilen oder als QR-Code aufhängen) — jeder meldet sich dort mit seiner <strong>eigenen persönlichen PIN</strong> an (oben bei "Team-Mitarbeiter" vergeben) und sieht danach automatisch nur die Bereiche, die für ihn freigeschaltet sind:<br>
         <code style="background:#1a2a4a;color:#d4af37;padding:5px 8px;border-radius:5px;font-size:12px;display:inline-block;margin-top:6px;word-break:break-all;">${link}</code>
         <div style="margin-top:10px;">
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${encodeURIComponent(link)}" style="width:120px;height:120px;border:1px solid #d4af37;border-radius:6px;background:#fff;padding:5px;">
-          <div style="font-size:11px;color:#8090a8;margin-top:4px;">Zum Ausdrucken/Aufhängen für Mitarbeiter.</div>
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=${encodeURIComponent(link)}" style="width:140px;height:140px;border:1px solid #d4af37;border-radius:6px;background:#fff;padding:5px;">
+          <div style="font-size:11px;color:#8090a8;margin-top:4px;">Zum Ausdrucken/Aufhängen — einmal aufs Handy, alle Bereiche darüber erreichbar.</div>
         </div>
       </div>
     `;
   } else {
     content.innerHTML = `
-      <div style="font-size:11.5px;color:#8090a8;margin-bottom:10px;">Noch kein Zugang eingerichtet. Erzeugt einen Link, den du an dein Team weitergibst — jeder meldet sich dort mit seiner eigenen persönlichen PIN an (bei "Team-Mitarbeiter" oben vergeben).</div>
-      <button id="intern-pin-setup-btn-${idx}" style="background:#1a6640;color:#fff;border:none;padding:8px 16px;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer;">Link erstellen</button>
+      <div style="font-size:11.5px;color:#8090a8;margin-bottom:10px;">Noch kein Team-Zugang eingerichtet. Erzeugt einen einzigen Link/QR-Code fürs ganze Team.</div>
+      <button id="team-zugang-setup-btn" style="background:#1a6640;color:#fff;border:none;padding:8px 16px;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer;">Link erstellen</button>
     `;
-    document.getElementById('intern-pin-setup-btn-' + idx).onclick = async () => {
+    document.getElementById('team-zugang-setup-btn').onclick = async () => {
       const code = Math.random().toString(36).slice(2, 10) + Math.random().toString(36).slice(2, 6);
-      await fetch(tool.pin.setupEndpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code, bookType: tool.pin.bookType }) });
-      await renderInternPinPanelContent(idx);
+      const bereiche = ['team', 'uebergabe', 'reservierung', 'schichtplan', 'zeiterfassung'];
+      await Promise.all(bereiche.map(bookType =>
+        fetch('/api/zugang-setup', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code, bookType }) })
+      ));
+      await renderTeamZugangPanel();
     };
   }
 }

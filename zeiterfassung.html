@@ -353,7 +353,7 @@ function initMitarbeiterModus(code) {
   zeCode = code;
   document.getElementById('tool-sub-text').textContent = 'Gib deine persönliche PIN ein, um deine Zeit einzutragen.';
 
-  const gespeichertePin = localStorage.getItem('gastroos_ze_pin_' + code);
+  const gespeichertePin = localStorage.getItem('gastroos_ze_pin_' + code) || localStorage.getItem('gastroos_team_pin');
   if (gespeichertePin) {
     pinPruefenMitWert(gespeichertePin, true);
   } else {
