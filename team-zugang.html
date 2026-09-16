@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Team-Zugang – GASTRO-OS</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Team-Zugang">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png">
+<script>
+  (function() {
+    var code = new URLSearchParams(window.location.search).get('u');
+    if (code) {
+      document.write('<link rel="manifest" href="/api/manifest?type=team&code=' + encodeURIComponent(code) + '">');
+    } else {
+      document.write('<link rel="manifest" href="/manifest-team.json">');
+    }
+  })();
+</script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
+.header{background:#1a2a4a;padding:14px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
+.brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+.wrap { max-width:560px; margin:0 auto; padding:28px 24px 60px; }
+.tool-label { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:4px; }
+.tool-title { font-family:Georgia,serif; font-size:22px; color:#1a2a4a; margin-bottom:4px; }
+.tool-sub { font-size:13px; color:#5a6a80; margin-bottom:20px; }
+
+.section { background:#fff; border:1px solid #e8dfc8; border-radius:10px; padding:22px 26px; margin-bottom:20px; box-shadow:0 2px 6px rgba(0,0,0,0.04); }
+.btn-add { background:#1a6640; color:#fff; border:none; padding:10px 20px; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; }
+.btn-add:hover { background:#d4af37; color:#1a2a4a; }
+.btn-add.secondary { background:transparent; color:#1a6640; border:1px solid #1a6640; }
+.btn-add.secondary:hover { background:#1a6640; color:#fff; }
+.error-msg { font-size:12.5px; color:#c0392b; margin-top:8px; display:none; }
+
+.pin-screen { text-align:center; padding:40px 20px; }
+.pin-input { font-size:24px; letter-spacing:8px; text-align:center; width:160px; padding:12px; border:2px solid #d4af37; border-radius:8px; margin:16px auto; display:block; }
+
+.bereich-liste { display:flex; flex-direction:column; gap:12px; margin-top:6px; }
+.bereich-btn { display:flex; align-items:center; gap:14px; background:#fff; border:1px solid #e8dfc8; border-radius:10px; padding:18px 20px; text-decoration:none; color:#1a2a4a; transition:all 0.2s; box-shadow:0 2px 6px rgba(0,0,0,0.04); }
+.bereich-btn:hover { border-color:#d4af37; box-shadow:0 4px 12px rgba(0,0,0,0.08); transform:translateY(-1px); }
+.bereich-btn .icon { font-size:26px; }
+.bereich-btn .titel { font-weight:700; font-size:15px; }
+.bereich-btn .desc { font-size:12px; color:#8090a8; margin-top:2px; }
+.bereich-btn .pfeil { margin-left:auto; color:#d4af37; font-size:18px; }
+
+.footer-brand { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-brand strong { color:#d4af37; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <span class="brand">GASTRO-OS</span>
+</div>
+<div class="gold-bar"></div>
+
+<div class="wrap">
+  <div class="tool-label">Toolbox · Intern</div>
+  <div class="tool-title">👥 Team-Zugang</div>
+  <div class="tool-sub" id="tool-sub-text">Wird geladen …</div>
+
+  <!-- ═══ PIN-EINGABE ═══ -->
+  <div id="pin-screen" class="section pin-screen" style="display:none;">
+    <div style="font-size:15px;margin-bottom:6px;">Gib deine persönliche PIN ein</div>
+    <input type="password" inputmode="numeric" maxlength="4" class="pin-input" id="pin-input" placeholder="••••">
+    <button class="btn-add" onclick="pinPruefen()">Entsperren</button>
+    <div class="error-msg" id="pin-error">Falsche PIN, bitte nochmal versuchen.</div>
+  </div>
+
+  <!-- ═══ BEREICHS-AUSWAHL ═══ -->
+  <div id="bereich-screen" style="display:none;">
+    <div class="section">
+      <div style="font-size:15px;font-weight:700;margin-bottom:14px;" id="begruessung">Hallo!</div>
+      <div class="bereich-liste" id="bereich-liste"></div>
+      <div class="error-msg" id="keine-bereiche" style="margin-top:16px;">Für dich ist noch kein Bereich freigeschaltet — bitte den Chef fragen.</div>
+    </div>
+    <button class="btn-add secondary" onclick="abmelden()" style="font-size:11.5px;padding:6px 12px;">🚪 Abmelden</button>
+  </div>
+
+</div>
+
+<div class="footer-brand"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+
+<script>
+const BEREICHE = [
+  { key: 'uebergabe',    icon: '📋', titel: 'Übergabebuch',     desc: 'Schichtübergabe lesen & eintragen',        seite: 'uebergabe.html' },
+  { key: 'reservierung', icon: '📅', titel: 'Reservierungsbuch', desc: 'Reservierungen sehen & eintragen',         seite: 'reservierung.html' },
+  { key: 'schichtplan',  icon: '🗂️', titel: 'Schichtplan',       desc: 'Deinen Dienstplan ansehen',                seite: 'schichtplan.html' },
+  { key: 'zeiterfassung',icon: '⏱️', titel: 'Zeiterfassung',     desc: 'Kommen, Pause und Gehen eintragen',        seite: 'zeiterfassung.html' }
+];
+
+const urlParams = new URLSearchParams(window.location.search);
+const codeAusUrl = urlParams.get('u');
+const code = codeAusUrl || localStorage.getItem('gastroos_team_code');
+
+if (!code) {
+  document.getElementById('tool-sub-text').textContent = 'Dieser Link ist unvollständig — bitte den Chef nach dem richtigen Link/QR-Code fragen.';
+} else {
+  if (codeAusUrl) localStorage.setItem('gastroos_team_code', codeAusUrl);
+  const gespeichertePin = localStorage.getItem('gastroos_team_pin');
+  if (gespeichertePin) {
+    pinPruefenMitWert(gespeichertePin, true);
+  } else {
+    zeigePinScreen();
+  }
+}
+
+function zeigePinScreen() {
+  document.getElementById('tool-sub-text').textContent = 'Gib deine persönliche PIN ein, um deine Bereiche zu sehen.';
+  document.getElementById('pin-screen').style.display = 'block';
+  document.getElementById('pin-input').focus();
+}
+
+window.pinPruefen = function() {
+  const pin = document.getElementById('pin-input').value.trim();
+  if (pin.length !== 4) return;
+  pinPruefenMitWert(pin, false);
+};
+
+async function pinPruefenMitWert(pin, stillLaden) {
+  try {
+    const res = await fetch('/api/buch-public', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code, pin, bookType: 'team' })
+    });
+    if (!res.ok) {
+      localStorage.removeItem('gastroos_team_pin');
+      if (!stillLaden) { document.getElementById('pin-error').style.display = 'block'; }
+      else { zeigePinScreen(); }
+      return;
+    }
+    const d = await res.json();
+    localStorage.setItem('gastroos_team_pin', pin);
+    document.getElementById('pin-screen').style.display = 'none';
+    document.getElementById('pin-error').style.display = 'none';
+    document.getElementById('tool-sub-text').textContent = 'Wähl, was du machen möchtest.';
+    document.getElementById('bereich-screen').style.display = 'block';
+    document.getElementById('begruessung').textContent = 'Hallo, ' + (d.meinName || '') + '!';
+
+    const erlaubt = BEREICHE.filter(b => d.rechte && d.rechte[b.key]);
+    const liste = document.getElementById('bereich-liste');
+    liste.innerHTML = '';
+    if (!erlaubt.length) {
+      document.getElementById('keine-bereiche').style.display = 'block';
+    } else {
+      erlaubt.forEach(b => {
+        const a = document.createElement('a');
+        a.className = 'bereich-btn';
+        a.href = b.seite + '?u=' + code;
+        a.innerHTML = `<span class="icon">${b.icon}</span><span><span class="titel">${b.titel}</span><br><span class="desc">${b.desc}</span></span><span class="pfeil">→</span>`;
+        liste.appendChild(a);
+      });
+    }
+  } catch (e) {
+    if (!stillLaden) document.getElementById('pin-error').style.display = 'block';
+  }
+}
+
+window.abmelden = function() {
+  localStorage.removeItem('gastroos_team_pin');
+  document.getElementById('bereich-screen').style.display = 'none';
+  document.getElementById('pin-input').value = '';
+  zeigePinScreen();
+};
+</script>
+</body>
+</html>
