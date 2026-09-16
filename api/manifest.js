@@ -10,10 +10,12 @@ const TITEL = {
   reservierung: { name: 'Reservierungsbuch – GASTRO-OS', short_name: 'Reservierung' },
   schichtplan: { name: 'Schichtplan – GASTRO-OS', short_name: 'Schichtplan' },
   zeiterfassung: { name: 'Zeiterfassung – GASTRO-OS', short_name: 'Zeiterfassung' },
-  team: { name: 'Team-Zugang – GASTRO-OS', short_name: 'Team-Zugang' }
+  team: { name: 'Team-Zugang – GASTRO-OS', short_name: 'Team-Zugang' },
+  belege: { name: 'Belege eintragen – GASTRO-OS', short_name: 'Belege' },
+  temperaturen: { name: 'Temperaturen eintragen – GASTRO-OS', short_name: 'Temperaturen' }
 };
-// Der Dateiname weicht hier vom "type" ab (team-zugang.html statt team.html).
-const DATEINAME = { team: 'team-zugang' };
+// Der Dateiname weicht bei manchen Typen von "type" ab.
+const DATEINAME = { team: 'team-zugang', belege: 'belege-eintragen', temperaturen: 'temperaturen-eintragen' };
 
 export default function handler(req, res) {
   const { type, code } = req.query;
