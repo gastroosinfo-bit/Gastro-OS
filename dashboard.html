@@ -21,11 +21,6 @@ function openModuleFromHash() {
   const m = hash.match(/#modul-(\d+)/);
   if (m) {
     num = parseInt(m[1]);
-  } else {
-    try {
-      const stored = localStorage.getItem('gastroos_last_module');
-      if (stored !== null) num = parseInt(stored);
-    } catch(e) {}
   }
   if (num === null || isNaN(num)) return;
   const content = document.getElementById('content-' + num);
