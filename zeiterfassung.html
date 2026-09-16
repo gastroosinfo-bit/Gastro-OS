@@ -119,15 +119,7 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
     <div class="error-msg" id="pin-error">Falsche PIN, bitte nochmal versuchen.</div>
   </div>
 
-  <!-- ═══ MITARBEITER: NAME WÄHLEN (nach PIN) ═══ -->
-  <div id="name-screen" class="section" style="display:none;text-align:center;">
-    <div style="font-size:15px;margin-bottom:4px;">Wer bist du?</div>
-    <div style="font-size:12.5px;color:#8090a8;">Wähl deinen Namen — danach siehst du nur deine eigenen Zeiten.</div>
-    <div class="name-choice" id="name-choice-liste"></div>
-    <div class="error-msg" id="name-error">Noch keine Mitarbeiter hinterlegt — bitte den Chef, sie im Dashboard einzutragen.</div>
-  </div>
-
-  <!-- ═══ MITARBEITER: ZEITERFASSUNG (nach Namenswahl) ═══ -->
+  <!-- ═══ MITARBEITER: ZEITERFASSUNG (nach erfolgreicher PIN-Prüfung) ═══ -->
   <div id="mitarbeiter-bereich" style="display:none;">
     <div class="section">
       <div class="section-head" id="ma-begruessung">Hallo!</div>
@@ -135,7 +127,7 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
       <div class="zeit-buttons" id="ma-buttons"></div>
       <span class="save-msg" id="ma-save-msg">✓ Gespeichert</span>
       <div style="margin-top:12px;">
-        <button class="btn-add secondary" onclick="mitarbeiterAbmelden()" style="font-size:11.5px;padding:6px 12px;">Nicht ich — anderen Namen wählen</button>
+        <button class="btn-add secondary" onclick="mitarbeiterAbmelden()" style="font-size:11.5px;padding:6px 12px;">🚪 Abmelden</button>
       </div>
     </div>
 
@@ -171,15 +163,8 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
 
     <div class="section">
       <div class="section-head">Team-Mitarbeiter</div>
-      <div style="font-size:11.5px;color:#8090a8;margin-bottom:10px;">Diese Liste wird mit dem Schichtplan geteilt — einmal pflegen, überall nutzen.</div>
-      <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;">
-        <div class="field-group" style="max-width:220px;margin-bottom:0;">
-          <label>Neuer Mitarbeitername</label>
-          <input type="text" id="ze-neuer-mitarbeiter" placeholder="z. B. Maria">
-        </div>
-        <button class="btn-add" onclick="mitarbeiterHinzufuegen()">+ Hinzufügen</button>
-      </div>
-      <div id="ze-mitarbeiter-liste" style="margin-top:14px;"></div>
+      <div style="font-size:11.5px;color:#8090a8;margin-bottom:10px;">PIN und Berechtigungen pro Person verwaltest du zentral im Dashboard unter "Dein Team".</div>
+      <div id="ze-mitarbeiter-liste" style="margin-top:6px;"></div>
     </div>
 
     <div class="section">
@@ -362,103 +347,72 @@ function zeitraumSetzen(prefix, art) {
 })();
 
 // ═══════════════ MITARBEITER-MODUS ═══════════════
+// Die persönliche PIN identifiziert automatisch, wer fragt — keine Namensauswahl
+// mehr nötig, und niemand kann sich mehr für einen Kollegen ausgeben.
 function initMitarbeiterModus(code) {
   zeCode = code;
-  document.getElementById('tool-sub-text').textContent = 'Gib deine PIN ein, um deine Zeit einzutragen.';
-  document.getElementById('pin-screen').style.display = 'block';
-  document.getElementById('pin-input').focus();
+  document.getElementById('tool-sub-text').textContent = 'Gib deine persönliche PIN ein, um deine Zeit einzutragen.';
 
-  window.pinPruefen = async function() {
+  const gespeichertePin = localStorage.getItem('gastroos_ze_pin_' + code);
+  if (gespeichertePin) {
+    pinPruefenMitWert(gespeichertePin, true);
+  } else {
+    document.getElementById('pin-screen').style.display = 'block';
+    document.getElementById('pin-input').focus();
+  }
+
+  window.pinPruefen = function() {
     const pin = document.getElementById('pin-input').value.trim();
     if (pin.length !== 4) return;
-    try {
-      const res = await fetch('/api/buch-public', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code, pin, bookType: 'zeiterfassung' })
-      });
-      if (!res.ok) { document.getElementById('pin-error').style.display = 'block'; return; }
-      const d = await res.json();
-      zePin = pin;
-      localStorage.setItem('gastroos_ze_code', code);
-      document.getElementById('pin-screen').style.display = 'none';
-
-      const namen = d.namen || [];
-      if (!namen.length) {
-        document.getElementById('name-screen').style.display = 'block';
-        document.getElementById('name-error').style.display = 'block';
-        return;
-      }
-
-      const gespeicherterName = localStorage.getItem('gastroos_ze_name_' + code);
-      if (gespeicherterName && namen.includes(gespeicherterName)) {
-        namenAuswaehlen(gespeicherterName);
-      } else {
-        zeigeNamensAuswahl(namen);
-      }
-    } catch (e) {
-      document.getElementById('pin-error').style.display = 'block';
-    }
+    pinPruefenMitWert(pin, false);
   };
 }
 
-function zeigeNamensAuswahl(namen) {
-  document.getElementById('tool-sub-text').textContent = 'Wähl deinen Namen, um weiterzumachen.';
-  document.getElementById('name-screen').style.display = 'block';
-  const liste = document.getElementById('name-choice-liste');
-  liste.innerHTML = '';
-  namen.forEach(n => {
-    const btn = document.createElement('button');
-    btn.textContent = n;
-    btn.onclick = () => namenAuswaehlen(n);
-    liste.appendChild(btn);
-  });
+async function pinPruefenMitWert(pin, stillLaden) {
+  try {
+    const res = await fetch('/api/buch-public', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code: zeCode, pin, bookType: 'zeiterfassung' })
+    });
+    if (!res.ok) {
+      localStorage.removeItem('gastroos_ze_pin_' + zeCode);
+      if (!stillLaden) { document.getElementById('pin-error').style.display = 'block'; }
+      else { document.getElementById('pin-screen').style.display = 'block'; }
+      return;
+    }
+    const d = await res.json();
+    zePin = pin;
+    zeName = d.meinName;
+    localStorage.setItem('gastroos_ze_code', zeCode);
+    localStorage.setItem('gastroos_ze_pin_' + zeCode, pin);
+    document.getElementById('pin-screen').style.display = 'none';
+    document.getElementById('pin-error').style.display = 'none';
+    document.getElementById('tool-sub-text').textContent = 'Trag hier deine Zeiten ein.';
+    document.getElementById('mitarbeiter-bereich').style.display = 'block';
+    document.getElementById('ma-begruessung').textContent = 'Hallo, ' + zeName + '!';
+    zeItems = d.items || [];
+    renderMaZustand();
+    renderMaTabelle();
+    zeitraumSetzen('ma', 'monat');
+  } catch (e) {
+    if (!stillLaden) document.getElementById('pin-error').style.display = 'block';
+  }
 }
 
 window.mitarbeiterAbmelden = function() {
-  localStorage.removeItem('gastroos_ze_name_' + zeCode);
+  localStorage.removeItem('gastroos_ze_pin_' + zeCode);
   document.getElementById('mitarbeiter-bereich').style.display = 'none';
-  namenNeuLaden();
+  document.getElementById('pin-input').value = '';
+  document.getElementById('pin-screen').style.display = 'block';
+  document.getElementById('tool-sub-text').textContent = 'Gib deine persönliche PIN ein, um deine Zeit einzutragen.';
 };
-
-async function namenNeuLaden() {
-  const res = await fetch('/api/buch-public', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ code: zeCode, pin: zePin, bookType: 'zeiterfassung' })
-  });
-  const d = await res.json();
-  zeigeNamensAuswahl(d.namen || []);
-}
-
-async function namenAuswaehlen(name) {
-  zeName = name;
-  localStorage.setItem('gastroos_ze_name_' + zeCode, name);
-  document.getElementById('name-screen').style.display = 'none';
-  document.getElementById('tool-sub-text').textContent = 'Trag hier deine Zeiten ein.';
-  document.getElementById('mitarbeiter-bereich').style.display = 'block';
-  document.getElementById('ma-begruessung').textContent = 'Hallo, ' + name + '!';
-  await zeitenLaden();
-  zeitraumSetzen('ma', 'monat');
-}
-
-async function zeitenLaden() {
-  const res = await fetch('/api/buch-public', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ code: zeCode, pin: zePin, bookType: 'zeiterfassung', mitarbeiterName: zeName })
-  });
-  const d = await res.json();
-  zeItems = d.items || [];
-  renderMaZustand();
-  renderMaTabelle();
-}
 
 async function zeitAktion(action) {
   const res = await fetch('/api/buch-public', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ code: zeCode, pin: zePin, bookType: 'zeiterfassung', mitarbeiterName: zeName, action, datum: heute(), zeit: jetzt() })
+    body: JSON.stringify({ code: zeCode, pin: zePin, bookType: 'zeiterfassung', action, datum: heute(), zeit: jetzt() })
   });
   const d = await res.json();
   zeItems = d.items || [];
@@ -541,7 +495,9 @@ async function initInhaberModus() {
   document.getElementById('inhaber-bereich').style.display = 'block';
 
   const mitarbeiterData = await toolLoad('schichtplan-mitarbeiter');
-  mitarbeiterNamen = mitarbeiterData.namen || [];
+  mitarbeiterNamen = Array.isArray(mitarbeiterData.mitarbeiter)
+    ? mitarbeiterData.mitarbeiter.map(m => m.name)
+    : (mitarbeiterData.namen || []);
   renderMitarbeiterListe();
   befuelleNameFilter();
 
@@ -554,29 +510,9 @@ async function initInhaberModus() {
 
 function renderMitarbeiterListe() {
   const el = document.getElementById('ze-mitarbeiter-liste');
-  if (!mitarbeiterNamen.length) { el.innerHTML = '<span style="font-size:12.5px;color:#8090a8;">Noch keine Mitarbeiter hinzugefügt.</span>'; return; }
-  el.innerHTML = mitarbeiterNamen.map(n =>
-    `<span class="chip">${n}<button onclick="mitarbeiterEntfernen('${n.replace(/'/g, "\\'")}')" title="Entfernen">✕</button></span>`
-  ).join('');
+  if (!mitarbeiterNamen.length) { el.innerHTML = '<span style="font-size:12.5px;color:#8090a8;">Noch keine Mitarbeiter angelegt — im Dashboard unter "Dein Team" hinzufügen.</span>'; return; }
+  el.innerHTML = mitarbeiterNamen.map(n => `<span class="chip">${n}</span>`).join('');
 }
-window.mitarbeiterHinzufuegen = async function() {
-  const input = document.getElementById('ze-neuer-mitarbeiter');
-  const name = input.value.trim();
-  if (!name) return;
-  if (!mitarbeiterNamen.includes(name)) {
-    mitarbeiterNamen.push(name);
-    await toolSave('schichtplan-mitarbeiter', { namen: mitarbeiterNamen });
-  }
-  input.value = '';
-  renderMitarbeiterListe();
-  befuelleNameFilter();
-};
-window.mitarbeiterEntfernen = async function(name) {
-  mitarbeiterNamen = mitarbeiterNamen.filter(n => n !== name);
-  await toolSave('schichtplan-mitarbeiter', { namen: mitarbeiterNamen });
-  renderMitarbeiterListe();
-  befuelleNameFilter();
-};
 
 function befuelleNameFilter() {
   ['ze-filter-name', 'chef-pdf-name'].forEach(id => {

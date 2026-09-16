@@ -100,10 +100,6 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
     </div>
     <div class="section">
       <div class="section-head">Neue Reservierung</div>
-      <div class="field-group" id="res-erfasstvon-wrap" style="display:none;max-width:220px;">
-        <label>Dein Name</label>
-        <input type="text" id="res-erfasstvon" placeholder="z. B. Maria">
-      </div>
       <div class="grid3">
         <div class="field-group"><label>Name</label><input type="text" id="res-name" placeholder="Gastname"></div>
         <div class="field-group"><label>Datum</label><input type="date" id="res-datum"></div>
@@ -170,37 +166,40 @@ if (codeAusUrl) {
 // ═══════════════ MITARBEITER-MODUS ═══════════════
 function initMitarbeiterModus(code) {
   document.getElementById('tool-sub-text').textContent = 'Gib deine PIN ein, um Reservierungen zu sehen und einzutragen.';
-  document.getElementById('pin-screen').style.display = 'block';
-  document.getElementById('pin-input').focus();
   let aktuellerPin = null;
 
   window.pinPruefen = async function() {
     const pin = document.getElementById('pin-input').value.trim();
     if (pin.length !== 4) return;
+    await pinPruefenMitWert(code, pin, false);
+  };
+
+  async function pinPruefenMitWert(code, pin, stillLaden) {
     try {
       const res = await fetch('/api/buch-public', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ code, pin, bookType: 'reservierung' })
       });
-      if (!res.ok) { document.getElementById('pin-error').style.display = 'block'; return; }
+      if (!res.ok) {
+        if (!stillLaden) { document.getElementById('pin-error').style.display = 'block'; }
+        else { document.getElementById('pin-screen').style.display = 'block'; document.getElementById('pin-input').focus(); }
+        return;
+      }
       const d = await res.json();
       aktuellerPin = pin;
+      const meinName = d.meinName;
       localStorage.setItem('gastroos_res_code', code);
       document.getElementById('pin-screen').style.display = 'none';
       document.getElementById('reservierung-bereich').style.display = 'block';
-      document.getElementById('tool-sub-text').textContent = 'Trag neue Reservierungen ein oder sieh die kommenden.';
+      document.getElementById('tool-sub-text').textContent = 'Hallo, ' + (meinName || '') + '! Trag neue Reservierungen ein oder sieh die kommenden.';
       document.getElementById('res-datum').value = heute();
       renderReservierungen(d.items || [], false);
       badgeBeimOeffnenZuruecksetzen();
-      document.getElementById('res-erfasstvon-wrap').style.display = 'block';
-      document.getElementById('res-erfasstvon').value = localStorage.getItem('gastroos_ma_name_' + code) || '';
       document.getElementById('res-push-section').style.display = 'flex';
       resPushSetup(code, pin);
 
       window.resEintragen = async function() {
-        const erfasstVon = document.getElementById('res-erfasstvon').value.trim() || 'Mitarbeiter';
-        localStorage.setItem('gastroos_ma_name_' + code, erfasstVon);
         const eintrag = {
           name: document.getElementById('res-name').value.trim(),
           datum: document.getElementById('res-datum').value,
@@ -208,8 +207,7 @@ function initMitarbeiterModus(code) {
           personen: document.getElementById('res-personen').value,
           telefon: document.getElementById('res-telefon').value,
           tisch: document.getElementById('res-tisch').value,
-          notiz: document.getElementById('res-notiz').value,
-          erfasstVon
+          notiz: document.getElementById('res-notiz').value
         };
         if (!eintrag.name || !eintrag.datum) { alert('Bitte mindestens Name und Datum angeben.'); return; }
         const res2 = await fetch('/api/buch-public', {
@@ -223,9 +221,17 @@ function initMitarbeiterModus(code) {
         renderReservierungen(d2.items || [], false);
       };
     } catch (e) {
-      document.getElementById('pin-error').style.display = 'block';
+      if (!stillLaden) document.getElementById('pin-error').style.display = 'block';
     }
-  };
+  }
+
+  const gespeichertePin = localStorage.getItem('gastroos_team_pin');
+  if (gespeichertePin) {
+    pinPruefenMitWert(code, gespeichertePin, true);
+  } else {
+    document.getElementById('pin-screen').style.display = 'block';
+    document.getElementById('pin-input').focus();
+  }
 }
 
 // ═══════════════ INHABER-MODUS ═══════════════

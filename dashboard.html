@@ -167,7 +167,23 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
       </div>
       <div class="module-content" id="intern-content">
         <div style="padding:14px 20px;font-size:12px;color:#5a6a85;line-height:1.6;background:#fdf8ea;border-bottom:1px solid #f0e8d4;">
-          💡 <strong style="color:#1a2a4a;">So funktioniert der Mitarbeiter-Zugang:</strong> Über "⚙️ PIN verwalten" legst du eine 4-stellige PIN fest — alle Mitarbeiter nutzen denselben Link + PIN, ohne eigenes Konto. Link per WhatsApp teilen oder QR-Code aufhängen. Am besten die Seite auf dem Handy zum Homebildschirm hinzufügen und Push-Benachrichtigungen aktivieren, dann bekommt man Neues sofort mit.
+          💡 <strong style="color:#1a2a4a;">So funktioniert der Mitarbeiter-Zugang:</strong> Jeder Mitarbeiter bekommt unten bei "Team-Mitarbeiter" eine eigene, persönliche PIN — damit niemand sich für einen Kollegen ausgeben kann. Den Link/QR-Code pro Bereich kannst du einmal aushängen oder teilen, jeder meldet sich dort mit seiner eigenen PIN an. Am besten die Seite auf dem Handy zum Homebildschirm hinzufügen und Push-Benachrichtigungen aktivieren, dann bekommt man Neues sofort mit.
+        </div>
+        <div style="padding:16px 20px;border-bottom:1px solid #f0e8d4;">
+          <div style="font-weight:700;font-size:13px;color:#1a2a4a;margin-bottom:4px;">👥 Team-Mitarbeiter verwalten</div>
+          <div style="font-size:11.5px;color:#8090a8;margin-bottom:12px;">PIN vergeben und ankreuzen, welche Bereiche die Person nutzen darf.</div>
+          <div id="team-mitarbeiter-liste"></div>
+          <div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;margin-top:12px;">
+            <div style="max-width:160px;">
+              <label style="font-size:10.5px;font-weight:700;color:#8090a8;text-transform:uppercase;display:block;margin-bottom:4px;">Name</label>
+              <input type="text" id="team-neu-name" style="border:1px solid #e0d8c8;border-radius:6px;padding:8px 10px;font-size:13px;width:100%;">
+            </div>
+            <div style="max-width:90px;">
+              <label style="font-size:10.5px;font-weight:700;color:#8090a8;text-transform:uppercase;display:block;margin-bottom:4px;">PIN</label>
+              <input type="text" inputmode="numeric" maxlength="4" id="team-neu-pin" placeholder="4-stellig" style="border:1px solid #e0d8c8;border-radius:6px;padding:8px 10px;font-size:13px;width:100%;">
+            </div>
+            <button onclick="teamMitarbeiterHinzufuegen()" style="background:#1a6640;color:#fff;border:none;padding:9px 16px;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer;">+ Hinzufügen</button>
+          </div>
         </div>
         <div id="intern-tools-list"></div>
       </div>
@@ -696,6 +712,7 @@ async function init() {
   }
   renderTaeglicheTools();
   renderInternTools();
+  teamMitarbeiterLaden();
   unreadPruefen();
   pushStatusPruefen();
   renderToolbox();
@@ -1007,6 +1024,78 @@ async function dashToolLoad(tool) {
     return (d && d.data) ? d.data : {};
   } catch (e) { return {}; }
 }
+async function dashToolSave(tool, data) {
+  try {
+    await fetch('/api/tool-data', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tool, data })
+    });
+  } catch (e) {}
+}
+
+// ─── Team-Mitarbeiter: Name + persönliche PIN + Rechte pro Bereich ─────────
+// Wird mit Schichtplan/Zeiterfassung geteilt (gleicher Tool-Name 'schichtplan-mitarbeiter').
+const TEAM_BEREICHE = [['uebergabe', 'Übergabe'], ['reservierung', 'Reservierung'], ['schichtplan', 'Schichtplan'], ['zeiterfassung', 'Zeiterfassung']];
+let teamMitarbeiterListe = [];
+async function teamMitarbeiterLaden() {
+  const data = await dashToolLoad('schichtplan-mitarbeiter');
+  if (Array.isArray(data.mitarbeiter)) {
+    teamMitarbeiterListe = data.mitarbeiter;
+  } else if (Array.isArray(data.namen) && data.namen.length) {
+    // Altformat (nur Namen, keine persönlichen PINs) — automatisch umwandeln, nichts geht verloren.
+    // Rechte erstmal für alle Bereiche an, PIN ist leer und muss noch vergeben werden.
+    teamMitarbeiterListe = data.namen.map(n => ({ name: n, pin: '', rechte: { uebergabe: true, reservierung: true, schichtplan: true, zeiterfassung: true } }));
+    await teamMitarbeiterSpeichern();
+  } else {
+    teamMitarbeiterListe = [];
+  }
+  teamMitarbeiterRender();
+}
+async function teamMitarbeiterSpeichern() {
+  await dashToolSave('schichtplan-mitarbeiter', { mitarbeiter: teamMitarbeiterListe });
+}
+function teamMitarbeiterRender() {
+  const el = document.getElementById('team-mitarbeiter-liste');
+  if (!el) return;
+  if (!teamMitarbeiterListe.length) { el.innerHTML = '<div style="font-size:12px;color:#8090a8;">Noch keine Mitarbeiter angelegt.</div>'; return; }
+  el.innerHTML = teamMitarbeiterListe.map((m, i) => `
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:9px 0;border-bottom:1px solid #f0e8d4;">
+      <input type="text" value="${(m.name || '').replace(/"/g, '&quot;')}" onchange="teamMitarbeiterFeldGeaendert(${i},'name',this.value)" style="border:1px solid #e0d8c8;border-radius:6px;padding:6px 8px;font-size:12.5px;width:110px;">
+      <input type="text" inputmode="numeric" maxlength="4" value="${m.pin || ''}" placeholder="PIN fehlt" onchange="teamMitarbeiterFeldGeaendert(${i},'pin',this.value)" style="border:1px solid ${m.pin ? '#e0d8c8' : '#c0392b'};border-radius:6px;padding:6px 8px;font-size:12.5px;width:70px;">
+      ${TEAM_BEREICHE.map(([key, label]) => `<label style="font-size:11px;display:flex;align-items:center;gap:4px;cursor:pointer;color:#3a5578;"><input type="checkbox" ${m.rechte && m.rechte[key] ? 'checked' : ''} onchange="teamMitarbeiterRechtGeaendert(${i},'${key}',this.checked)"> ${label}</label>`).join('')}
+      <button onclick="teamMitarbeiterLoeschen(${i})" style="background:transparent;border:1px solid #c0392b;color:#c0392b;padding:4px 8px;border-radius:5px;font-size:10.5px;cursor:pointer;margin-left:auto;">✕</button>
+    </div>
+  `).join('');
+}
+window.teamMitarbeiterFeldGeaendert = function(i, feld, wert) {
+  teamMitarbeiterListe[i][feld] = wert.trim();
+  teamMitarbeiterSpeichern();
+  if (feld === 'pin') teamMitarbeiterRender();
+};
+window.teamMitarbeiterRechtGeaendert = function(i, bereich, wert) {
+  if (!teamMitarbeiterListe[i].rechte) teamMitarbeiterListe[i].rechte = {};
+  teamMitarbeiterListe[i].rechte[bereich] = wert;
+  teamMitarbeiterSpeichern();
+};
+window.teamMitarbeiterLoeschen = async function(i) {
+  if (!confirm('Mitarbeiter "' + teamMitarbeiterListe[i].name + '" wirklich entfernen?')) return;
+  teamMitarbeiterListe.splice(i, 1);
+  await teamMitarbeiterSpeichern();
+  teamMitarbeiterRender();
+};
+window.teamMitarbeiterHinzufuegen = async function() {
+  const name = document.getElementById('team-neu-name').value.trim();
+  const pin = document.getElementById('team-neu-pin').value.trim();
+  if (!name) return;
+  if (pin && !/^\d{4}$/.test(pin)) { alert('Die PIN muss 4-stellig sein (oder erstmal leer lassen).'); return; }
+  if (pin && teamMitarbeiterListe.some(m => m.pin === pin)) { alert('Diese PIN ist schon an einen anderen Mitarbeiter vergeben — bitte eine andere wählen.'); return; }
+  teamMitarbeiterListe.push({ name, pin, rechte: { uebergabe: true, reservierung: true, schichtplan: true, zeiterfassung: true } });
+  await teamMitarbeiterSpeichern();
+  document.getElementById('team-neu-name').value = '';
+  document.getElementById('team-neu-pin').value = '';
+  teamMitarbeiterRender();
+};
 
 let unreadStatusCache = null;
 async function unreadStatusLaden() {
@@ -1185,47 +1274,26 @@ async function renderInternPinPanelContent(idx) {
   const content = document.getElementById('intern-pin-panel-content-' + idx);
   const zugang = await dashToolLoad(tool.pin.zugangTool);
 
-  if (zugang && zugang.code && zugang.pinHash) {
+  if (zugang && zugang.code) {
     const link = window.location.origin + '/' + tool.pin.linkPath + '?u=' + zugang.code;
     content.innerHTML = `
-      <div style="background:#fff8e0;border:1px solid #d4af37;border-radius:8px;padding:14px 16px;margin-bottom:12px;">
-        Link für Mitarbeiter (z. B. per WhatsApp teilen):<br>
+      <div style="background:#fff8e0;border:1px solid #d4af37;border-radius:8px;padding:14px 16px;">
+        Link für Mitarbeiter (z. B. per WhatsApp teilen oder aufhängen) — jeder meldet sich dort mit seiner <strong>eigenen persönlichen PIN</strong> an (siehe "Team-Mitarbeiter" oben):<br>
         <code style="background:#1a2a4a;color:#d4af37;padding:5px 8px;border-radius:5px;font-size:12px;display:inline-block;margin-top:6px;word-break:break-all;">${link}</code>
         <div style="margin-top:10px;">
           <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${encodeURIComponent(link)}" style="width:120px;height:120px;border:1px solid #d4af37;border-radius:6px;background:#fff;padding:5px;">
           <div style="font-size:11px;color:#8090a8;margin-top:4px;">Zum Ausdrucken/Aufhängen für Mitarbeiter.</div>
         </div>
       </div>
-      <div style="max-width:180px;margin-bottom:8px;">
-        <label style="font-size:10.5px;font-weight:700;color:#8090a8;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:4px;">PIN ändern (4-stellig)</label>
-        <input type="password" inputmode="numeric" maxlength="4" id="intern-neue-pin-${idx}" placeholder="Neue PIN" style="border:1px solid #e0d8c8;border-radius:6px;padding:8px 10px;font-size:13px;width:100%;">
-      </div>
-      <button id="intern-pin-save-btn-${idx}" style="background:#1a6640;color:#fff;border:none;padding:8px 16px;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer;">PIN speichern</button>
-      <span id="intern-pin-msg-${idx}" style="font-size:11.5px;color:#4aaa60;margin-left:8px;display:none;">✓ Gespeichert</span>
     `;
-    document.getElementById('intern-pin-save-btn-' + idx).onclick = async () => {
-      const pin = document.getElementById('intern-neue-pin-' + idx).value.trim();
-      if (!/^\d{4}$/.test(pin)) { alert('Bitte eine 4-stellige PIN eingeben.'); return; }
-      await fetch(tool.pin.setupEndpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code: zugang.code, pin, bookType: tool.pin.bookType }) });
-      document.getElementById('intern-neue-pin-' + idx).value = '';
-      const msg = document.getElementById('intern-pin-msg-' + idx);
-      msg.style.display = 'inline';
-      setTimeout(() => { msg.style.display = 'none'; }, 2000);
-    };
   } else {
     content.innerHTML = `
-      <div style="font-size:11.5px;color:#8090a8;margin-bottom:10px;">Noch kein Zugang eingerichtet. Leg eine 4-stellige PIN fest, die du an deine Mitarbeiter weitergibst.</div>
-      <div style="max-width:180px;margin-bottom:8px;">
-        <label style="font-size:10.5px;font-weight:700;color:#8090a8;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:4px;">PIN festlegen (4-stellig)</label>
-        <input type="password" inputmode="numeric" maxlength="4" id="intern-erste-pin-${idx}" placeholder="PIN wählen" style="border:1px solid #e0d8c8;border-radius:6px;padding:8px 10px;font-size:13px;width:100%;">
-      </div>
-      <button id="intern-pin-setup-btn-${idx}" style="background:#1a6640;color:#fff;border:none;padding:8px 16px;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer;">Zugang einrichten</button>
+      <div style="font-size:11.5px;color:#8090a8;margin-bottom:10px;">Noch kein Zugang eingerichtet. Erzeugt einen Link, den du an dein Team weitergibst — jeder meldet sich dort mit seiner eigenen persönlichen PIN an (bei "Team-Mitarbeiter" oben vergeben).</div>
+      <button id="intern-pin-setup-btn-${idx}" style="background:#1a6640;color:#fff;border:none;padding:8px 16px;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer;">Link erstellen</button>
     `;
     document.getElementById('intern-pin-setup-btn-' + idx).onclick = async () => {
-      const pin = document.getElementById('intern-erste-pin-' + idx).value.trim();
-      if (!/^\d{4}$/.test(pin)) { alert('Bitte eine 4-stellige PIN eingeben.'); return; }
       const code = Math.random().toString(36).slice(2, 10) + Math.random().toString(36).slice(2, 6);
-      await fetch(tool.pin.setupEndpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code, pin, bookType: tool.pin.bookType }) });
+      await fetch(tool.pin.setupEndpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code, bookType: tool.pin.bookType }) });
       await renderInternPinPanelContent(idx);
     };
   }

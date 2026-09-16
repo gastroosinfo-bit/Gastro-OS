@@ -92,10 +92,6 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
       <button id="ma-push-btn" style="background:#1a6640;color:#fff;border:none;padding:8px 14px;border-radius:6px;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;">🔔 Aktivieren</button>
     </div>
     <div class="section">
-      <div class="field-group" style="margin-bottom:14px;">
-        <label>Dein Name</label>
-        <input type="text" id="ma-name" placeholder="z. B. Maria">
-      </div>
       <div class="section-head">Neuer Übergabe-Eintrag</div>
       <textarea id="ma-text" rows="3" style="width:100%;border:1px solid #e0d8c8;border-radius:6px;padding:10px 12px;font-size:14px;font-family:inherit;" placeholder="Was ist wichtig für die nächste Schicht?"></textarea>
       <button class="btn-add" style="margin-top:10px;" onclick="maEintragen()">💾 Eintragen</button>
@@ -163,52 +159,58 @@ if (codeAusUrl) {
 // ═══════════════ MITARBEITER-MODUS ═══════════════
 function initMitarbeiterModus(code) {
   document.getElementById('tool-sub-text').textContent = 'Gib deine PIN ein, um Einträge zu lesen und neue hinzuzufügen.';
-  document.getElementById('pin-screen').style.display = 'block';
-  document.getElementById('pin-input').focus();
 
   window.pinPruefen = async function() {
     const pin = document.getElementById('pin-input').value.trim();
     if (pin.length !== 4) return;
-    try {
-      const res = await fetch('/api/buch-public', {
+    await pinPruefenMitWert(code, pin, false);
+  };
+
+  const gespeichertePin = localStorage.getItem('gastroos_team_pin');
+  if (gespeichertePin) {
+    pinPruefenMitWert(code, gespeichertePin, true);
+  } else {
+    document.getElementById('pin-screen').style.display = 'block';
+    document.getElementById('pin-input').focus();
+  }
+}
+
+async function pinPruefenMitWert(code, pin, stillLaden) {
+  try {
+    const res = await fetch('/api/buch-public', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code, pin, bookType: 'uebergabe' })
+    });
+    if (!res.ok) {
+      if (!stillLaden) { document.getElementById('pin-error').style.display = 'block'; }
+      else { document.getElementById('pin-screen').style.display = 'block'; document.getElementById('pin-input').focus(); }
+      return;
+    }
+    const d = await res.json();
+    document.getElementById('pin-screen').style.display = 'none';
+    document.getElementById('mitarbeiter-bereich').style.display = 'block';
+    document.getElementById('tool-sub-text').textContent = 'Hallo, ' + (d.meinName || '') + '! Trag hier ein, was für die nächste Schicht wichtig ist.';
+    renderListe('ma-liste', d.items || []);
+    badgeBeimOeffnenZuruecksetzen();
+    maPushSetup(code, pin);
+
+    window.maEintragen = async function() {
+      const text = document.getElementById('ma-text').value.trim();
+      if (!text) return;
+      const res2 = await fetch('/api/buch-public', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code, pin, bookType: 'uebergabe' })
+        body: JSON.stringify({ code, pin, bookType: 'uebergabe', action: 'add', text })
       });
-      if (!res.ok) {
-        document.getElementById('pin-error').style.display = 'block';
-        return;
-      }
-      const d = await res.json();
-      document.getElementById('pin-screen').style.display = 'none';
-      document.getElementById('mitarbeiter-bereich').style.display = 'block';
-      document.getElementById('tool-sub-text').textContent = 'Trag hier ein, was für die nächste Schicht wichtig ist.';
-      renderListe('ma-liste', d.items || []);
-      badgeBeimOeffnenZuruecksetzen();
-
-      const gespeicherterName = localStorage.getItem('gastroos_ma_name_' + code) || '';
-      document.getElementById('ma-name').value = gespeicherterName;
-      maPushSetup(code, pin);
-
-      window.maEintragen = async function() {
-        const text = document.getElementById('ma-text').value.trim();
-        const name = document.getElementById('ma-name').value.trim() || 'Mitarbeiter';
-        if (!text) return;
-        localStorage.setItem('gastroos_ma_name_' + code, name);
-        const res2 = await fetch('/api/buch-public', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ code, pin, bookType: 'uebergabe', action: 'add', text, autor: name })
-        });
-        const d2 = await res2.json();
-        document.getElementById('ma-text').value = '';
-        flashSaved('ma-save-msg');
-        renderListe('ma-liste', d2.items || []);
-      };
-    } catch (e) {
-      document.getElementById('pin-error').style.display = 'block';
-    }
-  };
+      const d2 = await res2.json();
+      document.getElementById('ma-text').value = '';
+      flashSaved('ma-save-msg');
+      renderListe('ma-liste', d2.items || []);
+    };
+  } catch (e) {
+    if (!stillLaden) document.getElementById('pin-error').style.display = 'block';
+  }
 }
 
 // ═══════════════ INHABER-MODUS ═══════════════
