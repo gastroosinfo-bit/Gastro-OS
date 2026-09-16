@@ -1,11 +1,16 @@
 // api/buch-public.js
-// Öffentlicher Zugang per Code + PIN — ohne normales GASTRO-OS-Login.
-// Deckt vier "Bücher" ab: uebergabe, reservierung (beide mit Eintragen durch Mitarbeiter),
-// schichtplan (nur lesend für Mitarbeiter — Bearbeiten ist ausschließlich dem eingeloggten
-// Chef über /api/tool-data vorbehalten) und zeiterfassung (Mitarbeiter tragen Kommen/Pause/
-// Gehen für sich selbst ein, sehen aber nur ihre eigenen Zeiten — Genehmigen ist Chef-Sache).
+// Öffentlicher Zugang per Code + persönlicher Mitarbeiter-PIN — ohne normales
+// GASTRO-OS-Login. Der "Code" identifiziert den Betrieb/Bereich (per Link/QR-Code
+// geteilt), die PIN identifiziert automatisch, WER genau fragt: jeder Mitarbeiter
+// hat in der Team-Mitarbeiterliste ('schichtplan-mitarbeiter') eine eigene,
+// persönliche PIN plus Häkchen, welche Bereiche er nutzen darf. So kann sich
+// niemand mehr für einen Kollegen ausgeben (frühere Version nutzte eine einzige,
+// geteilte PIN pro Bereich — das ließ genau das zu).
+// Deckt vier "Bücher" ab: uebergabe, reservierung (beide mit Eintragen durch
+// Mitarbeiter, Name kommt automatisch aus der erkannten Person), schichtplan
+// (nur lesend für Mitarbeiter) und zeiterfassung (Mitarbeiter tragen Kommen/
+// Pause/Gehen ein, sehen aber nur ihre eigenen Zeiten — Genehmigen ist Chef-Sache).
 
-const crypto = require('crypto');
 const { sendPushToAll } = require('../lib/push-helper');
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
@@ -25,13 +30,6 @@ function sbHeaders() {
     'Authorization': 'Bearer ' + SUPABASE_SERVICE_KEY
   };
 }
-function pinHash(bookType, code, pin) {
-  if (bookType === 'uebergabe') {
-    return crypto.createHmac('sha256', SUPABASE_SERVICE_KEY || 'fallback').update(code + ':' + pin).digest('hex');
-  }
-  return crypto.createHmac('sha256', SUPABASE_SERVICE_KEY || 'fallback').update(bookType + ':' + code + ':' + pin).digest('hex');
-}
-
 async function findOwnerByCode(zugangTool, code) {
   const r = await fetch(
     SUPABASE_URL + '/rest/v1/user_tool_data?tool_name=eq.' + zugangTool + '&data->>code=eq.' + encodeURIComponent(code) + '&select=user_id,data&limit=1',
@@ -51,9 +49,9 @@ async function loadItems(userId, toolName) {
   const data = (rows && rows.length > 0 && rows[0].data) ? rows[0].data : {};
   return data.items || [];
 }
-// Team-Mitarbeiterliste wird bewusst mit dem Schichtplan geteilt (gleicher Tool-Name)
-// — so muss der Chef seine Mitarbeiter nur an einer Stelle pflegen.
-async function loadNamen(userId) {
+// Team-Mitarbeiterliste wird mit dem Schichtplan geteilt (gleicher Tool-Name) — so muss
+// der Chef seine Mitarbeiter nur an einer Stelle pflegen. Jeder Eintrag: { name, pin, rechte }.
+async function loadMitarbeiter(userId) {
   const r = await fetch(
     SUPABASE_URL + '/rest/v1/user_tool_data?user_id=eq.' + encodeURIComponent(userId) +
     '&tool_name=eq.schichtplan-mitarbeiter&select=data&order=updated_at.desc&limit=1',
@@ -61,7 +59,13 @@ async function loadNamen(userId) {
   );
   const rows = await r.json();
   const data = (rows && rows.length > 0 && rows[0].data) ? rows[0].data : {};
-  return data.namen || [];
+  if (Array.isArray(data.mitarbeiter)) return data.mitarbeiter;
+  // Altformat (nur Namen, keine persönlichen PINs/Rechte) — bis zur Migration im
+  // Dashboard behandeln wir das defensiv als "noch keine PIN vergeben".
+  if (Array.isArray(data.namen)) {
+    return data.namen.map(n => ({ name: n, pin: '', rechte: { uebergabe: true, reservierung: true, schichtplan: true, zeiterfassung: true } }));
+  }
+  return [];
 }
 async function saveItems(userId, toolName, items) {
   const existingRes = await fetch(
@@ -89,18 +93,27 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Methode nicht erlaubt.' });
   if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) return res.status(500).json({ error: 'Server nicht konfiguriert.' });
 
-  const { code, pin, bookType, action, text, autor, eintrag, mitarbeiterName, datum, zeit } = req.body || {};
+  const { code, pin, bookType, action, text, eintrag, datum, zeit } = req.body || {};
   if (!code || !pin) return res.status(400).json({ error: 'Code oder PIN fehlt.' });
   if (!TOOL_NAME_BY_TYPE[bookType]) return res.status(400).json({ error: 'Ungültiger bookType.' });
 
   const zugangTool = bookType + '-zugang';
   const owner = await findOwnerByCode(zugangTool, code);
-  if (!owner || !owner.data || !owner.data.pinHash) {
+  if (!owner) {
     return res.status(401).json({ error: 'Ungültiger Code.' });
   }
-  if (owner.data.pinHash !== pinHash(bookType, code, pin)) {
+
+  // Die persönliche PIN identifiziert automatisch, wer fragt — kein Namens-Eintippen
+  // oder -Auswählen mehr nötig, und niemand kann sich mehr für einen Kollegen ausgeben.
+  const mitarbeiterListe = await loadMitarbeiter(owner.user_id);
+  const person = mitarbeiterListe.find(m => m.pin && String(m.pin) === String(pin));
+  if (!person) {
     return res.status(401).json({ error: 'Falsche PIN.' });
   }
+  if (!person.rechte || !person.rechte[bookType]) {
+    return res.status(403).json({ error: 'Für diesen Bereich nicht freigeschaltet. Bitte den Chef fragen.' });
+  }
+  const name = person.name;
 
   const toolName = TOOL_NAME_BY_TYPE[bookType];
 
@@ -108,20 +121,20 @@ export default async function handler(req, res) {
   if (bookType === 'uebergabe' && action === 'add') {
     if (!text || !text.trim()) return res.status(400).json({ error: 'Text fehlt.' });
     const items = await loadItems(owner.user_id, toolName);
-    items.push({ id: Date.now(), text: text.trim(), zeitpunkt: new Date().toISOString(), autor: (autor && autor.trim()) || 'Mitarbeiter' });
+    items.push({ id: Date.now(), text: text.trim(), zeitpunkt: new Date().toISOString(), autor: name });
     await saveItems(owner.user_id, toolName, items);
     sendPushToAll(owner.user_id, '📋 Neuer Übergabe-Eintrag', text.trim().slice(0, 120), '/uebergabe.html?u=' + code, 'uebergabe');
-    return res.status(200).json({ items });
+    return res.status(200).json({ items, meinName: name });
   }
 
   // ─── Reservierungsbuch: Mitarbeiter dürfen eintragen ───────────────────
   if (bookType === 'reservierung' && action === 'add') {
     if (!eintrag || !eintrag.name || !eintrag.datum) return res.status(400).json({ error: 'Name oder Datum fehlt.' });
     const items = await loadItems(owner.user_id, toolName);
-    items.push({ id: Date.now(), ...eintrag });
+    items.push({ id: Date.now(), ...eintrag, erfasstVon: name });
     await saveItems(owner.user_id, toolName, items);
     sendPushToAll(owner.user_id, '📅 Neue Reservierung', `${eintrag.name}, ${eintrag.datum}${eintrag.uhrzeit ? ' ' + eintrag.uhrzeit : ''}${eintrag.personen ? ', ' + eintrag.personen + ' Personen' : ''}`, '/reservierung.html?u=' + code, 'reservierung');
-    return res.status(200).json({ items });
+    return res.status(200).json({ items, meinName: name });
   }
 
   // ─── Zeiterfassung: Mitarbeiter tragen Kommen/Pause/Gehen für sich selbst ein ──
@@ -129,15 +142,6 @@ export default async function handler(req, res) {
   // komplette Liste zurückgegeben, sondern nur die Einträge des anfragenden Mitarbeiters
   // (Datenschutz: Kollegen sollen die Zeiten der anderen nicht sehen können).
   if (bookType === 'zeiterfassung') {
-    // Schritt 1: PIN ist geprüft, aber der Mitarbeiter hat noch keinen Namen gewählt —
-    // nur die Namensliste liefern, damit die Auswahl angezeigt werden kann. Zeiten werden
-    // bewusst noch NICHT mitgeschickt, solange nicht klar ist, wer fragt.
-    if (!mitarbeiterName || !mitarbeiterName.trim()) {
-      const namen = await loadNamen(owner.user_id);
-      return res.status(200).json({ namen, items: [] });
-    }
-
-    const name = mitarbeiterName.trim();
     let items = await loadItems(owner.user_id, toolName);
 
     if (['kommen', 'pause_start', 'pause_ende', 'gehen'].includes(action)) {
@@ -151,21 +155,21 @@ export default async function handler(req, res) {
           sendPushToAll(owner.user_id, '⏱️ Kommt', name + ' hat sich um ' + zeit + ' Uhr eingetragen.', '/dashboard.html', 'zeiterfassung');
         }
       } else {
-        const eintrag = items.find(i => i.name === name && i.datum === datum && !i.ende);
-        if (eintrag) {
-          if (action === 'pause_start' && !eintrag.pauseLaufend) {
-            eintrag.pauseLaufend = zeit;
+        const eintragZe = items.find(i => i.name === name && i.datum === datum && !i.ende);
+        if (eintragZe) {
+          if (action === 'pause_start' && !eintragZe.pauseLaufend) {
+            eintragZe.pauseLaufend = zeit;
             await saveItems(owner.user_id, toolName, items);
-          } else if (action === 'pause_ende' && eintrag.pauseLaufend) {
-            eintrag.pausen.push({ von: eintrag.pauseLaufend, bis: zeit });
-            eintrag.pauseLaufend = null;
+          } else if (action === 'pause_ende' && eintragZe.pauseLaufend) {
+            eintragZe.pausen.push({ von: eintragZe.pauseLaufend, bis: zeit });
+            eintragZe.pauseLaufend = null;
             await saveItems(owner.user_id, toolName, items);
           } else if (action === 'gehen') {
-            if (eintrag.pauseLaufend) {
-              eintrag.pausen.push({ von: eintrag.pauseLaufend, bis: zeit });
-              eintrag.pauseLaufend = null;
+            if (eintragZe.pauseLaufend) {
+              eintragZe.pausen.push({ von: eintragZe.pauseLaufend, bis: zeit });
+              eintragZe.pauseLaufend = null;
             }
-            eintrag.ende = zeit;
+            eintragZe.ende = zeit;
             await saveItems(owner.user_id, toolName, items);
             sendPushToAll(owner.user_id, '⏱️ Feierabend', name + ' hat sich um ' + zeit + ' Uhr ausgetragen — bitte im Dashboard genehmigen.', '/dashboard.html', 'zeiterfassung');
           }
@@ -174,11 +178,11 @@ export default async function handler(req, res) {
     }
 
     const meineItems = items.filter(i => i.name === name);
-    return res.status(200).json({ items: meineItems });
+    return res.status(200).json({ items: meineItems, meinName: name });
   }
 
   // ─── Schichtplan: Mitarbeiter dürfen NUR lesen, niemals eintragen/löschen ──
   // ─── Default (auch für uebergabe/reservierung ohne action="add"): nur lesen ──
   const items = await loadItems(owner.user_id, toolName);
-  return res.status(200).json({ items });
+  return res.status(200).json({ items, meinName: name });
 }
