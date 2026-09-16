@@ -22,8 +22,8 @@
     }
   })();
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js" defer></script>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
@@ -189,9 +189,27 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
           <label>Mitarbeiter</label>
           <select id="ze-filter-name" onchange="renderZeTabelle()"><option value="">Alle</option></select>
         </div>
-        <div class="field-group" style="max-width:180px;margin-bottom:0;">
+        <div class="field-group" style="max-width:170px;margin-bottom:0;">
           <label>Monat</label>
-          <select id="ze-filter-monat" onchange="renderZeTabelle()"><option value="">Alle</option></select>
+          <select id="ze-filter-monat" onchange="renderZeTabelle()">
+            <option value="">Alle</option>
+            <option value="01">Januar</option>
+            <option value="02">Februar</option>
+            <option value="03">März</option>
+            <option value="04">April</option>
+            <option value="05">Mai</option>
+            <option value="06">Juni</option>
+            <option value="07">Juli</option>
+            <option value="08">August</option>
+            <option value="09">September</option>
+            <option value="10">Oktober</option>
+            <option value="11">November</option>
+            <option value="12">Dezember</option>
+          </select>
+        </div>
+        <div class="field-group" style="max-width:120px;margin-bottom:0;">
+          <label>Jahr</label>
+          <select id="ze-filter-jahr" onchange="renderZeTabelle()"><option value="">Alle</option></select>
         </div>
       </div>
       <div style="overflow-x:auto;">
@@ -524,7 +542,7 @@ async function initInhaberModus() {
 
   const data = await toolLoad('zeiterfassung');
   alleZeiten = data.items || [];
-  befuelleMonatFilter();
+  befuelleJahrFilter();
   renderZeTabelle();
   zeitraumSetzen('chef', 'monat');
 }
@@ -569,15 +587,15 @@ function befuelleNameFilter() {
     if (aktuell) sel.value = aktuell;
   });
 }
-function befuelleMonatFilter() {
-  const monate = [...new Set(alleZeiten.map(i => i.datum.slice(0, 7)))].sort().reverse();
-  const sel = document.getElementById('ze-filter-monat');
+function befuelleJahrFilter() {
+  const aktJahr = parseInt(heute().slice(0, 4));
+  const sel = document.getElementById('ze-filter-jahr');
   sel.innerHTML = '<option value="">Alle</option>';
-  monate.forEach(m => {
+  for (let j = aktJahr - 3; j <= aktJahr + 1; j++) {
     const opt = document.createElement('option');
-    opt.value = m; opt.textContent = m;
+    opt.value = String(j); opt.textContent = String(j);
     sel.appendChild(opt);
-  });
+  }
 }
 
 function renderZeTabelle() {
@@ -585,9 +603,11 @@ function renderZeTabelle() {
   tbody.innerHTML = '';
   const filterName = document.getElementById('ze-filter-name').value;
   const filterMonat = document.getElementById('ze-filter-monat').value;
+  const filterJahr = document.getElementById('ze-filter-jahr').value;
   let gefiltert = [...alleZeiten];
   if (filterName) gefiltert = gefiltert.filter(i => i.name === filterName);
-  if (filterMonat) gefiltert = gefiltert.filter(i => i.datum.slice(0, 7) === filterMonat);
+  if (filterMonat) gefiltert = gefiltert.filter(i => i.datum.slice(5, 7) === filterMonat);
+  if (filterJahr) gefiltert = gefiltert.filter(i => i.datum.slice(0, 4) === filterJahr);
   gefiltert.sort((a, b) => b.datum.localeCompare(a.datum) || b.id - a.id);
 
   if (!gefiltert.length) { tbody.innerHTML = '<tr><td colspan="8" style="color:#8090a8;">Keine Einträge.</td></tr>'; return; }
@@ -615,7 +635,6 @@ window.zeLoeschen = async function(id) {
   if (!confirm('Diesen Eintrag wirklich löschen?')) return;
   alleZeiten = alleZeiten.filter(i => i.id !== id);
   await toolSave('zeiterfassung', { items: alleZeiten });
-  befuelleMonatFilter();
   renderZeTabelle();
 };
 
