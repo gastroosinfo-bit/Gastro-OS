@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zeiterfassung – GASTRO-OS</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Zeiterfassung">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png">
+<script>
+  (function() {
+    var code = new URLSearchParams(window.location.search).get('u');
+    if (code) {
+      document.write('<link rel="manifest" href="/api/manifest?type=zeiterfassung&code=' + encodeURIComponent(code) + '">');
+    } else {
+      document.write('<link rel="manifest" href="/manifest-zeiterfassung.json">');
+    }
+  })();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
+.header{background:#1a2a4a;padding:14px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
+.brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
+.btn-back { background:#d4af37; color:#1a2a4a; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.btn-back:hover { background:#c8a030; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+.wrap { max-width:920px; margin:0 auto; padding:28px 24px 60px; }
+.tool-label { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:4px; }
+.tool-title { font-family:Georgia,serif; font-size:22px; color:#1a2a4a; margin-bottom:4px; }
+.tool-sub { font-size:13px; color:#5a6a80; margin-bottom:20px; }
+
+.section { background:#fff; border:1px solid #e8dfc8; border-radius:10px; padding:22px 26px; margin-bottom:20px; box-shadow:0 2px 6px rgba(0,0,0,0.04); }
+.section-head { background:#1a2a4a; color:#d4af37; font-size:13px; font-weight:700; letter-spacing:1px; padding:10px 14px; border-radius:6px; margin-bottom:16px; }
+
+.field-group { display:flex; flex-direction:column; gap:5px; margin-bottom:14px; }
+.field-group label { font-size:11px; font-weight:700; color:#8090a8; text-transform:uppercase; letter-spacing:0.5px; }
+.field-group input, .field-group select { border:1px solid #e0d8c8; border-radius:6px; padding:9px 10px; font-size:13.5px; color:#1a2a4a; background:#eaf2ff; font-family:inherit; width:100%; }
+.field-group input:focus, .field-group select:focus { outline:none; border-color:#d4af37; background:#fff; }
+
+.btn-add { background:#1a6640; color:#fff; border:none; padding:10px 20px; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; }
+.btn-add:hover { background:#d4af37; color:#1a2a4a; }
+.btn-add.secondary { background:transparent; color:#1a6640; border:1px solid #1a6640; }
+.btn-add.secondary:hover { background:#1a6640; color:#fff; }
+.btn-add:disabled { opacity:0.4; cursor:not-allowed; }
+.btn-del { background:transparent; border:1px solid #c0392b; color:#c0392b; padding:5px 10px; border-radius:5px; font-size:11px; font-weight:600; cursor:pointer; }
+.btn-del:hover { background:#c0392b; color:#fff; }
+.save-msg { font-size:12px; color:#4aaa60; margin-left:10px; display:none; }
+.error-msg { font-size:12.5px; color:#c0392b; margin-top:8px; display:none; }
+
+.pin-screen { text-align:center; padding:40px 20px; }
+.pin-input { font-size:24px; letter-spacing:8px; text-align:center; width:160px; padding:12px; border:2px solid #d4af37; border-radius:8px; margin:16px auto; display:block; }
+.hinweis-box { background:#eaf2ff; border:1px solid #8ba8d0; border-radius:8px; padding:12px 16px; font-size:12px; color:#3a5578; margin-bottom:16px; }
+
+table.data-table { width:100%; border-collapse:collapse; font-size:12.5px; margin-top:4px; }
+table.data-table th { background:#f5f0e8; padding:8px 10px; font-size:11px; font-weight:700; color:#1a2a4a; text-align:left; border:1px solid #e8dfc8; white-space:nowrap; }
+table.data-table td { padding:8px 10px; border:1px solid #e8dfc8; }
+table.data-table tr:nth-child(even) td { background:#faf8f4; }
+
+.status-badge { display:inline-block; font-size:11px; font-weight:700; padding:3px 9px; border-radius:12px; white-space:nowrap; }
+.status-laeuft { background:#fff3cd; color:#9a7b1a; }
+.status-wartet { background:#ffe4cc; color:#a05a00; }
+.status-genehmigt { background:#d8f0e0; color:#1a6640; }
+
+.zeit-buttons { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:6px; }
+.zeit-btn { flex:1; min-width:140px; border:none; border-radius:10px; padding:18px 12px; font-size:15px; font-weight:700; cursor:pointer; color:#fff; transition:all 0.2s; }
+.zeit-btn.kommen { background:#1a6640; }
+.zeit-btn.kommen:hover { background:#134d30; }
+.zeit-btn.pause-start { background:#c8860a; }
+.zeit-btn.pause-start:hover { background:#a86e08; }
+.zeit-btn.pause-ende { background:#1a6640; }
+.zeit-btn.pause-ende:hover { background:#134d30; }
+.zeit-btn.gehen { background:#c0392b; }
+.zeit-btn.gehen:hover { background:#9c2e22; }
+.heute-status { font-size:13px; color:#3a5578; margin-bottom:14px; background:#eaf2ff; border-radius:8px; padding:10px 14px; }
+
+.chip { display:inline-flex; align-items:center; gap:6px; background:#eaf2ff; border:1px solid #cddbee; border-radius:14px; padding:5px 6px 5px 12px; margin:3px; font-size:12.5px; }
+.chip button { border:none; background:none; color:#c0392b; cursor:pointer; font-weight:700; font-size:13px; padding:2px 4px; }
+
+.pdf-row { display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end; margin-bottom:12px; }
+.pdf-row .field-group { margin-bottom:0; min-width:140px; }
+.quick-btns { display:flex; gap:6px; margin-bottom:14px; flex-wrap:wrap; }
+.quick-btn { background:transparent; border:1px solid #8090a8; color:#3a5578; padding:6px 12px; border-radius:14px; font-size:11.5px; cursor:pointer; }
+.quick-btn:hover { background:#eaf2ff; }
+
+.name-choice { display:flex; flex-wrap:wrap; gap:10px; margin:16px 0; }
+.name-choice button { background:#eaf2ff; border:1px solid #cddbee; color:#1a2a4a; padding:12px 20px; border-radius:8px; font-size:14px; font-weight:600; cursor:pointer; }
+.name-choice button:hover { background:#1a2a4a; color:#d4af37; }
+
+.footer-brand { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-brand strong { color:#d4af37; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <span class="brand">GASTRO-OS</span>
+  <a href="dashboard.html" class="btn-back" id="btn-dashboard" style="display:none;">← Zurück zum Dashboard</a>
+</div>
+<div class="gold-bar"></div>
+
+<div class="wrap">
+  <div class="tool-label">Toolbox · Intern</div>
+  <div class="tool-title">⏱️ Zeiterfassung</div>
+  <div class="tool-sub" id="tool-sub-text">Wird geladen …</div>
+
+  <!-- ═══ MITARBEITER: PIN-EINGABE ═══ -->
+  <div id="pin-screen" class="section pin-screen" style="display:none;">
+    <div style="font-size:15px;margin-bottom:6px;">Bitte PIN eingeben</div>
+    <input type="password" inputmode="numeric" maxlength="4" class="pin-input" id="pin-input" placeholder="••••">
+    <button class="btn-add" onclick="pinPruefen()">Entsperren</button>
+    <div class="error-msg" id="pin-error">Falsche PIN, bitte nochmal versuchen.</div>
+  </div>
+
+  <!-- ═══ MITARBEITER: NAME WÄHLEN (nach PIN) ═══ -->
+  <div id="name-screen" class="section" style="display:none;text-align:center;">
+    <div style="font-size:15px;margin-bottom:4px;">Wer bist du?</div>
+    <div style="font-size:12.5px;color:#8090a8;">Wähl deinen Namen — danach siehst du nur deine eigenen Zeiten.</div>
+    <div class="name-choice" id="name-choice-liste"></div>
+    <div class="error-msg" id="name-error">Noch keine Mitarbeiter hinterlegt — bitte den Chef, sie im Dashboard einzutragen.</div>
+  </div>
+
+  <!-- ═══ MITARBEITER: ZEITERFASSUNG (nach Namenswahl) ═══ -->
+  <div id="mitarbeiter-bereich" style="display:none;">
+    <div class="section">
+      <div class="section-head" id="ma-begruessung">Hallo!</div>
+      <div class="heute-status" id="ma-heute-status">Wird geladen …</div>
+      <div class="zeit-buttons" id="ma-buttons"></div>
+      <span class="save-msg" id="ma-save-msg">✓ Gespeichert</span>
+      <div style="margin-top:12px;">
+        <button class="btn-add secondary" onclick="mitarbeiterAbmelden()" style="font-size:11.5px;padding:6px 12px;">Nicht ich — anderen Namen wählen</button>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head">Meine Zeiten</div>
+      <div style="overflow-x:auto;">
+      <table class="data-table" id="ma-tabelle">
+        <thead><tr><th>Datum</th><th>Kommen</th><th>Pausen</th><th>Gehen</th><th>Std.</th><th>Status</th></tr></thead>
+        <tbody></tbody>
+      </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head">Als PDF speichern/drucken</div>
+      <div class="hinweis-box">Es werden nur bereits vom Chef genehmigte Zeiten ins PDF übernommen.</div>
+      <div class="quick-btns">
+        <button class="quick-btn" onclick="zeitraumSetzen('ma', 'woche')">Diese Woche</button>
+        <button class="quick-btn" onclick="zeitraumSetzen('ma', 'monat')">Dieser Monat</button>
+        <button class="quick-btn" onclick="zeitraumSetzen('ma', 'letzterMonat')">Letzter Monat</button>
+      </div>
+      <div class="pdf-row">
+        <div class="field-group"><label>Von</label><input type="date" id="ma-pdf-von"></div>
+        <div class="field-group"><label>Bis</label><input type="date" id="ma-pdf-bis"></div>
+        <button class="btn-add" onclick="maPdfErstellen()">📄 Meine Stunden als PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ INHABER: VERWALTUNG & GENEHMIGUNG ═══ -->
+  <div id="inhaber-bereich" style="display:none;">
+    <div class="hinweis-box">ℹ️ Mitarbeiter tragen Kommen/Pause/Gehen selbst über ihren PIN-Link ein und sehen dabei ausschließlich ihre eigenen Zeiten. Du siehst hier alle Einträge, genehmigst sie und kannst sie als PDF speichern oder ausdrucken.</div>
+
+    <div class="section">
+      <div class="section-head">Team-Mitarbeiter</div>
+      <div style="font-size:11.5px;color:#8090a8;margin-bottom:10px;">Diese Liste wird mit dem Schichtplan geteilt — einmal pflegen, überall nutzen.</div>
+      <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;">
+        <div class="field-group" style="max-width:220px;margin-bottom:0;">
+          <label>Neuer Mitarbeitername</label>
+          <input type="text" id="ze-neuer-mitarbeiter" placeholder="z. B. Maria">
+        </div>
+        <button class="btn-add" onclick="mitarbeiterHinzufuegen()">+ Hinzufügen</button>
+      </div>
+      <div id="ze-mitarbeiter-liste" style="margin-top:14px;"></div>
+    </div>
+
+    <div class="section">
+      <div class="section-head">Alle Zeiten</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;">
+        <div class="field-group" style="max-width:200px;margin-bottom:0;">
+          <label>Mitarbeiter</label>
+          <select id="ze-filter-name" onchange="renderZeTabelle()"><option value="">Alle</option></select>
+        </div>
+        <div class="field-group" style="max-width:180px;margin-bottom:0;">
+          <label>Monat</label>
+          <select id="ze-filter-monat" onchange="renderZeTabelle()"><option value="">Alle</option></select>
+        </div>
+      </div>
+      <div style="overflow-x:auto;">
+      <table class="data-table" id="ze-tabelle">
+        <thead><tr><th>Datum</th><th>Name</th><th>Kommen</th><th>Pausen</th><th>Gehen</th><th>Std.</th><th>Status</th><th></th></tr></thead>
+        <tbody></tbody>
+      </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head">Als PDF speichern/drucken</div>
+      <div class="hinweis-box">Es werden nur genehmigte Zeiten ins PDF übernommen.</div>
+      <div class="quick-btns">
+        <button class="quick-btn" onclick="zeitraumSetzen('chef', 'woche')">Diese Woche</button>
+        <button class="quick-btn" onclick="zeitraumSetzen('chef', 'monat')">Dieser Monat</button>
+        <button class="quick-btn" onclick="zeitraumSetzen('chef', 'letzterMonat')">Letzter Monat</button>
+      </div>
+      <div class="pdf-row">
+        <div class="field-group">
+          <label>Mitarbeiter</label>
+          <select id="chef-pdf-name"><option value="__alle__">Alle Mitarbeiter</option></select>
+        </div>
+        <div class="field-group"><label>Von</label><input type="date" id="chef-pdf-von"></div>
+        <div class="field-group"><label>Bis</label><input type="date" id="chef-pdf-bis"></div>
+        <button class="btn-add" onclick="chefPdfErstellen()">📄 PDF erstellen</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer-brand"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+
+<script>
+// ─── Allgemeine Helfer ──────────────────────────────────────────────────────
+function flashSaved(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.style.display = 'inline';
+  setTimeout(() => { el.style.display = 'none'; }, 2000);
+}
+// Zeitzonensicher — bewusst NICHT toISOString() (siehe bekannter Bug bei Datumsvergleichen).
+function heute() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+function jetzt() {
+  const d = new Date();
+  return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+}
+function minutenAus(zeit) {
+  const [h, m] = zeit.split(':').map(Number);
+  return h * 60 + m;
+}
+// Std. netto (Pausen abgezogen). Unterstützt Schichten über Mitternacht.
+function stundenBerechnen(eintrag) {
+  if (!eintrag.start || !eintrag.ende) return null;
+  let start = minutenAus(eintrag.start);
+  let ende = minutenAus(eintrag.ende);
+  if (ende < start) ende += 24 * 60;
+  let pauseMin = 0;
+  (eintrag.pausen || []).forEach(p => {
+    let von = minutenAus(p.von), bis = minutenAus(p.bis);
+    if (bis < von) bis += 24 * 60;
+    pauseMin += (bis - von);
+  });
+  return Math.max(0, (ende - start) - pauseMin) / 60;
+}
+function stundenText(eintrag) {
+  const h = stundenBerechnen(eintrag);
+  if (h === null) return '–';
+  return h.toFixed(2).replace('.', ',') + ' Std';
+}
+function pausenText(eintrag) {
+  const teile = (eintrag.pausen || []).map(p => p.von + '–' + p.bis);
+  if (eintrag.pauseLaufend) teile.push(eintrag.pauseLaufend + '–… (läuft)');
+  return teile.length ? teile.join(', ') : '–';
+}
+function statusBadge(eintrag) {
+  if (!eintrag.ende) return '<span class="status-badge status-laeuft">🟡 Läuft</span>';
+  if (eintrag.status === 'genehmigt') return '<span class="status-badge status-genehmigt">✅ Genehmigt</span>';
+  return '<span class="status-badge status-wartet">🟠 Wartet auf Genehmigung</span>';
+}
+function datumDe(iso) {
+  const [j, m, t] = iso.split('-');
+  return `${t}.${m}.${j}`;
+}
+function montagDerWoche(d) {
+  const tag = new Date(d);
+  const wochentag = (tag.getDay() + 6) % 7; // Montag = 0
+  tag.setDate(tag.getDate() - wochentag);
+  return tag;
+}
+function zuIso(d) {
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+function zeitraumSetzen(prefix, art) {
+  const heuteD = new Date();
+  let von, bis;
+  if (art === 'woche') {
+    von = montagDerWoche(heuteD);
+    bis = new Date(von); bis.setDate(bis.getDate() + 6);
+  } else if (art === 'monat') {
+    von = new Date(heuteD.getFullYear(), heuteD.getMonth(), 1);
+    bis = new Date(heuteD.getFullYear(), heuteD.getMonth() + 1, 0);
+  } else {
+    von = new Date(heuteD.getFullYear(), heuteD.getMonth() - 1, 1);
+    bis = new Date(heuteD.getFullYear(), heuteD.getMonth(), 0);
+  }
+  document.getElementById(prefix + '-pdf-von').value = zuIso(von);
+  document.getElementById(prefix + '-pdf-bis').value = zuIso(bis);
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// Chef- vs. Mitarbeiter-Modus (gleiche Logik wie bei den anderen Team-Tools):
+// 1) ?u=CODE in der URL -> immer Mitarbeiter
+// 2) sonst: gültige Chef-Session? -> Chef-Modus
+// 3) sonst: gespeicherter Mitarbeiter-Code auf diesem Gerät? -> Mitarbeiter
+// 4) sonst: Chef-Modus (führt zum Login, falls keine Session besteht)
+// ─────────────────────────────────────────────────────────────────────────
+(async function modusEntscheiden() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const codeAusUrl = urlParams.get('u');
+
+  if (codeAusUrl) { initMitarbeiterModus(codeAusUrl); return; }
+
+  try {
+    const res = await fetch('/api/verify-session');
+    if (res.ok) {
+      const d = await res.json();
+      if (d.valid) { initInhaberModus(); return; }
+    }
+  } catch (e) {}
+
+  const gespeicherterCode = localStorage.getItem('gastroos_ze_code');
+  if (gespeicherterCode) { initMitarbeiterModus(gespeicherterCode); return; }
+
+  initInhaberModus();
+})();
+
+// ═══════════════ MITARBEITER-MODUS ═══════════════
+let zeCode = null, zePin = null, zeName = null, zeItems = [];
+
+function initMitarbeiterModus(code) {
+  zeCode = code;
+  document.getElementById('tool-sub-text').textContent = 'Gib deine PIN ein, um deine Zeit einzutragen.';
+  document.getElementById('pin-screen').style.display = 'block';
+  document.getElementById('pin-input').focus();
+
+  window.pinPruefen = async function() {
+    const pin = document.getElementById('pin-input').value.trim();
+    if (pin.length !== 4) return;
+    try {
+      const res = await fetch('/api/buch-public', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code, pin, bookType: 'zeiterfassung' })
+      });
+      if (!res.ok) { document.getElementById('pin-error').style.display = 'block'; return; }
+      const d = await res.json();
+      zePin = pin;
+      localStorage.setItem('gastroos_ze_code', code);
+      document.getElementById('pin-screen').style.display = 'none';
+
+      const namen = d.namen || [];
+      if (!namen.length) {
+        document.getElementById('name-screen').style.display = 'block';
+        document.getElementById('name-error').style.display = 'block';
+        return;
+      }
+
+      const gespeicherterName = localStorage.getItem('gastroos_ze_name_' + code);
+      if (gespeicherterName && namen.includes(gespeicherterName)) {
+        namenAuswaehlen(gespeicherterName);
+      } else {
+        zeigeNamensAuswahl(namen);
+      }
+    } catch (e) {
+      document.getElementById('pin-error').style.display = 'block';
+    }
+  };
+}
+
+function zeigeNamensAuswahl(namen) {
+  document.getElementById('tool-sub-text').textContent = 'Wähl deinen Namen, um weiterzumachen.';
+  document.getElementById('name-screen').style.display = 'block';
+  const liste = document.getElementById('name-choice-liste');
+  liste.innerHTML = '';
+  namen.forEach(n => {
+    const btn = document.createElement('button');
+    btn.textContent = n;
+    btn.onclick = () => namenAuswaehlen(n);
+    liste.appendChild(btn);
+  });
+}
+
+window.mitarbeiterAbmelden = function() {
+  localStorage.removeItem('gastroos_ze_name_' + zeCode);
+  document.getElementById('mitarbeiter-bereich').style.display = 'none';
+  namenNeuLaden();
+};
+
+async function namenNeuLaden() {
+  const res = await fetch('/api/buch-public', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ code: zeCode, pin: zePin, bookType: 'zeiterfassung' })
+  });
+  const d = await res.json();
+  zeigeNamensAuswahl(d.namen || []);
+}
+
+async function namenAuswaehlen(name) {
+  zeName = name;
+  localStorage.setItem('gastroos_ze_name_' + zeCode, name);
+  document.getElementById('name-screen').style.display = 'none';
+  document.getElementById('tool-sub-text').textContent = 'Trag hier deine Zeiten ein.';
+  document.getElementById('mitarbeiter-bereich').style.display = 'block';
+  document.getElementById('ma-begruessung').textContent = 'Hallo, ' + name + '!';
+  await zeitenLaden();
+  zeitraumSetzen('ma', 'monat');
+}
+
+async function zeitenLaden() {
+  const res = await fetch('/api/buch-public', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ code: zeCode, pin: zePin, bookType: 'zeiterfassung', mitarbeiterName: zeName })
+  });
+  const d = await res.json();
+  zeItems = d.items || [];
+  renderMaZustand();
+  renderMaTabelle();
+}
+
+async function zeitAktion(action) {
+  const res = await fetch('/api/buch-public', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ code: zeCode, pin: zePin, bookType: 'zeiterfassung', mitarbeiterName: zeName, action, datum: heute(), zeit: jetzt() })
+  });
+  const d = await res.json();
+  zeItems = d.items || [];
+  renderMaZustand();
+  renderMaTabelle();
+  flashSaved('ma-save-msg');
+}
+
+function renderMaZustand() {
+  const heuteStr = heute();
+  const offen = zeItems.find(i => i.datum === heuteStr && !i.ende);
+  const buttons = document.getElementById('ma-buttons');
+  const status = document.getElementById('ma-heute-status');
+  buttons.innerHTML = '';
+
+  if (!offen) {
+    status.textContent = 'Du bist heute noch nicht eingetragen.';
+    buttons.innerHTML = '<button class="zeit-btn kommen" onclick="zeitAktion(\'kommen\')">▶️ Kommen</button>';
+  } else if (offen.pauseLaufend) {
+    status.textContent = 'Gekommen um ' + offen.start + ' Uhr — Pause läuft seit ' + offen.pauseLaufend + ' Uhr.';
+    buttons.innerHTML = '<button class="zeit-btn pause-ende" onclick="zeitAktion(\'pause_ende\')">▶️ Pause beenden</button>';
+  } else {
+    status.textContent = 'Gekommen um ' + offen.start + ' Uhr' + (offen.pausen.length ? ' — ' + offen.pausen.length + ' Pause(n) bisher' : '') + '.';
+    buttons.innerHTML =
+      '<button class="zeit-btn pause-start" onclick="zeitAktion(\'pause_start\')">☕ Pause</button>' +
+      '<button class="zeit-btn gehen" onclick="zeitAktion(\'gehen\')">🔴 Feierabend</button>';
+  }
+}
+
+function renderMaTabelle() {
+  const tbody = document.querySelector('#ma-tabelle tbody');
+  tbody.innerHTML = '';
+  const sorted = [...zeItems].sort((a, b) => b.datum.localeCompare(a.datum) || b.id - a.id);
+  if (!sorted.length) { tbody.innerHTML = '<tr><td colspan="6" style="color:#8090a8;">Noch keine Einträge.</td></tr>'; return; }
+  sorted.forEach(i => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${datumDe(i.datum)}</td><td>${i.start || ''}</td><td>${pausenText(i)}</td><td>${i.ende || '–'}</td><td>${stundenText(i)}</td><td>${statusBadge(i)}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+function maPdfErstellen() {
+  const von = document.getElementById('ma-pdf-von').value;
+  const bis = document.getElementById('ma-pdf-bis').value;
+  if (!von || !bis) { alert('Bitte Zeitraum wählen.'); return; }
+  const gefiltert = zeItems.filter(i => i.status === 'genehmigt' && i.datum >= von && i.datum <= bis).sort((a, b) => a.datum.localeCompare(b.datum));
+  if (!gefiltert.length) { alert('Keine genehmigten Zeiten in diesem Zeitraum.'); return; }
+  stundenzettelPdf(zeName, gefiltert, von, bis, 'Zeiterfassung-' + zeName.replace(/\s+/g, '_'));
+}
+
+// ═══════════════ INHABER-MODUS ═══════════════
+let mitarbeiterNamen = [];
+let alleZeiten = [];
+
+async function toolLoad(tool) {
+  try {
+    const res = await fetch('/api/tool-data?tool=' + encodeURIComponent(tool));
+    if (!res.ok) return {};
+    const d = await res.json();
+    return (d && d.data) ? d.data : {};
+  } catch (e) { return {}; }
+}
+async function toolSave(tool, data) {
+  try {
+    await fetch('/api/tool-data', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tool, data })
+    });
+  } catch (e) {}
+}
+
+async function initInhaberModus() {
+  try {
+    const res = await fetch('/api/verify-session');
+    if (!res.ok) { window.location.href = 'login.html'; return; }
+    const d = await res.json();
+    if (!d.valid) { window.location.href = 'login.html'; return; }
+  } catch (e) { window.location.href = 'login.html'; return; }
+
+  document.getElementById('btn-dashboard').style.display = 'inline-block';
+  document.getElementById('tool-sub-text').textContent = 'Genehmige die Zeiten deines Teams und erstelle Stundenzettel als PDF.';
+  document.getElementById('inhaber-bereich').style.display = 'block';
+
+  const mitarbeiterData = await toolLoad('schichtplan-mitarbeiter');
+  mitarbeiterNamen = mitarbeiterData.namen || [];
+  renderMitarbeiterListe();
+  befuelleNameFilter();
+
+  const data = await toolLoad('zeiterfassung');
+  alleZeiten = data.items || [];
+  befuelleMonatFilter();
+  renderZeTabelle();
+  zeitraumSetzen('chef', 'monat');
+}
+
+function renderMitarbeiterListe() {
+  const el = document.getElementById('ze-mitarbeiter-liste');
+  if (!mitarbeiterNamen.length) { el.innerHTML = '<span style="font-size:12.5px;color:#8090a8;">Noch keine Mitarbeiter hinzugefügt.</span>'; return; }
+  el.innerHTML = mitarbeiterNamen.map(n =>
+    `<span class="chip">${n}<button onclick="mitarbeiterEntfernen('${n.replace(/'/g, "\\'")}')" title="Entfernen">✕</button></span>`
+  ).join('');
+}
+window.mitarbeiterHinzufuegen = async function() {
+  const input = document.getElementById('ze-neuer-mitarbeiter');
+  const name = input.value.trim();
+  if (!name) return;
+  if (!mitarbeiterNamen.includes(name)) {
+    mitarbeiterNamen.push(name);
+    await toolSave('schichtplan-mitarbeiter', { namen: mitarbeiterNamen });
+  }
+  input.value = '';
+  renderMitarbeiterListe();
+  befuelleNameFilter();
+};
+window.mitarbeiterEntfernen = async function(name) {
+  mitarbeiterNamen = mitarbeiterNamen.filter(n => n !== name);
+  await toolSave('schichtplan-mitarbeiter', { namen: mitarbeiterNamen });
+  renderMitarbeiterListe();
+  befuelleNameFilter();
+};
+
+function befuelleNameFilter() {
+  ['ze-filter-name', 'chef-pdf-name'].forEach(id => {
+    const sel = document.getElementById(id);
+    const istPdf = id === 'chef-pdf-name';
+    const aktuell = sel.value;
+    sel.innerHTML = istPdf ? '<option value="__alle__">Alle Mitarbeiter</option>' : '<option value="">Alle</option>';
+    mitarbeiterNamen.forEach(n => {
+      const opt = document.createElement('option');
+      opt.value = n; opt.textContent = n;
+      sel.appendChild(opt);
+    });
+    if (aktuell) sel.value = aktuell;
+  });
+}
+function befuelleMonatFilter() {
+  const monate = [...new Set(alleZeiten.map(i => i.datum.slice(0, 7)))].sort().reverse();
+  const sel = document.getElementById('ze-filter-monat');
+  sel.innerHTML = '<option value="">Alle</option>';
+  monate.forEach(m => {
+    const opt = document.createElement('option');
+    opt.value = m; opt.textContent = m;
+    sel.appendChild(opt);
+  });
+}
+
+function renderZeTabelle() {
+  const tbody = document.querySelector('#ze-tabelle tbody');
+  tbody.innerHTML = '';
+  const filterName = document.getElementById('ze-filter-name').value;
+  const filterMonat = document.getElementById('ze-filter-monat').value;
+  let gefiltert = [...alleZeiten];
+  if (filterName) gefiltert = gefiltert.filter(i => i.name === filterName);
+  if (filterMonat) gefiltert = gefiltert.filter(i => i.datum.slice(0, 7) === filterMonat);
+  gefiltert.sort((a, b) => b.datum.localeCompare(a.datum) || b.id - a.id);
+
+  if (!gefiltert.length) { tbody.innerHTML = '<tr><td colspan="8" style="color:#8090a8;">Keine Einträge.</td></tr>'; return; }
+
+  gefiltert.forEach(i => {
+    const tr = document.createElement('tr');
+    const genehmigenBtn = (i.ende && i.status !== 'genehmigt')
+      ? `<button class="btn-add" style="padding:5px 10px;font-size:11px;" onclick="zeGenehmigen(${i.id})">✓ Genehmigen</button>`
+      : '';
+    tr.innerHTML = `<td>${datumDe(i.datum)}</td><td>${i.name}</td><td>${i.start || ''}</td><td>${pausenText(i)}</td><td>${i.ende || '–'}</td><td>${stundenText(i)}</td><td>${statusBadge(i)}</td>
+      <td style="white-space:nowrap;">${genehmigenBtn} <button class="btn-del" onclick="zeLoeschen(${i.id})">✕</button></td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+window.zeGenehmigen = async function(id) {
+  const eintrag = alleZeiten.find(i => i.id === id);
+  if (!eintrag) return;
+  eintrag.status = 'genehmigt';
+  eintrag.genehmigtAm = new Date().toISOString();
+  await toolSave('zeiterfassung', { items: alleZeiten });
+  renderZeTabelle();
+};
+window.zeLoeschen = async function(id) {
+  if (!confirm('Diesen Eintrag wirklich löschen?')) return;
+  alleZeiten = alleZeiten.filter(i => i.id !== id);
+  await toolSave('zeiterfassung', { items: alleZeiten });
+  befuelleMonatFilter();
+  renderZeTabelle();
+};
+
+function chefPdfErstellen() {
+  const name = document.getElementById('chef-pdf-name').value;
+  const von = document.getElementById('chef-pdf-von').value;
+  const bis = document.getElementById('chef-pdf-bis').value;
+  if (!von || !bis) { alert('Bitte Zeitraum wählen.'); return; }
+
+  if (name !== '__alle__') {
+    const gefiltert = alleZeiten.filter(i => i.name === name && i.status === 'genehmigt' && i.datum >= von && i.datum <= bis).sort((a, b) => a.datum.localeCompare(b.datum));
+    if (!gefiltert.length) { alert('Keine genehmigten Zeiten für ' + name + ' in diesem Zeitraum.'); return; }
+    stundenzettelPdf(name, gefiltert, von, bis, 'Zeiterfassung-' + name.replace(/\s+/g, '_'));
+    return;
+  }
+
+  // Alle Mitarbeiter: Übersichtsseite + je eine Detailseite pro Mitarbeiter mit Einträgen
+  const namenMitEintraegen = mitarbeiterNamen.filter(n =>
+    alleZeiten.some(i => i.name === n && i.status === 'genehmigt' && i.datum >= von && i.datum <= bis)
+  );
+  if (!namenMitEintraegen.length) { alert('Keine genehmigten Zeiten in diesem Zeitraum.'); return; }
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  doc.setFontSize(17);
+  doc.setTextColor(26, 42, 74);
+  doc.text('GASTRO-OS – Stundenübersicht', 14, 18);
+  doc.setFontSize(11);
+  doc.setTextColor(90, 106, 128);
+  doc.text(datumDe(von) + ' – ' + datumDe(bis), 14, 25);
+
+  const uebersichtsZeilen = namenMitEintraegen.map(n => {
+    const eintraege = alleZeiten.filter(i => i.name === n && i.status === 'genehmigt' && i.datum >= von && i.datum <= bis);
+    const summe = eintraege.reduce((s, i) => s + (stundenBerechnen(i) || 0), 0);
+    return [n, eintraege.length + '', summe.toFixed(2).replace('.', ',') + ' Std'];
+  });
+  doc.autoTable({
+    startY: 34,
+    head: [['Mitarbeiter', 'Einträge', 'Stunden gesamt']],
+    body: uebersichtsZeilen,
+    styles: { fontSize: 10 },
+    headStyles: { fillColor: [26, 42, 74], textColor: [212, 175, 55] },
+    margin: { left: 14, right: 14 }
+  });
+
+  namenMitEintraegen.forEach(n => {
+    const eintraege = alleZeiten.filter(i => i.name === n && i.status === 'genehmigt' && i.datum >= von && i.datum <= bis).sort((a, b) => a.datum.localeCompare(b.datum));
+    doc.addPage();
+    stundenzettelSeite(doc, n, eintraege, von, bis);
+  });
+
+  doc.save('Zeiterfassung-Alle-' + von + '_bis_' + bis + '.pdf');
+}
+
+// ─── Gemeinsame PDF-Seite (Stundenzettel für eine Person) ──────────────────
+function stundenzettelSeite(doc, name, eintraege, von, bis) {
+  doc.setFontSize(17);
+  doc.setTextColor(26, 42, 74);
+  doc.text('GASTRO-OS – Stundenzettel', 14, 18);
+  doc.setFontSize(12);
+  doc.setTextColor(26, 42, 74);
+  doc.text(name, 14, 27);
+  doc.setFontSize(10);
+  doc.setTextColor(90, 106, 128);
+  doc.text('Zeitraum: ' + datumDe(von) + ' – ' + datumDe(bis), 14, 33);
+
+  const zeilen = eintraege.map(i => [datumDe(i.datum), i.start || '', pausenText(i), i.ende || '', stundenText(i)]);
+  const summe = eintraege.reduce((s, i) => s + (stundenBerechnen(i) || 0), 0);
+
+  doc.autoTable({
+    startY: 40,
+    head: [['Datum', 'Kommen', 'Pausen', 'Gehen', 'Std.']],
+    body: zeilen,
+    styles: { fontSize: 9 },
+    headStyles: { fillColor: [26, 42, 74], textColor: [212, 175, 55] },
+    margin: { left: 14, right: 14 }
+  });
+
+  let y = doc.lastAutoTable.finalY + 8;
+  doc.setFillColor(26, 42, 74);
+  doc.rect(14, y, 182, 14, 'F');
+  doc.setFontSize(11);
+  doc.setTextColor(212, 175, 55);
+  doc.text('Stunden gesamt: ' + summe.toFixed(2).replace('.', ',') + ' Std', 20, y + 9.5);
+
+  y += 30;
+  if (y > 260) { doc.addPage(); y = 30; }
+  doc.setFontSize(9);
+  doc.setTextColor(90, 106, 128);
+  doc.text('_______________________________', 14, y);
+  doc.text('_______________________________', 108, y);
+  doc.text('Datum, Unterschrift Mitarbeiter', 14, y + 6);
+  doc.text('Datum, Unterschrift Chef', 108, y + 6);
+}
+
+function stundenzettelPdf(name, eintraege, von, bis, dateiname) {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  stundenzettelSeite(doc, name, eintraege, von, bis);
+  doc.save(dateiname + '-' + von + '_bis_' + bis + '.pdf');
+}
+</script>
+</body>
+</html>
