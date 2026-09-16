@@ -167,7 +167,7 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
     <!-- KACHEL 2: DEIN TEAM -->
     <div class="module-card toolbox-elegant" id="intern-card">
       <div class="module-header" onclick="toggleIntern()" style="padding:14px 22px;">
-        <div class="module-left"><div class="module-number toolbox-icon-circle" style="width:32px;height:32px;font-size:14px;">🔒</div><div><div class="module-title" style="letter-spacing:0.3px;font-size:14px;">Dein Team</div><div class="module-subtitle" style="margin-top:2px;">Übergabe, Reservierung &amp; Schichtplan</div></div></div>
+        <div class="module-left"><div class="module-number toolbox-icon-circle" style="width:32px;height:32px;font-size:14px;">🔒</div><div><div class="module-title" style="letter-spacing:0.3px;font-size:14px;">Dein Team</div><div class="module-subtitle" style="margin-top:2px;">Übergabe, Reservierung, Schichtplan &amp; Zeiterfassung</div></div></div>
         <div style="display:flex;align-items:center;gap:8px;"><span class="module-arrow" id="intern-arrow" style="color:#d4af37;">▼</span></div>
       </div>
       <div class="module-content" id="intern-content">
@@ -915,7 +915,10 @@ const INTERN_TOOLS = [
     pin: { zugangTool: 'reservierung-zugang', setupEndpoint: '/api/zugang-setup', bookType: 'reservierung', linkPath: 'reservierung.html' },
     unread: { dataTool: 'reservierungen', lastSeenKey: 'reservierung' } },
   { icon: '🗂️', title: 'Schichtplan', desc: 'Dienstplan fürs Team – Mitarbeiter sehen ihn per PIN nur lesend, ändern kannst nur du.', href: 'schichtplan.html',
-    pin: { zugangTool: 'schichtplan-zugang', setupEndpoint: '/api/zugang-setup', bookType: 'schichtplan', linkPath: 'schichtplan.html' } }
+    pin: { zugangTool: 'schichtplan-zugang', setupEndpoint: '/api/zugang-setup', bookType: 'schichtplan', linkPath: 'schichtplan.html' } },
+  { icon: '⏱️', title: 'Zeiterfassung', desc: 'Mitarbeiter tragen Kommen/Pause/Gehen per PIN ein (nur eigene Zeiten sichtbar) – du genehmigst und erstellst PDFs.', href: 'zeiterfassung.html',
+    pin: { zugangTool: 'zeiterfassung-zugang', setupEndpoint: '/api/zugang-setup', bookType: 'zeiterfassung', linkPath: 'zeiterfassung.html' },
+    unread: { dataTool: 'zeiterfassung', lastSeenKey: 'zeiterfassung', modus: 'genehmigung' } }
 ];
 
 const VAPID_PUBLIC_KEY = 'BNLFO9QNrjxgwjx4XsJdMxKeF1WH5kUhAdTOcN3DHabt32CN6g3hB5l5KsSA-u8_6HCGzrKN4BzIS4aIcIVSYTE';
@@ -1025,13 +1028,17 @@ async function unreadPruefen() {
     let items = data.items || [];
     if (tool.unread.lastSeenKey === 'uebergabe') items = items.filter(i => i.autor !== 'Chef');
     if (tool.unread.lastSeenKey === 'reservierung') items = items.filter(i => i.erfasstVon !== 'Chef');
-    const anzahl = items.filter(i => i.id > lastSeen).length;
+    // Zeiterfassung zeigt keine "ungelesen"-Zahl, sondern wie viele abgeschlossene
+    // Schichten noch auf Genehmigung warten — bleibt sichtbar, bis der Chef genehmigt.
+    const anzahl = (tool.unread.modus === 'genehmigung')
+      ? items.filter(i => i.ende && i.status !== 'genehmigt').length
+      : items.filter(i => i.id > lastSeen).length;
     const badge = document.getElementById('intern-badge-' + idx);
     if (badge) {
       if (anzahl > 0) { badge.textContent = anzahl; badge.style.display = 'block'; }
       else { badge.style.display = 'none'; }
     }
-    gesamt += anzahl;
+    if (tool.unread.modus !== 'genehmigung') gesamt += anzahl;
     aktualisiereUnreadBanner();
   });
   function aktualisiereUnreadBanner() {
