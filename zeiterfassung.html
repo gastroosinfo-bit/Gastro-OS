@@ -143,7 +143,7 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
       <div class="section-head">Meine Zeiten</div>
       <div style="overflow-x:auto;">
       <table class="data-table" id="ma-tabelle">
-        <thead><tr><th>Datum</th><th>Kommen</th><th>Pausen</th><th>Gehen</th><th>Std.</th><th>Status</th></tr></thead>
+        <thead><tr><th>Datum</th><th>Kommen</th><th>Pause</th><th>Pause Ende</th><th>Gehen</th><th>Std.</th><th>Status</th></tr></thead>
         <tbody></tbody>
       </table>
       </div>
@@ -214,7 +214,7 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
       </div>
       <div style="overflow-x:auto;">
       <table class="data-table" id="ze-tabelle">
-        <thead><tr><th>Datum</th><th>Name</th><th>Kommen</th><th>Pausen</th><th>Gehen</th><th>Std.</th><th>Status</th><th></th></tr></thead>
+        <thead><tr><th>Datum</th><th>Name</th><th>Kommen</th><th>Pause</th><th>Pause Ende</th><th>Gehen</th><th>Std.</th><th>Status</th><th></th></tr></thead>
         <tbody></tbody>
       </table>
       </div>
@@ -289,10 +289,15 @@ function stundenText(eintrag) {
   if (h === null) return '–';
   return h.toFixed(2).replace('.', ',') + ' Std';
 }
-function pausenText(eintrag) {
-  const teile = (eintrag.pausen || []).map(p => p.von + '–' + p.bis);
-  if (eintrag.pauseLaufend) teile.push(eintrag.pauseLaufend + '–… (läuft)');
-  return teile.length ? teile.join(', ') : '–';
+function pausenVonListe(eintrag) {
+  const von = (eintrag.pausen || []).map(p => p.von);
+  if (eintrag.pauseLaufend) von.push(eintrag.pauseLaufend);
+  return von.length ? von.join(', ') : '–';
+}
+function pausenBisListe(eintrag) {
+  const bis = (eintrag.pausen || []).map(p => p.bis);
+  if (eintrag.pauseLaufend) bis.push('läuft');
+  return bis.length ? bis.join(', ') : '–';
 }
 function statusBadge(eintrag) {
   if (!eintrag.ende) return '<span class="status-badge status-laeuft">🟡 Läuft</span>';
@@ -487,10 +492,10 @@ function renderMaTabelle() {
   const tbody = document.querySelector('#ma-tabelle tbody');
   tbody.innerHTML = '';
   const sorted = [...zeItems].sort((a, b) => b.datum.localeCompare(a.datum) || b.id - a.id);
-  if (!sorted.length) { tbody.innerHTML = '<tr><td colspan="6" style="color:#8090a8;">Noch keine Einträge.</td></tr>'; return; }
+  if (!sorted.length) { tbody.innerHTML = '<tr><td colspan="7" style="color:#8090a8;">Noch keine Einträge.</td></tr>'; return; }
   sorted.forEach(i => {
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${datumDe(i.datum)}</td><td>${i.start || ''}</td><td>${pausenText(i)}</td><td>${i.ende || '–'}</td><td>${stundenText(i)}</td><td>${statusBadge(i)}</td>`;
+    tr.innerHTML = `<td>${datumDe(i.datum)}</td><td>${i.start || ''}</td><td>${pausenVonListe(i)}</td><td>${pausenBisListe(i)}</td><td>${i.ende || '–'}</td><td>${stundenText(i)}</td><td>${statusBadge(i)}</td>`;
     tbody.appendChild(tr);
   });
 }
@@ -610,14 +615,14 @@ function renderZeTabelle() {
   if (filterJahr) gefiltert = gefiltert.filter(i => i.datum.slice(0, 4) === filterJahr);
   gefiltert.sort((a, b) => b.datum.localeCompare(a.datum) || b.id - a.id);
 
-  if (!gefiltert.length) { tbody.innerHTML = '<tr><td colspan="8" style="color:#8090a8;">Keine Einträge.</td></tr>'; return; }
+  if (!gefiltert.length) { tbody.innerHTML = '<tr><td colspan="9" style="color:#8090a8;">Keine Einträge.</td></tr>'; return; }
 
   gefiltert.forEach(i => {
     const tr = document.createElement('tr');
     const genehmigenBtn = (i.ende && i.status !== 'genehmigt')
       ? `<button class="btn-add" style="padding:5px 10px;font-size:11px;" onclick="zeGenehmigen(${i.id})">✓ Genehmigen</button>`
       : '';
-    tr.innerHTML = `<td>${datumDe(i.datum)}</td><td>${i.name}</td><td>${i.start || ''}</td><td>${pausenText(i)}</td><td>${i.ende || '–'}</td><td>${stundenText(i)}</td><td>${statusBadge(i)}</td>
+    tr.innerHTML = `<td>${datumDe(i.datum)}</td><td>${i.name}</td><td>${i.start || ''}</td><td>${pausenVonListe(i)}</td><td>${pausenBisListe(i)}</td><td>${i.ende || '–'}</td><td>${stundenText(i)}</td><td>${statusBadge(i)}</td>
       <td style="white-space:nowrap;">${genehmigenBtn} <button class="btn-del" onclick="zeLoeschen(${i.id})">✕</button></td>`;
     tbody.appendChild(tr);
   });
@@ -666,19 +671,29 @@ function chefPdfErstellen() {
   doc.setTextColor(90, 106, 128);
   doc.text(datumDe(von) + ' – ' + datumDe(bis), 14, 25);
 
-  const uebersichtsZeilen = namenMitEintraegen.map(n => {
-    const eintraege = alleZeiten.filter(i => i.name === n && i.status === 'genehmigt' && i.datum >= von && i.datum <= bis);
+  const uebersichtsZeilen = [];
+  let gesamtSumme = 0;
+  namenMitEintraegen.forEach(n => {
+    const eintraege = alleZeiten.filter(i => i.name === n && i.status === 'genehmigt' && i.datum >= von && i.datum <= bis).sort((a, b) => a.datum.localeCompare(b.datum));
+    eintraege.forEach(i => {
+      uebersichtsZeilen.push([datumDe(i.datum), n, i.start || '', pausenVonListe(i), pausenBisListe(i), i.ende || '', stundenText(i)]);
+    });
     const summe = eintraege.reduce((s, i) => s + (stundenBerechnen(i) || 0), 0);
-    return [n, eintraege.length + '', summe.toFixed(2).replace('.', ',') + ' Std'];
+    gesamtSumme += summe;
+    uebersichtsZeilen.push([{ content: 'Zwischensumme ' + n, colSpan: 6, styles: { fontStyle: 'bold', fillColor: [245, 240, 232] } }, { content: summe.toFixed(2).replace('.', ',') + ' Std', styles: { fontStyle: 'bold', fillColor: [245, 240, 232] } }]);
   });
   doc.autoTable({
     startY: 34,
-    head: [['Mitarbeiter', 'Einträge', 'Stunden gesamt']],
+    head: [['Datum', 'Mitarbeiter', 'Kommen', 'Pause', 'Pause Ende', 'Gehen', 'Std.']],
     body: uebersichtsZeilen,
-    styles: { fontSize: 10 },
+    styles: { fontSize: 8.5 },
     headStyles: { fillColor: [26, 42, 74], textColor: [212, 175, 55] },
     margin: { left: 14, right: 14 }
   });
+  let yNachUebersicht = doc.lastAutoTable.finalY + 8;
+  doc.setFontSize(10.5);
+  doc.setTextColor(26, 42, 74);
+  doc.text('Stunden gesamt (alle Mitarbeiter): ' + gesamtSumme.toFixed(2).replace('.', ',') + ' Std', 14, yNachUebersicht);
 
   namenMitEintraegen.forEach(n => {
     const eintraege = alleZeiten.filter(i => i.name === n && i.status === 'genehmigt' && i.datum >= von && i.datum <= bis).sort((a, b) => a.datum.localeCompare(b.datum));
@@ -701,12 +716,12 @@ function stundenzettelSeite(doc, name, eintraege, von, bis) {
   doc.setTextColor(90, 106, 128);
   doc.text('Zeitraum: ' + datumDe(von) + ' – ' + datumDe(bis), 14, 33);
 
-  const zeilen = eintraege.map(i => [datumDe(i.datum), i.start || '', pausenText(i), i.ende || '', stundenText(i)]);
+  const zeilen = eintraege.map(i => [datumDe(i.datum), i.start || '', pausenVonListe(i), pausenBisListe(i), i.ende || '', stundenText(i)]);
   const summe = eintraege.reduce((s, i) => s + (stundenBerechnen(i) || 0), 0);
 
   doc.autoTable({
     startY: 40,
-    head: [['Datum', 'Kommen', 'Pausen', 'Gehen', 'Std.']],
+    head: [['Datum', 'Kommen', 'Pause', 'Pause Ende', 'Gehen', 'Std.']],
     body: zeilen,
     styles: { fontSize: 9 },
     headStyles: { fillColor: [26, 42, 74], textColor: [212, 175, 55] },
