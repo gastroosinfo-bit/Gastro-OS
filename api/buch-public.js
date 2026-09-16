@@ -95,6 +95,19 @@ export default async function handler(req, res) {
 
   const { code, pin, bookType, action, text, eintrag, datum, zeit } = req.body || {};
   if (!code || !pin) return res.status(400).json({ error: 'Code oder PIN fehlt.' });
+
+  // ─── "team": nur Person + ihre Rechte ermitteln (für die Team-Zugang-Startseite
+  // mit den Bereichs-Buttons) — prüft absichtlich KEIN einzelnes rechte[bookType],
+  // da hier ja erst rausgefunden werden soll, was die Person überhaupt darf. ──
+  if (bookType === 'team') {
+    const owner = await findOwnerByCode('team-zugang', code);
+    if (!owner) return res.status(401).json({ error: 'Ungültiger Code.' });
+    const mitarbeiterListe = await loadMitarbeiter(owner.user_id);
+    const person = mitarbeiterListe.find(m => m.pin && String(m.pin) === String(pin));
+    if (!person) return res.status(401).json({ error: 'Falsche PIN.' });
+    return res.status(200).json({ meinName: person.name, rechte: person.rechte || {} });
+  }
+
   if (!TOOL_NAME_BY_TYPE[bookType]) return res.status(400).json({ error: 'Ungültiger bookType.' });
 
   const zugangTool = bookType + '-zugang';
