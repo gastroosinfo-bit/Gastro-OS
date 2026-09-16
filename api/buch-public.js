@@ -6,12 +6,14 @@
 // persönliche PIN plus Häkchen, welche Bereiche er nutzen darf. So kann sich
 // niemand mehr für einen Kollegen ausgeben (frühere Version nutzte eine einzige,
 // geteilte PIN pro Bereich — das ließ genau das zu).
-// Deckt vier "Bücher" ab: uebergabe, reservierung (beide mit Eintragen durch
-// Mitarbeiter, Name kommt automatisch aus der erkannten Person), schichtplan
-// (nur lesend für Mitarbeiter) und zeiterfassung (Mitarbeiter tragen Kommen/
-// Pause/Gehen ein, sehen aber nur ihre eigenen Zeiten — Genehmigen ist Chef-Sache).
+// Deckt sechs Bereiche ab: uebergabe, reservierung (Eintragen durch Mitarbeiter,
+// Name kommt automatisch aus der erkannten Person), schichtplan (nur lesend),
+// zeiterfassung (Mitarbeiter tragen Kommen/Pause/Gehen ein, sehen aber nur ihre
+// eigenen Zeiten), belege (Mitarbeiter laden Belege/Z-Bons hoch) und
+// temperaturen (Mitarbeiter tragen HACCP-Temperaturen ein).
 
 const { sendPushToAll } = require('../lib/push-helper');
+const { sbHeaders, findOwnerByCode, loadMitarbeiter } = require('../lib/pin-auth');
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
@@ -20,61 +22,28 @@ const TOOL_NAME_BY_TYPE = {
   uebergabe: 'tagesgeschaeft-schicht',
   reservierung: 'reservierungen',
   schichtplan: 'schichtplaene',
-  zeiterfassung: 'zeiterfassung'
+  zeiterfassung: 'zeiterfassung',
+  belege: 'tagesgeschaeft-belege',
+  temperaturen: 'tagesgeschaeft-haccp'
 };
 
-function sbHeaders() {
-  return {
-    'Content-Type': 'application/json',
-    'apikey': SUPABASE_SERVICE_KEY,
-    'Authorization': 'Bearer ' + SUPABASE_SERVICE_KEY
-  };
-}
-async function findOwnerByCode(zugangTool, code) {
-  const r = await fetch(
-    SUPABASE_URL + '/rest/v1/user_tool_data?tool_name=eq.' + zugangTool + '&data->>code=eq.' + encodeURIComponent(code) + '&select=user_id,data&limit=1',
-    { headers: sbHeaders() }
-  );
-  const rows = await r.json();
-  if (!rows || rows.length === 0) return null;
-  return rows[0];
-}
-async function loadItems(userId, toolName) {
+async function loadRaw(userId, toolName) {
   const r = await fetch(
     SUPABASE_URL + '/rest/v1/user_tool_data?user_id=eq.' + encodeURIComponent(userId) +
     '&tool_name=eq.' + toolName + '&select=data&order=updated_at.desc&limit=1',
     { headers: sbHeaders() }
   );
   const rows = await r.json();
-  const data = (rows && rows.length > 0 && rows[0].data) ? rows[0].data : {};
-  return data.items || [];
+  return (rows && rows.length > 0 && rows[0].data) ? rows[0].data : {};
 }
-// Team-Mitarbeiterliste wird mit dem Schichtplan geteilt (gleicher Tool-Name) — so muss
-// der Chef seine Mitarbeiter nur an einer Stelle pflegen. Jeder Eintrag: { name, pin, rechte }.
-async function loadMitarbeiter(userId) {
-  const r = await fetch(
-    SUPABASE_URL + '/rest/v1/user_tool_data?user_id=eq.' + encodeURIComponent(userId) +
-    '&tool_name=eq.schichtplan-mitarbeiter&select=data&order=updated_at.desc&limit=1',
-    { headers: sbHeaders() }
-  );
-  const rows = await r.json();
-  const data = (rows && rows.length > 0 && rows[0].data) ? rows[0].data : {};
-  if (Array.isArray(data.mitarbeiter)) return data.mitarbeiter;
-  // Altformat (nur Namen, keine persönlichen PINs/Rechte) — bis zur Migration im
-  // Dashboard behandeln wir das defensiv als "noch keine PIN vergeben".
-  if (Array.isArray(data.namen)) {
-    return data.namen.map(n => ({ name: n, pin: '', rechte: { uebergabe: true, reservierung: true, schichtplan: true, zeiterfassung: true } }));
-  }
-  return [];
-}
-async function saveItems(userId, toolName, items) {
+async function saveRaw(userId, toolName, data) {
   const existingRes = await fetch(
     SUPABASE_URL + '/rest/v1/user_tool_data?user_id=eq.' + encodeURIComponent(userId) +
     '&tool_name=eq.' + toolName + '&select=id&order=updated_at.desc',
     { headers: sbHeaders() }
   );
   const existingRows = await existingRes.json();
-  const payload = { data: { items }, updated_at: new Date().toISOString() };
+  const payload = { data, updated_at: new Date().toISOString() };
 
   if (existingRows && existingRows.length > 0) {
     await fetch(SUPABASE_URL + '/rest/v1/user_tool_data?id=eq.' + existingRows[0].id, {
@@ -84,16 +53,23 @@ async function saveItems(userId, toolName, items) {
     await fetch(SUPABASE_URL + '/rest/v1/user_tool_data', {
       method: 'POST',
       headers: { ...sbHeaders(), 'Prefer': 'return=minimal' },
-      body: JSON.stringify({ user_id: userId, tool_name: toolName, data: { items } })
+      body: JSON.stringify({ user_id: userId, tool_name: toolName, data })
     });
   }
+}
+async function loadItems(userId, toolName) {
+  const data = await loadRaw(userId, toolName);
+  return data.items || [];
+}
+async function saveItems(userId, toolName, items) {
+  await saveRaw(userId, toolName, { items });
 }
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Methode nicht erlaubt.' });
   if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) return res.status(500).json({ error: 'Server nicht konfiguriert.' });
 
-  const { code, pin, bookType, action, text, eintrag, datum, zeit } = req.body || {};
+  const { code, pin, bookType, action, text, eintrag, datum, zeit, werte } = req.body || {};
   if (!code || !pin) return res.status(400).json({ error: 'Code oder PIN fehlt.' });
 
   // ─── "team": nur Person + ihre Rechte ermitteln (für die Team-Zugang-Startseite
@@ -148,6 +124,34 @@ export default async function handler(req, res) {
     await saveItems(owner.user_id, toolName, items);
     sendPushToAll(owner.user_id, '📅 Neue Reservierung', `${eintrag.name}, ${eintrag.datum}${eintrag.uhrzeit ? ' ' + eintrag.uhrzeit : ''}${eintrag.personen ? ', ' + eintrag.personen + ' Personen' : ''}`, '/reservierung.html?u=' + code, 'reservierung');
     return res.status(200).json({ items, meinName: name });
+  }
+
+  // ─── Belege: Mitarbeiter dürfen Belege/Z-Bons eintragen (Datei kommt vorher
+  // separat über api/beleg-upload.js — hier wird nur der Metadaten-Eintrag mit
+  // dem bereits hochgeladenen storagePath gespeichert). ──────────────────────
+  if (bookType === 'belege' && action === 'add') {
+    if (!eintrag || !eintrag.plattform || !eintrag.datum) return res.status(400).json({ error: 'Anbieter oder Datum fehlt.' });
+    const items = await loadItems(owner.user_id, toolName);
+    items.push({ id: Date.now(), ...eintrag, erfasstVon: name });
+    await saveItems(owner.user_id, toolName, items);
+    sendPushToAll(owner.user_id, '🧾 Neuer Beleg', name + ' hat einen Beleg (' + eintrag.plattform + ') hochgeladen.', '/belegablage.html', 'belege');
+    return res.status(200).json({ meinName: name });
+  }
+
+  // ─── Temperaturen: Mitarbeiter tragen HACCP-Werte für vorhandene Geräte ein.
+  // Werte werden pro Tag zusammengeführt (nicht überschrieben), damit nicht ein
+  // Mitarbeiter die Einträge eines anderen für denselben Tag versehentlich löscht. ─
+  if (bookType === 'temperaturen') {
+    const raw = await loadRaw(owner.user_id, toolName);
+    const geraete = raw.geraete || [];
+    if (action === 'eintragen') {
+      if (!datum || !werte || typeof werte !== 'object') return res.status(400).json({ error: 'Datum oder Werte fehlen.' });
+      const eintraege = raw.eintraege || {};
+      eintraege[datum] = { ...(eintraege[datum] || {}), ...werte };
+      await saveRaw(owner.user_id, toolName, { geraete, eintraege });
+      sendPushToAll(owner.user_id, '🌡️ Temperaturen eingetragen', name + ' hat Temperaturen für ' + datum + ' eingetragen.', '/tagesgeschaeft.html', 'temperaturen');
+    }
+    return res.status(200).json({ geraete, meinName: name });
   }
 
   // ─── Zeiterfassung: Mitarbeiter tragen Kommen/Pause/Gehen für sich selbst ein ──
