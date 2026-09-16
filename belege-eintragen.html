@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Belege eintragen – GASTRO-OS</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Belege">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png">
+<script>
+  (function() {
+    var code = new URLSearchParams(window.location.search).get('u');
+    if (code) {
+      document.write('<link rel="manifest" href="/api/manifest?type=belege&code=' + encodeURIComponent(code) + '">');
+    } else {
+      document.write('<link rel="manifest" href="/manifest-belege.json">');
+    }
+  })();
+</script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4a; min-height:100vh; }
+.header{background:#1a2a4a;padding:14px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
+.brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+.wrap { max-width:640px; margin:0 auto; padding:28px 24px 60px; }
+.tool-label { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:4px; }
+.tool-title { font-family:Georgia,serif; font-size:22px; color:#1a2a4a; margin-bottom:4px; }
+.tool-sub { font-size:13px; color:#5a6a80; margin-bottom:20px; }
+
+.section { background:#fff; border:1px solid #e8dfc8; border-radius:10px; padding:22px 26px; margin-bottom:20px; box-shadow:0 2px 6px rgba(0,0,0,0.04); }
+.section-head { background:#1a2a4a; color:#d4af37; font-size:13px; font-weight:700; letter-spacing:1px; padding:10px 14px; border-radius:6px; margin-bottom:16px; }
+
+.field-group { display:flex; flex-direction:column; gap:5px; margin-bottom:14px; }
+.field-group label { font-size:11px; font-weight:700; color:#8090a8; text-transform:uppercase; letter-spacing:0.5px; }
+.field-group input, .field-group select { border:1px solid #e0d8c8; border-radius:6px; padding:9px 10px; font-size:13.5px; color:#1a2a4a; background:#eaf2ff; font-family:inherit; width:100%; }
+.field-group input:focus, .field-group select:focus { outline:none; border-color:#d4af37; background:#fff; }
+.grid2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.grid4 { display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:14px; }
+@media(max-width:640px){ .grid2,.grid4{ grid-template-columns:1fr 1fr; } }
+
+.btn-add { background:#1a6640; color:#fff; border:none; padding:10px 20px; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; }
+.btn-add:hover { background:#d4af37; color:#1a2a4a; }
+.btn-add.secondary { background:transparent; color:#1a6640; border:1px solid #1a6640; }
+.btn-add.secondary:hover { background:#1a6640; color:#fff; }
+.save-msg { font-size:12px; color:#4aaa60; margin-left:10px; display:none; }
+.error-msg { font-size:12.5px; color:#c0392b; margin-top:8px; display:none; }
+
+.pin-screen { text-align:center; padding:40px 20px; }
+.pin-input { font-size:24px; letter-spacing:8px; text-align:center; width:160px; padding:12px; border:2px solid #d4af37; border-radius:8px; margin:16px auto; display:block; }
+
+.upload-drop { border:2px dashed #d4af37; border-radius:10px; padding:26px; text-align:center; cursor:pointer; color:#5a6a85; font-size:13.5px; background:#fdf8ea; }
+.upload-drop:hover { background:#fff8e0; }
+.hint { font-size:11.5px; color:#8090a8; margin-top:6px; }
+.auto-hinweis { font-size:12px; padding:8px 12px; border-radius:6px; margin-top:10px; display:none; }
+.auto-hinweis.loading { background:#eaf2ff; color:#3a5578; }
+
+.notiz-item { border-bottom:1px solid #f0e8d4; padding:10px 0; font-size:12.5px; }
+.notiz-item:last-child { border-bottom:none; }
+
+.footer-brand { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-brand strong { color:#d4af37; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <span class="brand">GASTRO-OS</span>
+</div>
+<div class="gold-bar"></div>
+
+<div class="wrap">
+  <div class="tool-label">Toolbox · Intern</div>
+  <div class="tool-title">🧾 Belege eintragen</div>
+  <div class="tool-sub" id="tool-sub-text">Wird geladen …</div>
+
+  <!-- ═══ PIN-EINGABE ═══ -->
+  <div id="pin-screen" class="section pin-screen" style="display:none;">
+    <div style="font-size:15px;margin-bottom:6px;">Bitte PIN eingeben</div>
+    <input type="password" inputmode="numeric" maxlength="4" class="pin-input" id="pin-input" placeholder="••••">
+    <button class="btn-add" onclick="pinPruefen()">Entsperren</button>
+    <div class="error-msg" id="pin-error">Falsche PIN, bitte nochmal versuchen.</div>
+  </div>
+
+  <!-- ═══ MITARBEITER-BEREICH ═══ -->
+  <div id="mitarbeiter-bereich" style="display:none;">
+    <div class="section">
+      <div class="section-head">Neuer Beleg</div>
+      <div class="upload-drop" onclick="document.getElementById('beleg-datei').click()">
+        📎 Klicken, um ein Foto zu machen oder eine PDF-Datei auszuwählen<br>
+        <span id="beleg-datei-name" style="font-weight:600;color:#1a2a4a;"></span>
+      </div>
+      <input type="file" id="beleg-datei" accept="application/pdf,image/*" capture="environment" style="display:none;" onchange="belegDateiGewaehlt(event)">
+      <div class="hint">Max. 3 MB, PDF oder Foto (JPG/PNG).</div>
+      <div class="auto-hinweis" id="beleg-auto-hinweis"></div>
+
+      <div class="grid2" style="margin-top:16px;">
+        <div class="field-group"><label>Datum</label><input type="date" id="beleg-datum"></div>
+        <div class="field-group"><label>Anbieter / Lieferant</label>
+          <select id="beleg-plattform" onchange="belegPlattformGeaendert()">
+            <option value="Lieferando">Lieferando</option>
+            <option value="Wolt">Wolt</option>
+            <option value="Uber Eats">Uber Eats</option>
+            <option value="Metro">Metro</option>
+            <option value="Getränkelieferant">Getränkelieferant</option>
+            <option value="Z-Bon">Z-Bon (Tagesabschluss)</option>
+            <option value="__eigener__">+ Eigenen Lieferanten eingeben</option>
+          </select>
+          <input type="text" id="beleg-plattform-eigen" placeholder="Name des Lieferanten" style="display:none;margin-top:8px;">
+        </div>
+      </div>
+      <div class="grid2">
+        <div class="field-group"><label>Rechnungs-/Liefernr.</label><input type="text" id="beleg-rechnungsnr" placeholder="optional"></div>
+        <div class="field-group"><label>Betrag (€)</label><input type="number" step="0.01" id="beleg-betrag" placeholder="0,00"></div>
+      </div>
+      <div class="grid2" id="beleg-barkarte-wrap" style="display:none;">
+        <div class="field-group"><label>Bar (€)</label><input type="number" step="0.01" id="beleg-bar" placeholder="0,00"></div>
+        <div class="field-group"><label>Kartenzahlung (€)</label><input type="number" step="0.01" id="beleg-karte" placeholder="0,00"></div>
+      </div>
+
+      <button class="btn-add" style="margin-top:6px;" onclick="belegHochladen()">⬆️ Hochladen</button>
+      <span class="save-msg" id="beleg-save-msg">✓ Hochgeladen</span>
+    </div>
+
+    <div class="section">
+      <div class="section-head">Zuletzt von dir hochgeladen</div>
+      <div id="beleg-verlauf"><span style="color:#8090a8;font-size:12.5px;">Noch nichts hochgeladen.</span></div>
+    </div>
+
+    <button class="btn-add secondary" onclick="mitarbeiterAbmelden()" style="font-size:11.5px;padding:6px 12px;">🚪 Abmelden</button>
+  </div>
+
+</div>
+
+<div class="footer-brand"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg</div>
+
+<script>
+function flashSaved(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.style.display = 'inline';
+  setTimeout(() => { el.style.display = 'none'; }, 2000);
+}
+function heute() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+function dateiZuBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result.split(',')[1]);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+function belegPlattformGeaendert() {
+  const select = document.getElementById('beleg-plattform');
+  document.getElementById('beleg-plattform-eigen').style.display = select.value === '__eigener__' ? 'block' : 'none';
+  document.getElementById('beleg-barkarte-wrap').style.display = select.value === 'Z-Bon' ? 'grid' : 'none';
+}
+
+let beCode = null, bePin = null, beName = null;
+let belegAusgewaehlteDatei = null;
+let eigeneUploads = [];
+
+const urlParams = new URLSearchParams(window.location.search);
+const codeAusUrl = urlParams.get('u');
+beCode = codeAusUrl || localStorage.getItem('gastroos_be_code');
+
+if (!beCode) {
+  document.getElementById('tool-sub-text').textContent = 'Dieser Link ist unvollständig — bitte den Chef nach dem richtigen Link fragen.';
+} else {
+  if (codeAusUrl) localStorage.setItem('gastroos_be_code', codeAusUrl);
+  document.getElementById('beleg-datum').value = heute();
+  const gespeichertePin = localStorage.getItem('gastroos_team_pin');
+  if (gespeichertePin) {
+    pinPruefenMitWert(gespeichertePin, true);
+  } else {
+    zeigePinScreen();
+  }
+}
+
+function zeigePinScreen() {
+  document.getElementById('tool-sub-text').textContent = 'Gib deine persönliche PIN ein, um einen Beleg einzutragen.';
+  document.getElementById('pin-screen').style.display = 'block';
+  document.getElementById('pin-input').focus();
+}
+
+window.pinPruefen = function() {
+  const pin = document.getElementById('pin-input').value.trim();
+  if (pin.length !== 4) return;
+  pinPruefenMitWert(pin, false);
+};
+
+async function pinPruefenMitWert(pin, stillLaden) {
+  try {
+    const res = await fetch('/api/buch-public', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code: beCode, pin, bookType: 'belege' })
+    });
+    if (!res.ok) {
+      if (!stillLaden) { document.getElementById('pin-error').style.display = 'block'; }
+      else { zeigePinScreen(); }
+      return;
+    }
+    const d = await res.json();
+    bePin = pin;
+    beName = d.meinName;
+    localStorage.setItem('gastroos_team_pin', pin);
+    document.getElementById('pin-screen').style.display = 'none';
+    document.getElementById('pin-error').style.display = 'none';
+    document.getElementById('tool-sub-text').textContent = 'Hallo, ' + (beName || '') + '! Trag hier einen neuen Beleg oder Z-Bon ein.';
+    document.getElementById('mitarbeiter-bereich').style.display = 'block';
+  } catch (e) {
+    if (!stillLaden) document.getElementById('pin-error').style.display = 'block';
+  }
+}
+
+window.mitarbeiterAbmelden = function() {
+  localStorage.removeItem('gastroos_team_pin');
+  document.getElementById('mitarbeiter-bereich').style.display = 'none';
+  document.getElementById('pin-input').value = '';
+  zeigePinScreen();
+};
+
+window.belegDateiGewaehlt = async function(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  if (file.size > 3 * 1024 * 1024) { alert('Datei zu groß (max. 3 MB).'); event.target.value = ''; return; }
+  belegAusgewaehlteDatei = file;
+  document.getElementById('beleg-datei-name').textContent = file.name;
+
+  const hinweis = document.getElementById('beleg-auto-hinweis');
+  const istFoto = file.type.startsWith('image/');
+  hinweis.className = 'auto-hinweis loading';
+  hinweis.style.display = 'block';
+  hinweis.textContent = istFoto ? '🔍 Foto wird analysiert …' : '🔍 Beleg wird automatisch ausgelesen …';
+
+  try {
+    const base64 = await dateiZuBase64(file);
+    const res = await fetch('/api/beleg-upload', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code: beCode, pin: bePin, contentBase64: base64, contentType: file.type || 'application/pdf', analyzeOnly: true })
+    });
+    const d = await res.json();
+    const extracted = (d && d.extracted) || {};
+    let erkannt = [];
+
+    if (extracted.datum) { document.getElementById('beleg-datum').value = extracted.datum; erkannt.push('Datum'); }
+    if (extracted.betrag != null) { document.getElementById('beleg-betrag').value = extracted.betrag.toFixed(2); erkannt.push('Betrag'); }
+    if (extracted.istZBon) {
+      document.getElementById('beleg-plattform').value = 'Z-Bon';
+      belegPlattformGeaendert();
+      erkannt.push('Z-Bon erkannt');
+    } else if (extracted.plattform) {
+      const select = document.getElementById('beleg-plattform');
+      const eigenOption = select.querySelector('option[value="__eigener__"]');
+      let passendeOption = [...select.options].find(o => o.value === extracted.plattform);
+      if (!passendeOption) {
+        const opt = document.createElement('option');
+        opt.value = extracted.plattform; opt.textContent = extracted.plattform;
+        select.insertBefore(opt, eigenOption);
+      }
+      select.value = extracted.plattform;
+      belegPlattformGeaendert();
+      erkannt.push('Anbieter');
+    }
+    if (extracted.barBetrag != null) { document.getElementById('beleg-bar').value = extracted.barBetrag.toFixed(2); erkannt.push('Bar-Betrag'); }
+    if (extracted.kartenBetrag != null) { document.getElementById('beleg-karte').value = extracted.kartenBetrag.toFixed(2); erkannt.push('Karten-Betrag'); }
+    if (extracted.rechnungsnummer) { document.getElementById('beleg-rechnungsnr').value = extracted.rechnungsnummer; erkannt.push('Rechnungsnr.'); }
+
+    hinweis.className = 'auto-hinweis';
+    hinweis.textContent = erkannt.length ? ('✓ Automatisch erkannt: ' + erkannt.join(', ') + ' — bitte kurz prüfen.') : 'ℹ️ Konnte nichts automatisch auslesen — bitte Felder manuell ausfüllen.';
+  } catch (e) {
+    hinweis.className = 'auto-hinweis';
+    hinweis.textContent = 'ℹ️ Konnte nichts automatisch auslesen — bitte Felder manuell ausfüllen.';
+  }
+};
+
+window.belegHochladen = async function() {
+  if (!belegAusgewaehlteDatei) { alert('Bitte zuerst ein Foto oder eine PDF-Datei auswählen.'); return; }
+  const datum = document.getElementById('beleg-datum').value;
+  let plattform = document.getElementById('beleg-plattform').value;
+  if (plattform === '__eigener__') {
+    plattform = document.getElementById('beleg-plattform-eigen').value.trim();
+    if (!plattform) { alert('Bitte einen Namen für den Lieferanten eingeben.'); return; }
+  }
+  const betrag = parseFloat(document.getElementById('beleg-betrag').value) || 0;
+  const rechnungsnr = document.getElementById('beleg-rechnungsnr').value.trim();
+  const bar = (plattform === 'Z-Bon' && document.getElementById('beleg-bar').value) ? parseFloat(document.getElementById('beleg-bar').value) : null;
+  const karte = (plattform === 'Z-Bon' && document.getElementById('beleg-karte').value) ? parseFloat(document.getElementById('beleg-karte').value) : null;
+
+  try {
+    const base64 = await dateiZuBase64(belegAusgewaehlteDatei);
+    const uploadRes = await fetch('/api/beleg-upload', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code: beCode, pin: bePin, filename: belegAusgewaehlteDatei.name, contentBase64: base64, contentType: belegAusgewaehlteDatei.type || 'application/pdf' })
+    });
+    const uploadResult = await uploadRes.json();
+    if (!uploadRes.ok) { alert('Upload fehlgeschlagen: ' + (uploadResult.error || '')); return; }
+
+    const eintrag = { datum, plattform, betrag, rechnungsnr, bar, karte, status: 'bezahlt', dateiname: belegAusgewaehlteDatei.name, storagePath: uploadResult.path };
+    const res2 = await fetch('/api/buch-public', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code: beCode, pin: bePin, bookType: 'belege', action: 'add', eintrag })
+    });
+    if (!res2.ok) { alert('Speichern fehlgeschlagen.'); return; }
+
+    eigeneUploads.unshift({ plattform, betrag, datum });
+    renderVerlauf();
+    flashSaved('beleg-save-msg');
+    belegAusgewaehlteDatei = null;
+    document.getElementById('beleg-datei').value = '';
+    document.getElementById('beleg-datei-name').textContent = '';
+    document.getElementById('beleg-auto-hinweis').style.display = 'none';
+    document.getElementById('beleg-plattform').value = 'Lieferando';
+    belegPlattformGeaendert();
+    document.getElementById('beleg-plattform-eigen').value = '';
+    document.getElementById('beleg-betrag').value = '';
+    document.getElementById('beleg-rechnungsnr').value = '';
+    document.getElementById('beleg-bar').value = '';
+    document.getElementById('beleg-karte').value = '';
+    document.getElementById('beleg-datum').value = heute();
+  } catch (e) {
+    alert('Fehler beim Hochladen.');
+  }
+};
+
+function renderVerlauf() {
+  const el = document.getElementById('beleg-verlauf');
+  if (!eigeneUploads.length) { el.innerHTML = '<span style="color:#8090a8;font-size:12.5px;">Noch nichts hochgeladen.</span>'; return; }
+  el.innerHTML = eigeneUploads.map(u => `<div class="notiz-item">${u.datum} — ${u.plattform}${u.betrag ? ' — ' + u.betrag.toFixed(2).replace('.', ',') + ' €' : ''}</div>`).join('');
+}
+</script>
+</body>
+</html>
