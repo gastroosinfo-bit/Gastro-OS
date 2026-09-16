@@ -1276,12 +1276,21 @@ function renderInternTools() {
 // als Startseite mit Bereichs-Buttons. Der gleiche Code wird beim Einrichten
 // gleichzeitig für 'team' und alle vier Bereiche hinterlegt, damit die direkten
 // Links (z. B. aus Push-Benachrichtigungen) weiterhin unverändert funktionieren.
+const TEAM_ZUGANG_BEREICHE = ['team', 'uebergabe', 'reservierung', 'schichtplan', 'zeiterfassung', 'belege', 'temperaturen'];
+
 async function renderTeamZugangPanel() {
   const content = document.getElementById('team-zugang-content');
   if (!content) return;
   const zugang = await dashToolLoad('team-zugang');
 
   if (zugang && zugang.code) {
+    // Stellt sicher, dass auch nachträglich hinzugekommene Bereiche (z. B. Belege/
+    // Temperaturen) denselben Code kennen — harmlos erneut auszuführen, falls ein
+    // Bereich den Code schon hat, und schützt automatisch vor "Ungültiger Code" bei
+    // künftig neu hinzukommenden Bereichen.
+    await Promise.all(TEAM_ZUGANG_BEREICHE.map(bookType =>
+      fetch('/api/zugang-setup', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code: zugang.code, bookType }) })
+    ));
     const link = window.location.origin + '/team-zugang.html?u=' + zugang.code;
     content.innerHTML = `
       <div style="background:#fff8e0;border:1px solid #d4af37;border-radius:8px;padding:14px 16px;">
@@ -1300,8 +1309,7 @@ async function renderTeamZugangPanel() {
     `;
     document.getElementById('team-zugang-setup-btn').onclick = async () => {
       const code = Math.random().toString(36).slice(2, 10) + Math.random().toString(36).slice(2, 6);
-      const bereiche = ['team', 'uebergabe', 'reservierung', 'schichtplan', 'zeiterfassung', 'belege', 'temperaturen'];
-      await Promise.all(bereiche.map(bookType =>
+      await Promise.all(TEAM_ZUGANG_BEREICHE.map(bookType =>
         fetch('/api/zugang-setup', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code, bookType }) })
       ));
       await renderTeamZugangPanel();
