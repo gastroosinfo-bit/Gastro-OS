@@ -54,7 +54,7 @@ export default async function handler(req, res) {
   if (!code || !pin || !/^\d{4}$/.test(pin)) {
     return res.status(400).json({ error: 'Code oder vierstellige PIN fehlt/ungültig.' });
   }
-  if (!['uebergabe', 'reservierung', 'schichtplan'].includes(bookType)) {
+  if (!['uebergabe', 'reservierung', 'schichtplan', 'zeiterfassung'].includes(bookType)) {
     return res.status(400).json({ error: 'Ungültiger bookType.' });
   }
 
