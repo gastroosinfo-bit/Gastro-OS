@@ -8,7 +8,8 @@
 const TITEL = {
   uebergabe: { name: 'Übergabebuch – GASTRO-OS', short_name: 'Übergabebuch' },
   reservierung: { name: 'Reservierungsbuch – GASTRO-OS', short_name: 'Reservierung' },
-  schichtplan: { name: 'Schichtplan – GASTRO-OS', short_name: 'Schichtplan' }
+  schichtplan: { name: 'Schichtplan – GASTRO-OS', short_name: 'Schichtplan' },
+  zeiterfassung: { name: 'Zeiterfassung – GASTRO-OS', short_name: 'Zeiterfassung' }
 };
 
 export default function handler(req, res) {
