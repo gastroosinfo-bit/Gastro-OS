@@ -420,7 +420,7 @@ function initMitarbeiterModus(code) {
   zeCode = code;
   document.getElementById('tool-sub-text').textContent = 'Gib deine persönliche PIN ein, um deine Zeit einzutragen.';
 
-  const gespeichertePin = localStorage.getItem('gastroos_ze_pin_' + code) || localStorage.getItem('gastroos_team_pin');
+  const gespeichertePin = localStorage.getItem('gastroos_team_pin');
   if (gespeichertePin) {
     pinPruefenMitWert(gespeichertePin, true);
   } else {
@@ -443,7 +443,6 @@ async function pinPruefenMitWert(pin, stillLaden) {
       body: JSON.stringify({ code: zeCode, pin, bookType: 'zeiterfassung' })
     });
     if (!res.ok) {
-      localStorage.removeItem('gastroos_ze_pin_' + zeCode);
       let fehlertext = 'Falsche PIN, bitte nochmal versuchen.';
       try { const fehlerDaten = await res.json(); if (fehlerDaten && fehlerDaten.error) fehlertext = fehlerDaten.error; } catch (e) {}
       if (!stillLaden) {
@@ -458,7 +457,7 @@ async function pinPruefenMitWert(pin, stillLaden) {
     zePin = pin;
     zeName = d.meinName;
     localStorage.setItem('gastroos_ze_code', zeCode);
-    localStorage.setItem('gastroos_ze_pin_' + zeCode, pin);
+    localStorage.setItem('gastroos_team_pin', pin);
     document.getElementById('pin-screen').style.display = 'none';
     document.getElementById('pin-error').style.display = 'none';
     document.getElementById('tool-sub-text').textContent = 'Trag hier deine Zeiten ein.';
@@ -475,7 +474,7 @@ async function pinPruefenMitWert(pin, stillLaden) {
 }
 
 window.mitarbeiterAbmelden = function() {
-  localStorage.removeItem('gastroos_ze_pin_' + zeCode);
+  localStorage.removeItem('gastroos_team_pin');
   document.getElementById('mitarbeiter-bereich').style.display = 'none';
   document.getElementById('pin-input').value = '';
   document.getElementById('pin-screen').style.display = 'block';
@@ -532,17 +531,37 @@ function renderMaTabelle() {
       const formZeile = document.createElement('tr');
       formZeile.id = 'korrektur-zeile-' + i.id;
       formZeile.style.display = 'none';
+      const pausenHtml = (i.pausen || []).map((p, idx) => korrekturPauseZeile(i.id, idx, p.von, p.bis)).join('');
       formZeile.innerHTML = `<td colspan="8" style="background:#fdf3f1;">
-        <div style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;padding:8px 4px;">
-          <div class="field-group" style="margin-bottom:0;max-width:120px;"><label>Kommen</label><input type="time" id="korrektur-start-${i.id}" value="${i.start || ''}"></div>
-          <div class="field-group" style="margin-bottom:0;max-width:120px;"><label>Gehen</label><input type="time" id="korrektur-ende-${i.id}" value="${i.ende || ''}"></div>
-          <button class="btn-add" onclick="korrekturSpeichern(${i.id})">🔁 Korrigieren &amp; erneut einreichen</button>
+        <div style="padding:8px 4px;">
+          <div style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;margin-bottom:10px;">
+            <div class="field-group" style="margin-bottom:0;max-width:120px;"><label>Kommen</label><input type="time" id="korrektur-start-${i.id}" value="${i.start || ''}"></div>
+            <div class="field-group" style="margin-bottom:0;max-width:120px;"><label>Gehen</label><input type="time" id="korrektur-ende-${i.id}" value="${i.ende || ''}"></div>
+          </div>
+          <div id="korrektur-pausen-${i.id}">${pausenHtml}</div>
+          <button class="btn-add secondary" style="font-size:11px;padding:5px 10px;margin-bottom:10px;" onclick="korrekturPauseHinzufuegen(${i.id})">+ Pause hinzufügen</button>
+          <div>
+            <button class="btn-add" onclick="korrekturSpeichern(${i.id})">🔁 Korrigieren &amp; erneut einreichen</button>
+          </div>
         </div>
       </td>`;
       tbody.appendChild(formZeile);
     }
   });
 }
+
+function korrekturPauseZeile(eintragId, idx, von, bis) {
+  return `<div class="field-group" style="display:flex;flex-direction:row;gap:8px;align-items:flex-end;margin-bottom:8px;max-width:320px;" data-pause-idx="${idx}">
+    <div style="max-width:120px;"><label style="font-size:10px;font-weight:700;color:#8090a8;">Pause Start</label><input type="time" class="korrektur-pause-von-${eintragId}" value="${von || ''}"></div>
+    <div style="max-width:120px;"><label style="font-size:10px;font-weight:700;color:#8090a8;">Pause Ende</label><input type="time" class="korrektur-pause-bis-${eintragId}" value="${bis || ''}"></div>
+    <button class="btn-del" onclick="this.closest('[data-pause-idx]').remove()">✕</button>
+  </div>`;
+}
+window.korrekturPauseHinzufuegen = function(eintragId) {
+  const container = document.getElementById('korrektur-pausen-' + eintragId);
+  const idx = container.children.length;
+  container.insertAdjacentHTML('beforeend', korrekturPauseZeile(eintragId, idx, '', ''));
+};
 
 window.korrekturAnzeigen = function(id) {
   const zeile = document.getElementById('korrektur-zeile-' + id);
@@ -553,10 +572,20 @@ window.korrekturSpeichern = async function(id) {
   const korrekturStart = document.getElementById('korrektur-start-' + id).value;
   const korrekturEnde = document.getElementById('korrektur-ende-' + id).value;
   if (!korrekturStart || !korrekturEnde) { alert('Bitte Kommen- und Gehen-Zeit angeben.'); return; }
+
+  const vonFelder = document.querySelectorAll('.korrektur-pause-von-' + id);
+  const bisFelder = document.querySelectorAll('.korrektur-pause-bis-' + id);
+  const korrekturPausen = [];
+  for (let i = 0; i < vonFelder.length; i++) {
+    const von = vonFelder[i].value, bis = bisFelder[i].value;
+    if (von && bis) korrekturPausen.push({ von, bis });
+    else if (von || bis) { alert('Bitte bei jeder Pause sowohl Start als auch Ende angeben (oder beides leer lassen).'); return; }
+  }
+
   const res = await fetch('/api/buch-public', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ code: zeCode, pin: zePin, bookType: 'zeiterfassung', action: 'korrigieren', korrekturId: id, korrekturStart, korrekturEnde })
+    body: JSON.stringify({ code: zeCode, pin: zePin, bookType: 'zeiterfassung', action: 'korrigieren', korrekturId: id, korrekturStart, korrekturEnde, korrekturPausen })
   });
   if (!res.ok) { alert('Korrektur fehlgeschlagen.'); return; }
   const d = await res.json();

@@ -128,7 +128,7 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
     </div>
 
     <div class="section">
-      <div class="section-head">Zuletzt von dir hochgeladen</div>
+      <div class="section-head">Meine Belege</div>
       <div id="beleg-verlauf"><span style="color:#8090a8;font-size:12.5px;">Noch nichts hochgeladen.</span></div>
     </div>
 
@@ -166,7 +166,7 @@ function belegPlattformGeaendert() {
 
 let beCode = null, bePin = null, beName = null;
 let belegAusgewaehlteDatei = null;
-let eigeneUploads = [];
+let alleBelege = [];
 
 const urlParams = new URLSearchParams(window.location.search);
 const codeAusUrl = urlParams.get('u');
@@ -218,11 +218,13 @@ async function pinPruefenMitWert(pin, stillLaden) {
     const d = await res.json();
     bePin = pin;
     beName = d.meinName;
+    alleBelege = d.items || [];
     localStorage.setItem('gastroos_team_pin', pin);
     document.getElementById('pin-screen').style.display = 'none';
     document.getElementById('pin-error').style.display = 'none';
     document.getElementById('tool-sub-text').textContent = 'Hallo, ' + (beName || '') + '! Trag hier einen neuen Beleg oder Z-Bon ein.';
     document.getElementById('mitarbeiter-bereich').style.display = 'block';
+    renderVerlauf();
   } catch (e) {
     if (!stillLaden) document.getElementById('pin-error').style.display = 'block';
   }
@@ -303,6 +305,14 @@ window.belegHochladen = async function() {
   const bar = (plattform === 'Z-Bon' && document.getElementById('beleg-bar').value) ? parseFloat(document.getElementById('beleg-bar').value) : null;
   const karte = (plattform === 'Z-Bon' && document.getElementById('beleg-karte').value) ? parseFloat(document.getElementById('beleg-karte').value) : null;
 
+  // Duplikat-Warnung: gleicher Anbieter + Datum + Betrag — unabhängig davon, wer ihn
+  // hochgeladen hat (auch wenn der Chef oder ein Kollege ihn schon eingetragen hat).
+  const duplikat = alleBelege.find(b => b.plattform === plattform && b.datum === datum && Math.abs((b.betrag || 0) - betrag) < 0.01);
+  if (duplikat) {
+    const schonVon = duplikat.erfasstVon ? (' (eingetragen von ' + duplikat.erfasstVon + ')') : '';
+    if (!confirm('Es gibt bereits einen Beleg mit demselben Anbieter, Datum und Betrag' + schonVon + '. Trotzdem hochladen?')) return;
+  }
+
   try {
     const base64 = await dateiZuBase64(belegAusgewaehlteDatei);
     const uploadRes = await fetch('/api/beleg-upload', {
@@ -319,9 +329,10 @@ window.belegHochladen = async function() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ code: beCode, pin: bePin, bookType: 'belege', action: 'add', eintrag })
     });
+    const d2 = await res2.json();
     if (!res2.ok) { alert('Speichern fehlgeschlagen.'); return; }
 
-    eigeneUploads.unshift({ plattform, betrag, datum });
+    alleBelege = d2.items || alleBelege;
     renderVerlauf();
     flashSaved('beleg-save-msg');
     belegAusgewaehlteDatei = null;
@@ -341,10 +352,26 @@ window.belegHochladen = async function() {
   }
 };
 
+function euro(n) { return (Number(n) || 0).toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €'; }
+function datumDe(iso) { const [j, m, t] = iso.split('-'); return `${t}.${m}.${j}`; }
+const STATUS_LABEL = { bezahlt: '✅ Bezahlt', faellig: '🕒 Fällig', ausstehend: '⏳ Ausstehend', erhalten: '💶 Geld erhalten', pruefen: '❓ Noch zu prüfen', abgeglichen: '✔️ Abgeglichen' };
+
 function renderVerlauf() {
   const el = document.getElementById('beleg-verlauf');
-  if (!eigeneUploads.length) { el.innerHTML = '<span style="color:#8090a8;font-size:12.5px;">Noch nichts hochgeladen.</span>'; return; }
-  el.innerHTML = eigeneUploads.map(u => `<div class="notiz-item">${u.datum} — ${u.plattform}${u.betrag ? ' — ' + u.betrag.toFixed(2).replace('.', ',') + ' €' : ''}</div>`).join('');
+  const meine = alleBelege.filter(b => b.erfasstVon === beName).sort((a, b) => b.id - a.id);
+  if (!meine.length) { el.innerHTML = '<span style="color:#8090a8;font-size:12.5px;">Noch nichts hochgeladen.</span>'; return; }
+  el.innerHTML = `<div style="overflow-x:auto;"><table style="border-collapse:collapse;font-size:12.5px;width:100%;">
+    <thead><tr style="color:#8090a8;font-size:10.5px;text-transform:uppercase;font-weight:700;">
+      <th style="text-align:left;padding:5px 8px;">Datum</th><th style="text-align:left;padding:5px 8px;">Anbieter</th><th style="text-align:left;padding:5px 8px;">Betrag</th><th style="text-align:left;padding:5px 8px;">Rechnungsnr.</th><th style="text-align:left;padding:5px 8px;">Status</th>
+    </tr></thead>
+    <tbody>${meine.map(b => `<tr style="border-top:1px solid #f0e8d4;">
+      <td style="padding:6px 8px;">${datumDe(b.datum)}</td>
+      <td style="padding:6px 8px;">${b.plattform}${b.plattform === 'Z-Bon' && (b.bar || b.karte) ? ' (Bar: ' + euro(b.bar || 0) + ', Karte: ' + euro(b.karte || 0) + ')' : ''}</td>
+      <td style="padding:6px 8px;">${euro(b.betrag)}</td>
+      <td style="padding:6px 8px;">${b.rechnungsnr || '–'}</td>
+      <td style="padding:6px 8px;">${STATUS_LABEL[b.status] || b.status || '–'}</td>
+    </tr>`).join('')}</tbody>
+  </table></div>`;
 }
 </script>
 </body>
