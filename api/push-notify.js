@@ -2,9 +2,11 @@
 // Wird aufgerufen, wenn der eingeloggte INHABER selbst einen Übergabe- oder Reservierungs-
 // Eintrag macht (über die normale, authentifizierte Ansicht) — löst dieselbe Push-Benachrichtigung
 // an alle registrierten Geräte aus, die zu diesem Buch gehören (Chef + passende Mitarbeiter).
+// Mit "mitarbeiterName" gesetzt geht die Benachrichtigung NUR an diese eine Person (z. B. wenn
+// der Chef einen Zeiterfassungs-Eintrag ablehnt — nur die betroffene Person soll das erfahren).
 
 const crypto = require('crypto');
-const { sendPushToAll } = require('../lib/push-helper');
+const { sendPushToAll, sendPushToMitarbeiter } = require('../lib/push-helper');
 
 const SESSION_SECRET = process.env.SESSION_SECRET;
 
@@ -35,11 +37,15 @@ export default async function handler(req, res) {
   if (!email) return res.status(401).json({ error: 'Nicht angemeldet.' });
   if (req.method !== 'POST') return res.status(405).json({ error: 'Methode nicht erlaubt.' });
 
-  const { title, body, url, bookType } = req.body || {};
+  const { title, body, url, bookType, mitarbeiterName } = req.body || {};
   if (!title || !body) return res.status(400).json({ error: 'title oder body fehlt.' });
 
   try {
-    await sendPushToAll(email, title, body, url || '/dashboard.html', bookType);
+    if (mitarbeiterName) {
+      await sendPushToMitarbeiter(email, bookType, mitarbeiterName, title, body, url || '/dashboard.html');
+    } else {
+      await sendPushToAll(email, title, body, url || '/dashboard.html', bookType);
+    }
     return res.status(200).json({ ok: true });
   } catch (err) {
     console.error('Push-Versand fehlgeschlagen:', err);
