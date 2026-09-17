@@ -841,13 +841,15 @@ function toggleModule(m) {
   renderModulKacheln();
 }
 
+// ⚠️ Modul 13 ist inhaltlich noch nicht auf GitHub hochgeladen — bleibt bewusst als
+// "Bald verfügbar" gesperrt, unabhängig vom Lernfortschritt. Auf false setzen, sobald
+// die Lektionen live sind.
+const MODUL_13_NOCH_NICHT_VEROEFFENTLICHT = true;
+
 function renderModulKacheln() {
   const grid = document.getElementById('modul-kachel-grid');
   if (!grid) return;
   grid.innerHTML = '';
-
-  let unlockedUpTo = 1;
-  for (let n = 1; n <= 11; n++) { if (quizBestanden[n]) unlockedUpTo = n + 1; }
 
   for (let m = 0; m <= 13; m++) {
     const total = MODULE_ITEMS[m];
@@ -860,7 +862,7 @@ function renderModulKacheln() {
     const contentEl = document.getElementById('content-' + m);
     const istAktiv = contentEl && contentEl.classList.contains('open');
     const titel = MODUL_TITLES[m] || ('Modul ' + m);
-    const istBaldVerfuegbar = (m === 13 && unlockedUpTo === 13 && !istFertig);
+    const istBaldVerfuegbar = (m === 13 && MODUL_13_NOCH_NICHT_VEROEFFENTLICHT);
 
     const tile = document.createElement('div');
     tile.style.borderRadius = '12px';
