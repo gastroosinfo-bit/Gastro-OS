@@ -69,7 +69,7 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Methode nicht erlaubt.' });
   if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) return res.status(500).json({ error: 'Server nicht konfiguriert.' });
 
-  const { code, pin, bookType, action, text, eintrag, datum, zeit, werte } = req.body || {};
+  const { code, pin, bookType, action, text, eintrag, datum, zeit, werte, korrekturId, korrekturStart, korrekturEnde } = req.body || {};
   if (!code || !pin) return res.status(400).json({ error: 'Code oder PIN fehlt.' });
 
   // ─── "team": nur Person + ihre Rechte ermitteln (für die Team-Zugang-Startseite
@@ -192,6 +192,19 @@ export default async function handler(req, res) {
           }
         }
       }
+    }
+
+    if (action === 'korrigieren') {
+      if (!korrekturId) return res.status(400).json({ error: 'Eintrag-ID fehlt.' });
+      const eintragKorr = items.find(i => i.id === korrekturId && i.name === name);
+      if (!eintragKorr) return res.status(404).json({ error: 'Eintrag nicht gefunden.' });
+      if (eintragKorr.status !== 'abgelehnt') return res.status(400).json({ error: 'Nur abgelehnte Einträge können korrigiert werden.' });
+      if (korrekturStart) eintragKorr.start = korrekturStart;
+      if (korrekturEnde) eintragKorr.ende = korrekturEnde;
+      eintragKorr.status = 'offen';
+      delete eintragKorr.notiz;
+      await saveItems(owner.user_id, toolName, items);
+      sendPushToAll(owner.user_id, '✏️ Korrigiert', name + ' hat einen abgelehnten Eintrag korrigiert und erneut eingereicht.', '/dashboard.html', 'zeiterfassung');
     }
 
     const meineItems = items.filter(i => i.name === name);
