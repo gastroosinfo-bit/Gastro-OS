@@ -97,6 +97,10 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
   .header { padding:12px 16px; }
   .brand { font-size:16px; }
   .welcome { display:none; }
+  .header-kontakt-label { display:none; }
+  .header-mail-link { display:none; }
+  .header-whatsapp-link { display:none; }
+  .header-whatsapp-icon { display:inline-block !important; }
   .main { padding:0 12px; margin:16px auto; }
   .module-header { padding:12px 14px; }
   .module-title { font-size:14px; }
@@ -106,6 +110,7 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
   .op-stats span:first-child { font-size:13px; }
   .op-stats { font-size:12px; }
 }
+html, body { max-width:100%; overflow-x:hidden; }
 </style>
 <script>
 (function(){
@@ -122,9 +127,10 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
   <div class="brand">GASTRO-OS</div>
   <div class="welcome">Willkommen, <span id="user-name">...</span></div>
   <div style="display:flex;align-items:center;gap:10px;">
-    <span style="font-size:12px;color:#a0b0c8;letter-spacing:0.3px;">Kontakt</span>
-    <a href="mailto:info@mein-gastro-system.de" style="font-size:12px;color:#d4af37;text-decoration:none;white-space:nowrap;">Mail: info@mein-gastro-system.de</a>
-    <a href="https://wa.me/4915755880690" target="_blank" rel="noopener" style="font-size:12px;color:#d4af37;text-decoration:none;white-space:nowrap;">WhatsApp: 0157-55880690</a>
+    <span class="header-kontakt-label" style="font-size:12px;color:#a0b0c8;letter-spacing:0.3px;">Kontakt</span>
+    <a href="mailto:info@mein-gastro-system.de" class="header-mail-link" style="font-size:12px;color:#d4af37;text-decoration:none;white-space:nowrap;">Mail: info@mein-gastro-system.de</a>
+    <a href="https://wa.me/4915755880690" target="_blank" rel="noopener" class="header-whatsapp-link" style="font-size:12px;color:#d4af37;text-decoration:none;white-space:nowrap;">WhatsApp: 0157-55880690</a>
+    <a href="https://wa.me/4915755880690" target="_blank" rel="noopener" class="header-whatsapp-icon" style="display:none;font-size:16px;text-decoration:none;">💬</a>
     <button id="push-btn" class="btn-notify" onclick="pushAktivieren()" title="Benachrichtigungen aktivieren">🔔</button>
     <button class="btn-logout" onclick="doLogout()">Abmelden</button>
   </div>
@@ -1142,7 +1148,7 @@ async function unreadPruefen() {
     // Zeiterfassung zeigt keine "ungelesen"-Zahl, sondern wie viele abgeschlossene
     // Schichten noch auf Genehmigung warten — bleibt sichtbar, bis der Chef genehmigt.
     const anzahl = (tool.unread.modus === 'genehmigung')
-      ? items.filter(i => i.ende && i.status !== 'genehmigt').length
+      ? items.filter(i => i.ende && i.status !== 'genehmigt' && i.status !== 'abgelehnt').length
       : items.filter(i => i.id > lastSeen).length;
     const badge = document.getElementById('intern-badge-' + idx);
     if (badge) {

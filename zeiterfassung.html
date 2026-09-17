@@ -68,6 +68,7 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
 .status-laeuft { background:#fff3cd; color:#9a7b1a; }
 .status-wartet { background:#ffe4cc; color:#a05a00; }
 .status-genehmigt { background:#d8f0e0; color:#1a6640; }
+.status-abgelehnt { background:#fbdcd8; color:#a13a2b; cursor:help; }
 
 .zeit-buttons { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:6px; }
 .zeit-btn { flex:1; min-width:140px; border:none; border-radius:10px; padding:18px 12px; font-size:15px; font-weight:700; cursor:pointer; color:#fff; transition:all 0.2s; }
@@ -121,6 +122,10 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
 
   <!-- ═══ MITARBEITER: ZEITERFASSUNG (nach erfolgreicher PIN-Prüfung) ═══ -->
   <div id="mitarbeiter-bereich" style="display:none;">
+    <div class="section" style="display:flex;align-items:center;gap:12px;">
+      <div style="flex:1;font-size:12.5px;color:#5a6a85;" id="ma-push-status-text">Bekomm eine Benachrichtigung, wenn dein Chef eine Zeit genehmigt oder nicht genehmigt.</div>
+      <button id="ma-push-btn" style="background:#1a6640;color:#fff;border:none;padding:8px 14px;border-radius:6px;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;">🔔 Aktivieren</button>
+    </div>
     <div class="section">
       <div class="section-head" id="ma-begruessung">Hallo!</div>
       <div class="heute-status" id="ma-heute-status">Wird geladen …</div>
@@ -135,7 +140,7 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
       <div class="section-head">Meine Zeiten</div>
       <div style="overflow-x:auto;">
       <table class="data-table" id="ma-tabelle">
-        <thead><tr><th>Datum</th><th>Kommen</th><th>Pause</th><th>Pause Ende</th><th>Gehen</th><th>Std.</th><th>Status</th></tr></thead>
+        <thead><tr><th>Datum</th><th>Kommen</th><th>Pause</th><th>Pause Ende</th><th>Gehen</th><th>Std.</th><th>Status</th><th></th></tr></thead>
         <tbody></tbody>
       </table>
       </div>
@@ -287,6 +292,10 @@ function pausenBisListe(eintrag) {
 function statusBadge(eintrag) {
   if (!eintrag.ende) return '<span class="status-badge status-laeuft">🟡 Läuft</span>';
   if (eintrag.status === 'genehmigt') return '<span class="status-badge status-genehmigt">✅ Genehmigt</span>';
+  if (eintrag.status === 'abgelehnt') {
+    const notizText = eintrag.notiz ? ': ' + eintrag.notiz.replace(/</g, '&lt;') : '';
+    return '<span class="status-badge status-abgelehnt" title="' + (eintrag.notiz || '').replace(/"/g, '&quot;') + '">❌ Abgelehnt' + notizText + '</span>';
+  }
   return '<span class="status-badge status-wartet">🟠 Wartet auf Genehmigung</span>';
 }
 function datumDe(iso) {
@@ -302,6 +311,64 @@ function montagDerWoche(d) {
 function zuIso(d) {
   return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
+const VAPID_PUBLIC_KEY = 'BNLFO9QNrjxgwjx4XsJdMxKeF1WH5kUhAdTOcN3DHabt32CN6g3hB5l5KsSA-u8_6HCGzrKN4BzIS4aIcIVSYTE';
+function urlBase64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+  const rawData = window.atob(base64);
+  return Uint8Array.from([...rawData].map(c => c.charCodeAt(0)));
+}
+async function zePushSetup(code, pin) {
+  const btn = document.getElementById('ma-push-btn');
+  const status = document.getElementById('ma-push-status-text');
+  if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+    status.textContent = 'Push-Benachrichtigungen werden auf diesem Gerät/Browser nicht unterstützt.';
+    btn.style.display = 'none';
+    return;
+  }
+  if (Notification.permission === 'granted') {
+    const reg = await navigator.serviceWorker.getRegistration();
+    const sub = reg && await reg.pushManager.getSubscription();
+    if (sub) {
+      fetch('/api/push-subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code, pin, bookType: 'zeiterfassung', subscription: sub })
+      }).catch(() => {});
+      status.textContent = '🔔 Benachrichtigungen sind aktiv.';
+      btn.textContent = '✓ Aktiv';
+      btn.disabled = true;
+      btn.style.opacity = '0.6';
+      return;
+    }
+  }
+  btn.onclick = async function() {
+    try {
+      const reg = await navigator.serviceWorker.register('/sw.js');
+      const permission = await Notification.requestPermission();
+      if (permission !== 'granted') {
+        status.textContent = 'Benachrichtigungen wurden nicht erlaubt.';
+        return;
+      }
+      const sub = await reg.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
+      });
+      await fetch('/api/push-subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code, pin, bookType: 'zeiterfassung', subscription: sub })
+      });
+      status.textContent = '🔔 Benachrichtigungen sind jetzt aktiv.';
+      btn.textContent = '✓ Aktiv';
+      btn.disabled = true;
+      btn.style.opacity = '0.6';
+    } catch (e) {
+      status.textContent = 'Aktivierung leider fehlgeschlagen.';
+    }
+  };
+}
+
 function zeitraumSetzen(prefix, art) {
   const heuteD = new Date();
   let von, bis;
@@ -401,6 +468,7 @@ async function pinPruefenMitWert(pin, stillLaden) {
     renderMaZustand();
     renderMaTabelle();
     zeitraumSetzen('ma', 'monat');
+    zePushSetup(zeCode, pin);
   } catch (e) {
     if (!stillLaden) document.getElementById('pin-error').style.display = 'block';
   }
@@ -452,13 +520,51 @@ function renderMaTabelle() {
   const tbody = document.querySelector('#ma-tabelle tbody');
   tbody.innerHTML = '';
   const sorted = [...zeItems].sort((a, b) => b.datum.localeCompare(a.datum) || b.id - a.id);
-  if (!sorted.length) { tbody.innerHTML = '<tr><td colspan="7" style="color:#8090a8;">Noch keine Einträge.</td></tr>'; return; }
+  if (!sorted.length) { tbody.innerHTML = '<tr><td colspan="8" style="color:#8090a8;">Noch keine Einträge.</td></tr>'; return; }
   sorted.forEach(i => {
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${datumDe(i.datum)}</td><td>${i.start || ''}</td><td>${pausenVonListe(i)}</td><td>${pausenBisListe(i)}</td><td>${i.ende || '–'}</td><td>${stundenText(i)}</td><td>${statusBadge(i)}</td>`;
+    const korrigierenBtn = i.status === 'abgelehnt'
+      ? `<button class="btn-add secondary" style="padding:4px 9px;font-size:10.5px;" onclick="korrekturAnzeigen(${i.id})">✏️ Korrigieren</button>`
+      : '';
+    tr.innerHTML = `<td>${datumDe(i.datum)}</td><td>${i.start || ''}</td><td>${pausenVonListe(i)}</td><td>${pausenBisListe(i)}</td><td>${i.ende || '–'}</td><td>${stundenText(i)}</td><td>${statusBadge(i)}</td><td>${korrigierenBtn}</td>`;
     tbody.appendChild(tr);
+    if (i.status === 'abgelehnt') {
+      const formZeile = document.createElement('tr');
+      formZeile.id = 'korrektur-zeile-' + i.id;
+      formZeile.style.display = 'none';
+      formZeile.innerHTML = `<td colspan="8" style="background:#fdf3f1;">
+        <div style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;padding:8px 4px;">
+          <div class="field-group" style="margin-bottom:0;max-width:120px;"><label>Kommen</label><input type="time" id="korrektur-start-${i.id}" value="${i.start || ''}"></div>
+          <div class="field-group" style="margin-bottom:0;max-width:120px;"><label>Gehen</label><input type="time" id="korrektur-ende-${i.id}" value="${i.ende || ''}"></div>
+          <button class="btn-add" onclick="korrekturSpeichern(${i.id})">🔁 Korrigieren &amp; erneut einreichen</button>
+        </div>
+      </td>`;
+      tbody.appendChild(formZeile);
+    }
   });
 }
+
+window.korrekturAnzeigen = function(id) {
+  const zeile = document.getElementById('korrektur-zeile-' + id);
+  if (zeile) zeile.style.display = zeile.style.display === 'none' ? 'table-row' : 'none';
+};
+
+window.korrekturSpeichern = async function(id) {
+  const korrekturStart = document.getElementById('korrektur-start-' + id).value;
+  const korrekturEnde = document.getElementById('korrektur-ende-' + id).value;
+  if (!korrekturStart || !korrekturEnde) { alert('Bitte Kommen- und Gehen-Zeit angeben.'); return; }
+  const res = await fetch('/api/buch-public', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ code: zeCode, pin: zePin, bookType: 'zeiterfassung', action: 'korrigieren', korrekturId: id, korrekturStart, korrekturEnde })
+  });
+  if (!res.ok) { alert('Korrektur fehlgeschlagen.'); return; }
+  const d = await res.json();
+  zeItems = d.items || [];
+  renderMaZustand();
+  renderMaTabelle();
+  flashSaved('ma-save-msg');
+};
 
 function maPdfErstellen() {
   const von = document.getElementById('ma-pdf-von').value;
@@ -561,11 +667,12 @@ function renderZeTabelle() {
 
   gefiltert.forEach(i => {
     const tr = document.createElement('tr');
-    const genehmigenBtn = (i.ende && i.status !== 'genehmigt')
-      ? `<button class="btn-add" style="padding:5px 10px;font-size:11px;" onclick="zeGenehmigen(${i.id})">✓ Genehmigen</button>`
+    const aktionsBtns = (i.ende && i.status !== 'genehmigt')
+      ? `<button class="btn-add" style="padding:5px 10px;font-size:11px;" onclick="zeGenehmigen(${i.id})">✓ Genehmigen</button>
+         <button class="btn-add" style="padding:5px 10px;font-size:11px;background:#a13a2b;" onclick="zeAblehnen(${i.id})">✗ Nicht genehmigen</button>`
       : '';
     tr.innerHTML = `<td>${datumDe(i.datum)}</td><td>${i.name}</td><td>${i.start || ''}</td><td>${pausenVonListe(i)}</td><td>${pausenBisListe(i)}</td><td>${i.ende || '–'}</td><td>${stundenText(i)}</td><td>${statusBadge(i)}</td>
-      <td style="white-space:nowrap;">${genehmigenBtn} <button class="btn-del" onclick="zeLoeschen(${i.id})">✕</button></td>`;
+      <td style="white-space:nowrap;">${aktionsBtns} <button class="btn-del" onclick="zeLoeschen(${i.id})">✕</button></td>`;
     tbody.appendChild(tr);
   });
 }
@@ -575,9 +682,35 @@ window.zeGenehmigen = async function(id) {
   if (!eintrag) return;
   eintrag.status = 'genehmigt';
   eintrag.genehmigtAm = new Date().toISOString();
+  delete eintrag.notiz;
   await toolSave('zeiterfassung', { items: alleZeiten });
   renderZeTabelle();
+  chefPushAnMitarbeiter(eintrag.name, '✅ Zeit genehmigt', 'Deine Zeit vom ' + datumDe(eintrag.datum) + ' wurde genehmigt.');
 };
+
+window.zeAblehnen = async function(id) {
+  const eintrag = alleZeiten.find(i => i.id === id);
+  if (!eintrag) return;
+  const notiz = prompt('Warum wird dieser Eintrag nicht genehmigt? (z. B. "Zeiten stimmen nicht, bitte korrigieren")', eintrag.notiz || '');
+  if (notiz === null) return;
+  eintrag.status = 'abgelehnt';
+  eintrag.notiz = notiz.trim();
+  await toolSave('zeiterfassung', { items: alleZeiten });
+  renderZeTabelle();
+  chefPushAnMitarbeiter(eintrag.name, '❌ Zeit nicht genehmigt', 'Deine Zeit vom ' + datumDe(eintrag.datum) + ' wurde nicht genehmigt' + (notiz.trim() ? ': ' + notiz.trim() : '') + ' — bitte korrigieren.');
+};
+
+// Schickt eine Push-Benachrichtigung NUR an das Gerät dieses einen Mitarbeiters,
+// nicht ans ganze Team (nutzt die normale Chef-Session, kein Code/PIN nötig).
+async function chefPushAnMitarbeiter(mitarbeiterName, title, body) {
+  try {
+    await fetch('/api/push-notify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title, body, bookType: 'zeiterfassung', mitarbeiterName, url: '/zeiterfassung.html' })
+    });
+  } catch (e) {}
+}
 window.zeLoeschen = async function(id) {
   if (!confirm('Diesen Eintrag wirklich löschen?')) return;
   alleZeiten = alleZeiten.filter(i => i.id !== id);
