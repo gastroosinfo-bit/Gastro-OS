@@ -69,7 +69,7 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Methode nicht erlaubt.' });
   if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) return res.status(500).json({ error: 'Server nicht konfiguriert.' });
 
-  const { code, pin, bookType, action, text, eintrag, datum, zeit, werte, korrekturId, korrekturStart, korrekturEnde } = req.body || {};
+  const { code, pin, bookType, action, text, eintrag, datum, zeit, werte, korrekturId, korrekturStart, korrekturEnde, korrekturPausen } = req.body || {};
   if (!code || !pin) return res.status(400).json({ error: 'Code oder PIN fehlt.' });
 
   // ─── "team": nur Person + ihre Rechte ermitteln (für die Team-Zugang-Startseite
@@ -135,7 +135,7 @@ export default async function handler(req, res) {
     items.push({ id: Date.now(), ...eintrag, erfasstVon: name });
     await saveItems(owner.user_id, toolName, items);
     sendPushToAll(owner.user_id, '🧾 Neuer Beleg', name + ' hat einen Beleg (' + eintrag.plattform + ') hochgeladen.', '/belegablage.html', 'belege');
-    return res.status(200).json({ meinName: name });
+    return res.status(200).json({ items, meinName: name });
   }
 
   // ─── Temperaturen: Mitarbeiter tragen HACCP-Werte für vorhandene Geräte ein.
@@ -201,6 +201,7 @@ export default async function handler(req, res) {
       if (eintragKorr.status !== 'abgelehnt') return res.status(400).json({ error: 'Nur abgelehnte Einträge können korrigiert werden.' });
       if (korrekturStart) eintragKorr.start = korrekturStart;
       if (korrekturEnde) eintragKorr.ende = korrekturEnde;
+      if (Array.isArray(korrekturPausen)) eintragKorr.pausen = korrekturPausen;
       eintragKorr.status = 'offen';
       delete eintragKorr.notiz;
       await saveItems(owner.user_id, toolName, items);
