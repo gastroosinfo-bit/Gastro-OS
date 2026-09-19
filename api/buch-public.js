@@ -69,7 +69,7 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Methode nicht erlaubt.' });
   if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) return res.status(500).json({ error: 'Server nicht konfiguriert.' });
 
-  const { code, pin, bookType, action, text, eintrag, datum, zeit, werte, korrekturId, korrekturStart, korrekturEnde, korrekturPausen } = req.body || {};
+  const { code, pin, bookType, action, text, eintrag, datum, zeit, werte, korrekturId, korrekturStart, korrekturEnde, korrekturPausen, loeschId } = req.body || {};
   if (!code || !pin) return res.status(400).json({ error: 'Code oder PIN fehlt.' });
 
   // ─── "team": nur Person + ihre Rechte ermitteln (für die Team-Zugang-Startseite
@@ -212,7 +212,31 @@ export default async function handler(req, res) {
     return res.status(200).json({ items: meineItems, meinName: name });
   }
 
-  // ─── Schichtplan: Mitarbeiter dürfen NUR lesen, niemals eintragen/löschen ──
+  // ─── Schichtplan: normale Mitarbeiter dürfen NUR lesen. Wer zusätzlich das
+  // Recht "schichtplanBearbeiten" hat (separat vom normalen Lese-Recht "schichtplan"),
+  // darf Schichten eintragen und löschen — z. B. eine Schichtführerin. ──────────
+  if (bookType === 'schichtplan') {
+    const darfBearbeiten = !!(person.rechte && person.rechte.schichtplanBearbeiten);
+    let items = await loadItems(owner.user_id, toolName);
+
+    if (darfBearbeiten && action === 'add') {
+      if (!eintrag || !eintrag.name || !eintrag.datum) return res.status(400).json({ error: 'Name oder Datum fehlt.' });
+      items.push({ id: Date.now(), ...eintrag, erfasstVon: name });
+      await saveItems(owner.user_id, toolName, items);
+      sendPushToAll(owner.user_id, '🗂️ Schichtplan aktualisiert', name + ' hat eine Schicht eingetragen.', '/schichtplan.html', 'schichtplan');
+    } else if (darfBearbeiten && action === 'loeschen') {
+      items = items.filter(i => i.id !== loeschId);
+      await saveItems(owner.user_id, toolName, items);
+      sendPushToAll(owner.user_id, '🗂️ Schichtplan aktualisiert', name + ' hat eine Schicht gelöscht.', '/schichtplan.html', 'schichtplan');
+    }
+
+    return res.status(200).json({
+      items, meinName: name, kannBearbeiten: darfBearbeiten,
+      mitarbeiterNamen: darfBearbeiten ? mitarbeiterListe.map(m => m.name) : undefined,
+      _debugRechte: person.rechte
+    });
+  }
+
   // ─── Default (auch für uebergabe/reservierung ohne action="add"): nur lesen ──
   const items = await loadItems(owner.user_id, toolName);
   return res.status(200).json({ items, meinName: name });
