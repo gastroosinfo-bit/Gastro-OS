@@ -232,7 +232,8 @@ export default async function handler(req, res) {
 
     return res.status(200).json({
       items, meinName: name, kannBearbeiten: darfBearbeiten,
-      mitarbeiterNamen: darfBearbeiten ? mitarbeiterListe.map(m => m.name) : undefined
+      mitarbeiterNamen: darfBearbeiten ? mitarbeiterListe.map(m => m.name) : undefined,
+      _debugRechte: person.rechte
     });
   }
 
