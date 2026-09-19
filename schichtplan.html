@@ -98,11 +98,23 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
       <div style="flex:1;font-size:12.5px;color:#5a6a85;" id="ma-push-status-text">Bekomm eine Ton-Benachrichtigung, wenn sich der Plan ändert.</div>
       <button id="ma-push-btn" style="background:#1a6640;color:#fff;border:none;padding:8px 14px;border-radius:6px;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;">🔔 Aktivieren</button>
     </div>
+    <div class="section" id="ma-bearbeiten-section" style="display:none;">
+      <div class="section-head">Neue Schicht eintragen</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;">
+        <div class="field-group" style="margin-bottom:0;"><label>Name</label><select id="ma-neu-name"></select></div>
+        <div class="field-group" style="margin-bottom:0;"><label>Datum</label><input type="date" id="ma-neu-datum"></div>
+        <div class="field-group" style="margin-bottom:0;"><label>Von</label><input type="time" id="ma-neu-von"></div>
+        <div class="field-group" style="margin-bottom:0;"><label>Bis</label><input type="time" id="ma-neu-bis"></div>
+        <div class="field-group" style="margin-bottom:0;"><label>Notiz</label><input type="text" id="ma-neu-notiz" placeholder="optional"></div>
+        <button class="btn-add" onclick="maSchichtHinzufuegen()">+ Hinzufügen</button>
+      </div>
+      <span class="save-msg" id="ma-sp-save-msg">✓ Gespeichert</span>
+    </div>
     <div class="section">
       <div class="section-head">Dienstplan</div>
       <div style="overflow-x:auto;">
       <table class="data-table" id="ma-tabelle">
-        <thead><tr><th>Name</th><th>Datum</th><th>Von</th><th>Bis</th><th>Notiz</th></tr></thead>
+        <thead><tr><th>Name</th><th>Datum</th><th>Von</th><th>Bis</th><th>Notiz</th><th id="ma-tabelle-aktion-kopf" style="display:none;"></th></tr></thead>
         <tbody></tbody>
       </table>
       </div>
@@ -155,16 +167,51 @@ function flashSaved(id) {
 }
 function heute() { return new Date().toISOString().slice(0, 10); }
 function renderMaTabelle(items) {
+  window.maItems = items;
   const tbody = document.querySelector('#ma-tabelle tbody');
   tbody.innerHTML = '';
   const sorted = [...items].sort((a, b) => (a.datum + a.von).localeCompare(b.datum + b.von));
-  if (sorted.length === 0) { tbody.innerHTML = '<tr><td colspan="5" style="color:#8090a8;">Noch keine Schichten eingetragen.</td></tr>'; return; }
+  const colspan = window.maKannBearbeiten ? 6 : 5;
+  if (sorted.length === 0) { tbody.innerHTML = `<tr><td colspan="${colspan}" style="color:#8090a8;">Noch keine Schichten eingetragen.</td></tr>`; return; }
   sorted.forEach(s => {
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${s.name}</td><td>${s.datum}</td><td>${s.von || ''}</td><td>${s.bis || ''}</td><td>${s.notiz || ''}</td>`;
+    const loeschZelle = window.maKannBearbeiten ? `<td><button class="btn-del" onclick="maSchichtLoeschen(${s.id})">✕</button></td>` : '';
+    tr.innerHTML = `<td>${s.name}</td><td>${s.datum}</td><td>${s.von || ''}</td><td>${s.bis || ''}</td><td>${s.notiz || ''}</td>${loeschZelle}`;
     tbody.appendChild(tr);
   });
 }
+window.maSchichtHinzufuegen = async function() {
+  const eintrag = {
+    name: document.getElementById('ma-neu-name').value,
+    datum: document.getElementById('ma-neu-datum').value,
+    von: document.getElementById('ma-neu-von').value,
+    bis: document.getElementById('ma-neu-bis').value,
+    notiz: document.getElementById('ma-neu-notiz').value
+  };
+  if (!eintrag.name || !eintrag.datum) { alert('Bitte Name und Datum angeben.'); return; }
+  const res = await fetch('/api/buch-public', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ code: window.maCode, pin: window.maPin, bookType: 'schichtplan', action: 'add', eintrag })
+  });
+  if (!res.ok) { alert('Speichern fehlgeschlagen.'); return; }
+  const d = await res.json();
+  renderMaTabelle(d.items || []);
+  flashSaved('ma-sp-save-msg');
+  document.getElementById('ma-neu-von').value = '';
+  document.getElementById('ma-neu-bis').value = '';
+  document.getElementById('ma-neu-notiz').value = '';
+};
+window.maSchichtLoeschen = async function(id) {
+  const res = await fetch('/api/buch-public', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ code: window.maCode, pin: window.maPin, bookType: 'schichtplan', action: 'loeschen', loeschId: id })
+  });
+  if (!res.ok) { alert('Löschen fehlgeschlagen.'); return; }
+  const d = await res.json();
+  renderMaTabelle(d.items || []);
+};
 function renderSpTabelle(items) {
   const tbody = document.querySelector('#sp-tabelle tbody');
   tbody.innerHTML = '';
@@ -245,7 +292,19 @@ async function pinPruefenMitWert(code, pin, stillLaden) {
     localStorage.setItem('gastroos_sp_code', code);
     document.getElementById('pin-screen').style.display = 'none';
     document.getElementById('mitarbeiter-bereich').style.display = 'block';
-    document.getElementById('tool-sub-text').textContent = 'Hallo, ' + (d.meinName || '') + '! Dein Dienstplan — Änderungen macht nur der Chef.';
+    window.maKannBearbeiten = !!d.kannBearbeiten;
+    window.maCode = code;
+    window.maPin = pin;
+    window.maMitarbeiterNamen = d.mitarbeiterNamen || [];
+    if (window.maKannBearbeiten) {
+      document.getElementById('tool-sub-text').textContent = 'Hallo, ' + (d.meinName || '') + '! Du darfst den Dienstplan bearbeiten.';
+      document.getElementById('ma-bearbeiten-section').style.display = 'block';
+      document.getElementById('ma-tabelle-aktion-kopf').style.display = 'table-cell';
+      document.getElementById('ma-neu-name').innerHTML = '<option value="">– wählen –</option>' + window.maMitarbeiterNamen.map(n => `<option value="${n}">${n}</option>`).join('');
+      document.getElementById('ma-neu-datum').value = heute();
+    } else {
+      document.getElementById('tool-sub-text').textContent = 'Hallo, ' + (d.meinName || '') + '! Dein Dienstplan — Änderungen macht nur der Chef.';
+    }
     renderMaTabelle(d.items || []);
     badgeBeimOeffnenZuruecksetzen();
     maPushSetup(code, pin);

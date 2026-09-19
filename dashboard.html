@@ -1164,12 +1164,13 @@ async function dashToolSave(tool, data) {
 // ─── Team-Mitarbeiter: Name + persönliche PIN + Rechte pro Bereich ─────────
 // Wird mit Schichtplan/Zeiterfassung geteilt (gleicher Tool-Name 'schichtplan-mitarbeiter').
 const TEAM_BEREICHE = [
-  ['uebergabe', 'Ü', 'Übergabe'],
-  ['reservierung', 'R', 'Reservierung'],
-  ['schichtplan', 'S', 'Schichtplan'],
-  ['zeiterfassung', 'Z', 'Zeiterfassung'],
-  ['belege', 'B', 'Belege'],
-  ['temperaturen', 'T', 'Temperaturen']
+  ['uebergabe', 'Übergabebuch'],
+  ['reservierung', 'Reservierung'],
+  ['schichtplan', 'Schichtplan ansehen'],
+  ['schichtplanBearbeiten', 'Schichtplan bearbeiten'],
+  ['zeiterfassung', 'Zeiterfassung'],
+  ['belege', 'Belege'],
+  ['temperaturen', 'Temperaturen']
 ];
 let teamMitarbeiterListe = [];
 async function teamMitarbeiterLaden() {
@@ -1179,7 +1180,7 @@ async function teamMitarbeiterLaden() {
   } else if (Array.isArray(data.namen) && data.namen.length) {
     // Altformat (nur Namen, keine persönlichen PINs) — automatisch umwandeln, nichts geht verloren.
     // Rechte erstmal für alle Bereiche an, PIN ist leer und muss noch vergeben werden.
-    teamMitarbeiterListe = data.namen.map(n => ({ name: n, pin: '', rechte: { uebergabe: true, reservierung: true, schichtplan: true, zeiterfassung: true, belege: true, temperaturen: true } }));
+    teamMitarbeiterListe = data.namen.map(n => ({ name: n, pin: '', rechte: { uebergabe: true, reservierung: true, schichtplan: true, schichtplanBearbeiten: false, zeiterfassung: true, belege: true, temperaturen: true } }));
     await teamMitarbeiterSpeichern();
   } else {
     teamMitarbeiterListe = [];
@@ -1193,28 +1194,30 @@ function teamMitarbeiterRender() {
   const el = document.getElementById('team-mitarbeiter-liste');
   if (!el) return;
   if (!teamMitarbeiterListe.length) { el.innerHTML = '<div style="font-size:12px;color:#8090a8;">Noch keine Mitarbeiter angelegt.</div>'; return; }
-  const kopf = TEAM_BEREICHE.map(([key, kurz, titel], idx) => `<th title="${titel}"${idx === 0 ? ' style="padding-left:18px;border-left:2px solid #e8dfc8;"' : ''}>${kurz}</th>`).join('');
-  const zeilen = teamMitarbeiterListe.map((m, i) => `
-    <tr>
-      <td><input type="text" value="${(m.name || '').replace(/"/g, '&quot;')}" onchange="teamMitarbeiterFeldGeaendert(${i},'name',this.value)" style="border:1px solid #e0d8c8;border-radius:5px;padding:5px 6px;font-size:12px;width:78px;"></td>
-      <td><input type="text" inputmode="numeric" maxlength="4" value="${m.pin || ''}" placeholder="fehlt" onchange="teamMitarbeiterFeldGeaendert(${i},'pin',this.value)" style="border:1px solid ${m.pin ? '#e0d8c8' : '#c0392b'};border-radius:5px;padding:5px 4px;font-size:12px;width:48px;text-align:center;"></td>
-      ${TEAM_BEREICHE.map(([key, kurz, titel], idx) => `<td title="${titel}"${idx === 0 ? ' style="padding-left:18px;border-left:2px solid #e8dfc8;"' : ''}><input type="checkbox" ${m.rechte && m.rechte[key] ? 'checked' : ''} onchange="teamMitarbeiterRechtGeaendert(${i},'${key}',this.checked)" style="width:16px;height:16px;cursor:pointer;"></td>`).join('')}
-      <td><button onclick="teamMitarbeiterLoeschen(${i})" style="background:transparent;border:1px solid #c0392b;color:#c0392b;padding:3px 7px;border-radius:5px;font-size:10px;cursor:pointer;">✕</button></td>
-    </tr>
-  `).join('');
-  el.innerHTML = `
-    <div style="overflow-x:auto;">
-    <table style="border-collapse:collapse;font-size:12px;width:100%;">
-      <thead>
-        <tr style="color:#8090a8;font-size:10px;text-transform:uppercase;font-weight:700;">
-          <th style="text-align:left;padding:3px 6px;">Name</th><th style="padding:3px 6px;">PIN</th>${kopf}<th></th>
-        </tr>
-      </thead>
-      <tbody>${zeilen}</tbody>
-    </table>
+  el.innerHTML = teamMitarbeiterListe.map((m, i) => `
+    <div style="border:1px solid #e8dfc8;border-radius:10px;padding:14px 16px;margin-bottom:12px;background:#fdfaf3;">
+      <div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;margin-bottom:12px;">
+        <div style="max-width:150px;">
+          <label style="font-size:10px;font-weight:700;color:#8090a8;text-transform:uppercase;display:block;margin-bottom:3px;">Name</label>
+          <input type="text" value="${(m.name || '').replace(/"/g, '&quot;')}" onchange="teamMitarbeiterFeldGeaendert(${i},'name',this.value)" style="border:1px solid #e0d8c8;border-radius:5px;padding:6px 8px;font-size:12.5px;width:100%;">
+        </div>
+        <div style="max-width:90px;">
+          <label style="font-size:10px;font-weight:700;color:#8090a8;text-transform:uppercase;display:block;margin-bottom:3px;">PIN</label>
+          <input type="text" inputmode="numeric" maxlength="4" value="${m.pin || ''}" placeholder="fehlt" onchange="teamMitarbeiterFeldGeaendert(${i},'pin',this.value)" style="border:1px solid ${m.pin ? '#e0d8c8' : '#c0392b'};border-radius:5px;padding:6px 8px;font-size:12.5px;width:100%;text-align:center;">
+        </div>
+        <button onclick="teamMitarbeiterLoeschen(${i})" style="background:transparent;border:1px solid #c0392b;color:#c0392b;padding:6px 10px;border-radius:5px;font-size:11px;cursor:pointer;margin-left:auto;">✕ Entfernen</button>
+      </div>
+      <div style="font-size:10px;font-weight:700;color:#8090a8;text-transform:uppercase;margin-bottom:6px;">Darf nutzen</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:6px 14px;">
+        ${TEAM_BEREICHE.map(([key, label]) => `
+          <label style="display:flex;align-items:center;gap:7px;font-size:12.5px;color:#1a2a4a;cursor:pointer;${key === 'schichtplanBearbeiten' ? 'padding-left:18px;' : ''}">
+            <input type="checkbox" ${m.rechte && m.rechte[key] ? 'checked' : ''} onchange="teamMitarbeiterRechtGeaendert(${i},'${key}',this.checked)" style="width:15px;height:15px;cursor:pointer;flex-shrink:0;">
+            ${label}
+          </label>
+        `).join('')}
+      </div>
     </div>
-    <div style="font-size:10.5px;color:#8090a8;margin-top:6px;">Ü Übergabe · R Reservierung · S Schichtplan (nur ansehen) · Z Zeiterfassung · B Belege · T Temperaturen</div>
-  `;
+  `).join('');
 }
 window.teamMitarbeiterFeldGeaendert = function(i, feld, wert) {
   teamMitarbeiterListe[i][feld] = wert.trim();
@@ -1238,7 +1241,7 @@ window.teamMitarbeiterHinzufuegen = async function() {
   if (!name) return;
   if (pin && !/^\d{4}$/.test(pin)) { alert('Die PIN muss 4-stellig sein (oder erstmal leer lassen).'); return; }
   if (pin && teamMitarbeiterListe.some(m => m.pin === pin)) { alert('Diese PIN ist schon an einen anderen Mitarbeiter vergeben — bitte eine andere wählen.'); return; }
-  teamMitarbeiterListe.push({ name, pin, rechte: { uebergabe: true, reservierung: true, schichtplan: true, zeiterfassung: true, belege: true, temperaturen: true } });
+  teamMitarbeiterListe.push({ name, pin, rechte: { uebergabe: true, reservierung: true, schichtplan: true, schichtplanBearbeiten: false, zeiterfassung: true, belege: true, temperaturen: true } });
   await teamMitarbeiterSpeichern();
   document.getElementById('team-neu-name').value = '';
   document.getElementById('team-neu-pin').value = '';
