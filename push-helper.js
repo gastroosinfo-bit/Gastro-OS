@@ -64,6 +64,27 @@ async function sendPushToMitarbeiter(userId, bookType, mitarbeiterName, title, b
   }
 }
 
+// Sendet NUR an die Haupt-Subscription des Chefs (die ohne bookType) — ignoriert
+// alle Mitarbeiter-Subscriptions komplett, selbst wenn die zufällig denselben
+// bookType haben. Wichtig für Nachrichten, die WIRKLICH nur den Chef betreffen
+// (z. B. "Mitarbeiter X hat sich eingestempelt") — die dürfen nicht an andere
+// Mitarbeiter gehen, nur weil die zufällig für denselben Bereich angemeldet sind.
+async function sendPushNurAnChef(userId, title, body, url) {
+  if (!VAPID_PUBLIC_KEY || !VAPID_PRIVATE_KEY) return;
+
+  try {
+    const subscriptions = await ladeSubscriptions(userId);
+    const relevante = subscriptions.filter(sub => !sub.bookType);
+    if (!relevante.length) return;
+
+    webpush.setVapidDetails(VAPID_SUBJECT, VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY);
+    const payload = JSON.stringify({ title, body, url });
+    await Promise.all(relevante.map(sub =>
+      webpush.sendNotification(sub, payload).catch(() => {})
+    ));
+  } catch (e) {}
+}
+
 async function ladeSubscriptions(userId) {
   const r = await fetch(
     SUPABASE_URL + '/rest/v1/user_tool_data?user_id=eq.' + encodeURIComponent(userId) +
@@ -105,9 +126,10 @@ async function addSubscription(userId, subscription, bookType, mitarbeiterName) 
   }
 }
 
-// Entfernt genau eine Subscription (per endpoint) aus der Liste — z. B. wenn der Chef
-// die Benachrichtigungen auf seinem Dashboard wieder deaktiviert.
-async function removeSubscription(userId, endpoint) {
+// Entfernt Subscriptions für einen endpoint — mit bookType nur den EINEN Bereich
+// (z. B. wenn ein Mitarbeiter nur "Reservierung" abschaltet), ohne bookType alle
+// Einträge für dieses Gerät (z. B. wenn der Chef Benachrichtigungen komplett aus macht).
+async function removeSubscription(userId, endpoint, bookType) {
   const existingRes = await fetch(
     SUPABASE_URL + '/rest/v1/user_tool_data?user_id=eq.' + encodeURIComponent(userId) +
     '&tool_name=eq.push-subscriptions&select=id,data&order=updated_at.desc',
@@ -117,7 +139,11 @@ async function removeSubscription(userId, endpoint) {
   if (!existingRows || existingRows.length === 0) return;
 
   const bestehende = (existingRows[0].data && existingRows[0].data.subscriptions) ? existingRows[0].data.subscriptions : [];
-  const neueListe = bestehende.filter(s => s.endpoint !== endpoint);
+  const neueListe = bestehende.filter(s => {
+    if (s.endpoint !== endpoint) return true;
+    if (bookType) return s.bookType !== bookType; // nur diesen einen Bereich raus
+    return false; // kein bookType angegeben -> alles für diesen endpoint raus
+  });
   const payload = { data: { subscriptions: neueListe }, updated_at: new Date().toISOString() };
 
   await fetch(SUPABASE_URL + '/rest/v1/user_tool_data?id=eq.' + existingRows[0].id, {
@@ -125,4 +151,4 @@ async function removeSubscription(userId, endpoint) {
   });
 }
 
-module.exports = { sendPushToAll, sendPushToMitarbeiter, addSubscription, removeSubscription };
+module.exports = { sendPushToAll, sendPushToMitarbeiter, sendPushNurAnChef, addSubscription, removeSubscription };

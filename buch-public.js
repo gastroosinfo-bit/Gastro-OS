@@ -12,7 +12,7 @@
 // eigenen Zeiten), belege (Mitarbeiter laden Belege/Z-Bons hoch) und
 // temperaturen (Mitarbeiter tragen HACCP-Temperaturen ein).
 
-const { sendPushToAll } = require('../lib/push-helper');
+const { sendPushToAll, sendPushNurAnChef } = require('../lib/push-helper');
 const { sbHeaders, findOwnerByCode, loadMitarbeiter } = require('../lib/pin-auth');
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
@@ -112,7 +112,7 @@ export default async function handler(req, res) {
     const items = await loadItems(owner.user_id, toolName);
     items.push({ id: Date.now(), text: text.trim(), zeitpunkt: new Date().toISOString(), autor: name });
     await saveItems(owner.user_id, toolName, items);
-    sendPushToAll(owner.user_id, '📋 Neuer Übergabe-Eintrag', text.trim().slice(0, 120), '/uebergabe.html?u=' + code, 'uebergabe');
+    sendPushNurAnChef(owner.user_id, '📋 Neuer Übergabe-Eintrag', text.trim().slice(0, 120), '/uebergabe.html?u=' + code);
     return res.status(200).json({ items, meinName: name });
   }
 
@@ -122,7 +122,7 @@ export default async function handler(req, res) {
     const items = await loadItems(owner.user_id, toolName);
     items.push({ id: Date.now(), ...eintrag, erfasstVon: name });
     await saveItems(owner.user_id, toolName, items);
-    sendPushToAll(owner.user_id, '📅 Neue Reservierung', `${eintrag.name}, ${eintrag.datum}${eintrag.uhrzeit ? ' ' + eintrag.uhrzeit : ''}${eintrag.personen ? ', ' + eintrag.personen + ' Personen' : ''}`, '/reservierung.html?u=' + code, 'reservierung');
+    sendPushNurAnChef(owner.user_id, '📅 Neue Reservierung', `${eintrag.name}, ${eintrag.datum}${eintrag.uhrzeit ? ' ' + eintrag.uhrzeit : ''}${eintrag.personen ? ', ' + eintrag.personen + ' Personen' : ''}`, '/reservierung.html?u=' + code);
     return res.status(200).json({ items, meinName: name });
   }
 
@@ -134,7 +134,7 @@ export default async function handler(req, res) {
     const items = await loadItems(owner.user_id, toolName);
     items.push({ id: Date.now(), ...eintrag, erfasstVon: name });
     await saveItems(owner.user_id, toolName, items);
-    sendPushToAll(owner.user_id, '🧾 Neuer Beleg', name + ' hat einen Beleg (' + eintrag.plattform + ') hochgeladen.', '/belegablage.html', 'belege');
+    sendPushNurAnChef(owner.user_id, '🧾 Neuer Beleg', name + ' hat einen Beleg (' + eintrag.plattform + ') hochgeladen.', '/belegablage.html');
     return res.status(200).json({ items, meinName: name });
   }
 
@@ -149,7 +149,7 @@ export default async function handler(req, res) {
       const eintraege = raw.eintraege || {};
       eintraege[datum] = { ...(eintraege[datum] || {}), ...werte };
       await saveRaw(owner.user_id, toolName, { geraete, eintraege });
-      sendPushToAll(owner.user_id, '🌡️ Temperaturen eingetragen', name + ' hat Temperaturen für ' + datum + ' eingetragen.', '/tagesgeschaeft.html', 'temperaturen');
+      sendPushNurAnChef(owner.user_id, '🌡️ Temperaturen eingetragen', name + ' hat Temperaturen für ' + datum + ' eingetragen.', '/tagesgeschaeft.html');
     }
     return res.status(200).json({ geraete, meinName: name });
   }
@@ -169,7 +169,7 @@ export default async function handler(req, res) {
         if (!bereitsOffen) {
           items.push({ id: Date.now(), name, datum, start: zeit, pausen: [], pauseLaufend: null, ende: null, status: 'offen' });
           await saveItems(owner.user_id, toolName, items);
-          sendPushToAll(owner.user_id, '⏱️ Kommt', name + ' hat sich um ' + zeit + ' Uhr eingetragen.', '/dashboard.html', 'zeiterfassung');
+          sendPushNurAnChef(owner.user_id, '⏱️ Kommt', name + ' hat sich um ' + zeit + ' Uhr eingetragen.', '/dashboard.html');
         }
       } else {
         const eintragZe = items.find(i => i.name === name && i.datum === datum && !i.ende);
@@ -188,7 +188,7 @@ export default async function handler(req, res) {
             }
             eintragZe.ende = zeit;
             await saveItems(owner.user_id, toolName, items);
-            sendPushToAll(owner.user_id, '⏱️ Feierabend', name + ' hat sich um ' + zeit + ' Uhr ausgetragen — bitte im Dashboard genehmigen.', '/dashboard.html', 'zeiterfassung');
+            sendPushNurAnChef(owner.user_id, '⏱️ Feierabend', name + ' hat sich um ' + zeit + ' Uhr ausgetragen — bitte im Dashboard genehmigen.', '/dashboard.html');
           }
         }
       }
@@ -205,7 +205,7 @@ export default async function handler(req, res) {
       eintragKorr.status = 'offen';
       delete eintragKorr.notiz;
       await saveItems(owner.user_id, toolName, items);
-      sendPushToAll(owner.user_id, '✏️ Korrigiert', name + ' hat einen abgelehnten Eintrag korrigiert und erneut eingereicht.', '/dashboard.html', 'zeiterfassung');
+      sendPushNurAnChef(owner.user_id, '✏️ Korrigiert', name + ' hat einen abgelehnten Eintrag korrigiert und erneut eingereicht.', '/dashboard.html');
     }
 
     const meineItems = items.filter(i => i.name === name);
@@ -232,8 +232,7 @@ export default async function handler(req, res) {
 
     return res.status(200).json({
       items, meinName: name, kannBearbeiten: darfBearbeiten,
-      mitarbeiterNamen: darfBearbeiten ? mitarbeiterListe.map(m => m.name) : undefined,
-      _debugRechte: person.rechte
+      mitarbeiterNamen: darfBearbeiten ? mitarbeiterListe.map(m => m.name) : undefined
     });
   }
 
