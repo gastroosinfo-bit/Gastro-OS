@@ -1213,7 +1213,7 @@ function teamMitarbeiterRender() {
       <tbody>${zeilen}</tbody>
     </table>
     </div>
-    <div style="font-size:10.5px;color:#8090a8;margin-top:6px;">Ü Übergabe · R Reservierung · S Schichtplan · Z Zeiterfassung · B Belege · T Temperaturen</div>
+    <div style="font-size:10.5px;color:#8090a8;margin-top:6px;">Ü Übergabe · R Reservierung · S Schichtplan (nur ansehen) · Z Zeiterfassung · B Belege · T Temperaturen</div>
   `;
 }
 window.teamMitarbeiterFeldGeaendert = function(i, feld, wert) {
@@ -1420,7 +1420,7 @@ async function renderTeamZugangPanel() {
         <code style="background:#1a2a4a;color:#d4af37;padding:5px 8px;border-radius:5px;font-size:12px;display:inline-block;margin-top:6px;word-break:break-all;">${link}</code>
         <div style="margin-top:10px;">
           <img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=${encodeURIComponent(link)}" style="width:140px;height:140px;border:1px solid #d4af37;border-radius:6px;background:#fff;padding:5px;">
-          <div style="font-size:11px;color:#8090a8;margin-top:4px;">Zum Ausdrucken/Aufhängen — einmal aufs Handy, alle Bereiche darüber erreichbar.</div>
+          <div style="font-size:11px;color:#8090a8;margin-top:4px;">Zum Ausdrucken/Aufhängen — jeder sieht nur seine zugeteilten Bereiche.</div>
         </div>
       </div>
     `;
