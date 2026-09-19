@@ -305,12 +305,6 @@ async function pinPruefenMitWert(code, pin, stillLaden) {
     } else {
       document.getElementById('tool-sub-text').textContent = 'Hallo, ' + (d.meinName || '') + '! Dein Dienstplan — Änderungen macht nur der Chef.';
     }
-    if (d._debugRechte) {
-      const dbg = document.createElement('div');
-      dbg.style.cssText = 'background:#fff3cd;border:1px solid #d4af37;border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:11px;color:#5a4a00;font-family:monospace;word-break:break-all;';
-      dbg.textContent = 'DEBUG (bitte Screenshot schicken): ' + JSON.stringify(d._debugRechte);
-      document.querySelector('.wrap').insertBefore(dbg, document.getElementById('pin-screen'));
-    }
     renderMaTabelle(d.items || []);
     badgeBeimOeffnenZuruecksetzen();
     maPushSetup(code, pin);
