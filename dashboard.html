@@ -46,7 +46,7 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 .btn-notify:hover { background:rgba(212,175,55,0.15); }
 .btn-notify.active { background:#1a6640; border-color:#1a6640; color:#fff; cursor:default; }
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
-.main { max-width:860px; margin:32px auto; padding:0 24px; }
+.main { max-width:1180px; margin:32px auto; padding:0 24px; }
 .module-card { background:#fff; border:1px solid #e8dfc8; border-radius:10px; margin-bottom:16px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
 .module-card.locked { opacity:0.6; }
 .module-header { padding:16px 20px; display:flex; align-items:center; justify-content:space-between; cursor:pointer; user-select:none; transition:background 0.2s; }
@@ -137,20 +137,39 @@ html, body { max-width:100%; overflow-x:hidden; }
 </div>
 
 <div class="gold-bar"></div>
-<div class="overall-progress-bar">
-  <div class="op-inner">
-    <div class="op-stats">
-      <span>🚀 Gesamtfortschritt</span>
-      <span id="op-label">0 von 12 Modulen · 0%</span>
-    </div>
-    <div class="op-track"><div class="op-fill" id="op-fill" style="width:0%"></div></div>
-  </div>
-</div>
 <div class="main">
 
-<div style="position:relative;">
+<div class="dash-grid">
 
-  <div class="toolbox-sidebar">
+  <!-- LINKE SPALTE: Module (kompakt, als Zusatz) -->
+  <div class="dash-left">
+
+    <div style="font-family:Georgia,serif;font-size:15px;color:#1a2a4a;margin-bottom:10px;">Deine Module</div>
+    <div id="modul-liste"></div>
+
+    <!-- KACHEL: DEINE MODUL-TOOLS -->
+    <div class="module-card toolbox-elegant" id="modultools-card" style="margin-top:8px;">
+      <div class="module-header" onclick="toggleToolbox()" style="padding:14px 22px;">
+        <div class="module-left"><div class="module-number toolbox-icon-circle" style="width:32px;height:32px;font-size:14px;">🎓</div><div><div class="module-title" style="letter-spacing:0.3px;font-size:14px;">Deine Modul-Tools</div><div class="module-subtitle" id="toolbox-subtitle" style="margin-top:2px;">Wird geladen …</div></div></div>
+        <div style="display:flex;align-items:center;gap:8px;"><span class="module-arrow" id="toolbox-arrow" style="color:#d4af37;">▼</span></div>
+      </div>
+      <div class="module-content" id="toolbox-content"></div>
+    </div>
+
+    <div class="toolbox-elegant" style="padding:16px 20px;display:flex;gap:12px;align-items:flex-start;margin-top:16px;margin-bottom:16px;">
+      <div class="toolbox-icon-circle" style="flex-shrink:0;width:32px;height:32px;font-size:14px;">ℹ️</div>
+      <div style="font-size:12px;color:#5a6a85;line-height:1.6;padding-top:1px;">
+        <div style="font-family:Georgia,serif;font-size:13.5px;color:#1a2a4a;margin-bottom:4px;">So schaltest du das nächste Modul frei</div>
+        Jedes Modul öffnet sich automatisch, sobald du das <strong style="color:#1a2a4a;">Quiz</strong> des vorherigen Moduls bestanden hast (mindestens 6 von 8 richtigen Antworten). Lektionen und Tools allein reichen dafür nicht aus — das Quiz ist der Schlüssel.
+        <br><br>
+        Mit jedem abgeschlossenen Modul werden außerdem automatisch die passenden Werkzeuge dazu freigeschaltet — du findest sie dann direkt oben bei <strong style="color:#1a2a4a;">"Deine Modul-Tools"</strong>.
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RECHTE SPALTE: Tägliche Tools (Hauptfokus) -->
+  <div class="dash-right">
 
     <div id="unread-banner" style="display:none;background:#c0392b;color:#fff;border-radius:8px;padding:10px 16px;font-size:12.5px;font-weight:600;margin-bottom:12px;text-align:center;"></div>
 
@@ -201,28 +220,21 @@ html, body { max-width:100%; overflow-x:hidden; }
 
   </div>
 
-  <div class="toolbox-sidebar toolbox-sidebar-right">
-    <!-- KACHEL: DEINE MODUL-TOOLS -->
-    <div class="module-card toolbox-elegant" id="modultools-card">
-      <div class="module-header" onclick="toggleToolbox()" style="padding:14px 22px;">
-        <div class="module-left"><div class="module-number toolbox-icon-circle" style="width:32px;height:32px;font-size:14px;">🎓</div><div><div class="module-title" style="letter-spacing:0.3px;font-size:14px;">Deine Modul-Tools</div><div class="module-subtitle" id="toolbox-subtitle" style="margin-top:2px;">Wird geladen …</div></div></div>
-        <div style="display:flex;align-items:center;gap:8px;"><span class="module-arrow" id="toolbox-arrow" style="color:#d4af37;">▼</span></div>
-      </div>
-      <div class="module-content" id="toolbox-content"></div>
-    </div>
-  </div>
-
-  <div class="toolbox-elegant" style="padding:18px 22px;display:flex;gap:14px;align-items:flex-start;margin-bottom:16px;">
-    <div class="toolbox-icon-circle" style="flex-shrink:0;">ℹ️</div>
-    <div style="font-size:12.5px;color:#5a6a85;line-height:1.65;padding-top:2px;">
-      <div style="font-family:Georgia,serif;font-size:14.5px;color:#1a2a4a;margin-bottom:4px;">So schaltest du das nächste Modul frei</div>
-      Jedes Modul öffnet sich automatisch, sobald du das <strong style="color:#1a2a4a;">Quiz</strong> des vorherigen Moduls bestanden hast (mindestens 6 von 8 richtigen Antworten). Lektionen und Tools allein reichen dafür nicht aus — das Quiz ist der Schlüssel.
-    </div>
-  </div>
-
 </div>
 
 <style>
+.dash-grid {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+.dash-left, .dash-right { min-width: 0; }
+@media (max-width: 1000px) {
+  .dash-grid { grid-template-columns: 1fr; }
+  .dash-left { order: 2; }
+  .dash-right { order: 1; }
+}
 .toolbox-elegant {
   background: linear-gradient(180deg, #ffffff 0%, #fdfaf3 100%);
   border: 1px solid #e4d5a8;
@@ -248,8 +260,6 @@ html, body { max-width:100%; overflow-x:hidden; }
   box-shadow: 0 2px 6px rgba(184,148,42,0.35);
 }
 .toolbox-sidebar {
-  width: 340px;
-  max-width: 340px;
   margin-bottom: 16px;
 }
 #toolbox-content.open {
@@ -270,34 +280,9 @@ html, body { max-width:100%; overflow-x:hidden; }
 }
 #buchhaltung-content.open::-webkit-scrollbar { width: 6px; }
 #buchhaltung-content.open::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 3px; }
-@media (min-width: 1300px) {
-  .toolbox-sidebar {
-    position: absolute;
-    top: 0;
-    right: calc(100% + 20px);
-    margin-bottom: 0;
-  }
-}
-@media (min-width: 1650px) {
-  .toolbox-sidebar-right {
-    position: absolute;
-    top: 0;
-    left: calc(100% + 20px);
-    right: auto;
-    margin-bottom: 0;
-  }
-}
-@media (max-width: 1649px) {
-  .toolbox-sidebar-right { margin-bottom: 16px; }
-}
-@media (max-width: 640px) {
-  .toolbox-sidebar, .toolbox-sidebar-right { width:100%; max-width:100%; }
-}
 [id^="modul-card-"] > .module-header { display: none; }
 </style>
 
-<div style="font-family:Georgia,serif;font-size:16px;color:#1a2a4a;margin:8px 0 12px;">Deine Module</div>
-<div id="modul-kachel-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:24px;"></div>
 <div id="modul-schliessen-leiste" style="display:none;background:#1a2a4a;border-radius:10px;padding:12px 18px;margin-bottom:16px;align-items:center;justify-content:space-between;"></div>
 
 <!-- MODUL 0 -->
@@ -714,7 +699,7 @@ async function init() {
 
   for (const m of [0,1,2,3,4,5,6,7,8,9,10,11,12,13]) renderProgress(m);
   renderLockedModules();
-  renderModulKacheln();
+  renderModulListe();
   for (let i = 0; i <= 13; i++) {
     const card = document.getElementById('modul-card-' + i);
     const content = document.getElementById('content-' + i);
@@ -838,7 +823,7 @@ function toggleModule(m) {
     leiste.style.display = 'none';
     leiste.innerHTML = '';
   }
-  renderModulKacheln();
+  renderModulListe();
 }
 
 // ⚠️ Modul 13 ist inhaltlich noch nicht auf GitHub hochgeladen — bleibt bewusst als
@@ -846,10 +831,10 @@ function toggleModule(m) {
 // die Lektionen live sind.
 const MODUL_13_NOCH_NICHT_VEROEFFENTLICHT = true;
 
-function renderModulKacheln() {
-  const grid = document.getElementById('modul-kachel-grid');
-  if (!grid) return;
-  grid.innerHTML = '';
+function renderModulListe() {
+  const liste = document.getElementById('modul-liste');
+  if (!liste) return;
+  liste.innerHTML = '';
 
   for (let m = 0; m <= 13; m++) {
     const total = MODULE_ITEMS[m];
@@ -863,39 +848,42 @@ function renderModulKacheln() {
     const istAktiv = contentEl && contentEl.classList.contains('open');
     const titel = MODUL_TITLES[m] || ('Modul ' + m);
     const istBaldVerfuegbar = (m === 13 && MODUL_13_NOCH_NICHT_VEROEFFENTLICHT);
+    const klickbar = !istGesperrt && !istBaldVerfuegbar;
 
-    const tile = document.createElement('div');
-    tile.style.borderRadius = '12px';
-    tile.style.padding = '14px';
-    tile.style.transition = 'all 0.15s';
-    tile.style.cursor = (istGesperrt || istBaldVerfuegbar) ? 'default' : 'pointer';
-    if (!istGesperrt && !istBaldVerfuegbar) tile.onclick = () => toggleModule(m);
-
-    let iconHtml, textColor, subColor, statusText;
+    let iconHtml, iconBg, iconColor, subColor, statusText;
     if (istGesperrt) {
-      tile.style.background = '#2a3a5a';
-      tile.style.opacity = '0.55';
-      iconHtml = '<div style="width:28px;height:28px;border-radius:50%;background:#3a4a6a;display:flex;align-items:center;justify-content:center;color:#8a97b5;font-size:13px;margin-bottom:8px;">🔒</div>';
-      textColor = '#c0c8d8'; subColor = '#8a97b5'; statusText = 'Gesperrt';
+      iconHtml = '🔒'; iconBg = '#c8c0b0'; iconColor = '#fff';
+      subColor = '#a0aabc'; statusText = 'Gesperrt';
     } else if (istBaldVerfuegbar) {
-      tile.style.background = '#2a3a5a';
-      tile.style.opacity = '0.75';
-      iconHtml = '<div style="width:28px;height:28px;border-radius:50%;background:#d4af37;display:flex;align-items:center;justify-content:center;color:#1a2a4a;font-size:13px;margin-bottom:8px;">⏳</div>';
-      textColor = '#fff'; subColor = '#d4af37'; statusText = 'Bald verfügbar';
+      iconHtml = '⏳'; iconBg = '#d4af37'; iconColor = '#1a2a4a';
+      subColor = '#b8902a'; statusText = 'Bald verfügbar';
     } else if (istFertig) {
-      tile.style.background = '#1a2a4a';
-      iconHtml = '<div style="width:28px;height:28px;border-radius:50%;background:#d4af37;display:flex;align-items:center;justify-content:center;color:#1a2a4a;font-size:12px;font-weight:700;margin-bottom:8px;">✓</div>';
-      textColor = '#fff'; subColor = '#a0b0c8'; statusText = 'Abgeschlossen';
+      iconHtml = '✓'; iconBg = '#d4af37'; iconColor = '#1a2a4a';
+      subColor = '#1a6640'; statusText = 'Abgeschlossen';
     } else {
-      tile.style.background = '#1a2a4a';
-      tile.style.border = istAktiv ? '3px solid #d4af37' : '1px solid rgba(212,175,55,0.25)';
-      tile.style.boxShadow = istAktiv ? '0 0 0 3px rgba(212,175,55,0.25)' : 'none';
-      iconHtml = `<div style="width:28px;height:28px;border-radius:50%;background:#d4af37;display:flex;align-items:center;justify-content:center;color:#1a2a4a;font-size:12px;font-weight:700;margin-bottom:8px;">${m}</div>`;
-      textColor = '#fff'; subColor = istAktiv ? '#d4af37' : '#a0b0c8';
-      statusText = istAktiv ? '▲ Geöffnet — antippen zum Schließen' : (total ? (done + '/' + total) : '');
+      iconHtml = m; iconBg = '#1a2a4a'; iconColor = '#d4af37';
+      subColor = istAktiv ? '#d4af37' : '#8090a8';
+      statusText = istAktiv ? '▲ Geöffnet' : (total ? (done + ' von ' + total + ' abgeschlossen') : '');
     }
-    tile.innerHTML = iconHtml + `<p style="font-size:13px;font-weight:500;color:${textColor};margin:0;">${titel}</p><p style="font-size:11px;color:${subColor};margin:4px 0 0;">${statusText}</p>`;
-    grid.appendChild(tile);
+
+    const row = document.createElement('div');
+    row.className = 'module-card toolbox-elegant';
+    row.style.marginBottom = '8px';
+    if (istGesperrt) row.style.opacity = '0.65';
+    const headerBg = istAktiv ? 'background:#fdf8ea;' : '';
+    row.innerHTML = `
+      <div class="module-header" style="padding:11px 16px;${headerBg}${klickbar ? '' : 'cursor:default;'}" ${klickbar ? `onclick="toggleModule(${m})"` : ''}>
+        <div class="module-left">
+          <div class="module-number" style="width:26px;height:26px;font-size:11px;background:${iconBg};color:${iconColor};">${iconHtml}</div>
+          <div>
+            <div class="module-title" style="font-size:12.5px;">${titel}</div>
+            <div class="module-subtitle" style="font-size:10.5px;color:${subColor};">${statusText}</div>
+          </div>
+        </div>
+        ${klickbar ? `<span class="module-arrow" style="font-size:13px;${istAktiv ? 'transform:rotate(180deg);' : ''}">▼</span>` : ''}
+      </div>
+    `;
+    liste.appendChild(row);
   }
 }
 
