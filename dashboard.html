@@ -261,9 +261,9 @@ html, body { max-width:100%; overflow-x:hidden; }
         <div class="hub-title">Mein Team</div>
         <div class="hub-connector"></div>
         <div class="hub-pillars">
-          <a href="uebergabe.html" class="hub-pillar" style="position:relative;">📋<span id="intern-badge-0" style="display:none;position:absolute;top:-6px;right:-6px;background:#c0392b;color:#fff;font-size:10px;font-weight:700;border-radius:10px;min-width:18px;height:18px;line-height:18px;text-align:center;padding:0 4px;box-shadow:0 0 0 2px #1a2a4a;">0</span><span>Übergabe</span></a>
-          <a href="reservierung.html" class="hub-pillar" style="position:relative;">📅<span id="intern-badge-1" style="display:none;position:absolute;top:-6px;right:-6px;background:#c0392b;color:#fff;font-size:10px;font-weight:700;border-radius:10px;min-width:18px;height:18px;line-height:18px;text-align:center;padding:0 4px;box-shadow:0 0 0 2px #1a2a4a;">0</span><span>Reservierung</span></a>
-          <a href="schichtplan.html" class="hub-pillar" style="position:relative;">🗂️<span id="intern-badge-2" style="display:none;position:absolute;top:-6px;right:-6px;background:#c0392b;color:#fff;font-size:10px;font-weight:700;border-radius:10px;min-width:18px;height:18px;line-height:18px;text-align:center;padding:0 4px;box-shadow:0 0 0 2px #1a2a4a;">0</span><span>Schichtplan</span></a>
+          <a href="uebergabe.html" class="hub-pillar" style="position:relative;" onclick="markiereAlsGelesen('uebergabe')">📋<span id="intern-badge-0" style="display:none;position:absolute;top:-6px;right:-6px;background:#c0392b;color:#fff;font-size:10px;font-weight:700;border-radius:10px;min-width:18px;height:18px;line-height:18px;text-align:center;padding:0 4px;box-shadow:0 0 0 2px #1a2a4a;">0</span><span>Übergabe</span></a>
+          <a href="reservierung.html" class="hub-pillar" style="position:relative;" onclick="markiereAlsGelesen('reservierung')">📅<span id="intern-badge-1" style="display:none;position:absolute;top:-6px;right:-6px;background:#c0392b;color:#fff;font-size:10px;font-weight:700;border-radius:10px;min-width:18px;height:18px;line-height:18px;text-align:center;padding:0 4px;box-shadow:0 0 0 2px #1a2a4a;">0</span><span>Reservierung</span></a>
+          <a href="schichtplan.html" class="hub-pillar" style="position:relative;" onclick="markiereAlsGelesen('schichtplan')">🗂️<span id="intern-badge-2" style="display:none;position:absolute;top:-6px;right:-6px;background:#c0392b;color:#fff;font-size:10px;font-weight:700;border-radius:10px;min-width:18px;height:18px;line-height:18px;text-align:center;padding:0 4px;box-shadow:0 0 0 2px #1a2a4a;">0</span><span>Schichtplan</span></a>
           <a href="zeiterfassung.html" class="hub-pillar" style="position:relative;">⏱️<span id="intern-badge-3" style="display:none;position:absolute;top:-6px;right:-6px;background:#c0392b;color:#fff;font-size:10px;font-weight:700;border-radius:10px;min-width:18px;height:18px;line-height:18px;text-align:center;padding:0 4px;box-shadow:0 0 0 2px #1a2a4a;">0</span><span>Zeiterfassung</span></a>
         </div>
       </div>
@@ -1053,8 +1053,9 @@ const INTERN_TOOLS = [
   { icon: '📅', title: 'Reservierungsbuch', desc: 'Reservierungen erfassen – auch per PIN für Mitarbeiter ohne eigenen Zugang.', href: 'reservierung.html',
     pin: { zugangTool: 'reservierung-zugang', setupEndpoint: '/api/zugang-setup', bookType: 'reservierung', linkPath: 'reservierung.html' },
     unread: { dataTool: 'reservierungen', lastSeenKey: 'reservierung' } },
-  { icon: '🗂️', title: 'Schichtplan', desc: 'Dienstplan fürs Team – Mitarbeiter sehen ihn per PIN nur lesend, ändern kannst nur du.', href: 'schichtplan.html',
-    pin: { zugangTool: 'schichtplan-zugang', setupEndpoint: '/api/zugang-setup', bookType: 'schichtplan', linkPath: 'schichtplan.html' } },
+  { icon: '🗂️', title: 'Schichtplan', desc: 'Dienstplan fürs Team – Mitarbeiter sehen ihn per PIN nur lesend, ändern kannst du oder freigeschaltete Mitarbeiter.', href: 'schichtplan.html',
+    pin: { zugangTool: 'schichtplan-zugang', setupEndpoint: '/api/zugang-setup', bookType: 'schichtplan', linkPath: 'schichtplan.html' },
+    unread: { dataTool: 'schichtplaene', lastSeenKey: 'schichtplan' } },
   { icon: '⏱️', title: 'Zeiterfassung', desc: 'Mitarbeiter tragen Kommen/Pause/Gehen per PIN ein (nur eigene Zeiten sichtbar) – du genehmigst und erstellst PDFs.', href: 'zeiterfassung.html',
     pin: { zugangTool: 'zeiterfassung-zugang', setupEndpoint: '/api/zugang-setup', bookType: 'zeiterfassung', linkPath: 'zeiterfassung.html' },
     unread: { dataTool: 'zeiterfassung', lastSeenKey: 'zeiterfassung', modus: 'genehmigung' } }
@@ -1270,6 +1271,7 @@ async function unreadPruefen() {
     let items = data.items || [];
     if (tool.unread.lastSeenKey === 'uebergabe') items = items.filter(i => i.autor !== 'Chef');
     if (tool.unread.lastSeenKey === 'reservierung') items = items.filter(i => i.erfasstVon !== 'Chef');
+    if (tool.unread.lastSeenKey === 'schichtplan') items = items.filter(i => i.erfasstVon);
     // Zeiterfassung zeigt keine "ungelesen"-Zahl, sondern wie viele abgeschlossene
     // Schichten noch auf Genehmigung warten — bleibt sichtbar, bis der Chef genehmigt.
     const anzahl = (tool.unread.modus === 'genehmigung')
