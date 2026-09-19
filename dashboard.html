@@ -178,59 +178,26 @@ html, body { max-width:100%; overflow-x:hidden; }
       </div>
     </div>
 
-  </div>
-
-  <!-- RECHTE SPALTE: Tägliche Tools (Hauptfokus) -->
-  <div class="dash-right">
-
-    <div id="unread-banner" style="display:none;background:#c0392b;color:#fff;border-radius:8px;padding:10px 16px;font-size:12.5px;font-weight:600;margin-bottom:12px;text-align:center;"></div>
-
-    <!-- KACHEL: MEINE BUCHHALTUNG -->
-    <div class="module-card hub-card" id="buchhaltung-card" style="margin-bottom:16px;">
-      <div class="hub-head" onclick="toggleBuchhaltung()">
-        <div class="hub-circle">📊<span id="buchhaltung-card-badge" style="display:none;position:absolute;top:-2px;right:-2px;background:#c0392b;color:#fff;font-size:10px;font-weight:700;border-radius:10px;min-width:18px;height:18px;line-height:18px;text-align:center;padding:0 4px;box-shadow:0 0 0 2px #1a2a4a;">0</span></div>
-        <div class="hub-title">Meine Buchhaltung</div>
-        <div class="hub-connector"></div>
-        <div class="hub-pillars">
-          <a href="tagesgeschaeft.html" class="hub-pillar" onclick="event.stopPropagation()">📅<span>Tagesgeschäft</span></a>
-          <a href="belegablage.html" class="hub-pillar" onclick="event.stopPropagation()">🧾<span>Belege</span></a>
-          <a href="buchhaltung.html" class="hub-pillar" onclick="event.stopPropagation()">📈<span>Monatsberichte</span></a>
-        </div>
-        <div class="hub-hint"><span class="module-arrow" id="buchhaltung-arrow">▼</span> Klicken zum Öffnen</div>
+    <!-- KACHEL: TEAM-MITARBEITER & PIN (Verwaltung/Setup — daher hier links, nicht bei den täglichen Tools) -->
+    <div class="module-card toolbox-elegant" id="team-verwaltung-card" style="margin-top:8px;">
+      <div class="module-header" onclick="toggleTeamVerwaltung()" style="padding:14px 22px;">
+        <div class="module-left"><div class="module-number toolbox-icon-circle" style="width:32px;height:32px;font-size:14px;">🔑</div><div><div class="module-title" style="letter-spacing:0.3px;font-size:14px;">Team-Mitarbeiter &amp; PIN</div><div class="module-subtitle" style="margin-top:2px;">Zugang, PIN &amp; Rechte verwalten</div></div></div>
+        <div style="display:flex;align-items:center;gap:8px;"><span class="module-arrow" id="team-verwaltung-arrow" style="color:#d4af37;">▼</span></div>
       </div>
-      <div class="module-content" id="buchhaltung-content">
-        <div id="buchhaltung-tools-list"></div>
-      </div>
-    </div>
-
-    <!-- KACHEL 2: MEIN TEAM -->
-    <div class="module-card hub-card" id="intern-card">
-      <div class="hub-head" onclick="toggleIntern()">
-        <div class="hub-circle">🔒<span id="intern-card-badge" style="display:none;position:absolute;top:-2px;right:-2px;background:#c0392b;color:#fff;font-size:10px;font-weight:700;border-radius:10px;min-width:18px;height:18px;line-height:18px;text-align:center;padding:0 4px;box-shadow:0 0 0 2px #1a2a4a;">0</span></div>
-        <div class="hub-title">Mein Team</div>
-        <div class="hub-connector"></div>
-        <div class="hub-pillars">
-          <a href="uebergabe.html" class="hub-pillar" onclick="event.stopPropagation()">📋<span>Übergabe</span></a>
-          <a href="reservierung.html" class="hub-pillar" onclick="event.stopPropagation()">📅<span>Reservierung</span></a>
-          <a href="schichtplan.html" class="hub-pillar" onclick="event.stopPropagation()">🗂️<span>Schichtplan</span></a>
-          <a href="zeiterfassung.html" class="hub-pillar" onclick="event.stopPropagation()">⏱️<span>Zeiterfassung</span></a>
-        </div>
-        <div class="hub-hint"><span class="module-arrow" id="intern-arrow">▼</span> Klicken zum Öffnen</div>
-      </div>
-      <div class="module-content" id="intern-content">
+      <div class="module-content" id="team-verwaltung-content">
         <div style="padding:14px 20px 0;">
           <button onclick="const b=this.nextElementSibling; const auf = b.style.display === 'none'; b.style.display = auf ? 'block' : 'none'; this.querySelector('.pin-hinweis-pfeil').textContent = auf ? '▲' : '▼';" style="display:flex;align-items:center;gap:8px;width:100%;background:#eaf2ff;border:1.5px solid #8ba8d0;border-radius:10px;padding:11px 16px;font-size:13px;font-weight:700;color:#1a2a4a;cursor:pointer;text-align:left;">
             <span style="font-size:16px;">💡</span> Wie funktioniert das für Mitarbeiter? <span class="pin-hinweis-pfeil" style="margin-left:auto;color:#3a5578;">▼</span>
           </button>
           <div style="display:none;margin-top:8px;font-size:12px;color:#5a6a85;line-height:1.6;background:#fdf8ea;border-radius:10px;padding:12px 14px;">
-            Jeder Mitarbeiter bekommt unten bei "Team-Mitarbeiter" eine eigene, persönliche PIN — damit niemand sich für einen Kollegen ausgeben kann. Mit dem Link/QR-Code unten meldet sich jeder mit seiner eigenen PIN an und sieht automatisch nur, was für ihn freigeschaltet ist. Am besten die Seite auf dem Handy zum Homebildschirm hinzufügen und Push-Benachrichtigungen aktivieren, dann bekommt man Neues sofort mit.
+            Jeder Mitarbeiter bekommt unten eine eigene, persönliche PIN — damit niemand sich für einen Kollegen ausgeben kann. Mit dem Link/QR-Code unten meldet sich jeder mit seiner eigenen PIN an und sieht automatisch nur, was für ihn freigeschaltet ist. Am besten die Seite auf dem Handy zum Homebildschirm hinzufügen und Push-Benachrichtigungen aktivieren, dann bekommt man Neues sofort mit.
           </div>
         </div>
         <div style="padding:16px 20px;border-bottom:1px solid #f0e8d4;margin-top:14px;">
           <div style="font-weight:700;font-size:13px;color:#1a2a4a;margin-bottom:10px;">🔗 Team-Zugang (ein Link für alle Bereiche)</div>
           <div id="team-zugang-content" style="font-size:12.5px;color:#5a6a85;">Wird geladen …</div>
         </div>
-        <div style="padding:16px 20px;border-bottom:1px solid #f0e8d4;">
+        <div style="padding:16px 20px;">
           <div style="font-weight:700;font-size:13px;color:#1a2a4a;margin-bottom:4px;">👥 Team-Mitarbeiter verwalten</div>
           <div style="font-size:11.5px;color:#8090a8;margin-bottom:12px;">PIN vergeben und ankreuzen, welche Bereiche die Person nutzen darf.</div>
           <div id="team-mitarbeiter-liste"></div>
@@ -246,7 +213,42 @@ html, body { max-width:100%; overflow-x:hidden; }
             <button onclick="teamMitarbeiterHinzufuegen()" style="background:#1a6640;color:#fff;border:none;padding:9px 16px;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer;">+ Hinzufügen</button>
           </div>
         </div>
-        <div id="intern-tools-list"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RECHTE SPALTE: Tägliche Tools (Hauptfokus) -->
+  <div class="dash-right">
+
+    <div id="unread-banner" style="display:none;background:#c0392b;color:#fff;border-radius:8px;padding:10px 16px;font-size:12.5px;font-weight:600;margin-bottom:12px;text-align:center;"></div>
+
+    <!-- KACHEL: MEINE BUCHHALTUNG -->
+    <div class="module-card hub-card" id="buchhaltung-card" style="margin-bottom:16px;">
+      <div class="hub-head" style="cursor:default;">
+        <div class="hub-circle">📊<span id="buchhaltung-card-badge" style="display:none;position:absolute;top:-2px;right:-2px;background:#c0392b;color:#fff;font-size:10px;font-weight:700;border-radius:10px;min-width:18px;height:18px;line-height:18px;text-align:center;padding:0 4px;box-shadow:0 0 0 2px #1a2a4a;">0</span></div>
+        <div class="hub-title">Meine Buchhaltung</div>
+        <div class="hub-connector"></div>
+        <div class="hub-pillars">
+          <a href="tagesgeschaeft.html" class="hub-pillar">📅<span>Tagesgeschäft</span></a>
+          <a href="belegablage.html" class="hub-pillar">🧾<span>Belege</span></a>
+          <a href="buchhaltung.html" class="hub-pillar">📈<span>Monatsberichte</span></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- KACHEL 2: MEIN TEAM -->
+    <div class="module-card hub-card" id="intern-card">
+      <div class="hub-head" style="cursor:default;">
+        <div class="hub-circle">🔒<span id="intern-card-badge" style="display:none;position:absolute;top:-2px;right:-2px;background:#c0392b;color:#fff;font-size:10px;font-weight:700;border-radius:10px;min-width:18px;height:18px;line-height:18px;text-align:center;padding:0 4px;box-shadow:0 0 0 2px #1a2a4a;">0</span></div>
+        <div class="hub-title">Mein Team</div>
+        <div class="hub-connector"></div>
+        <div class="hub-pillars">
+          <a href="uebergabe.html" class="hub-pillar">📋<span>Übergabe</span></a>
+          <a href="reservierung.html" class="hub-pillar">📅<span>Reservierung</span></a>
+          <a href="schichtplan.html" class="hub-pillar">🗂️<span>Schichtplan</span></a>
+          <a href="zeiterfassung.html" class="hub-pillar">⏱️<span>Zeiterfassung</span></a>
+        </div>
       </div>
     </div>
 
@@ -994,6 +996,15 @@ function toggleModulListe() {
   if (arrow) arrow.classList.toggle('open', !isOpen);
 }
 
+function toggleTeamVerwaltung() {
+  const content = document.getElementById('team-verwaltung-content');
+  const arrow   = document.getElementById('team-verwaltung-arrow');
+  if (!content) return;
+  const isOpen = content.classList.contains('open');
+  content.classList.toggle('open', !isOpen);
+  if (arrow) arrow.classList.toggle('open', !isOpen);
+}
+
 function toggleIntern() {
   const content = document.getElementById('intern-content');
   const arrow   = document.getElementById('intern-arrow');
@@ -1165,12 +1176,12 @@ function teamMitarbeiterRender() {
   const el = document.getElementById('team-mitarbeiter-liste');
   if (!el) return;
   if (!teamMitarbeiterListe.length) { el.innerHTML = '<div style="font-size:12px;color:#8090a8;">Noch keine Mitarbeiter angelegt.</div>'; return; }
-  const kopf = TEAM_BEREICHE.map(([key, kurz, titel]) => `<th title="${titel}">${kurz}</th>`).join('');
+  const kopf = TEAM_BEREICHE.map(([key, kurz, titel], idx) => `<th title="${titel}"${idx === 0 ? ' style="padding-left:18px;border-left:2px solid #e8dfc8;"' : ''}>${kurz}</th>`).join('');
   const zeilen = teamMitarbeiterListe.map((m, i) => `
     <tr>
       <td><input type="text" value="${(m.name || '').replace(/"/g, '&quot;')}" onchange="teamMitarbeiterFeldGeaendert(${i},'name',this.value)" style="border:1px solid #e0d8c8;border-radius:5px;padding:5px 6px;font-size:12px;width:78px;"></td>
       <td><input type="text" inputmode="numeric" maxlength="4" value="${m.pin || ''}" placeholder="fehlt" onchange="teamMitarbeiterFeldGeaendert(${i},'pin',this.value)" style="border:1px solid ${m.pin ? '#e0d8c8' : '#c0392b'};border-radius:5px;padding:5px 4px;font-size:12px;width:48px;text-align:center;"></td>
-      ${TEAM_BEREICHE.map(([key, kurz, titel]) => `<td title="${titel}"><input type="checkbox" ${m.rechte && m.rechte[key] ? 'checked' : ''} onchange="teamMitarbeiterRechtGeaendert(${i},'${key}',this.checked)" style="width:16px;height:16px;cursor:pointer;"></td>`).join('')}
+      ${TEAM_BEREICHE.map(([key, kurz, titel], idx) => `<td title="${titel}"${idx === 0 ? ' style="padding-left:18px;border-left:2px solid #e8dfc8;"' : ''}><input type="checkbox" ${m.rechte && m.rechte[key] ? 'checked' : ''} onchange="teamMitarbeiterRechtGeaendert(${i},'${key}',this.checked)" style="width:16px;height:16px;cursor:pointer;"></td>`).join('')}
       <td><button onclick="teamMitarbeiterLoeschen(${i})" style="background:transparent;border:1px solid #c0392b;color:#c0392b;padding:3px 7px;border-radius:5px;font-size:10px;cursor:pointer;">✕</button></td>
     </tr>
   `).join('');
