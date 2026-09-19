@@ -50,7 +50,7 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 .btn-notify:hover { background:rgba(212,175,55,0.15); }
 .btn-notify.active { background:#1a6640; border-color:#1a6640; color:#fff; cursor:default; }
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
-.main { max-width:1180px; margin:32px auto; padding:0 24px; }
+.main { max-width:860px; margin:32px auto; padding:0 24px; }
 .module-card { background:#fff; border:1px solid #e8dfc8; border-radius:10px; margin-bottom:16px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
 .module-card.locked { opacity:0.6; }
 .module-header { padding:16px 20px; display:flex; align-items:center; justify-content:space-between; cursor:pointer; user-select:none; transition:background 0.2s; }
@@ -148,14 +148,12 @@ html, body { max-width:100%; overflow-x:hidden; }
   <!-- LINKE SPALTE: Module (kompakt, als Zusatz) -->
   <div class="dash-left">
 
-    <div class="toolbox-elegant" style="padding:16px 20px;display:flex;gap:12px;align-items:flex-start;margin-bottom:16px;">
-      <div class="toolbox-icon-circle" style="flex-shrink:0;width:32px;height:32px;font-size:14px;">ℹ️</div>
-      <div style="font-size:12px;color:#5a6a85;line-height:1.6;padding-top:1px;">
-        <div style="font-family:Georgia,serif;font-size:13.5px;color:#1a2a4a;margin-bottom:4px;">So schaltest du das nächste Modul frei</div>
-        Jedes Modul öffnet sich automatisch, sobald du das <strong style="color:#1a2a4a;">Quiz</strong> des vorherigen Moduls bestanden hast (mindestens 6 von 8 richtigen Antworten). Lektionen und Tools allein reichen dafür nicht aus — das Quiz ist der Schlüssel.
-        <br><br>
-        Mit jedem abgeschlossenen Modul werden außerdem automatisch die passenden Werkzeuge dazu freigeschaltet — du findest sie dann direkt unten bei <strong style="color:#1a2a4a;">"Meine Modul-Tools"</strong>.
+    <div class="toolbox-elegant" style="padding:14px 18px;display:flex;gap:10px;align-items:center;margin-bottom:14px;">
+      <div class="toolbox-icon-circle" style="flex-shrink:0;width:28px;height:28px;font-size:13px;">💡</div>
+      <div style="font-size:11.5px;color:#5a6a85;line-height:1.5;">
+        Nächstes Modul öffnet sich automatisch nach bestandenem <strong style="color:#1a2a4a;">Quiz</strong> — inklusive der passenden Tools.
       </div>
+    </div>
     </div>
 
     <!-- KACHEL: MEINE MODUL-TOOLS -->
@@ -187,7 +185,7 @@ html, body { max-width:100%; overflow-x:hidden; }
 
     <!-- KACHEL: MEINE BUCHHALTUNG -->
     <div class="module-card toolbox-elegant" id="buchhaltung-card" style="margin-bottom:16px;">
-      <div class="module-header navy-head" onclick="toggleBuchhaltung()">
+      <div class="module-header elegant-head" onclick="toggleBuchhaltung()">
         <div class="module-left"><div class="module-number toolbox-icon-circle" style="position:relative;">📊<span id="buchhaltung-card-badge" style="display:none;position:absolute;top:-6px;right:-8px;background:#c0392b;color:#fff;font-size:10px;font-weight:700;border-radius:10px;min-width:18px;height:18px;line-height:18px;text-align:center;padding:0 4px;box-shadow:0 0 0 2px #fff;">0</span></div><div><div class="module-title">Meine Buchhaltung</div><div class="module-subtitle">Tagesgeschäft, Belege &amp; Monatsberichte</div></div></div>
         <div style="display:flex;align-items:center;gap:8px;"><span class="module-arrow" id="buchhaltung-arrow">▼</span></div>
       </div>
@@ -198,7 +196,7 @@ html, body { max-width:100%; overflow-x:hidden; }
 
     <!-- KACHEL 2: MEIN TEAM -->
     <div class="module-card toolbox-elegant" id="intern-card">
-      <div class="module-header navy-head" onclick="toggleIntern()">
+      <div class="module-header elegant-head" onclick="toggleIntern()">
         <div class="module-left"><div class="module-number toolbox-icon-circle" style="position:relative;">🔒<span id="intern-card-badge" style="display:none;position:absolute;top:-6px;right:-8px;background:#c0392b;color:#fff;font-size:10px;font-weight:700;border-radius:10px;min-width:18px;height:18px;line-height:18px;text-align:center;padding:0 4px;box-shadow:0 0 0 2px #fff;">0</span></div><div><div class="module-title">Mein Team</div><div class="module-subtitle">Übergabe, Reservierung, Schichtplan &amp; Zeiterfassung</div></div></div>
         <div style="display:flex;align-items:center;gap:8px;"><span class="module-arrow" id="intern-arrow">▼</span></div>
       </div>
@@ -240,6 +238,7 @@ html, body { max-width:100%; overflow-x:hidden; }
   grid-template-columns: 340px 1fr;
   gap: 24px;
   align-items: start;
+  position: relative;
 }
 .dash-left, .dash-right { min-width: 0; }
 @media (max-width: 1000px) {
@@ -247,19 +246,30 @@ html, body { max-width:100%; overflow-x:hidden; }
   .dash-left { order: 2; }
   .dash-right { order: 1; }
 }
-.module-header.navy-head {
+@media (min-width: 1300px) {
+  .dash-grid { grid-template-columns: 1fr; }
+  .dash-right { max-width: 860px; }
+  .dash-left {
+    position: absolute;
+    top: 0;
+    width: 300px;
+    right: calc(100% + 24px);
+  }
+}
+.module-header.elegant-head {
   padding: 22px 28px;
-  background: linear-gradient(135deg, #1a2a4a 0%, #131f38 100%);
+  background: linear-gradient(135deg, #fdfaf3 0%, #f6efdc 100%);
 }
-.module-header.navy-head:hover { background: linear-gradient(135deg, #1f3155 0%, #172441 100%); }
-.module-header.navy-head .module-title { color: #fff; font-size: 16.5px; letter-spacing: 0.2px; }
-.module-header.navy-head .module-subtitle { color: rgba(255,255,255,0.55); margin-top: 3px; }
-.module-header.navy-head .module-number {
-  width: 46px; height: 46px; font-size: 20px;
-  background: linear-gradient(135deg, #e8c968, #d4af37);
-  box-shadow: 0 2px 10px rgba(212,175,55,0.35);
+.module-header.elegant-head:hover { background: linear-gradient(135deg, #fbf5e6 0%, #f2e9cf 100%); }
+.module-header.elegant-head .module-title { color: #1a2a4a; font-size: 17px; font-family: Georgia, serif; }
+.module-header.elegant-head .module-subtitle { color: #8090a8; margin-top: 3px; }
+.module-header.elegant-head .module-number {
+  width: 48px; height: 48px; font-size: 21px;
+  background: #1a2a4a;
+  color: #d4af37;
+  box-shadow: 0 2px 10px rgba(26,42,74,0.22);
 }
-.module-header.navy-head .module-arrow { color: #d4af37; font-size: 17px; }
+.module-header.elegant-head .module-arrow { color: #d4af37; font-size: 16px; }
 .toolbox-elegant {
   background: linear-gradient(180deg, #ffffff 0%, #fdfaf3 100%);
   border: 1px solid #e4d5a8;
