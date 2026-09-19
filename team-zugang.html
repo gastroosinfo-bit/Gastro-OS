@@ -78,6 +78,10 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 
   <!-- ═══ BEREICHS-AUSWAHL ═══ -->
   <div id="bereich-screen" style="display:none;">
+    <div class="section" style="display:flex;align-items:center;gap:12px;">
+      <div style="flex:1;font-size:12.5px;color:#5a6a85;" id="push-status-text">Einmal aktivieren, dann bekommst du für alle deine Bereiche Bescheid.</div>
+      <button id="push-btn" style="background:#1a6640;color:#fff;border:none;padding:8px 14px;border-radius:6px;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;">🔔 Aktivieren</button>
+    </div>
     <div class="section">
       <div style="font-size:15px;font-weight:700;margin-bottom:14px;" id="begruessung">Hallo!</div>
       <div class="bereich-liste" id="bereich-liste"></div>
@@ -171,11 +175,74 @@ async function pinPruefenMitWert(pin, stillLaden) {
       });
       if (d.rechte && d.rechte.zeiterfassung) zeitBadgeLaden(pin);
       bereichPushBadgesLaden(erlaubt);
+      teamPushSetup(erlaubt, pin);
     }
     gesamtBadgeZuruecksetzen();
   } catch (e) {
     if (!stillLaden) document.getElementById('pin-error').style.display = 'block';
   }
+}
+
+// Aktiviert Push EINMAL für alle Bereiche, die diese Person nutzen darf — sonst
+// müsste man auf jeder einzelnen Bereichsseite separat "Aktivieren" klicken, was
+// dazu führt, dass man nur für den zuletzt besuchten Bereich Nachrichten bekommt.
+const VAPID_PUBLIC_KEY = 'BNLFO9QNrjxgwjx4XsJdMxKeF1WH5kUhAdTOcN3DHabt32CN6g3hB5l5KsSA-u8_6HCGzrKN4BzIS4aIcIVSYTE';
+function urlBase64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+  const rawData = window.atob(base64);
+  return Uint8Array.from([...rawData].map(c => c.charCodeAt(0)));
+}
+async function teamPushSetup(erlaubt, pin) {
+  const btn = document.getElementById('push-btn');
+  const status = document.getElementById('push-status-text');
+  if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+    status.textContent = 'Push-Benachrichtigungen werden auf diesem Gerät/Browser nicht unterstützt.';
+    btn.style.display = 'none';
+    return;
+  }
+  async function fuerAlleBereicheMelden(sub) {
+    await Promise.all(erlaubt.map(b =>
+      fetch('/api/push-subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code, pin, bookType: b.key, subscription: sub })
+      }).catch(() => {})
+    ));
+  }
+  if (Notification.permission === 'granted') {
+    const reg = await navigator.serviceWorker.getRegistration();
+    const sub = reg && await reg.pushManager.getSubscription();
+    if (sub) {
+      await fuerAlleBereicheMelden(sub);
+      status.textContent = '🔔 Benachrichtigungen sind für alle deine Bereiche aktiv.';
+      btn.textContent = '✓ Aktiv';
+      btn.disabled = true;
+      btn.style.opacity = '0.6';
+      return;
+    }
+  }
+  btn.onclick = async function() {
+    try {
+      const reg = await navigator.serviceWorker.register('/sw.js');
+      const permission = await Notification.requestPermission();
+      if (permission !== 'granted') {
+        status.textContent = 'Benachrichtigungen wurden nicht erlaubt.';
+        return;
+      }
+      const sub = await reg.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
+      });
+      await fuerAlleBereicheMelden(sub);
+      status.textContent = '🔔 Benachrichtigungen sind jetzt für alle deine Bereiche aktiv.';
+      btn.textContent = '✓ Aktiv';
+      btn.disabled = true;
+      btn.style.opacity = '0.6';
+    } catch (e) {
+      status.textContent = 'Aktivierung leider fehlgeschlagen.';
+    }
+  };
 }
 
 async function gesamtBadgeZuruecksetzen() {

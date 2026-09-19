@@ -36,26 +36,30 @@ async function badgeZaehlerSchreiben(wert) {
     });
   } catch (e) {}
 }
-async function badgeErhoehen() {
-  const neu = (await badgeZaehlerLesen()) + 1;
-  await badgeZaehlerSchreiben(neu);
-  if ('setAppBadge' in self.navigator) {
-    try { await self.navigator.setAppBadge(neu); } catch (e) {}
-  }
-}
-async function badgeProBereichErhoehen(bookType) {
-  if (!bookType) return;
+async function badgeErhoehen(bookType) {
+  let gesamt = 0;
   try {
     const db = await badgeDbOeffnen();
-    await new Promise((resolve) => {
+    gesamt = await new Promise((resolve) => {
       const tx = db.transaction('zaehler', 'readwrite');
       const store = tx.objectStore('zaehler');
-      const getReq = store.get('bereich-' + bookType);
-      getReq.onsuccess = () => { store.put((getReq.result || 0) + 1, 'bereich-' + bookType); };
-      tx.oncomplete = () => resolve();
-      tx.onerror = () => resolve();
+      let neuGesamt = 0;
+      const getGesamt = store.get('count');
+      getGesamt.onsuccess = () => {
+        neuGesamt = (getGesamt.result || 0) + 1;
+        store.put(neuGesamt, 'count');
+        if (bookType) {
+          const getBereich = store.get('bereich-' + bookType);
+          getBereich.onsuccess = () => { store.put((getBereich.result || 0) + 1, 'bereich-' + bookType); };
+        }
+      };
+      tx.oncomplete = () => resolve(neuGesamt);
+      tx.onerror = () => resolve(0);
     });
   } catch (e) {}
+  if ('setAppBadge' in self.navigator) {
+    try { await self.navigator.setAppBadge(gesamt); } catch (e) {}
+  }
 }
 async function badgeZuruecksetzen() {
   await badgeZaehlerSchreiben(0);
@@ -78,8 +82,7 @@ self.addEventListener('push', function(event) {
   event.waitUntil(
     Promise.all([
       self.registration.showNotification(payload.title, options),
-      badgeErhoehen(),
-      badgeProBereichErhoehen(payload.bookType)
+      badgeErhoehen(payload.bookType)
     ])
   );
 });
