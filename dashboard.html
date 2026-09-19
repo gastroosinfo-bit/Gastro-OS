@@ -1208,7 +1208,7 @@ function teamMitarbeiterRender() {
         <button onclick="teamMitarbeiterLoeschen(${i})" style="background:transparent;border:1px solid #c0392b;color:#c0392b;padding:6px 10px;border-radius:5px;font-size:11px;cursor:pointer;margin-left:auto;">✕ Entfernen</button>
       </div>
       <div style="font-size:10px;font-weight:700;color:#8090a8;text-transform:uppercase;margin-bottom:6px;">Darf nutzen</div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:6px 14px;">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:6px 14px;margin-bottom:12px;">
         ${TEAM_BEREICHE.map(([key, label]) => `
           <label style="display:flex;align-items:center;gap:7px;font-size:12.5px;color:#1a2a4a;cursor:pointer;${key === 'schichtplanBearbeiten' ? 'padding-left:18px;' : ''}">
             <input type="checkbox" ${m.rechte && m.rechte[key] ? 'checked' : ''} onchange="teamMitarbeiterRechtGeaendert(${i},'${key}',this.checked)" style="width:15px;height:15px;cursor:pointer;flex-shrink:0;">
@@ -1216,18 +1216,24 @@ function teamMitarbeiterRender() {
           </label>
         `).join('')}
       </div>
+      <button onclick="teamMitarbeiterKarteSpeichern(${i})" style="background:#1a6640;color:#fff;border:none;padding:8px 16px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;">💾 Speichern</button>
+      <span class="save-msg" id="team-save-msg-${i}" style="font-size:12px;color:#4aaa60;margin-left:8px;display:none;">✓ Gespeichert</span>
     </div>
   `).join('');
 }
 window.teamMitarbeiterFeldGeaendert = function(i, feld, wert) {
   teamMitarbeiterListe[i][feld] = wert.trim();
-  teamMitarbeiterSpeichern();
-  if (feld === 'pin') teamMitarbeiterRender();
 };
 window.teamMitarbeiterRechtGeaendert = function(i, bereich, wert) {
   if (!teamMitarbeiterListe[i].rechte) teamMitarbeiterListe[i].rechte = {};
   teamMitarbeiterListe[i].rechte[bereich] = wert;
-  teamMitarbeiterSpeichern();
+};
+window.teamMitarbeiterKarteSpeichern = async function(i) {
+  const m = teamMitarbeiterListe[i];
+  if (!confirm('Änderungen für "' + (m.name || 'diesen Mitarbeiter') + '" speichern?')) return;
+  await teamMitarbeiterSpeichern();
+  const msg = document.getElementById('team-save-msg-' + i);
+  if (msg) { msg.style.display = 'inline'; setTimeout(() => { msg.style.display = 'none'; }, 2000); }
 };
 window.teamMitarbeiterLoeschen = async function(i) {
   if (!confirm('Mitarbeiter "' + teamMitarbeiterListe[i].name + '" wirklich entfernen?')) return;
