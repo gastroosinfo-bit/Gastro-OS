@@ -29,6 +29,10 @@ function openModuleFromHash() {
   if (!content) return;
   content.classList.add('open');
   if (arrow) arrow.classList.add('open');
+  const modulListeContent = document.getElementById('modulliste-content');
+  const modulListeArrow = document.getElementById('modulliste-arrow');
+  if (modulListeContent) modulListeContent.classList.add('open');
+  if (modulListeArrow) modulListeArrow.classList.add('open');
   if (m) { setTimeout(() => { if (card) card.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 400); }
 }
 window.addEventListener('DOMContentLoaded', openModuleFromHash);
@@ -144,25 +148,33 @@ html, body { max-width:100%; overflow-x:hidden; }
   <!-- LINKE SPALTE: Module (kompakt, als Zusatz) -->
   <div class="dash-left">
 
-    <div style="font-family:Georgia,serif;font-size:15px;color:#1a2a4a;margin-bottom:10px;">Deine Module</div>
-    <div id="modul-liste"></div>
-
-    <!-- KACHEL: DEINE MODUL-TOOLS -->
-    <div class="module-card toolbox-elegant" id="modultools-card" style="margin-top:8px;">
-      <div class="module-header" onclick="toggleToolbox()" style="padding:14px 22px;">
-        <div class="module-left"><div class="module-number toolbox-icon-circle" style="width:32px;height:32px;font-size:14px;">🎓</div><div><div class="module-title" style="letter-spacing:0.3px;font-size:14px;">Deine Modul-Tools</div><div class="module-subtitle" id="toolbox-subtitle" style="margin-top:2px;">Wird geladen …</div></div></div>
-        <div style="display:flex;align-items:center;gap:8px;"><span class="module-arrow" id="toolbox-arrow" style="color:#d4af37;">▼</span></div>
-      </div>
-      <div class="module-content" id="toolbox-content"></div>
-    </div>
-
-    <div class="toolbox-elegant" style="padding:16px 20px;display:flex;gap:12px;align-items:flex-start;margin-top:16px;margin-bottom:16px;">
+    <div class="toolbox-elegant" style="padding:16px 20px;display:flex;gap:12px;align-items:flex-start;margin-bottom:16px;">
       <div class="toolbox-icon-circle" style="flex-shrink:0;width:32px;height:32px;font-size:14px;">ℹ️</div>
       <div style="font-size:12px;color:#5a6a85;line-height:1.6;padding-top:1px;">
         <div style="font-family:Georgia,serif;font-size:13.5px;color:#1a2a4a;margin-bottom:4px;">So schaltest du das nächste Modul frei</div>
         Jedes Modul öffnet sich automatisch, sobald du das <strong style="color:#1a2a4a;">Quiz</strong> des vorherigen Moduls bestanden hast (mindestens 6 von 8 richtigen Antworten). Lektionen und Tools allein reichen dafür nicht aus — das Quiz ist der Schlüssel.
         <br><br>
-        Mit jedem abgeschlossenen Modul werden außerdem automatisch die passenden Werkzeuge dazu freigeschaltet — du findest sie dann direkt oben bei <strong style="color:#1a2a4a;">"Deine Modul-Tools"</strong>.
+        Mit jedem abgeschlossenen Modul werden außerdem automatisch die passenden Werkzeuge dazu freigeschaltet — du findest sie dann direkt unten bei <strong style="color:#1a2a4a;">"Meine Modul-Tools"</strong>.
+      </div>
+    </div>
+
+    <!-- KACHEL: MEINE MODUL-TOOLS -->
+    <div class="module-card toolbox-elegant" id="modultools-card" style="margin-bottom:8px;">
+      <div class="module-header" onclick="toggleToolbox()" style="padding:14px 22px;">
+        <div class="module-left"><div class="module-number toolbox-icon-circle" style="width:32px;height:32px;font-size:14px;">🎓</div><div><div class="module-title" style="letter-spacing:0.3px;font-size:14px;">Meine Modul-Tools</div><div class="module-subtitle" id="toolbox-subtitle" style="margin-top:2px;">Wird geladen …</div></div></div>
+        <div style="display:flex;align-items:center;gap:8px;"><span class="module-arrow" id="toolbox-arrow" style="color:#d4af37;">▼</span></div>
+      </div>
+      <div class="module-content" id="toolbox-content"></div>
+    </div>
+
+    <!-- KACHEL: MEINE MODULE (als Dropdown, enthält die komplette Modulliste) -->
+    <div class="module-card toolbox-elegant" id="modulliste-card">
+      <div class="module-header" onclick="toggleModulListe()" style="padding:14px 22px;">
+        <div class="module-left"><div class="module-number toolbox-icon-circle" style="width:32px;height:32px;font-size:14px;">📚</div><div><div class="module-title" style="letter-spacing:0.3px;font-size:14px;">Meine Module</div><div class="module-subtitle" style="margin-top:2px;">14 Lernmodule Schritt für Schritt</div></div></div>
+        <div style="display:flex;align-items:center;gap:8px;"><span class="module-arrow" id="modulliste-arrow" style="color:#d4af37;">▼</span></div>
+      </div>
+      <div class="module-content" id="modulliste-content">
+        <div id="modul-liste" style="padding:14px 16px;"></div>
       </div>
     </div>
 
@@ -173,22 +185,22 @@ html, body { max-width:100%; overflow-x:hidden; }
 
     <div id="unread-banner" style="display:none;background:#c0392b;color:#fff;border-radius:8px;padding:10px 16px;font-size:12.5px;font-weight:600;margin-bottom:12px;text-align:center;"></div>
 
-    <!-- KACHEL: DEINE BUCHHALTUNG -->
-    <div class="module-card toolbox-elegant" id="buchhaltung-card" style="margin-bottom:12px;">
-      <div class="module-header" onclick="toggleBuchhaltung()" style="padding:14px 22px;">
-        <div class="module-left"><div class="module-number toolbox-icon-circle" style="width:32px;height:32px;font-size:14px;position:relative;">📊<span id="buchhaltung-card-badge" style="display:none;position:absolute;top:-6px;right:-8px;background:#c0392b;color:#fff;font-size:10px;font-weight:700;border-radius:10px;min-width:18px;height:18px;line-height:18px;text-align:center;padding:0 4px;box-shadow:0 0 0 2px #fff;">0</span></div><div><div class="module-title" style="letter-spacing:0.3px;font-size:14px;">Deine Buchhaltung</div><div class="module-subtitle" style="margin-top:2px;">Tagesgeschäft, Belege &amp; Monatsberichte</div></div></div>
-        <div style="display:flex;align-items:center;gap:8px;"><span class="module-arrow" id="buchhaltung-arrow" style="color:#d4af37;">▼</span></div>
+    <!-- KACHEL: MEINE BUCHHALTUNG -->
+    <div class="module-card toolbox-elegant" id="buchhaltung-card" style="margin-bottom:16px;">
+      <div class="module-header navy-head" onclick="toggleBuchhaltung()">
+        <div class="module-left"><div class="module-number toolbox-icon-circle" style="position:relative;">📊<span id="buchhaltung-card-badge" style="display:none;position:absolute;top:-6px;right:-8px;background:#c0392b;color:#fff;font-size:10px;font-weight:700;border-radius:10px;min-width:18px;height:18px;line-height:18px;text-align:center;padding:0 4px;box-shadow:0 0 0 2px #fff;">0</span></div><div><div class="module-title">Meine Buchhaltung</div><div class="module-subtitle">Tagesgeschäft, Belege &amp; Monatsberichte</div></div></div>
+        <div style="display:flex;align-items:center;gap:8px;"><span class="module-arrow" id="buchhaltung-arrow">▼</span></div>
       </div>
       <div class="module-content" id="buchhaltung-content">
         <div id="buchhaltung-tools-list"></div>
       </div>
     </div>
 
-    <!-- KACHEL 2: DEIN TEAM -->
+    <!-- KACHEL 2: MEIN TEAM -->
     <div class="module-card toolbox-elegant" id="intern-card">
-      <div class="module-header" onclick="toggleIntern()" style="padding:14px 22px;">
-        <div class="module-left"><div class="module-number toolbox-icon-circle" style="width:32px;height:32px;font-size:14px;position:relative;">🔒<span id="intern-card-badge" style="display:none;position:absolute;top:-6px;right:-8px;background:#c0392b;color:#fff;font-size:10px;font-weight:700;border-radius:10px;min-width:18px;height:18px;line-height:18px;text-align:center;padding:0 4px;box-shadow:0 0 0 2px #fff;">0</span></div><div><div class="module-title" style="letter-spacing:0.3px;font-size:14px;">Dein Team</div><div class="module-subtitle" style="margin-top:2px;">Übergabe, Reservierung, Schichtplan &amp; Zeiterfassung</div></div></div>
-        <div style="display:flex;align-items:center;gap:8px;"><span class="module-arrow" id="intern-arrow" style="color:#d4af37;">▼</span></div>
+      <div class="module-header navy-head" onclick="toggleIntern()">
+        <div class="module-left"><div class="module-number toolbox-icon-circle" style="position:relative;">🔒<span id="intern-card-badge" style="display:none;position:absolute;top:-6px;right:-8px;background:#c0392b;color:#fff;font-size:10px;font-weight:700;border-radius:10px;min-width:18px;height:18px;line-height:18px;text-align:center;padding:0 4px;box-shadow:0 0 0 2px #fff;">0</span></div><div><div class="module-title">Mein Team</div><div class="module-subtitle">Übergabe, Reservierung, Schichtplan &amp; Zeiterfassung</div></div></div>
+        <div style="display:flex;align-items:center;gap:8px;"><span class="module-arrow" id="intern-arrow">▼</span></div>
       </div>
       <div class="module-content" id="intern-content">
         <div style="padding:14px 20px;font-size:12px;color:#5a6a85;line-height:1.6;background:#fdf8ea;border-bottom:1px solid #f0e8d4;">
@@ -235,6 +247,19 @@ html, body { max-width:100%; overflow-x:hidden; }
   .dash-left { order: 2; }
   .dash-right { order: 1; }
 }
+.module-header.navy-head {
+  padding: 22px 28px;
+  background: linear-gradient(135deg, #1a2a4a 0%, #131f38 100%);
+}
+.module-header.navy-head:hover { background: linear-gradient(135deg, #1f3155 0%, #172441 100%); }
+.module-header.navy-head .module-title { color: #fff; font-size: 16.5px; letter-spacing: 0.2px; }
+.module-header.navy-head .module-subtitle { color: rgba(255,255,255,0.55); margin-top: 3px; }
+.module-header.navy-head .module-number {
+  width: 46px; height: 46px; font-size: 20px;
+  background: linear-gradient(135deg, #e8c968, #d4af37);
+  box-shadow: 0 2px 10px rgba(212,175,55,0.35);
+}
+.module-header.navy-head .module-arrow { color: #d4af37; font-size: 17px; }
 .toolbox-elegant {
   background: linear-gradient(180deg, #ffffff 0%, #fdfaf3 100%);
   border: 1px solid #e4d5a8;
@@ -814,6 +839,10 @@ function toggleModule(m) {
     if (card) {
       card.style.display = 'block';
     }
+    const modulListeContent = document.getElementById('modulliste-content');
+    const modulListeArrow = document.getElementById('modulliste-arrow');
+    if (modulListeContent) modulListeContent.classList.add('open');
+    if (modulListeArrow) modulListeArrow.classList.add('open');
     if (leiste) {
       leiste.innerHTML = `<span style="color:#d4af37;font-family:Georgia,serif;font-size:14px;">📖 ${MODUL_TITLES[m] || ('Modul ' + m)}</span><button onclick="toggleModule(${m})" style="background:transparent;border:1px solid rgba(212,175,55,0.5);color:#d4af37;padding:6px 14px;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer;">✕ Schließen</button>`;
       leiste.style.display = 'flex';
@@ -890,6 +919,15 @@ function renderModulListe() {
 function toggleToolbox() {
   const content = document.getElementById('toolbox-content');
   const arrow   = document.getElementById('toolbox-arrow');
+  if (!content) return;
+  const isOpen = content.classList.contains('open');
+  content.classList.toggle('open', !isOpen);
+  if (arrow) arrow.classList.toggle('open', !isOpen);
+}
+
+function toggleModulListe() {
+  const content = document.getElementById('modulliste-content');
+  const arrow   = document.getElementById('modulliste-arrow');
   if (!content) return;
   const isOpen = content.classList.contains('open');
   content.classList.toggle('open', !isOpen);
