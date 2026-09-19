@@ -43,6 +43,20 @@ async function badgeErhoehen() {
     try { await self.navigator.setAppBadge(neu); } catch (e) {}
   }
 }
+async function badgeProBereichErhoehen(bookType) {
+  if (!bookType) return;
+  try {
+    const db = await badgeDbOeffnen();
+    await new Promise((resolve) => {
+      const tx = db.transaction('zaehler', 'readwrite');
+      const store = tx.objectStore('zaehler');
+      const getReq = store.get('bereich-' + bookType);
+      getReq.onsuccess = () => { store.put((getReq.result || 0) + 1, 'bereich-' + bookType); };
+      tx.oncomplete = () => resolve();
+      tx.onerror = () => resolve();
+    });
+  } catch (e) {}
+}
 async function badgeZuruecksetzen() {
   await badgeZaehlerSchreiben(0);
   if ('clearAppBadge' in self.navigator) {
@@ -58,13 +72,14 @@ self.addEventListener('push', function(event) {
 
   const options = {
     body: payload.body,
-    data: { url: payload.url || '/dashboard.html' }
+    data: { url: payload.url || '/dashboard.html', bookType: payload.bookType }
   };
 
   event.waitUntil(
     Promise.all([
       self.registration.showNotification(payload.title, options),
-      badgeErhoehen()
+      badgeErhoehen(),
+      badgeProBereichErhoehen(payload.bookType)
     ])
   );
 });

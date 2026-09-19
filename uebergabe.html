@@ -66,6 +66,8 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8; color:#1a2a4
 </head>
 <body>
 
+<a href="team-zugang.html" id="btn-zurueck-team" style="display:none;position:fixed;bottom:18px;left:18px;background:#1a2a4a;color:#d4af37;border:1px solid #d4af37;padding:10px 18px;border-radius:24px;font-size:13px;font-weight:700;text-decoration:none;box-shadow:0 3px 12px rgba(0,0,0,0.25);z-index:200;">← Zurück</a>
+
 <div class="header">
   <span class="brand">GASTRO-OS</span>
   <a href="dashboard.html" class="btn-back" id="btn-dashboard" style="display:none;">← Zurück zum Dashboard</a>
@@ -196,6 +198,8 @@ async function pinPruefenMitWert(code, pin, stillLaden) {
     const d = await res.json();
     document.getElementById('pin-screen').style.display = 'none';
     document.getElementById('mitarbeiter-bereich').style.display = 'block';
+    const btnZurueck = document.getElementById('btn-zurueck-team');
+    if (btnZurueck) { btnZurueck.href = 'team-zugang.html?u=' + code; btnZurueck.style.display = 'inline-block'; }
     document.getElementById('tool-sub-text').textContent = 'Hallo, ' + (d.meinName || '') + '! Trag hier ein, was für die nächste Schicht wichtig ist.';
     renderListe('ma-liste', d.items || []);
     badgeBeimOeffnenZuruecksetzen();
