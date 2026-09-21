@@ -190,7 +190,7 @@ html, body { max-width:100%; overflow-x:hidden; }
         <div style="display:flex;align-items:center;gap:8px;"><span class="module-arrow" id="modulliste-arrow" style="color:#d4af37;">▼</span></div>
       </div>
       <div class="module-content" id="modulliste-content">
-        <div id="modul-liste" style="padding:14px 16px;"></div>
+        <div id="modul-liste" style="padding:14px 16px;display:grid;grid-template-columns:1fr 1fr;gap:8px;"></div>
       </div>
     </div>
 
@@ -315,6 +315,12 @@ html, body { max-width:100%; overflow-x:hidden; }
 .hub-card.aufgeklappt {
   border-radius: 32px;
 }
+.hub-card-flat {
+  background: linear-gradient(160deg, #1a2a4a 0%, #121d34 100%);
+  border: 1px solid rgba(212,175,55,0.25);
+  border-radius: 14px;
+}
+.hub-card-flat .module-header:hover { background: rgba(255,255,255,0.06); }
 .hub-head { padding: 22px 26px 20px; cursor: pointer; display: flex; flex-direction: column; align-items: center; text-align: center; transition: background 0.2s; }
 .hub-head:hover { background: rgba(255,255,255,0.03); }
 .hub-circle {
@@ -982,37 +988,38 @@ function renderModulListe() {
     const istBaldVerfuegbar = (m === 13 && MODUL_13_NOCH_NICHT_VEROEFFENTLICHT);
     const klickbar = !istGesperrt && !istBaldVerfuegbar;
 
-    let iconHtml, iconBg, iconColor, subColor, statusText;
+    let iconHtml, iconBg, iconColor, subColor, statusText, titleColor;
+    titleColor = '#fff';
     if (istGesperrt) {
-      iconHtml = '🔒'; iconBg = '#c8c0b0'; iconColor = '#fff';
-      subColor = '#a0aabc'; statusText = 'Gesperrt';
+      iconHtml = '🔒'; iconBg = 'rgba(255,255,255,0.15)'; iconColor = '#fff';
+      subColor = 'rgba(255,255,255,0.4)'; statusText = 'Gesperrt'; titleColor = 'rgba(255,255,255,0.55)';
     } else if (istBaldVerfuegbar) {
       iconHtml = '⏳'; iconBg = '#d4af37'; iconColor = '#1a2a4a';
-      subColor = '#b8902a'; statusText = 'Bald verfügbar';
+      subColor = '#e8c968'; statusText = 'Bald verfügbar';
     } else if (istFertig) {
       iconHtml = '✓'; iconBg = '#d4af37'; iconColor = '#1a2a4a';
-      subColor = '#1a6640'; statusText = 'Abgeschlossen';
+      subColor = '#7fd9a0'; statusText = 'Abgeschlossen';
     } else {
-      iconHtml = m; iconBg = '#1a2a4a'; iconColor = '#d4af37';
-      subColor = istAktiv ? '#d4af37' : '#8090a8';
+      iconHtml = m; iconBg = '#d4af37'; iconColor = '#1a2a4a';
+      subColor = istAktiv ? '#d4af37' : 'rgba(255,255,255,0.55)';
       statusText = istAktiv ? '▲ Geöffnet' : (total ? (done + ' von ' + total + ' abgeschlossen') : '');
     }
 
     const row = document.createElement('div');
-    row.className = 'module-card toolbox-elegant';
-    row.style.marginBottom = '8px';
-    if (istGesperrt) row.style.opacity = '0.65';
-    const headerBg = istAktiv ? 'background:#fdf8ea;' : '';
+    row.className = 'module-card hub-card-flat';
+    row.style.marginBottom = '0';
+    if (istGesperrt) row.style.opacity = '0.7';
+    const headerBg = istAktiv ? 'background:rgba(255,255,255,0.07);' : '';
     row.innerHTML = `
-      <div class="module-header" style="padding:11px 16px;${headerBg}${klickbar ? '' : 'cursor:default;'}" ${klickbar ? `onclick="toggleModule(${m})"` : ''}>
+      <div class="module-header" style="padding:11px 14px;${headerBg}${klickbar ? '' : 'cursor:default;'}" ${klickbar ? `onclick="toggleModule(${m})"` : ''}>
         <div class="module-left">
           <div class="module-number" style="width:26px;height:26px;font-size:11px;background:${iconBg};color:${iconColor};">${iconHtml}</div>
           <div>
-            <div class="module-title" style="font-size:12.5px;">${titel}</div>
-            <div class="module-subtitle" style="font-size:10.5px;color:${subColor};">${statusText}</div>
+            <div class="module-title" style="font-size:12px;color:${titleColor};">${titel}</div>
+            <div class="module-subtitle" style="font-size:10px;color:${subColor};">${statusText}</div>
           </div>
         </div>
-        ${klickbar ? `<span class="module-arrow" style="font-size:13px;${istAktiv ? 'transform:rotate(180deg);' : ''}">▼</span>` : ''}
+        ${klickbar ? `<span class="module-arrow" style="font-size:12px;color:#d4af37;${istAktiv ? 'transform:rotate(180deg);' : ''}">▼</span>` : ''}
       </div>
     `;
     liste.appendChild(row);
