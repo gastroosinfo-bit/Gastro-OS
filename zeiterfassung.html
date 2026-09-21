@@ -569,7 +569,14 @@ window.korrekturPauseHinzufuegen = function(eintragId) {
 
 window.korrekturAnzeigen = function(id) {
   const zeile = document.getElementById('korrektur-zeile-' + id);
-  if (zeile) zeile.style.display = zeile.style.display === 'none' ? 'table-row' : 'none';
+  if (!zeile) return;
+  const wirdGeoeffnet = zeile.style.display === 'none';
+  zeile.style.display = wirdGeoeffnet ? 'table-row' : 'none';
+  if (wirdGeoeffnet) {
+    const scrollBox = zeile.closest('div[style*="overflow-x"]') || zeile.closest('table')?.parentElement;
+    if (scrollBox) scrollBox.scrollLeft = 0;
+    setTimeout(() => { zeile.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 50);
+  }
 };
 
 window.korrekturSpeichern = async function(id) {

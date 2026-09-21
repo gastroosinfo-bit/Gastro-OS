@@ -175,10 +175,9 @@ async function pinPruefenMitWert(pin, stillLaden) {
         liste.appendChild(a);
       });
       if (d.rechte && d.rechte.zeiterfassung) zeitBadgeLaden(pin);
-      bereichPushBadgesLaden(erlaubt);
       pushTogglesRendern(erlaubt, pin);
     }
-    gesamtBadgeZuruecksetzen();
+    await badgesLadenUndZuruecksetzen(erlaubt);
   } catch (e) {
     if (!stillLaden) document.getElementById('pin-error').style.display = 'block';
   }
@@ -276,15 +275,6 @@ async function pushBereichDeaktivieren(bookType) {
   } catch (e) {}
 }
 
-async function gesamtBadgeZuruecksetzen() {
-  if ('clearAppBadge' in navigator) { navigator.clearAppBadge().catch(() => {}); }
-  try {
-    const db = await badgeDbOeffnen();
-    const tx = db.transaction('zaehler', 'readwrite');
-    tx.objectStore('zaehler').put(0, 'count');
-  } catch (e) {}
-}
-
 // Zeigt an jedem Bereichs-Button, wie viele Push-Benachrichtigungen für genau
 // diesen Bereich seit dem letzten Öffnen eingetroffen sind — damit man nach einem
 // Blick aufs Homescreen-Icon ("da ist was Neues") auch sieht, WO genau.
@@ -296,22 +286,38 @@ function badgeDbOeffnen() {
     req.onerror = () => reject(req.error);
   });
 }
-async function bereichPushBadgesLaden(erlaubt) {
+// Liest die Bereichs-Zahlen UND setzt den Gesamtzähler zurück — bewusst über EINE
+// Datenbankverbindung statt zwei getrennter indexedDB.open()-Aufrufe, da gleichzeitige
+// separate Verbindungen auf iOS unzuverlässig sind (genau das war der Bug).
+async function badgesLadenUndZuruecksetzen(erlaubt) {
+  if ('clearAppBadge' in navigator) { navigator.clearAppBadge().catch(() => {}); }
   try {
     const db = await badgeDbOeffnen();
-    for (const b of erlaubt) {
-      if (b.key === 'zeiterfassung') continue; // hat schon eine eigene, genauere Zählung
-      const anzahl = await new Promise((resolve) => {
-        const tx = db.transaction('zaehler', 'readonly');
-        const r = tx.objectStore('zaehler').get('bereich-' + b.key);
-        r.onsuccess = () => resolve(r.result || 0);
-        r.onerror = () => resolve(0);
+    await new Promise((resolve) => {
+      const tx = db.transaction('zaehler', 'readonly');
+      const store = tx.objectStore('zaehler');
+      let ausstehend = erlaubt.length;
+      if (!ausstehend) { resolve(); return; }
+      erlaubt.forEach(b => {
+        if (b.key === 'zeiterfassung') { ausstehend--; if (ausstehend === 0) resolve(); return; }
+        const r = store.get('bereich-' + b.key);
+        r.onsuccess = () => {
+          const anzahl = r.result || 0;
+          if (anzahl > 0) {
+            const badge = document.getElementById('bereich-badge-' + b.key);
+            if (badge) { badge.textContent = anzahl; badge.style.display = 'inline-flex'; }
+          }
+          ausstehend--; if (ausstehend === 0) resolve();
+        };
+        r.onerror = () => { ausstehend--; if (ausstehend === 0) resolve(); };
       });
-      if (anzahl > 0) {
-        const badge = document.getElementById('bereich-badge-' + b.key);
-        if (badge) { badge.textContent = anzahl; badge.style.display = 'inline-flex'; }
-      }
-    }
+    });
+    await new Promise((resolve) => {
+      const tx = db.transaction('zaehler', 'readwrite');
+      tx.objectStore('zaehler').put(0, 'count');
+      tx.oncomplete = () => resolve();
+      tx.onerror = () => resolve();
+    });
   } catch (e) {}
 }
 async function bereichBadgeZuruecksetzen(key) {
