@@ -75,6 +75,9 @@ async function sendPushNurAnChef(userId, title, body, url) {
   try {
     const subscriptions = await ladeSubscriptions(userId);
     const relevante = subscriptions.filter(sub => !sub.bookType);
+    console.log('[DEBUG sendPushNurAnChef]', title, '— insgesamt gespeichert:', subscriptions.length,
+      '— davon ohne bookType (an Chef gehen):', relevante.length,
+      '— alle Einträge:', JSON.stringify(subscriptions.map(s => ({ bookType: s.bookType || null, mitarbeiterName: s.mitarbeiterName || null, endpointEnde: (s.endpoint || '').slice(-12) }))));
     if (!relevante.length) return;
 
     webpush.setVapidDetails(VAPID_SUBJECT, VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY);
