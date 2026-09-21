@@ -55,21 +55,17 @@ function openModuleFromHash() {
     return;
   }
 
-  const card = document.getElementById('modul-card-' + num);
+  const content = document.getElementById('content-' + num);
+  const arrow   = document.getElementById('arrow-' + num);
+  const card    = document.getElementById('modul-card-' + num);
+  if (!content) return;
+  content.classList.add('open');
+  if (arrow) arrow.classList.add('open');
   const modulListeContent = document.getElementById('modulliste-content');
   const modulListeArrow = document.getElementById('modulliste-arrow');
   if (modulListeContent) modulListeContent.classList.add('open');
   if (modulListeArrow) modulListeArrow.classList.add('open');
-  setTimeout(() => {
-    const zeile = document.getElementById('modul-liste')?.children[num];
-    const ziel = zeile || card;
-    if (ziel) {
-      ziel.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      ziel.style.transition = 'box-shadow 0.3s';
-      ziel.style.boxShadow = '0 0 0 3px #d4af37';
-      setTimeout(() => { ziel.style.boxShadow = ''; }, 1500);
-    }
-  }, 400);
+  setTimeout(() => { if (card) card.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 400);
 }
 window.addEventListener('DOMContentLoaded', openModuleFromHash);
 </script>
