@@ -300,7 +300,6 @@ async function initInhaberModus() {
   window.inhLoeschen = async function(id) {
     inhaberItems = inhaberItems.filter(s => s.id !== id);
     await toolSave('tagesgeschaeft-schicht', { items: inhaberItems });
-    notifyPending.uebergabe = (notifyPending.uebergabe || 0) + 1;
     await notifyPendingSpeichern();
     notifyBarAktualisieren();
     renderListe('inhaber-liste', inhaberItems, true);
