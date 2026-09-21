@@ -106,7 +106,7 @@ async function addSubscription(userId, subscription, bookType, mitarbeiterName) 
   );
   const existingRows = await existingRes.json();
   const bestehende = (existingRows && existingRows.length > 0 && existingRows[0].data && existingRows[0].data.subscriptions) ? existingRows[0].data.subscriptions : [];
-  const gefiltert = bestehende.filter(s => s.endpoint !== subscription.endpoint); // Duplikate vermeiden
+  const gefiltert = bestehende.filter(s => !(s.endpoint === subscription.endpoint && s.bookType === bookType)); // nur dieselbe Bereich+Gerät-Kombi ersetzen, andere Bereiche auf demselben Gerät bleiben erhalten
   let subMitTyp = subscription;
   if (bookType) subMitTyp = { ...subMitTyp, bookType };
   if (mitarbeiterName) subMitTyp = { ...subMitTyp, mitarbeiterName };

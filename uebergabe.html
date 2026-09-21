@@ -298,6 +298,7 @@ async function initInhaberModus() {
   };
 
   window.inhLoeschen = async function(id) {
+    if (!confirm('Diesen Eintrag wirklich löschen?')) return;
     inhaberItems = inhaberItems.filter(s => s.id !== id);
     await toolSave('tagesgeschaeft-schicht', { items: inhaberItems });
     await notifyPendingSpeichern();
