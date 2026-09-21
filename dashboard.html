@@ -23,6 +23,38 @@ function openModuleFromHash() {
     num = parseInt(m[1]);
   }
   if (num === null || isNaN(num)) return;
+
+  // Kam man von einer Tool-Seite (z. B. über "Meine Modul-Tools" geöffnet)? Dann
+  // dorthin zurückspringen statt zu "Meine Module" — sonst landet man immer an der
+  // falschen Stelle, je nachdem wo man eigentlich gestartet war.
+  let kamVonTool = false;
+  try {
+    const ref = document.referrer || '';
+    for (const tools of Object.values(TOOLS_BY_MODULE)) {
+      if (tools.some(t => ref.endsWith('/' + t.href) || ref.endsWith(t.href))) { kamVonTool = true; break; }
+    }
+  } catch (e) {}
+
+  if (kamVonTool) {
+    const toolsContent = document.getElementById('toolbox-content');
+    const toolsArrow = document.getElementById('toolbox-arrow');
+    if (toolsContent) toolsContent.classList.add('open');
+    if (toolsArrow) toolsArrow.classList.add('open');
+    window.toolboxOffenModul = num;
+    renderToolbox();
+    setTimeout(() => {
+      const gruppe = document.getElementById('toolbox-gruppe-' + num);
+      const ziel = gruppe ? gruppe.previousSibling : document.getElementById('modultools-card');
+      if (ziel) {
+        ziel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        ziel.style.transition = 'box-shadow 0.3s';
+        ziel.style.boxShadow = '0 0 0 3px #d4af37';
+        setTimeout(() => { ziel.style.boxShadow = ''; }, 1500);
+      }
+    }, 400);
+    return;
+  }
+
   const card = document.getElementById('modul-card-' + num);
   const modulListeContent = document.getElementById('modulliste-content');
   const modulListeArrow = document.getElementById('modulliste-arrow');
