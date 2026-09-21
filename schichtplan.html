@@ -205,6 +205,7 @@ window.maSchichtHinzufuegen = async function() {
   document.getElementById('ma-neu-notiz').value = '';
 };
 window.maSchichtLoeschen = async function(id) {
+  if (!confirm('Diese Schicht wirklich löschen?')) return;
   const res = await fetch('/api/buch-public', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -389,9 +390,9 @@ async function initInhaberModus() {
   spZeileHinzufuegen();
 
   window.spLoeschen = async function(id) {
+    if (!confirm('Diese Schicht wirklich löschen?')) return;
     window.spItems = window.spItems.filter(s => s.id !== id);
     await toolSave('schichtplaene', { items: window.spItems });
-    notifyPending.schichtplan = (notifyPending.schichtplan || 0) + 1;
     await notifyPendingSpeichern();
     notifyBarAktualisieren();
     renderSpTabelle(window.spItems);

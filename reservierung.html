@@ -329,9 +329,9 @@ async function initInhaberModus() {
     renderReservierungen(window.resItems, true);
   };
   window.resLoeschen = async function(id) {
+    if (!confirm('Diese Reservierung wirklich löschen?')) return;
     window.resItems = window.resItems.filter(r => r.id !== id);
     await toolSave('reservierungen', { items: window.resItems });
-    notifyPending.reservierung = (notifyPending.reservierung || 0) + 1;
     await notifyPendingSpeichern();
     notifyBarAktualisieren();
     renderReservierungen(window.resItems, true);
