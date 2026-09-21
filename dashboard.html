@@ -23,17 +23,21 @@ function openModuleFromHash() {
     num = parseInt(m[1]);
   }
   if (num === null || isNaN(num)) return;
-  const content = document.getElementById('content-' + num);
-  const arrow   = document.getElementById('arrow-' + num);
-  const card    = document.getElementById('modul-card-' + num);
-  if (!content) return;
-  content.classList.add('open');
-  if (arrow) arrow.classList.add('open');
+  const card = document.getElementById('modul-card-' + num);
   const modulListeContent = document.getElementById('modulliste-content');
   const modulListeArrow = document.getElementById('modulliste-arrow');
   if (modulListeContent) modulListeContent.classList.add('open');
   if (modulListeArrow) modulListeArrow.classList.add('open');
-  if (m) { setTimeout(() => { if (card) card.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 400); }
+  setTimeout(() => {
+    const zeile = document.getElementById('modul-liste')?.children[num];
+    const ziel = zeile || card;
+    if (ziel) {
+      ziel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      ziel.style.transition = 'box-shadow 0.3s';
+      ziel.style.boxShadow = '0 0 0 3px #d4af37';
+      setTimeout(() => { ziel.style.boxShadow = ''; }, 1500);
+    }
+  }, 400);
 }
 window.addEventListener('DOMContentLoaded', openModuleFromHash);
 </script>
@@ -755,7 +759,7 @@ const TOOLS_BY_MODULE = {
   1:  [{ icon:'📊', title:'Unternehmer-Score', desc:'Zeigt, wie unternehmerisch du deinen Betrieb aktuell führst.', href:'modul1-score.html' }],
   2:  [{ icon:'📊', title:'Analyse-Tool', desc:'Wertet deine Speisekarte nach Umsatz und Marge aus.', href:'modul2-analyse.html' }, { icon:'📊', title:'Margen-Tool', desc:'Berechnet die Deckungsbeiträge deiner Gerichte.', href:'modul2-marge.html' }],
   3:  [{ icon:'📊', title:'Einkaufs-Tool', desc:'Behält deinen Wareneinsatz und Einkauf im Blick.', href:'modul3-einkauf.html' }, { icon:'📊', title:'Lieferanten-Tool', desc:'Vergleicht und verwaltet deine Lieferanten.', href:'modul3-lieferanten.html' }],
-  4:  [{ icon:'📊', title:'BWA-Guide', desc:'Hilft dir, deine BWA endlich zu verstehen.', href:'modul4-bwa-guide.html' }, { icon:'📊', title:'Gewinn-Tool', desc:'Berechnet deinen tatsächlichen Gewinn.', href:'modul4-gewinn.html' }, { icon:'📊', title:'Kostentreiber-Tool', desc:'Zeigt dir, was in deinem Betrieb am meisten Geld kostet.', href:'modul4-kostentreiber.html' }],
+  4:  [{ icon:'📊', title:'Gewinn-Tool', desc:'Berechnet deinen tatsächlichen Gewinn.', href:'modul4-gewinn.html' }, { icon:'📊', title:'Kostentreiber-Tool', desc:'Zeigt dir, was in deinem Betrieb am meisten Geld kostet.', href:'modul4-kostentreiber.html' }],
   5:  [{ icon:'📊', title:'Wochenplaner', desc:'Plant Personal und Schichten strukturiert für die Woche.', href:'modul5-wochenplaner.html' }],
   6:  [{ icon:'📊', title:'Personalstruktur-Tool', desc:'Bildet die Struktur und Rollen deines Teams ab.', href:'modul6-personalstruktur.html' }, { icon:'📊', title:'Feedback-Tool', desc:'Strukturiert Mitarbeitergespräche und Feedback.', href:'modul6-feedback.html' }],
   7:  [{ icon:'📊', title:'Effizienzcheck', desc:'Prüft, wo in deinem Betrieb Zeit und Geld verloren gehen.', href:'modul7-effizienzcheck.html' }, { icon:'📊', title:'Kostenanalyse', desc:'Schlüsselt deine laufenden Kosten im Detail auf.', href:'modul7-kostenanalyse.html' }],
