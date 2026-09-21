@@ -212,38 +212,44 @@ html, body { max-width:100%; overflow-x:hidden; }
       <div class="module-content" id="team-verwaltung-content">
 
         <!-- SCHRITT 1: LINK/QR-CODE -->
-        <div style="padding:18px 20px;border-bottom:1px solid #f0e8d4;">
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+        <div style="border-bottom:1px solid #f0e8d4;">
+          <div onclick="schrittAufklappen(1)" style="padding:18px 20px 12px;display:flex;align-items:center;gap:10px;cursor:pointer;">
             <span style="background:#1a2a4a;color:#d4af37;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;">1</span>
-            <div style="font-weight:700;font-size:13.5px;color:#1a2a4a;">Link/QR-Code erstellen</div>
+            <div style="font-weight:700;font-size:13.5px;color:#1a2a4a;flex:1;">Link/QR-Code erstellen</div>
+            <span class="module-arrow" id="schritt-1-pfeil" style="color:#d4af37;font-size:13px;">▼</span>
           </div>
-          <div style="font-size:11.5px;color:#8090a8;margin-bottom:10px;padding-left:34px;">Dieser eine Link/QR-Code gilt fürs ganze Team — einmal aushängen oder teilen.</div>
-          <div style="padding-left:34px;">
-            <div id="team-zugang-content" style="font-size:12.5px;color:#5a6a85;">Wird geladen …</div>
+          <div id="schritt-1-inhalt" style="display:none;padding:0 20px 18px;">
+            <div style="font-size:11.5px;color:#8090a8;margin-bottom:10px;padding-left:34px;">Dieser eine Link/QR-Code gilt fürs ganze Team — einmal aushängen oder teilen.</div>
+            <div style="padding-left:34px;">
+              <div id="team-zugang-content" style="font-size:12.5px;color:#5a6a85;">Wird geladen …</div>
+            </div>
           </div>
         </div>
 
         <!-- SCHRITT 2: MITARBEITER ANLEGEN -->
-        <div style="padding:18px 20px;border-bottom:1px solid #f0e8d4;">
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+        <div style="border-bottom:1px solid #f0e8d4;">
+          <div onclick="schrittAufklappen(2)" style="padding:18px 20px 12px;display:flex;align-items:center;gap:10px;cursor:pointer;">
             <span style="background:#1a2a4a;color:#d4af37;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;">2</span>
-            <div style="font-weight:700;font-size:13.5px;color:#1a2a4a;">Mitarbeiter anlegen</div>
+            <div style="font-weight:700;font-size:13.5px;color:#1a2a4a;flex:1;">Mitarbeiter anlegen</div>
+            <span class="module-arrow" id="schritt-2-pfeil" style="color:#d4af37;font-size:13px;">▼</span>
           </div>
-          <div style="font-size:11.5px;color:#8090a8;margin-bottom:12px;padding-left:34px;">Name eintragen und eine persönliche 4-stellige PIN vergeben — damit niemand sich für einen Kollegen ausgeben kann.</div>
-          <div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;padding-left:34px;">
-            <div style="max-width:160px;">
-              <label style="font-size:10.5px;font-weight:700;color:#8090a8;text-transform:uppercase;display:block;margin-bottom:4px;">Name</label>
-              <input type="text" id="team-neu-name" style="border:1px solid #e0d8c8;border-radius:6px;padding:8px 10px;font-size:13px;width:100%;">
+          <div id="schritt-2-inhalt" style="display:none;padding:0 20px 18px;">
+            <div style="font-size:11.5px;color:#8090a8;margin-bottom:12px;padding-left:34px;">Name eintragen und eine persönliche 4-stellige PIN vergeben — damit niemand sich für einen Kollegen ausgeben kann.</div>
+            <div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;padding-left:34px;">
+              <div style="max-width:160px;">
+                <label style="font-size:10.5px;font-weight:700;color:#8090a8;text-transform:uppercase;display:block;margin-bottom:4px;">Name</label>
+                <input type="text" id="team-neu-name" style="border:1px solid #e0d8c8;border-radius:6px;padding:8px 10px;font-size:13px;width:100%;">
+              </div>
+              <div style="max-width:90px;">
+                <label style="font-size:10.5px;font-weight:700;color:#8090a8;text-transform:uppercase;display:block;margin-bottom:4px;">PIN</label>
+                <input type="text" inputmode="numeric" maxlength="4" id="team-neu-pin" placeholder="4-stellig" style="border:1px solid #e0d8c8;border-radius:6px;padding:8px 10px;font-size:13px;width:100%;">
+              </div>
+              <button onclick="teamMitarbeiterHinzufuegen()" style="background:#1a6640;color:#fff;border:none;padding:9px 16px;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer;">+ Anlegen</button>
             </div>
-            <div style="max-width:90px;">
-              <label style="font-size:10.5px;font-weight:700;color:#8090a8;text-transform:uppercase;display:block;margin-bottom:4px;">PIN</label>
-              <input type="text" inputmode="numeric" maxlength="4" id="team-neu-pin" placeholder="4-stellig" style="border:1px solid #e0d8c8;border-radius:6px;padding:8px 10px;font-size:13px;width:100%;">
-            </div>
-            <button onclick="teamMitarbeiterHinzufuegen()" style="background:#1a6640;color:#fff;border:none;padding:9px 16px;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer;">+ Anlegen</button>
           </div>
         </div>
 
-        <!-- SCHRITT 3: AUFGABEN/RECHTE ZUWEISEN -->
+        <!-- SCHRITT 3: AUFGABEN/RECHTE ZUWEISEN (bleibt immer offen — das ist der Teil, den man am häufigsten braucht) -->
         <div style="padding:18px 20px;">
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
             <span style="background:#1a2a4a;color:#d4af37;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;">3</span>
@@ -1059,6 +1065,14 @@ function toggleTeamVerwaltung() {
   if (arrow) arrow.classList.toggle('open', !isOpen);
   if (card) card.classList.toggle('aufgeklappt', !isOpen);
 }
+window.schrittAufklappen = function(n) {
+  const inhalt = document.getElementById('schritt-' + n + '-inhalt');
+  const pfeil  = document.getElementById('schritt-' + n + '-pfeil');
+  if (!inhalt) return;
+  const wirdGeoeffnet = inhalt.style.display === 'none';
+  inhalt.style.display = wirdGeoeffnet ? 'block' : 'none';
+  if (pfeil) pfeil.style.transform = wirdGeoeffnet ? 'rotate(180deg)' : 'rotate(0deg)';
+};
 
 function toggleIntern() {
   const content = document.getElementById('intern-content');
@@ -1513,18 +1527,27 @@ function renderToolbox() {
   if (!container) return;
   container.innerHTML = '';
   let count = 0;
+  let gruppenIndex = 0;
   for (const [modStr, tools] of Object.entries(TOOLS_BY_MODULE)) {
     const mod = parseInt(modStr);
     const unlocked = (mod === 0) || quizBestanden[mod];
     if (!unlocked) continue;
+    gruppenIndex++;
 
     const gruppenTitel = MODUL_TITLES[mod] || ('Modul ' + mod);
+    const offen = window.toolboxOffenModul === mod;
+    const gruppeId = 'toolbox-gruppe-' + mod;
+
     const header = document.createElement('div');
-    header.style.cssText = 'display:flex;align-items:center;gap:8px;padding:10px 16px 6px;';
-    header.innerHTML = `<span style="background:#d4af37;color:#1a2a4a;font-size:9px;font-weight:700;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">${mod}</span><span style="font-size:10.5px;font-weight:700;color:#d4af37;letter-spacing:0.4px;text-transform:uppercase;">${gruppenTitel}</span>`;
+    header.onclick = () => toolboxGruppeAufklappen(mod);
+    header.style.cssText = 'display:flex;align-items:center;gap:10px;padding:12px 16px;cursor:pointer;' + (gruppenIndex > 1 ? 'border-top:1px solid rgba(255,255,255,0.08);' : '');
+    header.innerHTML = `<span style="background:#d4af37;color:#1a2a4a;font-size:11px;font-weight:700;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">${mod}</span><span style="flex:1;font-size:11.5px;font-weight:700;color:#fff;letter-spacing:0.3px;">${gruppenTitel}</span><span style="font-size:10px;color:rgba(255,255,255,0.5);">${tools.length} Tool${tools.length === 1 ? '' : 's'}</span><span style="color:#d4af37;font-size:12px;transform:rotate(${offen ? '180deg' : '0deg'});">▼</span>`;
     container.appendChild(header);
 
-    for (const tool of tools) {
+    const gruppe = document.createElement('div');
+    gruppe.id = gruppeId;
+    gruppe.style.display = offen ? 'block' : 'none';
+    tools.forEach(tool => {
       count++;
       const item = document.createElement('a');
       item.href = tool.href;
@@ -1532,14 +1555,19 @@ function renderToolbox() {
       item.style.textDecoration = 'none';
       item.style.color = 'inherit';
       item.innerHTML = `<span class="item-icon">${tool.icon}</span><div class="item-info"><div class="item-title">${tool.title}</div><div style="font-size:11.5px;color:rgba(255,255,255,0.55);margin-top:1px;">${tool.desc || ''}</div></div><span class="item-link">Öffnen →</span>`;
-      container.appendChild(item);
-    }
+      gruppe.appendChild(item);
+    });
+    container.appendChild(gruppe);
   }
   if (subtitle) subtitle.textContent = count + (count === 1 ? ' Tool freigeschaltet' : ' Tools freigeschaltet');
   if (count === 0) {
     container.innerHTML = '<div class="content-item" style="color:rgba(255,255,255,0.5);font-size:12.5px;">Noch keine Tools freigeschaltet — bestehe das Quiz aus Modul 1, um dein erstes Tool freizuschalten.</div>';
   }
 }
+window.toolboxGruppeAufklappen = function(mod) {
+  window.toolboxOffenModul = (window.toolboxOffenModul === mod) ? null : mod;
+  renderToolbox();
+};
 
 document.addEventListener('click', function(e) {
   const link = e.target.closest('.item-link');
