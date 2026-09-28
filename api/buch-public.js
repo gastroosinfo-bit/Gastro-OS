@@ -235,7 +235,7 @@ export default async function handler(req, res) {
     } else if (darfBearbeiten && action === 'loeschen') {
       items = items.filter(i => i.id !== loeschId);
       await saveItems(owner.user_id, toolName, items);
-      await sendPushToAll(owner.user_id, '🗂️ Schichtplan aktualisiert', name + ' hat eine Schicht gelöscht.', '/schichtplan.html', 'schichtplan');
+      // Bewusst KEINE Push-Benachrichtigung beim Löschen: nur neue Einträge sollen das Team informieren.
     }
 
     return res.status(200).json({
