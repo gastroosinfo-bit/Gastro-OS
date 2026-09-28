@@ -5,9 +5,10 @@
 // Der bookType + mitarbeiterName sorgen dafür, dass z. B. bei einer abgelehnten Zeiterfassung
 // NUR die betroffene Person benachrichtigt wird, nicht das ganze Team.
 //
-// DELETE: Nur der eingeloggte Inhaber kann seine eigene Subscription wieder entfernen
-// (z. B. wenn er Benachrichtigungen im Dashboard deaktiviert). Mitarbeiter haben dafür
-// bewusst keine eigene Möglichkeit.
+// DELETE: Der Chef kann seine eigene Subscription entfernen (Session-Cookie), ein
+// Mitarbeiter (Code+PIN) kann gezielt EINEN einzelnen Bereich für sich abschalten,
+// ohne die anderen zu berühren — praktisch, wenn z. B. nur "Reservierung" nicht mehr
+// pingen soll, "Übergabe" aber schon.
 
 const crypto = require('crypto');
 const { addSubscription, removeSubscription } = require('../lib/push-helper');
@@ -38,14 +39,29 @@ function getEmailFromRequest(req) {
 }
 
 export default async function handler(req, res) {
-  // ── DELETE: Chef deaktiviert seine eigene Subscription ──────────────────
+  // ── DELETE: einzelne Subscription (Chef: alles für dieses Gerät; Mitarbeiter:
+  // gezielt nur einen Bereich) wieder entfernen ────────────────────────────
   if (req.method === 'DELETE') {
-    const email = getEmailFromRequest(req);
-    if (!email) return res.status(401).json({ error: 'Nicht angemeldet.' });
-    const { endpoint } = req.body || {};
+    const { endpoint, code, pin, bookType } = req.body || {};
     if (!endpoint) return res.status(400).json({ error: 'endpoint fehlt.' });
+
+    const email = getEmailFromRequest(req);
+    if (email) {
+      try {
+        await removeSubscription(email, endpoint);
+        return res.status(200).json({ ok: true });
+      } catch (e) {
+        return res.status(500).json({ error: 'Fehler beim Entfernen.' });
+      }
+    }
+
+    if (!code || !pin || !['uebergabe', 'reservierung', 'schichtplan', 'zeiterfassung', 'belege', 'temperaturen'].includes(bookType)) {
+      return res.status(401).json({ error: 'Nicht angemeldet.' });
+    }
+    const zugang = await pruefeZugang(bookType, code, pin);
+    if (zugang.error) return res.status(zugang.status).json({ error: zugang.error });
     try {
-      await removeSubscription(email, endpoint);
+      await removeSubscription(zugang.owner.user_id, endpoint, bookType);
       return res.status(200).json({ ok: true });
     } catch (e) {
       return res.status(500).json({ error: 'Fehler beim Entfernen.' });
