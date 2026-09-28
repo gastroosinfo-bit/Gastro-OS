@@ -303,7 +303,7 @@ html, body { max-width:100%; overflow-x:hidden; }
         <div class="hub-title">Meine Buchhaltung</div>
         <div class="hub-connector"></div>
         <div class="hub-pillars">
-          <a href="tagesgeschaeft.html" class="hub-pillar" style="position:relative;" onclick="markiereAlsGelesen('temperaturen')">📅<span id="temperaturen-neu-badge" style="display:none;position:absolute;top:-6px;right:-6px;background:#c0392b;color:#fff;font-size:10px;font-weight:700;border-radius:10px;min-width:18px;height:18px;line-height:18px;text-align:center;padding:0 4px;box-shadow:0 0 0 2px #1a2a4a;">0</span><span>Tagesgeschäft</span></a>
+          <a href="tagesgeschaeft.html" class="hub-pillar" style="position:relative;">📅<span id="temperaturen-neu-badge" style="display:none;position:absolute;top:-6px;right:-6px;background:#c0392b;color:#fff;font-size:10px;font-weight:700;border-radius:10px;min-width:18px;height:18px;line-height:18px;text-align:center;padding:0 4px;box-shadow:0 0 0 2px #1a2a4a;">0</span><span>Tagesgeschäft</span></a>
           <a href="belegablage.html" class="hub-pillar" style="position:relative;">🧾<span id="belege-faellig-badge" style="display:none;position:absolute;top:-6px;right:-6px;background:#c0392b;color:#fff;font-size:10px;font-weight:700;border-radius:10px;min-width:18px;height:18px;line-height:18px;text-align:center;padding:0 4px;box-shadow:0 0 0 2px #1a2a4a;">0</span><span>Belege</span></a>
           <a href="buchhaltung.html" class="hub-pillar">📈<span>Monatsberichte</span></a>
         </div>
@@ -1406,12 +1406,6 @@ async function unreadPruefen() {
   }
 }
 async function markiereAlsGelesen(lastSeenKey) {
-  if (lastSeenKey === 'temperaturen') {
-    const b = document.getElementById('temperaturen-neu-badge');
-    if (b) b.style.display = 'none';
-    buchhaltungBadgeWerte.temperaturen = 0;
-    buchhaltungKachelAktualisieren();
-  }
   const status = await unreadStatusLaden();
   status[lastSeenKey] = Date.now();
   await toolSaveGeneric('unread-status', status);

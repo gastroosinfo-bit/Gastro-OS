@@ -103,6 +103,7 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
       </optgroup>
     </select>
   </div>
+  <div id="temp-neu-hinweis" onclick="switchTab('haccp')" style="display:none;cursor:pointer;background:#fdecea;border:1px solid #e0a8a0;color:#a93226;border-radius:8px;padding:10px 14px;font-size:13px;font-weight:600;margin:-8px 0 18px;max-width:420px;"></div>
 
   <!-- ═══════════ KASSENBUCH ═══════════ -->
   <div class="tab-panel active" id="panel-kassenbuch">
@@ -530,6 +531,47 @@ function switchTab(tab) {
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === 'panel-' + tab));
   const select = document.getElementById('tg-tab-select');
   if (select && select.value !== tab) select.value = tab;
+  if (tab === 'haccp') tempGelesenMarkieren();
+}
+
+// ─── HINWEIS: neue Temperatur-Einträge von Mitarbeitern ────────────────────
+// Die Meldungen schreibt api/buch-public.js, sobald ein Mitarbeiter Temperaturen einträgt.
+// Der Hinweis bleibt sichtbar, bis der Chef den Bereich "Temperaturen" öffnet.
+async function tempHinweisInit() {
+  try {
+    const sres = await fetch('/api/tool-data?tool=unread-status');
+    const sd = sres.ok ? await sres.json() : null;
+    const lastSeen = (sd && sd.data && sd.data.temperaturen) || 0;
+    const data = await toolLoad('temperaturen-meldungen');
+    const neu = (data.items || []).filter(i => i.id > lastSeen);
+    tempHinweisAnzeigen(neu.length);
+  } catch (e) {}
+}
+function tempHinweisAnzeigen(anzahl) {
+  const opt = document.querySelector('#tg-tab-select option[value="haccp"]');
+  const box = document.getElementById('temp-neu-hinweis');
+  if (opt) opt.textContent = '🌡️ Temperaturen' + (anzahl > 0 ? ' (' + anzahl + ' neu)' : '');
+  if (box) {
+    if (anzahl > 0) {
+      box.textContent = '🌡️ ' + anzahl + (anzahl === 1 ? ' neuer Temperatur-Eintrag' : ' neue Temperatur-Einträge') + ' von deinem Team – hier ansehen';
+      box.style.display = 'block';
+    } else {
+      box.style.display = 'none';
+    }
+  }
+}
+async function tempGelesenMarkieren() {
+  tempHinweisAnzeigen(0);
+  try {
+    // Nur speichern, wenn der bisherige Stand sicher geladen wurde – sonst würden
+    // die "gelesen"-Markierungen der anderen Bereiche überschrieben.
+    const sres = await fetch('/api/tool-data?tool=unread-status');
+    if (!sres.ok) return;
+    const sd = await sres.json();
+    const status = (sd && sd.data) ? sd.data : {};
+    status.temperaturen = Date.now();
+    await toolSave('unread-status', status);
+  } catch (e) {}
 }
 
 // ─── KASSENBUCH ──────────────────────────────────────────────────────────
@@ -1630,7 +1672,7 @@ async function sbLoeschen(id) {
 (async function init() {
   const ok = await checkAuth();
   if (!ok) return;
-  await Promise.all([kbInit(), haccpInit(), weInit(), notizInit(), skInit(), abInit(), fgInit(), acInit(), sbInit()]);
+  await Promise.all([kbInit(), haccpInit(), weInit(), notizInit(), skInit(), abInit(), fgInit(), acInit(), sbInit(), tempHinweisInit()]);
   mbAuswahlInitialisieren();
 })();
 </script>
