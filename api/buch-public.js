@@ -149,6 +149,14 @@ export default async function handler(req, res) {
       const eintraege = raw.eintraege || {};
       eintraege[datum] = { ...(eintraege[datum] || {}), ...werte };
       await saveRaw(owner.user_id, toolName, { geraete, eintraege });
+      // Eigenes Meldungs-Log, damit das Dashboard eine Zahl anzeigen kann (die Push-Nachricht
+      // allein verschwindet schnell). Bewusst in einem separaten Tool gespeichert, damit das
+      // Speichern der Temperaturen durch den Chef dieses Log nicht überschreibt.
+      try {
+        const meldungen = await loadItems(owner.user_id, 'temperaturen-meldungen');
+        meldungen.push({ id: Date.now(), name, datum });
+        await saveItems(owner.user_id, 'temperaturen-meldungen', meldungen.slice(-100));
+      } catch (e) {}
       await sendPushNurAnChef(owner.user_id, '🌡️ Temperaturen eingetragen', name + ' hat Temperaturen für ' + datum + ' eingetragen.', '/tagesgeschaeft.html');
     }
     return res.status(200).json({ geraete, meinName: name });
