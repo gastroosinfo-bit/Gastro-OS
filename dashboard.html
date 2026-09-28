@@ -303,7 +303,7 @@ html, body { max-width:100%; overflow-x:hidden; }
         <div class="hub-title">Meine Buchhaltung</div>
         <div class="hub-connector"></div>
         <div class="hub-pillars">
-          <a href="tagesgeschaeft.html" class="hub-pillar">📅<span>Tagesgeschäft</span></a>
+          <a href="tagesgeschaeft.html" class="hub-pillar" style="position:relative;" onclick="markiereAlsGelesen('temperaturen')">📅<span id="temperaturen-neu-badge" style="display:none;position:absolute;top:-6px;right:-6px;background:#c0392b;color:#fff;font-size:10px;font-weight:700;border-radius:10px;min-width:18px;height:18px;line-height:18px;text-align:center;padding:0 4px;box-shadow:0 0 0 2px #1a2a4a;">0</span><span>Tagesgeschäft</span></a>
           <a href="belegablage.html" class="hub-pillar" style="position:relative;">🧾<span id="belege-faellig-badge" style="display:none;position:absolute;top:-6px;right:-6px;background:#c0392b;color:#fff;font-size:10px;font-weight:700;border-radius:10px;min-width:18px;height:18px;line-height:18px;text-align:center;padding:0 4px;box-shadow:0 0 0 2px #1a2a4a;">0</span><span>Belege</span></a>
           <a href="buchhaltung.html" class="hub-pillar">📈<span>Monatsberichte</span></a>
         </div>
@@ -892,6 +892,7 @@ async function init() {
   openModuleFromHash();
   faelligeRechnungenPruefen();
   belegeFaelligBadgePruefen();
+  temperaturenNeuPruefen();
 }
 
 function lockCard(m) {
@@ -1405,6 +1406,12 @@ async function unreadPruefen() {
   }
 }
 async function markiereAlsGelesen(lastSeenKey) {
+  if (lastSeenKey === 'temperaturen') {
+    const b = document.getElementById('temperaturen-neu-badge');
+    if (b) b.style.display = 'none';
+    buchhaltungBadgeWerte.temperaturen = 0;
+    buchhaltungKachelAktualisieren();
+  }
   const status = await unreadStatusLaden();
   status[lastSeenKey] = Date.now();
   await toolSaveGeneric('unread-status', status);
@@ -1469,11 +1476,35 @@ async function belegeFaelligBadgePruefen() {
     if (anzahl > 0) { badge.textContent = anzahl; badge.style.display = 'block'; }
     else { badge.style.display = 'none'; }
   }
+  buchhaltungBadgeWerte.belege = anzahl;
+  buchhaltungKachelAktualisieren();
+}
+
+// Summe für den großen Kreis von "Meine Buchhaltung": fällige Belege + neue Temperatur-Einträge.
+const buchhaltungBadgeWerte = { belege: 0, temperaturen: 0 };
+function buchhaltungKachelAktualisieren() {
+  const summe = buchhaltungBadgeWerte.belege + buchhaltungBadgeWerte.temperaturen;
   const tileBadge = document.getElementById('buchhaltung-card-badge');
   if (tileBadge) {
-    if (anzahl > 0) { tileBadge.textContent = anzahl; tileBadge.style.display = 'block'; }
+    if (summe > 0) { tileBadge.textContent = summe; tileBadge.style.display = 'block'; }
     else { tileBadge.style.display = 'none'; }
   }
+}
+
+// Zahl an der Säule "Tagesgeschäft": wie viele Temperatur-Einträge von Mitarbeitern seit dem
+// letzten Öffnen dazugekommen sind.
+async function temperaturenNeuPruefen() {
+  const status = await unreadStatusLaden();
+  const lastSeen = status['temperaturen'] || 0;
+  const data = await dashToolLoad('temperaturen-meldungen');
+  const anzahl = (data.items || []).filter(i => i.id > lastSeen).length;
+  const badge = document.getElementById('temperaturen-neu-badge');
+  if (badge) {
+    if (anzahl > 0) { badge.textContent = anzahl; badge.style.display = 'block'; }
+    else { badge.style.display = 'none'; }
+  }
+  buchhaltungBadgeWerte.temperaturen = anzahl;
+  buchhaltungKachelAktualisieren();
 }
 
 function renderInternTools() {
