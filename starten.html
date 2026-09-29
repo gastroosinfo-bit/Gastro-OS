@@ -181,16 +181,26 @@
     .origin-details summary::before { content: "▸ "; color: var(--gold); }
     .origin-details[open] summary::before { content: "▾ "; }
     .origin-details .origin-story { margin-top: 12px; }
-    .origin-photo {
-      float: right;
-      width: 220px;
-      max-width: 45%;
-      border-radius: 8px;
-      margin: 0 0 12px 18px;
+    .founder-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin: 20px 0 24px;
     }
-    @media (max-width: 480px) {
-      .origin-photo { float: none; width: 100%; max-width: 100%; margin: 0 0 14px; }
+    .founder-photo {
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: 50% 20%;
+      border: 2px solid var(--gold-light);
     }
+    .founder-caption {
+      font-size: 14px;
+      color: var(--gray);
+      line-height: 1.4;
+    }
+    .founder-caption strong { color: var(--navy); }
 
     .dual {
       background: var(--navy);
@@ -497,10 +507,14 @@
         <h2>Dein Restaurant läuft – aber du läufst hinterher.</h2>
         <p>Du arbeitest 12, 14, manchmal 16 Stunden am Tag – und am Ende des Monats bleibt trotzdem zu wenig übrig. GASTRO-OS bündelt dein Tagesgeschäft, dein Team und dein Wissen an einem Ort, damit sich das ändert.</p>
 
+        <div class="founder-row">
+          <img src="/sandra-story.jpg" alt="Sandra, Gründerin von GASTRO-OS" class="founder-photo">
+          <div class="founder-caption"><strong>Sandra</strong><br>Gründerin von GASTRO-OS</div>
+        </div>
+
         <details class="origin-details">
           <summary>Wie GASTRO-OS entstanden ist</summary>
           <div class="origin-story">
-            <img src="/img/sandra-story.jpg" alt="Sandra, Gründerin von GASTRO-OS" class="origin-photo">
             Ich bin Sandra. Bevor es GASTRO-OS gab, stand ich selbst jahrelang jeden Tag im eigenen Laden – morgens rein, abends raus. Und wenn der Laden zu war, ging die Arbeit erst richtig los: Kassenbuch führen, Belege sortieren, Temperaturen eintragen, Schichtpläne schreiben, Übergaben festhalten, Reservierungen im Kopf behalten – dazu Einkaufslisten, Kalkulationen, Eventplanung, alles noch nach Feierabend, verteilt auf zehn verschiedenen Zetteln und halbfertigen Excel-Tabellen. Die Arbeit, die niemand sieht. Irgendwann war klar: Das muss nicht so verteilt sein – es geht auch gebündelt, an einem Ort. Weil ich technisch selbst ziemlich fit bin, habe ich genau das zuerst für mich selbst entwickelt. Und es hat gut funktioniert. Dann dachte ich: Wenn es gut für mich ist, warum nicht auch für andere Gastronomen? So ist GASTRO-OS entstanden – und es wächst bis heute weiter, mit neuen Werkzeugen für genau die Aufgaben, die im Alltag wirklich anfallen.
           </div>
         </details>
