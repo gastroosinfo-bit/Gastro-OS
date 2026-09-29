@@ -224,6 +224,22 @@
       display: block;
     }
 
+    .faq-section {
+      background: var(--cream);
+      padding: 48px 24px;
+    }
+    .faq-section-inner {
+      max-width: 640px;
+      margin: 0 auto;
+    }
+    .faq-section-inner h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(20px, 3vw, 26px);
+      color: var(--navy);
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
     .benefits {
       background: var(--navy);
       padding: 64px 24px;
@@ -413,61 +429,9 @@
 
 <section class="decision">
   <div class="decision-inner">
-    <div class="decision-grid">
+    <div class="decision-grid" style="display:block;">
 
-      <div class="decision-dropdowns accordion-group">
-        <span class="eyebrow">Mehr dazu</span>
-
-        <div class="faq-item">
-          <button class="faq-q" onclick="toggle(this)">Was ist genau in GASTRO-OS enthalten? <span class="plus">+</span></button>
-          <div class="faq-a">Zwei Bereiche: Erstens dein Tagesgeschäft – Kassenbuch, Belege, Zeiterfassung, Schichtplan, Übergabebuch, Reservierungen und mehr, sofort nutzbar für dich und dein Team. Zweitens dein Wissen – aufeinander aufbauende Module mit Ankervideos, Wissenswerkzeugen und dem Küchenfunk-Podcast, wenn du Zeit dafür hast.</div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-q" onclick="toggle(this)">Können auch meine Mitarbeiter GASTRO-OS nutzen? <span class="plus">+</span></button>
-          <div class="faq-a">Ja. Du legst für jeden Mitarbeiter einen eigenen PIN-Zugang an und entscheidest, welche Bereiche er nutzen darf – zum Beispiel Übergabe, Reservierung oder Zeiterfassung.</div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-q" onclick="toggle(this)">Für wen ist das gemacht? <span class="plus">+</span></button>
-          <div class="faq-a">Für alle – egal ob du gerade erst übernommen hast oder schon seit Jahren im Geschäft bist. Die Inhalte sind Schritt für Schritt aufgebaut, so dass sie für Neueinsteiger genauso funktionieren wie für erfahrene Betriebsleiter, die trotzdem an einem Punkt feststecken.</div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-q" onclick="toggle(this)">Wie viel Zeit muss ich investieren? <span class="plus">+</span></button>
-          <div class="faq-a">Für dein Tagesgeschäft und Team: keine Einarbeitung nötig, einfach loslegen. Die Module sind freiwillig und ohne festes Pensum – du gehst sie in deinem eigenen Tempo durch, dann wenn du Zeit dafür hast.</div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-q" onclick="toggle(this)">Was unterscheidet GASTRO-OS von einem Berater oder Kurs? <span class="plus">+</span></button>
-          <div class="faq-a">Ein Berater ist irgendwann wieder weg, ein Kurs ist irgendwann durch. GASTRO-OS ist ein System, das dauerhaft nutzbar bleibt und laufend um neue Module, Tools und Inhalte erweitert wird – als Mitglied bekommst du das automatisch dazu.</div>
-        </div>
-
-        <span class="eyebrow" style="margin-top: 32px;">Häufig gestellte Fragen</span>
-
-        <div class="faq-item">
-          <button class="faq-q" onclick="toggle(this)">Was genau bekomme ich nach dem Kauf? <span class="plus">+</span></button>
-          <div class="faq-a">Sofortigen Zugang zu allen Modulen auf mein-gastro-system.de – mit Videos, Lektionen, Praxistools, Quizzen und Podcasts. Alles direkt im Browser, kein Download nötig.</div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-q" onclick="toggle(this)">Wie lange ist die Mindestlaufzeit? <span class="plus">+</span></button>
-          <div class="faq-a">Es gibt keine Mindestlaufzeit. Du startest monatlich und kannst jederzeit verlängern oder pausieren.</div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-q" onclick="toggle(this)">Gibt es eine Geld-zurück-Garantie? <span class="plus">+</span></button>
-          <div class="faq-a">Da GASTRO-OS ein digitales Produkt ist, zu dem du sofort vollen Zugriff auf alle Inhalte bekommst, gibt es keine gesonderte Geld-zurück-Garantie. Dafür bist du durch die monatliche Kündbarkeit jederzeit flexibel – ohne dass du dich langfristig bindest.</div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-q" onclick="toggle(this)">Brauche ich Vorwissen, um zu starten? <span class="plus">+</span></button>
-          <div class="faq-a">Nein. Dein Tagesgeschäft kannst du ab dem ersten Tag nutzen, ganz ohne Vorwissen. Die Module bauen zusätzlich Schritt für Schritt aufeinander auf – egal auf welchem Stand du gerade bist.</div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-q" onclick="toggle(this)">Bekomme ich auch neue Inhalte wenn ich bereits Mitglied bin? <span class="plus">+</span></button>
-          <div class="faq-a">Ja. GASTRO-OS wird laufend erweitert – neue Module, Tools und Inhalte kommen regelmäßig dazu. Als Mitglied profitierst du automatisch davon.</div>
-        </div>
-      </div>
-
-      <div class="decision-text">
+      <div class="decision-text" style="max-width:640px;margin:0 auto;">
         <h2>Dein Restaurant läuft – aber du läufst hinterher.</h2>
         <p>Du arbeitest 12, 14, manchmal 16 Stunden am Tag. Und trotzdem bleibt am Ende des Monats zu wenig übrig. Nicht weil du nicht hart genug arbeitest – sondern weil dir niemand gezeigt hat wie ein Gastronomiebetrieb wirklich funktioniert.</p>
 
@@ -486,10 +450,10 @@
   </div>
 </section>
 
-<section class="benefits" style="background: var(--cream-dark);">
+<section class="benefits">
   <div class="benefits-inner">
     <h2>Sofort nutzbar</h2>
-    <p style="text-align:center;max-width:600px;margin:-12px auto 28px;color:var(--gray);font-size:15.5px;line-height:1.6;">Ab dem ersten Tag einsatzbereit – ganz ohne Vorbereitung.</p>
+    <p style="text-align:center;max-width:600px;margin:-12px auto 28px;color:rgba(255,255,255,0.75);font-size:15.5px;line-height:1.6;">Ab dem ersten Tag einsatzbereit – ganz ohne Vorbereitung.</p>
     <ul class="benefit-list">
       <li><span class="icon">📒</span><div><strong>Kassenbuch</strong><span>Tageseinnahmen einfach erfassen.</span></div></li>
       <li><span class="icon">🧾</span><div><strong>Belege</strong><span>Fotografieren, ablegen, fertig.</span></div></li>
@@ -526,6 +490,61 @@
 <section class="growing">
   <div class="growing-inner">
     <p><strong>Es wächst mit dir.</strong> Neue Module, Tools und Videos kommen regelmäßig dazu – als Mitglied profitierst du automatisch davon.</p>
+  </div>
+</section>
+
+<section class="faq-section">
+  <div class="faq-section-inner accordion-group">
+    <h2>FAQ</h2>
+    <div class="faq-item">
+          <button class="faq-q" onclick="toggle(this)">Was ist genau in GASTRO-OS enthalten? <span class="plus">+</span></button>
+          <div class="faq-a">Zwei Bereiche: Erstens dein Tagesgeschäft – Kassenbuch, Belege, Zeiterfassung, Schichtplan, Übergabebuch, Reservierungen und mehr, sofort nutzbar für dich und dein Team. Zweitens dein Wissen – aufeinander aufbauende Module mit Ankervideos, Wissenswerkzeugen und dem Küchenfunk-Podcast, wenn du Zeit dafür hast.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggle(this)">Können auch meine Mitarbeiter GASTRO-OS nutzen? <span class="plus">+</span></button>
+          <div class="faq-a">Ja. Du legst für jeden Mitarbeiter einen eigenen PIN-Zugang an und entscheidest, welche Bereiche er nutzen darf – zum Beispiel Übergabe, Reservierung oder Zeiterfassung.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggle(this)">Für wen ist das gemacht? <span class="plus">+</span></button>
+          <div class="faq-a">Für alle – egal ob du gerade erst übernommen hast oder schon seit Jahren im Geschäft bist. Die Inhalte sind Schritt für Schritt aufgebaut, so dass sie für Neueinsteiger genauso funktionieren wie für erfahrene Betriebsleiter, die trotzdem an einem Punkt feststecken.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggle(this)">Wie viel Zeit muss ich investieren? <span class="plus">+</span></button>
+          <div class="faq-a">Für dein Tagesgeschäft und Team: keine Einarbeitung nötig, einfach loslegen. Die Module sind freiwillig und ohne festes Pensum – du gehst sie in deinem eigenen Tempo durch, dann wenn du Zeit dafür hast.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggle(this)">Was unterscheidet GASTRO-OS von einem Berater oder Kurs? <span class="plus">+</span></button>
+          <div class="faq-a">Ein Berater ist irgendwann wieder weg, ein Kurs ist irgendwann durch. GASTRO-OS ist ein System, das dauerhaft nutzbar bleibt und laufend um neue Module, Tools und Inhalte erweitert wird – als Mitglied bekommst du das automatisch dazu.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggle(this)">Was genau bekomme ich nach dem Kauf? <span class="plus">+</span></button>
+          <div class="faq-a">Sofortigen Zugang zu allen Modulen auf mein-gastro-system.de – mit Videos, Lektionen, Praxistools, Quizzen und Podcasts. Alles direkt im Browser, kein Download nötig.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggle(this)">Wie lange ist die Mindestlaufzeit? <span class="plus">+</span></button>
+          <div class="faq-a">Es gibt keine Mindestlaufzeit. Du startest monatlich und kannst jederzeit verlängern oder pausieren.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggle(this)">Gibt es eine Geld-zurück-Garantie? <span class="plus">+</span></button>
+          <div class="faq-a">Da GASTRO-OS ein digitales Produkt ist, zu dem du sofort vollen Zugriff auf alle Inhalte bekommst, gibt es keine gesonderte Geld-zurück-Garantie. Dafür bist du durch die monatliche Kündbarkeit jederzeit flexibel – ohne dass du dich langfristig bindest.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggle(this)">Brauche ich Vorwissen, um zu starten? <span class="plus">+</span></button>
+          <div class="faq-a">Nein. Dein Tagesgeschäft kannst du ab dem ersten Tag nutzen, ganz ohne Vorwissen. Die Module bauen zusätzlich Schritt für Schritt aufeinander auf – egal auf welchem Stand du gerade bist.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggle(this)">Bekomme ich auch neue Inhalte wenn ich bereits Mitglied bin? <span class="plus">+</span></button>
+          <div class="faq-a">Ja. GASTRO-OS wird laufend erweitert – neue Module, Tools und Inhalte kommen regelmäßig dazu. Als Mitglied profitierst du automatisch davon.</div>
+        </div>
   </div>
 </section>
 
