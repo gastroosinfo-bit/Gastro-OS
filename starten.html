@@ -188,19 +188,41 @@
       margin: 20px 0 24px;
     }
     .founder-photo {
-      width: 76px;
-      height: 76px;
+      width: 120px;
+      height: 120px;
       border-radius: 50%;
       object-fit: cover;
       object-position: 50% 20%;
-      border: 2px solid var(--gold-light);
+      border: 3px solid var(--gold-light);
+      cursor: pointer;
+      transition: transform 0.15s;
     }
+    .founder-photo:hover { transform: scale(1.04); }
     .founder-caption {
       font-size: 14px;
       color: var(--gray);
       line-height: 1.4;
     }
-    .founder-caption strong { color: var(--navy); }
+    .founder-caption strong { color: var(--navy); font-size: 15px; }
+
+    .lightbox-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(20,20,25,0.88);
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      cursor: zoom-out;
+    }
+    .lightbox-overlay.open { display: flex; }
+    .lightbox-overlay img {
+      max-width: 90vw;
+      max-height: 90vh;
+      border-radius: 8px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+    }
 
     .dual {
       background: var(--navy);
@@ -296,20 +318,30 @@
       display: block;
     }
 
-    .faq-section {
+    .faq-price {
       background: var(--cream);
-      padding: 48px 24px;
+      padding: 56px 24px;
     }
-    .faq-section-inner {
-      max-width: 640px;
+    .faq-price-inner {
+      max-width: 1040px;
       margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 48px;
+      align-items: start;
     }
-    .faq-section-inner h2 {
+    @media (max-width: 780px) {
+      .faq-price-inner { grid-template-columns: 1fr; }
+    }
+    .faq-col h2 {
       font-family: 'Playfair Display', serif;
       font-size: clamp(20px, 3vw, 26px);
       color: var(--navy);
       margin-bottom: 20px;
-      text-align: center;
+    }
+    .price-col { position: sticky; top: 24px; }
+    @media (max-width: 780px) {
+      .price-col { position: static; }
     }
 
     .benefits {
@@ -410,19 +442,12 @@
       margin-bottom: 40px;
     }
 
-    .final-cta {
-      background: var(--navy);
-      padding: 72px 24px;
-      text-align: center;
-    }
-    .final-cta .final-heading {
+    .price-col .final-heading {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(20px, 3vw, 30px);
-      color: var(--white);
-      margin-bottom: 32px;
-      max-width: 520px;
-      margin-left: auto;
-      margin-right: auto;
+      font-size: clamp(18px, 2.2vw, 22px);
+      color: var(--navy);
+      margin-bottom: 20px;
+      text-align: center;
     }
     .price-card {
       max-width: 480px;
@@ -433,7 +458,7 @@
       text-align: center;
     }
     .price-card-header {
-      background: rgba(255,255,255,0.06);
+      background: var(--navy);
       padding: 28px 32px;
       color: var(--white);
     }
@@ -508,7 +533,7 @@
         <p>Du arbeitest 12, 14, manchmal 16 Stunden am Tag – und am Ende des Monats bleibt trotzdem zu wenig übrig. GASTRO-OS bündelt dein Tagesgeschäft, dein Team und dein Wissen an einem Ort, damit sich das ändert.</p>
 
         <div class="founder-row">
-          <img src="/sandra-story.jpg" alt="Sandra, Gründerin von GASTRO-OS" class="founder-photo">
+          <img src="/sandra-story.jpg" alt="Sandra, Gründerin von GASTRO-OS" class="founder-photo" onclick="openLightbox(this.src)">
           <div class="founder-caption"><strong>Sandra</strong><br>Gründerin von GASTRO-OS</div>
         </div>
 
@@ -539,61 +564,76 @@
   </div>
 </section>
 
-<section class="faq-section">
-  <div class="faq-section-inner accordion-group">
-    <h2>FAQ</h2>
-    <div class="faq-item">
-          <button class="faq-q" onclick="toggle(this)">Was ist genau in GASTRO-OS enthalten? <span class="plus">+</span></button>
-          <div class="faq-a">Zwei Bereiche: Erstens dein Tagesgeschäft – Kassenbuch, Belege, Zeiterfassung, Schichtplan, Übergabebuch, Reservierungen und mehr, sofort nutzbar für dich und dein Team. Zweitens dein Wissen – aufeinander aufbauende Module mit Ankervideos, Wissenswerkzeugen und dem Küchenfunk-Podcast, wenn du Zeit dafür hast.</div>
-        </div>
+<section class="faq-price">
+  <div class="faq-price-inner">
 
-        <div class="faq-item">
-          <button class="faq-q" onclick="toggle(this)">Können auch meine Mitarbeiter GASTRO-OS nutzen? <span class="plus">+</span></button>
-          <div class="faq-a">Ja. Du legst für jeden Mitarbeiter einen eigenen PIN-Zugang an und entscheidest, welche Bereiche er nutzen darf – zum Beispiel Übergabe, Reservierung oder Zeiterfassung.</div>
-        </div>
+    <div class="faq-col accordion-group">
+      <h2>FAQ</h2>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggle(this)">Was ist genau in GASTRO-OS enthalten? <span class="plus">+</span></button>
+        <div class="faq-a">Zwei Bereiche: Erstens dein Tagesgeschäft – Kassenbuch, Belege, Zeiterfassung, Schichtplan, Übergabebuch, Reservierungen und mehr, sofort nutzbar für dich und dein Team. Zweitens dein Wissen – aufeinander aufbauende Module mit Ankervideos, Wissenswerkzeugen und dem Küchenfunk-Podcast, wenn du Zeit dafür hast.</div>
+      </div>
 
-        <div class="faq-item">
-          <button class="faq-q" onclick="toggle(this)">Wie viel Zeit muss ich investieren? <span class="plus">+</span></button>
-          <div class="faq-a">Für dein Tagesgeschäft und Team: keine Einarbeitung nötig, einfach loslegen. Die Module sind freiwillig und ohne festes Pensum – du gehst sie in deinem eigenen Tempo durch, dann wenn du Zeit dafür hast.</div>
-        </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggle(this)">Können auch meine Mitarbeiter GASTRO-OS nutzen? <span class="plus">+</span></button>
+        <div class="faq-a">Ja. Du legst für jeden Mitarbeiter einen eigenen PIN-Zugang an und entscheidest, welche Bereiche er nutzen darf – zum Beispiel Übergabe, Reservierung oder Zeiterfassung.</div>
+      </div>
 
-        <div class="faq-item">
-          <button class="faq-q" onclick="toggle(this)">Wie lange ist die Mindestlaufzeit? <span class="plus">+</span></button>
-          <div class="faq-a">Es gibt keine Mindestlaufzeit. Du startest monatlich und kannst jederzeit verlängern oder pausieren.</div>
-        </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggle(this)">Wie viel Zeit muss ich investieren? <span class="plus">+</span></button>
+        <div class="faq-a">Für dein Tagesgeschäft und Team: keine Einarbeitung nötig, einfach loslegen. Die Module sind freiwillig und ohne festes Pensum – du gehst sie in deinem eigenen Tempo durch, dann wenn du Zeit dafür hast.</div>
+      </div>
 
-        <div class="faq-item">
-          <button class="faq-q" onclick="toggle(this)">Gibt es eine Geld-zurück-Garantie? <span class="plus">+</span></button>
-          <div class="faq-a">Da GASTRO-OS ein digitales Produkt ist, zu dem du sofort vollen Zugriff auf alle Inhalte bekommst, gibt es keine gesonderte Geld-zurück-Garantie. Dafür bist du durch die monatliche Kündbarkeit jederzeit flexibel – ohne dass du dich langfristig bindest.</div>
-        </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggle(this)">Wie lange ist die Mindestlaufzeit? <span class="plus">+</span></button>
+        <div class="faq-a">Es gibt keine Mindestlaufzeit. Du startest monatlich und kannst jederzeit verlängern oder pausieren.</div>
+      </div>
 
-        <div class="faq-item">
-          <button class="faq-q" onclick="toggle(this)">Bekomme ich auch neue Inhalte wenn ich bereits Mitglied bin? <span class="plus">+</span></button>
-          <div class="faq-a">Ja. GASTRO-OS wird laufend erweitert – neue Module, Tools und Inhalte kommen regelmäßig dazu. Als Mitglied profitierst du automatisch davon.</div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggle(this)">Gibt es eine Geld-zurück-Garantie? <span class="plus">+</span></button>
+        <div class="faq-a">Da GASTRO-OS ein digitales Produkt ist, zu dem du sofort vollen Zugriff auf alle Inhalte bekommst, gibt es keine gesonderte Geld-zurück-Garantie. Dafür bist du durch die monatliche Kündbarkeit jederzeit flexibel – ohne dass du dich langfristig bindest.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggle(this)">Bekomme ich auch neue Inhalte wenn ich bereits Mitglied bin? <span class="plus">+</span></button>
+        <div class="faq-a">Ja. GASTRO-OS wird laufend erweitert – neue Module, Tools und Inhalte kommen regelmäßig dazu. Als Mitglied profitierst du automatisch davon.</div>
+      </div>
+    </div>
+
+    <div class="price-col">
+      <p class="final-heading">Bereit deinen Betrieb wirklich in den Griff zu kriegen?</p>
+      <div class="price-card">
+        <div class="price-card-header">
+          <h3>Gastro-OS</h3>
+          <div class="price-amount">299 € <span>/ Monat, inkl. 19% MwSt.</span></div>
         </div>
+        <div class="price-card-body">
+          <p>Monatlich kündbar. Sofortiger Zugang zu allen Inhalten. Keine Mindestlaufzeit.</p>
+          <div class="claim-highlight">💡 Mit den Strategien aus GASTRO-OS senken Betriebe ihren Wareneinsatz oft um 5% oder mehr – schon das reicht, um dein Abo komplett zu refinanzieren.</div>
+          <a href="https://whop.com/gastro-os-81b8/starten/" class="cta-btn">Jetzt Zugriff erhalten</a>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
-<section class="final-cta">
-  <p class="final-heading">Bereit deinen Betrieb wirklich in den Griff zu kriegen?</p>
-  <div class="price-card">
-    <div class="price-card-header">
-      <h3>Gastro-OS</h3>
-      <div class="price-amount">299 € <span>/ Monat</span></div>
-    </div>
-    <div class="price-card-body">
-      <p>Monatlich kündbar. Sofortiger Zugang zu allen Inhalten. Keine Mindestlaufzeit.</p>
-      <div class="claim-highlight">💡 Mit den Strategien aus GASTRO-OS senken Betriebe ihren Wareneinsatz oft um 5% oder mehr – schon das reicht, um dein Abo komplett zu refinanzieren.</div>
-      <a href="https://whop.com/gastro-os-81b8/starten/" class="cta-btn">Jetzt Zugriff erhalten</a>
-    </div>
-  </div>
-</section>
+<div class="lightbox-overlay" id="lightbox" onclick="closeLightbox()">
+  <img id="lightbox-img" src="" alt="Sandra, Gründerin von GASTRO-OS">
+</div>
 
 <footer class="footer">
   <p>© GASTRO-OS · <a href="https://mein-gastro-system.de/impressum.html">Impressum</a> · <a href="https://mein-gastro-system.de/datenschutz.html">Datenschutz</a> · <a href="https://mein-gastro-system.de/agb.html">AGB</a></p>
 </footer>
 
 <script>
+  function openLightbox(src) {
+    document.getElementById('lightbox-img').src = src;
+    document.getElementById('lightbox').classList.add('open');
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+  }
   function toggle(btn) {
     const group = btn.closest('.accordion-group');
     const answer = btn.nextElementSibling;
