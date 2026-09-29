@@ -169,6 +169,68 @@
       color: var(--navy);
     }
 
+    .origin-details summary {
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--navy);
+      font-size: 14.5px;
+      list-style: none;
+      padding: 4px 0;
+    }
+    .origin-details summary::-webkit-details-marker { display: none; }
+    .origin-details summary::before { content: "▸ "; color: var(--gold); }
+    .origin-details[open] summary::before { content: "▾ "; }
+    .origin-details .origin-story { margin-top: 12px; }
+    .origin-photo {
+      float: right;
+      width: 220px;
+      max-width: 45%;
+      border-radius: 8px;
+      margin: 0 0 12px 18px;
+    }
+    @media (max-width: 480px) {
+      .origin-photo { float: none; width: 100%; max-width: 100%; margin: 0 0 14px; }
+    }
+
+    .dual {
+      background: var(--navy);
+      padding: 48px 24px;
+      color: var(--white);
+    }
+    .dual-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+    }
+    @media (max-width: 640px) {
+      .dual-inner { grid-template-columns: 1fr; }
+    }
+    .dual-col {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(154,125,58,0.25);
+      border-radius: 8px;
+      padding: 22px 24px;
+    }
+    .dual-col h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 19px;
+      color: var(--gold-light);
+      margin-bottom: 8px;
+    }
+    .dual-tag {
+      font-size: 13.5px;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 14px;
+      line-height: 1.5;
+    }
+    .dual-list {
+      font-size: 14px;
+      color: rgba(255,255,255,0.9);
+      line-height: 1.8;
+    }
+
     /* Shared accordion styling (used by both info dropdowns and FAQ) */
     .faq-item {
       border: 1px solid rgba(28,35,64,0.1);
@@ -433,63 +495,33 @@
 
       <div class="decision-text" style="max-width:640px;margin:0 auto;">
         <h2>Dein Restaurant läuft – aber du läufst hinterher.</h2>
-        <p>Du arbeitest 12, 14, manchmal 16 Stunden am Tag. Und trotzdem bleibt am Ende des Monats zu wenig übrig. Nicht weil du nicht hart genug arbeitest – sondern weil dir niemand gezeigt hat wie ein Gastronomiebetrieb wirklich funktioniert.</p>
+        <p>Du arbeitest 12, 14, manchmal 16 Stunden am Tag – und am Ende des Monats bleibt trotzdem zu wenig übrig. GASTRO-OS bündelt dein Tagesgeschäft, dein Team und dein Wissen an einem Ort, damit sich das ändert.</p>
 
-        <div class="divider"></div>
-
-        <p class="lede">Gastro-OS ändert das.</p>
-        <p>Kein theoretischer Kurs. Kein leeres Motivationsgerede. Ein komplettes Betriebssystem für deinen Betrieb – mit Modulen, Tools, Videos und Podcasts direkt aus der Praxis.</p>
-
-        <div class="origin-story">
-          <strong>Wie GASTRO-OS entstanden ist:</strong><br><br>
-          Ich bin Sandra. Bevor es GASTRO-OS gab, stand ich selbst jahrelang jeden Tag im eigenen Laden – morgens rein, abends raus. Und wenn der Laden zu war, ging die Arbeit erst richtig los: Einkaufslisten, Kalkulationen, Eventplanung, alles noch nach Feierabend. Die Arbeit, die niemand sieht. Irgendwann war klar: Das muss nicht in zehn verschiedenen Tools und Excel-Listen verteilt sein – es geht auch gebündelt, an einem Ort. Weil ich technisch selbst ziemlich fit bin, habe ich genau das selbst entwickelt. So ist GASTRO-OS entstanden.
-        </div>
+        <details class="origin-details">
+          <summary>Wie GASTRO-OS entstanden ist</summary>
+          <div class="origin-story">
+            <img src="/img/sandra-story.jpg" alt="Sandra, Gründerin von GASTRO-OS" class="origin-photo">
+            Ich bin Sandra. Bevor es GASTRO-OS gab, stand ich selbst jahrelang jeden Tag im eigenen Laden – morgens rein, abends raus. Und wenn der Laden zu war, ging die Arbeit erst richtig los: Kassenbuch führen, Belege sortieren, Temperaturen eintragen, Schichtpläne schreiben, Übergaben festhalten, Reservierungen im Kopf behalten – dazu Einkaufslisten, Kalkulationen, Eventplanung, alles noch nach Feierabend, verteilt auf zehn verschiedenen Zetteln und halbfertigen Excel-Tabellen. Die Arbeit, die niemand sieht. Irgendwann war klar: Das muss nicht so verteilt sein – es geht auch gebündelt, an einem Ort. Weil ich technisch selbst ziemlich fit bin, habe ich genau das zuerst für mich selbst entwickelt. Und es hat gut funktioniert. Dann dachte ich: Wenn es gut für mich ist, warum nicht auch für andere Gastronomen? So ist GASTRO-OS entstanden – und es wächst bis heute weiter, mit neuen Werkzeugen für genau die Aufgaben, die im Alltag wirklich anfallen.
+          </div>
+        </details>
       </div>
 
     </div>
   </div>
 </section>
 
-<section class="benefits">
-  <div class="benefits-inner">
-    <h2>Sofort nutzbar</h2>
-    <p style="text-align:center;max-width:600px;margin:-12px auto 28px;color:rgba(255,255,255,0.75);font-size:15.5px;line-height:1.6;">Ab dem ersten Tag einsatzbereit – ganz ohne Vorbereitung.</p>
-    <ul class="benefit-list">
-      <li><span class="icon">📒</span><div><strong>Kassenbuch</strong><span>Tageseinnahmen einfach erfassen.</span></div></li>
-      <li><span class="icon">🧾</span><div><strong>Belege</strong><span>Fotografieren, ablegen, fertig.</span></div></li>
-      <li><span class="icon">⏱️</span><div><strong>Zeiterfassung</strong><span>Kommen und Gehen fürs Team, mit Genehmigung.</span></div></li>
-      <li><span class="icon">🗂️</span><div><strong>Schichtplan</strong><span>Dienstplan, den dein Team einsehen kann.</span></div></li>
-      <li><span class="icon">📋</span><div><strong>Übergabebuch</strong><span>Wichtiges zwischen den Schichten festhalten.</span></div></li>
-      <li><span class="icon">📅</span><div><strong>Reservierungen</strong><span>Tischreservierungen im Blick behalten.</span></div></li>
-      <li><span class="icon">➕</span><div><strong>Und mehr</strong><span>Dein Tagesgeschäft wächst laufend weiter.</span></div></li>
-      <li><span class="icon">🔑</span><div><strong>Team-Zugänge mit eigener PIN</strong><span>Du entscheidest, wer worauf zugreifen darf.</span></div></li>
-    </ul>
-  </div>
-</section>
-
-<section class="benefits">
-  <div class="benefits-inner">
-    <h2>Dazu: Dein Wissen wächst mit dir</h2>
-    <ul class="benefit-list">
-      <li><span class="icon">📋</span><div><strong>Klare Modulübersicht</strong><span>Du siehst auf einen Blick, was dich erwartet.</span></div></li>
-      <li><span class="icon">🛠️</span><div><strong>Wissenswerkzeuge zu jedem Modul</strong><span>Für die Zahlen und Themen, die gerade dran sind.</span></div></li>
-      <li><span class="icon">🎯</span><div><strong>Verständliche Zahlen</strong><span>Food Cost & Co. sind endlich keine Fremdwörter mehr.</span></div></li>
-      <li><span class="icon">⚙️</span><div><strong>Klare Systeme statt Chaos</strong><span>Dein Betrieb läuft auch ohne dich.</span></div></li>
-      <li><span class="icon">🤝</span><div><strong>Persönlicher Austausch mit Gleichgesinnten</strong><span>Vernetze dich mit anderen Gastronomen.</span></div></li>
-      <li><span class="icon">💡</span><div><strong>Wirksames Marketing</strong><span>Mehr Sichtbarkeit, ohne stundenlang Content zu produzieren.</span></div></li>
-      <li><span class="icon">🎬</span><div><strong>Kurzes Video zu jedem Modul</strong><span>Schnell erklärt, worum's geht.</span></div></li>
-      <li><span class="icon">🧠</span><div><strong>Übersichtliche Mindmaps</strong><span>Die Zusammenhänge auf einen Blick.</span></div></li>
-      <li><span class="icon">✅</span><div><strong>Praktische Checklisten zum Abhaken</strong><span>Direkt im Alltag einsetzbar.</span></div></li>
-      <li><span class="icon">📊</span><div><strong>Echte Fallbeispiele aus der Praxis</strong><span>Konkrete Zahlen und Situationen aus dem echten Gastro-Alltag.</span></div></li>
-      <li><span class="icon">❓</span><div><strong>Kurzes Quiz zu jedem Modul</strong><span>Testet dein Wissen, ganz ohne Druck.</span></div></li>
-      <li><span class="icon">🎙️</span><div><strong>Praktischer Podcast</strong><span>Für unterwegs, wenn du einen Moment hast.</span></div></li>
-    </ul>
-  </div>
-</section>
-
-<section class="growing">
-  <div class="growing-inner">
-    <p><strong>Es wächst mit dir.</strong> Neue Module, Tools und Videos kommen regelmäßig dazu – als Mitglied profitierst du automatisch davon.</p>
+<section class="dual">
+  <div class="dual-inner">
+    <div class="dual-col">
+      <h3>✅ Sofort nutzbar</h3>
+      <p class="dual-tag">Ab dem ersten Tag einsatzbereit – ganz ohne Vorbereitung.</p>
+      <p class="dual-list">Kassenbuch · Belege · Zeiterfassung · Schichtplan · Übergabebuch · Reservierungen · Team-Zugänge mit eigener PIN · und mehr</p>
+    </div>
+    <div class="dual-col dual-col-light">
+      <h3>🎓 Dein Wissen wächst mit dir</h3>
+      <p class="dual-tag">Freiwillig, in deinem Tempo, wenn du Zeit hast.</p>
+      <p class="dual-list">Aufeinander aufbauende Module · Ankervideos · Wissenswerkzeuge · kurzes Quiz · Küchenfunk-Podcast · Mindmaps · Checklisten</p>
+    </div>
   </div>
 </section>
 
@@ -507,23 +539,8 @@
         </div>
 
         <div class="faq-item">
-          <button class="faq-q" onclick="toggle(this)">Für wen ist das gemacht? <span class="plus">+</span></button>
-          <div class="faq-a">Für alle – egal ob du gerade erst übernommen hast oder schon seit Jahren im Geschäft bist. Die Inhalte sind Schritt für Schritt aufgebaut, so dass sie für Neueinsteiger genauso funktionieren wie für erfahrene Betriebsleiter, die trotzdem an einem Punkt feststecken.</div>
-        </div>
-
-        <div class="faq-item">
           <button class="faq-q" onclick="toggle(this)">Wie viel Zeit muss ich investieren? <span class="plus">+</span></button>
           <div class="faq-a">Für dein Tagesgeschäft und Team: keine Einarbeitung nötig, einfach loslegen. Die Module sind freiwillig und ohne festes Pensum – du gehst sie in deinem eigenen Tempo durch, dann wenn du Zeit dafür hast.</div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-q" onclick="toggle(this)">Was unterscheidet GASTRO-OS von einem Berater oder Kurs? <span class="plus">+</span></button>
-          <div class="faq-a">Ein Berater ist irgendwann wieder weg, ein Kurs ist irgendwann durch. GASTRO-OS ist ein System, das dauerhaft nutzbar bleibt und laufend um neue Module, Tools und Inhalte erweitert wird – als Mitglied bekommst du das automatisch dazu.</div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-q" onclick="toggle(this)">Was genau bekomme ich nach dem Kauf? <span class="plus">+</span></button>
-          <div class="faq-a">Sofortigen Zugang zu allen Modulen auf mein-gastro-system.de – mit Videos, Lektionen, Praxistools, Quizzen und Podcasts. Alles direkt im Browser, kein Download nötig.</div>
         </div>
 
         <div class="faq-item">
@@ -534,11 +551,6 @@
         <div class="faq-item">
           <button class="faq-q" onclick="toggle(this)">Gibt es eine Geld-zurück-Garantie? <span class="plus">+</span></button>
           <div class="faq-a">Da GASTRO-OS ein digitales Produkt ist, zu dem du sofort vollen Zugriff auf alle Inhalte bekommst, gibt es keine gesonderte Geld-zurück-Garantie. Dafür bist du durch die monatliche Kündbarkeit jederzeit flexibel – ohne dass du dich langfristig bindest.</div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-q" onclick="toggle(this)">Brauche ich Vorwissen, um zu starten? <span class="plus">+</span></button>
-          <div class="faq-a">Nein. Dein Tagesgeschäft kannst du ab dem ersten Tag nutzen, ganz ohne Vorwissen. Die Module bauen zusätzlich Schritt für Schritt aufeinander auf – egal auf welchem Stand du gerade bist.</div>
         </div>
 
         <div class="faq-item">
