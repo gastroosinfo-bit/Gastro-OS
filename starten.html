@@ -333,19 +333,12 @@
     @media (max-width: 780px) {
       .faq-price-inner { grid-template-columns: 1fr; }
     }
-    .faq-master summary {
-      cursor: pointer;
-      list-style: none;
+    .faq-col h2 {
       font-family: 'Playfair Display', serif;
       font-size: clamp(20px, 3vw, 26px);
       color: var(--navy);
-      font-weight: 700;
-      padding: 4px 0;
+      margin-bottom: 20px;
     }
-    .faq-master summary::-webkit-details-marker { display: none; }
-    .faq-master summary::before { content: "▸ "; color: var(--gold); font-size: 0.7em; }
-    .faq-master[open] summary::before { content: "▾ "; }
-    .faq-master .faq-list { margin-top: 18px; }
     .price-col { position: sticky; top: 24px; }
     @media (max-width: 780px) {
       .price-col { position: static; }
@@ -574,11 +567,9 @@
 <section class="faq-price">
   <div class="faq-price-inner">
 
-    <div class="faq-col">
-      <details class="faq-master">
-        <summary>FAQ</summary>
-        <div class="faq-list accordion-group">
-          <div class="faq-item">
+    <div class="faq-col accordion-group">
+      <h2>FAQ</h2>
+      <div class="faq-item">
           <button class="faq-q" onclick="toggle(this)">Was ist genau in GASTRO-OS enthalten? <span class="plus">+</span></button>
           <div class="faq-a">Zwei Bereiche: Erstens dein Tagesgeschäft – Kassenbuch, Belege, Zeiterfassung, Schichtplan, Übergabebuch, Reservierungen und mehr, sofort nutzbar für dich und dein Team. Zweitens dein Wissen – aufeinander aufbauende Module mit Ankervideos, Wissenswerkzeugen und dem Küchenfunk-Podcast, wenn du Zeit dafür hast.</div>
         </div>
@@ -627,8 +618,7 @@
           <button class="faq-q" onclick="toggle(this)">Bekomme ich auch neue Inhalte wenn ich bereits Mitglied bin? <span class="plus">+</span></button>
           <div class="faq-a">Ja. GASTRO-OS wird laufend erweitert – neue Module, Tools und Inhalte kommen regelmäßig dazu. Als Mitglied profitierst du automatisch davon.</div>
         </div>
-        </div>
-      </details>
+        
     </div>
 
     <div class="price-col">
