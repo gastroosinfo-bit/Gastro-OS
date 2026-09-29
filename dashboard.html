@@ -195,7 +195,7 @@ html, body { max-width:100%; overflow-x:hidden; }
     </div>
 
     <div style="display:flex;align-items:center;gap:8px;margin:4px 4px 10px;">
-      <div style="background:#1a2a4a;color:#d4af37;font-size:10px;font-weight:700;letter-spacing:0.5px;padding:5px 14px;border-radius:999px;">📚 MEIN LERNBEREICH</div>
+      <div style="background:#1a2a4a;color:#d4af37;font-size:10px;font-weight:700;letter-spacing:0.5px;padding:5px 14px;border-radius:999px;">📈 MEIN WISSEN</div>
       <div style="flex:1;height:1px;background:#e4d5a8;"></div>
     </div>
 
@@ -216,7 +216,7 @@ html, body { max-width:100%; overflow-x:hidden; }
     <!-- KACHEL: MEINE MODUL-TOOLS -->
     <div class="module-card toolbox-elegant" id="modultools-card" style="margin-bottom:8px;">
       <div class="module-header" onclick="toggleToolbox()" style="padding:14px 22px;">
-        <div class="module-left"><div class="module-number toolbox-icon-circle" style="width:40px;height:40px;font-size:17px;">🎓</div><div><div class="module-title" style="letter-spacing:0.3px;font-size:15px;">Kurs-Boni je Modul</div><div class="module-subtitle" id="toolbox-subtitle" style="margin-top:2px;">Wird geladen …</div></div></div>
+        <div class="module-left"><div class="module-number toolbox-icon-circle" style="width:40px;height:40px;font-size:17px;">📈</div><div><div class="module-title" style="letter-spacing:0.3px;font-size:15px;">Erweitere dein Wissen</div><div class="module-subtitle" id="toolbox-subtitle" style="margin-top:2px;">Wird geladen …</div></div></div>
         <div style="display:flex;align-items:center;gap:8px;"><span class="module-arrow" id="toolbox-arrow" style="color:#d4af37;">▼</span></div>
       </div>
       <div class="module-content" id="toolbox-content"></div>
@@ -1628,9 +1628,9 @@ function renderToolbox() {
     });
     container.appendChild(gruppe);
   }
-  if (subtitle) subtitle.textContent = count + (count === 1 ? ' Bonus freigeschaltet' : ' Boni freigeschaltet');
+  if (subtitle) subtitle.textContent = count + (count === 1 ? ' Einheit freigeschaltet' : ' Einheiten freigeschaltet');
   if (count === 0) {
-    container.innerHTML = '<div class="content-item" style="color:rgba(255,255,255,0.5);font-size:12.5px;">Noch keine Kurs-Boni freigeschaltet — dein Tagesgeschäft &amp; Team-Bereich oben sind davon unabhängig und sofort nutzbar.</div>';
+    container.innerHTML = '<div class="content-item" style="color:rgba(255,255,255,0.5);font-size:12.5px;">Noch keine Einheiten freigeschaltet — dein Tagesgeschäft &amp; Team-Bereich oben sind davon unabhängig und sofort nutzbar.</div>';
   }
 }
 window.toolboxGruppeAufklappen = function(mod) {
