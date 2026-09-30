@@ -352,6 +352,76 @@ html, body { max-width:100%; overflow-x:hidden; }
       <div class="faq-leer" id="faq-leer" style="display:none;">Dazu haben wir noch keine Antwort. Schreib uns gern per Mail oder WhatsApp (oben rechts).</div>
     </div>
   </aside>
+<script>
+// ─── FAQ zum System (rechte Spalte) ───────────────────────────────────────
+const FAQ_THEMEN = ['Erste Schritte', 'Tagesgeschäft', 'Team', 'Hilfe'];
+const FAQ_DATEN = [
+  { t: 'Erste Schritte', k: 'pin vergabe vergeben zugang mitarbeiter anlegen einladen qr link code', f: 'Wie gebe ich meinem Team Zugang?', a: 'Öffne die Kachel "Team-Mitarbeiter & PIN" ganz oben in der rechten Spalte. Dort gehst du in drei Schritten vor: 1. Link/QR-Code erstellen (ein Link fürs ganze Team, zum Aushängen oder Teilen), 2. Mitarbeiter anlegen (Name und persönliche 4-stellige PIN), 3. Aufgaben zuweisen (Häkchen bei den Bereichen, die die Person nutzen darf).' },
+  { t: 'Erste Schritte', k: 'login einloggen pin anmeldung', f: 'Wie melden sich meine Mitarbeiter an?', a: 'Sie öffnen den Team-Link oder scannen den QR-Code und geben ihre persönliche PIN ein. Danach sehen sie nur die Bereiche, die du freigegeben hast. Auf demselben Gerät bleibt der Zugang gespeichert, die PIN muss also nicht jedes Mal neu eingegeben werden.' },
+  { t: 'Erste Schritte', f: 'Was sehen meine Mitarbeiter, was nur ich?', a: 'Deine Mitarbeiter sehen nur die Bereiche, bei denen du ein Häkchen gesetzt hast, zum Beispiel Übergabebuch, Reservierungen, Schichtplan, Zeiterfassung, Belege und Temperaturen. Belege ansehen und löschen sowie Monatsberichte und die Team-Verwaltung bleiben bei dir.' },
+  { t: 'Erste Schritte', f: 'Muss ich erst die Module durcharbeiten?', a: 'Nein. Tagesgeschäft und Team kannst du sofort nutzen, ohne Quiz und ohne Freischaltung. Die Module links sind ein freiwilliger Bonus, den du in deinem Tempo nutzt. Mit "Wo stehe ich gerade?" findest du jederzeit einen guten Einstiegspunkt.' },
+
+  { t: 'Tagesgeschäft', f: 'Wie trage ich die Tageseinnahmen ein?', a: 'Öffne die Kachel "Dein Tagesgeschäft" und gehe dort zum Bereich "Tageseintrag". Trag Datum und Beträge ein und speichere. In der Übersicht siehst du danach deine Einträge.' },
+  { t: 'Tagesgeschäft', k: 'rechnung foto pdf upload steuer ust steuernummer lieferant', f: 'Wie lade ich einen Beleg hoch?', a: 'Öffne unter "Meine Buchhaltung" die Belege. Wähle ein Foto oder eine PDF-Datei (max. 3 MB). Datum, Betrag, Anbieter, Rechnungsnummer und die USt-IdNr. bzw. Steuernummer des Lieferanten werden, wenn möglich, automatisch erkannt. Prüf die Felder kurz und klick auf "Hochladen".' },
+  { t: 'Tagesgeschäft', f: 'Wo trage ich einen Z-Bon (Tagesabschluss) ein?', a: 'Auch bei den Belegen. Wähle als Anbieter "Z-Bon (Tagesabschluss)". Dann erscheinen zusätzlich die Felder für den Bar- und den Kartenbetrag.' },
+  { t: 'Tagesgeschäft', k: 'pdf steuerberater buchhaltung export', f: 'Wo finde ich den Monatsbericht?', a: 'Auf der Tagesgeschäft-Seite gibt es ein PDF mit Kassenbuch und Wareneingang, in der Belegablage einen Monatsbericht für die Belege. Alles zusammen stellst du unter "Monatsberichte" zusammen: Monat auswählen und PDF erstellen.' },
+  { t: 'Tagesgeschäft', f: 'Wie trage ich Temperaturen ein?', a: 'Lege auf der Tagesgeschäft-Seite einmal deine Kühlgeräte an. Danach trägst du täglich unter "Heutige Messung" die Werte ein. Mitarbeiter mit dem Recht "Temperaturen" können das ebenfalls über den Team-Link erledigen.' },
+  { t: 'Tagesgeschäft', f: 'Wie lade ich meine Speisekarte hoch?', a: 'Auf der Tagesgeschäft-Seite im Bereich "Speisekarte hochladen". PDF oder Foto, max. 3 MB pro Datei. Bei mehrseitigen Karten lädst du einfach mehrere Dateien hoch.' },
+
+  { t: 'Team', f: 'Wie funktioniert die Zeiterfassung?', a: 'Deine Mitarbeiter tragen Kommen, Pause und Gehen selbst über ihren PIN-Link ein. Du siehst alle Zeiten in der Zeiterfassung, genehmigst sie oder lehnst sie mit einer Notiz ab und kannst PDFs erstellen.' },
+  { t: 'Team', f: 'Was, wenn eine Zeit nicht stimmt?', a: 'Lehne den Eintrag mit einer kurzen Notiz ab. Der Mitarbeiter sieht die Notiz, kann seine Zeiten korrigieren und erneut einreichen.' },
+  { t: 'Team', f: 'Wie erstelle ich einen Schichtplan?', a: 'Unter "Mein Team" im Schichtplan trägst du neue Schichten ein. Deine Mitarbeiter sehen den Dienstplan. Bearbeiten dürfen sie ihn nur, wenn du ihnen dieses Recht zusätzlich gibst.' },
+  { t: 'Team', f: 'Wofür sind Übergabe- und Reservierungsbuch?', a: 'Im Übergabebuch hältst du Wichtiges zwischen den Schichten fest, im Reservierungsbuch Tischreservierungen. Beide können auch deine Mitarbeiter über den Team-Link befüllen, wenn du den Bereich freigegeben hast.' },
+  { t: 'Team', k: 'pin ändern zurücksetzen neu vergeben vergabe', f: 'Was, wenn ein Mitarbeiter seine PIN vergessen hat?', a: 'Öffne die Kachel "Team-Mitarbeiter & PIN". Dort siehst du die PIN jeder Person und kannst sie jederzeit ändern.' },
+
+  { t: 'Hilfe', f: 'Wie bekomme ich Benachrichtigungen aufs Handy?', a: 'Tippe oben rechts auf die Glocke und bestätige die Frage. Dein Browser fragt dann nach der Erlaubnis. Wurde sie einmal abgelehnt, erlaubst du Benachrichtigungen in den Einstellungen deines Browsers für diese Seite.' },
+  { t: 'Hilfe', k: 'login zurücksetzen anmelden passwort', f: 'Ich habe mein Passwort vergessen. Was tun?', a: 'Klick auf der Anmeldeseite auf "Passwort vergessen?". Du bekommst eine E-Mail, mit der du ein neues Passwort festlegen kannst.' },
+  { t: 'Hilfe', f: 'Wo erreiche ich den Support?', a: 'Per E-Mail an info@mein-gastro-system.de oder per WhatsApp unter 0157-55880690. Beides steht auch oben rechts im Dashboard.' }
+];
+let faqThema = 'Alle';
+function faqRender() {
+  const suche = (document.getElementById('faq-suche').value || '').trim().toLowerCase();
+  const chipBox = document.getElementById('faq-chips');
+  chipBox.innerHTML = '';
+  ['Alle'].concat(FAQ_THEMEN).forEach(t => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'faq-chip' + (t === faqThema ? ' aktiv' : '');
+    b.textContent = t;
+    b.onclick = () => { faqThema = t; faqRender(); };
+    chipBox.appendChild(b);
+  });
+  const liste = document.getElementById('faq-liste');
+  liste.innerHTML = '';
+  const woerter = suche.split(/\s+/).filter(Boolean);
+  const passt = e => {
+    const text = (e.f + ' ' + e.a + ' ' + (e.k || '')).toLowerCase();
+    return woerter.every(w => text.includes(w) || (w.length >= 6 && text.includes(w.slice(0, 4))));
+  };
+  const treffer = FAQ_DATEN.filter(e => (faqThema === 'Alle' || e.t === faqThema) && passt(e));
+  treffer.forEach(e => {
+    const item = document.createElement('div');
+    item.className = 'faq-item';
+    const fr = document.createElement('button');
+    fr.type = 'button';
+    fr.className = 'faq-frage';
+    const ftext = document.createElement('span');
+    ftext.textContent = e.f;
+    const pf = document.createElement('span');
+    pf.className = 'faq-pfeil';
+    pf.textContent = '▼';
+    fr.appendChild(ftext); fr.appendChild(pf);
+    const an = document.createElement('div');
+    an.className = 'faq-antwort';
+    an.textContent = e.a;
+    fr.onclick = () => item.classList.toggle('offen');
+    item.appendChild(fr); item.appendChild(an);
+    liste.appendChild(item);
+  });
+  document.getElementById('faq-leer').style.display = treffer.length ? 'none' : 'block';
+}
+faqRender();
+</script>
 
 </div>
 
@@ -1782,69 +1852,6 @@ init().catch(err => console.error('Dashboard init error:', err));
 </div>
 
 <script src="checklist-save.js">
-// ─── FAQ zum System (rechte Spalte) ───────────────────────────────────────
-const FAQ_THEMEN = ['Erste Schritte', 'Tagesgeschäft', 'Team', 'Hilfe'];
-const FAQ_DATEN = [
-  { t: 'Erste Schritte', f: 'Wie gebe ich meinem Team Zugang?', a: 'Öffne die Kachel "Team-Mitarbeiter & PIN" ganz oben in der rechten Spalte. Dort gehst du in drei Schritten vor: 1. Link/QR-Code erstellen (ein Link fürs ganze Team, zum Aushängen oder Teilen), 2. Mitarbeiter anlegen (Name und persönliche 4-stellige PIN), 3. Aufgaben zuweisen (Häkchen bei den Bereichen, die die Person nutzen darf).' },
-  { t: 'Erste Schritte', f: 'Wie melden sich meine Mitarbeiter an?', a: 'Sie öffnen den Team-Link oder scannen den QR-Code und geben ihre persönliche PIN ein. Danach sehen sie nur die Bereiche, die du freigegeben hast. Auf demselben Gerät bleibt der Zugang gespeichert, die PIN muss also nicht jedes Mal neu eingegeben werden.' },
-  { t: 'Erste Schritte', f: 'Was sehen meine Mitarbeiter, was nur ich?', a: 'Deine Mitarbeiter sehen nur die Bereiche, bei denen du ein Häkchen gesetzt hast, zum Beispiel Übergabebuch, Reservierungen, Schichtplan, Zeiterfassung, Belege und Temperaturen. Belege ansehen und löschen sowie Monatsberichte und die Team-Verwaltung bleiben bei dir.' },
-  { t: 'Erste Schritte', f: 'Muss ich erst die Module durcharbeiten?', a: 'Nein. Tagesgeschäft und Team kannst du sofort nutzen, ohne Quiz und ohne Freischaltung. Die Module links sind ein freiwilliger Bonus, den du in deinem Tempo nutzt. Mit "Wo stehe ich gerade?" findest du jederzeit einen guten Einstiegspunkt.' },
-
-  { t: 'Tagesgeschäft', f: 'Wie trage ich die Tageseinnahmen ein?', a: 'Öffne die Kachel "Dein Tagesgeschäft" und gehe dort zum Bereich "Tageseintrag". Trag Datum und Beträge ein und speichere. In der Übersicht siehst du danach deine Einträge.' },
-  { t: 'Tagesgeschäft', f: 'Wie lade ich einen Beleg hoch?', a: 'Öffne unter "Meine Buchhaltung" die Belege. Wähle ein Foto oder eine PDF-Datei (max. 3 MB). Datum, Betrag, Anbieter, Rechnungsnummer und die USt-IdNr. bzw. Steuernummer des Lieferanten werden, wenn möglich, automatisch erkannt. Prüf die Felder kurz und klick auf "Hochladen".' },
-  { t: 'Tagesgeschäft', f: 'Wo trage ich einen Z-Bon (Tagesabschluss) ein?', a: 'Auch bei den Belegen. Wähle als Anbieter "Z-Bon (Tagesabschluss)". Dann erscheinen zusätzlich die Felder für den Bar- und den Kartenbetrag.' },
-  { t: 'Tagesgeschäft', f: 'Wo finde ich den Monatsbericht?', a: 'Auf der Tagesgeschäft-Seite gibt es ein PDF mit Kassenbuch und Wareneingang, in der Belegablage einen Monatsbericht für die Belege. Alles zusammen stellst du unter "Monatsberichte" zusammen: Monat auswählen und PDF erstellen.' },
-  { t: 'Tagesgeschäft', f: 'Wie trage ich Temperaturen ein?', a: 'Lege auf der Tagesgeschäft-Seite einmal deine Kühlgeräte an. Danach trägst du täglich unter "Heutige Messung" die Werte ein. Mitarbeiter mit dem Recht "Temperaturen" können das ebenfalls über den Team-Link erledigen.' },
-  { t: 'Tagesgeschäft', f: 'Wie lade ich meine Speisekarte hoch?', a: 'Auf der Tagesgeschäft-Seite im Bereich "Speisekarte hochladen". PDF oder Foto, max. 3 MB pro Datei. Bei mehrseitigen Karten lädst du einfach mehrere Dateien hoch.' },
-
-  { t: 'Team', f: 'Wie funktioniert die Zeiterfassung?', a: 'Deine Mitarbeiter tragen Kommen, Pause und Gehen selbst über ihren PIN-Link ein. Du siehst alle Zeiten in der Zeiterfassung, genehmigst sie oder lehnst sie mit einer Notiz ab und kannst PDFs erstellen.' },
-  { t: 'Team', f: 'Was, wenn eine Zeit nicht stimmt?', a: 'Lehne den Eintrag mit einer kurzen Notiz ab. Der Mitarbeiter sieht die Notiz, kann seine Zeiten korrigieren und erneut einreichen.' },
-  { t: 'Team', f: 'Wie erstelle ich einen Schichtplan?', a: 'Unter "Mein Team" im Schichtplan trägst du neue Schichten ein. Deine Mitarbeiter sehen den Dienstplan. Bearbeiten dürfen sie ihn nur, wenn du ihnen dieses Recht zusätzlich gibst.' },
-  { t: 'Team', f: 'Wofür sind Übergabe- und Reservierungsbuch?', a: 'Im Übergabebuch hältst du Wichtiges zwischen den Schichten fest, im Reservierungsbuch Tischreservierungen. Beide können auch deine Mitarbeiter über den Team-Link befüllen, wenn du den Bereich freigegeben hast.' },
-  { t: 'Team', f: 'Was, wenn ein Mitarbeiter seine PIN vergessen hat?', a: 'Öffne die Kachel "Team-Mitarbeiter & PIN". Dort siehst du die PIN jeder Person und kannst sie jederzeit ändern.' },
-
-  { t: 'Hilfe', f: 'Wie bekomme ich Benachrichtigungen aufs Handy?', a: 'Tippe oben rechts auf die Glocke und bestätige die Frage. Dein Browser fragt dann nach der Erlaubnis. Wurde sie einmal abgelehnt, erlaubst du Benachrichtigungen in den Einstellungen deines Browsers für diese Seite.' },
-  { t: 'Hilfe', f: 'Ich habe mein Passwort vergessen. Was tun?', a: 'Klick auf der Anmeldeseite auf "Passwort vergessen?". Du bekommst eine E-Mail, mit der du ein neues Passwort festlegen kannst.' },
-  { t: 'Hilfe', f: 'Wo erreiche ich den Support?', a: 'Per E-Mail an info@mein-gastro-system.de oder per WhatsApp unter 0157-55880690. Beides steht auch oben rechts im Dashboard.' }
-];
-let faqThema = 'Alle';
-function faqRender() {
-  const suche = (document.getElementById('faq-suche').value || '').trim().toLowerCase();
-  const chipBox = document.getElementById('faq-chips');
-  chipBox.innerHTML = '';
-  ['Alle'].concat(FAQ_THEMEN).forEach(t => {
-    const b = document.createElement('button');
-    b.type = 'button';
-    b.className = 'faq-chip' + (t === faqThema ? ' aktiv' : '');
-    b.textContent = t;
-    b.onclick = () => { faqThema = t; faqRender(); };
-    chipBox.appendChild(b);
-  });
-  const liste = document.getElementById('faq-liste');
-  liste.innerHTML = '';
-  const treffer = FAQ_DATEN.filter(e => (faqThema === 'Alle' || e.t === faqThema) && (!suche || (e.f + ' ' + e.a).toLowerCase().includes(suche)));
-  treffer.forEach(e => {
-    const item = document.createElement('div');
-    item.className = 'faq-item';
-    const fr = document.createElement('button');
-    fr.type = 'button';
-    fr.className = 'faq-frage';
-    const ftext = document.createElement('span');
-    ftext.textContent = e.f;
-    const pf = document.createElement('span');
-    pf.className = 'faq-pfeil';
-    pf.textContent = '▼';
-    fr.appendChild(ftext); fr.appendChild(pf);
-    const an = document.createElement('div');
-    an.className = 'faq-antwort';
-    an.textContent = e.a;
-    fr.onclick = () => item.classList.toggle('offen');
-    item.appendChild(fr); item.appendChild(an);
-    liste.appendChild(item);
-  });
-  document.getElementById('faq-leer').style.display = treffer.length ? 'none' : 'block';
-}
-faqRender();
 </script>
 </body>
 </html>
