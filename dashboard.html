@@ -340,6 +340,7 @@ html, body { max-width:100%; overflow-x:hidden; }
   </div>
 
   <!-- FAQ-PANEL: Häufige Fragen zum System (feste Spalte rechts) -->
+  <div class="dash-faq-wrap" id="dash-faq-wrap">
   <aside class="dash-faq" id="dash-faq" aria-label="Häufige Fragen zum System">
     <div class="faq-head">
       <div class="faq-title">Hilfe von A bis Z</div>
@@ -349,37 +350,45 @@ html, body { max-width:100%; overflow-x:hidden; }
       <input type="search" id="faq-suche" class="faq-suche" placeholder="Stichwort suchen, z. B. PIN" oninput="faqRender()" aria-label="Hilfe durchsuchen">
       <div class="faq-abc" id="faq-abc"></div>
       <div id="faq-liste"></div>
-      <div class="faq-leer" id="faq-leer" style="display:none;">Dazu gibt es noch keinen Eintrag. Schreib uns gern per Mail oder WhatsApp (oben rechts).</div>
+      <div class="faq-leer" id="faq-leer" style="display:none;">Dazu gibt es noch keinen Eintrag. Nutze bitte die Support-Kachel darunter, wir helfen dir gern.</div>
     </div>
   </aside>
+  <div class="dash-support" id="dash-support">
+    <div class="support-title">Support</div>
+    <div class="support-text">Fragen oder Probleme? Wir helfen dir gern.</div>
+    <div class="support-btns">
+      <a class="support-btn" href="mailto:info@mein-gastro-system.de">E-Mail schreiben</a>
+      <a class="support-btn" href="https://wa.me/4915755880690" target="_blank" rel="noopener">WhatsApp</a>
+    </div>
+  </div>
+  </div>
 <script>
 // ─── Hilfe von A bis Z (rechte Spalte) ────────────────────────────────────
 // Ein Eintrag = Stichwort (w), Kurztext (a), optional Link (l) und Suchbegriffe/Synonyme (k).
 // Einträge mit "ref" sind zusätzliche Stichworte im A–Z-Verzeichnis, die auf einen anderen Eintrag verweisen.
 const HILFE = [
-  { w: 'Abschreibungen', a: 'Im Tagesgeschäft im Bereich "Abschreibungen und Co." trägst du Schwund und Bruch ein: Datum, Artikel, Menge und Einheit.', l: 'tagesgeschaeft.html', k: 'schwund bruch verderb ware weggeworfen entsorgt verlust abschreibung' },
-  { w: 'Artikelbericht', a: 'Im Tagesgeschäft im Bereich "Artikelbericht" lädst du den Verkaufsbericht deiner Kasse hoch (Foto oder PDF, max. 3 MB). Gericht und verkaufte Menge werden ausgelesen, bitte kurz prüfen. Danach siehst du dort das Ranking der meistverkauften Artikel für den Monat, getrennt nach Speisen und Getränken, und kannst es als PDF speichern. Ein einzelner Tag lässt sich in der Liste der hochgeladenen Berichte öffnen.', l: 'tagesgeschaeft.html', k: 'verkauf verkauft verkaufsbericht verkaufszahlen wieviel wie viele speisen getränke getraenke gericht menge kasse auswertung ranking meistverkauft bestseller beliebt' },
-  { w: 'Belege', a: 'Unter "Meine Buchhaltung" bei Belege wählst du ein Foto oder eine PDF (max. 3 MB). Datum, Betrag, Anbieter, Rechnungsnummer und USt-IdNr. bzw. Steuernummer des Lieferanten werden, wenn möglich, automatisch erkannt. Kurz prüfen und "Hochladen" klicken.', l: 'belegablage.html', k: 'beleg rechnung rechnungen quittung kassenbon bon lieferschein foto scannen pdf upload hochladen steuer ust steuernummer lieferant ablegen' },
+  { w: 'Abschreibungen', a: 'Unter „Meine Buchhaltung“ im Tagesgeschäft wählst du den Bereich „Abschreibungen und Co.“. Dort trägst du Schwund und Bruch ein (Datum, Artikel, Menge und Einheit) und lädst Stornobelege hoch.', l: 'tagesgeschaeft.html', k: 'schwund bruch verderb ware weggeworfen entsorgt verlust abschreibung' },
+  { w: 'Artikelbericht', a: 'Unter „Meine Buchhaltung“ im Tagesgeschäft wählst du den Bereich „Artikelbericht“. Dort lädst du den Verkaufsbericht deiner Kasse hoch (Foto oder PDF, max. 3 MB). Gericht und verkaufte Menge werden ausgelesen, bitte kurz prüfen. Danach siehst du dort das Ranking der meistverkauften Artikel für den Monat, getrennt nach Speisen und Getränken, und kannst es als PDF speichern. Ein einzelner Tag lässt sich in der Liste der hochgeladenen Berichte öffnen.', l: 'tagesgeschaeft.html', k: 'verkauf verkauft verkaufsbericht verkaufszahlen wieviel wie viele speisen getränke getraenke gericht menge kasse auswertung ranking meistverkauft bestseller beliebt' },
+  { w: 'Belege', a: 'Unter „Meine Buchhaltung“ öffnest du „Belege“ und wählst ein Foto oder eine PDF (max. 3 MB). Datum, Betrag, Anbieter, Rechnungsnummer und USt-IdNr. bzw. Steuernummer des Lieferanten werden, wenn möglich, automatisch erkannt. Kurz prüfen und „Hochladen“ klicken. Mitarbeiter mit dem Recht „Belege“ können Belege auf ihrem eigenen Handy über den Team-Link hochladen.', l: 'belegablage.html', k: 'beleg rechnung rechnungen quittung kassenbon bon lieferschein foto scannen pdf upload hochladen steuer ust steuernummer lieferant ablegen' },
   { w: 'Benachrichtigungen', a: 'Du tippst im Dashboard oben rechts auf die Glocke und bestätigst die Frage. Deine Mitarbeiter bekommen auf ihrer Team-Seite einen Hinweis zum Aktivieren. Wurde es im Browser abgelehnt, erlaubst du es in den Browser-Einstellungen für diese Seite. Auf dem iPhone klappt es zuverlässig erst, wenn GASTRO-OS auf dem Home-Bildschirm liegt.', k: 'push pushnachrichten glocke mitteilung mitteilungen meldung meldungen nachricht erinnerung aktivieren' },
-  { w: 'Handy-Startbildschirm', a: 'iPhone (Safari): unten auf das Teilen-Symbol tippen, dann "Zum Home-Bildschirm". Android (Chrome): oben rechts die drei Punkte, dann "Zum Startbildschirm hinzufügen" oder "App installieren". Danach öffnet sich GASTRO-OS wie eine App. Das gilt auch für den Team-Link deiner Mitarbeiter.', k: 'handy smartphone homescreen home-bildschirm app installieren icon speichern iphone android startbildschirm' },
-  { w: 'Kassenbuch', a: 'Im Tagesgeschäft im Bereich "Kassenbuch" trägst du beim Tageseintrag Datum und Beträge ein und speicherst.', l: 'tagesgeschaeft.html', k: 'kasse einnahmen tageseinnahmen tageseintrag umsatz bargeld eintragen' },
-  { w: 'Mitarbeiter anlegen', a: 'Öffne oben in der rechten Spalte die Kachel "Team-Mitarbeiter & PIN". Schritt 1: Link/QR-Code erstellen, Schritt 2: Name und persönliche 4-stellige PIN eintragen, Schritt 3: per Häkchen festlegen, welche Bereiche die Person nutzen darf.', k: 'team zugang einladen hinzufügen pin vergabe vergeben qr link code rechte personal' },
-  { w: 'Monatsbericht', a: 'Auf der Tagesgeschäft-Seite gibt es ein PDF mit Kassenbuch und Wareneingang, in der Belegablage einen Monatsbericht für die Belege. Alles zusammen stellst du unter "Monatsberichte" zusammen: Monat auswählen und PDF erstellen.', l: 'buchhaltung.html', k: 'bericht auswertung pdf steuerberater buchhaltung export monatsabschluss abschluss drucken' },
-  { w: 'Notizen', a: 'Im Tagesgeschäft im Bereich "Notizen" legst du eine neue Notiz an. Darunter steht der Verlauf.', l: 'tagesgeschaeft.html', k: 'notiz merken aufschreiben zettel' },
+  { w: 'Handy-Startbildschirm', a: 'iPhone (Safari): unten auf das Teilen-Symbol tippen, dann „Zum Home-Bildschirm“. Android (Chrome): oben rechts die drei Punkte, dann „Zum Startbildschirm hinzufügen“ oder „App installieren“. Danach öffnet sich GASTRO-OS wie eine App. Das gilt auch für den Team-Link: Jeder Mitarbeiter legt ihn auf seinem eigenen Handy ab.', k: 'handy smartphone homescreen home-bildschirm app installieren icon speichern iphone android startbildschirm' },
+  { w: 'Kassenbuch', a: 'Unter „Meine Buchhaltung“ im Tagesgeschäft wählst du den Bereich „Kassenbuch“. Beim Tageseintrag trägst du Datum und Beträge ein und speicherst.', l: 'tagesgeschaeft.html', k: 'kasse einnahmen tageseinnahmen tageseintrag umsatz bargeld eintragen' },
+  { w: 'Mitarbeiter anlegen', a: 'Öffne ganz oben in der Mitte die Kachel „Team-Mitarbeiter & PIN“. Schritt 1: Link/QR-Code erstellen (ein Link fürs ganze Team, jeder öffnet ihn auf seinem eigenen Handy). Schritt 2: Name und persönliche 4-stellige PIN eintragen. Schritt 3: per Häkchen festlegen, welche Bereiche die Person nutzen darf.', k: 'team zugang einladen hinzufügen pin vergabe vergeben qr link code rechte personal' },
+  { w: 'Monatsbericht', a: 'Unter „Meine Buchhaltung“ gibt es drei Bereiche: Im Tagesgeschäft ein PDF mit Kassenbuch und Wareneingang, bei „Belege“ einen Monatsbericht für die Belege und unter „Monatsberichte“ alles zusammen: Monat auswählen und PDF erstellen.', l: 'buchhaltung.html', k: 'bericht auswertung pdf steuerberater buchhaltung export monatsabschluss abschluss drucken' },
+  { w: 'Notizen', a: 'Unter „Meine Buchhaltung“ im Tagesgeschäft wählst du den Bereich „Notizen“ und legst eine neue Notiz an. Darunter steht der Verlauf.', l: 'tagesgeschaeft.html', k: 'notiz merken aufschreiben zettel' },
   { w: 'Passwort vergessen', a: 'Klick auf der Anmeldeseite auf "Passwort vergessen?". Du bekommst eine E-Mail, mit der du ein neues Passwort festlegen kannst.', k: 'kennwort login zurücksetzen zurücksetzen anmelden einloggen reset zugang' },
-  { w: 'PIN vergessen', a: 'Öffne die Kachel "Team-Mitarbeiter & PIN". Dort siehst du die PIN jeder Person und kannst sie jederzeit ändern.', k: 'code ändern zurücksetzen neu vergeben vergabe mitarbeiter geheimzahl' },
-  { w: 'Reservierungen', a: 'Im Reservierungsbuch unter "Mein Team" trägst du Tischreservierungen ein. Auch deine Mitarbeiter können das über den Team-Link, wenn du den Bereich freigegeben hast.', l: 'reservierung.html', k: 'reservierung tisch reservierungsbuch gäste buchung' },
-  { w: 'Schichtplan', a: 'Unter "Mein Team" im Schichtplan trägst du neue Schichten ein. Deine Mitarbeiter sehen den Dienstplan, bearbeiten dürfen sie ihn nur mit zusätzlichem Recht von dir.', l: 'schichtplan.html', k: 'dienstplan dienst schicht schichten wer arbeitet einteilen' },
-  { w: 'Speisekarte', a: 'Im Tagesgeschäft im Bereich "Speisekarte" lädst du deine Karte hoch (PDF oder Foto, max. 3 MB pro Datei, mehrseitig mit mehreren Dateien). Sie wird dort abgelegt. Was von der Karte wie oft verkauft wurde, siehst du im Artikelbericht.', l: 'tagesgeschaeft.html', k: 'karte gerichte hochladen preise' },
-  { w: 'Stornobelege', a: 'Stornobelege lädst du im Tagesgeschäft im Bereich "Abschreibungen und Co." hoch, nicht bei den normalen Belegen. Datum und Betrag werden, wenn möglich, automatisch ausgelesen.', l: 'tagesgeschaeft.html', k: 'storno stornobeleg storniert abschreibungen storniert' },
-  { w: 'Support', a: 'Per E-Mail an info@mein-gastro-system.de oder per WhatsApp unter 0157-55880690. Beides steht auch oben rechts im Dashboard.', k: 'kontakt hilfe mail whatsapp problem fehler frage anrufen' },
-  { w: 'Team-Zugang für Mitarbeiter', a: 'Deine Mitarbeiter öffnen den Team-Link oder scannen den QR-Code und geben ihre persönliche PIN ein. Danach sehen sie nur die Bereiche, die du freigegeben hast. Auf demselben Gerät bleibt der Zugang gespeichert. Am besten legen sie den Link auf den Handy-Startbildschirm.', k: 'login einloggen anmelden anmeldung pin mitarbeiter link qr personal' },
-  { w: 'Temperaturen', a: 'Im Tagesgeschäft legst du einmal deine Kühlgeräte an und trägst danach täglich unter "Heutige Messung" die Werte ein. Mitarbeiter mit dem Recht "Temperaturen" können das über den Team-Link erledigen.', l: 'tagesgeschaeft.html', k: 'temperatur haccp kühlgerät kühlgeräte kühlschrank kühlhaus messung messen grad' },
-  { w: 'Übergabebuch', a: 'Im Übergabebuch unter "Mein Team" hältst du Wichtiges zwischen den Schichten fest. Auch Mitarbeiter können eintragen, wenn du den Bereich freigegeben hast.', l: 'uebergabe.html', k: 'übergabe schicht schichtübergabe weitergeben' },
-  { w: 'Wareneingang', a: 'Im Tagesgeschäft im Bereich "Wareneingang" prüfst du unter "Neue Lieferung prüfen" eine Lieferung. Die letzten Einträge stehen darunter.', l: 'tagesgeschaeft.html', k: 'lieferung ware einkauf lieferant angekommen prüfen' },
-  { w: 'Z-Bon (Tagesabschluss)', a: 'Bei den Belegen wählst du als Anbieter "Z-Bon (Tagesabschluss)". Dann kommen die Felder für Bar- und Kartenbetrag dazu.', l: 'belegablage.html', k: 'zbon kassenabschluss tagesabschluss bar karte kasse' },
-  { w: 'Zeiterfassung', a: 'Deine Mitarbeiter tragen Kommen, Pause und Gehen selbst über ihren PIN-Link ein. Du genehmigst die Zeiten oder lehnst sie mit einer Notiz ab. Dann kann der Mitarbeiter korrigieren und erneut einreichen. PDFs erstellst du dort ebenfalls.', l: 'zeiterfassung.html', k: 'zeit zeiten arbeitszeit arbeitszeiten stunden stempeln einstempeln ausstempeln kommen gehen pause korrigieren ablehnen genehmigen' },
-  {"w": "Module", "a": "Die Module sind dein freiwilliger Bonus: Wissen und Werkzeuge für mehr Gewinn, in deinem Tempo. Für Tagesgeschäft und Team brauchst du sie nicht.\n\nSo gehst du vor:\n• Öffne links unter \"Mein Wissen\" ein Modul.\n• Modul 0 und Modul 1 sind sofort offen.\n• Jedes Modul hat Übersicht, Ankervideo, Lektionen, Werkzeuge und ein Quiz.\n\nSo schaltest du das nächste Modul frei:\nBestehe das Quiz des vorherigen Moduls. Das Quiz von Modul 1 schaltet Modul 2 frei, das Quiz von Modul 2 schaltet Modul 3 frei und so weiter. Wie viele Antworten richtig sein müssen, steht im Quiz. Gesperrte Module erkennst du am Schloss.\n\nMit den Häkchen hakst du selbst ab, was du erledigt hast. Der Fortschritt steht pro Modul als Balken dabei.", "k": "modul lernen lektion lektionen ankervideo podcast werkzeug werkzeuge tool quiz test freischalten freischaltung gesperrt sperre schloss nächstes weiter fortschritt häkchen wissen kurs lernplattform"}
+  { w: 'PIN vergessen', a: 'Öffne ganz oben in der Mitte die Kachel „Team-Mitarbeiter & PIN“. Dort siehst du die PIN jeder Person und kannst sie jederzeit ändern. Der Mitarbeiter gibt sie danach wieder über den Team-Link auf seinem eigenen Handy ein.', k: 'code ändern zurücksetzen neu vergeben vergabe mitarbeiter geheimzahl' },
+  { w: 'Reservierungen', a: 'Unter „Mein Team“ trägst du im Reservierungsbuch Tischreservierungen ein. Auch deine Mitarbeiter können das auf ihrem eigenen Handy über den Team-Link, wenn du den Bereich freigegeben hast.', l: 'reservierung.html', k: 'reservierung tisch reservierungsbuch gäste buchung' },
+  { w: 'Schichtplan', a: 'Unter „Mein Team“ trägst du im Schichtplan neue Schichten ein. Deine Mitarbeiter sehen den Dienstplan auf ihrem eigenen Handy über den Team-Link. Bearbeiten dürfen sie ihn nur mit zusätzlichem Recht von dir.', l: 'schichtplan.html', k: 'dienstplan dienst schicht schichten wer arbeitet einteilen' },
+  { w: 'Speisekarte', a: 'Unter „Meine Buchhaltung“ im Tagesgeschäft wählst du den Bereich „Speisekarte“ und lädst deine Karte hoch (PDF oder Foto, max. 3 MB pro Datei, mehrseitig mit mehreren Dateien). Sie wird dort abgelegt. Was von der Karte wie oft verkauft wurde, siehst du im Artikelbericht.', l: 'tagesgeschaeft.html', k: 'karte gerichte hochladen preise' },
+  { w: 'Stornobelege', a: 'Stornobelege lädst du unter „Meine Buchhaltung“ im Tagesgeschäft im Bereich „Abschreibungen und Co.“ hoch, nicht bei den normalen Belegen. Datum und Betrag werden, wenn möglich, automatisch ausgelesen.', l: 'tagesgeschaeft.html', k: 'storno stornobeleg storniert abschreibungen storniert' },
+  { w: 'Team-Zugang für Mitarbeiter', a: 'Jeder Mitarbeiter nutzt den Team-Link auf seinem eigenen Handy: Link öffnen (oder QR-Code scannen) und die persönliche PIN eingeben. Danach sieht er nur die Bereiche, die du freigegeben hast. Auf demselben Handy bleibt der Zugang gespeichert. Am besten legt jeder den Link auf seinen Handy-Startbildschirm.', k: 'login einloggen anmelden anmeldung pin mitarbeiter link qr personal' },
+  { w: 'Temperaturen', a: 'Unter „Meine Buchhaltung“ im Tagesgeschäft legst du einmal deine Kühlgeräte an und trägst danach täglich unter „Heutige Messung“ die Werte ein. Mitarbeiter mit dem Recht „Temperaturen“ können das auf ihrem eigenen Handy über den Team-Link erledigen.', l: 'tagesgeschaeft.html', k: 'temperatur haccp kühlgerät kühlgeräte kühlschrank kühlhaus messung messen grad' },
+  { w: 'Übergabebuch', a: 'Unter „Mein Team“ hältst du im Übergabebuch Wichtiges zwischen den Schichten fest. Auch Mitarbeiter können auf ihrem eigenen Handy über den Team-Link eintragen, wenn du den Bereich freigegeben hast.', l: 'uebergabe.html', k: 'übergabe schicht schichtübergabe weitergeben' },
+  { w: 'Wareneingang', a: 'Unter „Meine Buchhaltung“ im Tagesgeschäft wählst du den Bereich „Wareneingang“ und prüfst unter „Neue Lieferung prüfen“ eine Lieferung. Die letzten Einträge stehen darunter.', l: 'tagesgeschaeft.html', k: 'lieferung ware einkauf lieferant angekommen prüfen' },
+  { w: 'Z-Bon (Tagesabschluss)', a: 'Bei den Belegen wählst du als Anbieter „Z-Bon (Tagesabschluss)“. Dann kommen die Felder für Bar- und Kartenbetrag dazu.', l: 'belegablage.html', k: 'zbon kassenabschluss tagesabschluss bar karte kasse' },
+  { w: 'Zeiterfassung', a: 'Deine Mitarbeiter tragen Kommen, Pause und Gehen selbst auf ihrem eigenen Handy über ihren PIN-Link ein. Du findest alle Zeiten unter „Mein Team“ in der Zeiterfassung, genehmigst sie oder lehnst sie mit einer Notiz ab. Dann kann der Mitarbeiter korrigieren und erneut einreichen. PDFs erstellst du dort ebenfalls.', l: 'zeiterfassung.html', k: 'zeit zeiten arbeitszeit arbeitszeiten stunden stempeln einstempeln ausstempeln kommen gehen pause korrigieren ablehnen genehmigen' },
+  {"w": "Module", "a": "Die Module sind dein freiwilliger Bonus: Wissen und Werkzeuge für mehr Gewinn, in deinem Tempo. Für Tagesgeschäft und Team brauchst du sie nicht.\n\nSo gehst du vor:\n• Öffne links unter „Mein Wissen“ die Kachel „Erweitere dein Wissen“ und dort ein Modul.\n• Modul 0 und Modul 1 sind sofort offen.\n• Jedes Modul hat Übersicht, Ankervideo, Lektionen, Werkzeuge und ein Quiz.\n\nSo schaltest du das nächste Modul frei:\nBestehe das Quiz des vorherigen Moduls. Das Quiz von Modul 1 schaltet Modul 2 frei, das Quiz von Modul 2 schaltet Modul 3 frei und so weiter. Wie viele Antworten richtig sein müssen, steht im Quiz. Gesperrte Module erkennst du am Schloss.\n\nMit den Häkchen hakst du selbst ab, was du erledigt hast. Der Fortschritt steht pro Modul als Balken dabei. Die Werkzeuge der freigeschalteten Module findest du gesammelt links unter „Wissenswerkzeuge“.", "k": "modul lernen lektion lektionen ankervideo podcast werkzeug werkzeuge tool quiz test freischalten freischaltung gesperrt sperre schloss nächstes weiter fortschritt häkchen wissen kurs lernplattform"}
 ];
 const HILFE_ABC = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 const HILFE_FUELLWOERTER = new Set(['wie','wo','was','wer','wann','wenn','ich','du','man','mein','meine','meinen','meinem','meiner','dein','deine','der','die','das','den','dem','des','ein','eine','einen','einem','einer','und','oder','mit','von','zu','zum','zur','im','in','am','an','auf','für','ist','sind','kann','kannst','muss','soll','sollen','mir','mich','bei','wird','werden','habe','hab','hat','nicht','noch','auch','so','ob','es','sie','er','wir','ihr','the']);
@@ -556,7 +565,8 @@ faqRender();
 }
 .dash-left, .dash-right { min-width: 0; }
 
-.dash-faq { grid-column: 1 / -1; background:#fff; border:1px solid #e4d5a8; border-radius:14px; overflow:hidden; }
+.dash-faq-wrap { grid-column: 1 / -1; }
+.dash-faq { background:#fff; border:1px solid #e4d5a8; border-radius:14px; overflow:hidden; }
 .faq-head { background:#1a2a4a; padding:14px 16px; }
 .faq-title { color:#d4af37; font-weight:800; font-size:14px; }
 .faq-sub { color:rgba(255,255,255,0.6); font-size:11px; margin-top:3px; }
@@ -578,6 +588,12 @@ faqRender();
 .faq-buchstabe.leer { color:#c9c2b0; background:#faf8f4; cursor:default; border-color:#f0e8d4; }
 .faq-hinweis { font-size:12.5px; color:#8090a8; padding:6px 2px 2px; }
 .faq-oeffnen { display:inline-block; margin-top:8px; font-size:12px; font-weight:700; color:#1a2a4a; background:#faf6ea; border:1px solid #d4af37; border-radius:6px; padding:4px 10px; text-decoration:none; }
+.dash-support { margin-top:14px; background:#1a2a4a; border:1px solid rgba(212,175,55,0.3); border-radius:14px; padding:14px 16px; }
+.support-title { color:#d4af37; font-weight:800; font-size:14px; }
+.support-text { color:rgba(255,255,255,0.75); font-size:12px; margin:4px 0 10px; }
+.support-btns { display:flex; gap:8px; flex-wrap:wrap; }
+.support-btn { flex:1; min-width:110px; text-align:center; background:#d4af37; color:#1a2a4a; font-weight:700; font-size:12px; padding:8px 10px; border-radius:8px; text-decoration:none; }
+.support-btn:hover { background:#e6c552; }
 .faq-links { margin-top:6px; }
 .faq-links a { display:block; padding:6px 2px; border-top:1px solid #f0e8d4; font-size:12px; color:#1a2a4a; text-decoration:none; }
 .faq-links a:hover { color:#9A7D3A; }
@@ -594,10 +610,10 @@ faqRender();
 @media (min-width: 1500px) {
   .main { max-width: 1500px; }
   .dash-grid { grid-template-columns: 330px minmax(0,1fr) 340px; }
-  .dash-faq { grid-column: auto; position: sticky; top: 16px; max-height: calc(100vh - 32px); overflow-y: auto; }
+  .dash-faq-wrap { grid-column: auto; position: sticky; top: 16px; max-height: calc(100vh - 32px); overflow-y: auto; }
 }
 @media (max-width: 1000px) {
-  .dash-faq { order: 3; }
+  .dash-faq-wrap { order: 3; }
 }
 @media (max-width: 1000px) {
   .dash-grid { grid-template-columns: 1fr; }
