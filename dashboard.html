@@ -342,12 +342,14 @@ html, body { max-width:100%; overflow-x:hidden; }
   <!-- HILFE + SUPPORT (rechte Spalte, als aufklappbare Kacheln wie "Team-Mitarbeiter & PIN") -->
   <div class="dash-faq-wrap" id="dash-faq-wrap">
 
-    <div class="module-card hub-card" id="hilfe-card" style="margin-bottom:14px;">
-      <div class="hub-head" onclick="toggleHilfe()">
-        <div class="hub-circle">❓</div>
-        <div class="hub-title">Hilfe von A bis Z</div>
-        <div style="font-size:11px;color:rgba(255,255,255,0.55);margin-top:3px;">Stichwort suchen oder Buchstaben antippen</div>
-        <div style="margin-top:10px;"><span class="module-arrow" id="hilfe-arrow" style="color:#d4af37;font-size:14px;">▼</span></div>
+    <div class="module-card hub-card" id="hilfe-card" style="margin-bottom:14px; max-width:100%;">
+      <div class="hub-head" onclick="toggleHilfe()" style="padding:16px 18px; flex-direction:row; text-align:left; gap:10px;">
+        <div class="hub-circle" style="width:32px;height:32px;font-size:14px;flex-shrink:0;">❓</div>
+        <div style="flex:1;">
+          <div class="hub-title" style="font-size:13px; margin-top:0;">Hilfe von A bis Z</div>
+          <div style="font-size:10.5px;color:rgba(255,255,255,0.55);margin-top:1px;">Stichwort suchen oder Buchstaben antippen</div>
+        </div>
+        <span class="module-arrow" id="hilfe-arrow" style="color:#d4af37;font-size:14px;flex-shrink:0;margin-left:0;">▼</span>
       </div>
       <div class="module-content" id="hilfe-content">
         <div class="faq-body">
@@ -359,12 +361,14 @@ html, body { max-width:100%; overflow-x:hidden; }
       </div>
     </div>
 
-    <div class="module-card hub-card" id="support-card">
-      <div class="hub-head" onclick="toggleSupport()">
-        <div class="hub-circle">💬</div>
-        <div class="hub-title">Support</div>
-        <div style="font-size:11px;color:rgba(255,255,255,0.55);margin-top:3px;">Fragen oder Probleme? Wir helfen dir gern</div>
-        <div style="margin-top:10px;"><span class="module-arrow" id="support-arrow" style="color:#d4af37;font-size:14px;">▼</span></div>
+    <div class="module-card hub-card" id="support-card" style="max-width:100%;">
+      <div class="hub-head" onclick="toggleSupport()" style="padding:16px 18px; flex-direction:row; text-align:left; gap:10px;">
+        <div class="hub-circle" style="width:32px;height:32px;font-size:14px;flex-shrink:0;">💬</div>
+        <div style="flex:1;">
+          <div class="hub-title" style="font-size:13px; margin-top:0;">Support</div>
+          <div style="font-size:10.5px;color:rgba(255,255,255,0.55);margin-top:1px;">Fragen oder Probleme? Wir helfen dir gern</div>
+        </div>
+        <span class="module-arrow" id="support-arrow" style="color:#d4af37;font-size:14px;flex-shrink:0;margin-left:0;">▼</span>
       </div>
       <div class="module-content" id="support-content">
         <div class="support-btns" style="padding:14px 16px;">
