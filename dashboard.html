@@ -342,109 +342,209 @@ html, body { max-width:100%; overflow-x:hidden; }
   <!-- FAQ-PANEL: Häufige Fragen zum System (feste Spalte rechts) -->
   <aside class="dash-faq" id="dash-faq" aria-label="Häufige Fragen zum System">
     <div class="faq-head">
-      <div class="faq-title">Häufige Fragen</div>
-      <div class="faq-sub">Wie mache ich…? Wo finde ich…? Was ist, wenn…?</div>
+      <div class="faq-title">Hilfe von A bis Z</div>
+      <div class="faq-sub">Buchstaben antippen oder direkt suchen</div>
     </div>
     <div class="faq-body">
-      <input type="search" id="faq-suche" class="faq-suche" placeholder="Was suchst du?" oninput="faqRender()" aria-label="FAQ durchsuchen">
+      <input type="search" id="faq-suche" class="faq-suche" placeholder="Stichwort suchen, z. B. PIN" oninput="faqRender()" aria-label="Hilfe durchsuchen">
+      <div class="faq-abc" id="faq-abc"></div>
       <div id="faq-liste"></div>
-      <div class="faq-leer" id="faq-leer" style="display:none;">Dazu haben wir noch keine Antwort. Schreib uns gern per Mail oder WhatsApp (oben rechts).</div>
+      <div class="faq-leer" id="faq-leer" style="display:none;">Dazu gibt es noch keinen Eintrag. Schreib uns gern per Mail oder WhatsApp (oben rechts).</div>
     </div>
   </aside>
 <script>
-// ─── FAQ zum System (rechte Spalte) ───────────────────────────────────────
-const FAQ_THEMEN = ['Erste Schritte', 'Tagesgeschäft', 'Team im Alltag', 'Handy', 'Hilfe'];
-const FAQ_DATEN = [
-  { t: 'Erste Schritte', f: 'Wie gebe ich meinem Team Zugang?', k: 'pin vergabe vergeben zugang mitarbeiter anlegen einladen qr link code', a: 'Öffne die Kachel "Team-Mitarbeiter & PIN" ganz oben in der rechten Spalte. Dort gehst du in drei Schritten vor: 1. Link/QR-Code erstellen (ein Link fürs ganze Team, zum Aushängen oder Teilen), 2. Mitarbeiter anlegen (Name und persönliche 4-stellige PIN), 3. Aufgaben zuweisen (Häkchen bei den Bereichen, die die Person nutzen darf).' },
-  { t: 'Erste Schritte', f: 'Wie melden sich meine Mitarbeiter an?', k: 'login einloggen pin anmeldung', a: 'Sie öffnen den Team-Link oder scannen den QR-Code und geben ihre persönliche PIN ein. Danach sehen sie nur die Bereiche, die du freigegeben hast. Auf demselben Gerät bleibt der Zugang gespeichert. Am besten legt jeder den Link auf dem Handy-Startbildschirm ab und aktiviert die Benachrichtigungen (siehe Thema "Handy").' },
-  { t: 'Erste Schritte', f: 'Was sehen meine Mitarbeiter, was nur ich?', a: 'Deine Mitarbeiter sehen nur die Bereiche, bei denen du ein Häkchen gesetzt hast, zum Beispiel Übergabebuch, Reservierungen, Schichtplan, Zeiterfassung, Belege und Temperaturen. Belege ansehen und löschen sowie Monatsberichte und die Team-Verwaltung bleiben bei dir.' },
-  { t: 'Erste Schritte', f: 'Muss ich erst die Module durcharbeiten?', a: 'Nein. Tagesgeschäft und Team kannst du sofort nutzen, ohne Quiz und ohne Freischaltung. Die Module links sind ein freiwilliger Bonus, den du in deinem Tempo nutzt.' },
+// ─── Hilfe von A bis Z (rechte Spalte) ────────────────────────────────────
+// Ein Eintrag = Stichwort (w), Kurztext (a), optional Link (l) und Suchbegriffe/Synonyme (k).
+// Einträge mit "ref" sind zusätzliche Stichworte im A–Z-Verzeichnis, die auf einen anderen Eintrag verweisen.
+const HILFE = [
+  { w: 'Abschreibungen', a: 'Im Tagesgeschäft im Bereich "Abschreibungen und Co." trägst du Schwund und Bruch ein: Datum, Artikel, Menge und Einheit.', l: 'tagesgeschaeft.html', k: 'schwund bruch verderb ware weggeworfen entsorgt verlust abschreibung' },
+  { w: 'Artikelbericht', a: 'Im Tagesgeschäft im Bereich "Artikelbericht" lädst du den Verkaufsbericht deiner Kasse hoch (Foto oder PDF, max. 3 MB). Gericht und verkaufte Menge werden ausgelesen, bitte kurz prüfen.', l: 'tagesgeschaeft.html', k: 'verkauf verkaufsbericht verkaufszahlen gericht menge kasse auswertung bestseller' },
+  { w: 'Belege', a: 'Unter "Meine Buchhaltung" bei Belege wählst du ein Foto oder eine PDF (max. 3 MB). Datum, Betrag, Anbieter, Rechnungsnummer und USt-IdNr. bzw. Steuernummer des Lieferanten werden, wenn möglich, automatisch erkannt. Kurz prüfen und "Hochladen" klicken.', l: 'belegablage.html', k: 'beleg rechnung rechnungen quittung kassenbon bon lieferschein foto scannen pdf upload hochladen steuer ust steuernummer lieferant ablegen' },
+  { w: 'Benachrichtigungen', a: 'Du tippst im Dashboard oben rechts auf die Glocke und bestätigst die Frage. Deine Mitarbeiter bekommen auf ihrer Team-Seite einen Hinweis zum Aktivieren. Wurde es im Browser abgelehnt, erlaubst du es in den Browser-Einstellungen für diese Seite. Auf dem iPhone klappt es zuverlässig erst, wenn GASTRO-OS auf dem Home-Bildschirm liegt.', k: 'push pushnachrichten glocke mitteilung mitteilungen meldung meldungen nachricht erinnerung aktivieren' },
+  { w: 'Handy-Startbildschirm', a: 'iPhone (Safari): unten auf das Teilen-Symbol tippen, dann "Zum Home-Bildschirm". Android (Chrome): oben rechts die drei Punkte, dann "Zum Startbildschirm hinzufügen" oder "App installieren". Danach öffnet sich GASTRO-OS wie eine App. Das gilt auch für den Team-Link deiner Mitarbeiter.', k: 'handy smartphone homescreen home-bildschirm app installieren icon speichern iphone android startbildschirm' },
+  { w: 'Kassenbuch', a: 'Im Tagesgeschäft im Bereich "Kassenbuch" trägst du beim Tageseintrag Datum und Beträge ein und speicherst.', l: 'tagesgeschaeft.html', k: 'kasse einnahmen tageseinnahmen tageseintrag umsatz bargeld eintragen' },
+  { w: 'Mitarbeiter anlegen', a: 'Öffne oben in der rechten Spalte die Kachel "Team-Mitarbeiter & PIN". Schritt 1: Link/QR-Code erstellen, Schritt 2: Name und persönliche 4-stellige PIN eintragen, Schritt 3: per Häkchen festlegen, welche Bereiche die Person nutzen darf.', k: 'team zugang einladen hinzufügen pin vergabe vergeben qr link code rechte personal' },
+  { w: 'Monatsbericht', a: 'Auf der Tagesgeschäft-Seite gibt es ein PDF mit Kassenbuch und Wareneingang, in der Belegablage einen Monatsbericht für die Belege. Alles zusammen stellst du unter "Monatsberichte" zusammen: Monat auswählen und PDF erstellen.', l: 'buchhaltung.html', k: 'bericht auswertung pdf steuerberater buchhaltung export monatsabschluss abschluss drucken' },
+  { w: 'Notizen', a: 'Im Tagesgeschäft im Bereich "Notizen" legst du eine neue Notiz an. Darunter steht der Verlauf.', l: 'tagesgeschaeft.html', k: 'notiz merken aufschreiben zettel' },
+  { w: 'Passwort vergessen', a: 'Klick auf der Anmeldeseite auf "Passwort vergessen?". Du bekommst eine E-Mail, mit der du ein neues Passwort festlegen kannst.', k: 'kennwort login zurücksetzen zurücksetzen anmelden einloggen reset zugang' },
+  { w: 'PIN vergessen', a: 'Öffne die Kachel "Team-Mitarbeiter & PIN". Dort siehst du die PIN jeder Person und kannst sie jederzeit ändern.', k: 'code ändern zurücksetzen neu vergeben vergabe mitarbeiter geheimzahl' },
+  { w: 'Reservierungen', a: 'Im Reservierungsbuch unter "Mein Team" trägst du Tischreservierungen ein. Auch deine Mitarbeiter können das über den Team-Link, wenn du den Bereich freigegeben hast.', l: 'reservierung.html', k: 'reservierung tisch reservierungsbuch gäste buchung' },
+  { w: 'Schichtplan', a: 'Unter "Mein Team" im Schichtplan trägst du neue Schichten ein. Deine Mitarbeiter sehen den Dienstplan, bearbeiten dürfen sie ihn nur mit zusätzlichem Recht von dir.', l: 'schichtplan.html', k: 'dienstplan dienst schicht schichten wer arbeitet einteilen' },
+  { w: 'Speisekarte', a: 'Im Tagesgeschäft im Bereich "Speisekarte" lädst du deine Karte hoch (PDF oder Foto, max. 3 MB pro Datei, mehrseitig mit mehreren Dateien). Sie wird dort abgelegt. Zum Rechnen nutzt du in Modul 2 unter "Wissenswerkzeuge" das Analyse-Tool und das Margen-Tool.', l: 'tagesgeschaeft.html', k: 'karte gerichte hochladen berechnen kalkulation marge deckungsbeitrag preise' },
+  { w: 'Stornobelege', a: 'Stornobelege lädst du im Tagesgeschäft im Bereich "Abschreibungen und Co." hoch, nicht bei den normalen Belegen. Datum und Betrag werden, wenn möglich, automatisch ausgelesen.', l: 'tagesgeschaeft.html', k: 'storno stornobeleg storniert abschreibungen storniert' },
+  { w: 'Support', a: 'Per E-Mail an info@mein-gastro-system.de oder per WhatsApp unter 0157-55880690. Beides steht auch oben rechts im Dashboard.', k: 'kontakt hilfe mail whatsapp problem fehler frage anrufen' },
+  { w: 'Team-Zugang für Mitarbeiter', a: 'Deine Mitarbeiter öffnen den Team-Link oder scannen den QR-Code und geben ihre persönliche PIN ein. Danach sehen sie nur die Bereiche, die du freigegeben hast. Auf demselben Gerät bleibt der Zugang gespeichert. Am besten legen sie den Link auf den Handy-Startbildschirm.', k: 'login einloggen anmelden anmeldung pin mitarbeiter link qr personal' },
+  { w: 'Temperaturen', a: 'Im Tagesgeschäft legst du einmal deine Kühlgeräte an und trägst danach täglich unter "Heutige Messung" die Werte ein. Mitarbeiter mit dem Recht "Temperaturen" können das über den Team-Link erledigen.', l: 'tagesgeschaeft.html', k: 'temperatur haccp kühlgerät kühlgeräte kühlschrank kühlhaus messung messen grad' },
+  { w: 'Übergabebuch', a: 'Im Übergabebuch unter "Mein Team" hältst du Wichtiges zwischen den Schichten fest. Auch Mitarbeiter können eintragen, wenn du den Bereich freigegeben hast.', l: 'uebergabe.html', k: 'übergabe schicht schichtübergabe weitergeben' },
+  { w: 'Wareneingang', a: 'Im Tagesgeschäft im Bereich "Wareneingang" prüfst du unter "Neue Lieferung prüfen" eine Lieferung. Die letzten Einträge stehen darunter.', l: 'tagesgeschaeft.html', k: 'lieferung ware einkauf lieferant angekommen prüfen' },
+  { w: 'Z-Bon (Tagesabschluss)', a: 'Bei den Belegen wählst du als Anbieter "Z-Bon (Tagesabschluss)". Dann kommen die Felder für Bar- und Kartenbetrag dazu.', l: 'belegablage.html', k: 'zbon kassenabschluss tagesabschluss bar karte kasse' },
+  { w: 'Zeiterfassung', a: 'Deine Mitarbeiter tragen Kommen, Pause und Gehen selbst über ihren PIN-Link ein. Du genehmigst die Zeiten oder lehnst sie mit einer Notiz ab. Dann kann der Mitarbeiter korrigieren und erneut einreichen. PDFs erstellst du dort ebenfalls.', l: 'zeiterfassung.html', k: 'zeit zeiten arbeitszeit arbeitszeiten stunden stempeln einstempeln ausstempeln kommen gehen pause korrigieren ablehnen genehmigen' },
 
-  { t: 'Tagesgeschäft', f: 'Wie trage ich die Tageseinnahmen ein?', a: 'Öffne die Kachel "Dein Tagesgeschäft" und gehe dort zum Bereich "Tageseintrag". Trag Datum und Beträge ein und speichere.' },
-  { t: 'Tagesgeschäft', f: 'Wie lade ich einen Beleg hoch?', k: 'rechnung foto pdf upload steuer ust steuernummer lieferant z-bon tagesabschluss', a: 'Öffne unter "Meine Buchhaltung" die Belege. Wähle ein Foto oder eine PDF-Datei (max. 3 MB). Datum, Betrag, Anbieter, Rechnungsnummer und die USt-IdNr. bzw. Steuernummer des Lieferanten werden, wenn möglich, automatisch erkannt. Prüf die Felder kurz und klick auf "Hochladen". Einen Tagesabschluss wählst du als Anbieter "Z-Bon (Tagesabschluss)", dann kommen Bar- und Kartenbetrag dazu.' },
-  { t: 'Tagesgeschäft', f: 'Wo finde ich den Monatsbericht?', k: 'pdf steuerberater buchhaltung export', a: 'Auf der Tagesgeschäft-Seite gibt es ein PDF mit Kassenbuch und Wareneingang, in der Belegablage einen Monatsbericht für die Belege. Alles zusammen stellst du unter "Monatsberichte" zusammen: Monat auswählen und PDF erstellen.' },
-  { t: 'Tagesgeschäft', f: 'Wie trage ich Temperaturen ein?', k: 'haccp kühlgerät kühlschrank', a: 'Lege auf der Tagesgeschäft-Seite einmal deine Kühlgeräte an. Danach trägst du täglich unter "Heutige Messung" die Werte ein. Mitarbeiter mit dem Recht "Temperaturen" können das ebenfalls über den Team-Link erledigen.' },
-  { t: 'Tagesgeschäft', f: 'Was bringt die Speisekarte im System?', k: 'speisekarte hochladen berechnen kalkulation marge deckungsbeitrag artikelbericht verkauf gericht', a: 'Die Speisekarte lädst du auf der Tagesgeschäft-Seite hoch (PDF oder Foto, max. 3 MB pro Datei, mehrseitig geht mit mehreren Dateien). Sie wird dort abgelegt. Zum Rechnen nutzt du in Modul 2 unter "Wissenswerkzeuge" das Analyse-Tool (Umsatz und Marge) und das Margen-Tool (Deckungsbeiträge). Was wie oft verkauft wurde, siehst du über den Artikelbericht auf der Tagesgeschäft-Seite.' },
-
-  { t: 'Team im Alltag', f: 'Wie funktioniert die Zeiterfassung?', k: 'kommen gehen pause korrigieren ablehnen genehmigen', a: 'Deine Mitarbeiter tragen Kommen, Pause und Gehen selbst über ihren PIN-Link ein. Du siehst alle Zeiten in der Zeiterfassung, genehmigst sie oder lehnst sie mit einer Notiz ab. Lehnst du ab, kann der Mitarbeiter die Zeit korrigieren und erneut einreichen. PDFs erstellst du dort ebenfalls.' },
-  { t: 'Team im Alltag', f: 'Wie erstelle ich einen Schichtplan?', k: 'dienstplan schicht', a: 'Unter "Mein Team" im Schichtplan trägst du neue Schichten ein. Deine Mitarbeiter sehen den Dienstplan. Bearbeiten dürfen sie ihn nur, wenn du ihnen dieses Recht zusätzlich gibst.' },
-  { t: 'Team im Alltag', f: 'Wofür sind Übergabe- und Reservierungsbuch?', a: 'Im Übergabebuch hältst du Wichtiges zwischen den Schichten fest, im Reservierungsbuch Tischreservierungen. Beide können auch deine Mitarbeiter über den Team-Link befüllen, wenn du den Bereich freigegeben hast.' },
-  { t: 'Team im Alltag', f: 'Was, wenn ein Mitarbeiter seine PIN vergessen hat?', k: 'pin ändern zurücksetzen neu vergeben vergabe', a: 'Öffne die Kachel "Team-Mitarbeiter & PIN". Dort siehst du die PIN jeder Person und kannst sie jederzeit ändern.' },
-
-  { t: 'Handy', f: 'Wie lege ich GASTRO-OS auf den Handy-Startbildschirm?', k: 'homescreen home-bildschirm app installieren icon speichern iphone android', a: 'iPhone (Safari): unten auf das Teilen-Symbol tippen, dann "Zum Home-Bildschirm". Android (Chrome): oben rechts auf die drei Punkte tippen, dann "Zum Startbildschirm hinzufügen" oder "App installieren". Danach öffnet sich GASTRO-OS wie eine App. Das gilt für dich und für deine Mitarbeiter mit dem Team-Link.' },
-  { t: 'Handy', f: 'Wie aktiviere ich Benachrichtigungen?', k: 'push glocke mitteilung nachricht', a: 'Du tippst im Dashboard oben rechts auf die Glocke und bestätigst die Frage. Deine Mitarbeiter bekommen auf ihrer Team-Seite einen Hinweis zum Aktivieren. Dein Browser fragt danach nach der Erlaubnis. Wurde sie einmal abgelehnt, erlaubst du Benachrichtigungen in den Browser-Einstellungen für diese Seite. Auf dem iPhone klappt das zuverlässig erst, wenn GASTRO-OS auf dem Home-Bildschirm liegt.' },
-
-  { t: 'Hilfe', f: 'Ich habe mein Passwort vergessen. Was tun?', k: 'login zurücksetzen anmelden passwort', a: 'Klick auf der Anmeldeseite auf "Passwort vergessen?". Du bekommst eine E-Mail, mit der du ein neues Passwort festlegen kannst.' },
-  { t: 'Hilfe', f: 'Wo erreiche ich den Support?', k: 'kontakt mail whatsapp hilfe', a: 'Per E-Mail an info@mein-gastro-system.de oder per WhatsApp unter 0157-55880690. Beides steht auch oben rechts im Dashboard.' }
+  { w: 'Dienstplan', ref: 'Schichtplan' },
+  { w: 'Homescreen', ref: 'Handy-Startbildschirm' },
+  { w: 'Kühlgeräte', ref: 'Temperaturen' },
+  { w: 'Push-Nachrichten', ref: 'Benachrichtigungen' },
+  { w: 'Rechnungen', ref: 'Belege' },
+  { w: 'Steuerberater', ref: 'Monatsbericht' },
+  { w: 'Stempeln', ref: 'Zeiterfassung' },
+  { w: 'Tageseinnahmen', ref: 'Kassenbuch' }
 ];
-let faqOffeneKat = null;
-function faqFrageElement(e, mitThema) {
+HILFE.forEach(e => {
+  if (e.ref) {
+    const o = HILFE.find(x => x.w === e.ref);
+    e.a = o.a; e.l = o.l; e.k = (o.k || '') + ' ' + o.w;
+  }
+});
+const HILFE_ABC = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+const HILFE_FUELLWOERTER = new Set(['wie','wo','was','wer','wann','wenn','ich','du','man','mein','meine','meinen','meinem','meiner','dein','deine','der','die','das','den','dem','des','ein','eine','einen','einem','einer','und','oder','mit','von','zu','zum','zur','im','in','am','an','auf','für','ist','sind','kann','kannst','muss','soll','sollen','mir','mich','bei','wird','werden','habe','hab','hat','nicht','noch','auch','so','ob','es','sie','er','wir','ihr','the']);
+
+function hilfeNorm(str) {
+  return String(str || '').toLowerCase().replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ü/g,'ue').replace(/ß/g,'ss').replace(/[^a-z0-9\s]/g,' ');
+}
+function hilfeTokens(str) { return hilfeNorm(str).split(/\s+/).filter(Boolean); }
+// Abstand mit Buchstabendreher (Damerau/OSA): "zeitefrassung" ist nur 1 Fehler von "zeiterfassung" entfernt
+function hilfeAbstand(a, b) {
+  const la = a.length, lb = b.length;
+  if (Math.abs(la - lb) > 3) return 9;
+  const d = [];
+  for (let i = 0; i <= la; i++) { d.push([i]); }
+  for (let j = 1; j <= lb; j++) d[0][j] = j;
+  for (let i = 1; i <= la; i++) {
+    for (let j = 1; j <= lb; j++) {
+      const c = a[i-1] === b[j-1] ? 0 : 1;
+      d[i][j] = Math.min(d[i-1][j] + 1, d[i][j-1] + 1, d[i-1][j-1] + c);
+      if (i > 1 && j > 1 && a[i-1] === b[j-2] && a[i-2] === b[j-1]) d[i][j] = Math.min(d[i][j], d[i-2][j-2] + 1);
+    }
+  }
+  return d[la][lb];
+}
+// Wie gut passt ein Suchwort (q) zu einem Wort (t)? 0 = gar nicht. locker = großzügiger bei Tippfehlern.
+function hilfeWortScore(q, t, locker, fuzzyErlaubt) {
+  if (q === t) return 100;
+  if (q.length >= 2 && t.startsWith(q)) return 85;
+  if (q.length >= 3 && t.includes(q)) return 65;
+  if (t.length >= 5 && q.length >= 6 && q.includes(t)) return 45;
+  if (!fuzzyErlaubt || q.length < 4) return 0;
+  const max = q.length <= 6 ? (locker ? 2 : 1) : (locker ? 3 : 2);
+  const d1 = hilfeAbstand(q, t);
+  if (d1 <= max) return 55 - d1 * 10;
+  if (q.length >= 5) {
+    const d2 = hilfeAbstand(q, t.slice(0, q.length));
+    if (d2 <= max) return 45 - d2 * 10;
+  }
+  return 0;
+}
+function hilfeBewerten(e, qTokens, locker) {
+  if (!e._tok) {
+    e._tok = { w: hilfeTokens(e.w), k: hilfeTokens(e.k || ''), a: hilfeTokens(e.a) };
+  }
+  let treffer = 0, summe = 0;
+  qTokens.forEach(q => {
+    let best = 0;
+    e._tok.w.forEach(t => { best = Math.max(best, hilfeWortScore(q, t, locker, true) * 1.0); });
+    e._tok.k.forEach(t => { best = Math.max(best, hilfeWortScore(q, t, locker, true) * 0.85); });
+    e._tok.a.forEach(t => { best = Math.max(best, hilfeWortScore(q, t, locker, false) * 0.5); });
+    if (best >= 25) { treffer++; summe += best; }
+  });
+  return { treffer, summe };
+}
+function hilfeSuchen(text) {
+  let q = hilfeTokens(text).filter(t => !HILFE_FUELLWOERTER.has(t));
+  if (!q.length) q = hilfeTokens(text);
+  if (!q.length) return { treffer: [], vorschlaege: [] };
+  const bewertet = HILFE.map(e => ({ e, r: hilfeBewerten(e, q, false) }));
+  let voll = bewertet.filter(x => x.r.treffer === q.length);
+  if (!voll.length) {
+    const lockerBew = HILFE.map(e => ({ e, r: hilfeBewerten(e, q, true) }));
+    voll = lockerBew.filter(x => x.r.treffer === q.length);
+    if (!voll.length) {
+      const teil = lockerBew.filter(x => x.r.treffer >= 1).sort((a, b) => b.r.treffer - a.r.treffer || b.r.summe - a.r.summe).slice(0, 4);
+      return { treffer: [], vorschlaege: hilfeOhneDoppelte(teil.map(x => x.e)) };
+    }
+  }
+  voll.sort((a, b) => b.r.summe - a.r.summe);
+  return { treffer: hilfeOhneDoppelte(voll.map(x => x.e)), vorschlaege: [] };
+}
+// Verweis-Stichworte (z. B. "Dienstplan") ausblenden, wenn der Haupteintrag schon in der Liste steht
+function hilfeOhneDoppelte(liste) {
+  const titel = new Set(liste.map(e => e.w));
+  return liste.filter(e => !e.ref || !titel.has(e.ref));
+}
+function hilfeBuchstabe(w) { return hilfeNorm(w.charAt(0)).charAt(0).toUpperCase() || w.charAt(0).toUpperCase(); }
+let hilfeBuchstabeAktiv = null;
+function hilfeEintrag(e) {
   const item = document.createElement('div');
   item.className = 'faq-item';
   const fr = document.createElement('button');
   fr.type = 'button';
   fr.className = 'faq-frage';
-  const ftext = document.createElement('span');
-  if (mitThema) {
-    const th = document.createElement('div');
-    th.className = 'faq-treffer-kat';
-    th.textContent = e.t;
-    ftext.appendChild(th);
-  }
-  ftext.appendChild(document.createTextNode(e.f));
+  const t = document.createElement('span');
+  t.textContent = e.w;
   const pf = document.createElement('span');
   pf.className = 'faq-pfeil';
   pf.textContent = '▼';
-  fr.appendChild(ftext); fr.appendChild(pf);
+  fr.appendChild(t); fr.appendChild(pf);
   const an = document.createElement('div');
   an.className = 'faq-antwort';
-  an.textContent = e.a;
+  an.appendChild(document.createTextNode(e.a));
+  if (e.l) {
+    an.appendChild(document.createElement('br'));
+    const link = document.createElement('a');
+    link.className = 'faq-oeffnen';
+    link.href = e.l;
+    link.textContent = 'Öffnen →';
+    an.appendChild(link);
+  }
   fr.onclick = () => item.classList.toggle('offen');
   item.appendChild(fr); item.appendChild(an);
   return item;
 }
 function faqRender() {
-  const suche = (document.getElementById('faq-suche').value || '').trim().toLowerCase();
+  const suche = (document.getElementById('faq-suche').value || '').trim();
+  const vorhanden = new Set(HILFE.map(e => hilfeBuchstabe(e.w)));
+  const abc = document.getElementById('faq-abc');
+  abc.innerHTML = '';
+  HILFE_ABC.forEach(b => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    const hat = vorhanden.has(b);
+    btn.className = 'faq-buchstabe' + (hat ? '' : ' leer') + (hat && b === hilfeBuchstabeAktiv && !suche ? ' aktiv' : '');
+    btn.textContent = b;
+    if (hat) btn.onclick = () => { document.getElementById('faq-suche').value = ''; hilfeBuchstabeAktiv = (hilfeBuchstabeAktiv === b) ? null : b; faqRender(); };
+    abc.appendChild(btn);
+  });
   const liste = document.getElementById('faq-liste');
   liste.innerHTML = '';
-  let anzahl = 0;
+  const leer = document.getElementById('faq-leer');
+  let hinweis = '';
+  let leerAnzeigen = false;
   if (suche) {
-    const woerter = suche.split(/\s+/).filter(Boolean);
-    const passt = e => {
-      const text = (e.f + ' ' + e.a + ' ' + (e.k || '')).toLowerCase();
-      return woerter.every(w => text.includes(w) || (w.length >= 6 && text.includes(w.slice(0, 4))));
-    };
-    FAQ_DATEN.filter(passt).forEach(e => { liste.appendChild(faqFrageElement(e, true)); anzahl++; });
+    const erg = hilfeSuchen(suche);
+    if (erg.treffer.length) {
+      erg.treffer.forEach(e => liste.appendChild(hilfeEintrag(e)));
+    } else if (erg.vorschlaege.length) {
+      hinweis = 'Meintest du vielleicht:';
+      const h = document.createElement('div');
+      h.className = 'faq-hinweis';
+      h.textContent = hinweis;
+      liste.appendChild(h);
+      erg.vorschlaege.forEach(e => liste.appendChild(hilfeEintrag(e)));
+      hinweis = '';
+    } else {
+      leerAnzeigen = true;
+    }
+  } else if (hilfeBuchstabeAktiv) {
+    HILFE.filter(e => hilfeBuchstabe(e.w) === hilfeBuchstabeAktiv).sort((a, b) => a.w.localeCompare(b.w, 'de')).forEach(e => liste.appendChild(hilfeEintrag(e)));
   } else {
-    FAQ_THEMEN.forEach(t => {
-      const eintraege = FAQ_DATEN.filter(e => e.t === t);
-      const kat = document.createElement('button');
-      kat.type = 'button';
-      kat.className = 'faq-kat' + (faqOffeneKat === t ? ' offen' : '');
-      const name = document.createElement('span');
-      const n = document.createElement('span');
-      n.className = 'faq-kat-name';
-      n.textContent = t;
-      const z = document.createElement('span');
-      z.className = 'faq-kat-anzahl';
-      z.textContent = eintraege.length + (eintraege.length === 1 ? ' Frage' : ' Fragen');
-      name.appendChild(n); name.appendChild(z);
-      const pf = document.createElement('span');
-      pf.className = 'faq-pfeil';
-      pf.textContent = '▼';
-      kat.appendChild(name); kat.appendChild(pf);
-      kat.onclick = () => { faqOffeneKat = (faqOffeneKat === t) ? null : t; faqRender(); };
-      liste.appendChild(kat);
-      if (faqOffeneKat === t) {
-        const inhalt = document.createElement('div');
-        inhalt.className = 'faq-kat-inhalt';
-        eintraege.forEach(e => inhalt.appendChild(faqFrageElement(e, false)));
-        liste.appendChild(inhalt);
-      }
-      anzahl += eintraege.length;
-    });
+    hinweis = 'Tippe oben einen Buchstaben an oder such direkt nach einem Stichwort. Tippfehler sind kein Problem.';
   }
-  document.getElementById('faq-leer').style.display = anzahl ? 'none' : 'block';
+  if (hinweis) {
+    const h = document.createElement('div');
+    h.className = 'faq-hinweis';
+    h.textContent = hinweis;
+    liste.appendChild(h);
+  }
+  leer.style.display = leerAnzeigen ? 'block' : 'none';
 }
 faqRender();
 </script>
@@ -476,6 +576,12 @@ faqRender();
 .faq-kat.offen .faq-kat-anzahl { color:rgba(255,255,255,0.6); }
 .faq-kat.offen .faq-pfeil { transform:rotate(180deg); }
 .faq-kat-inhalt { margin:-2px 0 10px; padding:0 4px; }
+.faq-abc { display:grid; grid-template-columns:repeat(9, 1fr); gap:4px; margin-bottom:10px; }
+.faq-buchstabe { font-family:inherit; font-size:12px; font-weight:700; padding:6px 0; border-radius:6px; border:1px solid #e0d8c8; background:#fff; color:#1a2a4a; cursor:pointer; }
+.faq-buchstabe.aktiv { background:#1a2a4a; color:#d4af37; border-color:#1a2a4a; }
+.faq-buchstabe.leer { color:#c9c2b0; background:#faf8f4; cursor:default; border-color:#f0e8d4; }
+.faq-hinweis { font-size:12.5px; color:#8090a8; padding:6px 2px 2px; }
+.faq-oeffnen { display:inline-block; margin-top:8px; font-size:12px; font-weight:700; color:#1a2a4a; background:#faf6ea; border:1px solid #d4af37; border-radius:6px; padding:4px 10px; text-decoration:none; }
 .faq-treffer-kat { font-size:10px; color:#8090a8; text-transform:uppercase; letter-spacing:0.4px; }
 .faq-chip { font-size:11px; padding:4px 10px; border-radius:999px; border:1px solid #e0d8c8; background:#fff; color:#5a6a85; cursor:pointer; font-family:inherit; }
 .faq-chip.aktiv { background:#1a2a4a; color:#d4af37; border-color:#1a2a4a; }
