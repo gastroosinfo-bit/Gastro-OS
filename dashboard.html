@@ -358,7 +358,7 @@ html, body { max-width:100%; overflow-x:hidden; }
 // Einträge mit "ref" sind zusätzliche Stichworte im A–Z-Verzeichnis, die auf einen anderen Eintrag verweisen.
 const HILFE = [
   { w: 'Abschreibungen', a: 'Im Tagesgeschäft im Bereich "Abschreibungen und Co." trägst du Schwund und Bruch ein: Datum, Artikel, Menge und Einheit.', l: 'tagesgeschaeft.html', k: 'schwund bruch verderb ware weggeworfen entsorgt verlust abschreibung' },
-  { w: 'Artikelbericht', a: 'Im Tagesgeschäft im Bereich "Artikelbericht" lädst du den Verkaufsbericht deiner Kasse hoch (Foto oder PDF, max. 3 MB). Gericht und verkaufte Menge werden ausgelesen, bitte kurz prüfen.', l: 'tagesgeschaeft.html', k: 'verkauf verkaufsbericht verkaufszahlen gericht menge kasse auswertung bestseller' },
+  { w: 'Artikelbericht', a: 'Im Tagesgeschäft im Bereich "Artikelbericht" lädst du den Verkaufsbericht deiner Kasse hoch (Foto oder PDF, max. 3 MB). Gericht und verkaufte Menge werden ausgelesen, bitte kurz prüfen. Danach siehst du dort das Ranking der meistverkauften Artikel für den Monat, getrennt nach Speisen und Getränken, und kannst es als PDF speichern. Ein einzelner Tag lässt sich in der Liste der hochgeladenen Berichte öffnen.', l: 'tagesgeschaeft.html', k: 'verkauf verkauft verkaufsbericht verkaufszahlen wieviel wie viele speisen getränke getraenke gericht menge kasse auswertung ranking meistverkauft bestseller beliebt' },
   { w: 'Belege', a: 'Unter "Meine Buchhaltung" bei Belege wählst du ein Foto oder eine PDF (max. 3 MB). Datum, Betrag, Anbieter, Rechnungsnummer und USt-IdNr. bzw. Steuernummer des Lieferanten werden, wenn möglich, automatisch erkannt. Kurz prüfen und "Hochladen" klicken.', l: 'belegablage.html', k: 'beleg rechnung rechnungen quittung kassenbon bon lieferschein foto scannen pdf upload hochladen steuer ust steuernummer lieferant ablegen' },
   { w: 'Benachrichtigungen', a: 'Du tippst im Dashboard oben rechts auf die Glocke und bestätigst die Frage. Deine Mitarbeiter bekommen auf ihrer Team-Seite einen Hinweis zum Aktivieren. Wurde es im Browser abgelehnt, erlaubst du es in den Browser-Einstellungen für diese Seite. Auf dem iPhone klappt es zuverlässig erst, wenn GASTRO-OS auf dem Home-Bildschirm liegt.', k: 'push pushnachrichten glocke mitteilung mitteilungen meldung meldungen nachricht erinnerung aktivieren' },
   { w: 'Handy-Startbildschirm', a: 'iPhone (Safari): unten auf das Teilen-Symbol tippen, dann "Zum Home-Bildschirm". Android (Chrome): oben rechts die drei Punkte, dann "Zum Startbildschirm hinzufügen" oder "App installieren". Danach öffnet sich GASTRO-OS wie eine App. Das gilt auch für den Team-Link deiner Mitarbeiter.', k: 'handy smartphone homescreen home-bildschirm app installieren icon speichern iphone android startbildschirm' },
@@ -370,7 +370,7 @@ const HILFE = [
   { w: 'PIN vergessen', a: 'Öffne die Kachel "Team-Mitarbeiter & PIN". Dort siehst du die PIN jeder Person und kannst sie jederzeit ändern.', k: 'code ändern zurücksetzen neu vergeben vergabe mitarbeiter geheimzahl' },
   { w: 'Reservierungen', a: 'Im Reservierungsbuch unter "Mein Team" trägst du Tischreservierungen ein. Auch deine Mitarbeiter können das über den Team-Link, wenn du den Bereich freigegeben hast.', l: 'reservierung.html', k: 'reservierung tisch reservierungsbuch gäste buchung' },
   { w: 'Schichtplan', a: 'Unter "Mein Team" im Schichtplan trägst du neue Schichten ein. Deine Mitarbeiter sehen den Dienstplan, bearbeiten dürfen sie ihn nur mit zusätzlichem Recht von dir.', l: 'schichtplan.html', k: 'dienstplan dienst schicht schichten wer arbeitet einteilen' },
-  { w: 'Speisekarte', a: 'Im Tagesgeschäft im Bereich "Speisekarte" lädst du deine Karte hoch (PDF oder Foto, max. 3 MB pro Datei, mehrseitig mit mehreren Dateien). Sie wird dort abgelegt. Zum Rechnen nutzt du in Modul 2 unter "Wissenswerkzeuge" das Analyse-Tool und das Margen-Tool.', l: 'tagesgeschaeft.html', k: 'karte gerichte hochladen berechnen kalkulation marge deckungsbeitrag preise' },
+  { w: 'Speisekarte', a: 'Im Tagesgeschäft im Bereich "Speisekarte" lädst du deine Karte hoch (PDF oder Foto, max. 3 MB pro Datei, mehrseitig mit mehreren Dateien). Sie wird dort abgelegt. Was von der Karte wie oft verkauft wurde, siehst du im Artikelbericht.', l: 'tagesgeschaeft.html', k: 'karte gerichte hochladen preise' },
   { w: 'Stornobelege', a: 'Stornobelege lädst du im Tagesgeschäft im Bereich "Abschreibungen und Co." hoch, nicht bei den normalen Belegen. Datum und Betrag werden, wenn möglich, automatisch ausgelesen.', l: 'tagesgeschaeft.html', k: 'storno stornobeleg storniert abschreibungen storniert' },
   { w: 'Support', a: 'Per E-Mail an info@mein-gastro-system.de oder per WhatsApp unter 0157-55880690. Beides steht auch oben rechts im Dashboard.', k: 'kontakt hilfe mail whatsapp problem fehler frage anrufen' },
   { w: 'Team-Zugang für Mitarbeiter', a: 'Deine Mitarbeiter öffnen den Team-Link oder scannen den QR-Code und geben ihre persönliche PIN ein. Danach sehen sie nur die Bereiche, die du freigegeben hast. Auf demselben Gerät bleibt der Zugang gespeichert. Am besten legen sie den Link auf den Handy-Startbildschirm.', k: 'login einloggen anmelden anmeldung pin mitarbeiter link qr personal' },
@@ -379,22 +379,8 @@ const HILFE = [
   { w: 'Wareneingang', a: 'Im Tagesgeschäft im Bereich "Wareneingang" prüfst du unter "Neue Lieferung prüfen" eine Lieferung. Die letzten Einträge stehen darunter.', l: 'tagesgeschaeft.html', k: 'lieferung ware einkauf lieferant angekommen prüfen' },
   { w: 'Z-Bon (Tagesabschluss)', a: 'Bei den Belegen wählst du als Anbieter "Z-Bon (Tagesabschluss)". Dann kommen die Felder für Bar- und Kartenbetrag dazu.', l: 'belegablage.html', k: 'zbon kassenabschluss tagesabschluss bar karte kasse' },
   { w: 'Zeiterfassung', a: 'Deine Mitarbeiter tragen Kommen, Pause und Gehen selbst über ihren PIN-Link ein. Du genehmigst die Zeiten oder lehnst sie mit einer Notiz ab. Dann kann der Mitarbeiter korrigieren und erneut einreichen. PDFs erstellst du dort ebenfalls.', l: 'zeiterfassung.html', k: 'zeit zeiten arbeitszeit arbeitszeiten stunden stempeln einstempeln ausstempeln kommen gehen pause korrigieren ablehnen genehmigen' },
-
-  { w: 'Dienstplan', ref: 'Schichtplan' },
-  { w: 'Homescreen', ref: 'Handy-Startbildschirm' },
-  { w: 'Kühlgeräte', ref: 'Temperaturen' },
-  { w: 'Push-Nachrichten', ref: 'Benachrichtigungen' },
-  { w: 'Rechnungen', ref: 'Belege' },
-  { w: 'Steuerberater', ref: 'Monatsbericht' },
-  { w: 'Stempeln', ref: 'Zeiterfassung' },
-  { w: 'Tageseinnahmen', ref: 'Kassenbuch' }
+  {"w": "Module", "a": "Die Module sind dein freiwilliger Bonus: Wissen und Werkzeuge für mehr Gewinn, in deinem Tempo. Für Tagesgeschäft und Team brauchst du sie nicht.\n\nSo gehst du vor:\n• Öffne links unter \"Mein Wissen\" ein Modul.\n• Modul 0 und Modul 1 sind sofort offen.\n• Jedes Modul hat Übersicht, Ankervideo, Lektionen, Werkzeuge und ein Quiz.\n\nSo schaltest du das nächste Modul frei:\nBestehe das Quiz des vorherigen Moduls. Das Quiz von Modul 1 schaltet Modul 2 frei, das Quiz von Modul 2 schaltet Modul 3 frei und so weiter. Wie viele Antworten richtig sein müssen, steht im Quiz. Gesperrte Module erkennst du am Schloss.\n\nMit den Häkchen hakst du selbst ab, was du erledigt hast. Der Fortschritt steht pro Modul als Balken dabei.", "k": "modul lernen lektion lektionen ankervideo podcast werkzeug werkzeuge tool quiz test freischalten freischaltung gesperrt sperre schloss nächstes weiter fortschritt häkchen wissen kurs lernplattform"}
 ];
-HILFE.forEach(e => {
-  if (e.ref) {
-    const o = HILFE.find(x => x.w === e.ref);
-    e.a = o.a; e.l = o.l; e.k = (o.k || '') + ' ' + o.w;
-  }
-});
 const HILFE_ABC = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 const HILFE_FUELLWOERTER = new Set(['wie','wo','was','wer','wann','wenn','ich','du','man','mein','meine','meinen','meinem','meiner','dein','deine','der','die','das','den','dem','des','ein','eine','einen','einem','einer','und','oder','mit','von','zu','zum','zur','im','in','am','an','auf','für','ist','sind','kann','kannst','muss','soll','sollen','mir','mich','bei','wird','werden','habe','hab','hat','nicht','noch','auch','so','ob','es','sie','er','wir','ihr','the']);
 
@@ -487,7 +473,17 @@ function hilfeEintrag(e) {
   const an = document.createElement('div');
   an.className = 'faq-antwort';
   an.appendChild(document.createTextNode(e.a));
-  if (e.l) {
+  if (e.links && e.links.length) {
+    const box = document.createElement('div');
+    box.className = 'faq-links';
+    e.links.forEach(l => {
+      const a2 = document.createElement('a');
+      a2.href = l.h;
+      a2.textContent = l.t + ' →';
+      box.appendChild(a2);
+    });
+    an.appendChild(box);
+  } else if (e.l) {
     an.appendChild(document.createElement('br'));
     const link = document.createElement('a');
     link.className = 'faq-oeffnen';
@@ -534,7 +530,7 @@ function faqRender() {
       leerAnzeigen = true;
     }
   } else if (hilfeBuchstabeAktiv) {
-    HILFE.filter(e => hilfeBuchstabe(e.w) === hilfeBuchstabeAktiv).sort((a, b) => a.w.localeCompare(b.w, 'de')).forEach(e => liste.appendChild(hilfeEintrag(e)));
+    HILFE.filter(e => hilfeBuchstabe(e.w) === hilfeBuchstabeAktiv).sort((a, b) => a.w.localeCompare(b.w, 'de', { numeric: true })).forEach(e => liste.appendChild(hilfeEintrag(e)));
   } else {
     hinweis = 'Tippe oben einen Buchstaben an oder such direkt nach einem Stichwort. Tippfehler sind kein Problem.';
   }
@@ -582,6 +578,9 @@ faqRender();
 .faq-buchstabe.leer { color:#c9c2b0; background:#faf8f4; cursor:default; border-color:#f0e8d4; }
 .faq-hinweis { font-size:12.5px; color:#8090a8; padding:6px 2px 2px; }
 .faq-oeffnen { display:inline-block; margin-top:8px; font-size:12px; font-weight:700; color:#1a2a4a; background:#faf6ea; border:1px solid #d4af37; border-radius:6px; padding:4px 10px; text-decoration:none; }
+.faq-links { margin-top:6px; }
+.faq-links a { display:block; padding:6px 2px; border-top:1px solid #f0e8d4; font-size:12px; color:#1a2a4a; text-decoration:none; }
+.faq-links a:hover { color:#9A7D3A; }
 .faq-treffer-kat { font-size:10px; color:#8090a8; text-transform:uppercase; letter-spacing:0.4px; }
 .faq-chip { font-size:11px; padding:4px 10px; border-radius:999px; border:1px solid #e0d8c8; background:#fff; color:#5a6a85; cursor:pointer; font-family:inherit; }
 .faq-chip.aktiv { background:#1a2a4a; color:#d4af37; border-color:#1a2a4a; }
@@ -589,7 +588,7 @@ faqRender();
 .faq-frage { width:100%; text-align:left; background:none; border:none; padding:10px 2px; font-size:12.5px; font-weight:600; color:#1a2a4a; cursor:pointer; display:flex; justify-content:space-between; gap:8px; font-family:inherit; }
 .faq-pfeil { color:#d4af37; flex-shrink:0; transition:transform .2s; }
 .faq-item.offen .faq-pfeil { transform:rotate(180deg); }
-.faq-antwort { display:none; font-size:12.5px; color:#3a4a65; line-height:1.55; padding:0 2px 12px; }
+.faq-antwort { white-space:pre-line; display:none; font-size:12.5px; color:#3a4a65; line-height:1.55; padding:0 2px 12px; }
 .faq-item.offen .faq-antwort { display:block; }
 .faq-leer { font-size:12.5px; color:#8090a8; padding:10px 2px; }
 @media (min-width: 1500px) {
@@ -1000,7 +999,7 @@ faqRender();
     <div class="content-item"><div class="check-box" id="chk-12-1" onclick="toggleCheck(12,1)"></div><span class="item-icon">🎬</span><div class="item-info"><div class="item-title" id="title-12-1">Ankervideo — Mitarbeiter finden &amp; halten</div></div><a href="modul12-ankervideo.html" class="item-link">Öffnen →</a></div>
     <div class="content-item"><div class="check-box" id="chk-12-2" onclick="toggleCheck(12,2)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-12-2">Lektion 1 — Warum gute Leute gehen</div></div><a href="modul12-lektion1.html" class="item-link">Öffnen →</a></div>
     <div class="content-item"><div class="check-box" id="chk-12-3" onclick="toggleCheck(12,3)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-12-3">Lektion 2 — Die richtige Stellenanzeige</div></div><a href="modul12-lektion2.html" class="item-link">Öffnen →</a></div>
-    <div class="content-item"><div class="check-box" id="chk-12-4" onclick="toggleCheck(12,4)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-12-4">Lektion 3 — Onboarding mit System</div></div><a href="modul12-lektion4.html" class="item-link">Öffnen →</a></div>
+    <div class="content-item"><div class="check-box" id="chk-12-4" onclick="toggleCheck(12,4)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-12-4">Lektion 3 — Onboarding mit System</div></div><a href="modul12-lektion3.html" class="item-link">Öffnen →</a></div>
     <div class="content-item"><div class="check-box" id="chk-12-5" onclick="toggleCheck(12,5)"></div><span class="item-icon">📖</span><div class="item-info"><div class="item-title" id="title-12-5">Lektion 4 — Vom Plan zur Umsetzung</div></div><a href="modul12-lektion4.html" class="item-link">Öffnen →</a></div>
     <div class="content-item"><div class="check-box" id="chk-12-6" onclick="toggleCheck(12,6)"></div><span class="item-icon">🎙️</span><div class="item-info"><div class="item-title" id="title-12-6">Podcast Küchenfunk #6 — Modul 12</div></div><a href="modul12-podcast.html" class="item-link">Öffnen →</a></div>
     <div class="content-item"><div class="check-box" id="chk-12-7" onclick="toggleCheck(12,7)"></div><span class="item-icon">📸</span><div class="item-info"><div class="item-title" id="title-12-7">So nutzt du den Mitarbeiter-Recruiting-Plan</div></div><a href="modul12-recruiting-video.html" class="item-link">Öffnen →</a></div>
