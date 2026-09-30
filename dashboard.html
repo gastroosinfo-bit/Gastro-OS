@@ -339,28 +339,40 @@ html, body { max-width:100%; overflow-x:hidden; }
 
   </div>
 
-  <!-- FAQ-PANEL: Häufige Fragen zum System (feste Spalte rechts) -->
+  <!-- HILFE + SUPPORT (rechte Spalte, als aufklappbare Kacheln wie "Team-Mitarbeiter & PIN") -->
   <div class="dash-faq-wrap" id="dash-faq-wrap">
-  <aside class="dash-faq" id="dash-faq" aria-label="Häufige Fragen zum System">
-    <div class="faq-head">
-      <div class="faq-title">Hilfe von A bis Z</div>
-      <div class="faq-sub">Buchstaben antippen oder direkt suchen</div>
+
+    <div class="module-card hub-card" id="hilfe-card" style="margin-bottom:14px;">
+      <div class="hub-head" onclick="toggleHilfe()">
+        <div class="hub-circle">❓</div>
+        <div class="hub-title">Hilfe von A bis Z</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.55);margin-top:3px;">Stichwort suchen oder Buchstaben antippen</div>
+        <div style="margin-top:10px;"><span class="module-arrow" id="hilfe-arrow" style="color:#d4af37;font-size:14px;">▼</span></div>
+      </div>
+      <div class="module-content" id="hilfe-content">
+        <div class="faq-body">
+          <input type="search" id="faq-suche" class="faq-suche" placeholder="Stichwort suchen, z. B. PIN" oninput="faqRender()" aria-label="Hilfe durchsuchen">
+          <div class="faq-abc" id="faq-abc"></div>
+          <div id="faq-liste"></div>
+          <div class="faq-leer" id="faq-leer" style="display:none;">Dazu gibt es noch keinen Eintrag. Nutze bitte die Support-Kachel darunter, wir helfen dir gern.</div>
+        </div>
+      </div>
     </div>
-    <div class="faq-body">
-      <input type="search" id="faq-suche" class="faq-suche" placeholder="Stichwort suchen, z. B. PIN" oninput="faqRender()" aria-label="Hilfe durchsuchen">
-      <div class="faq-abc" id="faq-abc"></div>
-      <div id="faq-liste"></div>
-      <div class="faq-leer" id="faq-leer" style="display:none;">Dazu gibt es noch keinen Eintrag. Nutze bitte die Support-Kachel darunter, wir helfen dir gern.</div>
+
+    <div class="module-card hub-card" id="support-card">
+      <div class="hub-head" onclick="toggleSupport()">
+        <div class="hub-circle">💬</div>
+        <div class="hub-title">Support</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.55);margin-top:3px;">Fragen oder Probleme? Wir helfen dir gern</div>
+        <div style="margin-top:10px;"><span class="module-arrow" id="support-arrow" style="color:#d4af37;font-size:14px;">▼</span></div>
+      </div>
+      <div class="module-content" id="support-content">
+        <div class="support-btns" style="padding:14px 16px;">
+          <a class="support-btn" href="mailto:info@mein-gastro-system.de">E-Mail schreiben</a>
+          <a class="support-btn" href="https://wa.me/4915755880690" target="_blank" rel="noopener">WhatsApp</a>
+        </div>
+      </div>
     </div>
-  </aside>
-  <div class="dash-support" id="dash-support">
-    <div class="support-title">Support</div>
-    <div class="support-text">Fragen oder Probleme? Wir helfen dir gern.</div>
-    <div class="support-btns">
-      <a class="support-btn" href="mailto:info@mein-gastro-system.de">E-Mail schreiben</a>
-      <a class="support-btn" href="https://wa.me/4915755880690" target="_blank" rel="noopener">WhatsApp</a>
-    </div>
-  </div>
   </div>
 <script>
 // ─── Hilfe von A bis Z (rechte Spalte) ────────────────────────────────────
@@ -466,6 +478,18 @@ function hilfeOhneDoppelte(liste) {
   return liste.filter(e => !e.ref || !titel.has(e.ref));
 }
 function hilfeBuchstabe(w) { return hilfeNorm(w.charAt(0)).charAt(0).toUpperCase() || w.charAt(0).toUpperCase(); }
+function hilfeKachelUmschalten(kachelId, inhaltId, pfeilId) {
+  const content = document.getElementById(inhaltId);
+  const arrow = document.getElementById(pfeilId);
+  const card = document.getElementById(kachelId);
+  if (!content) return;
+  const offen = content.classList.contains('open');
+  content.classList.toggle('open', !offen);
+  if (arrow) arrow.classList.toggle('open', !offen);
+  if (card) card.classList.toggle('aufgeklappt', !offen);
+}
+function toggleHilfe() { hilfeKachelUmschalten('hilfe-card', 'hilfe-content', 'hilfe-arrow'); }
+function toggleSupport() { hilfeKachelUmschalten('support-card', 'support-content', 'support-arrow'); }
 let hilfeBuchstabeAktiv = null;
 function hilfeEintrag(e) {
   const item = document.createElement('div');
