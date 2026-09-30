@@ -89,6 +89,15 @@ function belegRechnungsnrFinden(text) {
   const match = text.match(/(Rechnungs-?(?:nr|nummer)|Liefer(?:schein)?-?(?:nr|nummer))[.:\s]{0,5}([A-Za-z0-9\-\/]{3,20})/i);
   return match ? match[2] : null;
 }
+// USt-IdNr. (z. B. DE123456789) bevorzugt, sonst Steuernummer (z. B. 123/456/78901).
+// Wenn nichts sicher gefunden wird: null (Feld bleibt leer).
+function belegSteuerIdFinden(text) {
+  const ust = text.match(/\bDE[\s-]?(\d{3})[\s-]?(\d{3})[\s-]?(\d{3})\b/);
+  if (ust) return 'DE' + ust[1] + ust[2] + ust[3];
+  const stnr = text.match(/(Steuer-?\s?Nr\.?|Steuernummer|St\.?-?\s?Nr\.?)[.:\s]{0,5}(\d{2,3}\s?\/\s?\d{3,4}\s?\/\s?\d{4,5})/i);
+  if (stnr) return stnr[2].replace(/\s/g, '');
+  return null;
+}
 function belegIstZBon(text) {
   return /(Z-?BON|TAGESABSCHLUSS|KASSENABSCHLUSS)/i.test(text);
 }
@@ -117,10 +126,11 @@ async function belegAuslesenPdf(buffer) {
       istZBon: belegIstZBon(text),
       barBetrag: barKarte.barBetrag,
       kartenBetrag: barKarte.kartenBetrag,
-      rechnungsnummer: belegRechnungsnrFinden(text)
+      rechnungsnummer: belegRechnungsnrFinden(text),
+      steuerId: belegSteuerIdFinden(text)
     };
   } catch (e) {
-    return { datum: null, betrag: null, plattform: null, mwst19Betrag: null, mwst7Betrag: null, istZBon: false, barBetrag: null, kartenBetrag: null, rechnungsnummer: null };
+    return { datum: null, betrag: null, plattform: null, mwst19Betrag: null, mwst7Betrag: null, istZBon: false, barBetrag: null, kartenBetrag: null, rechnungsnummer: null, steuerId: null };
   }
 }
 
@@ -128,7 +138,7 @@ async function belegAuslesenPdf(buffer) {
 // ─── Automatische Auslese via Claude/Anthropic (Fotos UND PDFs ohne Textschicht) ──
 async function belegAuslesenClaude(buffer, contentType) {
   if (!ANTHROPIC_API_KEY) {
-    return { datum: null, betrag: null, plattform: null, mwst19Betrag: null, mwst7Betrag: null, istZBon: false, barBetrag: null, kartenBetrag: null, rechnungsnummer: null };
+    return { datum: null, betrag: null, plattform: null, mwst19Betrag: null, mwst7Betrag: null, istZBon: false, barBetrag: null, kartenBetrag: null, rechnungsnummer: null, steuerId: null };
   }
   try {
     const base64 = buffer.toString('base64');
@@ -144,7 +154,8 @@ async function belegAuslesenClaude(buffer, contentType) {
       '"istZBon": true oder false (true nur, wenn es sich klar um einen Kassen-Tagesabschluss/Z-Bon handelt, erkennbar an Begriffen wie "Z-Bon", "Tagesabschluss" oder "Kassenabschluss"), ' +
       '"barBetrag": Zahl (Bar-Anteil des Umsatzes, nur bei Z-Bons relevant) oder null, ' +
       '"kartenBetrag": Zahl (Kartenzahlungs-Anteil des Umsatzes, nur bei Z-Bons relevant) oder null, ' +
-      '"rechnungsnummer": "Rechnungs-, Beleg-, Liefer- oder Bon-Nummer oder null"}. ' +
+      '"rechnungsnummer": "Rechnungs-, Beleg-, Liefer- oder Bon-Nummer oder null", ' +
+      '"steuerId": "USt-IdNr. (z. B. DE123456789) oder Steuernummer des LIEFERANTEN bzw. Rechnungsausstellers, also des Absenders des Belegs, NICHT die des Empfängers/Kunden; wenn keine eindeutig erkennbar ist, null"}. ' +
       'Viele Kassenbons weisen BEIDE MwSt-Sätze getrennt aus — trag dann beide Werte ein. ' +
       'Falls ein Wert nicht eindeutig erkennbar ist, setze null statt zu raten.';
 
@@ -163,7 +174,7 @@ async function belegAuslesenClaude(buffer, contentType) {
     });
 
     if (!res.ok) {
-      return { datum: null, betrag: null, plattform: null, mwst19Betrag: null, mwst7Betrag: null, istZBon: false, barBetrag: null, kartenBetrag: null, rechnungsnummer: null };
+      return { datum: null, betrag: null, plattform: null, mwst19Betrag: null, mwst7Betrag: null, istZBon: false, barBetrag: null, kartenBetrag: null, rechnungsnummer: null, steuerId: null };
     }
     const data = await res.json();
     const textAntwort = (data.content && data.content[0] && data.content[0].text) || '';
@@ -178,15 +189,16 @@ async function belegAuslesenClaude(buffer, contentType) {
       istZBon: geparst.istZBon === true,
       barBetrag: (typeof geparst.barBetrag === 'number') ? geparst.barBetrag : null,
       kartenBetrag: (typeof geparst.kartenBetrag === 'number') ? geparst.kartenBetrag : null,
-      rechnungsnummer: geparst.rechnungsnummer || null
+      rechnungsnummer: geparst.rechnungsnummer || null,
+      steuerId: (typeof geparst.steuerId === 'string' && geparst.steuerId.trim()) ? geparst.steuerId.trim() : null
     };
   } catch (e) {
-    return { datum: null, betrag: null, plattform: null, mwst19Betrag: null, mwst7Betrag: null, istZBon: false, barBetrag: null, kartenBetrag: null, rechnungsnummer: null };
+    return { datum: null, betrag: null, plattform: null, mwst19Betrag: null, mwst7Betrag: null, istZBon: false, barBetrag: null, kartenBetrag: null, rechnungsnummer: null, steuerId: null };
   }
 }
 
 function belegErgebnisLeer(erg) {
-  return !erg.datum && erg.betrag == null && !erg.plattform && erg.mwst19Betrag == null && erg.mwst7Betrag == null && !erg.rechnungsnummer;
+  return !erg.datum && erg.betrag == null && !erg.plattform && erg.mwst19Betrag == null && erg.mwst7Betrag == null && !erg.rechnungsnummer && !erg.steuerId;
 }
 
 async function belegAuslesen(buffer, contentType) {
@@ -201,7 +213,7 @@ async function belegAuslesen(buffer, contentType) {
   if (contentType && contentType.startsWith('image/')) {
     return belegAuslesenClaude(buffer, contentType);
   }
-  return { datum: null, betrag: null, plattform: null, mwst19Betrag: null, mwst7Betrag: null, rechnungsnummer: null };
+  return { datum: null, betrag: null, plattform: null, mwst19Betrag: null, mwst7Betrag: null, rechnungsnummer: null, steuerId: null };
 }
 
 // ─── Artikelbericht: Gericht + verkaufte Menge auslesen (immer via Claude) ──
