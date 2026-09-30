@@ -103,6 +103,7 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
       <div class="field-group"><label>Betrag (€)</label><input type="number" step="0.01" id="beleg-betrag" placeholder="0,00"></div>
     </div>
     <div class="grid4" style="margin-top:14px;">
+      <div class="field-group"><label>USt-IdNr./Steuernr. Lieferant</label><input type="text" id="beleg-steuerid" placeholder="optional"></div>
       <div class="field-group"><label>MwSt. 19% (€)</label><input type="number" step="0.01" id="beleg-mwst19" placeholder="optional"></div>
       <div class="field-group"><label>MwSt. 7% (€)</label><input type="number" step="0.01" id="beleg-mwst7" placeholder="optional"></div>
       <div class="field-group"><label id="beleg-status-label">Status</label>
@@ -153,7 +154,7 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
     </div>
     <div style="overflow-x:auto;">
     <table class="data-table" id="beleg-tabelle">
-      <thead><tr><th></th><th>Datum</th><th>Anbieter</th><th>Rechnungsnr.</th><th>Betrag</th><th>MwSt. 19%</th><th>MwSt. 7%</th><th>Status</th><th>Datei</th><th></th></tr></thead>
+      <thead><tr><th></th><th>Datum</th><th>Anbieter</th><th>Rechnungsnr.</th><th>USt-IdNr./Steuernr.</th><th>Betrag</th><th>MwSt. 19%</th><th>MwSt. 7%</th><th>Status</th><th>Datei</th><th></th></tr></thead>
       <tbody></tbody>
     </table>
     </div>
@@ -449,6 +450,8 @@ async function belegDateiGewaehlt(evt) {
       document.getElementById('beleg-rechnungsnr').value = extracted.rechnungsnummer;
       erkannt.push('Rechnungsnr.');
     }
+    document.getElementById('beleg-steuerid').value = extracted.steuerId || '';
+    if (extracted.steuerId) erkannt.push('USt-IdNr./Steuernr.');
 
     hinweis.className = 'auto-hinweis';
     if (erkannt.length) {
@@ -477,6 +480,7 @@ async function belegHochladen() {
     }
   }
   const rechnungsnr = document.getElementById('beleg-rechnungsnr').value.trim();
+  const steuerId = document.getElementById('beleg-steuerid').value.trim();
   const betrag = parseFloat(document.getElementById('beleg-betrag').value) || 0;
   const mwst19 = document.getElementById('beleg-mwst19').value ? parseFloat(document.getElementById('beleg-mwst19').value) : null;
   const mwst7 = document.getElementById('beleg-mwst7').value ? parseFloat(document.getElementById('beleg-mwst7').value) : null;
@@ -504,7 +508,7 @@ async function belegHochladen() {
     belegeDaten.push({
       id: Date.now(),
       datum, plattform, betrag,
-      rechnungsnr, mwst19, mwst7, bar, karte, status, faelligkeit,
+      rechnungsnr, steuerId, mwst19, mwst7, bar, karte, status, faelligkeit,
       dateiname: belegAusgewaehlteDatei.name,
       storagePath: result.path
     });
@@ -522,6 +526,7 @@ async function belegHochladen() {
     document.getElementById('beleg-datei').value = '';
     document.getElementById('beleg-betrag').value = '';
     document.getElementById('beleg-rechnungsnr').value = '';
+    document.getElementById('beleg-steuerid').value = '';
     document.getElementById('beleg-mwst19').value = '';
     document.getElementById('beleg-mwst7').value = '';
     document.getElementById('beleg-status').value = 'bezahlt';
@@ -636,7 +641,7 @@ function belegRenderTabelle() {
     const tr = document.createElement('tr');
     const handlungHinweis = b.status === 'offen' ? 'Noch abzugleichen' : (b.status === 'ausstehend' ? 'Auszahlung ausstehend' : 'Zahlung fällig');
     const warnZelle = belegBrauchtHandlung(b) ? `<span title="${handlungHinweis}" style="font-size:15px;">⚠️</span>` : '';
-    tr.innerHTML = `<td style="text-align:center;">${warnZelle}</td><td>${b.datum}</td><td>${b.plattform}</td><td>${b.rechnungsnr || '–'}</td><td>${euro(b.betrag)}</td><td>${b.mwst19 != null ? euro(b.mwst19) : '–'}</td><td>${b.mwst7 != null ? euro(b.mwst7) : '–'}</td><td>${belegStatusZelle(b)}</td><td><a href="#" onclick="belegOeffnen('${b.storagePath}');return false;">${b.dateiname}</a></td><td><button class="btn-del" onclick="belegLoeschen(${b.id})">✕</button></td>`;
+    tr.innerHTML = `<td style="text-align:center;">${warnZelle}</td><td>${b.datum}</td><td>${b.plattform}</td><td>${b.rechnungsnr || '–'}</td><td>${b.steuerId || '–'}</td><td>${euro(b.betrag)}</td><td>${b.mwst19 != null ? euro(b.mwst19) : '–'}</td><td>${b.mwst7 != null ? euro(b.mwst7) : '–'}</td><td>${belegStatusZelle(b)}</td><td><a href="#" onclick="belegOeffnen('${b.storagePath}');return false;">${b.dateiname}</a></td><td><button class="btn-del" onclick="belegLoeschen(${b.id})">✕</button></td>`;
     tbody.appendChild(tr);
   });
   document.getElementById('beleg-sum-monat').textContent = euro(sumMonat);
@@ -691,13 +696,13 @@ function belegMonatsberichtErstellen() {
     sumMwst19 += b.mwst19 || 0;
     sumMwst7 += b.mwst7 || 0;
     const statusText = belegStatusText(b);
-    return [b.datum, b.plattform, b.rechnungsnr || '–', euro(b.betrag), b.mwst19 != null ? euro(b.mwst19) : '–', b.mwst7 != null ? euro(b.mwst7) : '–', statusText];
+    return [b.datum, b.plattform, b.rechnungsnr || '–', b.steuerId || '–', euro(b.betrag), b.mwst19 != null ? euro(b.mwst19) : '–', b.mwst7 != null ? euro(b.mwst7) : '–', statusText];
   });
 
   if (zeilen.length) {
     doc.autoTable({
       startY: 32,
-      head: [['Datum', 'Anbieter', 'Rechnungsnr.', 'Betrag', 'MwSt. 19%', 'MwSt. 7%', 'Status']],
+      head: [['Datum', 'Anbieter', 'Rechnungsnr.', 'USt-IdNr./Steuernr.', 'Betrag', 'MwSt. 19%', 'MwSt. 7%', 'Status']],
       body: zeilen,
       styles: { fontSize: 8.5 },
       headStyles: { fillColor: [26, 42, 74], textColor: [212, 175, 55] },
