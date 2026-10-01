@@ -80,7 +80,7 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8 url('/bg-rest
 .btn-logout:hover { border-color:#d4af37; color:#d4af37; }
 .btn-notify { background:transparent; border:1px solid rgba(212,175,55,0.4); color:#d4af37; width:34px; height:34px; border-radius:50%; font-size:15px; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
 .btn-notify:hover { background:rgba(212,175,55,0.15); }
-.btn-notify.active { background:#1a6640; border-color:#1a6640; color:#fff; cursor:default; }
+.btn-notify.active { background:rgba(212,175,55,0.28); border-color:#d4af37; color:#d4af37; cursor:default; }
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
 .main { max-width:1160px; margin:32px auto; padding:0 24px; }
 @media (min-width:1300px) {
@@ -136,10 +136,6 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8 url('/bg-rest
   .header { padding:12px 16px; }
   .brand { font-size:16px; }
   .welcome { display:none; }
-  .header-kontakt-label { display:none; }
-  .header-mail-link { display:none; }
-  .header-whatsapp-link { display:none; }
-  .header-whatsapp-icon { display:inline-block !important; }
   .main { padding:0 12px; margin:16px auto; }
   .module-header { padding:12px 14px; }
   .module-title { font-size:14px; }
@@ -166,10 +162,6 @@ html, body { max-width:100%; overflow-x:hidden; }
   <div class="brand">GASTRO-OS</div>
   <div class="welcome">Willkommen, <span id="user-name">...</span></div>
   <div style="display:flex;align-items:center;gap:10px;">
-    <span class="header-kontakt-label" style="font-size:12px;color:#a0b0c8;letter-spacing:0.3px;">Kontakt</span>
-    <a href="mailto:info@mein-gastro-system.de" class="header-mail-link" style="font-size:12px;color:#d4af37;text-decoration:none;white-space:nowrap;">Mail: info@mein-gastro-system.de</a>
-    <a href="https://wa.me/4915755880690" target="_blank" rel="noopener" class="header-whatsapp-link" style="font-size:12px;color:#d4af37;text-decoration:none;white-space:nowrap;">WhatsApp: 0157-55880690</a>
-    <a href="https://wa.me/4915755880690" target="_blank" rel="noopener" class="header-whatsapp-icon" style="display:none;font-size:16px;text-decoration:none;">💬</a>
     <button id="push-btn" class="btn-notify" onclick="pushAktivieren()" title="Benachrichtigungen aktivieren">🔔</button>
     <button class="btn-logout" onclick="doLogout()">Abmelden</button>
   </div>
@@ -185,7 +177,7 @@ html, body { max-width:100%; overflow-x:hidden; }
 
     <div class="module-card hub-card" style="margin-bottom:14px; max-width:100%;">
       <a href="modul0-reflexion.html" class="hub-head" style="padding:16px 18px; flex-direction:row; text-align:left; gap:10px; text-decoration:none;">
-        <div class="hub-circle" style="width:32px;height:32px;font-size:14px;flex-shrink:0;">🎯</div>
+        <div class="hub-circle" style="width:32px;height:32px;font-size:14px;flex-shrink:0;"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" /> <circle cx="12" cy="12" r="6" /> <circle cx="12" cy="12" r="2" /></svg></div>
         <div style="flex:1;">
           <div class="hub-title" style="font-size:13px; margin-top:0;">Wo stehe ich gerade?</div>
           <div style="font-size:10.5px;color:rgba(255,255,255,0.55);margin-top:1px;">Start-Check jederzeit wiederholen</div>
@@ -194,29 +186,25 @@ html, body { max-width:100%; overflow-x:hidden; }
       </a>
     </div>
 
-    <div style="display:flex;align-items:center;gap:8px;margin:4px 4px 10px;">
-      <div style="background:#1a2a4a;color:#d4af37;font-size:10px;font-weight:700;letter-spacing:0.5px;padding:5px 14px;border-radius:999px;">📈 MEIN WISSEN</div>
-      <div style="flex:1;height:1px;background:#e4d5a8;"></div>
-    </div>
-
-    <div style="background:#1a2a4a;border-radius:10px;padding:14px 16px;margin-bottom:14px;text-align:center;">
-      <div style="color:#d4af37;font-weight:800;font-size:13px;letter-spacing:0.3px;">🎓 FREIWILLIG, ABER WERTVOLL</div>
-      <div style="color:rgba(255,255,255,0.75);font-size:11.5px;margin-top:4px;line-height:1.5;">
-        Lern in deinem eigenen Tempo — für mehr Umsatz, weniger Chaos, klare Zahlen.
+    <!-- MEIN WISSEN: ein aufklappbarer Bereich, darin Hinweis + die beiden Kacheln -->
+    <div class="module-card hub-card" id="wissen-card" style="margin-bottom:14px; max-width:100%;">
+      <div class="hub-head" onclick="hilfeKachelUmschalten('wissen-card','wissen-content','wissen-arrow')" style="padding:16px 18px; flex-direction:row; text-align:left; gap:10px;">
+        <div class="hub-circle" style="width:32px;height:32px;font-size:14px;flex-shrink:0;"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z" /> <path d="M22 10v6" /> <path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5" /></svg></div>
+        <div style="flex:1;">
+          <div class="hub-title" style="font-size:13px; margin-top:0;">Mein Wissen</div>
+          <div style="font-size:10.5px;color:rgba(255,255,255,0.55);margin-top:1px;">Freiwillig, aber wertvoll</div>
+        </div>
+        <span class="module-arrow" id="wissen-arrow" style="color:#d4af37;font-size:14px;flex-shrink:0;margin-left:0;">▼</span>
       </div>
-    </div>
-
-    <div class="toolbox-elegant" style="padding:14px 18px;display:flex;gap:10px;align-items:center;margin-bottom:14px;">
-      <div class="toolbox-icon-circle" style="flex-shrink:0;width:28px;height:28px;font-size:13px;">💡</div>
-      <div style="font-size:11.5px;color:#5a6a85;line-height:1.5;">
-        Nächstes Modul öffnet sich automatisch nach bestandenem <strong style="color:#1a2a4a;">Quiz</strong> — inklusive der passenden Boni.
-      </div>
-    </div>
-
+      <div class="module-content" id="wissen-content">
+        <div style="padding:14px 16px 6px;font-size:12px;color:#5a6a85;line-height:1.6;">
+          Lern in deinem eigenen Tempo, für mehr Umsatz, weniger Chaos und klare Zahlen. Das nächste Modul öffnet sich automatisch nach bestandenem <strong style="color:#1a2a4a;">Quiz</strong>, inklusive der passenden Boni.
+        </div>
+        <div style="padding:8px 12px 10px;">
     <!-- KACHEL: MEINE MODUL-TOOLS -->
     <div class="module-card toolbox-elegant" id="modultools-card" style="margin-bottom:8px;">
       <div class="module-header" onclick="toggleToolbox()" style="padding:14px 22px;">
-        <div class="module-left"><div class="module-number toolbox-icon-circle" style="width:40px;height:40px;font-size:17px;">📈</div><div><div class="module-title" style="letter-spacing:0.3px;font-size:15px;">Wissenswerkzeuge</div><div class="module-subtitle" id="toolbox-subtitle" style="margin-top:2px;">Wird geladen …</div></div></div>
+        <div class="module-left"><div class="module-number toolbox-icon-circle" style="width:40px;height:40px;font-size:17px;"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z" /></svg></div><div><div class="module-title" style="letter-spacing:0.3px;font-size:15px;">Wissenswerkzeuge</div><div class="module-subtitle" id="toolbox-subtitle" style="margin-top:2px;">Wird geladen …</div></div></div>
         <div style="display:flex;align-items:center;gap:8px;"><span class="module-arrow" id="toolbox-arrow" style="color:#d4af37;">▼</span></div>
       </div>
       <div class="module-content" id="toolbox-content"></div>
@@ -225,11 +213,14 @@ html, body { max-width:100%; overflow-x:hidden; }
     <!-- KACHEL: MEINE MODULE (als Dropdown, enthält die komplette Modulliste) -->
     <div class="module-card toolbox-elegant" id="modulliste-card">
       <div class="module-header" onclick="toggleModulListe()" style="padding:14px 22px;">
-        <div class="module-left"><div class="module-number toolbox-icon-circle" style="width:40px;height:40px;font-size:17px;">📚</div><div><div class="module-title" style="letter-spacing:0.3px;font-size:15px;">Erweitere dein Wissen</div><div class="module-subtitle" style="margin-top:2px;">Schritt für Schritt zum System</div></div></div>
+        <div class="module-left"><div class="module-number toolbox-icon-circle" style="width:40px;height:40px;font-size:17px;"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v16" /> <path d="M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z" /></svg></div><div><div class="module-title" style="letter-spacing:0.3px;font-size:15px;">Erweitere dein Wissen</div><div class="module-subtitle" style="margin-top:2px;">Schritt für Schritt zum System</div></div></div>
         <div style="display:flex;align-items:center;gap:8px;"><span class="module-arrow" id="modulliste-arrow" style="color:#d4af37;">▼</span></div>
       </div>
       <div class="module-content" id="modulliste-content">
         <div id="modul-liste" style="padding:14px 16px;display:grid;grid-template-columns:1fr 1fr;gap:8px;"></div>
+      </div>
+    </div>
+        </div>
       </div>
     </div>
 
@@ -241,14 +232,14 @@ html, body { max-width:100%; overflow-x:hidden; }
     <div id="unread-banner" style="display:none;background:#c0392b;color:#fff;border-radius:8px;padding:10px 16px;font-size:12.5px;font-weight:600;margin-bottom:12px;text-align:center;"></div>
 
     <div style="text-align:center;margin:4px 4px 16px;">
-      <span style="background:#1a6640;color:#fff;font-size:10px;font-weight:700;letter-spacing:0.5px;padding:5px 14px;border-radius:999px;">✅ SOFORT NUTZBAR</span>
+      <span style="background:#1a6640;color:#fff;font-size:10px;font-weight:700;letter-spacing:0.5px;padding:5px 14px;border-radius:999px;"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="width:11px;height:11px;margin-right:4px;vertical-align:-1px;stroke-width:3.2;"><path d="M20 6 9 17l-5-5" /></svg>SOFORT NUTZBAR</span>
       <div style="font-size:11px;color:#5a6a85;margin-top:6px;">Kein Quiz, keine Freischaltung nötig — ab dem ersten Tag einsatzbereit</div>
     </div>
 
     <!-- KACHEL: TEAM-MITARBEITER & PIN (jetzt oben rechts, navy wie die anderen Hauptkacheln) -->
     <div class="module-card hub-card" id="team-verwaltung-card" style="margin-bottom:16px;">
       <div class="hub-head" onclick="toggleTeamVerwaltung()">
-        <div class="hub-circle">🔑</div>
+        <div class="hub-circle"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z" /> <circle cx="16.5" cy="7.5" r=".5" fill="currentColor" /></svg></div>
         <div class="hub-title">Team-Mitarbeiter &amp; PIN</div>
         <div style="font-size:11px;color:rgba(255,255,255,0.55);margin-top:3px;">Zugang, PIN &amp; Rechte verwalten</div>
         <div style="margin-top:10px;"><span class="module-arrow" id="team-verwaltung-arrow" style="color:#d4af37;font-size:14px;">▼</span></div>
@@ -311,14 +302,14 @@ html, body { max-width:100%; overflow-x:hidden; }
     <!-- KACHEL: MEINE BUCHHALTUNG -->
     <div class="module-card hub-card" id="buchhaltung-card" style="margin-bottom:16px;">
       <div class="hub-head" style="cursor:default;">
-        <div class="hub-circle">📊<span id="buchhaltung-card-badge" style="display:none;position:absolute;top:-2px;right:-2px;background:#c0392b;color:#fff;font-size:10px;font-weight:700;border-radius:10px;min-width:18px;height:18px;line-height:18px;text-align:center;padding:0 4px;box-shadow:0 0 0 2px #1a2a4a;">0</span></div>
+        <div class="hub-circle"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16" /> <path d="M18 17V9" /> <path d="M13 17V5" /> <path d="M8 17v-3" /></svg><span id="buchhaltung-card-badge" style="display:none;position:absolute;top:-2px;right:-2px;background:#c0392b;color:#fff;font-size:10px;font-weight:700;border-radius:10px;min-width:18px;height:18px;line-height:18px;text-align:center;padding:0 4px;box-shadow:0 0 0 2px #1a2a4a;">0</span></div>
         <div class="hub-title">Meine Buchhaltung</div>
         <div class="hub-connector"></div>
         <div class="hub-pillars">
-          <a href="tagesgeschaeft.html" class="hub-pillar" style="position:relative;">📅<span id="temperaturen-neu-badge" style="display:none;position:absolute;top:-6px;right:-6px;background:#c0392b;color:#fff;font-size:10px;font-weight:700;border-radius:10px;min-width:18px;height:18px;line-height:18px;text-align:center;padding:0 4px;box-shadow:0 0 0 2px #1a2a4a;">0</span><span>Tagesgeschäft</span></a>
-          <a href="belegablage.html" class="hub-pillar" style="position:relative;">🧾<span id="belege-faellig-badge" style="display:none;position:absolute;top:-6px;right:-6px;background:#c0392b;color:#fff;font-size:10px;font-weight:700;border-radius:10px;min-width:18px;height:18px;line-height:18px;text-align:center;padding:0 4px;box-shadow:0 0 0 2px #1a2a4a;">0</span><span>Belege</span></a>
-          <a href="buchhaltung.html" class="hub-pillar">📈<span>Monatsberichte</span></a>
-          <a href="e-rechnung.html" class="hub-pillar">📄<span>E-Rechnung</span></a>
+          <a href="tagesgeschaeft.html" class="hub-pillar" style="position:relative;"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 2v3" /> <path d="M16 2v3" /> <rect x="3" y="3" width="18" height="18" rx="2" /> <path d="M3 9h18" /> <path d="M8 13h.01" /> <path d="M12 13h.01" /> <path d="M16 13h.01" /> <path d="M8 17h.01" /> <path d="M12 17h.01" /> <path d="M16 17h.01" /></svg><span id="temperaturen-neu-badge" style="display:none;position:absolute;top:-6px;right:-6px;background:#c0392b;color:#fff;font-size:10px;font-weight:700;border-radius:10px;min-width:18px;height:18px;line-height:18px;text-align:center;padding:0 4px;box-shadow:0 0 0 2px #1a2a4a;">0</span><span>Tagesgeschäft</span></a>
+          <a href="belegablage.html" class="hub-pillar" style="position:relative;"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17V7" /> <path d="M16 8h-6a2 2 0 0 0 0 4h4a2 2 0 0 1 0 4H8" /> <path d="M4 3a1 1 0 0 1 1-1 1.3 1.3 0 0 1 .7.2l.933.6a1.3 1.3 0 0 0 1.4 0l.934-.6a1.3 1.3 0 0 1 1.4 0l.933.6a1.3 1.3 0 0 0 1.4 0l.933-.6a1.3 1.3 0 0 1 1.4 0l.934.6a1.3 1.3 0 0 0 1.4 0l.933-.6A1.3 1.3 0 0 1 19 2a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1 1.3 1.3 0 0 1-.7-.2l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.934.6a1.3 1.3 0 0 1-1.4 0l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-1.4 0l-.934-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-.7.2 1 1 0 0 1-1-1z" /></svg><span id="belege-faellig-badge" style="display:none;position:absolute;top:-6px;right:-6px;background:#c0392b;color:#fff;font-size:10px;font-weight:700;border-radius:10px;min-width:18px;height:18px;line-height:18px;text-align:center;padding:0 4px;box-shadow:0 0 0 2px #1a2a4a;">0</span><span>Belege</span></a>
+          <a href="buchhaltung.html" class="hub-pillar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16" /> <path d="m19 9-5 5-4-4-3 3" /></svg><span>Monatsberichte</span></a>
+          <a href="e-rechnung.html" class="hub-pillar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" /> <path d="M14 2v5a1 1 0 0 0 1 1h5" /> <path d="M10 9H8" /> <path d="M16 13H8" /> <path d="M16 17H8" /></svg><span>E-Rechnung</span></a>
         </div>
       </div>
     </div>
@@ -326,14 +317,14 @@ html, body { max-width:100%; overflow-x:hidden; }
     <!-- KACHEL 2: MEIN TEAM -->
     <div class="module-card hub-card" id="intern-card">
       <div class="hub-head" style="cursor:default;">
-        <div class="hub-circle">🔒<span id="intern-card-badge" style="display:none;position:absolute;top:-2px;right:-2px;background:#c0392b;color:#fff;font-size:10px;font-weight:700;border-radius:10px;min-width:18px;height:18px;line-height:18px;text-align:center;padding:0 4px;box-shadow:0 0 0 2px #1a2a4a;">0</span></div>
+        <div class="hub-circle"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /> <path d="M16 3.128a4 4 0 0 1 0 7.744" /> <path d="M22 21v-2a4 4 0 0 0-3-3.87" /> <circle cx="9" cy="7" r="4" /></svg><span id="intern-card-badge" style="display:none;position:absolute;top:-2px;right:-2px;background:#c0392b;color:#fff;font-size:10px;font-weight:700;border-radius:10px;min-width:18px;height:18px;line-height:18px;text-align:center;padding:0 4px;box-shadow:0 0 0 2px #1a2a4a;">0</span></div>
         <div class="hub-title">Mein Team</div>
         <div class="hub-connector"></div>
         <div class="hub-pillars">
-          <a href="uebergabe.html" class="hub-pillar" style="position:relative;" onclick="markiereAlsGelesen('uebergabe')">📋<span id="intern-badge-0" style="display:none;position:absolute;top:-6px;right:-6px;background:#c0392b;color:#fff;font-size:10px;font-weight:700;border-radius:10px;min-width:18px;height:18px;line-height:18px;text-align:center;padding:0 4px;box-shadow:0 0 0 2px #1a2a4a;">0</span><span>Übergabe</span></a>
-          <a href="reservierung.html" class="hub-pillar" style="position:relative;" onclick="markiereAlsGelesen('reservierung')">📅<span id="intern-badge-1" style="display:none;position:absolute;top:-6px;right:-6px;background:#c0392b;color:#fff;font-size:10px;font-weight:700;border-radius:10px;min-width:18px;height:18px;line-height:18px;text-align:center;padding:0 4px;box-shadow:0 0 0 2px #1a2a4a;">0</span><span>Reservierung</span></a>
-          <a href="schichtplan.html" class="hub-pillar" style="position:relative;" onclick="markiereAlsGelesen('schichtplan')">🗂️<span id="intern-badge-2" style="display:none;position:absolute;top:-6px;right:-6px;background:#c0392b;color:#fff;font-size:10px;font-weight:700;border-radius:10px;min-width:18px;height:18px;line-height:18px;text-align:center;padding:0 4px;box-shadow:0 0 0 2px #1a2a4a;">0</span><span>Schichtplan</span></a>
-          <a href="zeiterfassung.html" class="hub-pillar" style="position:relative;">⏱️<span id="intern-badge-3" style="display:none;position:absolute;top:-6px;right:-6px;background:#c0392b;color:#fff;font-size:10px;font-weight:700;border-radius:10px;min-width:18px;height:18px;line-height:18px;text-align:center;padding:0 4px;box-shadow:0 0 0 2px #1a2a4a;">0</span><span>Zeiterfassung</span></a>
+          <a href="uebergabe.html" class="hub-pillar" style="position:relative;" onclick="markiereAlsGelesen('uebergabe')"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1" /> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" /> <path d="M12 11h4" /> <path d="M12 16h4" /> <path d="M8 11h.01" /> <path d="M8 16h.01" /></svg><span id="intern-badge-0" style="display:none;position:absolute;top:-6px;right:-6px;background:#c0392b;color:#fff;font-size:10px;font-weight:700;border-radius:10px;min-width:18px;height:18px;line-height:18px;text-align:center;padding:0 4px;box-shadow:0 0 0 2px #1a2a4a;">0</span><span>Übergabe</span></a>
+          <a href="reservierung.html" class="hub-pillar" style="position:relative;" onclick="markiereAlsGelesen('reservierung')"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 2v3" /> <path d="M16 2v3" /> <rect x="3" y="3" width="18" height="18" rx="2" /> <path d="M3 9h18" /> <path d="m9 15 2 2 4-4" /></svg><span id="intern-badge-1" style="display:none;position:absolute;top:-6px;right:-6px;background:#c0392b;color:#fff;font-size:10px;font-weight:700;border-radius:10px;min-width:18px;height:18px;line-height:18px;text-align:center;padding:0 4px;box-shadow:0 0 0 2px #1a2a4a;">0</span><span>Reservierung</span></a>
+          <a href="schichtplan.html" class="hub-pillar" style="position:relative;" onclick="markiereAlsGelesen('schichtplan')"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 14v2.2l1.6 1" /> <path d="M16 2v3" /> <path d="M21 7.338V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h2.338" /> <path d="M3 9h5.859" /> <path d="M8 2v3" /> <circle cx="16" cy="16" r="6" /></svg><span id="intern-badge-2" style="display:none;position:absolute;top:-6px;right:-6px;background:#c0392b;color:#fff;font-size:10px;font-weight:700;border-radius:10px;min-width:18px;height:18px;line-height:18px;text-align:center;padding:0 4px;box-shadow:0 0 0 2px #1a2a4a;">0</span><span>Schichtplan</span></a>
+          <a href="zeiterfassung.html" class="hub-pillar" style="position:relative;"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><line x1="10" x2="14" y1="2" y2="2" /> <line x1="12" x2="15" y1="14" y2="11" /> <circle cx="12" cy="14" r="8" /></svg><span id="intern-badge-3" style="display:none;position:absolute;top:-6px;right:-6px;background:#c0392b;color:#fff;font-size:10px;font-weight:700;border-radius:10px;min-width:18px;height:18px;line-height:18px;text-align:center;padding:0 4px;box-shadow:0 0 0 2px #1a2a4a;">0</span><span>Zeiterfassung</span></a>
         </div>
       </div>
     </div>
@@ -345,7 +336,7 @@ html, body { max-width:100%; overflow-x:hidden; }
 
     <div class="module-card hub-card" id="hilfe-card" style="margin-bottom:14px; max-width:100%;">
       <div class="hub-head" onclick="toggleHilfe()" style="padding:16px 18px; flex-direction:row; text-align:left; gap:10px;">
-        <div class="hub-circle" style="width:32px;height:32px;font-size:14px;flex-shrink:0;">❓</div>
+        <div class="hub-circle" style="width:32px;height:32px;font-size:14px;flex-shrink:0;"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" /> <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /> <path d="M12 17h.01" /></svg></div>
         <div style="flex:1;">
           <div class="hub-title" style="font-size:13px; margin-top:0;">Hilfe von A bis Z</div>
           <div style="font-size:10.5px;color:rgba(255,255,255,0.55);margin-top:1px;">Stichwort suchen oder Buchstaben antippen</div>
@@ -364,7 +355,7 @@ html, body { max-width:100%; overflow-x:hidden; }
 
     <div class="module-card hub-card" id="support-card" style="max-width:100%;">
       <div class="hub-head" onclick="toggleSupport()" style="padding:16px 18px; flex-direction:row; text-align:left; gap:10px;">
-        <div class="hub-circle" style="width:32px;height:32px;font-size:14px;flex-shrink:0;">💬</div>
+        <div class="hub-circle" style="width:32px;height:32px;font-size:14px;flex-shrink:0;"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719" /></svg></div>
         <div style="flex:1;">
           <div class="hub-title" style="font-size:13px; margin-top:0;">Support</div>
           <div style="font-size:10.5px;color:rgba(255,255,255,0.55);margin-top:1px;">Fragen, Anregungen oder Probleme?</div>
@@ -686,6 +677,11 @@ faqRender();
   box-shadow: 0 4px 16px rgba(212,175,55,0.4);
   flex-shrink: 0;
 }
+/* Linien-Symbole statt Emojis (Icons: Lucide, ISC-Lizenz, https://lucide.dev) */
+.ic { width:1em; height:1em; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+.hub-circle .ic { width:48%; height:48%; stroke-width:1.9; }
+.toolbox-icon-circle .ic { width:52%; height:52%; stroke-width:1.9; }
+.hub-pillar .ic { width:19px; height:19px; color:#d4af37; stroke-width:1.7; }
 .hub-title { font-family: Georgia, serif; font-size: 15px; color: #fff; margin-top: 9px; }
 .hub-connector { width: 2px; height: 14px; background: rgba(212,175,55,0.45); margin: 5px 0; }
 .hub-pillars { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
