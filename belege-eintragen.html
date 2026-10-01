@@ -120,6 +120,9 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8 url('/bg-rest
         <div class="field-group"><label>Rechnungs-/Liefernr.</label><input type="text" id="beleg-rechnungsnr" placeholder="optional"></div>
         <div class="field-group"><label>Betrag (€)</label><input type="number" step="0.01" id="beleg-betrag" placeholder="0,00"></div>
       </div>
+      <div class="grid2">
+        <div class="field-group"><label>USt-IdNr./Steuernr. Lieferant</label><input type="text" id="beleg-steuerid" placeholder="optional"></div>
+      </div>
       <div class="grid2" id="beleg-barkarte-wrap" style="display:none;">
         <div class="field-group"><label>Bar (€)</label><input type="number" step="0.01" id="beleg-bar" placeholder="0,00"></div>
         <div class="field-group"><label>Kartenzahlung (€)</label><input type="number" step="0.01" id="beleg-karte" placeholder="0,00"></div>
@@ -287,6 +290,8 @@ window.belegDateiGewaehlt = async function(event) {
     if (extracted.barBetrag != null) { document.getElementById('beleg-bar').value = extracted.barBetrag.toFixed(2); erkannt.push('Bar-Betrag'); }
     if (extracted.kartenBetrag != null) { document.getElementById('beleg-karte').value = extracted.kartenBetrag.toFixed(2); erkannt.push('Karten-Betrag'); }
     if (extracted.rechnungsnummer) { document.getElementById('beleg-rechnungsnr').value = extracted.rechnungsnummer; erkannt.push('Rechnungsnr.'); }
+    document.getElementById('beleg-steuerid').value = extracted.steuerId || '';
+    if (extracted.steuerId) erkannt.push('USt-IdNr./Steuernr.');
 
     hinweis.className = 'auto-hinweis';
     hinweis.textContent = erkannt.length ? ('✓ Automatisch erkannt: ' + erkannt.join(', ') + ' — bitte kurz prüfen.') : 'ℹ️ Konnte nichts automatisch auslesen — bitte Felder manuell ausfüllen.';
@@ -306,6 +311,7 @@ window.belegHochladen = async function() {
   }
   const betrag = parseFloat(document.getElementById('beleg-betrag').value) || 0;
   const rechnungsnr = document.getElementById('beleg-rechnungsnr').value.trim();
+  const steuerId = document.getElementById('beleg-steuerid').value.trim();
   const bar = (plattform === 'Z-Bon' && document.getElementById('beleg-bar').value) ? parseFloat(document.getElementById('beleg-bar').value) : null;
   const karte = (plattform === 'Z-Bon' && document.getElementById('beleg-karte').value) ? parseFloat(document.getElementById('beleg-karte').value) : null;
 
@@ -327,7 +333,7 @@ window.belegHochladen = async function() {
     const uploadResult = await uploadRes.json();
     if (!uploadRes.ok) { alert('Upload fehlgeschlagen: ' + (uploadResult.error || '')); return; }
 
-    const eintrag = { datum, plattform, betrag, rechnungsnr, bar, karte, status: 'bezahlt', dateiname: belegAusgewaehlteDatei.name, storagePath: uploadResult.path };
+    const eintrag = { datum, plattform, betrag, rechnungsnr, steuerId, bar, karte, status: 'bezahlt', dateiname: belegAusgewaehlteDatei.name, storagePath: uploadResult.path };
     const res2 = await fetch('/api/buch-public', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -348,6 +354,7 @@ window.belegHochladen = async function() {
     document.getElementById('beleg-plattform-eigen').value = '';
     document.getElementById('beleg-betrag').value = '';
     document.getElementById('beleg-rechnungsnr').value = '';
+    document.getElementById('beleg-steuerid').value = '';
     document.getElementById('beleg-bar').value = '';
     document.getElementById('beleg-karte').value = '';
     document.getElementById('beleg-datum').value = heute();
@@ -366,13 +373,14 @@ function renderVerlauf() {
   if (!meine.length) { el.innerHTML = '<span style="color:#8090a8;font-size:12.5px;">Noch nichts hochgeladen.</span>'; return; }
   el.innerHTML = `<div style="overflow-x:auto;"><table style="border-collapse:collapse;font-size:12.5px;width:100%;">
     <thead><tr style="color:#8090a8;font-size:10.5px;text-transform:uppercase;font-weight:700;">
-      <th style="text-align:left;padding:5px 8px;">Datum</th><th style="text-align:left;padding:5px 8px;">Anbieter</th><th style="text-align:left;padding:5px 8px;">Betrag</th><th style="text-align:left;padding:5px 8px;">Rechnungsnr.</th><th style="text-align:left;padding:5px 8px;">Status</th>
+      <th style="text-align:left;padding:5px 8px;">Datum</th><th style="text-align:left;padding:5px 8px;">Anbieter</th><th style="text-align:left;padding:5px 8px;">Betrag</th><th style="text-align:left;padding:5px 8px;">Rechnungsnr.</th><th style="text-align:left;padding:5px 8px;">USt-IdNr./Steuernr.</th><th style="text-align:left;padding:5px 8px;">Status</th>
     </tr></thead>
     <tbody>${meine.map(b => `<tr style="border-top:1px solid #f0e8d4;">
       <td style="padding:6px 8px;">${datumDe(b.datum)}</td>
       <td style="padding:6px 8px;">${b.plattform}${b.plattform === 'Z-Bon' && (b.bar || b.karte) ? ' (Bar: ' + euro(b.bar || 0) + ', Karte: ' + euro(b.karte || 0) + ')' : ''}</td>
       <td style="padding:6px 8px;">${euro(b.betrag)}</td>
       <td style="padding:6px 8px;">${b.rechnungsnr || '–'}</td>
+      <td style="padding:6px 8px;">${b.steuerId || '–'}</td>
       <td style="padding:6px 8px;">${STATUS_LABEL[b.status] || b.status || '–'}</td>
     </tr>`).join('')}</tbody>
   </table></div>`;
