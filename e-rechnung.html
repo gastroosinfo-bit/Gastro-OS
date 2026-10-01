@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Die E-Rechnung einfach erklärt – GASTRO-OS</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8 url('/bg-restaurant.jpg') center top / cover no-repeat; color:#1a2a4a; min-height:100vh; }
+.header { background:#1a2a4a; padding:16px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:20px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+.main { max-width:860px; margin:40px auto; padding:0 24px 60px; }
+.card { background:#fff; border:1px solid #e8dfc8; border-radius:10px; padding:36px 40px; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; margin-bottom:8px; }
+.gold-rule { width:56px; height:2px; background:#d4af37; margin:10px 0 22px; }
+p { font-size:14px; line-height:1.8; color:#334455; margin-bottom:8px; }
+a { color:#9A7D3A; }
+.back-btn { background:#d4af37; color:#1a2a4a; border:none; padding:9px 20px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; }
+.footer { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer strong { color:#d4af37; }
+.hinweisbox { background:#fdf8ea; border:1px solid #e8dfc8; border-radius:8px; padding:14px 18px; margin-bottom:22px; font-size:12.5px; color:#5a6a85; line-height:1.6; }
+.kurz { background:#faf8f4; border-left:3px solid #d4af37; border-radius:0 8px 8px 0; padding:14px 18px; margin-bottom:24px; font-size:14px; line-height:1.7; color:#1a2a4a; }
+details { border-top:1px solid #efe6d0; }
+details:last-of-type { border-bottom:1px solid #efe6d0; }
+summary { cursor:pointer; list-style:none; padding:15px 4px; font-family:Georgia,serif; font-size:15.5px; color:#1a2a4a; display:flex; justify-content:space-between; gap:12px; align-items:center; }
+summary::-webkit-details-marker { display:none; }
+summary::after { content:'▼'; color:#d4af37; font-size:12px; flex-shrink:0; transition:transform .2s; }
+details[open] summary::after { transform:rotate(180deg); }
+details[open] summary { color:#9A7D3A; }
+.antwort { padding:0 4px 16px; }
+.antwort ul { margin:6px 0 8px 20px; }
+.antwort li { font-size:14px; line-height:1.75; color:#334455; margin-bottom:4px; }
+table { width:100%; border-collapse:collapse; margin:8px 0 12px; font-size:13.5px; }
+th { text-align:left; background:#1a2a4a; color:#d4af37; padding:9px 12px; font-weight:600; }
+td { padding:9px 12px; border-bottom:1px solid #efe6d0; color:#334455; vertical-align:top; }
+.bald { background:#1a2a4a; color:#fff; border-radius:10px; padding:18px 22px; margin-top:26px; }
+.bald strong { color:#d4af37; }
+.bald p { color:rgba(255,255,255,0.85); margin:6px 0 0; }
+@media (max-width:640px) { .header { padding:14px 18px; } .card { padding:24px 20px; } h1 { font-size:23px; } }
+</style>
+</head>
+<body>
+<script>
+(async function(){
+  try {
+    const res = await fetch('/api/verify-session');
+    if (!res.ok) { window.location.href = 'login.html'; return; }
+    const d = await res.json();
+    if (!d.valid) { window.location.href = 'login.html'; return; }
+  } catch (e) { window.location.href = 'login.html'; }
+})();
+</script>
+
+<div class="header">
+  <div class="brand">GASTRO-OS</div>
+  <a href="dashboard.html" class="back-btn">← Zurück zum Dashboard</a>
+</div>
+<div class="gold-bar"></div>
+
+<div class="main">
+  <div class="card">
+    <h1>Die E-Rechnung einfach erklärt</h1>
+    <div class="gold-rule"></div>
+
+    <div class="hinweisbox">
+      <strong style="color:#1a2a4a;">Wichtig:</strong> Das ist eine allgemeine Information und keine Steuer- oder Rechtsberatung. Stand: Oktober 2026. Die Fristen können sich noch ändern. Wie die Regeln für deinen Betrieb genau gelten, klärst du am besten mit deinem Steuerberater.
+    </div>
+
+    <div class="kurz">
+      <strong>Kurz gesagt:</strong> Eine E-Rechnung ist eine Rechnung als Datei in einem festen, maschinenlesbaren Format. Eine normale PDF-Rechnung per E-Mail zählt nicht dazu. <strong>Empfangen</strong> können müssen sie alle Unternehmen schon seit 2025. <strong>Ausstellen</strong> müssen sie Unternehmen ab 2027 oder 2028, wenn die Rechnung an ein anderes inländisches Unternehmen geht.
+    </div>
+
+    <details>
+      <summary>Was ist eine E-Rechnung?</summary>
+      <div class="antwort">
+        <p>Eine E-Rechnung ist eine Rechnung in einem <strong>strukturierten elektronischen Format</strong>. Das bedeutet: Ein Computer kann alle wichtigen Angaben direkt auslesen, zum Beispiel Rechnungsnummer, Beträge, Steuersatz und Lieferant. Niemand muss die Daten mehr abtippen.</p>
+        <p>Ein normales PDF sieht für uns wie eine Rechnung aus, ist für den Computer aber nur ein Bild des Dokuments.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Ist eine PDF-Rechnung per E-Mail schon eine E-Rechnung?</summary>
+      <div class="antwort">
+        <p><strong>Nein.</strong> Nicht der Weg zählt, sondern das Format. Eine PDF, die du per E-Mail bekommst oder verschickst, gilt seit 2025 nicht mehr als elektronische Rechnung im Sinne der Pflicht. Sie zählt als „sonstige Rechnung“, genau wie Papier.</p>
+        <p>Eine E-Rechnung kann aber ganz normal per E-Mail ankommen, als Anhang. Entscheidend ist, was im Anhang steckt.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Wie ist eine E-Rechnung aufgebaut?</summary>
+      <div class="antwort">
+        <p>In Deutschland gibt es zwei übliche Formate:</p>
+        <table>
+          <tr><th>Format</th><th>So sieht es aus</th></tr>
+          <tr><td><strong>XRechnung</strong></td><td>Eine reine Datendatei (XML). Du kannst sie nicht wie ein Dokument lesen, ein Programm zeigt sie dir an.</td></tr>
+          <tr><td><strong>ZUGFeRD</strong></td><td>Sieht aus wie ein normales PDF, enthält aber zusätzlich die Datendatei. Du kannst es also ganz normal öffnen und lesen, das Programm liest die Daten aus.</td></tr>
+        </table>
+        <p>Die Pflichtangaben sind im Kern dieselben wie bei jeder Rechnung, zum Beispiel Name und Anschrift beider Seiten, Datum, Leistung, Betrag und Steuersatz. Sie stehen nur zusätzlich in einer festen, maschinenlesbaren Struktur.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Wie erkenne ich eine E-Rechnung?</summary>
+      <div class="antwort">
+        <ul>
+          <li>Hängt an der Mail eine <strong>XML-Datei</strong> (Dateiendung .xml), ist es meist eine XRechnung.</li>
+          <li>Eine <strong>PDF kann ZUGFeRD</strong> sein. Das sieht man ihr nicht an. Ob eine E-Rechnung gemeint ist, erfährst du am sichersten vom Lieferanten oder aus dem Mailtext.</li>
+          <li>Im Zweifel fragst du kurz beim Lieferanten nach, in welchem Format seine Rechnung kommt.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary>Wer muss E-Rechnungen empfangen können?</summary>
+      <div class="antwort">
+        <p><strong>Alle Unternehmen in Deutschland, seit dem 1. Januar 2025</strong>, auch kleine Betriebe und Kleinunternehmer. Dafür gibt es keine Übergangsfrist.</p>
+        <p>Zum Empfangen genügt zunächst ein E-Mail-Postfach. Es muss nach Angabe des Bundesfinanzministeriums kein eigenes Postfach nur für E-Rechnungen sein.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Wer muss E-Rechnungen ausstellen und ab wann?</summary>
+      <div class="antwort">
+        <p>Die Pflicht gilt für Rechnungen zwischen <strong>inländischen Unternehmen</strong> und kommt in Stufen:</p>
+        <table>
+          <tr><th>Zeitraum</th><th>Was gilt</th></tr>
+          <tr><td>2025 und 2026</td><td>Du darfst weiter Papier oder PDF verschicken. Eine E-Rechnung ist freiwillig.</td></tr>
+          <tr><td>ab 1. Januar 2027</td><td>Pflicht, wenn dein Gesamtumsatz im Vorjahr (2026) <strong>über 800.000 Euro</strong> lag.</td></tr>
+          <tr><td>2027 bei bis zu 800.000 Euro</td><td>Papier oder PDF sind noch erlaubt.</td></tr>
+          <tr><td>ab 1. Januar 2028</td><td>Pflicht für <strong>alle</strong> Unternehmen bei Rechnungen an andere inländische Unternehmen.</td></tr>
+        </table>
+        <p>Maßgeblich ist der Gesamtumsatz des Vorjahres, nicht nur der Anteil, den du an Unternehmen verkaufst.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Gilt das auch für meine Rechnungen an Gäste und für Kassenbons?</summary>
+      <div class="antwort">
+        <p>Die Pflicht betrifft nur Rechnungen an <strong>andere Unternehmen</strong> (B2B). Rechnungen an Privatpersonen und normale Kassenbons an Gäste sind davon nicht betroffen.</p>
+        <p>Außerdem gibt es Ausnahmen, zum Beispiel für <strong>Kleinbetragsrechnungen bis 250 Euro</strong>. Die dürfen weiterhin als sonstige Rechnung ausgestellt werden.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Welche Rechnungen in meinem Betrieb sind betroffen?</summary>
+      <div class="antwort">
+        <ul>
+          <li><strong>Eingehende Rechnungen:</strong> Von Lieferanten, zum Beispiel Großhandel, Getränkelieferant oder Dienstleister. Diese Rechnungen kommen künftig immer häufiger als E-Rechnung bei dir an.</li>
+          <li><strong>Ausgehende Rechnungen:</strong> Rechnungen über 250 Euro an Unternehmen, zum Beispiel für Firmenfeiern, Catering oder Veranstaltungen.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary>Was muss ich beim Empfang einer E-Rechnung tun?</summary>
+      <div class="antwort">
+        <ul>
+          <li>Ein E-Mail-Postfach haben, in dem E-Rechnungen ankommen können.</li>
+          <li>Die E-Rechnung <strong>im Originalformat aufbewahren</strong>. Nur ausdrucken oder als Bild ablegen reicht bei einer E-Rechnung nicht.</li>
+          <li>Die gesetzlichen Aufbewahrungsfristen beachten. Wie lange und wie genau, klärst du mit deinem Steuerberater.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary>Brauche ich eine spezielle Software?</summary>
+      <div class="antwort">
+        <p><strong>Zum Empfangen</strong> reicht anfangs ein Postfach. Um eine XRechnung lesbar anzusehen, brauchst du ein Programm oder einen Viewer. Viele Buchhaltungsprogramme können das, und viele Steuerberater übernehmen das für ihre Mandanten.</p>
+        <p><strong>Zum Ausstellen</strong> brauchst du ein Rechnungsprogramm, das E-Rechnungen im richtigen Format erzeugt. Frag bei deinem Steuerberater, deinem Kassen- oder Buchhaltungsanbieter nach, ob das schon enthalten ist.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Was passiert, wenn ich mich nicht daran halte?</summary>
+      <div class="antwort">
+        <p>Wer nach Ablauf der Übergangsfristen trotz Pflicht nur eine normale Rechnung ausstellt, begeht damit eine Ordnungswidrigkeit. Außerdem kann eine nicht richtig ausgestellte Rechnung steuerliche Probleme machen, zum Beispiel beim Vorsteuerabzug deines Geschäftspartners. Das lässt du dir am besten von deinem Steuerberater genau erklären.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Gibt es Ausnahmen?</summary>
+      <div class="antwort">
+        <ul>
+          <li><strong>Kleinunternehmer</strong> müssen E-Rechnungen nicht ausstellen, aber empfangen können.</li>
+          <li><strong>Kleinbetragsrechnungen</strong> bis 250 Euro.</li>
+          <li><strong>Rechnungen an Privatpersonen</strong> und an Kunden im Ausland.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary>Wo finde ich die amtlichen Informationen?</summary>
+      <div class="antwort">
+        <p>Beim Bundesfinanzministerium unter <a href="https://www.bundesfinanzministerium.de" target="_blank" rel="noopener">bundesfinanzministerium.de</a>. Dort stehen die Schreiben zur Einführung der E-Rechnung vom 15. Oktober 2024 und vom 15. Oktober 2025. Auch dein Steuerberater und deine IHK helfen dir weiter.</p>
+      </div>
+    </details>
+
+    <div class="bald">
+      <strong>Kommt noch:</strong> Eine E-Rechnungs-Funktion direkt im System ist geplant und steht dir irgendwann zur Verfügung. Einen Termin gibt es noch nicht. GASTRO-OS wird laufend erweitert, neue Funktionen findest du dann hier im Dashboard.
+    </div>
+
+    <p style="margin-top:26px;font-size:12px;color:#8090a8;">Stand: Oktober 2026. Allgemeine Information, keine Steuer- oder Rechtsberatung.</p>
+  </div>
+</div>
+<div class="gold-bar"></div>
+<div class="footer" style="margin-top:40px;"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg &nbsp;·&nbsp; <a href="impressum.html" style="color:#ffffff;text-decoration:none;">Impressum</a> &nbsp;·&nbsp; <a href="datenschutz.html" style="color:#ffffff;text-decoration:none;">Datenschutz</a> &nbsp;·&nbsp; <a href="agb.html" style="color:#ffffff;text-decoration:none;">AGB</a></div>
+<script src="checklist-save.js"></script>
+</body>
+</html>
