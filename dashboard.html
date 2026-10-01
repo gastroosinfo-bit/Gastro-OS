@@ -383,6 +383,7 @@ html, body { max-width:100%; overflow-x:hidden; }
 // Ein Eintrag = Stichwort (w), Kurztext (a), optional Link (l) und Suchbegriffe/Synonyme (k).
 // Einträge mit "ref" sind zusätzliche Stichworte im A–Z-Verzeichnis, die auf einen anderen Eintrag verweisen.
 const HILFE = [
+  {"w": "Abo kündigen", "a": "Die Zahlung läuft über Whop, deshalb kündigst du dort selbst, jederzeit und ohne Mindestlaufzeit. Melde dich bei Whop mit der E-Mail an, mit der du gekauft hast, öffne dein Profil und dort „Orders“ (Bestellungen), wähle das Abo GASTRO-OS und klicke auf „Cancel membership“. In der Whop-App: Profilbild antippen, „Manage Orders“, Abo wählen, „Cancel membership“. Du bekommst eine Bestätigung per E-Mail. Dein Zugang bleibt bis zum Ende der bereits bezahlten Periode bestehen, danach wird nichts mehr abgebucht. Dein Fortschritt und deine Daten bleiben gespeichert. Wenn du später mit derselben E-Mail-Adresse wieder einsteigst, geht es genau dort weiter, wo du aufgehört hast.", "l": "https://whop.com/@me/settings/orders/", "k": "abo abonnement kündigung kündigen beenden stornieren abmelden auslaufen mitgliedschaft whop bestellung zahlung abbuchung bezahlung rechnung monatlich laufzeit"},
   { w: 'Abschreibungen', a: 'Unter „Meine Buchhaltung“ im Tagesgeschäft wählst du den Bereich „Abschreibungen und Co.“. Dort trägst du Schwund und Bruch ein (Datum, Artikel, Menge und Einheit) und lädst Stornobelege hoch.', l: 'tagesgeschaeft.html', k: 'schwund bruch verderb ware weggeworfen entsorgt verlust abschreibung' },
   { w: 'Artikelbericht', a: 'Unter „Meine Buchhaltung“ im Tagesgeschäft wählst du den Bereich „Artikelbericht“. Dort lädst du den Verkaufsbericht deiner Kasse hoch (Foto oder PDF, max. 3 MB). Gericht und verkaufte Menge werden ausgelesen, bitte kurz prüfen. Danach siehst du dort das Ranking der meistverkauften Artikel für den Monat, getrennt nach Speisen und Getränken, und kannst es als PDF speichern. Ein einzelner Tag lässt sich in der Liste der hochgeladenen Berichte öffnen.', l: 'tagesgeschaeft.html', k: 'verkauf verkauft verkaufsbericht verkaufszahlen wieviel wie viele speisen getränke getraenke gericht menge kasse auswertung ranking meistverkauft bestseller beliebt' },
   { w: 'Belege', a: 'Unter „Meine Buchhaltung“ öffnest du „Belege“ und wählst ein Foto oder eine PDF (max. 3 MB). Datum, Betrag, Anbieter, Rechnungsnummer und USt-IdNr. bzw. Steuernummer des Lieferanten werden, wenn möglich, automatisch erkannt. Kurz prüfen und „Hochladen“ klicken. Mitarbeiter mit dem Recht „Belege“ können Belege auf ihrem eigenen Handy über den Team-Link hochladen.', l: 'belegablage.html', k: 'beleg rechnung rechnungen quittung kassenbon bon lieferschein foto scannen pdf upload hochladen steuer ust steuernummer lieferant ablegen' },
@@ -525,7 +526,13 @@ function hilfeEintrag(e) {
     const link = document.createElement('a');
     link.className = 'faq-oeffnen';
     link.href = e.l;
-    link.textContent = 'Öffnen →';
+    if (/^https?:/.test(e.l)) {
+      link.target = '_blank';
+      link.rel = 'noopener';
+      link.textContent = 'Bei Whop öffnen →';
+    } else {
+      link.textContent = 'Öffnen →';
+    }
     an.appendChild(link);
   }
   fr.onclick = () => item.classList.toggle('offen');
