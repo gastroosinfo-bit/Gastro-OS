@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Export für DATEV und Lexware einfach erklärt – GASTRO-OS</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8 url('/bg-restaurant.jpg') center top / cover no-repeat; color:#1a2a4a; min-height:100vh; }
+.header { background:#1a2a4a; padding:16px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:20px; color:#d4af37; letter-spacing:3px; font-weight:normal; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+.main { max-width:860px; margin:40px auto; padding:0 24px 60px; }
+.card { background:#fff; border:1px solid #e8dfc8; border-radius:10px; padding:36px 40px; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+h1 { font-family:Georgia,serif; font-size:28px; color:#1a2a4a; margin-bottom:8px; }
+.gold-rule { width:56px; height:2px; background:#d4af37; margin:10px 0 22px; }
+p { font-size:14px; line-height:1.8; color:#334455; margin-bottom:8px; }
+a { color:#9A7D3A; }
+.back-btn { background:#d4af37; color:#1a2a4a; border:none; padding:9px 20px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; }
+.footer { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer strong { color:#d4af37; }
+.hinweisbox { background:#fdf8ea; border:1px solid #e8dfc8; border-radius:8px; padding:14px 18px; margin-bottom:22px; font-size:12.5px; color:#5a6a85; line-height:1.6; }
+.kurz { background:#faf8f4; border-left:3px solid #d4af37; border-radius:0 8px 8px 0; padding:14px 18px; margin-bottom:24px; font-size:14px; line-height:1.7; color:#1a2a4a; }
+details { border-top:1px solid #efe6d0; }
+details:last-of-type { border-bottom:1px solid #efe6d0; }
+summary { cursor:pointer; list-style:none; padding:15px 4px; font-family:Georgia,serif; font-size:15.5px; color:#1a2a4a; display:flex; justify-content:space-between; gap:12px; align-items:center; }
+summary::-webkit-details-marker { display:none; }
+summary::after { content:'▼'; color:#d4af37; font-size:12px; flex-shrink:0; transition:transform .2s; }
+details[open] summary::after { transform:rotate(180deg); }
+details[open] summary { color:#9A7D3A; }
+.antwort { padding:0 4px 16px; }
+.antwort ul, .antwort ol { margin:6px 0 8px 20px; }
+.antwort li { font-size:14px; line-height:1.75; color:#334455; margin-bottom:4px; }
+.bald { background:#1a2a4a; color:#fff; border-radius:10px; padding:18px 22px; margin-top:26px; }
+.bald strong { color:#d4af37; }
+.bald p { color:rgba(255,255,255,0.85); margin:6px 0 0; }
+@media (max-width:640px) { .header { padding:14px 18px; } .card { padding:24px 20px; } h1 { font-size:23px; } }
+</style>
+</head>
+<body>
+<script>
+(async function(){
+  try {
+    const res = await fetch('/api/verify-session');
+    if (!res.ok) { window.location.href = 'login.html'; return; }
+    const d = await res.json();
+    if (!d.valid) { window.location.href = 'login.html'; return; }
+  } catch (e) { window.location.href = 'login.html'; }
+})();
+</script>
+
+<div class="header">
+  <div class="brand">GASTRO-OS</div>
+  <a href="dashboard.html" class="back-btn">← Zurück zum Dashboard</a>
+</div>
+<div class="gold-bar"></div>
+
+<div class="main">
+  <div class="card">
+    <h1>Export für DATEV und Lexware einfach erklärt</h1>
+    <div class="gold-rule"></div>
+
+    <div class="hinweisbox">
+      <strong style="color:#1a2a4a;">Wichtig:</strong> Das ist eine allgemeine Information und keine Steuer- oder Rechtsberatung. Stand: Oktober 2026. DATEV und Lexware sind Marken der jeweiligen Anbieter. GASTRO-OS steht in keiner Verbindung zu diesen Unternehmen. Lass die Exportdatei bitte zuerst von deinem Steuerberater prüfen.
+    </div>
+
+    <div class="kurz">
+      <strong>Kurz gesagt:</strong> Geplant ist ein Export, mit dem du aus deinem Monatsbericht per Klick eine Datei machst, die dein Steuerberater in sein Buchhaltungsprogramm einlesen kann. Er muss dann nichts mehr abtippen. Eine automatische Übertragung direkt in ein DATEV- oder Lexware-Konto gibt es nicht.
+    </div>
+
+    <details>
+      <summary>Was ist der geplante Export?</summary>
+      <div class="antwort">
+        <p>Dein Kassenbuch und deine Belege werden in eine <strong>Datei im CSV-Format</strong> umgewandelt, die dem Aufbau für DATEV bzw. Lexware entspricht. Jede Einnahme und jeder Beleg wird dabei zu einer eigenen Buchungszeile.</p>
+        <p>Das ist eine Alternative zum PDF-Monatsbericht. Das PDF bleibt natürlich weiter möglich.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>So soll es ablaufen</summary>
+      <div class="antwort">
+        <ol>
+          <li>Einmalig hinterlegst du in den Einstellungen deine <strong>Kontonummern</strong> (siehe unten).</li>
+          <li>Du wählst den Monat aus.</li>
+          <li>Du klickst auf „Als DATEV-Export“ oder „Als Lexware-Export“. Die Datei wird heruntergeladen.</li>
+          <li>Du schickst die Datei an deinen Steuerberater, zum Beispiel per Mail. Er liest sie in seinem Programm ein.</li>
+        </ol>
+      </div>
+    </details>
+
+    <details>
+      <summary>Wird die Datei direkt an DATEV oder Lexware gesendet?</summary>
+      <div class="antwort">
+        <p><strong>Nein.</strong> Du lädst die Datei herunter und gibst sie weiter. Eine direkte Anbindung an ein Benutzerkonto bei DATEV oder Lexware gibt es nicht. In der Regel importiert ohnehin der Steuerberater die Datei, nicht du selbst.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Was muss ich einmalig einstellen?</summary>
+      <div class="antwort">
+        <p>Für die Buchungen braucht der Export <strong>Kontonummern</strong>, zum Beispiel für Einnahmen und für Wareneinkauf. Die richtigen Nummern hängen vom Kontenrahmen ab (häufig SKR03 oder SKR04) und können bei jedem Betrieb und Steuerberater anders sein.</p>
+        <p>Frag deshalb vorher kurz bei deinem Steuerberater nach, welche Konten er verwendet. Du trägst sie einmal ein, danach gelten sie für jeden Export.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Worauf sollte ich achten?</summary>
+      <div class="antwort">
+        <ul>
+          <li>Lass die <strong>erste Exportdatei</strong> von deinem Steuerberater probeweise einlesen, bevor ihr euch darauf verlasst.</li>
+          <li>Prüf vor dem Versand kurz, ob Kassenbuch und Belege des Monats vollständig sind.</li>
+          <li>Die Verantwortung für die Buchhaltung bleibt bei dir und deinem Steuerberater. Der Export ist eine Arbeitserleichterung.</li>
+        </ul>
+      </div>
+    </details>
+
+    <div class="bald">
+      <strong>Geplant:</strong> Der Export für DATEV und Lexware ist vorgesehen. Sobald er verfügbar ist, findest du ihn hier im Dashboard. GASTRO-OS wird laufend weiterentwickelt.
+    </div>
+
+    <p style="margin-top:26px;font-size:12px;color:#8090a8;">Stand: Oktober 2026. Allgemeine Information, keine Steuer- oder Rechtsberatung.</p>
+  </div>
+</div>
+<div class="gold-bar"></div>
+<div class="footer" style="margin-top:40px;"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg &nbsp;·&nbsp; <a href="impressum.html" style="color:#ffffff;text-decoration:none;">Impressum</a> &nbsp;·&nbsp; <a href="datenschutz.html" style="color:#ffffff;text-decoration:none;">Datenschutz</a> &nbsp;·&nbsp; <a href="agb.html" style="color:#ffffff;text-decoration:none;">AGB</a></div>
+<script src="checklist-save.js"></script>
+</body>
+</html>
