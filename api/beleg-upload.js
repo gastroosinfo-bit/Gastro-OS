@@ -112,7 +112,7 @@ function belegBarKarteFinden(text) {
 
 async function belegAuslesenPdf(buffer) {
   try {
-    const pdfParse = require('pdf-parse');
+    const pdfParse = require('pdf-parse/lib/pdf-parse.js');
     const data = await pdfParse(buffer);
     const text = data.text || '';
     const mwst = belegMwstFinden(text);
@@ -137,6 +137,17 @@ async function belegAuslesenPdf(buffer) {
 
 // ─── Automatische Auslese aus Fotos via Claude/Anthropic (kostenpflichtig) ──
 // ─── Automatische Auslese via Claude/Anthropic (Fotos UND PDFs ohne Textschicht) ──
+// Bildtyp anhand der echten Dateikopf-Bytes bestimmen (Dateiendung/Browser-Angabe kann falsch sein)
+function bildTypErkennen(buffer, angegeben) {
+  if (buffer && buffer.length > 12) {
+    if (buffer[0] === 0x89 && buffer[1] === 0x50 && buffer[2] === 0x4E && buffer[3] === 0x47) return 'image/png';
+    if (buffer[0] === 0xFF && buffer[1] === 0xD8 && buffer[2] === 0xFF) return 'image/jpeg';
+    if (buffer.slice(0, 3).toString('ascii') === 'GIF') return 'image/gif';
+    if (buffer.slice(0, 4).toString('ascii') === 'RIFF' && buffer.slice(8, 12).toString('ascii') === 'WEBP') return 'image/webp';
+  }
+  return angegeben || 'image/jpeg';
+}
+
 async function belegAuslesenClaude(buffer, contentType) {
   if (!ANTHROPIC_API_KEY) {
     return { datum: null, betrag: null, plattform: null, mwst19Betrag: null, mwst7Betrag: null, istZBon: false, barBetrag: null, kartenBetrag: null, rechnungsnummer: null, steuerId: null };
@@ -146,7 +157,7 @@ async function belegAuslesenClaude(buffer, contentType) {
     const istPdf = contentType === 'application/pdf';
     const contentBlock = istPdf
       ? { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: base64 } }
-      : { type: 'image', source: { type: 'base64', media_type: contentType || 'image/jpeg', data: base64 } };
+      : { type: 'image', source: { type: 'base64', media_type: bildTypErkennen(buffer, contentType), data: base64 } };
     const prompt = 'Das ist eine Rechnung, ein Kassenbon oder ein Kassen-Tagesabschluss (Z-Bon) aus der Gastronomie oder einem Einzelhandel/Großhandel (z. B. Lidl, Metro, Medimax). ' +
       'Lies daraus folgende Angaben aus und antworte AUSSCHLIESSLICH mit einem JSON-Objekt, ohne weiteren Text, ohne Markdown-Codeblock: ' +
       '{"datum": "YYYY-MM-DD oder null", "betrag": Zahl (Gesamt-Bruttobetrag bzw. Gesamtumsatz) oder null, "plattform": "Name des Lieferanten/Geschäfts oder null", ' +
@@ -234,7 +245,7 @@ async function artikelberichtAuslesen(buffer, contentType) {
     const istPdf = contentType === 'application/pdf';
     const contentBlock = istPdf
       ? { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: base64 } }
-      : { type: 'image', source: { type: 'base64', media_type: contentType || 'image/jpeg', data: base64 } };
+      : { type: 'image', source: { type: 'base64', media_type: bildTypErkennen(buffer, contentType), data: base64 } };
     const prompt = 'Das ist ein Artikel- bzw. Verkaufsbericht aus einem Kassensystem einer Gastronomie. Er zeigt, welche Gerichte/Artikel wie oft verkauft wurden. ' +
       'Lies JEDE Zeile mit einem Gericht/Artikel und der dazugehörigen verkauften Menge (Anzahl) aus. ' +
       'Ordne jeden Artikel zusätzlich einer Kategorie zu: "speise" für Essen, "getraenk" für alle Getränke (auch alkoholische). ' +
