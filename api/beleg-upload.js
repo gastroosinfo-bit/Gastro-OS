@@ -169,7 +169,7 @@ async function belegAuslesenClaude(buffer, contentType) {
       },
       body: JSON.stringify({
         model: 'claude-haiku-5-5',
-        max_tokens: 400,
+        max_tokens: 2000,
         messages: [{ role: 'user', content: [contentBlock, { type: 'text', text: prompt }] }]
       })
     });
@@ -181,7 +181,11 @@ async function belegAuslesenClaude(buffer, contentType) {
     const data = await res.json();
     const textBlock = (data.content || []).find(function (b) { return b && b.type === 'text' && b.text; });
     const textAntwort = (textBlock && textBlock.text) || '';
-    const bereinigt = textAntwort.replace(/```json|```/g, '').trim();
+    if (data.stop_reason === 'max_tokens') console.error('Claude-Beleg-Auslese abgeschnitten (max_tokens)');
+    let bereinigt = textAntwort.replace(/```json|```/g, '').trim();
+    const ersteKlammer = bereinigt.indexOf('{');
+    const letzteKlammer = bereinigt.lastIndexOf('}');
+    if (ersteKlammer >= 0 && letzteKlammer > ersteKlammer) bereinigt = bereinigt.slice(ersteKlammer, letzteKlammer + 1);
     const geparst = JSON.parse(bereinigt);
     return {
       datum: geparst.datum || null,
