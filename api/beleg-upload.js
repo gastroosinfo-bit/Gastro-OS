@@ -130,6 +130,7 @@ async function belegAuslesenPdf(buffer) {
       steuerId: belegSteuerIdFinden(text)
     };
   } catch (e) {
+    console.error('Claude-Beleg-Auslese Ausnahme', e && e.message);
     return { datum: null, betrag: null, plattform: null, mwst19Betrag: null, mwst7Betrag: null, istZBon: false, barBetrag: null, kartenBetrag: null, rechnungsnummer: null, steuerId: null };
   }
 }
@@ -174,10 +175,12 @@ async function belegAuslesenClaude(buffer, contentType) {
     });
 
     if (!res.ok) {
+      console.error('Claude-Beleg-Auslese Fehler', res.status, (await res.text()).slice(0, 500));
       return { datum: null, betrag: null, plattform: null, mwst19Betrag: null, mwst7Betrag: null, istZBon: false, barBetrag: null, kartenBetrag: null, rechnungsnummer: null, steuerId: null };
     }
     const data = await res.json();
-    const textAntwort = (data.content && data.content[0] && data.content[0].text) || '';
+    const textBlock = (data.content || []).find(function (b) { return b && b.type === 'text' && b.text; });
+    const textAntwort = (textBlock && textBlock.text) || '';
     const bereinigt = textAntwort.replace(/```json|```/g, '').trim();
     const geparst = JSON.parse(bereinigt);
     return {
@@ -193,6 +196,7 @@ async function belegAuslesenClaude(buffer, contentType) {
       steuerId: (typeof geparst.steuerId === 'string' && geparst.steuerId.trim()) ? geparst.steuerId.trim() : null
     };
   } catch (e) {
+    console.error('Claude-Beleg-Auslese Ausnahme', e && e.message);
     return { datum: null, betrag: null, plattform: null, mwst19Betrag: null, mwst7Betrag: null, istZBon: false, barBetrag: null, kartenBetrag: null, rechnungsnummer: null, steuerId: null };
   }
 }
@@ -250,9 +254,13 @@ async function artikelberichtAuslesen(buffer, contentType) {
       })
     });
 
-    if (!res.ok) return { artikel: [] };
+    if (!res.ok) {
+      console.error('Claude-Artikel-Auslese Fehler', res.status, (await res.text()).slice(0, 500));
+      return { artikel: [] };
+    }
     const data = await res.json();
-    const textAntwort = (data.content && data.content[0] && data.content[0].text) || '';
+    const textBlock = (data.content || []).find(function (b) { return b && b.type === 'text' && b.text; });
+    const textAntwort = (textBlock && textBlock.text) || '';
     const bereinigt = textAntwort.replace(/```json|```/g, '').trim();
     const geparst = JSON.parse(bereinigt);
     if (!Array.isArray(geparst)) return { artikel: [] };
@@ -266,6 +274,7 @@ async function artikelberichtAuslesen(buffer, contentType) {
       }));
     return { artikel };
   } catch (e) {
+    console.error('Claude-Artikel-Auslese Ausnahme', e && e.message);
     return { artikel: [] };
   }
 }
