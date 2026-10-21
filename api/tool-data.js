@@ -39,18 +39,160 @@ function sbHeaders() {
 // ─── Zentrale-Ansicht: Zahlen der zugeordneten Filialen (nur lesen) ──────────
 // Nur Zugänge, die in der Tabelle filial_gruppen als zentrale_email eingetragen sind, dürfen das abrufen.
 // Es werden nur Zahlen zurückgegeben (keine E-Mail-Adressen, keine Belegdateien).
-// Leichte Abfrage: Ist dieser Zugang eine Zentrale? (für die Kachel im Dashboard)
+// ─── Hilfsfunktionen Zentrale / Filialen ─────────────────────────────────────
+const WOCHENTAGE = ['mo', 'di', 'mi', 'do', 'fr', 'sa', 'so'];
+function ruhetageNormal(v) {
+  const liste = Array.isArray(v) ? v : String(v || '').toLowerCase().split(/[\s,;]+/);
+  const out = [];
+  liste.forEach(x => {
+    const k = String(x || '').toLowerCase().slice(0, 2);
+    if (WOCHENTAGE.includes(k) && !out.includes(k)) out.push(k);
+  });
+  return out.join(',');
+}
+function emailOk(e) { return typeof e === 'string' && e.length <= 160 && /^[^\s@,"'()]+@[^\s@,"'()]+\.[^\s@,"'()]+$/.test(e); }
+function q(v) { return encodeURIComponent(v); }
+
+// Stufe/Plan der Zentrale (Tabelle zentrale_plaene); null = keine Zentrale
+async function zentralePlan(email) {
+  const r = await fetch(
+    SUPABASE_URL + '/rest/v1/zentrale_plaene?zentrale_email=eq.' + q(email.toLowerCase()) + '&select=max_filialen,plan,nur_zentrale&limit=1',
+    { headers: sbHeaders() }
+  );
+  if (!r.ok) return null;
+  const rows = await r.json();
+  return Array.isArray(rows) && rows.length > 0 ? rows[0] : null;
+}
+async function zentraleFilialen(email) {
+  const r = await fetch(
+    SUPABASE_URL + '/rest/v1/filial_gruppen?zentrale_email=eq.' + q(email.toLowerCase()) +
+    '&select=filiale_email,filiale_name,ruhetage,status&order=filiale_name.asc&limit=500',
+    { headers: sbHeaders() }
+  );
+  if (!r.ok) return null;
+  const rows = await r.json();
+  return Array.isArray(rows) ? rows : null;
+}
+
+// Leichte Abfrage: Ist dieser Zugang eine Zentrale? (für Kachel im Dashboard, Überblick und Login-Weiche)
 async function gruppeCheck(req, res, email) {
   try {
-    const gRes = await fetch(
-      SUPABASE_URL + '/rest/v1/filial_gruppen?zentrale_email=eq.' + encodeURIComponent(email) + '&select=filiale_email,nur_zentrale&limit=50',
+    const plan = await zentralePlan(email);
+    const filialen = await zentraleFilialen(email);
+    const ok = !!plan || (Array.isArray(filialen) && filialen.length > 0);
+    return res.status(200).json({ zentrale: ok, nurZentrale: !!(plan && plan.nur_zentrale === true) });
+  } catch (e) {
+    return res.status(200).json({ zentrale: false, nurZentrale: false });
+  }
+}
+
+// Zentrale: eigene Filialen mit Status und Limit
+async function gruppeVerwalten(req, res, email) {
+  try {
+    const plan = await zentralePlan(email);
+    const filialen = await zentraleFilialen(email);
+    if (!plan && !(filialen && filialen.length > 0)) return res.status(403).json({ error: 'Kein Zentrale-Zugang.' });
+    return res.status(200).json({
+      max: plan ? plan.max_filialen : 0,
+      plan: plan ? plan.plan : null,
+      filialen: (filialen || []).map(f => ({ email: f.filiale_email, name: f.filiale_name, ruhetage: f.ruhetage || '', status: f.status || 'aktiv' }))
+    });
+  } catch (e) {
+    return res.status(500).json({ error: 'Fehler beim Laden.' });
+  }
+}
+
+// Filiale: Anfragen von Zentralen und bestehende Freigaben
+async function gruppeAnfragen(req, res, email) {
+  try {
+    const r = await fetch(
+      SUPABASE_URL + '/rest/v1/filial_gruppen?filiale_email=eq.' + q(email.toLowerCase()) +
+      '&select=zentrale_email,status&limit=100',
       { headers: sbHeaders() }
     );
-    const rows = await gRes.json();
-    const ok = Array.isArray(rows) && rows.length > 0;
-    return res.status(200).json({ zentrale: ok, nurZentrale: ok && rows.some(r => r.nur_zentrale === true) });
+    const rows = await r.json();
+    if (!Array.isArray(rows)) return res.status(200).json({ anfragen: [], freigaben: [] });
+    // Eigene Zeile (Zentrale = Filiale) nicht anzeigen
+    const fremd = rows.filter(x => String(x.zentrale_email).toLowerCase() !== email.toLowerCase());
+    return res.status(200).json({
+      anfragen: fremd.filter(x => x.status === 'angefragt').map(x => ({ zentrale: x.zentrale_email })),
+      freigaben: fremd.filter(x => (x.status || 'aktiv') === 'aktiv').map(x => ({ zentrale: x.zentrale_email }))
+    });
   } catch (e) {
-    return res.status(200).json({ zentrale: false });
+    return res.status(200).json({ anfragen: [], freigaben: [] });
+  }
+}
+
+// POST-Aktionen für Zentrale und Filiale
+async function gruppeAktion(req, res, email) {
+  const b = req.body || {};
+  const ich = email.toLowerCase();
+  try {
+    // ── Filiale antwortet auf eine Anfrage / beendet eine Freigabe
+    if (b.gruppe === 'antwort') {
+      const zentrale = String(b.zentrale || '').toLowerCase();
+      if (!emailOk(zentrale)) return res.status(400).json({ error: 'Angaben ungültig.' });
+      const filter = '?zentrale_email=eq.' + q(zentrale) + '&filiale_email=eq.' + q(ich);
+      if (b.entscheidung === 'zulassen') {
+        await fetch(SUPABASE_URL + '/rest/v1/filial_gruppen' + filter + '&status=eq.angefragt', {
+          method: 'PATCH', headers: sbHeaders(), body: JSON.stringify({ status: 'aktiv' })
+        });
+      } else if (b.entscheidung === 'ablehnen' || b.entscheidung === 'trennen') {
+        await fetch(SUPABASE_URL + '/rest/v1/filial_gruppen' + filter, { method: 'DELETE', headers: sbHeaders() });
+      } else {
+        return res.status(400).json({ error: 'Angaben ungültig.' });
+      }
+      return res.status(200).json({ success: true });
+    }
+
+    // ── ab hier: nur Zentralen
+    const plan = await zentralePlan(ich);
+    const bestehende = await zentraleFilialen(ich);
+    if (!plan && !(bestehende && bestehende.length > 0)) return res.status(403).json({ error: 'Kein Zentrale-Zugang.' });
+    const filiale = String(b.filiale_email || '').toLowerCase().trim();
+    if (!emailOk(filiale)) return res.status(400).json({ error: 'Bitte eine gültige E-Mail-Adresse der Filiale eingeben.' });
+    const filter = '?zentrale_email=eq.' + q(ich) + '&filiale_email=eq.' + q(filiale);
+
+    if (b.gruppe === 'hinzufuegen') {
+      const name = String(b.name || '').trim().slice(0, 80);
+      if (!name) return res.status(400).json({ error: 'Bitte einen Namen für die Filiale eingeben.' });
+      const max = plan ? plan.max_filialen : 0;
+      if ((bestehende || []).length >= max) {
+        return res.status(403).json({ error: 'limit', max, belegt: (bestehende || []).length });
+      }
+      if ((bestehende || []).some(f => String(f.filiale_email).toLowerCase() === filiale)) {
+        return res.status(409).json({ error: 'Diese E-Mail-Adresse ist schon eingetragen.' });
+      }
+      const ins = await fetch(SUPABASE_URL + '/rest/v1/filial_gruppen', {
+        method: 'POST', headers: sbHeaders(),
+        body: JSON.stringify({
+          zentrale_email: ich, filiale_email: filiale, filiale_name: name,
+          ruhetage: ruhetageNormal(b.ruhetage),
+          status: filiale === ich ? 'aktiv' : 'angefragt'   // eigene Adresse braucht keine Zustimmung
+        })
+      });
+      if (!ins.ok) return res.status(500).json({ error: 'Konnte nicht gespeichert werden.' });
+      return res.status(200).json({ success: true, status: filiale === ich ? 'aktiv' : 'angefragt' });
+    }
+
+    if (b.gruppe === 'aendern') {
+      const name = String(b.name || '').trim().slice(0, 80);
+      if (!name) return res.status(400).json({ error: 'Bitte einen Namen für die Filiale eingeben.' });
+      await fetch(SUPABASE_URL + '/rest/v1/filial_gruppen' + filter, {
+        method: 'PATCH', headers: sbHeaders(),
+        body: JSON.stringify({ filiale_name: name, ruhetage: ruhetageNormal(b.ruhetage) })
+      });
+      return res.status(200).json({ success: true });
+    }
+
+    if (b.gruppe === 'entfernen') {
+      await fetch(SUPABASE_URL + '/rest/v1/filial_gruppen' + filter, { method: 'DELETE', headers: sbHeaders() });
+      return res.status(200).json({ success: true });
+    }
+
+    return res.status(400).json({ error: 'Unbekannte Aktion.' });
+  } catch (e) {
+    return res.status(500).json({ error: 'Fehler. Bitte versuche es erneut.' });
   }
 }
 
@@ -67,12 +209,17 @@ async function gruppeUebersicht(req, res, email) {
   try {
     const gRes = await fetch(
       SUPABASE_URL + '/rest/v1/filial_gruppen?zentrale_email=eq.' + encodeURIComponent(email) +
-      '&select=filiale_email,filiale_name,ruhetage&order=filiale_name.asc&limit=500',
+      '&status=eq.aktiv&select=filiale_email,filiale_name,ruhetage&order=filiale_name.asc&limit=500',
       { headers: sbHeaders() }
     );
     const filialen = await gRes.json();
     if (!Array.isArray(filialen)) return res.status(500).json({ error: 'Fehler beim Laden.' });
-    if (filialen.length === 0) return res.status(403).json({ error: 'Kein Zentrale-Zugang.' });
+    if (filialen.length === 0) {
+      const plan = await zentralePlan(email);
+      const alle = await zentraleFilialen(email);
+      if (!plan && !(alle && alle.length > 0)) return res.status(403).json({ error: 'Kein Zentrale-Zugang.' });
+      return res.status(200).json({ von, bis, filialen: [] });
+    }
 
     const emails = filialen.map(f => '"' + String(f.filiale_email).replace(/"/g, '') + '"').join(',');
     const tools = ['tagesgeschaeft-kassenbuch', 'tagesgeschaeft-stornos', 'tagesgeschaeft-freigetraenke', 'tagesgeschaeft-abschreibungen'];
@@ -155,6 +302,8 @@ export default async function handler(req, res) {
   if (req.method === 'GET') {
     if (req.query.gruppe === 'uebersicht') return gruppeUebersicht(req, res, email);
     if (req.query.gruppe === 'check') return gruppeCheck(req, res, email);
+    if (req.query.gruppe === 'verwalten') return gruppeVerwalten(req, res, email);
+    if (req.query.gruppe === 'anfragen') return gruppeAnfragen(req, res, email);
     const tool = req.query.tool;
     if (!tool) return res.status(400).json({ error: 'tool fehlt.' });
 
@@ -177,6 +326,7 @@ export default async function handler(req, res) {
   // verlässt sich NICHT auf einen Unique-Constraint in der Datenbank (merge-duplicates
   // erzeugt sonst bei fehlendem Constraint bei jedem Speichern eine neue Zeile).
   if (req.method === 'POST') {
+    if (req.body && req.body.gruppe) return gruppeAktion(req, res, email);
     const { tool, data } = req.body || {};
     if (!tool) return res.status(400).json({ error: 'tool fehlt.' });
 
