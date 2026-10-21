@@ -43,6 +43,7 @@ tfoot td { background:#1a2a4a; color:#fff; font-weight:700; border-color:#1a2a4a
 .badge { display:inline-block; font-size:10.5px; font-weight:700; padding:2px 8px; border-radius:10px; margin-left:4px; }
 .b-rot { background:#fdecea; color:#c0392b; }
 .b-gelb { background:#fff4d6; color:#8a6d00; }
+.b-grau { background:#eceff3; color:#5a6a80; }
 .b-ok { background:#e6f4ea; color:#1a6640; }
 .detail td { background:#fff !important; text-align:right; }
 .detail td:first-child { text-align:left; }
@@ -163,9 +164,21 @@ tfoot td { background:#1a2a4a; color:#fff; font-weight:700; border-color:#1a2a4a
       var r = { name: f.name, tage: f.tage || {}, tageGesamt: tage.length, tageMitEintrag: 0,
         umsatz: 0, kasse: 0, karte: 0, lieferdienste: 0, ueberweisung: 0, wareneinkauf: 0, sonstiges: 0,
         stornoAnz: 0, stornoSumme: 0, freiAnz: 0, freiSumme: 0, abschrAnz: 0, abschrSumme: 0, tageListe: tage };
+      var heuteIso = iso(new Date());
+      r.ruhetage = f.ruhetage || [];
+      r.erwartet = 0; r.tageMitEintrag = 0; r.fehlt = 0;
+      r.status = {};   // je Tag: 'ja' | 'fehlt' | 'ruhetag' | 'offen'
       tage.forEach(function (d) {
-        var t = r.tage[d]; if (!t) return;
-        if (t.eintrag) r.tageMitEintrag++;
+        var t = r.tage[d];
+        var hat = !!(t && t.eintrag);
+        var wochentag = new Date(d + 'T12:00:00').getDay();
+        var ruhetag = r.ruhetage.indexOf(wochentag) >= 0;
+        if (hat) { r.status[d] = 'ja'; }
+        else if (ruhetag) { r.status[d] = 'ruhetag'; }
+        else if (d >= heuteIso) { r.status[d] = 'offen'; }   // heute läuft noch, Zukunft zählt nicht
+        else { r.status[d] = 'fehlt'; }
+        if (r.status[d] === 'ja' || r.status[d] === 'fehlt') { r.erwartet++; if (hat) r.tageMitEintrag++; else r.fehlt++; }
+        if (!t) return;
         r.umsatz += t.umsatz; r.kasse += t.kasse; r.karte += t.karte; r.lieferdienste += t.lieferdienste; r.ueberweisung += t.ueberweisung;
         r.wareneinkauf += t.wareneinkauf; r.sonstiges += t.sonstiges;
         r.stornoAnz += t.stornoAnzahl; r.stornoSumme += t.stornoSumme;
@@ -173,7 +186,6 @@ tfoot td { background:#1a2a4a; color:#fff; font-weight:700; border-color:#1a2a4a
         r.abschrAnz += t.abschrAnzahl; r.abschrSumme += t.abschrSumme;
       });
       r.ergebnis = r.umsatz - r.wareneinkauf - r.sonstiges;
-      r.fehlt = r.tageGesamt - r.tageMitEintrag;
       return r;
     });
     // Auffälligkeiten: im Vergleich zum Durchschnitt aller Filialen (ab 3 Filialen), sonst feste Grenzen
@@ -242,21 +254,25 @@ tfoot td { background:#1a2a4a; color:#fff; font-weight:700; border-color:#1a2a4a
       var st = r.stornoAnz ? r.stornoAnz + ' (' + euro(r.stornoSumme) + ')' : '–';
       var fr = r.freiSumme ? euro(r.freiSumme) : '–';
       var ab = r.abschrSumme ? euro(r.abschrSumme) : '–';
-      var eint = r.fehlt === 0 ? '<span class="badge b-ok">vollständig</span>'
-        : '<span class="badge ' + (r.tageMitEintrag === 0 ? 'b-rot' : 'b-gelb') + '">' + r.tageMitEintrag + ' von ' + r.tageGesamt + ' Tagen</span>';
+      var eint;
+      if (r.fehlt > 0) eint = '<span class="badge ' + (r.tageMitEintrag === 0 ? 'b-rot' : 'b-gelb') + '">' + r.tageMitEintrag + ' von ' + r.erwartet + ' Tagen</span>';
+      else if (r.erwartet > 0) eint = '<span class="badge b-ok">vollständig</span>';
+      else eint = '<span class="badge b-grau">noch offen / Ruhetag</span>';
       var badges = r.auff.map(function (a) { return '<span class="badge b-rot">' + esc(a) + '</span>'; }).join('');
       h += '<tr class="fil" data-n="' + esc(r.name) + '"><td><strong>' + esc(r.name) + '</strong>' + badges + '</td><td>' + euro(r.umsatz) + '</td><td>' + euro(r.wareneinkauf) + '</td><td>' + euro(r.ergebnis) + '</td><td>' + st + '</td><td>' + fr + '</td><td>' + ab + '</td><td>' + eint + '</td></tr>';
       if (offen[r.name]) {
         h += '<tr class="detail"><td colspan="8"><div class="tabwrap"><table><thead><tr><th>Datum</th><th>Umsatz</th><th>Wareneinkauf</th><th>Stornos</th><th>Freigetränke</th><th>Abschreibungen</th><th>Eintrag</th></tr></thead><tbody>';
         r.tageListe.slice().reverse().forEach(function (d) {
           var t = r.tage[d] || { eintrag: false, umsatz: 0, wareneinkauf: 0, stornoAnzahl: 0, stornoSumme: 0, freiSumme: 0, abschrSumme: 0 };
-          h += '<tr><td>' + deDatum(d) + '</td><td>' + (t.eintrag ? euro(t.umsatz) : '–') + '</td><td>' + (t.eintrag ? euro(t.wareneinkauf) : '–') + '</td><td>' + (t.stornoAnzahl ? t.stornoAnzahl + ' (' + euro(t.stornoSumme) + ')' : '–') + '</td><td>' + (t.freiSumme ? euro(t.freiSumme) : '–') + '</td><td>' + (t.abschrSumme ? euro(t.abschrSumme) : '–') + '</td><td>' + (t.eintrag ? '<span class="badge b-ok">ja</span>' : '<span class="badge b-rot">fehlt</span>') + '</td></tr>';
+          var stt = r.status[d];
+          var badge = stt === 'ja' ? '<span class="badge b-ok">ja</span>' : stt === 'fehlt' ? '<span class="badge b-rot">fehlt</span>' : stt === 'ruhetag' ? '<span class="badge b-grau">Ruhetag</span>' : '<span class="badge b-grau">noch offen</span>';
+          h += '<tr><td>' + deDatum(d) + '</td><td>' + (t.eintrag ? euro(t.umsatz) : '–') + '</td><td>' + (t.eintrag ? euro(t.wareneinkauf) : '–') + '</td><td>' + (t.stornoAnzahl ? t.stornoAnzahl + ' (' + euro(t.stornoSumme) + ')' : '–') + '</td><td>' + (t.freiSumme ? euro(t.freiSumme) : '–') + '</td><td>' + (t.abschrSumme ? euro(t.abschrSumme) : '–') + '</td><td>' + badge + '</td></tr>';
         });
         h += '</tbody></table></div></td></tr>';
       }
     });
     h += '</tbody><tfoot><tr><td>Summe (angezeigte Filialen)</td><td>' + euro(sum('umsatz')) + '</td><td>' + euro(sum('wareneinkauf')) + '</td><td>' + euro(sum('ergebnis')) + '</td><td>' + sum('stornoAnz') + '</td><td>' + euro(sum('freiSumme')) + '</td><td>' + euro(sum('abschrSumme')) + '</td><td></td></tr></tfoot></table></div>';
-    h += '<div class="hinweis">Auf eine Filiale klicken zeigt die einzelnen Tage. Die Spaltenköpfe sortieren die Tabelle. „Auffällig“ heißt: deutlich mehr Stornos, Freigetränke oder Abschreibungen als der Durchschnitt aller Filialen. Die Zahlen stammen aus den Einträgen der Filialen, ein fehlender Eintrag bedeutet, dass an dem Tag nichts im Kassenbuch eingetragen wurde.</div>';
+    h += '<div class="hinweis">Auf eine Filiale klicken zeigt die einzelnen Tage. Die Spaltenköpfe sortieren die Tabelle. „Auffällig“ heißt: deutlich mehr Stornos, Freigetränke oder Abschreibungen als der Durchschnitt aller Filialen. Die Zahlen stammen aus den Einträgen der Filialen, „fehlt“ heißt: Für einen abgeschlossenen Tag, der kein Ruhetag der Filiale ist, wurde nichts im Kassenbuch eingetragen. Der heutige Tag zählt erst ab morgen.</div>';
     box.innerHTML = h;
 
     Array.prototype.forEach.call(box.querySelectorAll('th[data-k]'), function (th) {
