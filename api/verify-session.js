@@ -40,6 +40,11 @@ function heutigesDatumString() {
 }
 
 export default function handler(req, res) {
+  // Abmelden: Cookie serverseitig löschen (HttpOnly-Cookies kann die Seite selbst nicht löschen)
+  if (req.query && req.query.logout === '1') {
+    res.setHeader('Set-Cookie', 'gastro_os_session=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0');
+    return res.status(200).json({ ok: true });
+  }
   const cookie = req.headers.cookie || '';
   const match = cookie.match(/gastro_os_session=([^;]+)/);
   if (!match) return res.status(401).json({ valid: false });
