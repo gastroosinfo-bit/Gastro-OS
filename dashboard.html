@@ -1155,9 +1155,12 @@ async function init() {
 
   currentUser = { id: userEmail, email: userEmail };
   // Kachel "Meine Filialen" nur für Zentrale-Zugänge
-  fetch('/api/tool-data?gruppe=check').then(r => r.ok ? r.json() : null).then(d => {
-    if (d && d.zentrale) { const z = document.getElementById('zentrale-card'); if (z) z.style.display = ''; }
-  }).catch(() => {});
+  try {
+    const gr = await fetch('/api/tool-data?gruppe=check');
+    const gd = gr.ok ? await gr.json() : null;
+    if (gd && gd.nurZentrale) { window.location.replace('zentrale.html'); return; }
+    if (gd && gd.zentrale) { const z = document.getElementById('zentrale-card'); if (z) z.style.display = ''; }
+  } catch(e) {}
   document.getElementById('user-name').textContent = userEmail.split('@')[0];
 
   progress = (await loadTool('modul_progress')) || {};
@@ -2034,7 +2037,7 @@ async function faelligeRechnungenPruefen() {
 function euro(n) { return (Number(n) || 0).toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €'; }
 
 async function doLogout() {
-  document.cookie = 'gastro_os_session=; Path=/; Max-Age=0';
+  try { await fetch('/api/verify-session?logout=1'); } catch(e) {}
   window.location.href = 'login.html';
 }
 

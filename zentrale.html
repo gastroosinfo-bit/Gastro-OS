@@ -62,13 +62,23 @@ tfoot td { background:#1a2a4a; color:#fff; font-weight:700; border-color:#1a2a4a
     if (!res.ok) { window.location.href = 'login.html'; return; }
     const d = await res.json();
     if (!d.valid) { window.location.href = 'login.html'; return; }
+    try {
+      const g = await fetch('/api/tool-data?gruppe=check');
+      const gd = g.ok ? await g.json() : null;
+      if (gd && gd.nurZentrale) {
+        if (document.readyState === 'loading') await new Promise(r => document.addEventListener('DOMContentLoaded', r));
+        const b = document.getElementById('kopf-btn');
+        b.textContent = 'Abmelden'; b.removeAttribute('href'); b.style.cursor = 'pointer';
+        b.onclick = async function(){ try { await fetch('/api/verify-session?logout=1'); } catch(e) {} window.location.href = 'login.html'; };
+      }
+    } catch (e) {}
   } catch (e) { window.location.href = 'login.html'; }
 })();
 </script>
 
 <div class="header">
   <div class="brand">GASTRO-OS</div>
-  <a href="dashboard.html" class="back-btn">← Zurück zum Dashboard</a>
+  <a href="dashboard.html" class="back-btn" id="kopf-btn">← Zurück zum Dashboard</a>
 </div>
 <div class="gold-bar"></div>
 
