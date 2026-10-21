@@ -139,7 +139,7 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8 url('/bg-rest
     <button class="btn-add" onclick="bhBerichtErstellen()">📄 Ausgewählte Bereiche als PDF</button>
   </div>
 
-  <div class="section">
+  <div class="section" id="bh-zip-bereich">
     <div class="section-head">Original-Belegdateien</div>
     <div style="font-size:12.5px;color:#5a6a85;margin-bottom:14px;">Lädt alle hochgeladenen PDF-/Foto-Dateien der Belege des gewählten Monats gesammelt als ZIP-Datei herunter.</div>
     <button class="btn-add" onclick="bhBelegeAlsZip(this)">📦 <span id="bh-zip-anzahl-text">Alle Belegdateien des Monats</span> als ZIP herunterladen</button>
@@ -775,6 +775,7 @@ function bhBerichtErstellen() {
     if (titel) titel.textContent = '📊 Monatsbericht: ' + (_params.get('name') || FILIALE);
     const sub = document.querySelector('.tool-sub');
     if (sub) sub.textContent = 'Ansicht der Zentrale, nur lesen. Die Zahlen stammen aus den Einträgen der Filiale.';
+    const zipB = document.getElementById('bh-zip-bereich'); if (zipB) zipB.style.display = 'none';
     const lab = document.querySelector('.tool-label');
     if (lab) lab.textContent = 'Filial-Überblick · Monatsbericht';
   }
