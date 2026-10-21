@@ -2056,19 +2056,19 @@ async function filialFreigabenLaden() {
     let h = '';
     getr.forEach(function (g) {
       h += '<div style="background:#fff;border:1px solid #e0b4ae;border-radius:8px;padding:10px 14px;margin-bottom:8px;font-size:12.5px;color:#1a2a4a;display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;">' +
-        '<span>Die Zentrale <strong>' + filialEsc(g.zentrale) + '</strong> hat die Verbindung beendet und sieht deine Tageszahlen nicht mehr.</span>' +
+        '<span>Die Zentrale <strong>' + filialEsc(g.zentrale) + '</strong> hat die Verbindung beendet und sieht deine Zahlen nicht mehr.</span>' +
         '<button onclick="filialAntwort(\'' + filialEsc(g.zentrale) + '\',\'quittieren\')" style="background:#1a2a4a;color:#d4af37;border:none;border-radius:6px;padding:5px 14px;font-size:12px;font-weight:700;cursor:pointer;">OK</button></div>';
     });
     anf.forEach(function (a) {
       h += '<div style="background:#fff;border:2px solid #d4af37;border-radius:10px;padding:14px 16px;margin-bottom:10px;">' +
         '<div style="font-weight:700;color:#1a2a4a;font-size:14px;margin-bottom:4px;">Anfrage von einer Zentrale</div>' +
-        '<div style="font-size:13px;color:#1a2a4a;line-height:1.5;margin-bottom:10px;"><strong>' + filialEsc(a.zentrale) + '</strong> möchte die Tageszahlen dieser Filiale in ihrem Filial-Überblick sehen: Umsatz, Wareneinkauf, Stornos, Freigetränke und Abschreibungen aus dem Tagesgeschäft. Belege und Mitarbeiterdaten bleiben privat. Du kannst die Freigabe jederzeit wieder beenden.</div>' +
+        '<div style="font-size:13px;color:#1a2a4a;line-height:1.5;margin-bottom:10px;"><strong>' + filialEsc(a.zentrale) + '</strong> möchte die Zahlen dieser Filiale in ihrem Filial-Überblick sehen, nur lesend: das Tagesgeschäft (Umsatz, Wareneinkauf, Stornos, Freigetränke, Abschreibungen), den Monatsbericht und den Schichtplan (Namen und Zeiten der Mitarbeiter). Belegdateien, Zugangsdaten und PINs bleiben privat. Du kannst die Freigabe jederzeit wieder beenden.</div>' +
         '<button onclick="filialAntwort(\'' + filialEsc(a.zentrale) + '\',\'zulassen\')" style="background:#1a2a4a;color:#d4af37;border:none;border-radius:6px;padding:8px 16px;font-weight:700;font-size:12.5px;cursor:pointer;margin-right:8px;">Zulassen</button>' +
         '<button onclick="filialAntwort(\'' + filialEsc(a.zentrale) + '\',\'ablehnen\')" style="background:#faf8f4;color:#c0392b;border:1px solid #e0d8c8;border-radius:6px;padding:8px 16px;font-weight:700;font-size:12.5px;cursor:pointer;">Ablehnen</button></div>';
     });
     frei.forEach(function (f) {
       h += '<div style="background:rgba(255,255,255,0.85);border:1px solid #e4d5a8;border-radius:8px;padding:8px 14px;margin-bottom:8px;font-size:12px;color:#5a6a85;display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;">' +
-        '<span>Die Zentrale <strong>' + filialEsc(f.zentrale) + '</strong> sieht deine Tageszahlen.</span>' +
+        '<span>Die Zentrale <strong>' + filialEsc(f.zentrale) + '</strong> sieht deine Zahlen (nur lesen).</span>' +
         '<button onclick="filialAntwort(\'' + filialEsc(f.zentrale) + '\',\'trennen\')" style="background:none;border:1px solid #e0d8c8;border-radius:6px;padding:4px 10px;font-size:11.5px;font-weight:700;color:#c0392b;cursor:pointer;">Freigabe beenden</button></div>';
     });
     box.innerHTML = h;

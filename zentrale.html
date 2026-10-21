@@ -49,6 +49,8 @@ tfoot td { background:#1a2a4a; color:#fff; font-weight:700; border-color:#1a2a4a
 .detail td:first-child { text-align:left; }
 .detail table td, .detail table th { cursor:default; }
 
+.det { text-align:left; padding:4px 2px 10px; cursor:default; }
+.det-titel { font-weight:700; font-size:13px; color:#1a2a4a; margin:14px 0 6px; }
 .verw-kopf { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px; margin-bottom:10px; }
 .verw-zaehler { font-size:13px; font-weight:700; color:#1a2a4a; }
 .verw-balken { height:8px; background:#eceff3; border-radius:6px; overflow:hidden; width:220px; max-width:100%; margin-top:6px; }
@@ -206,6 +208,7 @@ tfoot td { background:#1a2a4a; color:#fff; font-weight:700; border-color:#1a2a4a
         umsatz: 0, kasse: 0, karte: 0, lieferdienste: 0, ueberweisung: 0, wareneinkauf: 0, sonstiges: 0,
         stornoAnz: 0, stornoSumme: 0, freiAnz: 0, freiSumme: 0, abschrAnz: 0, abschrSumme: 0, tageListe: tage };
       var heuteIso = iso(new Date());
+      r.email = f.email || '';
       r.ruhetage = f.ruhetage || [];
       r.erwartet = 0; r.tageMitEintrag = 0; r.fehlt = 0;
       r.status = {};   // je Tag: 'ja' | 'fehlt' | 'ruhetag' | 'offen'
@@ -309,7 +312,7 @@ tfoot td { background:#1a2a4a; color:#fff; font-weight:700; border-color:#1a2a4a
           var badge = stt === 'ja' ? '<span class="badge b-ok">ja</span>' : stt === 'fehlt' ? '<span class="badge b-rot">fehlt</span>' : stt === 'ruhetag' ? '<span class="badge b-grau">Ruhetag</span>' : '<span class="badge b-grau">noch offen</span>';
           h += '<tr><td>' + deDatum(d) + '</td><td>' + (t.eintrag ? euro(t.umsatz) : '–') + '</td><td>' + (t.eintrag ? euro(t.wareneinkauf) : '–') + '</td><td>' + (t.stornoAnzahl ? t.stornoAnzahl + ' (' + euro(t.stornoSumme) + ')' : '–') + '</td><td>' + (t.freiSumme ? euro(t.freiSumme) : '–') + '</td><td>' + (t.abschrSumme ? euro(t.abschrSumme) : '–') + '</td><td>' + badge + '</td></tr>';
         });
-        h += '</tbody></table></div></td></tr>';
+        h += '</tbody></table></div><div class="det" data-e="' + esc(r.email) + '" data-n="' + esc(r.name) + '"><div class="meldung">Lade Einzelheiten …</div></div></td></tr>';
       }
     });
     h += '</tbody><tfoot><tr><td>Summe (angezeigte Filialen)</td><td>' + euro(sum('umsatz')) + '</td><td>' + euro(sum('wareneinkauf')) + '</td><td>' + euro(sum('ergebnis')) + '</td><td>' + sum('stornoAnz') + '</td><td>' + euro(sum('freiSumme')) + '</td><td>' + euro(sum('abschrSumme')) + '</td><td></td></tr></tfoot></table></div>';
@@ -326,6 +329,55 @@ tfoot td { background:#1a2a4a; color:#fff; font-weight:700; border-color:#1a2a4a
     Array.prototype.forEach.call(box.querySelectorAll('tr.fil'), function (tr) {
       tr.onclick = function () { var n = tr.getAttribute('data-n'); offen[n] = !offen[n]; zeichnen(); };
     });
+    Array.prototype.forEach.call(box.querySelectorAll('.det'), function (el) { detailsZeigen(el); });
+  }
+
+
+  // ── Einzelheiten einer Filiale (nur lesen): Stornos/Freigetränke/Abschreibungen, Schichtplan, Monatsbericht
+  var detCache = {};
+  async function detailsZeigen(el) {
+    var mail = el.getAttribute('data-e'), name = el.getAttribute('data-n');
+    if (!mail) { el.innerHTML = ''; return; }
+    var heute = new Date(), s2 = new Date(heute); s2.setDate(s2.getDate() + 13);
+    var key = mail + '|' + daten.von + '|' + daten.bis + '|' + iso(heute);
+    var d = detCache[key];
+    if (!d) {
+      try {
+        var res = await fetch('/api/tool-data?gruppe=details&filiale=' + encodeURIComponent(mail) +
+          '&von=' + daten.von + '&bis=' + daten.bis + '&svon=' + iso(heute) + '&sbis=' + iso(s2));
+        if (!res.ok) { el.innerHTML = '<div class="meldung fehler">Die Einzelheiten konnten nicht geladen werden.</div>'; return; }
+        d = await res.json(); detCache[key] = d;
+      } catch (e) { el.innerHTML = '<div class="meldung fehler">Die Einzelheiten konnten nicht geladen werden.</div>'; return; }
+    }
+    var zeitraum = daten.von === daten.bis ? deDatum(daten.von) : deDatum(daten.von) + ' – ' + deDatum(daten.bis);
+    var h = '<div style="margin:14px 0 6px;"><a class="btn-gold" href="buchhaltung.html?filiale=' + encodeURIComponent(mail) + '&name=' + encodeURIComponent(name) + '">Monatsbericht ansehen</a></div>';
+
+    var zeilen2 = [];
+    d.stornos.forEach(function (i) { zeilen2.push({ datum: i.datum, art: 'Storno', was: '–', menge: '', wert: i.betrag, grund: i.grund }); });
+    d.freigetraenke.forEach(function (i) { zeilen2.push({ datum: i.datum, art: 'Freigetränk', was: i.name, menge: i.menge ? i.menge + ' ' + i.einheit : '', wert: i.wert, grund: i.grund }); });
+    d.abschreibungen.forEach(function (i) { zeilen2.push({ datum: i.datum, art: 'Abschreibung', was: i.name, menge: i.menge ? i.menge + ' ' + i.einheit : '', wert: i.wert, grund: i.grund }); });
+    zeilen2.sort(function (a, b) { return a.datum < b.datum ? 1 : a.datum > b.datum ? -1 : 0; });
+    h += '<div class="det-titel">Stornos, Freigetränke &amp; Abschreibungen · ' + esc(zeitraum) + '</div>';
+    if (zeilen2.length === 0) h += '<div class="meldung" style="padding:6px 0;">Keine Einträge in diesem Zeitraum.</div>';
+    else {
+      h += '<div class="tabwrap"><table><thead><tr><th>Datum</th><th>Art</th><th>Was</th><th>Menge</th><th>Wert</th><th>Grund</th></tr></thead><tbody>';
+      zeilen2.forEach(function (z) {
+        h += '<tr><td>' + deDatum(z.datum) + '</td><td style="text-align:left;">' + esc(z.art) + '</td><td style="text-align:left;">' + esc(z.was) + '</td><td>' + esc(z.menge) + '</td><td>' + euro(z.wert) + '</td><td style="text-align:left;white-space:normal;">' + esc(z.grund) + '</td></tr>';
+      });
+      h += '</tbody></table></div>';
+    }
+
+    h += '<div class="det-titel">Schichtplan · nächste 14 Tage</div>';
+    if (d.schichten.length === 0) h += '<div class="meldung" style="padding:6px 0;">Keine Schichten eingetragen.</div>';
+    else {
+      var sl = d.schichten.slice().sort(function (a, b) { return a.datum < b.datum ? -1 : a.datum > b.datum ? 1 : (a.von < b.von ? -1 : 1); });
+      h += '<div class="tabwrap"><table><thead><tr><th>Datum</th><th>Mitarbeiter</th><th>Zeit</th><th>Notiz</th></tr></thead><tbody>';
+      sl.forEach(function (x) {
+        h += '<tr><td>' + deDatum(x.datum) + '</td><td style="text-align:left;">' + esc(x.name) + '</td><td>' + esc(x.von) + ' – ' + esc(x.bis) + '</td><td style="text-align:left;white-space:normal;">' + esc(x.notiz) + '</td></tr>';
+      });
+      h += '</tbody></table></div>';
+    }
+    el.innerHTML = h;
   }
 
   Array.prototype.forEach.call(document.querySelectorAll('#presets .chip[data-p]'), function (b) {
@@ -348,6 +400,7 @@ tfoot td { background:#1a2a4a; color:#fff; font-weight:700; border-color:#1a2a4a
 (function () {
   // Upgrade-Kontakt: später durch den Whop-Link ersetzen
   var UPGRADE_LINK = 'mailto:info@mein-gastro-system.de?subject=Upgrade%20Filial-%C3%9Cberblick';
+  var INDIVIDUELL_LINK = 'mailto:info@mein-gastro-system.de?subject=Individuelles%20Angebot%20Filial-%C3%9Cberblick';
   var TAGE = [['mo','Mo'],['di','Di'],['mi','Mi'],['do','Do'],['fr','Fr'],['sa','Sa'],['so','So']];
   var stand = null;
 
@@ -384,7 +437,11 @@ tfoot td { background:#1a2a4a; color:#fff; font-weight:700; border-color:#1a2a4a
     var h = '<div class="verw-kopf"><div><div class="verw-zaehler">' + n + ' von ' + max + ' Filialen belegt</div>' +
             '<div class="verw-balken' + (voll ? ' voll' : '') + '"><div style="width:' + proz + '%"></div></div></div></div>';
     if (voll) {
-      h += '<div class="verw-hinweis">Alle Filialen deiner Stufe sind belegt. Für weitere Filialen wechsle bitte auf die nächste Stufe. <a class="btn-gold" style="margin-left:8px;padding:6px 14px;" href="' + UPGRADE_LINK + '">Upgrade anfragen</a></div>';
+      if (max >= 30) {
+        h += '<div class="verw-hinweis">Du hast alle Filialen der größten Stufe belegt. Für mehr als 30 Filialen erstellen wir dir ein individuelles Angebot. Bitte melde dich bei uns. <a class="btn-gold" style="margin-left:8px;padding:6px 14px;" href="' + INDIVIDUELL_LINK + '">Individuelles Angebot anfragen</a></div>';
+      } else {
+        h += '<div class="verw-hinweis">Alle Filialen deiner Stufe sind belegt. Für weitere Filialen wechsle bitte auf die nächste Stufe. <a class="btn-gold" style="margin-left:8px;padding:6px 14px;" href="' + UPGRADE_LINK + '">Upgrade anfragen</a></div>';
+      }
     }
     if (n === 0) h += '<div class="meldung">Noch keine Filialen eingetragen.</div>';
     stand.filialen.forEach(function (f) {

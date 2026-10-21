@@ -157,9 +157,12 @@ async function checkAuth() {
     return true;
   } catch (e) { window.location.href = 'login.html'; return false; }
 }
+// Ansicht einer Zentrale: Monatsbericht einer Filiale (nur lesen)
+const _params = new URLSearchParams(location.search);
+const FILIALE = _params.get('filiale') || '';
 async function toolLoad(tool) {
   try {
-    const res = await fetch('/api/tool-data?tool=' + encodeURIComponent(tool));
+    const res = await fetch('/api/tool-data?tool=' + encodeURIComponent(tool) + (FILIALE ? '&filiale=' + encodeURIComponent(FILIALE) : ''));
     if (!res.ok) return {};
     const d = await res.json();
     return (d && d.data) ? d.data : {};
@@ -707,6 +710,16 @@ function bhBerichtErstellen() {
 (async function init() {
   const ok = await checkAuth();
   if (!ok) return;
+  if (FILIALE) {
+    const back = document.querySelector('.btn-back');
+    if (back) { back.href = 'zentrale.html'; back.textContent = '← Zurück zum Filial-Überblick'; }
+    const titel = document.querySelector('.tool-title');
+    if (titel) titel.textContent = '📊 Monatsbericht: ' + (_params.get('name') || FILIALE);
+    const sub = document.querySelector('.tool-sub');
+    if (sub) sub.textContent = 'Ansicht der Zentrale, nur lesen. Die Zahlen stammen aus den Einträgen der Filiale.';
+    const lab = document.querySelector('.tool-label');
+    if (lab) lab.textContent = 'Filial-Überblick · Monatsbericht';
+  }
   const [kb, we, bel, fg, ac, sb, hc, nz, ab] = await Promise.all([
     toolLoad('tagesgeschaeft-kassenbuch'),
     toolLoad('tagesgeschaeft-wareneingang'),
