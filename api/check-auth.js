@@ -177,7 +177,7 @@ export default async function handler(req, res) {
       `gastro_os_session=${token}; Path=/; HttpOnly; Secure; SameSite=Lax${kurz ? '' : `; Max-Age=${SESSION_DAYS * 86400}`}`
     );
     await logLogin(email);
-    return res.status(200).json({ success: true });
+    return res.status(200).json({ success: true, ziel: kurz ? '/zentrale.html' : '/dashboard.html' });
   }
 
   return res.status(400).json({ error: 'Ungültiger Schritt.' });
