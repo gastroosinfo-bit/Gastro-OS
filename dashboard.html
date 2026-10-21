@@ -486,6 +486,8 @@ faqRender();
 
     <div id="unread-banner" style="display:none;background:#c0392b;color:#fff;border-radius:8px;padding:10px 16px;font-size:12.5px;font-weight:600;margin-bottom:12px;text-align:center;"></div>
 
+    <div id="filial-freigaben" style="display:none;margin-bottom:14px;"></div>
+
     <div style="text-align:center;margin:4px 4px 16px;">
       <span style="background:#1a6640;color:#fff;font-size:10px;font-weight:700;letter-spacing:0.5px;padding:5px 14px;border-radius:999px;"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="width:11px;height:11px;margin-right:4px;vertical-align:-1px;stroke-width:3.2;"><path d="M20 6 9 17l-5-5" /></svg>SOFORT NUTZBAR</span>
       <div style="font-size:11px;color:#5a6a85;margin-top:6px;">Kein Quiz, keine Freischaltung nötig — ab dem ersten Tag einsatzbereit</div>
@@ -1164,6 +1166,7 @@ async function init() {
     if (gd && gd.zentrale) { const z = document.getElementById('zentrale-card'); if (z) z.style.display = ''; }
   } catch(e) {}
   const vv = document.getElementById('vorab-verstecken'); if (vv) vv.remove();
+  filialFreigabenLaden();
   document.getElementById('user-name').textContent = userEmail.split('@')[0];
 
   progress = (await loadTool('modul_progress')) || {};
@@ -2038,6 +2041,46 @@ async function faelligeRechnungenPruefen() {
   document.getElementById('faellig-overlay').style.display = 'flex';
 }
 function euro(n) { return (Number(n) || 0).toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €'; }
+
+// ─── Filial-Freigaben: Anfragen von Zentralen an diese Filiale ───────────────
+function filialEsc(t) { return String(t == null ? '' : t).replace(/[&<>"']/g, function (c) { return ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' })[c]; }); }
+async function filialFreigabenLaden() {
+  const box = document.getElementById('filial-freigaben');
+  if (!box) return;
+  try {
+    const r = await fetch('/api/tool-data?gruppe=anfragen');
+    if (!r.ok) return;
+    const d = await r.json();
+    const anf = d.anfragen || [], frei = d.freigaben || [];
+    if (anf.length === 0 && frei.length === 0) { box.style.display = 'none'; return; }
+    let h = '';
+    anf.forEach(function (a) {
+      h += '<div style="background:#fff;border:2px solid #d4af37;border-radius:10px;padding:14px 16px;margin-bottom:10px;">' +
+        '<div style="font-weight:700;color:#1a2a4a;font-size:14px;margin-bottom:4px;">Anfrage von einer Zentrale</div>' +
+        '<div style="font-size:13px;color:#1a2a4a;line-height:1.5;margin-bottom:10px;"><strong>' + filialEsc(a.zentrale) + '</strong> möchte die Tageszahlen dieser Filiale in ihrem Filial-Überblick sehen: Umsatz, Wareneinkauf, Stornos, Freigetränke und Abschreibungen aus dem Tagesgeschäft. Belege und Mitarbeiterdaten bleiben privat. Du kannst die Freigabe jederzeit wieder beenden.</div>' +
+        '<button onclick="filialAntwort(\'' + filialEsc(a.zentrale) + '\',\'zulassen\')" style="background:#1a2a4a;color:#d4af37;border:none;border-radius:6px;padding:8px 16px;font-weight:700;font-size:12.5px;cursor:pointer;margin-right:8px;">Zulassen</button>' +
+        '<button onclick="filialAntwort(\'' + filialEsc(a.zentrale) + '\',\'ablehnen\')" style="background:#faf8f4;color:#c0392b;border:1px solid #e0d8c8;border-radius:6px;padding:8px 16px;font-weight:700;font-size:12.5px;cursor:pointer;">Ablehnen</button></div>';
+    });
+    frei.forEach(function (f) {
+      h += '<div style="background:rgba(255,255,255,0.85);border:1px solid #e4d5a8;border-radius:8px;padding:8px 14px;margin-bottom:8px;font-size:12px;color:#5a6a85;display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;">' +
+        '<span>Die Zentrale <strong>' + filialEsc(f.zentrale) + '</strong> sieht deine Tageszahlen.</span>' +
+        '<button onclick="filialAntwort(\'' + filialEsc(f.zentrale) + '\',\'trennen\')" style="background:none;border:1px solid #e0d8c8;border-radius:6px;padding:4px 10px;font-size:11.5px;font-weight:700;color:#c0392b;cursor:pointer;">Freigabe beenden</button></div>';
+    });
+    box.innerHTML = h;
+    box.style.display = 'block';
+  } catch (e) {}
+}
+async function filialAntwort(zentrale, entscheidung) {
+  if (entscheidung === 'trennen' && !confirm('Freigabe für diese Zentrale beenden? Sie sieht deine Zahlen dann nicht mehr.')) return;
+  try {
+    await fetch('/api/tool-data', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ gruppe: 'antwort', zentrale: zentrale, entscheidung: entscheidung })
+    });
+  } catch (e) {}
+  filialFreigabenLaden();
+}
 
 async function doLogout() {
   try { await fetch('/api/verify-session?logout=1'); } catch(e) {}
