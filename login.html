@@ -192,8 +192,10 @@ async function handleEmailStep(event) {
     if (data.hasPassword) {
       document.getElementById('returningEmail').textContent = email;
       document.getElementById('step2existing').style.display = 'block';
+      setTimeout(() => { const f = document.getElementById('password'); if (f) f.focus(); }, 50);
     } else {
       document.getElementById('step2new').style.display = 'block';
+      setTimeout(() => { const f = document.getElementById('newPassword'); if (f) f.focus(); }, 50);
     }
 
   } catch (err) {
