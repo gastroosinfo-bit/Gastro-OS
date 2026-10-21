@@ -66,7 +66,7 @@ async function zentralePlan(email) {
 async function zentraleFilialen(email) {
   const r = await fetch(
     SUPABASE_URL + '/rest/v1/filial_gruppen?zentrale_email=eq.' + q(email.toLowerCase()) +
-    '&select=filiale_email,filiale_name,ruhetage,status&order=filiale_name.asc&limit=500',
+    '&status=neq.getrennt&select=filiale_email,filiale_name,ruhetage,status&order=filiale_name.asc&limit=500',
     { headers: sbHeaders() }
   );
   if (!r.ok) return null;
@@ -111,15 +111,16 @@ async function gruppeAnfragen(req, res, email) {
       { headers: sbHeaders() }
     );
     const rows = await r.json();
-    if (!Array.isArray(rows)) return res.status(200).json({ anfragen: [], freigaben: [] });
+    if (!Array.isArray(rows)) return res.status(200).json({ anfragen: [], freigaben: [], getrennt: [] });
     // Eigene Zeile (Zentrale = Filiale) nicht anzeigen
     const fremd = rows.filter(x => String(x.zentrale_email).toLowerCase() !== email.toLowerCase());
     return res.status(200).json({
       anfragen: fremd.filter(x => x.status === 'angefragt').map(x => ({ zentrale: x.zentrale_email })),
-      freigaben: fremd.filter(x => (x.status || 'aktiv') === 'aktiv').map(x => ({ zentrale: x.zentrale_email }))
+      freigaben: fremd.filter(x => (x.status || 'aktiv') === 'aktiv').map(x => ({ zentrale: x.zentrale_email })),
+      getrennt: fremd.filter(x => x.status === 'getrennt').map(x => ({ zentrale: x.zentrale_email }))
     });
   } catch (e) {
-    return res.status(200).json({ anfragen: [], freigaben: [] });
+    return res.status(200).json({ anfragen: [], freigaben: [], getrennt: [] });
   }
 }
 
@@ -137,6 +138,8 @@ async function gruppeAktion(req, res, email) {
         await fetch(SUPABASE_URL + '/rest/v1/filial_gruppen' + filter + '&status=eq.angefragt', {
           method: 'PATCH', headers: sbHeaders(), body: JSON.stringify({ status: 'aktiv' })
         });
+      } else if (b.entscheidung === 'quittieren') {
+        await fetch(SUPABASE_URL + '/rest/v1/filial_gruppen' + filter + '&status=eq.getrennt', { method: 'DELETE', headers: sbHeaders() });
       } else if (b.entscheidung === 'ablehnen' || b.entscheidung === 'trennen') {
         await fetch(SUPABASE_URL + '/rest/v1/filial_gruppen' + filter, { method: 'DELETE', headers: sbHeaders() });
       } else {
@@ -163,6 +166,7 @@ async function gruppeAktion(req, res, email) {
       if ((bestehende || []).some(f => String(f.filiale_email).toLowerCase() === filiale)) {
         return res.status(409).json({ error: 'Diese E-Mail-Adresse ist schon eingetragen.' });
       }
+      await fetch(SUPABASE_URL + '/rest/v1/filial_gruppen' + filter + '&status=eq.getrennt', { method: 'DELETE', headers: sbHeaders() });
       const ins = await fetch(SUPABASE_URL + '/rest/v1/filial_gruppen', {
         method: 'POST', headers: sbHeaders(),
         body: JSON.stringify({
@@ -186,7 +190,15 @@ async function gruppeAktion(req, res, email) {
     }
 
     if (b.gruppe === 'entfernen') {
-      await fetch(SUPABASE_URL + '/rest/v1/filial_gruppen' + filter, { method: 'DELETE', headers: sbHeaders() });
+      const war = (bestehende || []).find(f => String(f.filiale_email).toLowerCase() === filiale);
+      if (war && (war.status || 'aktiv') === 'aktiv' && filiale !== ich) {
+        // Filiale soll es einmal sehen: Zeile bleibt mit Status "getrennt", bis die Filiale quittiert
+        await fetch(SUPABASE_URL + '/rest/v1/filial_gruppen' + filter, {
+          method: 'PATCH', headers: sbHeaders(), body: JSON.stringify({ status: 'getrennt' })
+        });
+      } else {
+        await fetch(SUPABASE_URL + '/rest/v1/filial_gruppen' + filter, { method: 'DELETE', headers: sbHeaders() });
+      }
       return res.status(200).json({ success: true });
     }
 
