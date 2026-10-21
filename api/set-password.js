@@ -14,7 +14,7 @@ function hashPassword(password) {
 async function istNurZentrale(email) {
   try {
     const r = await fetch(
-      `${SUPABASE_URL}/rest/v1/filial_gruppen?zentrale_email=eq.${encodeURIComponent(email.toLowerCase())}&nur_zentrale=eq.true&select=zentrale_email&limit=1`,
+      `${SUPABASE_URL}/rest/v1/zentrale_plaene?zentrale_email=eq.${encodeURIComponent(email.toLowerCase())}&nur_zentrale=eq.true&select=zentrale_email&limit=1`,
       { headers: { 'apikey': SUPABASE_SERVICE_KEY, 'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}` } }
     );
     if (!r.ok) return false;
