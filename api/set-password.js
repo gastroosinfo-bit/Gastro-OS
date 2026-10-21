@@ -70,7 +70,7 @@ export default async function handler(req, res) {
       `gastro_os_session=${token}; Path=/; HttpOnly; Secure; SameSite=Lax` + (kurz ? '' : `; Max-Age=${SESSION_DAYS * 86400}`)
     );
 
-    return res.status(200).json({ success: true });
+    return res.status(200).json({ success: true, ziel: kurz ? '/zentrale.html' : '/dashboard.html' });
 
   } catch (err) {
     console.error('Server Fehler:', err);
