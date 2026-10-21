@@ -36,6 +36,96 @@ function sbHeaders() {
   };
 }
 
+// ─── Zentrale-Ansicht: Zahlen der zugeordneten Filialen (nur lesen) ──────────
+// Nur Zugänge, die in der Tabelle filial_gruppen als zentrale_email eingetragen sind, dürfen das abrufen.
+// Es werden nur Zahlen zurückgegeben (keine E-Mail-Adressen, keine Belegdateien).
+async function gruppeUebersicht(req, res, email) {
+  const von = String(req.query.von || '');
+  const bis = String(req.query.bis || '');
+  const datumOk = /^\d{4}-\d{2}-\d{2}$/;
+  if (!datumOk.test(von) || !datumOk.test(bis) || von > bis) {
+    return res.status(400).json({ error: 'Zeitraum ungültig.' });
+  }
+  if ((new Date(bis) - new Date(von)) / 86400000 > 92) {
+    return res.status(400).json({ error: 'Zeitraum zu lang (max. 92 Tage).' });
+  }
+  try {
+    const gRes = await fetch(
+      SUPABASE_URL + '/rest/v1/filial_gruppen?zentrale_email=eq.' + encodeURIComponent(email) +
+      '&select=filiale_email,filiale_name&order=filiale_name.asc&limit=500',
+      { headers: sbHeaders() }
+    );
+    const filialen = await gRes.json();
+    if (!Array.isArray(filialen)) return res.status(500).json({ error: 'Fehler beim Laden.' });
+    if (filialen.length === 0) return res.status(403).json({ error: 'Kein Zentrale-Zugang.' });
+
+    const emails = filialen.map(f => '"' + String(f.filiale_email).replace(/"/g, '') + '"').join(',');
+    const tools = ['tagesgeschaeft-kassenbuch', 'tagesgeschaeft-stornos', 'tagesgeschaeft-freigetraenke', 'tagesgeschaeft-abschreibungen'];
+    const dRes = await fetch(
+      SUPABASE_URL + '/rest/v1/user_tool_data?user_id=in.(' + encodeURIComponent(emails) + ')' +
+      '&tool_name=in.(' + tools.join(',') + ')&select=user_id,tool_name,data,updated_at&order=updated_at.desc&limit=5000',
+      { headers: sbHeaders() }
+    );
+    const rows = await dRes.json();
+    if (!Array.isArray(rows)) return res.status(500).json({ error: 'Fehler beim Laden.' });
+
+    // pro Filiale und Tool nur die neueste Zeile verwenden
+    const neueste = {};
+    rows.forEach(r => {
+      const k = r.user_id + '|' + r.tool_name;
+      if (!neueste[k]) neueste[k] = r.data || {};
+    });
+
+    const num = v => (typeof v === 'number' && isFinite(v)) ? v : (parseFloat(v) || 0);
+    const imZeitraum = d => typeof d === 'string' && d >= von && d <= bis;
+
+    const ergebnis = filialen.map(f => {
+      const tage = {};
+      const tag = d => (tages => tages[d] || (tages[d] = {
+        eintrag: false, kasse: 0, karte: 0, lieferdienste: 0, ueberweisung: 0, umsatz: 0,
+        wareneinkauf: 0, sonstiges: 0, stornoAnzahl: 0, stornoSumme: 0,
+        freiAnzahl: 0, freiSumme: 0, abschrAnzahl: 0, abschrSumme: 0
+      }))(tage);
+
+      const kb = neueste[f.filiale_email + '|tagesgeschaeft-kassenbuch'] || {};
+      Object.keys(kb).forEach(d => {
+        if (!imZeitraum(d)) return;
+        const t = kb[d] || {};
+        const x = tag(d);
+        x.eintrag = true;
+        x.kasse = num(t.kasse); x.karte = num(t.karte);
+        x.lieferdienste = num(t.lieferdienste); x.ueberweisung = num(t.ueberweisung);
+        x.umsatz = x.kasse + x.karte + x.lieferdienste + x.ueberweisung;
+        x.wareneinkauf = num(t.wareneinkaufBar) + num(t.wareneinkaufKarte) + num(t.wareneinkaufUeberweisung);
+        x.sonstiges = num(t.sonstigesBar) + num(t.sonstigesKarte) + num(t.sonstigesUeberweisung);
+      });
+
+      const liste = (tool) => {
+        const d = neueste[f.filiale_email + '|' + tool] || {};
+        return Array.isArray(d.items) ? d.items : [];
+      };
+      liste('tagesgeschaeft-stornos').forEach(i => {
+        if (!imZeitraum(i.datum)) return;
+        const x = tag(i.datum); x.stornoAnzahl += 1; x.stornoSumme += num(i.betrag);
+      });
+      liste('tagesgeschaeft-freigetraenke').forEach(i => {
+        if (!imZeitraum(i.datum)) return;
+        const x = tag(i.datum); x.freiAnzahl += 1; x.freiSumme += num(i.wert);
+      });
+      liste('tagesgeschaeft-abschreibungen').forEach(i => {
+        if (!imZeitraum(i.datum)) return;
+        const x = tag(i.datum); x.abschrAnzahl += 1; x.abschrSumme += num(i.wert);
+      });
+
+      return { name: f.filiale_name, tage };
+    });
+
+    return res.status(200).json({ von, bis, filialen: ergebnis });
+  } catch (e) {
+    return res.status(500).json({ error: 'Fehler beim Laden.' });
+  }
+}
+
 export default async function handler(req, res) {
   const email = getEmailFromRequest(req);
   if (!email) {
@@ -44,6 +134,7 @@ export default async function handler(req, res) {
 
   // ─── GET: Zustand laden ───────────────────────────────────────────────────
   if (req.method === 'GET') {
+    if (req.query.gruppe === 'uebersicht') return gruppeUebersicht(req, res, email);
     const tool = req.query.tool;
     if (!tool) return res.status(400).json({ error: 'tool fehlt.' });
 
