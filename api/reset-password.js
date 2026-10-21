@@ -9,8 +9,22 @@ function hashPassword(password) {
   return crypto.createHmac('sha256', SESSION_SECRET).update(password).digest('hex');
 }
 
-function signSession(email) {
-  const expires = Date.now() + SESSION_DAYS * 24 * 60 * 60 * 1000;
+
+// "Nur Zentrale"-Zugänge: Sitzung gilt nur bis der Browser geschlossen wird (Session-Cookie), serverseitig max. 1 Tag
+async function istNurZentrale(email) {
+  try {
+    const r = await fetch(
+      `${SUPABASE_URL}/rest/v1/filial_gruppen?zentrale_email=eq.${encodeURIComponent(email.toLowerCase())}&nur_zentrale=eq.true&select=zentrale_email&limit=1`,
+      { headers: { 'apikey': SUPABASE_SERVICE_KEY, 'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}` } }
+    );
+    if (!r.ok) return false;
+    const rows = await r.json();
+    return Array.isArray(rows) && rows.length > 0;
+  } catch (e) { return false; }
+}
+
+function signSession(email, kurz) {
+  const expires = Date.now() + (kurz ? 1 : SESSION_DAYS) * 24 * 60 * 60 * 1000;
   const data = `${email}|${expires}`;
   const sig = crypto.createHmac('sha256', SESSION_SECRET).update(data).digest('hex');
   return Buffer.from(`${data}|${sig}`).toString('base64');
@@ -72,9 +86,10 @@ export default async function handler(req, res) {
     body: JSON.stringify({ used: true })
   });
 
-  const sessionToken = signSession(normalizedEmail);
+  const kurz = await istNurZentrale(normalizedEmail);
+  const sessionToken = signSession(normalizedEmail, kurz);
   res.setHeader('Set-Cookie',
-    `gastro_os_session=${sessionToken}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${SESSION_DAYS * 86400}`
+    `gastro_os_session=${sessionToken}; Path=/; HttpOnly; Secure; SameSite=Lax` + (kurz ? '' : `; Max-Age=${SESSION_DAYS * 86400}`)
   );
 
   return res.status(200).json({ success: true });
