@@ -40,6 +40,15 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8 url('/bg-rest
 .summary-box .vgl { font-size:11px; color:#8090a8; margin-top:4px; min-height:14px; }
 .summary-box .value.minus { color:#c0392b; }
 .summary-box .value.plus { color:#1a6640; }
+.kenn { display:flex; flex-wrap:wrap; gap:8px 28px; margin:14px 2px 4px; font-size:13px; color:#5a6a85; }
+.kenn b { color:#1a2a4a; }
+.kenn small { color:#8090a8; font-size:11.5px; }
+.weitere { margin-top:16px; border-top:1px solid #efe8d6; padding-top:12px; }
+.weitere-titel { font-size:11px; font-weight:700; color:#8090a8; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px; }
+.weitere-grid { display:grid; grid-template-columns:1fr 1fr; gap:0 28px; }
+.weitere-grid > div { display:flex; justify-content:space-between; gap:10px; padding:6px 0; border-bottom:1px solid #f3ecd9; font-size:12.5px; color:#5a6a85; }
+.weitere-grid b { color:#1a2a4a; }
+@media (max-width:560px) { .weitere-grid { grid-template-columns:1fr; } }
 
 .footer-brand { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-brand strong { color:#d4af37; }
@@ -87,29 +96,25 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8 url('/bg-rest
 
   <div class="section">
     <div class="section-head">Übersicht <span id="bh-monat-label" style="color:#a0b0c8;font-weight:400;"></span></div>
-    <div style="font-size:11px;font-weight:700;color:#8090a8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Auswertung</div>
     <div class="grid3">
+      <div class="summary-box"><div class="label">Einnahmen</div><div class="value" id="bh-sum-einnahmen">0,00 €</div><div class="vgl" id="bh-einnahmen-vgl"></div></div>
+      <div class="summary-box"><div class="label">Ausgaben</div><div class="value" id="bh-sum-ausgaben">0,00 €</div><div class="vgl" id="bh-ausgaben-vgl"></div></div>
       <div class="summary-box"><div class="label">Gewinn</div><div class="value" id="bh-gewinn">0,00 €</div><div class="vgl" id="bh-gewinn-vgl"></div></div>
-      <div class="summary-box"><div class="label">Wareneinsatz</div><div class="value" id="bh-wareneinsatz">–</div><div class="vgl" id="bh-wareneinsatz-vgl"></div></div>
-      <div class="summary-box"><div class="label">Einnahmen zum Vormonat</div><div class="value" id="bh-einnahmen-delta">–</div><div class="vgl" id="bh-einnahmen-vgl"></div></div>
     </div>
-    <div style="font-size:11px;font-weight:700;color:#8090a8;text-transform:uppercase;letter-spacing:0.5px;margin:16px 0 8px;">Kassenbuch</div>
-    <div class="grid3">
-      <div class="summary-box"><div class="label">Einnahmen</div><div class="value" id="bh-sum-einnahmen">0,00 €</div></div>
-      <div class="summary-box"><div class="label">Ausgaben</div><div class="value" id="bh-sum-ausgaben">0,00 €</div></div>
-      <div class="summary-box"><div class="label">Wareneingänge</div><div class="value" id="bh-anzahl-we">0</div></div>
+    <div class="kenn">
+      <span>Wareneinsatz <b id="bh-wareneinsatz">–</b> <small id="bh-wareneinsatz-vgl"></small></span>
+      <span>Wareneingänge <b id="bh-anzahl-we">0</b></span>
     </div>
-    <div style="font-size:11px;font-weight:700;color:#8090a8;text-transform:uppercase;letter-spacing:0.5px;margin:16px 0 8px;">Belege</div>
-    <div class="grid3">
-      <div class="summary-box"><div class="label">Einnahmen (Belege)</div><div class="value" id="bh-sum-belege-einnahmen">0,00 €</div></div>
-      <div class="summary-box"><div class="label">Ausgaben (Belege)</div><div class="value" id="bh-sum-belege-ausgaben">0,00 €</div></div>
-      <div class="summary-box"><div class="label">Belege gesamt</div><div class="value" id="bh-sum-belege">0,00 €</div></div>
-    </div>
-    <div style="font-size:11px;font-weight:700;color:#8090a8;text-transform:uppercase;letter-spacing:0.5px;margin:16px 0 8px;">Abschreibungen und Co.</div>
-    <div class="grid3">
-      <div class="summary-box"><div class="label">Freigetränke</div><div class="value" id="bh-sum-freigetraenke">0,00 €</div></div>
-      <div class="summary-box"><div class="label">Abschreibungen</div><div class="value" id="bh-sum-abschreibungen">0,00 €</div></div>
-      <div class="summary-box"><div class="label">Stornobelege</div><div class="value" id="bh-sum-stornos">0,00 €</div></div>
+    <div class="weitere">
+      <div class="weitere-titel">Weitere Zahlen des Monats</div>
+      <div class="weitere-grid">
+        <div><span>Belege · Einnahmen</span><b id="bh-sum-belege-einnahmen">0,00 €</b></div>
+        <div><span>Freigetränke</span><b id="bh-sum-freigetraenke">0,00 €</b></div>
+        <div><span>Belege · Ausgaben</span><b id="bh-sum-belege-ausgaben">0,00 €</b></div>
+        <div><span>Abschreibungen</span><b id="bh-sum-abschreibungen">0,00 €</b></div>
+        <div><span>Belege gesamt</span><b id="bh-sum-belege">0,00 €</b></div>
+        <div><span>Stornobelege</span><b id="bh-sum-stornos">0,00 €</b></div>
+      </div>
     </div>
   </div>
 
@@ -265,28 +270,22 @@ function bhAuswertungZeigen(monatSchluessel) {
   const vor = bhMonatSummen(vorKey);
   const vorName = MONATSNAMEN[parseInt(vorKey.slice(5, 7))];
   const prozent = n => n.toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' %';
+  const mitVorzeichen = n => (n >= 0 ? '+' : '–') + prozent(Math.abs(n));
   const setze = (id, text, klasse) => { const e = document.getElementById(id); e.textContent = text; e.classList.remove('minus', 'plus'); if (klasse) e.classList.add(klasse); };
+  const vergleich = (id, aktuell, frueher, hatVormonat, gutWennHoeher) => {
+    if (!hatVormonat || frueher === 0) { setze(id, 'kein Vormonat vorhanden'); return; }
+    const p = (aktuell - frueher) / Math.abs(frueher) * 100;
+    setze(id, mitVorzeichen(p) + ' zu ' + vorName);
+  };
+  const hatVor = vor.tage > 0;
 
-  // Gewinn
   setze('bh-gewinn', euro(jetzt.gewinn), jetzt.gewinn < 0 ? 'minus' : (jetzt.gewinn > 0 ? 'plus' : ''));
-  if (vor.tage > 0) {
-    const d = jetzt.gewinn - vor.gewinn;
-    setze('bh-gewinn-vgl', (d >= 0 ? '+' : '–') + euro(Math.abs(d)) + ' zu ' + vorName);
-  } else setze('bh-gewinn-vgl', 'kein Vormonat vorhanden');
+  vergleich('bh-einnahmen-vgl', jetzt.ein, vor.ein, hatVor);
+  vergleich('bh-ausgaben-vgl', jetzt.aus, vor.aus, hatVor);
+  vergleich('bh-gewinn-vgl', jetzt.gewinn, vor.gewinn, hatVor);
 
-  // Wareneinsatz in % der Einnahmen
-  if (jetzt.ein > 0) setze('bh-wareneinsatz', prozent(jetzt.ware / jetzt.ein * 100)); else setze('bh-wareneinsatz', '–');
-  if (vor.ein > 0) setze('bh-wareneinsatz-vgl', vorName + ': ' + prozent(vor.ware / vor.ein * 100)); else setze('bh-wareneinsatz-vgl', 'Ware im Verhältnis zu den Einnahmen');
-
-  // Einnahmen gegenüber Vormonat
-  if (vor.ein > 0 && jetzt.tage > 0) {
-    const p = (jetzt.ein - vor.ein) / vor.ein * 100;
-    setze('bh-einnahmen-delta', (p >= 0 ? '+' : '–') + prozent(Math.abs(p)), p < 0 ? 'minus' : (p > 0 ? 'plus' : ''));
-    setze('bh-einnahmen-vgl', vorName + ': ' + euro(vor.ein));
-  } else {
-    setze('bh-einnahmen-delta', '–');
-    setze('bh-einnahmen-vgl', 'kein Vormonat vorhanden');
-  }
+  setze('bh-wareneinsatz', jetzt.ein > 0 ? prozent(jetzt.ware / jetzt.ein * 100) : '–');
+  setze('bh-wareneinsatz-vgl', (hatVor && vor.ein > 0) ? '(' + vorName + ': ' + prozent(vor.ware / vor.ein * 100) + ')' : '');
 }
 
 function bhUebersichtAktualisieren() {
