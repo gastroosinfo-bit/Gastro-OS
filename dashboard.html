@@ -583,6 +583,18 @@ faqRender();
       </div>
     </div>
 
+    <!-- KACHEL 3: MEINE FILIALEN (nur für Zentrale-Zugänge sichtbar) -->
+    <div class="module-card hub-card" id="zentrale-card" style="display:none;margin-top:16px;max-width:490px;">
+      <div class="hub-head" style="cursor:default;">
+        <div class="hub-circle"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18" /><path d="M5 21V7l8-4v18" /><path d="M19 21V11l-6-4" /><path d="M9 9v.01" /><path d="M9 12v.01" /><path d="M9 15v.01" /></svg></div>
+        <div class="hub-title">Meine Filialen</div>
+        <div class="hub-connector"></div>
+        <div class="hub-pillars">
+          <a href="zentrale.html" class="hub-pillar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16" /> <path d="M18 17V9" /> <path d="M13 17V5" /> <path d="M8 17v-3" /></svg><span>Filial-Überblick</span></a>
+        </div>
+      </div>
+    </div>
+
   </div>
 
 
@@ -1142,6 +1154,10 @@ async function init() {
   } catch(e) { window.location.href = 'login.html'; return; }
 
   currentUser = { id: userEmail, email: userEmail };
+  // Kachel "Meine Filialen" nur für Zentrale-Zugänge
+  fetch('/api/tool-data?gruppe=check').then(r => r.ok ? r.json() : null).then(d => {
+    if (d && d.zentrale) { const z = document.getElementById('zentrale-card'); if (z) z.style.display = ''; }
+  }).catch(() => {});
   document.getElementById('user-name').textContent = userEmail.split('@')[0];
 
   progress = (await loadTool('modul_progress')) || {};
