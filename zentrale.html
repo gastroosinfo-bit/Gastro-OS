@@ -229,7 +229,8 @@ tfoot td { background:#1a2a4a; color:#fff; font-weight:700; border-color:#1a2a4a
         r.freiAnz += t.freiAnzahl; r.freiSumme += t.freiSumme;
         r.abschrAnz += t.abschrAnzahl; r.abschrSumme += t.abschrSumme;
       });
-      r.ergebnis = r.umsatz - r.wareneinkauf - r.sonstiges;
+      r.ausgaben = r.wareneinkauf + r.sonstiges;
+      r.ergebnis = r.umsatz - r.ausgaben;   // Gewinn; Stornos stecken schon im Tagesumsatz (Eintrag am Tagesende)
       return r;
     });
     // Auffälligkeiten: im Vergleich zum Durchschnitt aller Filialen (ab 3 Filialen), sonst feste Grenzen
@@ -279,44 +280,43 @@ tfoot td { background:#1a2a4a; color:#fff; font-weight:700; border-color:#1a2a4a
 
     var h = '<div class="sub" style="margin-bottom:10px;">Zeitraum: <strong>' + esc(zeitraum) + '</strong> · ' + zeilen.length + ' Filialen</div>';
     h += '<div class="kpis">';
-    h += '<div class="kpi"><div class="z">' + euro(sum('umsatz')) + '</div><div class="l">Umsatz gesamt</div></div>';
-    h += '<div class="kpi"><div class="z">' + euro(sum('wareneinkauf')) + '</div><div class="l">Wareneinkauf</div></div>';
-    h += '<div class="kpi"><div class="z">' + euro(sum('ergebnis')) + '</div><div class="l">Ergebnis</div></div>';
+    h += '<div class="kpi"><div class="z">' + euro(sum('umsatz')) + '</div><div class="l">Einnahmen gesamt</div></div>';
+    h += '<div class="kpi"><div class="z">' + euro(sum('ausgaben')) + '</div><div class="l">Ausgaben</div></div>';
+    h += '<div class="kpi"><div class="z">' + euro(sum('ergebnis')) + '</div><div class="l">Gewinn</div></div>';
     h += '<div class="kpi' + (auffAnz ? ' warn' : '') + '"><div class="z">' + auffAnz + '</div><div class="l">Filialen mit Auffälligkeiten</div></div>';
     h += '<div class="kpi' + (ohneEintrag ? ' warn' : '') + '"><div class="z">' + ohneEintrag + '</div><div class="l">Filialen mit fehlenden Einträgen</div></div>';
     h += '</div><div style="height:12px"></div>';
 
-    var cols = [['name','Filiale'],['umsatz','Umsatz'],['wareneinkauf','Wareneinkauf'],['ergebnis','Ergebnis'],['stornoAnz','Stornos'],['freiSumme','Freigetränke'],['abschrSumme','Abschreibungen'],['fehlt','Einträge']];
+    var cols = [['name','Filiale'],['umsatz','Einnahmen'],['ausgaben','Ausgaben'],['ergebnis','Gewinn'],['fehlt','Einträge']];
     h += '<div class="tabwrap"><table><thead><tr>';
     cols.forEach(function (c) {
       var pf = sortKey === c[0] ? (sortDir === 1 ? ' ▲' : ' ▼') : '';
       h += '<th data-k="' + c[0] + '">' + c[1] + pf + '</th>';
     });
     h += '</tr></thead><tbody>';
-    if (l.length === 0) h += '<tr><td colspan="8" style="text-align:left;">Keine Filiale passt zu den Filtern.</td></tr>';
+    if (l.length === 0) h += '<tr><td colspan="5" style="text-align:left;">Keine Filiale passt zu den Filtern.</td></tr>';
     l.forEach(function (r, idx) {
-      var st = r.stornoAnz ? r.stornoAnz + ' (' + euro(r.stornoSumme) + ')' : '–';
-      var fr = r.freiSumme ? euro(r.freiSumme) : '–';
-      var ab = r.abschrSumme ? euro(r.abschrSumme) : '–';
       var eint;
       if (r.fehlt > 0) eint = '<span class="badge ' + (r.tageMitEintrag === 0 ? 'b-rot' : 'b-gelb') + '">' + r.tageMitEintrag + ' von ' + r.erwartet + ' Tagen</span>';
       else if (r.erwartet > 0) eint = '<span class="badge b-ok">vollständig</span>';
       else eint = '<span class="badge b-grau">noch offen / Ruhetag</span>';
       var badges = r.auff.map(function (a) { return '<span class="badge b-rot">' + esc(a) + '</span>'; }).join('');
-      h += '<tr class="fil" data-n="' + esc(r.name) + '"><td><strong>' + esc(r.name) + '</strong>' + badges + '</td><td>' + euro(r.umsatz) + '</td><td>' + euro(r.wareneinkauf) + '</td><td>' + euro(r.ergebnis) + '</td><td>' + st + '</td><td>' + fr + '</td><td>' + ab + '</td><td>' + eint + '</td></tr>';
+      h += '<tr class="fil" data-n="' + esc(r.name) + '"><td><strong>' + esc(r.name) + '</strong>' + badges + '</td><td>' + euro(r.umsatz) + '</td><td>' + euro(r.ausgaben) + '</td><td>' + euro(r.ergebnis) + '</td><td>' + eint + '</td></tr>';
       if (offen[r.name]) {
-        h += '<tr class="detail"><td colspan="8"><div class="tabwrap"><table><thead><tr><th>Datum</th><th>Umsatz</th><th>Wareneinkauf</th><th>Stornos</th><th>Freigetränke</th><th>Abschreibungen</th><th>Eintrag</th></tr></thead><tbody>';
+        h += '<tr class="detail"><td colspan="5"><div class="tabwrap"><table><thead><tr><th>Datum</th><th>Einnahmen</th><th>Ausgaben</th><th>Gewinn</th><th>Eintrag</th></tr></thead><tbody>';
         r.tageListe.slice().reverse().forEach(function (d) {
-          var t = r.tage[d] || { eintrag: false, umsatz: 0, wareneinkauf: 0, stornoAnzahl: 0, stornoSumme: 0, freiSumme: 0, abschrSumme: 0 };
+          var t = r.tage[d] || { eintrag: false, umsatz: 0, wareneinkauf: 0, sonstiges: 0, stornoAnzahl: 0, stornoSumme: 0, freiSumme: 0, abschrSumme: 0 };
+          var tAus = (t.wareneinkauf || 0) + (t.sonstiges || 0);
+          var tGew = (t.umsatz || 0) - tAus;
           var stt = r.status[d];
           var badge = stt === 'ja' ? '<span class="badge b-ok">ja</span>' : stt === 'fehlt' ? '<span class="badge b-rot">fehlt</span>' : stt === 'ruhetag' ? '<span class="badge b-grau">Ruhetag</span>' : '<span class="badge b-grau">noch offen</span>';
-          h += '<tr><td>' + deDatum(d) + '</td><td>' + (t.eintrag ? euro(t.umsatz) : '–') + '</td><td>' + (t.eintrag ? euro(t.wareneinkauf) : '–') + '</td><td>' + (t.stornoAnzahl ? t.stornoAnzahl + ' (' + euro(t.stornoSumme) + ')' : '–') + '</td><td>' + (t.freiSumme ? euro(t.freiSumme) : '–') + '</td><td>' + (t.abschrSumme ? euro(t.abschrSumme) : '–') + '</td><td>' + badge + '</td></tr>';
+          h += '<tr><td>' + deDatum(d) + '</td><td>' + (t.eintrag ? euro(t.umsatz) : '–') + '</td><td>' + (t.eintrag ? euro(tAus) : '–') + '</td><td>' + (t.eintrag ? euro(tGew) : '–') + '</td><td>' + badge + '</td></tr>';
         });
         h += '</tbody></table></div><div class="det" data-e="' + esc(r.email) + '" data-n="' + esc(r.name) + '"><div class="meldung">Lade Einzelheiten …</div></div></td></tr>';
       }
     });
-    h += '</tbody><tfoot><tr><td>Summe (angezeigte Filialen)</td><td>' + euro(sum('umsatz')) + '</td><td>' + euro(sum('wareneinkauf')) + '</td><td>' + euro(sum('ergebnis')) + '</td><td>' + sum('stornoAnz') + '</td><td>' + euro(sum('freiSumme')) + '</td><td>' + euro(sum('abschrSumme')) + '</td><td></td></tr></tfoot></table></div>';
-    h += '<div class="hinweis">Auf eine Filiale klicken zeigt die einzelnen Tage. Die Spaltenköpfe sortieren die Tabelle. „Auffällig“ heißt: deutlich mehr Stornos, Freigetränke oder Abschreibungen als der Durchschnitt aller Filialen. Die Zahlen stammen aus den Einträgen der Filialen, „fehlt“ heißt: Für einen abgeschlossenen Tag, der kein Ruhetag der Filiale ist, wurde nichts im Kassenbuch eingetragen. Der heutige Tag zählt erst ab morgen.</div>';
+    h += '</tbody><tfoot><tr><td>Summe (angezeigte Filialen)</td><td>' + euro(sum('umsatz')) + '</td><td>' + euro(sum('ausgaben')) + '</td><td>' + euro(sum('ergebnis')) + '</td><td></td></tr></tfoot></table></div>';
+    h += '<div class="hinweis">Auf eine Filiale klicken zeigt die einzelnen Tage, die Stornos, Freigetränke und Abschreibungen sowie den Schichtplan. Die Spaltenköpfe sortieren die Tabelle. Der Gewinn ist Einnahmen minus Ausgaben (Wareneinkauf und Sonstiges). Stornos sind schon in den Einnahmen enthalten, weil der Tagesumsatz am Tagesende eingetragen wird. „Auffällig“ heißt: deutlich mehr Stornos, Freigetränke oder Abschreibungen als der Durchschnitt aller Filialen. Die Zahlen stammen aus den Einträgen der Filialen, „fehlt“ heißt: Für einen abgeschlossenen Tag, der kein Ruhetag der Filiale ist, wurde nichts im Kassenbuch eingetragen. Der heutige Tag zählt erst ab morgen.</div>';
     box.innerHTML = h;
 
     Array.prototype.forEach.call(box.querySelectorAll('th[data-k]'), function (th) {
@@ -357,7 +357,11 @@ tfoot td { background:#1a2a4a; color:#fff; font-weight:700; border-color:#1a2a4a
     d.freigetraenke.forEach(function (i) { zeilen2.push({ datum: i.datum, art: 'Freigetränk', was: i.name, menge: i.menge ? i.menge + ' ' + i.einheit : '', wert: i.wert, grund: i.grund }); });
     d.abschreibungen.forEach(function (i) { zeilen2.push({ datum: i.datum, art: 'Abschreibung', was: i.name, menge: i.menge ? i.menge + ' ' + i.einheit : '', wert: i.wert, grund: i.grund }); });
     zeilen2.sort(function (a, b) { return a.datum < b.datum ? 1 : a.datum > b.datum ? -1 : 0; });
-    h += '<div class="det-titel">Stornos, Freigetränke &amp; Abschreibungen · ' + esc(zeitraum) + '</div>';
+    var sumSt = d.stornos.reduce(function (a, i) { return a + i.betrag; }, 0);
+    var sumFg = d.freigetraenke.reduce(function (a, i) { return a + i.wert; }, 0);
+    var sumAb = d.abschreibungen.reduce(function (a, i) { return a + i.wert; }, 0);
+    h += '<div class="det-titel">Abschreibungen &amp; Co (Stornos, Freigetränke, Abschreibungen) · ' + esc(zeitraum) + '</div>';
+    h += '<div class="verw-hinweis" style="background:#f5f0e8;color:#1a2a4a;">Ohne Einnahme abgegeben oder weggeworfen: Freigetränke <strong>' + euro(sumFg) + '</strong> · Abschreibungen <strong>' + euro(sumAb) + '</strong> · Stornos <strong>' + euro(sumSt) + '</strong>. Diese Beträge sind nicht noch einmal vom Gewinn abgezogen: Die Ware steckt im Wareneinkauf, und die Stornos sind schon im Tagesumsatz berücksichtigt.</div>';
     if (zeilen2.length === 0) h += '<div class="meldung" style="padding:6px 0;">Keine Einträge in diesem Zeitraum.</div>';
     else {
       h += '<div class="tabwrap"><table><thead><tr><th>Datum</th><th>Art</th><th>Was</th><th>Menge</th><th>Wert</th><th>Grund</th></tr></thead><tbody>';
