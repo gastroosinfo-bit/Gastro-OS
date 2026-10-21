@@ -37,6 +37,9 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8 url('/bg-rest
 .summary-box { background:#f5f0e8; border-radius:8px; padding:14px 18px; text-align:center; }
 .summary-box .label { font-size:10.5px; font-weight:700; color:#8090a8; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px; }
 .summary-box .value { font-size:18px; font-weight:700; color:#1a2a4a; }
+.summary-box .vgl { font-size:11px; color:#8090a8; margin-top:4px; min-height:14px; }
+.summary-box .value.minus { color:#c0392b; }
+.summary-box .value.plus { color:#1a6640; }
 
 .footer-brand { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-brand strong { color:#d4af37; }
@@ -84,7 +87,13 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8 url('/bg-rest
 
   <div class="section">
     <div class="section-head">Übersicht <span id="bh-monat-label" style="color:#a0b0c8;font-weight:400;"></span></div>
-    <div style="font-size:11px;font-weight:700;color:#8090a8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Kassenbuch</div>
+    <div style="font-size:11px;font-weight:700;color:#8090a8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Auswertung</div>
+    <div class="grid3">
+      <div class="summary-box"><div class="label">Gewinn</div><div class="value" id="bh-gewinn">0,00 €</div><div class="vgl" id="bh-gewinn-vgl"></div></div>
+      <div class="summary-box"><div class="label">Wareneinsatz</div><div class="value" id="bh-wareneinsatz">–</div><div class="vgl" id="bh-wareneinsatz-vgl"></div></div>
+      <div class="summary-box"><div class="label">Einnahmen zum Vormonat</div><div class="value" id="bh-einnahmen-delta">–</div><div class="vgl" id="bh-einnahmen-vgl"></div></div>
+    </div>
+    <div style="font-size:11px;font-weight:700;color:#8090a8;text-transform:uppercase;letter-spacing:0.5px;margin:16px 0 8px;">Kassenbuch</div>
     <div class="grid3">
       <div class="summary-box"><div class="label">Einnahmen</div><div class="value" id="bh-sum-einnahmen">0,00 €</div></div>
       <div class="summary-box"><div class="label">Ausgaben</div><div class="value" id="bh-sum-ausgaben">0,00 €</div></div>
@@ -234,6 +243,52 @@ function bhAktuellerMonatSchluessel() {
   return document.getElementById('bh-jahr').value + '-' + document.getElementById('bh-monat').value;
 }
 
+function bhMonatSummen(schluessel) {
+  let ein = 0, aus = 0, ware = 0, tage = 0;
+  Object.keys(kassenbuchDaten).filter(d => d.slice(0, 7) === schluessel).forEach(datum => {
+    const t = kassenbuchDaten[datum];
+    tage++;
+    ein += t.kasse + t.karte + t.lieferdienste + (t.ueberweisung || 0);
+    ware += kbWareneinkaufGesamt(t);
+    aus += kbWareneinkaufGesamt(t) + kbSonstigesGesamt(t);
+  });
+  return { ein, aus, ware, tage, gewinn: ein - aus };
+}
+function bhVormonatSchluessel(schluessel) {
+  let j = parseInt(schluessel.slice(0, 4)), m = parseInt(schluessel.slice(5, 7)) - 1;
+  if (m < 1) { m = 12; j -= 1; }
+  return j + '-' + String(m).padStart(2, '0');
+}
+function bhAuswertungZeigen(monatSchluessel) {
+  const jetzt = bhMonatSummen(monatSchluessel);
+  const vorKey = bhVormonatSchluessel(monatSchluessel);
+  const vor = bhMonatSummen(vorKey);
+  const vorName = MONATSNAMEN[parseInt(vorKey.slice(5, 7))];
+  const prozent = n => n.toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' %';
+  const setze = (id, text, klasse) => { const e = document.getElementById(id); e.textContent = text; e.classList.remove('minus', 'plus'); if (klasse) e.classList.add(klasse); };
+
+  // Gewinn
+  setze('bh-gewinn', euro(jetzt.gewinn), jetzt.gewinn < 0 ? 'minus' : (jetzt.gewinn > 0 ? 'plus' : ''));
+  if (vor.tage > 0) {
+    const d = jetzt.gewinn - vor.gewinn;
+    setze('bh-gewinn-vgl', (d >= 0 ? '+' : '–') + euro(Math.abs(d)) + ' zu ' + vorName);
+  } else setze('bh-gewinn-vgl', 'kein Vormonat vorhanden');
+
+  // Wareneinsatz in % der Einnahmen
+  if (jetzt.ein > 0) setze('bh-wareneinsatz', prozent(jetzt.ware / jetzt.ein * 100)); else setze('bh-wareneinsatz', '–');
+  if (vor.ein > 0) setze('bh-wareneinsatz-vgl', vorName + ': ' + prozent(vor.ware / vor.ein * 100)); else setze('bh-wareneinsatz-vgl', 'Ware im Verhältnis zu den Einnahmen');
+
+  // Einnahmen gegenüber Vormonat
+  if (vor.ein > 0 && jetzt.tage > 0) {
+    const p = (jetzt.ein - vor.ein) / vor.ein * 100;
+    setze('bh-einnahmen-delta', (p >= 0 ? '+' : '–') + prozent(Math.abs(p)), p < 0 ? 'minus' : (p > 0 ? 'plus' : ''));
+    setze('bh-einnahmen-vgl', vorName + ': ' + euro(vor.ein));
+  } else {
+    setze('bh-einnahmen-delta', '–');
+    setze('bh-einnahmen-vgl', 'kein Vormonat vorhanden');
+  }
+}
+
 function bhUebersichtAktualisieren() {
   const monatSchluessel = bhAktuellerMonatSchluessel();
   document.getElementById('bh-monat-label').textContent = '· ' + MONATSNAMEN[parseInt(monatSchluessel.slice(5,7))] + ' ' + monatSchluessel.slice(0,4);
@@ -244,6 +299,7 @@ function bhUebersichtAktualisieren() {
     sumEin += t.kasse + t.karte + t.lieferdienste + (t.ueberweisung || 0);
     sumAus += kbWareneinkaufGesamt(t) + kbSonstigesGesamt(t);
   });
+  bhAuswertungZeigen(monatSchluessel);
   document.getElementById('bh-sum-einnahmen').textContent = euro(sumEin);
   document.getElementById('bh-sum-ausgaben').textContent = euro(sumAus);
 
