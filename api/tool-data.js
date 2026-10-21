@@ -43,11 +43,12 @@ function sbHeaders() {
 async function gruppeCheck(req, res, email) {
   try {
     const gRes = await fetch(
-      SUPABASE_URL + '/rest/v1/filial_gruppen?zentrale_email=eq.' + encodeURIComponent(email) + '&select=filiale_email&limit=1',
+      SUPABASE_URL + '/rest/v1/filial_gruppen?zentrale_email=eq.' + encodeURIComponent(email) + '&select=filiale_email,nur_zentrale&limit=50',
       { headers: sbHeaders() }
     );
     const rows = await gRes.json();
-    return res.status(200).json({ zentrale: Array.isArray(rows) && rows.length > 0 });
+    const ok = Array.isArray(rows) && rows.length > 0;
+    return res.status(200).json({ zentrale: ok, nurZentrale: ok && rows.some(r => r.nur_zentrale === true) });
   } catch (e) {
     return res.status(200).json({ zentrale: false });
   }
