@@ -44,6 +44,29 @@ export default async function handler(req, res) {
   const hash = hashPassword(password);
 
   try {
+    // 1) Ein bereits gesetztes Passwort darf hier nie überschrieben werden (dafür gibt es "Passwort vergessen")
+    const pRes = await fetch(
+      `${SUPABASE_URL}/rest/v1/profiles?email=eq.${encodeURIComponent(email.toLowerCase())}&select=password_hash`,
+      { headers: { 'apikey': SUPABASE_SERVICE_KEY, 'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}` } }
+    );
+    if (!pRes.ok) {
+      return res.status(500).json({ error: 'Server-Fehler. Bitte versuche es erneut.' });
+    }
+    const pRows = await pRes.json();
+    if (Array.isArray(pRows) && pRows.length > 0 && pRows[0].password_hash) {
+      return res.status(409).json({ error: 'Für diese E-Mail ist schon ein Passwort gesetzt. Bitte melde dich an oder nutze „Passwort vergessen“.' });
+    }
+
+    // 2) Nur Adressen mit gültigem Zugang dürfen ein Passwort setzen: gleiche Prüfung wie beim Login (Abo, Demo-Zugang, Zentrale)
+    const zRes = await fetch('https://www.mein-gastro-system.de/api/check-auth', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, step: 'check_email' })
+    });
+    if (!zRes.ok) {
+      return res.status(403).json({ error: 'Kein aktiver Zugang für diese E-Mail gefunden.' });
+    }
+
     const response = await fetch(
       `${SUPABASE_URL}/rest/v1/profiles`,
       {
