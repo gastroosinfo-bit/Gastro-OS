@@ -40,11 +40,20 @@ function heutigesDatumString() {
 }
 
 export default function handler(req, res) {
+  // Antworten dieser Funktion nie zwischenspeichern
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+
   // Abmelden: Cookie serverseitig löschen (HttpOnly-Cookies kann die Seite selbst nicht löschen)
   if (req.query && req.query.logout === '1') {
-    res.setHeader('Set-Cookie', 'gastro_os_session=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0');
+    const weg = 'gastro_os_session=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0; Expires=Thu, 01 Jan 1970 00:00:00 GMT';
+    res.setHeader('Set-Cookie', [
+      weg,
+      weg + '; Domain=mein-gastro-system.de',
+      weg + '; Domain=www.mein-gastro-system.de'
+    ]);
     return res.status(200).json({ ok: true });
   }
+
   const cookie = req.headers.cookie || '';
   const match = cookie.match(/gastro_os_session=([^;]+)/);
   if (!match) return res.status(401).json({ valid: false });
