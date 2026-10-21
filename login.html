@@ -229,7 +229,7 @@ async function handleSetPassword(event) {
 
     if (response.ok && data.success) {
       showSuccess('✓ Passwort gespeichert. Du wirst weitergeleitet...');
-      setTimeout(() => { window.location.href = '/dashboard.html'; }, 1200);
+      setTimeout(() => { window.location.href = data.ziel || '/dashboard.html'; }, 1200);
     } else {
       showError(data.error || 'Fehler beim Speichern. Bitte versuche es erneut.');
       btn.disabled = false;
@@ -261,7 +261,7 @@ async function handlePasswordLogin(event) {
 
     if (response.ok && data.success) {
       showSuccess('✓ Zugang bestätigt. Du wirst weitergeleitet...');
-      setTimeout(() => { window.location.href = '/dashboard.html'; }, 1200);
+      setTimeout(() => { window.location.href = data.ziel || '/dashboard.html'; }, 1200);
     } else {
       showError(data.error || 'Falsches Passwort. Bitte versuche es erneut.');
       btn.disabled = false;
