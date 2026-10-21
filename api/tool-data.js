@@ -52,7 +52,7 @@ async function gruppeUebersicht(req, res, email) {
   try {
     const gRes = await fetch(
       SUPABASE_URL + '/rest/v1/filial_gruppen?zentrale_email=eq.' + encodeURIComponent(email) +
-      '&select=filiale_email,filiale_name&order=filiale_name.asc&limit=500',
+      '&select=filiale_email,filiale_name,ruhetage&order=filiale_name.asc&limit=500',
       { headers: sbHeaders() }
     );
     const filialen = await gRes.json();
@@ -117,7 +117,11 @@ async function gruppeUebersicht(req, res, email) {
         const x = tag(i.datum); x.abschrAnzahl += 1; x.abschrSumme += num(i.wert);
       });
 
-      return { name: f.filiale_name, tage };
+      // Ruhetage der Filiale (Kürzel mo,di,mi,do,fr,sa,so) als Zahlen 0=So … 6=Sa
+      const wt = { so: 0, mo: 1, di: 2, mi: 3, do: 4, fr: 5, sa: 6 };
+      const ruhetage = String(f.ruhetage || '').toLowerCase().split(/[\s,;]+/)
+        .map(x => wt[x.slice(0, 2)]).filter(x => x !== undefined);
+      return { name: f.filiale_name, ruhetage, tage };
     });
 
     return res.status(200).json({ von, bis, filialen: ergebnis });
