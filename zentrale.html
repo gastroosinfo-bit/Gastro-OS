@@ -53,6 +53,8 @@ tfoot td { background:#1a2a4a; color:#fff; font-weight:700; border-color:#1a2a4a
 .hinweis { font-size:11.5px; color:#8090a8; margin-top:10px; line-height:1.6; }
 @media (max-width:640px) { .header { padding:14px 18px; } .card { padding:18px 14px; } h1 { font-size:21px; } }
 </style>
+<style id="vorab-verstecken">body{visibility:hidden;}</style>
+<script>setTimeout(function(){var v=document.getElementById('vorab-verstecken');if(v)v.remove();},6000);</script>
 </head>
 <body>
 <script>
@@ -72,6 +74,7 @@ tfoot td { background:#1a2a4a; color:#fff; font-weight:700; border-color:#1a2a4a
         b.onclick = async function(){ try { await fetch('/api/verify-session?logout=1'); } catch(e) {} window.location.href = 'login.html'; };
       }
     } catch (e) {}
+    const vv = document.getElementById('vorab-verstecken'); if (vv) vv.remove();
   } catch (e) { window.location.href = 'login.html'; }
 })();
 </script>
