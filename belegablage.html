@@ -578,6 +578,7 @@ async function belegOeffnen(path) {
   } catch (e) {}
 }
 async function belegLoeschen(id) {
+  if (!confirm('Diesen Beleg wirklich löschen? Das kann nicht rückgängig gemacht werden.')) return;
   const item = belegeDaten.find(b => b.id === id);
   belegeDaten = belegeDaten.filter(b => b.id !== id);
   await toolSave('tagesgeschaeft-belege', { items: belegeDaten });

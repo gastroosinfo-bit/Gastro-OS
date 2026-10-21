@@ -665,6 +665,7 @@ async function kbSpeichernTag() {
   kbRenderTabelle();
 }
 function kbLoeschen(datum) {
+  if (!confirm('Diesen Kassenbuch-Eintrag wirklich löschen? Das kann nicht rückgängig gemacht werden.')) return;
   delete kassenbuchDaten[datum];
   toolSave('tagesgeschaeft-kassenbuch', kassenbuchDaten);
   kbRenderTabelle();
@@ -969,6 +970,7 @@ async function weHinzufuegen() {
   weRenderTabelle();
 }
 async function weLoeschen(id) {
+  if (!confirm('Diesen Wareneingang wirklich löschen? Das kann nicht rückgängig gemacht werden.')) return;
   weDaten = weDaten.filter(w => w.id !== id);
   await toolSave('tagesgeschaeft-wareneingang', { items: weDaten });
   weRenderTabelle();
@@ -1002,6 +1004,7 @@ async function notizHinzufuegen() {
   notizRenderListe();
 }
 async function notizLoeschen(id) {
+  if (!confirm('Diese Notiz wirklich löschen? Das kann nicht rückgängig gemacht werden.')) return;
   notizDaten = notizDaten.filter(n => n.id !== id);
   await toolSave('tagesgeschaeft-notizen', { items: notizDaten });
   notizRenderListe();
@@ -1112,6 +1115,7 @@ async function skOeffnen(id) {
 }
 
 async function skLoeschen(id) {
+  if (!confirm('Diese Speisekarten-Datei wirklich löschen? Das kann nicht rückgängig gemacht werden.')) return;
   const item = skDaten.items.find(i => i.id === id);
   skDaten.items = skDaten.items.filter(i => i.id !== id);
   await toolSave('tagesgeschaeft-speisekarte', skDaten);
@@ -1276,6 +1280,7 @@ function abRenderVerlauf() {
 }
 
 async function abLoeschen(datum) {
+  if (!confirm('Diesen Artikelbericht wirklich löschen? Das kann nicht rückgängig gemacht werden.')) return;
   delete artikelberichteDaten[datum];
   await toolSave('tagesgeschaeft-artikelberichte', artikelberichteDaten);
   abRenderVerlauf();
@@ -1522,6 +1527,7 @@ async function fgHinzufuegen() {
 }
 
 async function fgLoeschen(id) {
+  if (!confirm('Dieses Freigetränk wirklich löschen? Das kann nicht rückgängig gemacht werden.')) return;
   freigetraenkeDaten.items = freigetraenkeDaten.items.filter(i => i.id !== id);
   await toolSave('tagesgeschaeft-freigetraenke', freigetraenkeDaten);
   fgRender();
@@ -1592,6 +1598,7 @@ async function acHinzufuegen() {
 }
 
 async function acLoeschen(id) {
+  if (!confirm('Diese Abschreibung wirklich löschen? Das kann nicht rückgängig gemacht werden.')) return;
   abschreibungenDaten.items = abschreibungenDaten.items.filter(i => i.id !== id);
   await toolSave('tagesgeschaeft-abschreibungen', abschreibungenDaten);
   acRender();
@@ -1729,6 +1736,7 @@ async function sbOeffnen(id) {
 }
 
 async function sbLoeschen(id) {
+  if (!confirm('Diesen Stornobeleg wirklich löschen? Das kann nicht rückgängig gemacht werden.')) return;
   const item = stornoDaten.items.find(i => i.id === id);
   stornoDaten.items = stornoDaten.items.filter(i => i.id !== id);
   await toolSave('tagesgeschaeft-stornos', stornoDaten);
