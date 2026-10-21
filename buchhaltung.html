@@ -99,7 +99,7 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8 url('/bg-rest
     <div class="grid3">
       <div class="summary-box"><div class="label">Einnahmen</div><div class="value" id="bh-sum-einnahmen">0,00 €</div><div class="vgl" id="bh-einnahmen-vgl"></div></div>
       <div class="summary-box"><div class="label">Ausgaben</div><div class="value" id="bh-sum-ausgaben">0,00 €</div><div class="vgl" id="bh-ausgaben-vgl"></div></div>
-      <div class="summary-box"><div class="label">Gewinn</div><div class="value" id="bh-gewinn">0,00 €</div><div class="vgl" id="bh-gewinn-vgl"></div></div>
+      <div class="summary-box"><div class="label">Gewinn</div><div class="value" id="bh-gewinn">0,00 €</div><div class="vgl" id="bh-gewinn-vgl"></div><div class="vgl" id="bh-gewinn-verlust" style="margin-top:2px;"></div></div>
     </div>
     <div class="kenn">
       <span>Wareneinsatz <b id="bh-wareneinsatz">–</b> <small id="bh-wareneinsatz-vgl"></small></span>
@@ -321,6 +321,9 @@ function bhUebersichtAktualisieren() {
 
   const acDesMonats = abschreibungenDaten.filter(a => a.datum && a.datum.slice(0, 7) === monatSchluessel);
   document.getElementById('bh-sum-abschreibungen').textContent = euro(acDesMonats.reduce((s, a) => s + (a.wert || 0), 0));
+
+  const verlust = fgDesMonats.reduce((s, f) => s + (f.wert || 0), 0) + acDesMonats.reduce((s, a) => s + (a.wert || 0), 0);
+  document.getElementById('bh-gewinn-verlust').textContent = verlust > 0 ? 'Darin enthalten: ' + euro(verlust) + ' Verlust (Freigetränke, Abschreibungen)' : '';
 
   const sbDesMonats = stornoDaten.filter(s => s.datum && s.datum.slice(0, 7) === monatSchluessel);
   document.getElementById('bh-sum-stornos').textContent = euro(sbDesMonats.reduce((s, x) => s + (x.betrag || 0), 0));
