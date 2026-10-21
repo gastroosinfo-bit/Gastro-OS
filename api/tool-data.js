@@ -208,6 +208,71 @@ async function gruppeAktion(req, res, email) {
   }
 }
 
+// Darf diese Zentrale die Daten der Filiale lesen? (nur wenn die Filiale zugestimmt hat)
+async function istAktiveFiliale(zentrale, filiale) {
+  try {
+    const r = await fetch(
+      SUPABASE_URL + '/rest/v1/filial_gruppen?zentrale_email=eq.' + q(zentrale.toLowerCase()) +
+      '&filiale_email=eq.' + q(filiale.toLowerCase()) + '&status=eq.aktiv&select=filiale_email&limit=1',
+      { headers: sbHeaders() }
+    );
+    if (!r.ok) return false;
+    const rows = await r.json();
+    return Array.isArray(rows) && rows.length > 0;
+  } catch (e) { return false; }
+}
+
+// Diese Bereiche darf eine Zentrale bei einer zugestimmten Filiale NUR LESEN (Monatsbericht, Tagesgeschäft, Schichtplan)
+const LESBAR_FUER_ZENTRALE = [
+  'tagesgeschaeft-kassenbuch', 'tagesgeschaeft-wareneingang', 'tagesgeschaeft-belege',
+  'tagesgeschaeft-freigetraenke', 'tagesgeschaeft-abschreibungen', 'tagesgeschaeft-stornos',
+  'tagesgeschaeft-haccp', 'tagesgeschaeft-notizen', 'tagesgeschaeft-artikelberichte',
+  'schichtplaene', 'schichtplan-mitarbeiter'
+];
+
+async function neuesteDaten(userEmail, tool) {
+  const r = await fetch(
+    SUPABASE_URL + '/rest/v1/user_tool_data?user_id=eq.' + q(userEmail) + '&tool_name=eq.' + q(tool) +
+    '&select=data&order=updated_at.desc&limit=1',
+    { headers: sbHeaders() }
+  );
+  if (!r.ok) return {};
+  const rows = await r.json();
+  return (Array.isArray(rows) && rows.length > 0 && rows[0].data) ? rows[0].data : {};
+}
+
+// Einzelheiten einer Filiale: Stornos, Freigetränke, Abschreibungen (Zeitraum) und Schichten (Zeitraum)
+async function gruppeDetails(req, res, email) {
+  const filiale = String(req.query.filiale || '').toLowerCase();
+  const von = String(req.query.von || ''), bis = String(req.query.bis || '');
+  const svon = String(req.query.svon || ''), sbis = String(req.query.sbis || '');
+  const ok = /^\d{4}-\d{2}-\d{2}$/;
+  if (!emailOk(filiale) || ![von, bis, svon, sbis].every(d => ok.test(d)) || von > bis || svon > sbis) {
+    return res.status(400).json({ error: 'Angaben ungültig.' });
+  }
+  if (!(await istAktiveFiliale(email, filiale))) return res.status(403).json({ error: 'Kein Zugriff auf diese Filiale.' });
+  try {
+    const [st, fg, ac, sp] = await Promise.all([
+      neuesteDaten(filiale, 'tagesgeschaeft-stornos'),
+      neuesteDaten(filiale, 'tagesgeschaeft-freigetraenke'),
+      neuesteDaten(filiale, 'tagesgeschaeft-abschreibungen'),
+      neuesteDaten(filiale, 'schichtplaene')
+    ]);
+    const liste = d => Array.isArray(d.items) ? d.items : [];
+    const imZ = (d, a, b) => typeof d === 'string' && d >= a && d <= b;
+    const text = (v, n) => String(v == null ? '' : v).slice(0, n || 200);
+    const zahl = v => (typeof v === 'number' && isFinite(v)) ? v : (parseFloat(v) || 0);
+    return res.status(200).json({
+      stornos: liste(st).filter(i => imZ(i.datum, von, bis)).map(i => ({ datum: i.datum, betrag: zahl(i.betrag), grund: text(i.grund) })),
+      freigetraenke: liste(fg).filter(i => imZ(i.datum, von, bis)).map(i => ({ datum: i.datum, name: text(i.getraenk), menge: zahl(i.menge), einheit: text(i.einheit, 20), wert: zahl(i.wert), grund: text(i.grund) })),
+      abschreibungen: liste(ac).filter(i => imZ(i.datum, von, bis)).map(i => ({ datum: i.datum, name: text(i.artikel), menge: zahl(i.menge), einheit: text(i.einheit, 20), wert: zahl(i.wert), grund: text(i.grund) })),
+      schichten: liste(sp).filter(i => imZ(i.datum, svon, sbis)).map(i => ({ datum: i.datum, name: text(i.name, 80), von: text(i.von, 10), bis: text(i.bis, 10), notiz: text(i.notiz) }))
+    });
+  } catch (e) {
+    return res.status(500).json({ error: 'Fehler beim Laden.' });
+  }
+}
+
 async function gruppeUebersicht(req, res, email) {
   const von = String(req.query.von || '');
   const bis = String(req.query.bis || '');
@@ -295,7 +360,7 @@ async function gruppeUebersicht(req, res, email) {
       const wt = { so: 0, mo: 1, di: 2, mi: 3, do: 4, fr: 5, sa: 6 };
       const ruhetage = String(f.ruhetage || '').toLowerCase().split(/[\s,;]+/)
         .map(x => wt[x.slice(0, 2)]).filter(x => x !== undefined);
-      return { name: f.filiale_name, ruhetage, tage };
+      return { name: f.filiale_name, email: f.filiale_email, ruhetage, tage };
     });
 
     return res.status(200).json({ von, bis, filialen: ergebnis });
@@ -315,13 +380,24 @@ export default async function handler(req, res) {
     if (req.query.gruppe === 'uebersicht') return gruppeUebersicht(req, res, email);
     if (req.query.gruppe === 'check') return gruppeCheck(req, res, email);
     if (req.query.gruppe === 'verwalten') return gruppeVerwalten(req, res, email);
+    if (req.query.gruppe === 'details') return gruppeDetails(req, res, email);
     if (req.query.gruppe === 'anfragen') return gruppeAnfragen(req, res, email);
     const tool = req.query.tool;
     if (!tool) return res.status(400).json({ error: 'tool fehlt.' });
 
+    // Zentrale liest (nur lesen) einen Bereich einer zugestimmten Filiale
+    let zielNutzer = email;
+    if (req.query.filiale) {
+      const fil = String(req.query.filiale).toLowerCase();
+      if (!LESBAR_FUER_ZENTRALE.includes(tool) || !(await istAktiveFiliale(email, fil))) {
+        return res.status(403).json({ error: 'Kein Zugriff.' });
+      }
+      zielNutzer = fil;
+    }
+
     try {
       const r = await fetch(
-        SUPABASE_URL + '/rest/v1/user_tool_data?user_id=eq.' + encodeURIComponent(email) +
+        SUPABASE_URL + '/rest/v1/user_tool_data?user_id=eq.' + encodeURIComponent(zielNutzer) +
         '&tool_name=eq.' + encodeURIComponent(tool) + '&select=data&order=updated_at.desc&limit=1',
         { headers: sbHeaders() }
       );
