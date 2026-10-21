@@ -2066,9 +2066,10 @@ async function filialFreigabenLaden() {
         '<button onclick="filialAntwort(\'' + filialEsc(a.zentrale) + '\',\'zulassen\')" style="background:#1a2a4a;color:#d4af37;border:none;border-radius:6px;padding:8px 16px;font-weight:700;font-size:12.5px;cursor:pointer;margin-right:8px;">Zulassen</button>' +
         '<button onclick="filialAntwort(\'' + filialEsc(a.zentrale) + '\',\'ablehnen\')" style="background:#faf8f4;color:#c0392b;border:1px solid #e0d8c8;border-radius:6px;padding:8px 16px;font-weight:700;font-size:12.5px;cursor:pointer;">Ablehnen</button></div>';
     });
-    frei.forEach(function (f) {
-      h += '<span title="Zentrale ' + filialEsc(f.zentrale) + ' kann deine Zahlen einsehen (nur lesen)" style="display:inline-block;background:#1a6640;color:#fff;font-size:10px;font-weight:700;letter-spacing:0.5px;padding:5px 14px;border-radius:999px;margin:0 8px 8px 0;"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="width:11px;height:11px;margin-right:4px;vertical-align:-1px;stroke-width:3.2;"><path d="M20 6 9 17l-5-5" /></svg>MIT ZENTRALE VERBUNDEN</span>';
-    });
+    if (frei.length > 0) {
+      const zs = frei.map(function (f) { return f.zentrale; }).join(', ');
+      h += '<div style="text-align:center;margin:0 0 4px;"><span title="Verbunden mit: ' + filialEsc(zs) + ' (nur lesen)" style="display:inline-block;background:#1a6640;color:#fff;font-size:10px;font-weight:700;letter-spacing:0.5px;padding:5px 14px;border-radius:999px;"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="width:11px;height:11px;margin-right:4px;vertical-align:-1px;stroke-width:3.2;"><path d="M20 6 9 17l-5-5" /></svg>MIT ZENTRALE VERBUNDEN</span></div>';
+    }
     box.innerHTML = h;
     box.style.display = 'block';
   } catch (e) {}
