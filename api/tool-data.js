@@ -39,6 +39,20 @@ function sbHeaders() {
 // ─── Zentrale-Ansicht: Zahlen der zugeordneten Filialen (nur lesen) ──────────
 // Nur Zugänge, die in der Tabelle filial_gruppen als zentrale_email eingetragen sind, dürfen das abrufen.
 // Es werden nur Zahlen zurückgegeben (keine E-Mail-Adressen, keine Belegdateien).
+// Leichte Abfrage: Ist dieser Zugang eine Zentrale? (für die Kachel im Dashboard)
+async function gruppeCheck(req, res, email) {
+  try {
+    const gRes = await fetch(
+      SUPABASE_URL + '/rest/v1/filial_gruppen?zentrale_email=eq.' + encodeURIComponent(email) + '&select=filiale_email&limit=1',
+      { headers: sbHeaders() }
+    );
+    const rows = await gRes.json();
+    return res.status(200).json({ zentrale: Array.isArray(rows) && rows.length > 0 });
+  } catch (e) {
+    return res.status(200).json({ zentrale: false });
+  }
+}
+
 async function gruppeUebersicht(req, res, email) {
   const von = String(req.query.von || '');
   const bis = String(req.query.bis || '');
@@ -139,6 +153,7 @@ export default async function handler(req, res) {
   // ─── GET: Zustand laden ───────────────────────────────────────────────────
   if (req.method === 'GET') {
     if (req.query.gruppe === 'uebersicht') return gruppeUebersicht(req, res, email);
+    if (req.query.gruppe === 'check') return gruppeCheck(req, res, email);
     const tool = req.query.tool;
     if (!tool) return res.status(400).json({ error: 'tool fehlt.' });
 
