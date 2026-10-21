@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Filial-Überblick – GASTRO-OS</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8 url('/bg-restaurant.jpg') center top / cover no-repeat fixed; color:#1a2a4a; min-height:100vh; }
+.header { background:#1a2a4a; padding:16px 40px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+.brand { font-family:Georgia,serif; font-size:20px; color:#d4af37; letter-spacing:3px; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+.main { max-width:1180px; margin:32px auto; padding:0 20px 60px; }
+.card { background:#fff; border:1px solid #e8dfc8; border-radius:10px; padding:26px 28px; box-shadow:0 2px 8px rgba(0,0,0,0.05); margin-bottom:18px; }
+h1 { font-family:Georgia,serif; font-size:26px; margin-bottom:4px; }
+.sub { font-size:13px; color:#5a6a80; margin-bottom:4px; }
+.gold-rule { width:56px; height:2px; background:#d4af37; margin:10px 0 4px; }
+.back-btn { background:#d4af37; color:#1a2a4a; border:none; padding:9px 20px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; }
+.footer { background:#1a2a4a; margin-top:40px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer strong { color:#d4af37; }
+.bar { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:14px; }
+.chip { background:#faf8f4; border:1px solid #e0d8c8; color:#1a2a4a; padding:7px 13px; border-radius:18px; font-size:12.5px; font-weight:600; cursor:pointer; }
+.chip.aktiv { background:#1a2a4a; color:#d4af37; border-color:#1a2a4a; }
+.bar label { font-size:11px; font-weight:700; color:#8090a8; text-transform:uppercase; letter-spacing:.5px; }
+.bar input[type=date], .bar input[type=text] { border:1px solid #e0d8c8; border-radius:6px; padding:7px 10px; font-size:13px; color:#1a2a4a; background:#eaf2ff; font-family:inherit; }
+.bar .check { display:flex; align-items:center; gap:6px; font-size:12.5px; color:#1a2a4a; font-weight:600; text-transform:none; letter-spacing:0; cursor:pointer; }
+.kpis { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; margin-bottom:6px; }
+.kpi { background:#faf8f4; border-left:3px solid #d4af37; border-radius:0 8px 8px 0; padding:11px 14px; }
+.kpi .z { font-family:Georgia,serif; font-size:20px; color:#1a2a4a; }
+.kpi .l { font-size:11px; color:#8090a8; text-transform:uppercase; letter-spacing:.5px; margin-top:2px; }
+.kpi.warn { border-left-color:#c0392b; }
+.kpi.warn .z { color:#c0392b; }
+.tabwrap { overflow-x:auto; }
+table { width:100%; border-collapse:collapse; font-size:12.5px; }
+th { background:#f5f0e8; padding:9px 10px; font-size:11px; font-weight:700; color:#1a2a4a; text-align:right; border:1px solid #e8dfc8; white-space:nowrap; cursor:pointer; user-select:none; }
+th:first-child, td:first-child { text-align:left; }
+td { padding:9px 10px; border:1px solid #e8dfc8; text-align:right; white-space:nowrap; }
+tbody tr.fil:nth-child(4n+1) td, tbody tr.fil:nth-child(4n+2) td { background:#faf8f4; }
+tr.fil { cursor:pointer; }
+tr.fil:hover td { background:#f3ecd9 !important; }
+tfoot td { background:#1a2a4a; color:#fff; font-weight:700; border-color:#1a2a4a; }
+.badge { display:inline-block; font-size:10.5px; font-weight:700; padding:2px 8px; border-radius:10px; margin-left:4px; }
+.b-rot { background:#fdecea; color:#c0392b; }
+.b-gelb { background:#fff4d6; color:#8a6d00; }
+.b-ok { background:#e6f4ea; color:#1a6640; }
+.detail td { background:#fff !important; text-align:right; }
+.detail td:first-child { text-align:left; }
+.detail table td, .detail table th { cursor:default; }
+.meldung { font-size:13.5px; color:#5a6a80; padding:18px 4px; }
+.fehler { color:#c0392b; }
+.hinweis { font-size:11.5px; color:#8090a8; margin-top:10px; line-height:1.6; }
+@media (max-width:640px) { .header { padding:14px 18px; } .card { padding:18px 14px; } h1 { font-size:21px; } }
+</style>
+</head>
+<body>
+<script>
+(async function(){
+  try {
+    const res = await fetch('/api/verify-session');
+    if (!res.ok) { window.location.href = 'login.html'; return; }
+    const d = await res.json();
+    if (!d.valid) { window.location.href = 'login.html'; return; }
+  } catch (e) { window.location.href = 'login.html'; }
+})();
+</script>
+
+<div class="header">
+  <div class="brand">GASTRO-OS</div>
+  <a href="dashboard.html" class="back-btn">← Zurück zum Dashboard</a>
+</div>
+<div class="gold-bar"></div>
+
+<div class="main">
+  <div class="card">
+    <h1>Filial-Überblick</h1>
+    <div class="gold-rule"></div>
+    <div class="sub">Alle Filialen im Vergleich – Zahlen aus Kassenbuch, Stornos, Freigetränken und Abschreibungen.</div>
+  </div>
+
+  <div class="card">
+    <div class="bar" id="presets">
+      <button class="chip" data-p="heute">Heute</button>
+      <button class="chip aktiv" data-p="gestern">Gestern</button>
+      <button class="chip" data-p="7">Letzte 7 Tage</button>
+      <button class="chip" data-p="monat">Dieser Monat</button>
+      <button class="chip" data-p="vormonat">Letzter Monat</button>
+      <label style="margin-left:8px;">Von</label><input type="date" id="von">
+      <label>Bis</label><input type="date" id="bis">
+      <button class="chip" id="btn-laden">Anzeigen</button>
+    </div>
+    <div class="bar">
+      <input type="text" id="suche" placeholder="Filiale suchen …">
+      <label class="check"><input type="checkbox" id="f-auff"> Nur Auffälligkeiten</label>
+      <label class="check"><input type="checkbox" id="f-fehlt"> Nur Filialen mit fehlenden Einträgen</label>
+    </div>
+
+    <div id="inhalt"><div class="meldung">Lade Daten …</div></div>
+  </div>
+</div>
+
+<div class="gold-bar"></div>
+<div class="footer"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Strategie · Erfolg &nbsp;·&nbsp; <a href="impressum.html" style="color:#ffffff;text-decoration:none;">Impressum</a> &nbsp;·&nbsp; <a href="datenschutz.html" style="color:#ffffff;text-decoration:none;">Datenschutz</a> &nbsp;·&nbsp; <a href="agb.html" style="color:#ffffff;text-decoration:none;">AGB</a></div>
+
+<script>
+(function () {
+  var daten = null;          // Antwort des Servers
+  var zeilen = [];           // berechnete Zeilen je Filiale
+  var sortKey = 'name', sortDir = 1;
+  var offen = {};            // aufgeklappte Filialen
+
+  function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' })[c]; }); }
+  function euro(n) { return (Number(n) || 0).toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €'; }
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+  function iso(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+  function deDatum(s) { var p = s.split('-'); return p[2] + '.' + p[1] + '.' + p[0]; }
+  function tageListe(von, bis) {
+    var out = [], d = new Date(von + 'T12:00:00'), e = new Date(bis + 'T12:00:00');
+    while (d <= e) { out.push(iso(d)); d.setDate(d.getDate() + 1); }
+    return out;
+  }
+
+  function presetZeitraum(p) {
+    var h = new Date(), von, bis;
+    if (p === 'heute') { von = bis = iso(h); }
+    else if (p === 'gestern') { var g = new Date(h); g.setDate(g.getDate() - 1); von = bis = iso(g); }
+    else if (p === '7') { var s = new Date(h); s.setDate(s.getDate() - 6); von = iso(s); bis = iso(h); }
+    else if (p === 'monat') { von = iso(new Date(h.getFullYear(), h.getMonth(), 1)); bis = iso(h); }
+    else { von = iso(new Date(h.getFullYear(), h.getMonth() - 1, 1)); bis = iso(new Date(h.getFullYear(), h.getMonth(), 0)); }
+    return { von: von, bis: bis };
+  }
+
+  function setPreset(p) {
+    var z = presetZeitraum(p);
+    document.getElementById('von').value = z.von;
+    document.getElementById('bis').value = z.bis;
+    Array.prototype.forEach.call(document.querySelectorAll('#presets .chip[data-p]'), function (b) {
+      b.classList.toggle('aktiv', b.getAttribute('data-p') === p);
+    });
+    laden();
+  }
+
+  async function laden() {
+    var von = document.getElementById('von').value, bis = document.getElementById('bis').value;
+    var box = document.getElementById('inhalt');
+    if (!von || !bis || von > bis) { box.innerHTML = '<div class="meldung fehler">Bitte einen gültigen Zeitraum wählen.</div>'; return; }
+    box.innerHTML = '<div class="meldung">Lade Daten …</div>';
+    try {
+      var res = await fetch('/api/tool-data?gruppe=uebersicht&von=' + von + '&bis=' + bis);
+      if (res.status === 403) { box.innerHTML = '<div class="meldung fehler">Dieser Zugang ist nicht als Zentrale eingerichtet.</div>'; return; }
+      if (!res.ok) { box.innerHTML = '<div class="meldung fehler">Die Daten konnten nicht geladen werden. Bitte später noch einmal versuchen.</div>'; return; }
+      daten = await res.json();
+      berechnen();
+      zeichnen();
+    } catch (e) {
+      box.innerHTML = '<div class="meldung fehler">Die Daten konnten nicht geladen werden.</div>';
+    }
+  }
+
+  function berechnen() {
+    var tage = tageListe(daten.von, daten.bis);
+    zeilen = daten.filialen.map(function (f) {
+      var r = { name: f.name, tage: f.tage || {}, tageGesamt: tage.length, tageMitEintrag: 0,
+        umsatz: 0, kasse: 0, karte: 0, lieferdienste: 0, ueberweisung: 0, wareneinkauf: 0, sonstiges: 0,
+        stornoAnz: 0, stornoSumme: 0, freiAnz: 0, freiSumme: 0, abschrAnz: 0, abschrSumme: 0, tageListe: tage };
+      tage.forEach(function (d) {
+        var t = r.tage[d]; if (!t) return;
+        if (t.eintrag) r.tageMitEintrag++;
+        r.umsatz += t.umsatz; r.kasse += t.kasse; r.karte += t.karte; r.lieferdienste += t.lieferdienste; r.ueberweisung += t.ueberweisung;
+        r.wareneinkauf += t.wareneinkauf; r.sonstiges += t.sonstiges;
+        r.stornoAnz += t.stornoAnzahl; r.stornoSumme += t.stornoSumme;
+        r.freiAnz += t.freiAnzahl; r.freiSumme += t.freiSumme;
+        r.abschrAnz += t.abschrAnzahl; r.abschrSumme += t.abschrSumme;
+      });
+      r.ergebnis = r.umsatz - r.wareneinkauf - r.sonstiges;
+      r.fehlt = r.tageGesamt - r.tageMitEintrag;
+      return r;
+    });
+    // Auffälligkeiten: im Vergleich zum Durchschnitt aller Filialen (ab 3 Filialen), sonst feste Grenzen
+    var n = zeilen.length || 1;
+    var avg = function (k) { return zeilen.reduce(function (s, r) { return s + r[k]; }, 0) / n; };
+    var aS = avg('stornoAnz'), aF = avg('freiSumme'), aA = avg('abschrSumme');
+    zeilen.forEach(function (r) {
+      r.auff = [];
+      if (n >= 3) {
+        if (r.stornoAnz >= 3 && r.stornoAnz >= 2 * aS) r.auff.push('Viele Stornos (' + r.stornoAnz + ')');
+        if (r.freiSumme >= 20 && r.freiSumme >= 2 * aF) r.auff.push('Hohe Freigetränke');
+        if (r.abschrSumme >= 20 && r.abschrSumme >= 2 * aA) r.auff.push('Hohe Abschreibungen');
+      } else {
+        if (r.stornoAnz >= 3) r.auff.push('Viele Stornos (' + r.stornoAnz + ')');
+        if (r.freiSumme >= 50) r.auff.push('Hohe Freigetränke');
+        if (r.abschrSumme >= 50) r.auff.push('Hohe Abschreibungen');
+      }
+    });
+  }
+
+  function sichtbar() {
+    var q = document.getElementById('suche').value.trim().toLowerCase();
+    var nurA = document.getElementById('f-auff').checked, nurF = document.getElementById('f-fehlt').checked;
+    var l = zeilen.filter(function (r) {
+      if (q && r.name.toLowerCase().indexOf(q) < 0) return false;
+      if (nurA && r.auff.length === 0) return false;
+      if (nurF && r.fehlt === 0) return false;
+      return true;
+    });
+    l.sort(function (a, b) {
+      var x = a[sortKey], y = b[sortKey];
+      if (typeof x === 'string') return x.localeCompare(y, 'de', { numeric: true }) * sortDir;
+      return (x - y) * sortDir;
+    });
+    return l;
+  }
+
+  function zeichnen() {
+    var box = document.getElementById('inhalt');
+    if (!daten) return;
+    if (zeilen.length === 0) { box.innerHTML = '<div class="meldung">Keine Filialen zugeordnet.</div>'; return; }
+    var l = sichtbar();
+    var sum = function (k) { return l.reduce(function (s, r) { return s + r[k]; }, 0); };
+    var ohneEintrag = zeilen.filter(function (r) { return r.fehlt > 0; }).length;
+    var auffAnz = zeilen.filter(function (r) { return r.auff.length > 0; }).length;
+    var zeitraum = daten.von === daten.bis ? deDatum(daten.von) : deDatum(daten.von) + ' – ' + deDatum(daten.bis);
+
+    var h = '<div class="sub" style="margin-bottom:10px;">Zeitraum: <strong>' + esc(zeitraum) + '</strong> · ' + zeilen.length + ' Filialen</div>';
+    h += '<div class="kpis">';
+    h += '<div class="kpi"><div class="z">' + euro(sum('umsatz')) + '</div><div class="l">Umsatz gesamt</div></div>';
+    h += '<div class="kpi"><div class="z">' + euro(sum('wareneinkauf')) + '</div><div class="l">Wareneinkauf</div></div>';
+    h += '<div class="kpi"><div class="z">' + euro(sum('ergebnis')) + '</div><div class="l">Ergebnis</div></div>';
+    h += '<div class="kpi' + (auffAnz ? ' warn' : '') + '"><div class="z">' + auffAnz + '</div><div class="l">Filialen mit Auffälligkeiten</div></div>';
+    h += '<div class="kpi' + (ohneEintrag ? ' warn' : '') + '"><div class="z">' + ohneEintrag + '</div><div class="l">Filialen mit fehlenden Einträgen</div></div>';
+    h += '</div><div style="height:12px"></div>';
+
+    var cols = [['name','Filiale'],['umsatz','Umsatz'],['wareneinkauf','Wareneinkauf'],['ergebnis','Ergebnis'],['stornoAnz','Stornos'],['freiSumme','Freigetränke'],['abschrSumme','Abschreibungen'],['fehlt','Einträge']];
+    h += '<div class="tabwrap"><table><thead><tr>';
+    cols.forEach(function (c) {
+      var pf = sortKey === c[0] ? (sortDir === 1 ? ' ▲' : ' ▼') : '';
+      h += '<th data-k="' + c[0] + '">' + c[1] + pf + '</th>';
+    });
+    h += '</tr></thead><tbody>';
+    if (l.length === 0) h += '<tr><td colspan="8" style="text-align:left;">Keine Filiale passt zu den Filtern.</td></tr>';
+    l.forEach(function (r, idx) {
+      var st = r.stornoAnz ? r.stornoAnz + ' (' + euro(r.stornoSumme) + ')' : '–';
+      var fr = r.freiSumme ? euro(r.freiSumme) : '–';
+      var ab = r.abschrSumme ? euro(r.abschrSumme) : '–';
+      var eint = r.fehlt === 0 ? '<span class="badge b-ok">vollständig</span>'
+        : '<span class="badge ' + (r.tageMitEintrag === 0 ? 'b-rot' : 'b-gelb') + '">' + r.tageMitEintrag + ' von ' + r.tageGesamt + ' Tagen</span>';
+      var badges = r.auff.map(function (a) { return '<span class="badge b-rot">' + esc(a) + '</span>'; }).join('');
+      h += '<tr class="fil" data-n="' + esc(r.name) + '"><td><strong>' + esc(r.name) + '</strong>' + badges + '</td><td>' + euro(r.umsatz) + '</td><td>' + euro(r.wareneinkauf) + '</td><td>' + euro(r.ergebnis) + '</td><td>' + st + '</td><td>' + fr + '</td><td>' + ab + '</td><td>' + eint + '</td></tr>';
+      if (offen[r.name]) {
+        h += '<tr class="detail"><td colspan="8"><div class="tabwrap"><table><thead><tr><th>Datum</th><th>Umsatz</th><th>Wareneinkauf</th><th>Stornos</th><th>Freigetränke</th><th>Abschreibungen</th><th>Eintrag</th></tr></thead><tbody>';
+        r.tageListe.slice().reverse().forEach(function (d) {
+          var t = r.tage[d] || { eintrag: false, umsatz: 0, wareneinkauf: 0, stornoAnzahl: 0, stornoSumme: 0, freiSumme: 0, abschrSumme: 0 };
+          h += '<tr><td>' + deDatum(d) + '</td><td>' + (t.eintrag ? euro(t.umsatz) : '–') + '</td><td>' + (t.eintrag ? euro(t.wareneinkauf) : '–') + '</td><td>' + (t.stornoAnzahl ? t.stornoAnzahl + ' (' + euro(t.stornoSumme) + ')' : '–') + '</td><td>' + (t.freiSumme ? euro(t.freiSumme) : '–') + '</td><td>' + (t.abschrSumme ? euro(t.abschrSumme) : '–') + '</td><td>' + (t.eintrag ? '<span class="badge b-ok">ja</span>' : '<span class="badge b-rot">fehlt</span>') + '</td></tr>';
+        });
+        h += '</tbody></table></div></td></tr>';
+      }
+    });
+    h += '</tbody><tfoot><tr><td>Summe (angezeigte Filialen)</td><td>' + euro(sum('umsatz')) + '</td><td>' + euro(sum('wareneinkauf')) + '</td><td>' + euro(sum('ergebnis')) + '</td><td>' + sum('stornoAnz') + '</td><td>' + euro(sum('freiSumme')) + '</td><td>' + euro(sum('abschrSumme')) + '</td><td></td></tr></tfoot></table></div>';
+    h += '<div class="hinweis">Auf eine Filiale klicken zeigt die einzelnen Tage. Die Spaltenköpfe sortieren die Tabelle. „Auffällig“ heißt: deutlich mehr Stornos, Freigetränke oder Abschreibungen als der Durchschnitt aller Filialen. Die Zahlen stammen aus den Einträgen der Filialen, ein fehlender Eintrag bedeutet, dass an dem Tag nichts im Kassenbuch eingetragen wurde.</div>';
+    box.innerHTML = h;
+
+    Array.prototype.forEach.call(box.querySelectorAll('th[data-k]'), function (th) {
+      th.onclick = function () {
+        var k = th.getAttribute('data-k');
+        if (sortKey === k) sortDir = -sortDir; else { sortKey = k; sortDir = (k === 'name') ? 1 : -1; }
+        zeichnen();
+      };
+    });
+    Array.prototype.forEach.call(box.querySelectorAll('tr.fil'), function (tr) {
+      tr.onclick = function () { var n = tr.getAttribute('data-n'); offen[n] = !offen[n]; zeichnen(); };
+    });
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll('#presets .chip[data-p]'), function (b) {
+    b.onclick = function () { setPreset(b.getAttribute('data-p')); };
+  });
+  document.getElementById('btn-laden').onclick = function () {
+    Array.prototype.forEach.call(document.querySelectorAll('#presets .chip[data-p]'), function (b) { b.classList.remove('aktiv'); });
+    laden();
+  };
+  ['suche', 'f-auff', 'f-fehlt'].forEach(function (id) {
+    document.getElementById(id).addEventListener(id === 'suche' ? 'input' : 'change', zeichnen);
+  });
+
+  setPreset('gestern');
+})();
+</script>
+</body>
+</html>
