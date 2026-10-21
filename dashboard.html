@@ -2051,9 +2051,14 @@ async function filialFreigabenLaden() {
     const r = await fetch('/api/tool-data?gruppe=anfragen');
     if (!r.ok) return;
     const d = await r.json();
-    const anf = d.anfragen || [], frei = d.freigaben || [];
-    if (anf.length === 0 && frei.length === 0) { box.style.display = 'none'; return; }
+    const anf = d.anfragen || [], frei = d.freigaben || [], getr = d.getrennt || [];
+    if (anf.length === 0 && frei.length === 0 && getr.length === 0) { box.style.display = 'none'; return; }
     let h = '';
+    getr.forEach(function (g) {
+      h += '<div style="background:#fff;border:1px solid #e0b4ae;border-radius:8px;padding:10px 14px;margin-bottom:8px;font-size:12.5px;color:#1a2a4a;display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;">' +
+        '<span>Die Zentrale <strong>' + filialEsc(g.zentrale) + '</strong> hat die Verbindung beendet und sieht deine Tageszahlen nicht mehr.</span>' +
+        '<button onclick="filialAntwort(\'' + filialEsc(g.zentrale) + '\',\'quittieren\')" style="background:#1a2a4a;color:#d4af37;border:none;border-radius:6px;padding:5px 14px;font-size:12px;font-weight:700;cursor:pointer;">OK</button></div>';
+    });
     anf.forEach(function (a) {
       h += '<div style="background:#fff;border:2px solid #d4af37;border-radius:10px;padding:14px 16px;margin-bottom:10px;">' +
         '<div style="font-weight:700;color:#1a2a4a;font-size:14px;margin-bottom:4px;">Anfrage von einer Zentrale</div>' +
