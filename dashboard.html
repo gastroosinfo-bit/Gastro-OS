@@ -156,6 +156,8 @@ html, body { max-width:100%; overflow-x:hidden; }
   });
 })();
 </script>
+<style id="vorab-verstecken">body{visibility:hidden;}</style>
+<script>setTimeout(function(){var v=document.getElementById('vorab-verstecken');if(v)v.remove();},6000);</script>
 </head>
 <body>
 <div class="header">
@@ -1161,6 +1163,7 @@ async function init() {
     if (gd && gd.nurZentrale) { window.location.replace('zentrale.html'); return; }
     if (gd && gd.zentrale) { const z = document.getElementById('zentrale-card'); if (z) z.style.display = ''; }
   } catch(e) {}
+  const vv = document.getElementById('vorab-verstecken'); if (vv) vv.remove();
   document.getElementById('user-name').textContent = userEmail.split('@')[0];
 
   progress = (await loadTool('modul_progress')) || {};
