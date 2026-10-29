@@ -818,7 +818,7 @@ function wochenRender() {
       html += '<td>' + liste.sort((a, b) => a.start.localeCompare(b.start)).map(e => wgChip(e.start, e.ende, 'wg-ist')).join('') + '</td>';
     });
     const extra = soll ? abwTage * soll / 5 : 0; // Urlaub/Krank zählt als Soll/5 pro Tag
-    const klein = (soll ? 'Soll ' + stdTxt(soll) : '') + (extra ? ' · inkl. ' + abwTage + ' Tag(e) Urlaub/Krank' : '');
+    const klein = (soll ? 'Soll ' + stdTxt(soll) : 'Kein Soll hinterlegt (Dashboard → Dein Team → Std./Woche)') + (extra ? ' · inkl. ' + abwTage + ' Tag(e) Urlaub/Krank' : '');
     html += '<td class="sum">' + stdSumme(x.summe + extra, soll) + (klein ? '<div class="wg-soll">' + klein + '</div>' : '') + '</td></tr>';
   });
   body.innerHTML = html + '</tbody></table></div><div style="font-size:11px;color:#8090a8;margin-top:6px;">Blau = gestempelte Zeit (Kommen–Gehen). Zahl rechts: Wochenstunden nach Abzug der Pausen – rot = Soll noch nicht erreicht, grün = erreicht.</div>';
