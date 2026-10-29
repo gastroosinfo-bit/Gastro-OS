@@ -73,6 +73,7 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
 
 .std-gruen { color:#1a6640; font-weight:700; white-space:nowrap; display:inline-flex; align-items:center; gap:5px; }
 .std-rot { color:#c0392b; }
+.std-gruen.std-neutral { color:#1a2a4a; }
 .std-gruen svg { width:13px; height:13px; flex:none; }
 table.std-table .std-gruen, table.wg .std-gruen { font-size:16px; }
 table.std-table td.zahl, table.std-table th.zahl { text-align:right; white-space:nowrap; }
@@ -234,10 +235,10 @@ function stdText(h) {
   if (!h) return '–';
   return (Math.round(h * 100) / 100).toLocaleString('de-DE') + ' Std.';
 }
-function stdHtml(h, soll) {
+function stdHtml(h, soll, neutral) {
   if (!h) return soll ? '<span class="std-gruen std-rot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9.5 2.5h5"/></svg>0 Std.</span>' : '–';
   const rot = soll && (Math.round(h * 100) < Math.round(soll * 100));
-  return '<span class="std-gruen' + (rot ? ' std-rot' : '') + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9.5 2.5h5"/></svg>' + stdText(h) + '</span>';
+  return '<span class="std-gruen' + (rot ? ' std-rot' : '') + (neutral ? ' std-neutral' : '') + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9.5 2.5h5"/></svg>' + stdText(h) + '</span>';
 }
 function datumIso(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
 function montagVon(d) { const x = new Date(d.getFullYear(), d.getMonth(), d.getDate()); x.setDate(x.getDate() - ((x.getDay() + 6) % 7)); return x; }
@@ -287,7 +288,8 @@ function stundenRender() {
   (typeof mitarbeiterNamen !== 'undefined' ? mitarbeiterNamen : []).forEach(n => person(n));
   items.forEach(s => { const x = person(s.name || '?'); x.tage[wgTagIndex(s.datum)].push(s); x.plan += stdZwischen(s.von, s.bis); });
   zeWoche.forEach(e => { person(e.name || '?').ist += zeStdNetto(e); });
-  const namen = Object.keys(pp).sort((a, b) => a.localeCompare(b, 'de'));
+  if (window.maName) person(window.maName);
+  const namen = Object.keys(pp).sort((a, b) => (a === window.maName ? -1 : b === window.maName ? 1 : a.localeCompare(b, 'de')));
   let html;
   if (!namen.length) {
     html = '<div style="font-size:12.5px;color:#8090a8;">Keine Schichten in dieser Woche.</div>';
@@ -321,7 +323,7 @@ function stundenRender() {
       else if (window.chefModus) klein += 'Kein Soll hinterlegt (Dashboard → Dein Team → Std./Woche)';
       if (zeVorhanden && x.ist) klein += (klein ? ' · ' : '') + 'gestempelt ' + stdText(x.ist);
       if (extra) klein += (klein ? ' · ' : '') + 'inkl. ' + abwTage + ' Tag(e) Urlaub/Krank';
-      html += '<td class="sum">' + stdHtml(x.plan + extra, so) + (klein ? '<div class="wg-soll">' + klein + '</div>' : '') + '</td></tr>';
+      html += '<td class="sum">' + stdHtml(x.plan + extra, so, !!(window.maName && n !== window.maName)) + (klein ? '<div class="wg-soll">' + klein + '</div>' : '') + '</td></tr>';
     });
     html += '</tbody></table></div><div style="font-size:11px;color:#8090a8;margin-top:6px;">Zahl rechts: geplante Wochenstunden – rot = Soll noch nicht erreicht, grün = erreicht.</div>';
   }
@@ -536,6 +538,10 @@ async function pinPruefenMitWert(code, pin, stillLaden) {
     const btnZurueck = document.getElementById('btn-zurueck-team');
     if (btnZurueck) { btnZurueck.href = 'team-zugang.html?u=' + code; btnZurueck.style.display = 'inline-block'; }
     window.maKannBearbeiten = !!d.kannBearbeiten;
+    window.maName = d.meinName;
+    window.sollStdMap = {};
+    if (d.sollStd > 0) window.sollStdMap[d.meinName] = d.sollStd;
+    window.zeItemsChef = Array.isArray(d.meineZeiten) ? d.meineZeiten : [];
     document.getElementById('ma-dienstplan-section').style.display = window.maKannBearbeiten ? 'block' : 'none';
     window.maCode = code;
     window.maPin = pin;
