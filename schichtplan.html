@@ -72,6 +72,7 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
 .std-label { font-size:13.5px; font-weight:700; color:#1a2a4a; min-width:210px; text-align:center; }
 
 .std-gruen { color:#1a6640; font-weight:700; white-space:nowrap; display:inline-flex; align-items:center; gap:5px; }
+.std-rot { color:#c0392b; }
 .std-gruen svg { width:13px; height:13px; flex:none; }
 table.std-table .std-gruen { font-size:15px; }
 table.std-table td.zahl, table.std-table th.zahl { text-align:right; white-space:nowrap; }
@@ -207,9 +208,10 @@ function stdText(h) {
   if (!h) return '–';
   return (Math.round(h * 100) / 100).toLocaleString('de-DE') + ' Std.';
 }
-function stdHtml(h) {
-  if (!h) return '–';
-  return '<span class="std-gruen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9.5 2.5h5"/></svg>' + stdText(h) + '</span>';
+function stdHtml(h, soll) {
+  if (!h) return soll ? '<span class="std-gruen std-rot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9.5 2.5h5"/></svg>0 Std.</span>' : '–';
+  const rot = soll && (Math.round(h * 100) < Math.round(soll * 100));
+  return '<span class="std-gruen' + (rot ? ' std-rot' : '') + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9.5 2.5h5"/></svg>' + stdText(h) + '</span>';
 }
 function datumIso(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
 function montagVon(d) { const x = new Date(d.getFullYear(), d.getMonth(), d.getDate()); x.setDate(x.getDate() - ((x.getDay() + 6) % 7)); return x; }
@@ -251,18 +253,20 @@ function stundenRender() {
     html = '<div style="font-size:12.5px;color:#8090a8;">Keine Schichten in dieser Woche.</div>';
   } else {
     let gp = 0, gi = 0, gs = 0;
-    const diff = (plan, ist) => { const d = Math.round((ist - plan) * 100) / 100; return (d > 0 ? '+' : '') + stdText(d).replace('–', '0 Std.'); };
-    html = '<table class="data-table std-table"><thead><tr><th>Mitarbeiter</th><th class="zahl">Schichten</th><th class="zahl">Geplant</th>' +
-      (zeVorhanden ? '<th class="zahl">Gearbeitet</th><th class="zahl">Differenz</th>' : '') + '</tr></thead><tbody>';
+    const sm = window.sollStdMap || {};
+    const hatSoll = Object.keys(sm).length > 0;
+    html = '<table class="data-table std-table"><thead><tr><th>Mitarbeiter</th><th class="zahl">Schichten</th>' + (hatSoll ? '<th class="zahl">Soll</th>' : '') + '<th class="zahl">Geplant</th>' +
+      (zeVorhanden ? '<th class="zahl">Gearbeitet</th>' : '') + '</tr></thead><tbody>';
     namen.forEach(n => {
       const x = pp[n]; gp += x.plan; gi += x.ist; gs += x.schichten;
-      html += '<tr><td>' + n + '</td><td class="zahl">' + x.schichten + '</td><td class="zahl">' + stdHtml(x.plan) + '</td>' +
-        (zeVorhanden ? '<td class="zahl">' + stdHtml(x.ist) + '</td><td class="zahl">' + diff(x.plan, x.ist) + '</td>' : '') + '</tr>';
+      const so = sm[n] || 0;
+      html += '<tr><td>' + n + '</td><td class="zahl">' + x.schichten + '</td>' + (hatSoll ? '<td class="zahl" style="color:#5a6a80;">' + (so ? stdText(so) : '–') + '</td>' : '') +
+        '<td class="zahl">' + stdHtml(x.plan, so) + '</td>' + (zeVorhanden ? '<td class="zahl">' + stdHtml(x.ist, so) + '</td>' : '') + '</tr>';
     });
-    if (namen.length > 1) html += '<tr class="summe"><td>Gesamt</td><td class="zahl">' + gs + '</td><td class="zahl">' + stdHtml(gp) + '</td>' +
-      (zeVorhanden ? '<td class="zahl">' + stdHtml(gi) + '</td><td class="zahl">' + diff(gp, gi) + '</td>' : '') + '</tr>';
+    if (namen.length > 1) html += '<tr class="summe"><td>Gesamt</td><td class="zahl">' + gs + '</td>' + (hatSoll ? '<td class="zahl"></td>' : '') + '<td class="zahl">' + stdHtml(gp) + '</td>' +
+      (zeVorhanden ? '<td class="zahl">' + stdHtml(gi) + '</td>' : '') + '</tr>';
     html += '</tbody></table>';
-    if (zeVorhanden) html += '<div style="font-size:11px;color:#8090a8;margin-top:8px;">Gearbeitet = gestempelte Zeit aus der Zeiterfassung abzüglich Pausen (alle abgeschlossenen Einträge, auch noch nicht genehmigte).</div>';
+    if (zeVorhanden) html += '<div style="font-size:11px;color:#8090a8;margin-top:8px;">Gearbeitet = gestempelte Zeit aus der Zeiterfassung abzüglich Pausen (alle abgeschlossenen Einträge, auch noch nicht genehmigte). Rot = Soll-Stunden noch nicht erreicht, grün = erreicht.</div>';
   }
   const label = 'KW ' + isoKW(montag) + ' · ' + datumKurz(montag) + ' – ' + datumKurz(sonntag) + sonntag.getFullYear();
   document.querySelectorAll('.std-label').forEach(el => { el.textContent = label; });
@@ -485,6 +489,8 @@ async function initInhaberModus() {
   mitarbeiterNamen = Array.isArray(mitarbeiterData.mitarbeiter)
     ? mitarbeiterData.mitarbeiter.map(m => m.name)
     : (mitarbeiterData.namen || []);
+  window.sollStdMap = {};
+  if (Array.isArray(mitarbeiterData.mitarbeiter)) mitarbeiterData.mitarbeiter.forEach(m => { if (m.name && parseFloat(m.sollStd) > 0) window.sollStdMap[m.name] = parseFloat(m.sollStd); });
   renderMitarbeiterListe();
 
   const data = await toolLoad('schichtplaene');
