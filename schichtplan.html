@@ -292,17 +292,20 @@ function stundenRender() {
       let abwTage = 0;
       x.tage.forEach((liste, ti) => {
         const tagDat = (() => { const d = new Date(montag); d.setDate(d.getDate() + ti); return datumIso(d); })();
-        const sel = (aktuell) => '<select class="wg-sel wg-' + (aktuell || 'frei') + '" data-name="' + n.replace(/"/g, '&quot;') + '" data-datum="' + tagDat + '" onchange="wgAbwesenheitSetzen(this)">' +
-          '<option value=""' + (!aktuell ? ' selected' : '') + '>frei</option><option value="urlaub"' + (aktuell === 'urlaub' ? ' selected' : '') + '>Urlaub</option><option value="krank"' + (aktuell === 'krank' ? ' selected' : '') + '>Krank</option></select>';
+        const zelle = (klasse, inhalt) => '<td><button type="button" class="wg-sel ' + klasse + '" data-name="' + n.replace(/"/g, '&quot;') + '" data-datum="' + tagDat + '" onclick="wgZelleOeffnen(this)">' + inhalt + '</button></td>';
         const schichten = liste.filter(sh => artVon(sh) === 'schicht');
         const abw = liste.filter(sh => artVon(sh) !== 'schicht');
+        schichten.sort((a, b) => (a.von || '').localeCompare(b.von || ''));
         if (schichten.length) {
-          html += '<td>' + schichten.sort((a, b) => (a.von || '').localeCompare(b.von || '')).map(sh => wgChip(sh.von, sh.bis, (sh.von || '') < '12:00' ? 'wg-frueh' : 'wg-spaet')).join('') + '</td>';
+          html += window.chefModus
+            ? zelle((schichten[0].von || '') < '12:00' ? 'wg-frueh' : 'wg-spaet', schichten.map(sh => wgZeitTxt(sh.von, sh.bis)).join('<br>'))
+            : '<td>' + schichten.map(sh => wgChip(sh.von, sh.bis, (sh.von || '') < '12:00' ? 'wg-frueh' : 'wg-spaet')).join('') + '</td>';
         } else if (abw.length) {
           abwTage++;
-          html += '<td>' + (window.chefModus ? sel(artVon(abw[0])) : '<span class="wg-chip wg-' + artVon(abw[0]) + '">' + ART_LABEL[artVon(abw[0])] + '</span>') + '</td>';
+          const art = artVon(abw[0]);
+          html += window.chefModus ? zelle('wg-' + art, ART_LABEL[art]) : '<td><span class="wg-chip wg-' + art + '">' + ART_LABEL[art] + '</span></td>';
         } else {
-          html += '<td>' + (window.chefModus ? sel('') : '<span class="wg-chip wg-frei">frei</span>') + '</td>';
+          html += window.chefModus ? zelle('wg-frei', 'frei') : '<td><span class="wg-chip wg-frei">frei</span></td>';
         }
       });
       const extra = so ? abwTage * so / 5 : 0; // Urlaub/Krank zählt als Soll/5 pro Tag
@@ -326,10 +329,55 @@ function artVon(s) {
   const m = /^\s*(urlaub|krank)\b/i.exec((s && s.notiz) || '');
   return m ? m[1].toLowerCase() : 'schicht';
 }
-window.wgAbwesenheitSetzen = async function(el) {
-  const name = el.dataset.name, datum = el.dataset.datum, art = el.value;
-  window.spItems = window.spItems.filter(s => !(s.name === name && s.datum === datum && artVon(s) !== 'schicht'));
-  if (art) window.spItems.push({ id: Date.now() + Math.floor(Math.random() * 1000), name, datum, von: '', bis: '', notiz: ART_LABEL[art], art });
+function wgZeitTxt(von, bis) { return (von && bis) ? wgKurz(von) + '–' + wgKurz(bis) : (von ? wgKurz(von) + '–' : 'Schicht'); }
+function wgModalZeile(von, bis, notiz) {
+  return '<div class="wgm-zeile" style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;margin-bottom:10px;" data-notiz="' + (notiz || '').replace(/"/g, '&quot;') + '">' +
+    '<div class="field-group" style="margin-bottom:0;flex:1;min-width:100px;"><label>Von</label><input type="time" class="wgm-von" value="' + (von || '') + '"></div>' +
+    '<div class="field-group" style="margin-bottom:0;flex:1;min-width:100px;"><label>Bis</label><input type="time" class="wgm-bis" value="' + (bis || '') + '"></div>' +
+    '<button class="btn-del" style="height:38px;" onclick="this.closest(\'.wgm-zeile\').remove()">✕</button></div>';
+}
+window.wgModalSchliessen = function() { const m = document.getElementById('wg-modal'); if (m) m.remove(); document.body.style.overflow = ''; };
+window.wgModalArt = function() { document.getElementById('wgm-schicht').style.display = document.getElementById('wgm-art').value === 'schicht' ? 'block' : 'none'; };
+window.wgZelleOeffnen = function(btn) {
+  const name = btn.dataset.name, datum = btn.dataset.datum;
+  const vorhanden = window.spItems.filter(s => s.name === name && s.datum === datum);
+  const schichten = vorhanden.filter(s => artVon(s) === 'schicht').sort((a, b) => (a.von || '').localeCompare(b.von || ''));
+  const abw = vorhanden.find(s => artVon(s) !== 'schicht');
+  const art = schichten.length ? 'schicht' : (abw ? artVon(abw) : '');
+  const tag = WG_TAGE[wgTagIndex(datum)] + ', ' + datum.slice(8, 10) + '.' + datum.slice(5, 7) + '.' + datum.slice(0, 4);
+  const zeilen = (schichten.length ? schichten : [{ von: '', bis: '', notiz: '' }]).map(sh => wgModalZeile(sh.von, sh.bis, sh.notiz)).join('');
+  const m = document.createElement('div');
+  m.id = 'wg-modal';
+  m.dataset.name = name; m.dataset.datum = datum;
+  m.style.cssText = 'position:fixed;inset:0;background:rgba(26,42,74,0.6);z-index:1000;display:flex;align-items:flex-start;justify-content:center;overflow-y:auto;padding:16px;';
+  m.innerHTML = '<div style="background:#fff;border-radius:12px;padding:20px;width:100%;max-width:420px;margin:auto;box-shadow:0 8px 30px rgba(0,0,0,0.3);">' +
+    '<div class="section-head" style="margin-bottom:14px;">' + name + ' · ' + tag + '</div>' +
+    '<div class="field-group"><label>Art</label><select id="wgm-art" onchange="wgModalArt()">' +
+    '<option value=""' + (art === '' ? ' selected' : '') + '>frei</option><option value="schicht"' + (art === 'schicht' ? ' selected' : '') + '>Schicht (Uhrzeiten)</option>' +
+    '<option value="urlaub"' + (art === 'urlaub' ? ' selected' : '') + '>Urlaub</option><option value="krank"' + (art === 'krank' ? ' selected' : '') + '>Krank</option></select></div>' +
+    '<div id="wgm-schicht" style="display:' + (art === 'schicht' ? 'block' : 'none') + ';"><div id="wgm-zeilen">' + zeilen + '</div>' +
+    '<button class="btn-add secondary" style="font-size:12px;padding:7px 12px;margin-bottom:14px;" onclick="document.getElementById(\'wgm-zeilen\').insertAdjacentHTML(\'beforeend\', wgModalZeile(\'\', \'\', \'\'))">+ Weitere Schicht an dem Tag</button></div>' +
+    '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;"><button class="btn-add" style="flex:1;" onclick="wgZelleSpeichern()">💾 Speichern</button><button class="btn-add secondary" onclick="wgModalSchliessen()">Abbrechen</button></div></div>';
+  document.body.appendChild(m);
+  document.body.style.overflow = 'hidden';
+};
+window.wgZelleSpeichern = async function() {
+  const m = document.getElementById('wg-modal');
+  const name = m.dataset.name, datum = m.dataset.datum, art = document.getElementById('wgm-art').value;
+  const neu = [];
+  if (art === 'schicht') {
+    m.querySelectorAll('.wgm-zeile').forEach(z => {
+      const von = z.querySelector('.wgm-von').value, bis = z.querySelector('.wgm-bis').value;
+      if (von && bis) neu.push({ von, bis, notiz: z.dataset.notiz || '' });
+      else if (von || bis) neu.push({ error: true });
+    });
+    if (neu.some(x => x.error) || !neu.length) { alert('Bitte Von und Bis angeben.'); return; }
+  }
+  window.spItems = window.spItems.filter(s => !(s.name === name && s.datum === datum));
+  const id = () => Date.now() + Math.floor(Math.random() * 100000);
+  if (art === 'schicht') neu.forEach(x => window.spItems.push({ id: id(), name, datum, von: x.von, bis: x.bis, notiz: x.notiz }));
+  else if (art) window.spItems.push({ id: id(), name, datum, von: '', bis: '', notiz: ART_LABEL[art], art });
+  wgModalSchliessen();
   await toolSave('schichtplaene', { items: window.spItems });
   notifyPending.schichtplan = (notifyPending.schichtplan || 0) + 1;
   await notifyPendingSpeichern();
