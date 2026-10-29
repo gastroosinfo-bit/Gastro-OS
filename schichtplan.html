@@ -216,31 +216,45 @@ window.stundenWocheWechseln = function(delta) {
   const m = new Date(window.stdMontag); m.setDate(m.getDate() + 7 * delta);
   window.stdMontag = m; stundenRender();
 };
+// Gearbeitete Stunden aus der Zeiterfassung (netto, Pausen schon abgezogen)
+function zeStdNetto(e) {
+  if (!e.start || !e.ende) return 0;
+  const m = z => { const t = z.split(':').map(Number); return t[0] * 60 + t[1]; };
+  let st = m(e.start), en = m(e.ende);
+  if (en < st) en += 1440;
+  let pause = 0;
+  (e.pausen || []).forEach(p => { let v = m(p.von), bi = m(p.bis); if (bi < v) bi += 1440; pause += (bi - v); });
+  return Math.max(0, (en - st) - pause) / 60;
+}
 function stundenRender() {
   const montag = window.stdMontag;
   const sonntag = new Date(montag); sonntag.setDate(sonntag.getDate() + 6);
   const von = datumIso(montag), bis = datumIso(sonntag);
   const items = (window.stdItems || []).filter(s => s.datum >= von && s.datum <= bis);
-  const proPerson = {};
-  items.forEach(s => {
-    const n = s.name || '?';
-    if (!proPerson[n]) proPerson[n] = { schichten: 0, std: 0 };
-    proPerson[n].schichten++;
-    proPerson[n].std += stdZwischen(s.von, s.bis);
-  });
-  const namen = Object.keys(proPerson).sort((a, b) => a.localeCompare(b, 'de'));
+  const zeVorhanden = Array.isArray(window.zeItemsChef);
+  const zeWoche = zeVorhanden ? window.zeItemsChef.filter(e => e.ende && e.datum >= von && e.datum <= bis) : [];
+  const pp = {};
+  const person = n => (pp[n] = pp[n] || { schichten: 0, plan: 0, ist: 0 });
+  items.forEach(s => { const x = person(s.name || '?'); x.schichten++; x.plan += stdZwischen(s.von, s.bis); });
+  zeWoche.forEach(e => { person(e.name || '?').ist += zeStdNetto(e); });
+  const namen = Object.keys(pp).sort((a, b) => a.localeCompare(b, 'de'));
   let html;
   if (!namen.length) {
     html = '<div style="font-size:12.5px;color:#8090a8;">Keine Schichten in dieser Woche.</div>';
   } else {
-    let gesamt = 0;
-    html = '<table class="data-table std-table"><thead><tr><th>Mitarbeiter</th><th class="zahl">Schichten</th><th class="zahl">Stunden</th></tr></thead><tbody>';
+    let gp = 0, gi = 0, gs = 0;
+    const diff = (plan, ist) => { const d = Math.round((ist - plan) * 100) / 100; return (d > 0 ? '+' : '') + stdText(d).replace('–', '0 Std.'); };
+    html = '<table class="data-table std-table"><thead><tr><th>Mitarbeiter</th><th class="zahl">Schichten</th><th class="zahl">Geplant</th>' +
+      (zeVorhanden ? '<th class="zahl">Gearbeitet</th><th class="zahl">Differenz</th>' : '') + '</tr></thead><tbody>';
     namen.forEach(n => {
-      gesamt += proPerson[n].std;
-      html += '<tr><td>' + n + '</td><td class="zahl">' + proPerson[n].schichten + '</td><td class="zahl">' + stdText(proPerson[n].std) + '</td></tr>';
+      const x = pp[n]; gp += x.plan; gi += x.ist; gs += x.schichten;
+      html += '<tr><td>' + n + '</td><td class="zahl">' + x.schichten + '</td><td class="zahl">' + stdText(x.plan) + '</td>' +
+        (zeVorhanden ? '<td class="zahl">' + stdText(x.ist) + '</td><td class="zahl">' + diff(x.plan, x.ist) + '</td>' : '') + '</tr>';
     });
-    if (namen.length > 1) html += '<tr class="summe"><td>Gesamt</td><td class="zahl">' + items.length + '</td><td class="zahl">' + stdText(gesamt) + '</td></tr>';
+    if (namen.length > 1) html += '<tr class="summe"><td>Gesamt</td><td class="zahl">' + gs + '</td><td class="zahl">' + stdText(gp) + '</td>' +
+      (zeVorhanden ? '<td class="zahl">' + stdText(gi) + '</td><td class="zahl">' + diff(gp, gi) + '</td>' : '') + '</tr>';
     html += '</tbody></table>';
+    if (zeVorhanden) html += '<div style="font-size:11px;color:#8090a8;margin-top:8px;">Gearbeitet = gestempelte Zeit aus der Zeiterfassung abzüglich Pausen (alle abgeschlossenen Einträge, auch noch nicht genehmigte).</div>';
   }
   const label = 'KW ' + isoKW(montag) + ' · ' + datumKurz(montag) + ' – ' + datumKurz(sonntag) + sonntag.getFullYear();
   document.querySelectorAll('.std-label').forEach(el => { el.textContent = label; });
@@ -468,6 +482,10 @@ async function initInhaberModus() {
   const data = await toolLoad('schichtplaene');
   window.spItems = data.items || [];
   renderSpTabelle(window.spItems);
+
+  const zeData = await toolLoad('zeiterfassung');
+  window.zeItemsChef = Array.isArray(zeData.items) ? zeData.items : [];
+  stundenRender();
 
   spZeileHinzufuegen();
 
