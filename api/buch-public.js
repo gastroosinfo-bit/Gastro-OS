@@ -238,8 +238,24 @@ export default async function handler(req, res) {
       // Bewusst KEINE Push-Benachrichtigung beim Löschen: nur neue Einträge sollen das Team informieren.
     }
 
+    // Eigenes Soll (Wochenstunden aus "Dein Team") und eigene abgeschlossene Stempelzeiten —
+    // bewusst NUR die der anfragenden Person, nie die von Kollegen.
+    let sollStd = null;
+    try {
+      const rohRaw = await loadRaw(owner.user_id, 'schichtplan-mitarbeiter');
+      const roh = (rohRaw.mitarbeiter || []).find(m => m.pin && String(m.pin) === String(pin)) || {};
+      const z = parseFloat(roh.sollStd);
+      if (z > 0) sollStd = z;
+    } catch (e) {}
+    let meineZeiten = [];
+    try {
+      const zeAlle = await loadItems(owner.user_id, 'zeiterfassung');
+      meineZeiten = zeAlle.filter(i => i.name === name && i.ende).slice(-200)
+        .map(i => ({ id: i.id, name: i.name, datum: i.datum, start: i.start, ende: i.ende, pausen: i.pausen || [] }));
+    } catch (e) {}
+
     return res.status(200).json({
-      items, meinName: name, kannBearbeiten: darfBearbeiten,
+      items, meinName: name, kannBearbeiten: darfBearbeiten, sollStd, meineZeiten,
       mitarbeiterNamen: darfBearbeiten ? mitarbeiterListe.map(m => m.name) : undefined
     });
   }
