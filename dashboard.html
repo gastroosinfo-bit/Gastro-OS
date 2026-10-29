@@ -1671,8 +1671,7 @@ window.teamMitarbeiterFeldGeaendert = function(i, feld, wert) {
   if (feld === 'sollStd') {
     const z = parseFloat(String(wert).replace(',', '.'));
     teamMitarbeiterListe[i].sollStd = (isFinite(z) && z > 0 && z <= 80) ? Math.round(z * 100) / 100 : '';
-    teamMitarbeiterRender();
-    return;
+    return; // bewusst KEIN Neuzeichnen hier, sonst geht der Tipp auf "Speichern" verloren
   }
   teamMitarbeiterListe[i][feld] = wert.trim();
 };
@@ -1684,6 +1683,7 @@ window.teamMitarbeiterKarteSpeichern = async function(i) {
   const m = teamMitarbeiterListe[i];
   if (!confirm('Änderungen für "' + (m.name || 'diesen Mitarbeiter') + '" speichern?')) return;
   await teamMitarbeiterSpeichern();
+  teamMitarbeiterRender();
   const msg = document.getElementById('team-save-msg-' + i);
   if (msg) { msg.style.display = 'inline'; setTimeout(() => { msg.style.display = 'none'; }, 2000); }
 };

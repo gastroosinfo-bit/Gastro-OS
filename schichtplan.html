@@ -305,6 +305,7 @@ function stundenRender() {
       const extra = so ? abwTage * so / 5 : 0; // Urlaub/Krank zählt als Soll/5 pro Tag
       let klein = '';
       if (so) klein += 'Soll ' + stdText(so);
+      else if (window.chefModus) klein += 'Kein Soll hinterlegt (Dashboard → Dein Team → Std./Woche)';
       if (zeVorhanden && x.ist) klein += (klein ? ' · ' : '') + 'gestempelt ' + stdText(x.ist);
       if (extra) klein += (klein ? ' · ' : '') + 'inkl. ' + abwTage + ' Tag(e) Urlaub/Krank';
       html += '<td class="sum">' + stdHtml(x.plan + extra, so) + (klein ? '<div class="wg-soll">' + klein + '</div>' : '') + '</td></tr>';
