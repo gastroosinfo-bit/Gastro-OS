@@ -150,8 +150,8 @@ table.wg td.sum { text-align:right; white-space:nowrap; padding-left:8px; min-wi
       </div>
       <div class="std-body"></div>
     </div>
-    <div class="section">
-      <div class="section-head">Dienstplan</div>
+    <div class="section" id="ma-dienstplan-section" style="display:none;">
+      <div class="section-head">Dienstplan bearbeiten</div>
       <div style="overflow-x:auto;">
       <table class="data-table" id="ma-tabelle">
         <thead><tr><th>Name</th><th>Datum</th><th>Von</th><th>Bis</th><th>Std.</th><th>Notiz</th><th id="ma-tabelle-aktion-kopf" style="display:none;"></th></tr></thead>
@@ -194,15 +194,6 @@ table.wg td.sum { text-align:right; white-space:nowrap; padding-left:8px; min-wi
         <button class="btn-add secondary" onclick="stundenWocheWechseln(1)">▶</button>
       </div>
       <div class="std-body"></div>
-    </div>
-    <div class="section">
-      <div class="section-head">Dienstplan</div>
-      <div style="overflow-x:auto;">
-      <table class="data-table" id="sp-tabelle">
-        <thead><tr><th>Name</th><th>Datum</th><th>Von</th><th>Bis</th><th>Std.</th><th>Notiz</th><th></th></tr></thead>
-        <tbody></tbody>
-      </table>
-      </div>
     </div>
   </div>
 
@@ -451,16 +442,7 @@ window.maSchichtLoeschen = async function(id) {
 };
 function renderSpTabelle(items) {
   window.stdItems = items; stundenRender();
-  const tbody = document.querySelector('#sp-tabelle tbody');
-  tbody.innerHTML = '';
-  const sorted = [...items].sort((a, b) => (a.datum + a.von).localeCompare(b.datum + b.von));
-  sorted.forEach(s => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${s.name}</td><td>${s.datum}</td><td>${s.von || ''}</td><td>${s.bis || ''}</td><td>${stdHtml(stdZwischen(s.von, s.bis))}</td><td>${s.notiz || ''}</td><td><button class="btn-del" onclick="spLoeschen(${s.id})">✕</button></td>`;
-    tbody.appendChild(tr);
-  });
 }
-
 // ─────────────────────────────────────────────────────────────────────────
 // Entscheidung Chef- vs. Mitarbeiter-Modus:
 // 1) ?u=CODE in der URL -> immer Mitarbeiter (expliziter Link)
@@ -533,6 +515,7 @@ async function pinPruefenMitWert(code, pin, stillLaden) {
     const btnZurueck = document.getElementById('btn-zurueck-team');
     if (btnZurueck) { btnZurueck.href = 'team-zugang.html?u=' + code; btnZurueck.style.display = 'inline-block'; }
     window.maKannBearbeiten = !!d.kannBearbeiten;
+    document.getElementById('ma-dienstplan-section').style.display = window.maKannBearbeiten ? 'block' : 'none';
     window.maCode = code;
     window.maPin = pin;
     window.maMitarbeiterNamen = d.mitarbeiterNamen || [];
