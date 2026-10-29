@@ -351,13 +351,19 @@ window.wgZelleOeffnenFuer = function(name, datum) {
     '<option value="urlaub"' + (art === 'urlaub' ? ' selected' : '') + '>Urlaub</option><option value="krank"' + (art === 'krank' ? ' selected' : '') + '>Krank</option></select></div>' +
     '<div id="wgm-schicht" style="display:' + (art === 'schicht' ? 'block' : 'none') + ';"><div id="wgm-zeilen">' + zeilen + '</div>' +
     '<button class="btn-add secondary" style="font-size:12px;padding:7px 12px;margin-bottom:14px;" onclick="document.getElementById(\'wgm-zeilen\').insertAdjacentHTML(\'beforeend\', wgModalZeile(\'\', \'\', \'\'))">+ Weitere Schicht an dem Tag</button></div>' +
-    '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;"><button class="btn-add" style="flex:1;" onclick="wgZelleSpeichern()">💾 Speichern</button><button class="btn-add secondary" onclick="wgModalSchliessen()">Abbrechen</button></div></div>';
+    '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;"><button class="btn-add" style="flex:1;" onclick="wgZelleSpeichern()">💾 Speichern</button><button class="btn-add secondary" onclick="wgModalSchliessen()">Abbrechen</button></div>' +
+    (vorhanden.length ? '<div style="margin-top:12px;"><button class="btn-del" style="padding:8px 14px;font-size:12px;" onclick="wgZelleLoeschen()">🗑️ Eintrag löschen (wieder frei)</button></div>' : '') + '</div>';
   document.body.appendChild(m);
   document.body.style.overflow = 'hidden';
 };
+window.wgZelleLoeschen = function() {
+  document.getElementById('wgm-art').value = '';
+  wgZelleSpeichern();
+};
 window.wgZelleSpeichern = async function() {
   const m = document.getElementById('wg-modal');
-  const name = m.dataset.name, datum = m.dataset.datum, art = document.getElementById('wgm-art').value;
+  const name = m.dataset.name, datum = m.dataset.datum;
+  let art = document.getElementById('wgm-art').value;
   const neu = [];
   if (art === 'schicht') {
     m.querySelectorAll('.wgm-zeile').forEach(z => {
@@ -365,8 +371,9 @@ window.wgZelleSpeichern = async function() {
       if (von && bis) neu.push({ von, bis, notiz: z.dataset.notiz || '' });
       else if (von || bis) neu.push({ error: true });
     });
-    if (neu.some(x => x.error) || !neu.length) { alert('Bitte Von und Bis angeben.'); return; }
+    if (neu.some(x => x.error)) { alert('Bitte Von und Bis angeben (oder die Zeile mit ✕ entfernen).'); return; }
   }
+  if (art === 'schicht' && !neu.length) art = ''; // keine Uhrzeit mehr eingetragen = frei
   window.spItems = window.spItems.filter(s => !(s.name === name && s.datum === datum));
   const id = () => Date.now() + Math.floor(Math.random() * 100000);
   if (art === 'schicht') neu.forEach(x => window.spItems.push({ id: id(), name, datum, von: x.von, bis: x.bis, notiz: x.notiz }));
