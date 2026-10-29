@@ -70,6 +70,10 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
 .std-nav { display:flex; align-items:center; justify-content:center; gap:14px; margin-bottom:12px; }
 .std-nav button { padding:6px 14px; }
 .std-label { font-size:13.5px; font-weight:700; color:#1a2a4a; min-width:210px; text-align:center; }
+
+.std-gruen { color:#1a6640; font-weight:700; white-space:nowrap; display:inline-flex; align-items:center; gap:5px; }
+.std-gruen svg { width:13px; height:13px; flex:none; }
+table.std-table .std-gruen { font-size:15px; }
 table.std-table td.zahl, table.std-table th.zahl { text-align:right; white-space:nowrap; }
 table.std-table tr.summe td { font-weight:700; background:#f5f0e8; }
 .footer-brand { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
@@ -203,6 +207,10 @@ function stdText(h) {
   if (!h) return '–';
   return (Math.round(h * 100) / 100).toLocaleString('de-DE') + ' Std.';
 }
+function stdHtml(h) {
+  if (!h) return '–';
+  return '<span class="std-gruen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9.5 2.5h5"/></svg>' + stdText(h) + '</span>';
+}
 function datumIso(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
 function montagVon(d) { const x = new Date(d.getFullYear(), d.getMonth(), d.getDate()); x.setDate(x.getDate() - ((x.getDay() + 6) % 7)); return x; }
 function isoKW(montag) {
@@ -248,11 +256,11 @@ function stundenRender() {
       (zeVorhanden ? '<th class="zahl">Gearbeitet</th><th class="zahl">Differenz</th>' : '') + '</tr></thead><tbody>';
     namen.forEach(n => {
       const x = pp[n]; gp += x.plan; gi += x.ist; gs += x.schichten;
-      html += '<tr><td>' + n + '</td><td class="zahl">' + x.schichten + '</td><td class="zahl">' + stdText(x.plan) + '</td>' +
-        (zeVorhanden ? '<td class="zahl">' + stdText(x.ist) + '</td><td class="zahl">' + diff(x.plan, x.ist) + '</td>' : '') + '</tr>';
+      html += '<tr><td>' + n + '</td><td class="zahl">' + x.schichten + '</td><td class="zahl">' + stdHtml(x.plan) + '</td>' +
+        (zeVorhanden ? '<td class="zahl">' + stdHtml(x.ist) + '</td><td class="zahl">' + diff(x.plan, x.ist) + '</td>' : '') + '</tr>';
     });
-    if (namen.length > 1) html += '<tr class="summe"><td>Gesamt</td><td class="zahl">' + gs + '</td><td class="zahl">' + stdText(gp) + '</td>' +
-      (zeVorhanden ? '<td class="zahl">' + stdText(gi) + '</td><td class="zahl">' + diff(gp, gi) + '</td>' : '') + '</tr>';
+    if (namen.length > 1) html += '<tr class="summe"><td>Gesamt</td><td class="zahl">' + gs + '</td><td class="zahl">' + stdHtml(gp) + '</td>' +
+      (zeVorhanden ? '<td class="zahl">' + stdHtml(gi) + '</td><td class="zahl">' + diff(gp, gi) + '</td>' : '') + '</tr>';
     html += '</tbody></table>';
     if (zeVorhanden) html += '<div style="font-size:11px;color:#8090a8;margin-top:8px;">Gearbeitet = gestempelte Zeit aus der Zeiterfassung abzüglich Pausen (alle abgeschlossenen Einträge, auch noch nicht genehmigte).</div>';
   }
@@ -273,7 +281,7 @@ function renderMaTabelle(items) {
   sorted.forEach(s => {
     const tr = document.createElement('tr');
     const loeschZelle = window.maKannBearbeiten ? `<td><button class="btn-del" onclick="maSchichtLoeschen(${s.id})">✕</button></td>` : '';
-    tr.innerHTML = `<td>${s.name}</td><td>${s.datum}</td><td>${s.von || ''}</td><td>${s.bis || ''}</td><td>${stdText(stdZwischen(s.von, s.bis))}</td><td>${s.notiz || ''}</td>${loeschZelle}`;
+    tr.innerHTML = `<td>${s.name}</td><td>${s.datum}</td><td>${s.von || ''}</td><td>${s.bis || ''}</td><td>${stdHtml(stdZwischen(s.von, s.bis))}</td><td>${s.notiz || ''}</td>${loeschZelle}`;
     tbody.appendChild(tr);
   });
 }
@@ -317,7 +325,7 @@ function renderSpTabelle(items) {
   const sorted = [...items].sort((a, b) => (a.datum + a.von).localeCompare(b.datum + b.von));
   sorted.forEach(s => {
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${s.name}</td><td>${s.datum}</td><td>${s.von || ''}</td><td>${s.bis || ''}</td><td>${stdText(stdZwischen(s.von, s.bis))}</td><td>${s.notiz || ''}</td><td><button class="btn-del" onclick="spLoeschen(${s.id})">✕</button></td>`;
+    tr.innerHTML = `<td>${s.name}</td><td>${s.datum}</td><td>${s.von || ''}</td><td>${s.bis || ''}</td><td>${stdHtml(stdZwischen(s.von, s.bis))}</td><td>${s.notiz || ''}</td><td><button class="btn-del" onclick="spLoeschen(${s.id})">✕</button></td>`;
     tbody.appendChild(tr);
   });
 }
