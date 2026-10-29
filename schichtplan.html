@@ -586,13 +586,20 @@ function notifyBarAktualisieren() {
         '<button class="btn-add secondary" style="padding:5px 10px;font-size:11.5px;" onclick="wgZelleOeffnenFuer(\'' + x.name.replace(/'/g, "\\'") + '\',\'' + d + '\')">✏️ Ändern</button>' +
         '<button class="btn-del" onclick="pendingLoeschen(' + i + ')">✕ Löschen</button></div>';
     }).join('');
-    if (notifyPending.schichtplanAlt) h += '<div style="font-size:11.5px;color:#8090a8;padding-top:6px;border-top:1px solid #f0e3b0;">+ ' + notifyPending.schichtplanAlt + ' frühere Änderung(en), nicht einzeln aufgeführt</div>';
+    if (notifyPending.schichtplanAlt) h += '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding-top:8px;border-top:1px solid #f0e3b0;"><span style="flex:1;min-width:180px;font-size:11.5px;color:#8090a8;">+ ' + notifyPending.schichtplanAlt + ' frühere Änderung(en), nicht einzeln aufgeführt (die Einträge selbst stehen im Plan unten)</span><button class="btn-del" onclick="pendingAltVerwerfen()">✕ Verwerfen</button></div>';
     liste.innerHTML = h;
   } else {
     bar.style.display = 'none';
     liste.innerHTML = '';
   }
 }
+window.pendingAltVerwerfen = async function() {
+  if (!confirm('Die früheren Änderungen aus der Meldung nehmen? Die Einträge im Plan bleiben unverändert, es wird nur der Zähler auf 0 gesetzt.')) return;
+  notifyPending.schichtplanAlt = 0;
+  notifyPending.schichtplan = pendingZaehlen();
+  await notifyPendingSpeichern();
+  notifyBarAktualisieren();
+};
 window.pendingLoeschen = async function(i) {
   const x = pendingListe()[i];
   if (!x) return;
