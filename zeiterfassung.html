@@ -556,33 +556,13 @@ function renderMaTabelle() {
       : '';
     tr.innerHTML = `<td>${datumDe(i.datum)}</td><td>${i.start || ''}</td><td>${pausenVonListe(i)}</td><td>${pausenBisListe(i)}</td><td>${i.ende || '–'}</td><td>${stundenText(i)}</td><td>${statusBadge(i)}</td><td>${korrigierenBtn}</td>`;
     tbody.appendChild(tr);
-    if (i.status === 'abgelehnt') {
-      const formZeile = document.createElement('tr');
-      formZeile.id = 'korrektur-zeile-' + i.id;
-      formZeile.style.display = 'none';
-      const pausenHtml = (i.pausen || []).map((p, idx) => korrekturPauseZeile(i.id, idx, p.von, p.bis)).join('');
-      formZeile.innerHTML = `<td colspan="8" style="background:#fdf3f1;">
-        <div style="padding:8px 4px;">
-          <div style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;margin-bottom:10px;">
-            <div class="field-group" style="margin-bottom:0;max-width:120px;"><label>Kommen</label><input type="time" id="korrektur-start-${i.id}" value="${i.start || ''}"></div>
-            <div class="field-group" style="margin-bottom:0;max-width:120px;"><label>Gehen</label><input type="time" id="korrektur-ende-${i.id}" value="${i.ende || ''}"></div>
-          </div>
-          <div id="korrektur-pausen-${i.id}">${pausenHtml}</div>
-          <button class="btn-add secondary" style="font-size:11px;padding:5px 10px;margin-bottom:10px;" onclick="korrekturPauseHinzufuegen(${i.id})">+ Pause hinzufügen</button>
-          <div>
-            <button class="btn-add" onclick="korrekturSpeichern(${i.id})">🔁 Korrigieren &amp; erneut einreichen</button>
-          </div>
-        </div>
-      </td>`;
-      tbody.appendChild(formZeile);
-    }
   });
 }
 
 function korrekturPauseZeile(eintragId, idx, von, bis) {
-  return `<div class="field-group" style="display:flex;flex-direction:row;gap:8px;align-items:flex-end;margin-bottom:8px;max-width:320px;" data-pause-idx="${idx}">
-    <div style="max-width:120px;"><label style="font-size:10px;font-weight:700;color:#8090a8;">Pause Start</label><input type="time" class="korrektur-pause-von-${eintragId}" value="${von || ''}"></div>
-    <div style="max-width:120px;"><label style="font-size:10px;font-weight:700;color:#8090a8;">Pause Ende</label><input type="time" class="korrektur-pause-bis-${eintragId}" value="${bis || ''}"></div>
+  return `<div class="field-group" style="display:flex;flex-direction:row;flex-wrap:wrap;gap:8px;align-items:flex-end;margin-bottom:10px;" data-pause-idx="${idx}">
+    <div style="flex:1;min-width:110px;"><label style="font-size:10px;font-weight:700;color:#8090a8;">Pause Start</label><input type="time" class="korrektur-pause-von-${eintragId}" value="${von || ''}"></div>
+    <div style="flex:1;min-width:110px;"><label style="font-size:10px;font-weight:700;color:#8090a8;">Pause Ende</label><input type="time" class="korrektur-pause-bis-${eintragId}" value="${bis || ''}"></div>
     <button class="btn-del" onclick="this.closest('[data-pause-idx]').remove()">✕</button>
   </div>`;
 }
@@ -592,16 +572,35 @@ window.korrekturPauseHinzufuegen = function(eintragId) {
   container.insertAdjacentHTML('beforeend', korrekturPauseZeile(eintragId, idx, '', ''));
 };
 
+window.korrekturSchliessen = function() {
+  const m = document.getElementById('korrektur-modal');
+  if (m) m.remove();
+  document.body.style.overflow = '';
+};
 window.korrekturAnzeigen = function(id) {
-  const zeile = document.getElementById('korrektur-zeile-' + id);
-  if (!zeile) return;
-  const wirdGeoeffnet = zeile.style.display === 'none';
-  zeile.style.display = wirdGeoeffnet ? 'table-row' : 'none';
-  if (wirdGeoeffnet) {
-    const scrollBox = zeile.closest('div[style*="overflow-x"]') || zeile.closest('table')?.parentElement;
-    if (scrollBox) scrollBox.scrollLeft = 0;
-    setTimeout(() => { zeile.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 50);
-  }
+  const i = zeItems.find(x => x.id === id);
+  if (!i) return;
+  korrekturSchliessen();
+  const pausenHtml = (i.pausen || []).map((p, idx) => korrekturPauseZeile(i.id, idx, p.von, p.bis)).join('');
+  const m = document.createElement('div');
+  m.id = 'korrektur-modal';
+  m.style.cssText = 'position:fixed;inset:0;background:rgba(26,42,74,0.6);z-index:1000;display:flex;align-items:flex-start;justify-content:center;overflow-y:auto;padding:16px;';
+  m.innerHTML = `<div style="background:#fff;border-radius:12px;padding:20px;width:100%;max-width:460px;margin:auto;box-shadow:0 8px 30px rgba(0,0,0,0.3);">
+    <div class="section-head" style="margin-bottom:12px;">Zeit korrigieren · ${datumDe(i.datum)}</div>
+    ${i.notiz ? '<div class="hinweis-box" style="background:#fdf3f1;border-color:#e5b4ab;color:#a13a2b;">Hinweis vom Chef: ' + i.notiz.replace(/</g, '&lt;') + '</div>' : ''}
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:6px;">
+      <div class="field-group" style="flex:1;min-width:130px;margin-bottom:8px;"><label>Kommen</label><input type="time" id="korrektur-start-${i.id}" value="${i.start || ''}"></div>
+      <div class="field-group" style="flex:1;min-width:130px;margin-bottom:8px;"><label>Gehen</label><input type="time" id="korrektur-ende-${i.id}" value="${i.ende || ''}"></div>
+    </div>
+    <div id="korrektur-pausen-${i.id}">${pausenHtml}</div>
+    <button class="btn-add secondary" style="font-size:12px;padding:7px 12px;margin-bottom:14px;" onclick="korrekturPauseHinzufuegen(${i.id})">+ Pause hinzufügen</button>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button class="btn-add" style="flex:1;" onclick="korrekturSpeichern(${i.id})">🔁 Korrigieren &amp; erneut einreichen</button>
+      <button class="btn-add secondary" onclick="korrekturSchliessen()">Abbrechen</button>
+    </div>
+  </div>`;
+  document.body.appendChild(m);
+  document.body.style.overflow = 'hidden';
 };
 
 window.korrekturSpeichern = async function(id) {
@@ -626,6 +625,7 @@ window.korrekturSpeichern = async function(id) {
   if (!res.ok) { alert('Korrektur fehlgeschlagen.'); return; }
   const d = await res.json();
   zeItems = d.items || [];
+  korrekturSchliessen();
   renderMaZustand();
   renderMaTabelle();
   flashSaved('ma-save-msg');
