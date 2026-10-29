@@ -163,9 +163,12 @@ table.wg td.sum { text-align:right; white-space:nowrap; padding-left:8px; min-wi
 
   <!-- ═══ INHABER: SCHICHTPLAN VERWALTEN ═══ -->
   <div id="inhaber-bereich" style="display:none;">
-    <div class="notify-bar" id="notify-bar" style="background:#fff8e0;border:1px solid #d4af37;border-radius:8px;padding:12px 16px;margin-bottom:16px;display:none;align-items:center;justify-content:space-between;gap:12px;">
-      <span id="notify-text" style="font-size:12.5px;color:#5a6a85;">0 Änderungen noch nicht gemeldet</span>
-      <button class="btn-add" onclick="schichtplanBenachrichtigen()">🔔 Änderungen melden</button>
+    <div class="notify-bar" id="notify-bar" style="background:#fff8e0;border:1px solid #d4af37;border-radius:8px;padding:12px 16px;margin-bottom:16px;display:none;flex-direction:column;gap:10px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+        <span id="notify-text" style="font-size:12.5px;color:#5a6a85;">0 Änderungen noch nicht gemeldet</span>
+        <button class="btn-add" onclick="schichtplanBenachrichtigen()">🔔 Änderungen melden</button>
+      </div>
+      <div id="notify-liste"></div>
     </div>
     <div class="hinweis-box">ℹ️ Nur du als Chef kannst hier Schichten eintragen, ändern oder löschen. Mitarbeiter sehen den Plan über ihren eigenen PIN-Link nur lesend.</div>
 
@@ -338,8 +341,8 @@ function wgModalZeile(von, bis, notiz) {
 }
 window.wgModalSchliessen = function() { const m = document.getElementById('wg-modal'); if (m) m.remove(); document.body.style.overflow = ''; };
 window.wgModalArt = function() { document.getElementById('wgm-schicht').style.display = document.getElementById('wgm-art').value === 'schicht' ? 'block' : 'none'; };
-window.wgZelleOeffnen = function(btn) {
-  const name = btn.dataset.name, datum = btn.dataset.datum;
+window.wgZelleOeffnen = function(btn) { wgZelleOeffnenFuer(btn.dataset.name, btn.dataset.datum); };
+window.wgZelleOeffnenFuer = function(name, datum) {
   const vorhanden = window.spItems.filter(s => s.name === name && s.datum === datum);
   const schichten = vorhanden.filter(s => artVon(s) === 'schicht').sort((a, b) => (a.von || '').localeCompare(b.von || ''));
   const abw = vorhanden.find(s => artVon(s) !== 'schicht');
@@ -379,10 +382,10 @@ window.wgZelleSpeichern = async function() {
   else if (art) window.spItems.push({ id: id(), name, datum, von: '', bis: '', notiz: ART_LABEL[art], art });
   wgModalSchliessen();
   await toolSave('schichtplaene', { items: window.spItems });
-  notifyPending.schichtplan = (notifyPending.schichtplan || 0) + 1;
+  pendingAdd(name, datum);
   await notifyPendingSpeichern();
-  notifyBarAktualisieren();
   renderSpTabelle(window.spItems);
+  notifyBarAktualisieren();
 };
 window.artWechsel = function(artId, vonId, bisId) {
   const art = document.getElementById(artId).value;
@@ -558,24 +561,69 @@ let notifyPending = {};
 async function notifyPendingLaden() {
   notifyPending = await toolLoad('notify-pending');
   if (!notifyPending || typeof notifyPending !== 'object') notifyPending = {};
+  // Ältere, noch nicht einzeln aufgeführte Änderungen (nur Zähler) merken
+  if (!Array.isArray(notifyPending.schichtplanListe)) {
+    notifyPending.schichtplanAlt = notifyPending.schichtplan || 0;
+    notifyPending.schichtplanListe = [];
+  }
 }
 async function notifyPendingSpeichern() {
   await toolSave('notify-pending', notifyPending);
 }
+function pendingListe() { return Array.isArray(notifyPending.schichtplanListe) ? notifyPending.schichtplanListe : []; }
+function pendingZaehlen() { return pendingListe().length + (notifyPending.schichtplanAlt || 0); }
+function pendingAdd(name, datum) {
+  const l = pendingListe().filter(x => !(x.name === name && x.datum === datum));
+  l.push({ name, datum });
+  notifyPending.schichtplanListe = l;
+  notifyPending.schichtplan = pendingZaehlen();
+}
+function tagText(name, datum) {
+  const v = (window.spItems || []).filter(s => s.name === name && s.datum === datum);
+  const sch = v.filter(s => artVon(s) === 'schicht').sort((a, b) => (a.von || '').localeCompare(b.von || ''));
+  if (sch.length) return sch.map(s => wgZeitTxt(s.von, s.bis) + ' Uhr').join(' + ');
+  const a = v.find(s => artVon(s) !== 'schicht');
+  return a ? ART_LABEL[artVon(a)] : 'frei (entfernt)';
+}
 function notifyBarAktualisieren() {
   const bar = document.getElementById('notify-bar');
   const text = document.getElementById('notify-text');
-  const n = notifyPending.schichtplan || 0;
+  const liste = document.getElementById('notify-liste');
+  const n = pendingZaehlen();
   if (!bar) return;
   if (n > 0) {
     bar.style.display = 'flex';
     text.textContent = n === 1 ? '1 Änderung noch nicht gemeldet' : n + ' Änderungen noch nicht gemeldet';
+    const l = pendingListe();
+    let h = l.map((x, i) => {
+      const d = x.datum;
+      const tag = WG_TAGE[wgTagIndex(d)] + ' ' + d.slice(8, 10) + '.' + d.slice(5, 7) + '.';
+      return '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:7px 0;border-top:1px solid #f0e3b0;">' +
+        '<div style="flex:1;min-width:160px;font-size:12.5px;color:#1a2a4a;"><b>' + x.name + '</b> · ' + tag + ' · ' + tagText(x.name, d) + '</div>' +
+        '<button class="btn-add secondary" style="padding:5px 10px;font-size:11.5px;" onclick="wgZelleOeffnenFuer(\'' + x.name.replace(/'/g, "\\'") + '\',\'' + d + '\')">✏️ Ändern</button>' +
+        '<button class="btn-del" onclick="pendingLoeschen(' + i + ')">✕ Löschen</button></div>';
+    }).join('');
+    if (notifyPending.schichtplanAlt) h += '<div style="font-size:11.5px;color:#8090a8;padding-top:6px;border-top:1px solid #f0e3b0;">+ ' + notifyPending.schichtplanAlt + ' frühere Änderung(en), nicht einzeln aufgeführt</div>';
+    liste.innerHTML = h;
   } else {
     bar.style.display = 'none';
+    liste.innerHTML = '';
   }
 }
+window.pendingLoeschen = async function(i) {
+  const x = pendingListe()[i];
+  if (!x) return;
+  if (!confirm('Eintrag von ' + x.name + ' am ' + x.datum.slice(8, 10) + '.' + x.datum.slice(5, 7) + '. wirklich löschen?')) return;
+  window.spItems = window.spItems.filter(s => !(s.name === x.name && s.datum === x.datum));
+  notifyPending.schichtplanListe = pendingListe().filter((_, idx) => idx !== i);
+  notifyPending.schichtplan = pendingZaehlen();
+  await toolSave('schichtplaene', { items: window.spItems });
+  await notifyPendingSpeichern();
+  renderSpTabelle(window.spItems);
+  notifyBarAktualisieren();
+};
 window.schichtplanBenachrichtigen = async function() {
-  const n = notifyPending.schichtplan || 0;
+  const n = pendingZaehlen();
   if (!n) return;
   const zugang = await toolLoad('schichtplan-zugang');
   const zielUrl = (zugang && zugang.code) ? ('/schichtplan.html?u=' + zugang.code) : '/schichtplan.html';
@@ -590,6 +638,8 @@ window.schichtplanBenachrichtigen = async function() {
     })
   }).catch(() => {});
   notifyPending.schichtplan = 0;
+  notifyPending.schichtplanListe = [];
+  notifyPending.schichtplanAlt = 0;
   await notifyPendingSpeichern();
   notifyBarAktualisieren();
 };
@@ -621,6 +671,7 @@ async function initInhaberModus() {
   const data = await toolLoad('schichtplaene');
   window.spItems = data.items || [];
   renderSpTabelle(window.spItems);
+  notifyBarAktualisieren();
 
   const zeData = await toolLoad('zeiterfassung');
   window.zeItemsChef = Array.isArray(zeData.items) ? zeData.items : [];
@@ -630,7 +681,9 @@ async function initInhaberModus() {
 
   window.spLoeschen = async function(id) {
     if (!confirm('Diese Schicht wirklich löschen?')) return;
+    const weg = window.spItems.find(s => s.id === id);
     window.spItems = window.spItems.filter(s => s.id !== id);
+    if (weg) pendingAdd(weg.name, weg.datum);
     await toolSave('schichtplaene', { items: window.spItems });
     await notifyPendingSpeichern();
     notifyBarAktualisieren();
@@ -714,7 +767,7 @@ window.spAlleSpeichern = async function() {
   window.spItems = window.spItems.concat(neueEintraege);
   await toolSave('schichtplaene', { items: window.spItems });
 
-  notifyPending.schichtplan = (notifyPending.schichtplan || 0) + neueEintraege.length;
+  neueEintraege.forEach(e => pendingAdd(e.name, e.datum));
   await notifyPendingSpeichern();
   notifyBarAktualisieren();
 
