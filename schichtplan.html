@@ -92,6 +92,7 @@ table.wg td.sum { text-align:right; white-space:nowrap; padding-left:8px; min-wi
 .wg-frei { background:#eceae6; color:#a0a8b8; }
 .wg-ist { background:#d8e6f7; color:#1a2a4a; }
 .wg-soll { font-size:10.5px; color:#8090a8; font-weight:400; margin:2px 0 0 auto; white-space:normal; max-width:160px; text-align:right; line-height:1.3; }
+.wg-sel { display:block; width:100%; border:none; border-radius:8px; padding:7px 2px; margin:2px 0; font-size:11px; font-weight:700; font-family:inherit; text-align:center; text-align-last:center; -webkit-appearance:none; appearance:none; cursor:pointer; }
 .wg-urlaub { background:#d8f0e0; color:#1a6640; }
 .wg-krank { background:#fbdcd8; color:#a13a2b; }
 .footer-brand { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
@@ -289,16 +290,19 @@ function stundenRender() {
       const x = pp[n], so = sm[n] || 0;
       html += '<tr><td class="name">' + n + '</td>';
       let abwTage = 0;
-      x.tage.forEach(liste => {
+      x.tage.forEach((liste, ti) => {
+        const tagDat = (() => { const d = new Date(montag); d.setDate(d.getDate() + ti); return datumIso(d); })();
+        const sel = (aktuell) => '<select class="wg-sel wg-' + (aktuell || 'frei') + '" data-name="' + n.replace(/"/g, '&quot;') + '" data-datum="' + tagDat + '" onchange="wgAbwesenheitSetzen(this)">' +
+          '<option value=""' + (!aktuell ? ' selected' : '') + '>frei</option><option value="urlaub"' + (aktuell === 'urlaub' ? ' selected' : '') + '>Urlaub</option><option value="krank"' + (aktuell === 'krank' ? ' selected' : '') + '>Krank</option></select>';
         const schichten = liste.filter(sh => artVon(sh) === 'schicht');
         const abw = liste.filter(sh => artVon(sh) !== 'schicht');
         if (schichten.length) {
           html += '<td>' + schichten.sort((a, b) => (a.von || '').localeCompare(b.von || '')).map(sh => wgChip(sh.von, sh.bis, (sh.von || '') < '12:00' ? 'wg-frueh' : 'wg-spaet')).join('') + '</td>';
         } else if (abw.length) {
           abwTage++;
-          html += '<td><span class="wg-chip wg-' + artVon(abw[0]) + '">' + ART_LABEL[artVon(abw[0])] + '</span></td>';
+          html += '<td>' + (window.chefModus ? sel(artVon(abw[0])) : '<span class="wg-chip wg-' + artVon(abw[0]) + '">' + ART_LABEL[artVon(abw[0])] + '</span>') + '</td>';
         } else {
-          html += '<td><span class="wg-chip wg-frei">frei</span></td>';
+          html += '<td>' + (window.chefModus ? sel('') : '<span class="wg-chip wg-frei">frei</span>') + '</td>';
         }
       });
       const extra = so ? abwTage * so / 5 : 0; // Urlaub/Krank zählt als Soll/5 pro Tag
@@ -322,6 +326,16 @@ function artVon(s) {
   const m = /^\s*(urlaub|krank)\b/i.exec((s && s.notiz) || '');
   return m ? m[1].toLowerCase() : 'schicht';
 }
+window.wgAbwesenheitSetzen = async function(el) {
+  const name = el.dataset.name, datum = el.dataset.datum, art = el.value;
+  window.spItems = window.spItems.filter(s => !(s.name === name && s.datum === datum && artVon(s) !== 'schicht'));
+  if (art) window.spItems.push({ id: Date.now() + Math.floor(Math.random() * 1000), name, datum, von: '', bis: '', notiz: ART_LABEL[art], art });
+  await toolSave('schichtplaene', { items: window.spItems });
+  notifyPending.schichtplan = (notifyPending.schichtplan || 0) + 1;
+  await notifyPendingSpeichern();
+  notifyBarAktualisieren();
+  renderSpTabelle(window.spItems);
+};
 window.artWechsel = function(artId, vonId, bisId) {
   const art = document.getElementById(artId).value;
   [vonId, bisId].forEach(id => { const el = document.getElementById(id); el.disabled = art !== 'schicht'; if (art !== 'schicht') el.value = ''; });
@@ -540,6 +554,7 @@ async function initInhaberModus() {
     if (!d.valid) { window.location.href = 'login.html'; return; }
   } catch (e) { window.location.href = 'login.html'; return; }
 
+  window.chefModus = true;
   document.getElementById('btn-dashboard').style.display = 'inline-block';
   document.getElementById('tool-sub-text').textContent = 'Trag hier den Dienstplan für dein Team ein.';
   document.getElementById('inhaber-bereich').style.display = 'block';
