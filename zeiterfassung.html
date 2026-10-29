@@ -129,6 +129,18 @@ table.wg td.sum { text-align:right; white-space:nowrap; padding-left:8px; min-wi
   .wg-chip, .wg-sel { font-size:9.5px; padding:8px 0; border-radius:6px; }
   .wg-soll { max-width:none; }
 }
+@media (max-width:480px) {
+  .wrap { padding:20px 10px 60px; }
+  .section { padding:16px 8px; }
+  .std-nav { gap:6px; }
+  .std-nav .btn-add { padding:6px 10px; }
+  .std-label { min-width:0; flex:1; font-size:12px; }
+  table.wg td:not(.name):not(.sum) { padding:0 1px; }
+  .wg-chip, .wg-sel { font-size:9px; padding:6px 0; line-height:1.2; letter-spacing:-0.2px; }
+  .wg-chip .t0, .wg-sel .t0 { display:none; }
+  .wg-chip .t1, .wg-chip .t2, .wg-sel .t1, .wg-sel .t2 { display:block; }
+  table.wg td.name { font-size:13px; }
+}
 .footer-brand { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-brand strong { color:#d4af37; }
 </style>
@@ -771,9 +783,12 @@ function befuelleJahrFilter() {
 }
 
 function wgKurz(t) { return (t || '').replace(/^0/, '').replace(':00', ''); }
+function wgZeitHtml(von, bis) {
+  if (von && bis) return '<span class="t1">' + wgKurz(von) + '</span><span class="t0">–</span><span class="t2">' + wgKurz(bis) + '</span>';
+  return von ? '<span class="t1">' + wgKurz(von) + '</span><span class="t0">–</span>' : 'Schicht';
+}
 function wgChip(von, bis, klasse) {
-  const txt = (von && bis) ? wgKurz(von) + '–' + wgKurz(bis) : (von ? wgKurz(von) + '–' : 'Schicht');
-  return '<span class="wg-chip ' + klasse + '">' + txt + '</span>';
+  return '<span class="wg-chip ' + klasse + '">' + wgZeitHtml(von, bis) + '</span>';
 }
 const WG_TAGE = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
 function wgTagIndex(datum) { return (new Date(datum + 'T00:00:00').getDay() + 6) % 7; }
@@ -831,7 +846,7 @@ function wochenRender() {
       html += '<td>' + liste.sort((a, b) => a.start.localeCompare(b.start)).map(e => wgChip(e.start, e.ende, 'wg-ist')).join('') + '</td>';
     });
     const extra = soll ? abwTage * soll / 5 : 0; // Urlaub/Krank zählt als Soll/5 pro Tag
-    const klein = (soll ? 'Soll ' + stdTxt(soll) : 'Kein Soll hinterlegt (Dashboard → Dein Team → Std./Woche)') + (extra ? ' · inkl. ' + abwTage + ' Tag(e) Urlaub/Krank' : '');
+    const klein = (soll ? 'Soll ' + stdTxt(soll) : 'Kein Soll hinterlegt (Dashboard → Dein Team → Std./Woche)') + (extra ? '<br>inkl. ' + abwTage + ' Tag(e) Urlaub/Krank' : '');
     html += '<td class="sum">' + stdSumme(x.summe + extra, soll) + (klein ? '<div class="wg-soll">' + klein + '</div>' : '') + '</td></tr>';
   });
   body.innerHTML = html + '</tbody></table></div><div style="font-size:11px;color:#8090a8;margin-top:6px;">Blau = gestempelte Zeit (Kommen–Gehen). Zahl rechts: Wochenstunden nach Abzug der Pausen – rot = Soll noch nicht erreicht, grün = erreicht.</div>';

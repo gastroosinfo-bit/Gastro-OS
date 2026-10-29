@@ -109,6 +109,18 @@ table.wg td.sum { text-align:right; white-space:nowrap; padding-left:8px; min-wi
   .wg-chip, .wg-sel { font-size:9.5px; padding:8px 0; border-radius:6px; }
   .wg-soll { max-width:none; }
 }
+@media (max-width:480px) {
+  .wrap { padding:20px 10px 60px; }
+  .section { padding:16px 8px; }
+  .std-nav { gap:6px; }
+  .std-nav .btn-add { padding:6px 10px; }
+  .std-label { min-width:0; flex:1; font-size:12px; }
+  table.wg td:not(.name):not(.sum) { padding:0 1px; }
+  .wg-chip, .wg-sel { font-size:9px; padding:6px 0; line-height:1.2; letter-spacing:-0.2px; }
+  .wg-chip .t0, .wg-sel .t0 { display:none; }
+  .wg-chip .t1, .wg-chip .t2, .wg-sel .t1, .wg-sel .t2 { display:block; }
+  table.wg td.name { font-size:13px; }
+}
 .footer-brand { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-brand strong { color:#d4af37; }
 </style>
@@ -264,9 +276,12 @@ function zeStdNetto(e) {
   return Math.max(0, (en - st) - pause) / 60;
 }
 function wgKurz(t) { return (t || '').replace(/^0/, '').replace(':00', ''); }
+function wgZeitHtml(von, bis) {
+  if (von && bis) return '<span class="t1">' + wgKurz(von) + '</span><span class="t0">–</span><span class="t2">' + wgKurz(bis) + '</span>';
+  return von ? '<span class="t1">' + wgKurz(von) + '</span><span class="t0">–</span>' : 'Schicht';
+}
 function wgChip(von, bis, klasse) {
-  const txt = (von && bis) ? wgKurz(von) + '–' + wgKurz(bis) : (von ? wgKurz(von) + '–' : 'Schicht');
-  return '<span class="wg-chip ' + klasse + '">' + txt + '</span>';
+  return '<span class="wg-chip ' + klasse + '">' + wgZeitHtml(von, bis) + '</span>';
 }
 const WG_TAGE = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
 function wgTagIndex(datum) { return (new Date(datum + 'T00:00:00').getDay() + 6) % 7; }
@@ -307,7 +322,7 @@ function stundenRender() {
         schichten.sort((a, b) => (a.von || '').localeCompare(b.von || ''));
         if (schichten.length) {
           html += window.chefModus
-            ? zelle((schichten[0].von || '') < '12:00' ? 'wg-frueh' : 'wg-spaet', schichten.map(sh => wgZeitTxt(sh.von, sh.bis)).join('<br>'))
+            ? zelle((schichten[0].von || '') < '12:00' ? 'wg-frueh' : 'wg-spaet', schichten.map(sh => wgZeitHtml(sh.von, sh.bis)).join('<br>'))
             : '<td>' + schichten.map(sh => wgChip(sh.von, sh.bis, (sh.von || '') < '12:00' ? 'wg-frueh' : 'wg-spaet')).join('') + '</td>';
         } else if (abw.length) {
           abwTage++;
@@ -321,8 +336,8 @@ function stundenRender() {
       let klein = '';
       if (so) klein += 'Soll ' + stdText(so);
       else if (window.chefModus) klein += 'Kein Soll hinterlegt (Dashboard → Dein Team → Std./Woche)';
-      if (zeVorhanden && x.ist) klein += (klein ? ' · ' : '') + 'gestempelt ' + stdText(x.ist);
-      if (extra) klein += (klein ? ' · ' : '') + 'inkl. ' + abwTage + ' Tag(e) Urlaub/Krank';
+      if (zeVorhanden && x.ist) klein += (klein ? '<br>' : '') + 'gestempelt ' + stdText(x.ist);
+      if (extra) klein += (klein ? '<br>' : '') + 'inkl. ' + abwTage + ' Tag(e) Urlaub/Krank';
       html += '<td class="sum">' + stdHtml(x.plan + extra, so, !!(window.maName && n !== window.maName)) + (klein ? '<div class="wg-soll">' + klein + '</div>' : '') + '</td></tr>';
     });
     html += '</tbody></table></div><div style="font-size:11px;color:#8090a8;margin-top:6px;">Zahl rechts: geplante Wochenstunden – rot = Soll noch nicht erreicht, grün = erreicht.</div>';
