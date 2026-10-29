@@ -281,6 +281,31 @@ function stundenText(eintrag) {
   if (h === null) return '–';
   return h.toFixed(2).replace('.', ',') + ' Std';
 }
+// Hinweise für den Chef vor dem Genehmigen (Arbeitszeitgesetz: Pause ab 6 Std. 30 Min., ab 9 Std. 45 Min.; max. 10 Std. Arbeitszeit)
+function pruefHinweise(eintrag) {
+  if (!eintrag.start || !eintrag.ende) return [];
+  let start = minutenAus(eintrag.start), ende = minutenAus(eintrag.ende);
+  if (ende < start) ende += 24 * 60;
+  const brutto = ende - start;
+  let pause = 0;
+  (eintrag.pausen || []).forEach(p => {
+    let v = minutenAus(p.von), b = minutenAus(p.bis);
+    if (b < v) b += 24 * 60;
+    pause += (b - v);
+  });
+  const netto = brutto - pause;
+  const h = [];
+  if (netto <= 0) h.push('0 Std. – bitte prüfen');
+  if (netto > 600) h.push('über 10 Std. Arbeitszeit');
+  if (brutto > 540 && pause < 45) h.push('Pause unter 45 Min. (ab 9 Std.)');
+  else if (brutto > 360 && pause < 30) h.push('Pause unter 30 Min. (ab 6 Std.)');
+  return h;
+}
+function hinweisHtml(eintrag) {
+  const h = pruefHinweise(eintrag);
+  if (!h.length) return '';
+  return '<div style="font-size:10.5px;color:#a05a00;font-weight:700;margin-top:3px;white-space:normal;min-width:120px;">⚠️ ' + h.join('<br>⚠️ ') + '</div>';
+}
 function pausenVonListe(eintrag) {
   const von = (eintrag.pausen || []).map(p => p.von);
   if (eintrag.pauseLaufend) von.push(eintrag.pauseLaufend);
@@ -711,7 +736,7 @@ function renderZeTabelle() {
       ? `<button class="btn-add" style="padding:5px 10px;font-size:11px;" onclick="zeGenehmigen(${i.id})">✓ Genehmigen</button>
          <button class="btn-add" style="padding:5px 10px;font-size:11px;background:#a13a2b;" onclick="zeAblehnen(${i.id})">✗ Nicht genehmigen</button>`
       : '';
-    tr.innerHTML = `<td>${datumDe(i.datum)}</td><td>${i.name}</td><td>${i.start || ''}</td><td>${pausenVonListe(i)}</td><td>${pausenBisListe(i)}</td><td>${i.ende || '–'}</td><td>${stundenText(i)}</td><td>${statusBadge(i)}</td>
+    tr.innerHTML = `<td>${datumDe(i.datum)}</td><td>${i.name}</td><td>${i.start || ''}</td><td>${pausenVonListe(i)}</td><td>${pausenBisListe(i)}</td><td>${i.ende || '–'}</td><td>${stundenText(i)}${hinweisHtml(i)}</td><td>${statusBadge(i)}</td>
       <td style="white-space:nowrap;">${aktionsBtns} <button class="btn-del" onclick="zeLoeschen(${i.id})">✕</button></td>`;
     tbody.appendChild(tr);
   });
