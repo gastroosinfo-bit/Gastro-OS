@@ -95,6 +95,19 @@ table.wg td.sum { text-align:right; white-space:nowrap; padding-left:8px; min-wi
 .wg-sel { display:block; width:100%; border:none; border-radius:8px; padding:7px 2px; margin:2px 0; font-size:11px; font-weight:700; font-family:inherit; text-align:center; text-align-last:center; -webkit-appearance:none; appearance:none; cursor:pointer; }
 .wg-urlaub { background:#d8f0e0; color:#1a6640; }
 .wg-krank { background:#fbdcd8; color:#a13a2b; }
+@media (max-width:700px) {
+  .wg-wrap { overflow:visible; }
+  table.wg, table.wg thead, table.wg tbody { display:block; width:100%; min-width:0; }
+  table.wg tr { display:flex; flex-wrap:wrap; align-items:center; margin-bottom:12px; }
+  table.wg thead tr { margin-bottom:2px; }
+  table.wg thead th.name, table.wg thead th:last-child { display:none; }
+  table.wg thead th { flex:0 0 14.28%; width:14.28%; min-width:0; padding:2px 0; font-size:10px; }
+  table.wg td.name { order:1; flex:1 1 50%; width:50%; padding:0 0 6px 2px; }
+  table.wg td.sum { order:2; flex:1 1 50%; width:50%; min-width:0; padding:0 2px 6px 0; }
+  table.wg td:not(.name):not(.sum) { order:3; flex:0 0 14.28%; width:14.28%; min-width:0; padding:0 1px; }
+  .wg-chip, .wg-sel { font-size:9.5px; padding:8px 0; border-radius:6px; }
+  .wg-soll { max-width:none; }
+}
 .footer-brand { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-brand strong { color:#d4af37; }
 </style>
