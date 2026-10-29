@@ -61,7 +61,7 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
 .pin-input { font-size:24px; letter-spacing:8px; text-align:center; width:160px; padding:12px; border:2px solid #d4af37; border-radius:8px; margin:16px auto; display:block; }
 .hinweis-box { background:#eaf2ff; border:1px solid #8ba8d0; border-radius:8px; padding:12px 16px; font-size:12px; color:#3a5578; margin-bottom:16px; }
 
-.sp-row { display:grid; grid-template-columns:1.3fr 1fr 0.8fr 0.8fr 1.2fr auto; gap:10px; align-items:end; margin-bottom:12px; }
+.sp-row { display:grid; grid-template-columns:1.3fr 1fr 1.1fr 0.8fr 0.8fr 1.2fr auto; gap:10px; align-items:end; margin-bottom:12px; }
 @media(max-width:760px){ .sp-row{ grid-template-columns:1fr 1fr; } .sp-row .btn-del{ grid-column:span 2; justify-self:end; } }
 
 .chip { display:inline-flex; align-items:center; gap:6px; background:#eaf2ff; border:1px solid #cddbee; border-radius:14px; padding:5px 6px 5px 12px; margin:3px; font-size:12.5px; }
@@ -74,9 +74,26 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
 .std-gruen { color:#1a6640; font-weight:700; white-space:nowrap; display:inline-flex; align-items:center; gap:5px; }
 .std-rot { color:#c0392b; }
 .std-gruen svg { width:13px; height:13px; flex:none; }
-table.std-table .std-gruen { font-size:15px; }
+table.std-table .std-gruen, table.wg .std-gruen { font-size:16px; }
 table.std-table td.zahl, table.std-table th.zahl { text-align:right; white-space:nowrap; }
 table.std-table tr.summe td { font-weight:700; background:#f5f0e8; }
+
+.wg-wrap { overflow-x:auto; }
+table.wg { width:100%; border-collapse:separate; border-spacing:0 8px; min-width:620px; }
+table.wg th { font-size:11px; font-weight:700; color:#5a6a80; text-align:center; padding:2px 3px; }
+table.wg th.name, table.wg td:not(.name):not(.sum) { width:62px; min-width:62px; }
+table.wg td.name { text-align:left; }
+table.wg td { padding:0 3px; text-align:center; vertical-align:middle; }
+table.wg td.name { font-weight:700; font-size:14px; color:#1a2a4a; white-space:nowrap; padding-right:8px; }
+table.wg td.sum { text-align:right; white-space:nowrap; padding-left:8px; min-width:150px; }
+.wg-chip { display:block; border-radius:8px; padding:7px 2px; font-size:11px; font-weight:700; white-space:nowrap; margin:2px 0; }
+.wg-frueh { background:#d4af37; color:#1a2a4a; }
+.wg-spaet { background:#1a2a4a; color:#fff; }
+.wg-frei { background:#eceae6; color:#a0a8b8; }
+.wg-ist { background:#d8e6f7; color:#1a2a4a; }
+.wg-soll { font-size:10.5px; color:#8090a8; font-weight:400; margin:2px 0 0 auto; white-space:normal; max-width:160px; text-align:right; line-height:1.3; }
+.wg-urlaub { background:#d8f0e0; color:#1a6640; }
+.wg-krank { background:#fbdcd8; color:#a13a2b; }
 .footer-brand { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-brand strong { color:#d4af37; }
 </style>
@@ -115,6 +132,7 @@ table.std-table tr.summe td { font-weight:700; background:#f5f0e8; }
       <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;">
         <div class="field-group" style="margin-bottom:0;"><label>Name</label><select id="ma-neu-name"></select></div>
         <div class="field-group" style="margin-bottom:0;"><label>Datum</label><input type="date" id="ma-neu-datum"></div>
+        <div class="field-group" style="margin-bottom:0;"><label>Art</label><select id="ma-neu-art" onchange="artWechsel('ma-neu-art','ma-neu-von','ma-neu-bis')"><option value="schicht">Schicht</option><option value="urlaub">Urlaub</option><option value="krank">Krank</option></select></div>
         <div class="field-group" style="margin-bottom:0;"><label>Von</label><input type="time" id="ma-neu-von"></div>
         <div class="field-group" style="margin-bottom:0;"><label>Bis</label><input type="time" id="ma-neu-bis"></div>
         <div class="field-group" style="margin-bottom:0;"><label>Notiz</label><input type="text" id="ma-neu-notiz" placeholder="optional"></div>
@@ -236,6 +254,18 @@ function zeStdNetto(e) {
   (e.pausen || []).forEach(p => { let v = m(p.von), bi = m(p.bis); if (bi < v) bi += 1440; pause += (bi - v); });
   return Math.max(0, (en - st) - pause) / 60;
 }
+function wgKurz(t) { return (t || '').replace(/^0/, '').replace(':00', ''); }
+function wgChip(von, bis, klasse) {
+  const txt = (von && bis) ? wgKurz(von) + '–' + wgKurz(bis) : (von ? wgKurz(von) + '–' : 'Schicht');
+  return '<span class="wg-chip ' + klasse + '">' + txt + '</span>';
+}
+const WG_TAGE = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
+function wgTagIndex(datum) { return (new Date(datum + 'T00:00:00').getDay() + 6) % 7; }
+function wgKopf(montag) {
+  let h = '<th class="name"></th>';
+  for (let i = 0; i < 7; i++) { const d = new Date(montag); d.setDate(d.getDate() + i); h += '<th>' + WG_TAGE[i] + '<br><span style="font-weight:400;">' + d.getDate() + '.</span></th>'; }
+  return h + '<th></th>';
+}
 function stundenRender() {
   const montag = window.stdMontag;
   const sonntag = new Date(montag); sonntag.setDate(sonntag.getDate() + 6);
@@ -243,36 +273,64 @@ function stundenRender() {
   const items = (window.stdItems || []).filter(s => s.datum >= von && s.datum <= bis);
   const zeVorhanden = Array.isArray(window.zeItemsChef);
   const zeWoche = zeVorhanden ? window.zeItemsChef.filter(e => e.ende && e.datum >= von && e.datum <= bis) : [];
+  const sm = window.sollStdMap || {};
   const pp = {};
-  const person = n => (pp[n] = pp[n] || { schichten: 0, plan: 0, ist: 0 });
-  items.forEach(s => { const x = person(s.name || '?'); x.schichten++; x.plan += stdZwischen(s.von, s.bis); });
+  const person = n => (pp[n] = pp[n] || { tage: [[], [], [], [], [], [], []], plan: 0, ist: 0 });
+  (typeof mitarbeiterNamen !== 'undefined' ? mitarbeiterNamen : []).forEach(n => person(n));
+  items.forEach(s => { const x = person(s.name || '?'); x.tage[wgTagIndex(s.datum)].push(s); x.plan += stdZwischen(s.von, s.bis); });
   zeWoche.forEach(e => { person(e.name || '?').ist += zeStdNetto(e); });
   const namen = Object.keys(pp).sort((a, b) => a.localeCompare(b, 'de'));
   let html;
   if (!namen.length) {
     html = '<div style="font-size:12.5px;color:#8090a8;">Keine Schichten in dieser Woche.</div>';
   } else {
-    let gp = 0, gi = 0, gs = 0;
-    const sm = window.sollStdMap || {};
-    const hatSoll = Object.keys(sm).length > 0;
-    html = '<table class="data-table std-table"><thead><tr><th>Mitarbeiter</th><th class="zahl">Schichten</th>' + (hatSoll ? '<th class="zahl">Soll</th>' : '') + '<th class="zahl">Geplant</th>' +
-      (zeVorhanden ? '<th class="zahl">Gearbeitet</th>' : '') + '</tr></thead><tbody>';
+    html = '<div class="wg-wrap"><table class="wg"><thead><tr>' + wgKopf(montag) + '</tr></thead><tbody>';
     namen.forEach(n => {
-      const x = pp[n]; gp += x.plan; gi += x.ist; gs += x.schichten;
-      const so = sm[n] || 0;
-      html += '<tr><td>' + n + '</td><td class="zahl">' + x.schichten + '</td>' + (hatSoll ? '<td class="zahl" style="color:#5a6a80;">' + (so ? stdText(so) : '–') + '</td>' : '') +
-        '<td class="zahl">' + stdHtml(x.plan, so) + '</td>' + (zeVorhanden ? '<td class="zahl">' + stdHtml(x.ist, so) + '</td>' : '') + '</tr>';
+      const x = pp[n], so = sm[n] || 0;
+      html += '<tr><td class="name">' + n + '</td>';
+      let abwTage = 0;
+      x.tage.forEach(liste => {
+        const schichten = liste.filter(sh => artVon(sh) === 'schicht');
+        const abw = liste.filter(sh => artVon(sh) !== 'schicht');
+        if (schichten.length) {
+          html += '<td>' + schichten.sort((a, b) => (a.von || '').localeCompare(b.von || '')).map(sh => wgChip(sh.von, sh.bis, (sh.von || '') < '12:00' ? 'wg-frueh' : 'wg-spaet')).join('') + '</td>';
+        } else if (abw.length) {
+          abwTage++;
+          html += '<td><span class="wg-chip wg-' + artVon(abw[0]) + '">' + ART_LABEL[artVon(abw[0])] + '</span></td>';
+        } else {
+          html += '<td><span class="wg-chip wg-frei">frei</span></td>';
+        }
+      });
+      const extra = so ? abwTage * so / 5 : 0; // Urlaub/Krank zählt als Soll/5 pro Tag
+      let klein = '';
+      if (so) klein += 'Soll ' + stdText(so);
+      if (zeVorhanden && x.ist) klein += (klein ? ' · ' : '') + 'gestempelt ' + stdText(x.ist);
+      if (extra) klein += (klein ? ' · ' : '') + 'inkl. ' + abwTage + ' Tag(e) Urlaub/Krank';
+      html += '<td class="sum">' + stdHtml(x.plan + extra, so) + (klein ? '<div class="wg-soll">' + klein + '</div>' : '') + '</td></tr>';
     });
-    if (namen.length > 1) html += '<tr class="summe"><td>Gesamt</td><td class="zahl">' + gs + '</td>' + (hatSoll ? '<td class="zahl"></td>' : '') + '<td class="zahl">' + stdHtml(gp) + '</td>' +
-      (zeVorhanden ? '<td class="zahl">' + stdHtml(gi) + '</td>' : '') + '</tr>';
-    html += '</tbody></table>';
-    if (zeVorhanden) html += '<div style="font-size:11px;color:#8090a8;margin-top:8px;">Gearbeitet = gestempelte Zeit aus der Zeiterfassung abzüglich Pausen (alle abgeschlossenen Einträge, auch noch nicht genehmigte). Rot = Soll-Stunden noch nicht erreicht, grün = erreicht.</div>';
+    html += '</tbody></table></div><div style="font-size:11px;color:#8090a8;margin-top:6px;">Zahl rechts: geplante Wochenstunden – rot = Soll noch nicht erreicht, grün = erreicht.</div>';
   }
   const label = 'KW ' + isoKW(montag) + ' · ' + datumKurz(montag) + ' – ' + datumKurz(sonntag) + sonntag.getFullYear();
   document.querySelectorAll('.std-label').forEach(el => { el.textContent = label; });
   document.querySelectorAll('.std-body').forEach(el => { el.innerHTML = html; });
 }
 
+const ART_LABEL = { urlaub: 'Urlaub', krank: 'Krank' };
+// Art eines Eintrags: Feld "art", ersatzweise am Anfang der Notiz erkannt (falls ein Server das Feld nicht mitspeichert)
+function artVon(s) {
+  if (s && (s.art === 'urlaub' || s.art === 'krank')) return s.art;
+  const m = /^\s*(urlaub|krank)\b/i.exec((s && s.notiz) || '');
+  return m ? m[1].toLowerCase() : 'schicht';
+}
+window.artWechsel = function(artId, vonId, bisId) {
+  const art = document.getElementById(artId).value;
+  [vonId, bisId].forEach(id => { const el = document.getElementById(id); el.disabled = art !== 'schicht'; if (art !== 'schicht') el.value = ''; });
+};
+function artNotiz(art, notiz) {
+  if (art === 'schicht') return notiz;
+  const n = (notiz || '').trim();
+  return ART_LABEL[art] + (n ? ' – ' + n : '');
+}
 function heute() { return new Date().toISOString().slice(0, 10); }
 function renderMaTabelle(items) {
   window.maItems = items;
@@ -297,6 +355,8 @@ window.maSchichtHinzufuegen = async function() {
     bis: document.getElementById('ma-neu-bis').value,
     notiz: document.getElementById('ma-neu-notiz').value
   };
+  const maArt = document.getElementById('ma-neu-art').value;
+  if (maArt !== 'schicht') { eintrag.art = maArt; eintrag.von = ''; eintrag.bis = ''; eintrag.notiz = artNotiz(maArt, eintrag.notiz); }
   if (!eintrag.name || !eintrag.datum) { alert('Bitte Name und Datum angeben.'); return; }
   const res = await fetch('/api/buch-public', {
     method: 'POST',
@@ -310,6 +370,8 @@ window.maSchichtHinzufuegen = async function() {
   document.getElementById('ma-neu-von').value = '';
   document.getElementById('ma-neu-bis').value = '';
   document.getElementById('ma-neu-notiz').value = '';
+  document.getElementById('ma-neu-art').value = 'schicht';
+  artWechsel('ma-neu-art', 'ma-neu-von', 'ma-neu-bis');
 };
 window.maSchichtLoeschen = async function(id) {
   if (!confirm('Diese Schicht wirklich löschen?')) return;
@@ -550,6 +612,7 @@ function spZeileHinzufuegen() {
   row.innerHTML = `
     <div class="field-group" style="margin-bottom:0;"><label>Name</label><select id="sp-row-name-${rowId}">${mitarbeiterSelectHtml()}</select></div>
     <div class="field-group" style="margin-bottom:0;"><label>Datum</label><input type="date" id="sp-row-datum-${rowId}"></div>
+    <div class="field-group" style="margin-bottom:0;"><label>Art</label><select id="sp-row-art-${rowId}" onchange="artWechsel('sp-row-art-${rowId}','sp-row-von-${rowId}','sp-row-bis-${rowId}')"><option value="schicht">Schicht</option><option value="urlaub">Urlaub</option><option value="krank">Krank</option></select></div>
     <div class="field-group" style="margin-bottom:0;"><label>Von</label><input type="time" id="sp-row-von-${rowId}"></div>
     <div class="field-group" style="margin-bottom:0;"><label>Bis</label><input type="time" id="sp-row-bis-${rowId}"></div>
     <div class="field-group" style="margin-bottom:0;"><label>Notiz</label><input type="text" id="sp-row-notiz-${rowId}" placeholder="optional"></div>
@@ -577,8 +640,10 @@ window.spAlleSpeichern = async function() {
     const von = document.getElementById('sp-row-von-' + rowId).value;
     const bis = document.getElementById('sp-row-bis-' + rowId).value;
     const notiz = document.getElementById('sp-row-notiz-' + rowId).value;
+    const art = document.getElementById('sp-row-art-' + rowId).value;
     if (name && datum) {
-      neueEintraege.push({ id: Date.now() + Math.floor(Math.random() * 1000), name, datum, von, bis, notiz });
+      if (art === 'schicht') neueEintraege.push({ id: Date.now() + Math.floor(Math.random() * 1000), name, datum, von, bis, notiz });
+      else neueEintraege.push({ id: Date.now() + Math.floor(Math.random() * 1000), name, datum, von: '', bis: '', notiz: artNotiz(art, notiz), art });
     }
   });
   if (!neueEintraege.length) { alert('Bitte bei mindestens einer Zeile Name und Datum angeben.'); return; }

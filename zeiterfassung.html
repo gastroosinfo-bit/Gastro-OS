@@ -95,6 +95,27 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
 .name-choice button { background:#eaf2ff; border:1px solid #cddbee; color:#1a2a4a; padding:12px 20px; border-radius:8px; font-size:14px; font-weight:600; cursor:pointer; }
 .name-choice button:hover { background:#1a2a4a; color:#d4af37; }
 
+
+.wg-wrap { overflow-x:auto; }
+table.wg { width:100%; border-collapse:separate; border-spacing:0 8px; min-width:620px; }
+table.wg th { font-size:11px; font-weight:700; color:#5a6a80; text-align:center; padding:2px 3px; }
+table.wg th.name, table.wg td:not(.name):not(.sum) { width:62px; min-width:62px; }
+table.wg td.name { text-align:left; }
+table.wg td { padding:0 3px; text-align:center; vertical-align:middle; }
+table.wg td.name { font-weight:700; font-size:14px; color:#1a2a4a; white-space:nowrap; padding-right:8px; }
+table.wg td.sum { text-align:right; white-space:nowrap; padding-left:8px; min-width:150px; }
+.wg-chip { display:block; border-radius:8px; padding:7px 2px; font-size:11px; font-weight:700; white-space:nowrap; margin:2px 0; }
+.wg-frueh { background:#d4af37; color:#1a2a4a; }
+.wg-spaet { background:#1a2a4a; color:#fff; }
+.wg-frei { background:#eceae6; color:#a0a8b8; }
+.wg-ist { background:#d8e6f7; color:#1a2a4a; }
+.wg-soll { font-size:10.5px; color:#8090a8; font-weight:400; margin:2px 0 0 auto; white-space:normal; max-width:160px; text-align:right; line-height:1.3; }
+.std-nav { display:flex; align-items:center; justify-content:center; gap:14px; margin-bottom:12px; }
+.std-label { font-size:13.5px; font-weight:700; color:#1a2a4a; min-width:210px; text-align:center; }
+.std-gruen { color:#1a6640; font-weight:700; white-space:nowrap; display:inline-flex; align-items:center; gap:5px; font-size:16px; }
+.std-rot { color:#c0392b; }
+.wg-urlaub { background:#d8f0e0; color:#1a6640; }
+.wg-krank { background:#fbdcd8; color:#a13a2b; }
 .footer-brand { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-brand strong { color:#d4af37; }
 </style>
@@ -172,6 +193,16 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
       <div class="section-head">Team-Mitarbeiter</div>
       <div style="font-size:11.5px;color:#8090a8;margin-bottom:10px;">PIN und Berechtigungen pro Person verwaltest du zentral im Dashboard unter "Dein Team".</div>
       <div id="ze-mitarbeiter-liste" style="margin-top:6px;"></div>
+    </div>
+
+    <div class="section">
+      <div class="section-head">Wochenübersicht</div>
+      <div class="std-nav">
+        <button class="btn-add secondary" onclick="wochenWechseln(-1)">◀</button>
+        <span class="std-label" id="wg-label"></span>
+        <button class="btn-add secondary" onclick="wochenWechseln(1)">▶</button>
+      </div>
+      <div id="wg-body"></div>
     </div>
 
     <div class="section">
@@ -306,12 +337,11 @@ function hinweisHtml(eintrag) {
   if (!h.length) return '';
   return '<div style="font-size:10.5px;color:#a05a00;font-weight:700;margin-top:3px;white-space:normal;min-width:120px;">⚠️ ' + h.join('<br>⚠️ ') + '</div>';
 }
-// Stunden grün, fett, mit Uhr-Symbol (rot bei 0 Std.) – wie im Schichtplan
+// Einzelne Einträge: neutral (Farbe gibt es nur bei der Wochensumme gegenüber dem Soll)
 function stundenHtml(eintrag) {
   const h = stundenBerechnen(eintrag);
   if (h === null) return '–';
-  const farbe = h <= 0 ? '#c0392b' : '#1a6640';
-  return '<span style="color:' + farbe + ';font-weight:700;font-size:15px;white-space:nowrap;display:inline-flex;align-items:center;gap:5px;"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex:none;"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9.5 2.5h5"/></svg>' + stundenText(eintrag) + '</span>';
+  return '<span style="font-weight:700;white-space:nowrap;">' + stundenText(eintrag) + '</span>';
 }
 function pausenVonListe(eintrag) {
   const von = (eintrag.pausen || []).map(p => p.von);
@@ -682,8 +712,12 @@ async function initInhaberModus() {
   mitarbeiterNamen = Array.isArray(mitarbeiterData.mitarbeiter)
     ? mitarbeiterData.mitarbeiter.map(m => m.name)
     : (mitarbeiterData.namen || []);
+  sollStdMap = {};
+  if (Array.isArray(mitarbeiterData.mitarbeiter)) mitarbeiterData.mitarbeiter.forEach(m => { if (m.name && parseFloat(m.sollStd) > 0) sollStdMap[m.name] = parseFloat(m.sollStd); });
   renderMitarbeiterListe();
   befuelleNameFilter();
+  const spDaten = await toolLoad('schichtplaene');
+  abwItems = (spDaten.items || []).filter(a => artVon(a) !== 'schicht');
 
   const data = await toolLoad('zeiterfassung');
   alleZeiten = data.items || [];
@@ -723,7 +757,75 @@ function befuelleJahrFilter() {
   }
 }
 
+function wgKurz(t) { return (t || '').replace(/^0/, '').replace(':00', ''); }
+function wgChip(von, bis, klasse) {
+  const txt = (von && bis) ? wgKurz(von) + '–' + wgKurz(bis) : (von ? wgKurz(von) + '–' : 'Schicht');
+  return '<span class="wg-chip ' + klasse + '">' + txt + '</span>';
+}
+const WG_TAGE = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
+function wgTagIndex(datum) { return (new Date(datum + 'T00:00:00').getDay() + 6) % 7; }
+function wgKopf(montag) {
+  let h = '<th class="name"></th>';
+  for (let i = 0; i < 7; i++) { const d = new Date(montag); d.setDate(d.getDate() + i); h += '<th>' + WG_TAGE[i] + '<br><span style="font-weight:400;">' + d.getDate() + '.</span></th>'; }
+  return h + '<th></th>';
+}
+const ART_LABEL = { urlaub: 'Urlaub', krank: 'Krank' };
+// Art eines Eintrags: Feld "art", ersatzweise am Anfang der Notiz erkannt (falls ein Server das Feld nicht mitspeichert)
+function artVon(s) {
+  if (s && (s.art === 'urlaub' || s.art === 'krank')) return s.art;
+  const m = /^\s*(urlaub|krank)\b/i.exec((s && s.notiz) || '');
+  return m ? m[1].toLowerCase() : 'schicht';
+}
+let abwItems = [];
+function stdTxt(h) { return (Math.round(h * 100) / 100).toLocaleString('de-DE') + ' Std.'; }
+function stdSumme(h, soll) {
+  if (!h && !soll) return '–';
+  const rot = soll && Math.round(h * 100) < Math.round(soll * 100);
+  return '<span class="std-gruen' + (rot ? ' std-rot' : '') + '"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex:none;"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9.5 2.5h5"/></svg>' + stdTxt(h || 0) + '</span>';
+}
+function isoKW(montag) {
+  const d = new Date(montag.getFullYear(), montag.getMonth(), montag.getDate() + 3);
+  return Math.floor(((d - new Date(d.getFullYear(), 0, 1)) / 86400000) / 7) + 1;
+}
+let wgMontag = montagDerWoche(new Date()), sollStdMap = {};
+window.wochenWechseln = function(delta) { const m = new Date(wgMontag); m.setDate(m.getDate() + 7 * delta); wgMontag = m; wochenRender(); };
+function wochenRender() {
+  const body = document.getElementById('wg-body');
+  if (!body) return;
+  const so = new Date(wgMontag); so.setDate(so.getDate() + 6);
+  const von = zuIso(wgMontag), bis = zuIso(so);
+  const woche = alleZeiten.filter(e => e.ende && e.datum >= von && e.datum <= bis);
+  const pp = {};
+  const person = n => (pp[n] = pp[n] || { tage: [[], [], [], [], [], [], []], summe: 0 });
+  mitarbeiterNamen.forEach(n => person(n));
+  woche.forEach(e => { const x = person(e.name || '?'); x.tage[wgTagIndex(e.datum)].push(e); x.summe += (stundenBerechnen(e) || 0); });
+  abwItems.filter(a => a.datum >= von && a.datum <= bis).forEach(a => { const x = person(a.name || '?'); x.abw = x.abw || {}; x.abw[wgTagIndex(a.datum)] = artVon(a); });
+  const namen = Object.keys(pp).sort((a, b) => a.localeCompare(b, 'de'));
+  document.getElementById('wg-label').textContent = 'KW ' + isoKW(wgMontag) + ' · ' + String(wgMontag.getDate()).padStart(2, '0') + '.' + String(wgMontag.getMonth() + 1).padStart(2, '0') + '. – ' + String(so.getDate()).padStart(2, '0') + '.' + String(so.getMonth() + 1).padStart(2, '0') + '.' + so.getFullYear();
+  if (!namen.length) { body.innerHTML = '<div style="font-size:12.5px;color:#8090a8;">Keine Zeiten in dieser Woche.</div>'; return; }
+  let html = '<div class="wg-wrap"><table class="wg"><thead><tr>' + wgKopf(wgMontag) + '</tr></thead><tbody>';
+  namen.forEach(n => {
+    const x = pp[n], soll = sollStdMap[n] || 0;
+    html += '<tr><td class="name">' + n + '</td>';
+    let abwTage = 0;
+    x.tage.forEach((liste, ti) => {
+      if (!liste.length) {
+        const art = x.abw && x.abw[ti];
+        if (art) { abwTage++; html += '<td><span class="wg-chip wg-' + art + '">' + ART_LABEL[art] + '</span></td>'; }
+        else html += '<td><span class="wg-chip wg-frei">frei</span></td>';
+        return;
+      }
+      html += '<td>' + liste.sort((a, b) => a.start.localeCompare(b.start)).map(e => wgChip(e.start, e.ende, 'wg-ist')).join('') + '</td>';
+    });
+    const extra = soll ? abwTage * soll / 5 : 0; // Urlaub/Krank zählt als Soll/5 pro Tag
+    const klein = (soll ? 'Soll ' + stdTxt(soll) : '') + (extra ? ' · inkl. ' + abwTage + ' Tag(e) Urlaub/Krank' : '');
+    html += '<td class="sum">' + stdSumme(x.summe + extra, soll) + (klein ? '<div class="wg-soll">' + klein + '</div>' : '') + '</td></tr>';
+  });
+  body.innerHTML = html + '</tbody></table></div><div style="font-size:11px;color:#8090a8;margin-top:6px;">Blau = gestempelte Zeit (Kommen–Gehen). Zahl rechts: Wochenstunden nach Abzug der Pausen – rot = Soll noch nicht erreicht, grün = erreicht.</div>';
+}
+
 function renderZeTabelle() {
+  wochenRender();
   const tbody = document.querySelector('#ze-tabelle tbody');
   tbody.innerHTML = '';
   const filterName = document.getElementById('ze-filter-name').value;
