@@ -67,6 +67,11 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
 .chip { display:inline-flex; align-items:center; gap:6px; background:#eaf2ff; border:1px solid #cddbee; border-radius:14px; padding:5px 6px 5px 12px; margin:3px; font-size:12.5px; }
 .chip button { border:none; background:none; color:#c0392b; cursor:pointer; font-weight:700; font-size:13px; padding:2px 4px; }
 
+.std-nav { display:flex; align-items:center; justify-content:center; gap:14px; margin-bottom:12px; }
+.std-nav button { padding:6px 14px; }
+.std-label { font-size:13.5px; font-weight:700; color:#1a2a4a; min-width:210px; text-align:center; }
+table.std-table td.zahl, table.std-table th.zahl { text-align:right; white-space:nowrap; }
+table.std-table tr.summe td { font-weight:700; background:#f5f0e8; }
 .footer-brand { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-brand strong { color:#d4af37; }
 </style>
@@ -113,10 +118,19 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
       <span class="save-msg" id="ma-sp-save-msg">✓ Gespeichert</span>
     </div>
     <div class="section">
+      <div class="section-head">Stunden pro Woche</div>
+      <div class="std-nav">
+        <button class="btn-add secondary" onclick="stundenWocheWechseln(-1)">◀</button>
+        <span class="std-label"></span>
+        <button class="btn-add secondary" onclick="stundenWocheWechseln(1)">▶</button>
+      </div>
+      <div class="std-body"></div>
+    </div>
+    <div class="section">
       <div class="section-head">Dienstplan</div>
       <div style="overflow-x:auto;">
       <table class="data-table" id="ma-tabelle">
-        <thead><tr><th>Name</th><th>Datum</th><th>Von</th><th>Bis</th><th>Notiz</th><th id="ma-tabelle-aktion-kopf" style="display:none;"></th></tr></thead>
+        <thead><tr><th>Name</th><th>Datum</th><th>Von</th><th>Bis</th><th>Std.</th><th>Notiz</th><th id="ma-tabelle-aktion-kopf" style="display:none;"></th></tr></thead>
         <tbody></tbody>
       </table>
       </div>
@@ -146,10 +160,19 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
     </div>
 
     <div class="section">
+      <div class="section-head">Stunden pro Woche</div>
+      <div class="std-nav">
+        <button class="btn-add secondary" onclick="stundenWocheWechseln(-1)">◀</button>
+        <span class="std-label"></span>
+        <button class="btn-add secondary" onclick="stundenWocheWechseln(1)">▶</button>
+      </div>
+      <div class="std-body"></div>
+    </div>
+    <div class="section">
       <div class="section-head">Dienstplan</div>
       <div style="overflow-x:auto;">
       <table class="data-table" id="sp-tabelle">
-        <thead><tr><th>Name</th><th>Datum</th><th>Von</th><th>Bis</th><th>Notiz</th><th></th></tr></thead>
+        <thead><tr><th>Name</th><th>Datum</th><th>Von</th><th>Bis</th><th>Std.</th><th>Notiz</th><th></th></tr></thead>
         <tbody></tbody>
       </table>
       </div>
@@ -167,18 +190,76 @@ function flashSaved(id) {
   el.style.display = 'inline';
   setTimeout(() => { el.style.display = 'none'; }, 2000);
 }
+// ─── Stunden-Summen pro Woche (Mo–So) und Mitarbeiter ──────────────────────
+function stdZwischen(von, bis) {
+  if (!von || !bis) return 0;
+  const a = von.split(':').map(Number), b = bis.split(':').map(Number);
+  if (a.length < 2 || b.length < 2 || isNaN(a[0]) || isNaN(a[1]) || isNaN(b[0]) || isNaN(b[1])) return 0;
+  let min = (b[0] * 60 + b[1]) - (a[0] * 60 + a[1]);
+  if (min < 0) min += 1440; // Schicht über Mitternacht
+  return min / 60;
+}
+function stdText(h) {
+  if (!h) return '–';
+  return (Math.round(h * 100) / 100).toLocaleString('de-DE') + ' Std.';
+}
+function datumIso(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+function montagVon(d) { const x = new Date(d.getFullYear(), d.getMonth(), d.getDate()); x.setDate(x.getDate() - ((x.getDay() + 6) % 7)); return x; }
+function isoKW(montag) {
+  const d = new Date(montag.getFullYear(), montag.getMonth(), montag.getDate() + 3); // Donnerstag der Woche
+  const jan1 = new Date(d.getFullYear(), 0, 1);
+  return Math.floor(((d - jan1) / 86400000) / 7) + 1;
+}
+function datumKurz(d) { return String(d.getDate()).padStart(2, '0') + '.' + String(d.getMonth() + 1).padStart(2, '0') + '.'; }
+window.stdMontag = montagVon(new Date());
+window.stundenWocheWechseln = function(delta) {
+  const m = new Date(window.stdMontag); m.setDate(m.getDate() + 7 * delta);
+  window.stdMontag = m; stundenRender();
+};
+function stundenRender() {
+  const montag = window.stdMontag;
+  const sonntag = new Date(montag); sonntag.setDate(sonntag.getDate() + 6);
+  const von = datumIso(montag), bis = datumIso(sonntag);
+  const items = (window.stdItems || []).filter(s => s.datum >= von && s.datum <= bis);
+  const proPerson = {};
+  items.forEach(s => {
+    const n = s.name || '?';
+    if (!proPerson[n]) proPerson[n] = { schichten: 0, std: 0 };
+    proPerson[n].schichten++;
+    proPerson[n].std += stdZwischen(s.von, s.bis);
+  });
+  const namen = Object.keys(proPerson).sort((a, b) => a.localeCompare(b, 'de'));
+  let html;
+  if (!namen.length) {
+    html = '<div style="font-size:12.5px;color:#8090a8;">Keine Schichten in dieser Woche.</div>';
+  } else {
+    let gesamt = 0;
+    html = '<table class="data-table std-table"><thead><tr><th>Mitarbeiter</th><th class="zahl">Schichten</th><th class="zahl">Stunden</th></tr></thead><tbody>';
+    namen.forEach(n => {
+      gesamt += proPerson[n].std;
+      html += '<tr><td>' + n + '</td><td class="zahl">' + proPerson[n].schichten + '</td><td class="zahl">' + stdText(proPerson[n].std) + '</td></tr>';
+    });
+    if (namen.length > 1) html += '<tr class="summe"><td>Gesamt</td><td class="zahl">' + items.length + '</td><td class="zahl">' + stdText(gesamt) + '</td></tr>';
+    html += '</tbody></table>';
+  }
+  const label = 'KW ' + isoKW(montag) + ' · ' + datumKurz(montag) + ' – ' + datumKurz(sonntag) + sonntag.getFullYear();
+  document.querySelectorAll('.std-label').forEach(el => { el.textContent = label; });
+  document.querySelectorAll('.std-body').forEach(el => { el.innerHTML = html; });
+}
+
 function heute() { return new Date().toISOString().slice(0, 10); }
 function renderMaTabelle(items) {
   window.maItems = items;
+  window.stdItems = items; stundenRender();
   const tbody = document.querySelector('#ma-tabelle tbody');
   tbody.innerHTML = '';
   const sorted = [...items].sort((a, b) => (a.datum + a.von).localeCompare(b.datum + b.von));
-  const colspan = window.maKannBearbeiten ? 6 : 5;
+  const colspan = window.maKannBearbeiten ? 7 : 6;
   if (sorted.length === 0) { tbody.innerHTML = `<tr><td colspan="${colspan}" style="color:#8090a8;">Noch keine Schichten eingetragen.</td></tr>`; return; }
   sorted.forEach(s => {
     const tr = document.createElement('tr');
     const loeschZelle = window.maKannBearbeiten ? `<td><button class="btn-del" onclick="maSchichtLoeschen(${s.id})">✕</button></td>` : '';
-    tr.innerHTML = `<td>${s.name}</td><td>${s.datum}</td><td>${s.von || ''}</td><td>${s.bis || ''}</td><td>${s.notiz || ''}</td>${loeschZelle}`;
+    tr.innerHTML = `<td>${s.name}</td><td>${s.datum}</td><td>${s.von || ''}</td><td>${s.bis || ''}</td><td>${stdText(stdZwischen(s.von, s.bis))}</td><td>${s.notiz || ''}</td>${loeschZelle}`;
     tbody.appendChild(tr);
   });
 }
@@ -216,12 +297,13 @@ window.maSchichtLoeschen = async function(id) {
   renderMaTabelle(d.items || []);
 };
 function renderSpTabelle(items) {
+  window.stdItems = items; stundenRender();
   const tbody = document.querySelector('#sp-tabelle tbody');
   tbody.innerHTML = '';
   const sorted = [...items].sort((a, b) => (a.datum + a.von).localeCompare(b.datum + b.von));
   sorted.forEach(s => {
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${s.name}</td><td>${s.datum}</td><td>${s.von || ''}</td><td>${s.bis || ''}</td><td>${s.notiz || ''}</td><td><button class="btn-del" onclick="spLoeschen(${s.id})">✕</button></td>`;
+    tr.innerHTML = `<td>${s.name}</td><td>${s.datum}</td><td>${s.von || ''}</td><td>${s.bis || ''}</td><td>${stdText(stdZwischen(s.von, s.bis))}</td><td>${s.notiz || ''}</td><td><button class="btn-del" onclick="spLoeschen(${s.id})">✕</button></td>`;
     tbody.appendChild(tr);
   });
 }
