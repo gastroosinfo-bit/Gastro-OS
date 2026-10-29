@@ -306,6 +306,13 @@ function hinweisHtml(eintrag) {
   if (!h.length) return '';
   return '<div style="font-size:10.5px;color:#a05a00;font-weight:700;margin-top:3px;white-space:normal;min-width:120px;">⚠️ ' + h.join('<br>⚠️ ') + '</div>';
 }
+// Stunden grün, fett, mit Uhr-Symbol (rot bei 0 Std.) – wie im Schichtplan
+function stundenHtml(eintrag) {
+  const h = stundenBerechnen(eintrag);
+  if (h === null) return '–';
+  const farbe = h <= 0 ? '#c0392b' : '#1a6640';
+  return '<span style="color:' + farbe + ';font-weight:700;font-size:15px;white-space:nowrap;display:inline-flex;align-items:center;gap:5px;"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex:none;"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9.5 2.5h5"/></svg>' + stundenText(eintrag) + '</span>';
+}
 function pausenVonListe(eintrag) {
   const von = (eintrag.pausen || []).map(p => p.von);
   if (eintrag.pauseLaufend) von.push(eintrag.pauseLaufend);
@@ -554,7 +561,7 @@ function renderMaTabelle() {
     const korrigierenBtn = i.status === 'abgelehnt'
       ? `<button class="btn-add secondary" style="padding:4px 9px;font-size:10.5px;" onclick="korrekturAnzeigen(${i.id})">✏️ Korrigieren</button>`
       : '';
-    tr.innerHTML = `<td>${datumDe(i.datum)}</td><td>${i.start || ''}</td><td>${pausenVonListe(i)}</td><td>${pausenBisListe(i)}</td><td>${i.ende || '–'}</td><td>${stundenText(i)}</td><td>${statusBadge(i)}</td><td>${korrigierenBtn}</td>`;
+    tr.innerHTML = `<td>${datumDe(i.datum)}</td><td>${i.start || ''}</td><td>${pausenVonListe(i)}</td><td>${pausenBisListe(i)}</td><td>${i.ende || '–'}</td><td>${stundenHtml(i)}</td><td>${statusBadge(i)}</td><td>${korrigierenBtn}</td>`;
     tbody.appendChild(tr);
   });
 }
@@ -736,7 +743,7 @@ function renderZeTabelle() {
       ? `<button class="btn-add" style="padding:5px 10px;font-size:11px;" onclick="zeGenehmigen(${i.id})">✓ Genehmigen</button>
          <button class="btn-add" style="padding:5px 10px;font-size:11px;background:#a13a2b;" onclick="zeAblehnen(${i.id})">✗ Nicht genehmigen</button>`
       : '';
-    tr.innerHTML = `<td>${datumDe(i.datum)}</td><td>${i.name}</td><td>${i.start || ''}</td><td>${pausenVonListe(i)}</td><td>${pausenBisListe(i)}</td><td>${i.ende || '–'}</td><td>${stundenText(i)}${hinweisHtml(i)}</td><td>${statusBadge(i)}</td>
+    tr.innerHTML = `<td>${datumDe(i.datum)}</td><td>${i.name}</td><td>${i.start || ''}</td><td>${pausenVonListe(i)}</td><td>${pausenBisListe(i)}</td><td>${i.ende || '–'}</td><td>${stundenHtml(i)}${hinweisHtml(i)}</td><td>${statusBadge(i)}</td>
       <td style="white-space:nowrap;">${aktionsBtns} <button class="btn-del" onclick="zeLoeschen(${i.id})">✕</button></td>`;
     tbody.appendChild(tr);
   });
