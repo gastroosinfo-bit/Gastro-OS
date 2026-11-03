@@ -605,6 +605,17 @@
     .price-list li.price-new::before { content:''; }
     .price-list li.price-new strong { color:var(--gold); }
     .price-list li.price-new a { color:var(--navy); font-weight:700; white-space:nowrap; }
+
+    /* Mini-Preisbox unter dem FAQ-Button */
+    .pricemini { background:var(--navy); border:1px solid var(--gold-light); border-radius:16px; padding:16px 18px; text-align:center; box-shadow:0 8px 24px rgba(0,0,0,.3); }
+    .pricemini-amount { font-family:'Playfair Display',serif; font-size:30px; font-weight:900; color:var(--gold-light); line-height:1.1; }
+    .pricemini-amount span { font-family:'DM Sans',sans-serif; font-size:12px; font-weight:400; color:rgba(255,255,255,.65); }
+    .pricemini-sub { font-size:12.5px; color:rgba(255,255,255,.75); margin:6px 0 12px; }
+    .pricemini-btn { display:block; background:linear-gradient(90deg,#9A7D3A,#C4A55A,#9A7D3A); color:#1C2340; font-weight:700; font-size:15px; text-decoration:none; padding:12px 16px; border-radius:10px; }
+    .pricemini-btn:hover { filter:brightness(1.08); }
+    .pricemini-d { position:absolute; left:24px; top:96px; width:380px; z-index:10; }
+    .pricemini-m { display:none; width:min(420px,100%); margin:28px auto 0; }
+    @media (max-width:1399px){ .pricemini-d { display:none; } .pricemini-m { display:block; } }
   </style>
   <!-- Cookie-Consent + Google Analytics: ausgelagert in cookie-consent.js -->
 <script src="/cookie-consent.js"></script>
@@ -667,9 +678,20 @@
         </div>
     </div>
   </div>
+  <div class="pricemini pricemini-d">
+    <div class="pricemini-amount">299 € <span>/ Monat, inkl. 19% MwSt.</span></div>
+    <div class="pricemini-sub">Monatlich kündbar · Keine Mindestlaufzeit</div>
+    <a class="pricemini-btn" href="https://whop.com/gastro-os-81b8/starten/">Jetzt Zugriff erhalten</a>
+  </div>
   <div class="logo-badge">GASTRO-OS · System · Strategie · Erfolg</div>
   <h1>Dein Betrieb digital organisiert: Tagesgeschäft, <span class="nowrap">Team &amp; Wissen<a class="hero-star" href="#zentrale" aria-label="Neu: Die Zentrale für mehrere Standorte"><span>NEU</span></a></span><br>an einem Ort. <em>Sofort einsatzbereit.</em></h1>
   <p class="hero-sub">Für Inhaber von Restaurants, Cafés, Bistros und Gaststätten, auch mit mehreren Standorten, die ihren Betrieb noch strukturierter und profitabler führen wollen.</p>
+  <div class="pricemini pricemini-m">
+    <div class="pricemini-amount">299 € <span>/ Monat, inkl. 19% MwSt.</span></div>
+    <div class="pricemini-sub">Monatlich kündbar · Keine Mindestlaufzeit</div>
+    <a class="pricemini-btn" href="https://whop.com/gastro-os-81b8/starten/">Jetzt Zugriff erhalten</a>
+  </div>
+
 </section>
 
 
@@ -755,30 +777,6 @@
   </div>
 </section>
 
-<section class="faq-price">
-  <div class="faq-price-inner price-only">
-
-        <div class="price-col">
-      <p class="final-heading">Bereit, deinen Betrieb aufs nächste Level zu bringen?</p>
-      <div class="price-card">
-        <div class="price-card-header">
-          <h3>Gastro-OS</h3>
-          <div class="price-amount">299 € <span>/ Monat, inkl. 19% MwSt.</span></div>
-        </div>
-        <div class="price-card-body">
-          <ul class="price-list">
-            <li>Monatlich kündbar</li>
-            <li>Keine Mindestlaufzeit</li>
-            <li>Sofort startklar: Tagesgeschäft, Team &amp; Wissen</li>
-            <li class="price-new"><strong>★ Neu:</strong> Zentrale für mehrere Standorte, als Zusatzprodukt. <a href="mailto:info@mein-gastro-system.de?subject=Zentrale%20f%C3%BCr%20mehrere%20Standorte">Jetzt anfragen</a></li>
-          </ul>
-          <a href="https://whop.com/gastro-os-81b8/starten/" class="cta-btn">Jetzt Zugriff erhalten</a>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</section>
 
 
 
