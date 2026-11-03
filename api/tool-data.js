@@ -266,6 +266,8 @@ const LESBAR_FUER_ZENTRALE = [
   'tagesgeschaeft-kassenbuch', 'tagesgeschaeft-wareneingang', 'tagesgeschaeft-belege',
   'tagesgeschaeft-freigetraenke', 'tagesgeschaeft-abschreibungen', 'tagesgeschaeft-stornos',
   'tagesgeschaeft-haccp', 'tagesgeschaeft-notizen', 'tagesgeschaeft-artikelberichte',
+  'tagesgeschaeft-speisekarte', 'tagesgeschaeft-schicht', 'tagesgeschaeft-belege-lieferanten',
+  'reservierungen', 'zeiterfassung', 'temperaturen-meldungen',
   'schichtplaene', 'schichtplan-mitarbeiter'
 ];
 
