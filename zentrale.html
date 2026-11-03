@@ -381,16 +381,17 @@ tfoot td { background:#1a2a4a; color:#fff; font-weight:700; border-color:#1a2a4a
       });
       h += '</tbody></table></div>';
     }
-    h += '<div class="det-titel">Weitere Bereiche ansehen</div><div class="bereich-chips" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;">' +
-      BEREICHE.map(function (b) { return '<button type="button" class="chip" data-b="' + b[0] + '">' + b[1] + '</button>'; }).join('') +
-      '</div><div class="bereich-out"></div>';
+    h += '<div class="det-titel">Weitere Bereiche ansehen</div><div style="margin-bottom:10px;"><select class="bereich-select" style="width:100%;max-width:360px;padding:10px 12px;border:1px solid #d8cfae;border-radius:10px;background:#fff;font-family:inherit;font-size:14px;font-weight:600;color:#1a2a4a;cursor:pointer;">' +
+      '<option value="">Bereich auswählen …</option>' +
+      BEREICHE.map(function (b) { return '<option value="' + b[0] + '">' + b[1] + '</option>'; }).join('') +
+      '</select></div><div class="bereich-out"></div>';
     el.innerHTML = h;
-    Array.prototype.forEach.call(el.querySelectorAll('.bereich-chips .chip'), function (c) {
-      c.onclick = function () {
-        Array.prototype.forEach.call(el.querySelectorAll('.bereich-chips .chip'), function (x) { x.classList.toggle('aktiv', x === c); });
-        bereichZeigen(mail, c.getAttribute('data-b'), el.querySelector('.bereich-out'));
-      };
-    });
+    var sel = el.querySelector('.bereich-select');
+    sel.onchange = function () {
+      var out = el.querySelector('.bereich-out');
+      if (!sel.value) { out.innerHTML = ''; return; }
+      bereichZeigen(mail, sel.value, out);
+    };
   }
 
   // ── Weitere Bereiche einer Filiale (nur lesen): Name im System, Anzeigename, Datumsfeld
