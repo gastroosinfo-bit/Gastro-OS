@@ -157,9 +157,20 @@ async function gruppeAktion(req, res, email) {
       const max = plan ? plan.max_filialen : 0;
       const vorhanden = (bestehende || []).map(f => String(f.filiale_email).toLowerCase());
       let frei = max - (bestehende || []).length;
-      const zeilen = String(b.liste || '').split(/\r?\n/).map(z => z.trim()).filter(Boolean).slice(0, 200);
+      const roh = String(b.liste || '').split(/\r?\n/).map(z => z.trim()).filter(Boolean).slice(0, 200);
+      const EMAIL_RE = /[^\s@,;:"'()<>|]+@[^\s@,;:"'()<>|]+\.[^\s@,;:"'()<>|]+/g;
+      // Eine Zeile kann auch mehrere Einträge enthalten: jede E-Mail-Adresse beendet einen Eintrag
+      const eintraege = [];
+      roh.forEach(z => {
+        const treffer = [...z.matchAll(EMAIL_RE)];
+        if (treffer.length <= 1) { eintraege.push(z); return; }
+        let start = 0;
+        treffer.forEach(t => { const ende = t.index + t[0].length; eintraege.push(z.slice(start, ende)); start = ende; });
+      });
       const neu = [], fehler = [], fehlerzeilen = [], gesehen = {};
-      zeilen.forEach((z, i) => {
+      eintraege.forEach(z0 => {
+        const z = z0.replace(/^[\s,;:|\-–]+|[\s,;:|\-–]+$/g, '').trim();
+        if (!z) return;
         const m = z.match(/[^\s@,;:"'()<>|]+@[^\s@,;:"'()<>|]+\.[^\s@,;:"'()<>|]+/);
         const mail = m ? m[0].toLowerCase() : '';
         const name = z.replace(m ? m[0] : '', '').replace(/[;\t|<>]+/g, ' ').replace(/^[\s,\-–:]+|[\s,\-–:]+$/g, '').replace(/\s+/g, ' ').trim().slice(0, 80);
