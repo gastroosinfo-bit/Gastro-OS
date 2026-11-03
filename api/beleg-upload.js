@@ -570,8 +570,23 @@ export default async function handler(req, res) {
   if (req.method === 'GET') {
     const path = req.query.path;
     if (!path) return res.status(400).json({ error: 'path fehlt.' });
-    if (!path.startsWith(safeUserFolder(email) + '/') && !path.startsWith(encodeURIComponent(email) + '/')) {
-      return res.status(403).json({ error: 'Kein Zugriff.' });
+    const eigener = path.startsWith(safeUserFolder(email) + '/') || path.startsWith(encodeURIComponent(email) + '/');
+    if (!eigener) {
+      // Zentrale darf Belegdateien einer Filiale ansehen, die zugestimmt hat (nur lesen)
+      const fil = String(req.query.filiale || '').toLowerCase();
+      let erlaubt = false;
+      if (fil && (path.startsWith(safeUserFolder(fil) + '/') || path.startsWith(encodeURIComponent(fil) + '/'))) {
+        try {
+          const g = await fetch(
+            SUPABASE_URL + '/rest/v1/filial_gruppen?zentrale_email=eq.' + encodeURIComponent(email.toLowerCase()) +
+            '&filiale_email=eq.' + encodeURIComponent(fil) + '&status=eq.aktiv&select=filiale_email&limit=1',
+            { headers: { 'apikey': SUPABASE_SERVICE_KEY, 'Authorization': 'Bearer ' + SUPABASE_SERVICE_KEY } }
+          );
+          const rows = g.ok ? await g.json() : [];
+          erlaubt = Array.isArray(rows) && rows.length > 0;
+        } catch (e) { erlaubt = false; }
+      }
+      if (!erlaubt) return res.status(403).json({ error: 'Kein Zugriff.' });
     }
     try {
       const signRes = await fetch(
