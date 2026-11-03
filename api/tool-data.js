@@ -140,8 +140,9 @@ async function gruppeAktion(req, res, email) {
         });
       } else if (b.entscheidung === 'quittieren') {
         await fetch(SUPABASE_URL + '/rest/v1/filial_gruppen' + filter + '&status=eq.getrennt', { method: 'DELETE', headers: sbHeaders() });
-      } else if (b.entscheidung === 'ablehnen' || b.entscheidung === 'trennen') {
-        await fetch(SUPABASE_URL + '/rest/v1/filial_gruppen' + filter, { method: 'DELETE', headers: sbHeaders() });
+      } else if (b.entscheidung === 'ablehnen') {
+        // Nur offene Anfragen dürfen abgelehnt werden. Eine bestehende Verbindung beendet nur die Zentrale selbst.
+        await fetch(SUPABASE_URL + '/rest/v1/filial_gruppen' + filter + '&status=eq.angefragt', { method: 'DELETE', headers: sbHeaders() });
       } else {
         return res.status(400).json({ error: 'Angaben ungültig.' });
       }
