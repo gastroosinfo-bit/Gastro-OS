@@ -158,16 +158,17 @@ async function gruppeAktion(req, res, email) {
       const vorhanden = (bestehende || []).map(f => String(f.filiale_email).toLowerCase());
       let frei = max - (bestehende || []).length;
       const zeilen = String(b.liste || '').split(/\r?\n/).map(z => z.trim()).filter(Boolean).slice(0, 200);
-      const neu = [], fehler = [], gesehen = {};
+      const neu = [], fehler = [], fehlerzeilen = [], gesehen = {};
       zeilen.forEach((z, i) => {
-        const teile = z.split(/[;\t]|,(?=[^,]*@)/).map(t => t.trim()).filter(Boolean);
-        const mail = (teile.find(t => t.indexOf('@') >= 0) || '').toLowerCase();
-        const name = (teile.find(t => t.indexOf('@') < 0) || '').slice(0, 80);
-        if (!name || !emailOk(mail)) { fehler.push('Zeile ' + (i + 1) + ': Name oder E-Mail fehlt oder ist ungültig'); return; }
-        if (vorhanden.includes(mail) || gesehen[mail]) { fehler.push('Zeile ' + (i + 1) + ': ' + mail + ' ist schon eingetragen'); return; }
-        if (frei <= 0) { fehler.push('Zeile ' + (i + 1) + ': ' + name + ' passt nicht mehr in deine Stufe (Limit ' + max + ')'); return; }
+        const m = z.match(/[^\s@,;:"'()<>|]+@[^\s@,;:"'()<>|]+\.[^\s@,;:"'()<>|]+/);
+        const mail = m ? m[0].toLowerCase() : '';
+        const name = z.replace(m ? m[0] : '', '').replace(/[;\t|<>]+/g, ' ').replace(/^[\s,\-–:]+|[\s,\-–:]+$/g, '').replace(/\s+/g, ' ').trim().slice(0, 80);
+        if (!emailOk(mail)) { fehler.push('„' + z + '“: Die E-Mail fehlt oder ist ungültig'); fehlerzeilen.push(z); return; }
+        if (vorhanden.includes(mail) || gesehen[mail]) { fehler.push('„' + z + '“: Diese E-Mail ist schon eingetragen'); fehlerzeilen.push(z); return; }
+        if (frei <= 0) { fehler.push('„' + z + '“: Passt nicht mehr in deine Stufe (Limit ' + max + ')'); fehlerzeilen.push(z); return; }
         gesehen[mail] = true; frei--;
-        neu.push({ zentrale_email: ich, filiale_email: mail, filiale_name: name, ruhetage: '', status: mail === ich ? 'aktiv' : 'angefragt' });
+        const anzeigename = name || mail.split('@')[0];
+        neu.push({ zentrale_email: ich, filiale_email: mail, filiale_name: anzeigename, ruhetage: '', status: mail === ich ? 'aktiv' : 'angefragt' });
       });
       if (neu.length > 0) {
         for (const x of neu) {
@@ -176,7 +177,7 @@ async function gruppeAktion(req, res, email) {
         const ins = await fetch(SUPABASE_URL + '/rest/v1/filial_gruppen', { method: 'POST', headers: sbHeaders(), body: JSON.stringify(neu) });
         if (!ins.ok) return res.status(500).json({ error: 'Konnte nicht gespeichert werden.' });
       }
-      return res.status(200).json({ success: true, angelegt: neu.length, fehler });
+      return res.status(200).json({ success: true, angelegt: neu.length, fehler, fehlerzeilen });
     }
 
     const filiale = String(b.filiale_email || '').toLowerCase().trim();
