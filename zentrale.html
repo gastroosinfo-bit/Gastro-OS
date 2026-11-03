@@ -463,7 +463,12 @@ tfoot td { background:#1a2a4a; color:#fff; font-weight:700; border-color:#1a2a4a
          '<span style="font-size:11px;font-weight:700;color:#8090a8;text-transform:uppercase;">Ruhetage</span>' + tageHtml('') +
          '<button class="btn-gold" id="neu-btn"' + (voll ? ' disabled' : '') + '>Hinzufügen</button></div>' +
          '<div class="hinweis">Die E-Mail ist die, mit der sich die Filiale bei GASTRO-OS anmeldet. Die Filiale sieht beim nächsten Login im Dashboard eine Anfrage und muss zustimmen, bevor ihre Zahlen hier erscheinen. Ruhetage sorgen dafür, dass an diesen Tagen kein Eintrag als fehlend zählt.</div>' +
-         '<div id="verw-meldung"></div></div>';
+         '<div id="verw-meldung"></div></div>' +
+         '<div class="verw-neu"><h3>Mehrere Filialen auf einmal</h3>' +
+         '<div class="hinweis" style="margin-top:0;">Eine Filiale pro Zeile: Name und E-Mail, getrennt durch Semikolon. Du kannst die Liste auch direkt aus Excel einfügen (zwei Spalten).</div>' +
+         '<textarea id="liste-feld" rows="6" style="width:100%;box-sizing:border-box;margin:8px 0;padding:10px;border:1px solid #d8cfae;border-radius:10px;font-family:inherit;font-size:14px;" placeholder="Frankfurt Sachsenhausen; sachsenhausen@beispiel.de&#10;Frankfurt Ostend; ostend@beispiel.de"' + (voll ? ' disabled' : '') + '></textarea>' +
+         '<button class="btn-gold" id="liste-btn"' + (voll ? ' disabled' : '') + '>Alle hinzufügen</button>' +
+         '<div id="liste-meldung"></div></div>';
     box.innerHTML = h;
 
     Array.prototype.forEach.call(box.querySelectorAll('.tag-btn'), function (b) { b.onclick = function () { b.classList.toggle('an'); }; });
@@ -471,6 +476,7 @@ tfoot td { background:#1a2a4a; color:#fff; font-weight:700; border-color:#1a2a4a
       b.onclick = function () { aktion(b.closest('.verw-zeile'), b.getAttribute('data-a')); };
     });
     document.getElementById('neu-btn').onclick = hinzufuegen;
+    document.getElementById('liste-btn').onclick = hinzufuegenListe;
   }
 
   function meldung(text, fehler) {
@@ -493,6 +499,27 @@ tfoot td { background:#1a2a4a; color:#fff; font-weight:700; border-color:#1a2a4a
     btn.disabled = false;
     if (x.d && x.d.error === 'limit') { await laden(); return; }
     meldung((x.d && x.d.error) || 'Das hat nicht geklappt. Bitte versuche es erneut.', true);
+  }
+
+  async function hinzufuegenListe() {
+    var feld = document.getElementById('liste-feld');
+    var text = feld.value.trim();
+    if (!text) { return; }
+    var btn = document.getElementById('liste-btn'); btn.disabled = true;
+    var x = await senden({ gruppe: 'hinzufuegen_liste', liste: text });
+    if (x.ok) {
+      var d = x.d || {};
+      await laden();
+      var m = document.getElementById('liste-meldung');
+      var h = '<div class="verw-ok">' + esc(d.angelegt + ' Filialen hinzugefügt. Jede muss im eigenen Dashboard noch zustimmen.') + '</div>';
+      if (d.fehler && d.fehler.length) h += '<div class="verw-fehler">' + d.fehler.map(esc).join('<br>') + '</div>';
+      if (m) m.innerHTML = h;
+      window.dispatchEvent(new Event('filialen-geaendert'));
+      return;
+    }
+    btn.disabled = false;
+    var m2 = document.getElementById('liste-meldung');
+    if (m2) m2.innerHTML = '<div class="verw-fehler">' + esc((x.d && x.d.error) || 'Das hat nicht geklappt. Bitte versuche es erneut.') + '</div>';
   }
 
   async function aktion(zeile, was) {
