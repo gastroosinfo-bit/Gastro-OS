@@ -152,6 +152,33 @@ async function gruppeAktion(req, res, email) {
     const plan = await zentralePlan(ich);
     const bestehende = await zentraleFilialen(ich);
     if (!plan && !(bestehende && bestehende.length > 0)) return res.status(403).json({ error: 'Kein Zentrale-Zugang.' });
+    // ── Mehrere Filialen auf einmal anlegen (Liste: "Name; E-Mail" pro Zeile)
+    if (b.gruppe === 'hinzufuegen_liste') {
+      const max = plan ? plan.max_filialen : 0;
+      const vorhanden = (bestehende || []).map(f => String(f.filiale_email).toLowerCase());
+      let frei = max - (bestehende || []).length;
+      const zeilen = String(b.liste || '').split(/\r?\n/).map(z => z.trim()).filter(Boolean).slice(0, 200);
+      const neu = [], fehler = [], gesehen = {};
+      zeilen.forEach((z, i) => {
+        const teile = z.split(/[;\t]|,(?=[^,]*@)/).map(t => t.trim()).filter(Boolean);
+        const mail = (teile.find(t => t.indexOf('@') >= 0) || '').toLowerCase();
+        const name = (teile.find(t => t.indexOf('@') < 0) || '').slice(0, 80);
+        if (!name || !emailOk(mail)) { fehler.push('Zeile ' + (i + 1) + ': Name oder E-Mail fehlt oder ist ungültig'); return; }
+        if (vorhanden.includes(mail) || gesehen[mail]) { fehler.push('Zeile ' + (i + 1) + ': ' + mail + ' ist schon eingetragen'); return; }
+        if (frei <= 0) { fehler.push('Zeile ' + (i + 1) + ': ' + name + ' passt nicht mehr in deine Stufe (Limit ' + max + ')'); return; }
+        gesehen[mail] = true; frei--;
+        neu.push({ zentrale_email: ich, filiale_email: mail, filiale_name: name, ruhetage: '', status: mail === ich ? 'aktiv' : 'angefragt' });
+      });
+      if (neu.length > 0) {
+        for (const x of neu) {
+          await fetch(SUPABASE_URL + '/rest/v1/filial_gruppen?zentrale_email=eq.' + q(ich) + '&filiale_email=eq.' + q(x.filiale_email) + '&status=eq.getrennt', { method: 'DELETE', headers: sbHeaders() });
+        }
+        const ins = await fetch(SUPABASE_URL + '/rest/v1/filial_gruppen', { method: 'POST', headers: sbHeaders(), body: JSON.stringify(neu) });
+        if (!ins.ok) return res.status(500).json({ error: 'Konnte nicht gespeichert werden.' });
+      }
+      return res.status(200).json({ success: true, angelegt: neu.length, fehler });
+    }
+
     const filiale = String(b.filiale_email || '').toLowerCase().trim();
     if (!emailOk(filiale)) return res.status(400).json({ error: 'Bitte eine gültige E-Mail-Adresse der Filiale eingeben.' });
     const filter = '?zentrale_email=eq.' + q(ich) + '&filiale_email=eq.' + q(filiale);
