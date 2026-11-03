@@ -539,18 +539,42 @@
     .zentrale-cta { display:inline-block; background:linear-gradient(135deg,#C4A55A,#E8C766); color:#1C2340; font-weight:700; font-size:16px; padding:16px 32px; border-radius:12px; text-decoration:none; }
     .zentrale-cta:hover { filter:brightness(1.08); }
     @media (prefers-reduced-motion: reduce){ .new-star, .new-badge { animation:none; } }
+
+    /* Hilfe-Karten (Dropdown, wie im Dashboard) */
+    .hk { background:var(--white); border:1px solid #e8dfc8; border-radius:14px; overflow:hidden; text-align:left; box-shadow:0 2px 10px rgba(28,35,64,.06); }
+    .hk-head { width:100%; display:flex; align-items:center; gap:12px; background:#1a2a4a; border:none; padding:16px 18px; cursor:pointer; font-family:inherit; text-align:left; }
+    .hk-icon { width:30px; height:30px; border-radius:50%; border:1.5px solid #d4af37; color:#d4af37; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:15px; flex-shrink:0; }
+    .hk-titles { flex:1; }
+    .hk-title { color:#d4af37; font-weight:800; font-size:15px; }
+    .hk-sub { color:rgba(255,255,255,.6); font-size:12px; margin-top:2px; }
+    .hk-arrow { color:#d4af37; font-size:14px; transition:transform .2s; }
+    .hk.open .hk-arrow { transform:rotate(180deg); }
+    .hk-body { display:none; padding:6px 18px 10px; background:#fff; }
+    .hk.open .hk-body { display:block; }
+    .hk-item { border-top:1px solid #f0e8d4; }
+    .hk-item:first-child { border-top:none; }
+    .hk-q { width:100%; text-align:left; background:none; border:none; padding:14px 2px; font-size:15px; font-weight:600; color:#1a2a4a; cursor:pointer; display:flex; justify-content:space-between; gap:10px; font-family:inherit; }
+    .hk-q:hover { color:var(--gold); }
+    .hk-pfeil { color:#d4af37; flex-shrink:0; transition:transform .2s; }
+    .hk-item.open .hk-pfeil { transform:rotate(180deg); }
+    .hk-a { display:none; font-size:14.5px; color:#3a4a65; line-height:1.65; padding:0 2px 16px; }
+    .hk-item.open .hk-a { display:block; }
+    .hk-dark { max-width:760px; margin:0 auto 32px; border-color:rgba(196,165,90,.5); }
+    .faq-col .hk { margin-top:4px; }
+    .price-extra { background:rgba(154,125,58,.10); border:1px solid rgba(154,125,58,.4); border-radius:10px; padding:12px 14px; margin:0 0 18px; font-size:14px; color:var(--navy); }
+    .price-extra strong { color:var(--gold); }
   </style>
   <!-- Cookie-Consent + Google Analytics: ausgelagert in cookie-consent.js -->
 <script src="/cookie-consent.js"></script>
 </head>
 <body>
 
-<a class="new-banner" href="#zentrale"><span class="new-star">★</span> NEU: Die Zentrale für Betriebe mit mehreren Filialen <span class="new-star">★</span> Jetzt ansehen</a>
+<a class="new-banner" href="#zentrale"><span class="new-star">★</span> NEU: Die Zentrale, das Zusatzprodukt für mehrere Filialen <span class="new-star">★</span> Jetzt ansehen</a>
 
 <section class="hero">
   <div class="logo-badge">GASTRO-OS · System · Strategie · Erfolg</div>
   <h1>Dein Betrieb digital organisiert: Tagesgeschäft, Team &amp; Wissen<br>an einem Ort. <em>Sofort einsatzbereit.</em></h1>
-  <p class="hero-sub">Für Inhaber von Restaurants, Cafés, Bistros und Gaststätten, die ihren Betrieb noch strukturierter und profitabler führen wollen.</p>
+  <p class="hero-sub">Für Inhaber von Restaurants, Cafés, Bistros und Gaststätten, auch mit mehreren Filialen, die ihren Betrieb noch strukturierter und profitabler führen wollen.</p>
 </section>
 
 <section class="decision">
@@ -583,7 +607,7 @@
     <div class="dual-col">
       <h3>✅ Sofort nutzbar</h3>
       <p class="dual-tag">Ab dem ersten Tag einsatzbereit – ganz ohne Vorbereitung.</p>
-      <p class="dual-list">Kassenbuch · Belege · Zeiterfassung · Schichtplan · Übergabebuch · Reservierungen · Team-Zugänge mit eigener PIN · und mehr</p>
+      <p class="dual-list"><strong>Jeden Tag:</strong> Zahlen eintragen (Kassenbuch, Z-Bon) · Rechnungen und Belege hochladen · Wareneingang prüfen<br><strong>Im Team:</strong> Zeiterfassung · Schichtplan · Temperaturprotokoll · Übergabebuch · Reservierungen · Zugänge mit eigener PIN<br><strong>Am Monatsende:</strong> alles gebündelt als PDF, bereit für den Steuerberater</p>
     </div>
     <div class="dual-col dual-col-light">
       <h3>🎓 Dein Wissen wächst mit dir</h3>
@@ -595,16 +619,41 @@
 
 <section class="zentrale" id="zentrale">
   <div class="zentrale-inner">
-    <div class="new-badge"><span class="new-star">★</span> NEU <span class="new-star">★</span></div>
+    <div class="new-badge"><span class="new-star">★</span> NEU · Zusatzprodukt für mehrere Filialen <span class="new-star">★</span></div>
     <h2>Mehrere Filialen? <em>Alles an einem Ort.</em><br>Die GASTRO-OS Zentrale.</h2>
-    <p class="zentrale-lead">Jede Filiale trägt ihre täglichen Dinge selbst ein. Du behältst den Überblick, ohne anzurufen, nachzufragen oder Zettel zusammenzusuchen.</p>
+    <p class="zentrale-lead">Zusätzlich zu GASTRO-OS: Jede Filiale trägt ihre täglichen Dinge selbst ein. Du behältst den Überblick, ohne anzurufen, nachzufragen oder Zettel zusammenzusuchen.</p>
     <div class="zentrale-grid">
       <div class="zentrale-item"><strong>Eigener Zugang pro Filiale</strong><span>Jede Filiale arbeitet in ihrem eigenen Bereich und trägt dort Belege, Schichtplan, Zeiterfassung &amp; Co. ein.</span></div>
       <div class="zentrale-item"><strong>Jederzeit Einblick</strong><span>Du siehst alle Daten und Zahlen deiner Standorte, ohne nachzufragen.</span></div>
       <div class="zentrale-item"><strong>Du wählst, was wichtig ist</strong><span>Blende genau die Daten ein, die du gerade brauchst.</span></div>
-      <div class="zentrale-item"><strong>Ein Bericht, auch als PDF</strong><span>Alles in einem Bericht zum Herunterladen. Das macht die Buchhaltung einfacher.</span></div>
+      <div class="zentrale-item"><strong>Bericht als PDF</strong><span>Monatsbericht jeder Filiale ansehen und als PDF herunterladen. Das macht die Buchhaltung einfacher.</span></div>
     </div>
     <p class="zentrale-note">Ob zwei Filialen oder dreißig: Die Anzahl der Standorte ist kein Problem.</p>
+    <div class="hk hk-dark" id="hk-zentrale">
+      <button class="hk-head" onclick="hkToggle('hk-zentrale')">
+        <span class="hk-icon">?</span>
+        <span class="hk-titles"><span class="hk-title" style="display:block;">Fragen zur Zentrale</span><span class="hk-sub" style="display:block;">Alles Wichtige für Betriebe mit mehreren Filialen</span></span>
+        <span class="hk-arrow">▼</span>
+      </button>
+      <div class="hk-body">
+        <div class="hk-item">
+          <button class="hk-q" onclick="hkItem(this)">Wie viele Filialen kann ich anlegen? <span class="hk-pfeil">▼</span></button>
+          <div class="hk-a">Die Anzahl der Standorte ist kein Problem, ob zwei Filialen oder dreißig.</div>
+        </div>
+        <div class="hk-item">
+          <button class="hk-q" onclick="hkItem(this)">Wer trägt die Daten ein? <span class="hk-pfeil">▼</span></button>
+          <div class="hk-a">Jede Filiale hat ihren eigenen Zugang und trägt dort die täglichen Dinge selbst ein, zum Beispiel Belege, Schichtplan, Zeiterfassung, Temperaturprotokoll und Checklisten.</div>
+        </div>
+        <div class="hk-item">
+          <button class="hk-q" onclick="hkItem(this)">Was sehe ich in der Zentrale? <span class="hk-pfeil">▼</span></button>
+          <div class="hk-a">Du hast jederzeit Einblick in die Daten und Zahlen aller deiner Filialen und wählst aus, was gerade wichtig ist. Den Monatsbericht einer Filiale siehst du dir in Ruhe an und kannst ihn als PDF herunterladen. Das macht auch die Buchhaltung einfacher.</div>
+        </div>
+        <div class="hk-item">
+          <button class="hk-q" onclick="hkItem(this)">Ist die Zentrale im Abo enthalten? <span class="hk-pfeil">▼</span></button>
+          <div class="hk-a">Die Zentrale ist ein zusätzliches Produkt zu GASTRO-OS, speziell für Betriebe mit mehreren Filialen. Den Preis und alles Weitere besprechen wir persönlich mit dir. Schreib uns dazu kurz an info@mein-gastro-system.de.</div>
+        </div>
+      </div>
+    </div>
     <a class="zentrale-cta" href="mailto:info@mein-gastro-system.de?subject=Zentrale%20f%C3%BCr%20mehrere%20Filialen">Fragen zur Zentrale? Schreib uns</a>
   </div>
 </section>
@@ -612,63 +661,61 @@
 <section class="faq-price">
   <div class="faq-price-inner">
 
-    <div class="faq-col accordion-group">
+    <div class="faq-col">
       <h2>FAQ</h2>
-      <div class="faq-item">
-          <button class="faq-q" onclick="toggle(this)">Was ist genau in GASTRO-OS enthalten? <span class="plus">+</span></button>
-          <div class="faq-a">Zwei Bereiche: Erstens dein Tagesgeschäft – Kassenbuch, Belege, Zeiterfassung, Schichtplan, Übergabebuch, Reservierungen und mehr, sofort nutzbar für dich und dein Team. Zweitens dein Wissen – aufeinander aufbauende Module mit Ankervideos, Wissenswerkzeugen und dem Küchenfunk-Podcast, wenn du Zeit dafür hast.</div>
+      <div class="hk open" id="hk-faq">
+        <button class="hk-head" onclick="hkToggle('hk-faq')">
+          <span class="hk-icon">?</span>
+          <span class="hk-titles"><span class="hk-title" style="display:block;">Fragen &amp; Antworten</span><span class="hk-sub" style="display:block;">Tippe eine Frage an, die Antwort klappt auf</span></span>
+          <span class="hk-arrow">▼</span>
+        </button>
+        <div class="hk-body">
+        <div class="hk-item">
+          <button class="hk-q" onclick="hkItem(this)">Was ist genau in GASTRO-OS enthalten? <span class="hk-pfeil">▼</span></button>
+          <div class="hk-a">Drei Bereiche: Erstens dein Tagesgeschäft – Kassenbuch, Belege, Zeiterfassung, Schichtplan, Temperaturprotokoll, Checklisten, Übergabebuch, Reservierungen und mehr, sofort nutzbar für dich und dein Team. Zweitens dein Wissen – aufeinander aufbauende Module mit Ankervideos, Wissenswerkzeugen und dem Küchenfunk-Podcast, wenn du Zeit dafür hast. Als Zusatzprodukt gibt es ganz neu die Zentrale für alle, die mehrere Filialen führen.</div>
         </div>
-
-      <div class="faq-item">
-          <button class="faq-q" onclick="toggle(this)">Ich habe mehrere Filialen. Geht das? <span class="plus">+</span></button>
-          <div class="faq-a">Ja, dafür gibt es die neue Zentrale. Jede Filiale hat ihren eigenen Zugang und trägt die täglichen Dinge selbst ein. Du hast jederzeit Einblick in alle Daten und Zahlen, wählst aus, was gerade wichtig ist, und kannst alles als Bericht auch als PDF herunterladen. Schreib uns einfach kurz an info@mein-gastro-system.de, dann klären wir alles Weitere für deine Standorte.</div>
+        <div class="hk-item">
+          <button class="hk-q" onclick="hkItem(this)">Ich habe mehrere Filialen. Geht das? <span class="hk-pfeil">▼</span></button>
+          <div class="hk-a">Ja, dafür gibt es die neue Zentrale als Zusatzprodukt zu GASTRO-OS. Jede Filiale hat ihren eigenen Zugang und trägt die täglichen Dinge selbst ein. Du hast jederzeit Einblick in alle Daten und Zahlen und wählst aus, was gerade wichtig ist. Ob zwei Filialen oder dreißig: Die Anzahl der Standorte ist kein Problem. Mehr dazu findest du oben im Bereich „Die GASTRO-OS Zentrale“.</div>
         </div>
-
-      <div class="faq-item">
-          <button class="faq-q" onclick="toggle(this)">Können auch meine Mitarbeiter GASTRO-OS nutzen? <span class="plus">+</span></button>
-          <div class="faq-a">Ja. Du legst für jeden Mitarbeiter einen eigenen PIN-Zugang an und entscheidest, welche Bereiche er nutzen darf – zum Beispiel Übergabe, Reservierung oder Zeiterfassung.</div>
+        <div class="hk-item">
+          <button class="hk-q" onclick="hkItem(this)">Können auch meine Mitarbeiter GASTRO-OS nutzen? <span class="hk-pfeil">▼</span></button>
+          <div class="hk-a">Ja. Du legst für jeden Mitarbeiter einen eigenen PIN-Zugang an und entscheidest, welche Bereiche er nutzen darf – zum Beispiel Übergabe, Reservierung oder Zeiterfassung.</div>
         </div>
-
-      <div class="faq-item">
-          <button class="faq-q" onclick="toggle(this)">Für wen ist das gemacht? <span class="plus">+</span></button>
-          <div class="faq-a">Für alle – egal ob du gerade erst übernommen hast oder schon seit Jahren im Geschäft bist. Dein Tagesgeschäft und Team kannst du sofort nutzen, unabhängig vom Stand. Die Module bauen zusätzlich Schritt für Schritt aufeinander auf, in deinem Tempo.</div>
+        <div class="hk-item">
+          <button class="hk-q" onclick="hkItem(this)">Für wen ist das gemacht? <span class="hk-pfeil">▼</span></button>
+          <div class="hk-a">Für alle – egal ob du einen Laden oder mehrere Filialen führst, gerade erst übernommen hast oder schon seit Jahren im Geschäft bist. Dein Tagesgeschäft und Team kannst du sofort nutzen, unabhängig vom Stand. Die Module bauen zusätzlich Schritt für Schritt aufeinander auf, in deinem Tempo.</div>
         </div>
-
-      <div class="faq-item">
-          <button class="faq-q" onclick="toggle(this)">Wie viel Zeit muss ich investieren? <span class="plus">+</span></button>
-          <div class="faq-a">Für dein Tagesgeschäft und Team: keine Einarbeitung nötig, einfach loslegen. Die Module sind freiwillig und ohne festes Pensum – du gehst sie in deinem eigenen Tempo durch, dann wenn du Zeit dafür hast.</div>
+        <div class="hk-item">
+          <button class="hk-q" onclick="hkItem(this)">Wie viel Zeit muss ich investieren? <span class="hk-pfeil">▼</span></button>
+          <div class="hk-a">Für dein Tagesgeschäft und Team: keine Einarbeitung nötig, einfach loslegen. Die Module sind freiwillig und ohne festes Pensum – du gehst sie in deinem eigenen Tempo durch, dann wenn du Zeit dafür hast.</div>
         </div>
-
-      <div class="faq-item">
-          <button class="faq-q" onclick="toggle(this)">Was unterscheidet GASTRO-OS von einem Berater oder Kurs? <span class="plus">+</span></button>
-          <div class="faq-a">Ein Berater ist irgendwann wieder weg, ein Kurs ist irgendwann durch. GASTRO-OS ist ein System für dein Tagesgeschäft, dein Team und dein Wissen, das dauerhaft nutzbar bleibt und laufend erweitert wird – als Mitglied bekommst du das automatisch dazu.</div>
+        <div class="hk-item">
+          <button class="hk-q" onclick="hkItem(this)">Was unterscheidet GASTRO-OS von einem Berater oder Kurs? <span class="hk-pfeil">▼</span></button>
+          <div class="hk-a">Ein Berater ist irgendwann wieder weg, ein Kurs ist irgendwann durch. GASTRO-OS ist ein System für dein Tagesgeschäft, dein Team, dein Wissen und auf Wunsch alle deine Filialen, das dauerhaft nutzbar bleibt und laufend erweitert wird – als Mitglied bekommst du das automatisch dazu.</div>
         </div>
-
-      <div class="faq-item">
-          <button class="faq-q" onclick="toggle(this)">Was genau bekomme ich nach dem Kauf? <span class="plus">+</span></button>
-          <div class="faq-a">Sofortigen Zugang zu deinem Tagesgeschäft und Team-Bereich – dazu die Module auf mein-gastro-system.de, die sich Schritt für Schritt freischalten: mit Videos, Lektionen, Wissenswerkzeugen, Quiz und Podcast. Alles direkt im Browser, kein Download nötig.</div>
+        <div class="hk-item">
+          <button class="hk-q" onclick="hkItem(this)">Was genau bekomme ich nach dem Kauf? <span class="hk-pfeil">▼</span></button>
+          <div class="hk-a">Sofortigen Zugang zu deinem Tagesgeschäft und Team-Bereich – dazu die Module auf mein-gastro-system.de, die sich Schritt für Schritt freischalten: mit Videos, Lektionen, Wissenswerkzeugen, Quiz und Podcast. Alles direkt im Browser, kein Download nötig. Für mehrere Filialen gibt es die Zentrale als Zusatzprodukt, dafür schreibst du uns kurz.</div>
         </div>
-
-      <div class="faq-item">
-          <button class="faq-q" onclick="toggle(this)">Wie lange ist die Mindestlaufzeit? <span class="plus">+</span></button>
-          <div class="faq-a">Es gibt keine Mindestlaufzeit. Du zahlst monatlich und kannst jederzeit kündigen.</div>
+        <div class="hk-item">
+          <button class="hk-q" onclick="hkItem(this)">Wie lange ist die Mindestlaufzeit? <span class="hk-pfeil">▼</span></button>
+          <div class="hk-a">Es gibt keine Mindestlaufzeit. Du zahlst monatlich und kannst jederzeit kündigen.</div>
         </div>
-
-      <div class="faq-item">
-          <button class="faq-q" onclick="toggle(this)">Gibt es eine Geld-zurück-Garantie? <span class="plus">+</span></button>
-          <div class="faq-a">Da GASTRO-OS ein digitales Produkt ist, zu dem du sofort vollen Zugriff auf alle Inhalte bekommst, gibt es keine gesonderte Geld-zurück-Garantie. Dafür bist du durch die monatliche Kündbarkeit jederzeit flexibel – ohne dass du dich langfristig bindest.</div>
+        <div class="hk-item">
+          <button class="hk-q" onclick="hkItem(this)">Gibt es eine Geld-zurück-Garantie? <span class="hk-pfeil">▼</span></button>
+          <div class="hk-a">Da GASTRO-OS ein digitales Produkt ist, zu dem du sofort vollen Zugriff auf alle Inhalte bekommst, gibt es keine gesonderte Geld-zurück-Garantie. Dafür bist du durch die monatliche Kündbarkeit jederzeit flexibel – ohne dass du dich langfristig bindest.</div>
         </div>
-
-      <div class="faq-item">
-          <button class="faq-q" onclick="toggle(this)">Brauche ich Vorwissen, um zu starten? <span class="plus">+</span></button>
-          <div class="faq-a">Nein. Dein Tagesgeschäft kannst du ab dem ersten Tag nutzen, ganz ohne Vorwissen. Die Module bauen zusätzlich Schritt für Schritt aufeinander auf – egal auf welchem Stand du gerade bist.</div>
+        <div class="hk-item">
+          <button class="hk-q" onclick="hkItem(this)">Brauche ich Vorwissen, um zu starten? <span class="hk-pfeil">▼</span></button>
+          <div class="hk-a">Nein. Dein Tagesgeschäft kannst du ab dem ersten Tag nutzen, ganz ohne Vorwissen. Die Module bauen zusätzlich Schritt für Schritt aufeinander auf – egal auf welchem Stand du gerade bist.</div>
         </div>
-
-      <div class="faq-item">
-          <button class="faq-q" onclick="toggle(this)">Bekomme ich auch neue Inhalte wenn ich bereits Mitglied bin? <span class="plus">+</span></button>
-          <div class="faq-a">Ja. GASTRO-OS wird laufend erweitert – neue Module, Tools und Inhalte kommen regelmäßig dazu. Als Mitglied profitierst du automatisch davon.</div>
+        <div class="hk-item">
+          <button class="hk-q" onclick="hkItem(this)">Bekomme ich auch neue Inhalte wenn ich bereits Mitglied bin? <span class="hk-pfeil">▼</span></button>
+          <div class="hk-a">Ja. GASTRO-OS wird laufend erweitert – neue Module, Tools und Inhalte kommen regelmäßig dazu. Als Mitglied profitierst du automatisch davon.</div>
         </div>
-        
+        </div>
+      </div>
     </div>
 
     <div class="price-col">
@@ -679,8 +726,9 @@
           <div class="price-amount">299 € <span>/ Monat, inkl. 19% MwSt.</span></div>
         </div>
         <div class="price-card-body">
-          <p>Monatlich kündbar. Sofortiger Zugang zu allen Inhalten. Keine Mindestlaufzeit.</p>
-          <div class="claim-highlight">💡 Mit den Strategien aus GASTRO-OS senken Betriebe ihren Wareneinsatz oft um 5% oder mehr – schon das reicht, um dein Abo komplett zu refinanzieren.</div>
+          <p>Monatlich kündbar. Sofortiger Zugang zu Tagesgeschäft, Team und allen Inhalten. Keine Mindestlaufzeit.</p>
+          <div class="price-extra"><strong>★ Neu:</strong> Mehrere Filialen? Die Zentrale gibt es als Zusatzprodukt dazu. Schreib uns kurz an <a href="mailto:info@mein-gastro-system.de?subject=Zentrale%20f%C3%BCr%20mehrere%20Filialen" style="color:var(--navy);font-weight:600;">info@mein-gastro-system.de</a>, dann klären wir alles für deine Standorte.</div>
+          <div class="claim-highlight">💡 Zahlen eintragen, Rechnungen hochladen, fertig: Der Monatsbericht entsteht aus dem, was ohnehin jeden Tag anfällt. Kein Zettel, keine Excel-Datei.</div>
           <a href="https://whop.com/gastro-os-81b8/starten/" class="cta-btn">Jetzt Zugriff erhalten</a>
         </div>
       </div>
@@ -704,6 +752,13 @@
   }
   function closeLightbox() {
     document.getElementById('lightbox').classList.remove('open');
+  }
+  function hkToggle(id) { document.getElementById(id).classList.toggle('open'); }
+  function hkItem(btn) {
+    var item = btn.closest('.hk-item');
+    var wasOpen = item.classList.contains('open');
+    btn.closest('.hk-body').querySelectorAll('.hk-item').forEach(function(i){ i.classList.remove('open'); });
+    if (!wasOpen) item.classList.add('open');
   }
   function toggle(btn) {
     const group = btn.closest('.accordion-group');
