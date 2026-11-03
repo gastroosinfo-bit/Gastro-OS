@@ -674,12 +674,13 @@
     .wir.open .wir-panel { display:block; }
     .wir-panel .decision-text h2 { font-size:clamp(20px,3vw,26px); }
 
-    @media (min-width:1400px){ .wirpill { top:254px; } }
+    .pillcol { display:flex; flex-direction:column; gap:10px; }
+    @media (min-width:1400px){ .pillcol { position:absolute; left:24px; top:196px; width:380px; z-index:20; } .pillcol .faqpill { position:relative !important; left:auto !important; top:auto !important; width:100% !important; margin:0 !important; } }
     .wir-in { padding:18px 20px; }
     .wir-in .decision-text h2 { font-size:20px; margin-bottom:12px; }
     .wir-in .decision-text p { font-size:14px; }
     .wir-in .founder-row { margin:14px 0; }
-    @media (max-width:1399px){ .faqpill, .wirpill { position:relative !important; left:auto !important; top:auto !important; bottom:auto !important; } .faqpill-panel { max-height:none; overflow:visible; } }
+    @media (max-width:1399px){ .faqpill, .wirpill { position:relative !important; left:auto !important; top:auto !important; bottom:auto !important; } .faqpill-panel { max-height:none; overflow:visible; } .pillcol { width:min(420px,100%); margin:14px auto 0; } .pillcol .faqpill { margin:0 !important; width:100% !important; } }
     /* Stern mit Text in der Überschrift */
     .hero-star { width:clamp(100px,11vw,128px) !important; height:clamp(100px,11vw,128px) !important; flex-direction:column; }
     .hero-star::before { background:linear-gradient(135deg,#FFE9A0,#E8C766 50%,#F3D67A) !important; }
@@ -708,6 +709,7 @@
     <div class="pricemini-sub">Monatlich kündbar · Keine Mindestlaufzeit</div>
     <a class="pricemini-btn" href="https://whop.com/gastro-os-81b8/starten/">Jetzt Zugriff erhalten</a>
   </div>
+  <div class="pillcol">
   <div class="faqpill" id="faqpill">
     <button class="faqpill-btn" onclick="hkToggle('faqpill')" aria-expanded="false">
       <span class="faqpill-icon">?</span>
@@ -784,6 +786,7 @@
         </details></div></div>
   </div>
 
+  </div>
 </section>
 
 <section class="tiles">
