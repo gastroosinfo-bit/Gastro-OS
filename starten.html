@@ -577,13 +577,14 @@
 
     /* FAQ-Pille im Hero (Stil wie im Dashboard) */
     .hero { overflow:visible; z-index:5; }
-    .faqpill { position:absolute; left:24px; top:28px; width:290px; text-align:left; z-index:20; }
-    .faqpill-btn { width:100%; display:flex; align-items:center; gap:10px; background:linear-gradient(135deg,#1a2a4a,#243a66); border:1px solid rgba(212,175,55,.45); border-radius:30px; padding:9px 16px 9px 10px; cursor:pointer; font-family:inherit; text-align:left; box-shadow:0 4px 14px rgba(0,0,0,.25); }
-    .faqpill-icon { width:28px; height:28px; border-radius:50%; background:linear-gradient(135deg,#f0d36b,#d4af37); color:#1a2a4a; font-weight:800; font-size:14px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .faqpill { position:absolute; left:24px; top:28px; width:250px; text-align:left; z-index:20; }
+    .faqpill-btn { width:100%; display:flex; align-items:center; gap:10px; background:linear-gradient(135deg,#F3D67A,#C4A55A 55%,#E8C766); border:1px solid #E8C766; border-radius:30px; padding:8px 16px 8px 9px; cursor:pointer; font-family:inherit; text-align:left; box-shadow:0 4px 16px rgba(196,165,90,.45); }
+    .faqpill-btn:hover { filter:brightness(1.07); }
+    .faqpill-icon { width:28px; height:28px; border-radius:50%; background:#1a2a4a; color:#E8C766; font-weight:800; font-size:14px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
     .faqpill-titles { flex:1; display:block; }
-    .faqpill-title { display:block; font-family:'Playfair Display',serif; font-weight:700; font-size:13px; color:#fff; }
+    .faqpill-title { display:block; font-family:'Playfair Display',serif; font-weight:700; font-size:14px; color:#1a2a4a; }
     .faqpill-sub { display:block; font-size:10.5px; color:rgba(255,255,255,.6); margin-top:1px; }
-    .faqpill-arrow { color:#d4af37; font-size:13px; transition:transform .2s; }
+    .faqpill-arrow { color:#1a2a4a; font-size:13px; transition:transform .2s; }
     .faqpill.open .faqpill-arrow { transform:rotate(180deg); }
     .faqpill-panel { display:none; margin-top:8px; background:#fff; border:1px solid #e8dfc8; border-radius:16px; padding:4px 14px 6px; box-shadow:0 10px 30px rgba(0,0,0,.35); max-height:70vh; overflow-y:auto; color:#1a2a4a; }
     .faqpill.open .faqpill-panel { display:block; }
@@ -604,7 +605,7 @@
   <div class="faqpill" id="faqpill">
     <button class="faqpill-btn" onclick="hkToggle('faqpill')" aria-expanded="false">
       <span class="faqpill-icon">?</span>
-      <span class="faqpill-titles"><span class="faqpill-title">Fragen &amp; Antworten</span><span class="faqpill-sub">Frage antippen, Antwort klappt auf</span></span>
+      <span class="faqpill-titles"><span class="faqpill-title">Fragen &amp; Antworten</span></span>
       <span class="faqpill-arrow">▼</span>
     </button>
     <div class="faqpill-panel hk-body">
@@ -704,7 +705,7 @@
 <section class="zentrale" id="zentrale">
   <div class="zentrale-inner">
     <div class="new-badge"><span class="new-star">★</span> NEU · Zusatzprodukt für mehrere Filialen <span class="new-star">★</span></div>
-    <h2>Du hast mehr als eine Filiale oder einen Standort? <em>Kein Problem.</em><br>Die GASTRO-OS Zentrale.</h2>
+    <h2>Du hast mehr als einen Standort? <em>Kein Problem.</em><br>Die GASTRO-OS Zentrale.</h2>
     <p class="zentrale-lead">Zusätzlich zu GASTRO-OS: Jede Filiale trägt ihre täglichen Dinge selbst ein. Du behältst den Überblick, ohne anzurufen, nachzufragen oder Zettel zusammenzusuchen.</p>
     <div class="zentrale-grid">
       <div class="zentrale-item"><strong>Eigener Zugang pro Filiale</strong><span>Jede Filiale arbeitet in ihrem eigenen Bereich und trägt dort Belege, Schichtplan, Zeiterfassung &amp; Co. ein.</span></div>
