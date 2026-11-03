@@ -578,8 +578,9 @@
     /* FAQ-Pille im Hero (Stil wie im Dashboard) */
     .hero { overflow:visible; z-index:5; }
     .faqpill { position:absolute; left:24px; top:28px; width:380px; text-align:left; z-index:20; }
-    .faqpill-btn { width:100%; display:flex; align-items:center; gap:10px; background:linear-gradient(135deg,#F3D67A,#C4A55A 55%,#E8C766); border:1px solid #E8C766; border-radius:30px; padding:8px 16px 8px 9px; cursor:pointer; font-family:inherit; text-align:left; box-shadow:0 4px 16px rgba(196,165,90,.45); }
+    .faqpill-btn { width:100%; display:flex; align-items:center; gap:10px; background:linear-gradient(90deg,#9A7D3A,#C4A55A,#9A7D3A); border:1px solid #9A7D3A; border-radius:30px; padding:8px 16px 8px 9px; cursor:pointer; font-family:inherit; text-align:left; box-shadow:0 4px 16px rgba(196,165,90,.45); }
     .faqpill-btn:hover { filter:brightness(1.07); }
+    .faqpill-btn:focus:not(:focus-visible) { outline:none; }
     .faqpill-icon { width:28px; height:28px; border-radius:50%; background:#1a2a4a; color:#E8C766; font-weight:800; font-size:14px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
     .faqpill-titles { flex:1; display:block; }
     .faqpill-title { display:block; font-family:'Playfair Display',serif; font-weight:700; font-size:14px; color:#1a2a4a; }
