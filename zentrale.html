@@ -47,6 +47,8 @@ tfoot td { background:#1a2a4a; color:#fff; font-weight:700; border-color:#1a2a4a
 .b-ok { background:#e6f4ea; color:#1a6640; }
 .detail td { background:#fff !important; text-align:right; }
 .detail td:first-child { text-align:left; }
+.detail > td { white-space:normal; max-width:0; }
+.detail .det, .detail .det .verw-hinweis, .detail .det .meldung { white-space:normal; word-wrap:break-word; }
 .detail table td, .detail table th { cursor:default; }
 
 .det { text-align:left; padding:4px 2px 10px; cursor:default; }
@@ -268,6 +270,20 @@ tfoot td { background:#1a2a4a; color:#fff; font-weight:700; border-color:#1a2a4a
     return l;
   }
 
+  var tageCache = {};
+  function tagesTabelle(r) {
+    var h = '<div class="tabwrap"><table><thead><tr><th>Datum</th><th>Einnahmen</th><th>Ausgaben</th><th>Gewinn</th><th>Eintrag</th></tr></thead><tbody>';
+    r.tageListe.slice().reverse().forEach(function (d) {
+      var t = r.tage[d] || { eintrag: false, umsatz: 0, wareneinkauf: 0, sonstiges: 0 };
+      var tAus = (t.wareneinkauf || 0) + (t.sonstiges || 0);
+      var tGew = (t.umsatz || 0) - tAus;
+      var stt = r.status[d];
+      var badge = stt === 'ja' ? '<span class="badge b-ok">ja</span>' : stt === 'fehlt' ? '<span class="badge b-rot">fehlt</span>' : stt === 'ruhetag' ? '<span class="badge b-grau">Ruhetag</span>' : '<span class="badge b-grau">noch offen</span>';
+      h += '<tr><td>' + deDatum(d) + '</td><td>' + (t.eintrag ? euro(t.umsatz) : '–') + '</td><td>' + (t.eintrag ? euro(tAus) : '–') + '</td><td>' + (t.eintrag ? euro(tGew) : '–') + '</td><td>' + badge + '</td></tr>';
+    });
+    return h + '</tbody></table></div>';
+  }
+
   function zeichnen() {
     var box = document.getElementById('inhalt');
     if (!daten) return;
@@ -287,36 +303,28 @@ tfoot td { background:#1a2a4a; color:#fff; font-weight:700; border-color:#1a2a4a
     h += '<div class="kpi' + (ohneEintrag ? ' warn' : '') + '"><div class="z">' + ohneEintrag + '</div><div class="l">Filialen mit fehlenden Einträgen</div></div>';
     h += '</div><div style="height:12px"></div>';
 
-    var cols = [['name','Filiale'],['umsatz','Einnahmen'],['ausgaben','Ausgaben'],['ergebnis','Gewinn'],['fehlt','Einträge']];
+    var cols = [['name','Filiale'],['ergebnis','Gewinn'],['fehlt','Einträge']];
     h += '<div class="tabwrap"><table><thead><tr>';
     cols.forEach(function (c) {
       var pf = sortKey === c[0] ? (sortDir === 1 ? ' ▲' : ' ▼') : '';
       h += '<th data-k="' + c[0] + '">' + c[1] + pf + '</th>';
     });
     h += '</tr></thead><tbody>';
-    if (l.length === 0) h += '<tr><td colspan="5" style="text-align:left;">Keine Filiale passt zu den Filtern.</td></tr>';
+    if (l.length === 0) h += '<tr><td colspan="3" style="text-align:left;">Keine Filiale passt zu den Filtern.</td></tr>';
     l.forEach(function (r, idx) {
       var eint;
       if (r.fehlt > 0) eint = '<span class="badge ' + (r.tageMitEintrag === 0 ? 'b-rot' : 'b-gelb') + '">' + r.tageMitEintrag + ' von ' + r.erwartet + ' Tagen</span>';
       else if (r.erwartet > 0) eint = '<span class="badge b-ok">vollständig</span>';
       else eint = '<span class="badge b-grau">noch offen / Ruhetag</span>';
       var badges = r.auff.map(function (a) { return '<span class="badge b-rot">' + esc(a) + '</span>'; }).join('');
-      h += '<tr class="fil" data-n="' + esc(r.name) + '"><td><strong>' + esc(r.name) + '</strong>' + badges + '</td><td>' + euro(r.umsatz) + '</td><td>' + euro(r.ausgaben) + '</td><td>' + euro(r.ergebnis) + '</td><td>' + eint + '</td></tr>';
+      h += '<tr class="fil" data-n="' + esc(r.name) + '"><td><strong>' + esc(r.name) + '</strong>' + badges + '</td><td>' + euro(r.ergebnis) + '</td><td>' + eint + '</td></tr>';
+      tageCache[r.name] = tagesTabelle(r);
       if (offen[r.name]) {
-        h += '<tr class="detail"><td colspan="5"><div class="tabwrap"><table><thead><tr><th>Datum</th><th>Einnahmen</th><th>Ausgaben</th><th>Gewinn</th><th>Eintrag</th></tr></thead><tbody>';
-        r.tageListe.slice().reverse().forEach(function (d) {
-          var t = r.tage[d] || { eintrag: false, umsatz: 0, wareneinkauf: 0, sonstiges: 0, stornoAnzahl: 0, stornoSumme: 0, freiSumme: 0, abschrSumme: 0 };
-          var tAus = (t.wareneinkauf || 0) + (t.sonstiges || 0);
-          var tGew = (t.umsatz || 0) - tAus;
-          var stt = r.status[d];
-          var badge = stt === 'ja' ? '<span class="badge b-ok">ja</span>' : stt === 'fehlt' ? '<span class="badge b-rot">fehlt</span>' : stt === 'ruhetag' ? '<span class="badge b-grau">Ruhetag</span>' : '<span class="badge b-grau">noch offen</span>';
-          h += '<tr><td>' + deDatum(d) + '</td><td>' + (t.eintrag ? euro(t.umsatz) : '–') + '</td><td>' + (t.eintrag ? euro(tAus) : '–') + '</td><td>' + (t.eintrag ? euro(tGew) : '–') + '</td><td>' + badge + '</td></tr>';
-        });
-        h += '</tbody></table></div><div class="det" data-e="' + esc(r.email) + '" data-n="' + esc(r.name) + '"><div class="meldung">Lade Einzelheiten …</div></div></td></tr>';
+        h += '<tr class="detail"><td colspan="3"><div class="det" data-e="' + esc(r.email) + '" data-n="' + esc(r.name) + '"><div class="meldung">Lade Einzelheiten …</div></div></td></tr>';
       }
     });
-    h += '</tbody><tfoot><tr><td>Summe (angezeigte Filialen)</td><td>' + euro(sum('umsatz')) + '</td><td>' + euro(sum('ausgaben')) + '</td><td>' + euro(sum('ergebnis')) + '</td><td></td></tr></tfoot></table></div>';
-    h += '<div class="hinweis">Auf eine Filiale klicken zeigt die einzelnen Tage, die Stornos, Freigetränke und Abschreibungen sowie den Schichtplan. Die Spaltenköpfe sortieren die Tabelle. Der Gewinn ist Einnahmen minus Ausgaben (Wareneinkauf und Sonstiges). Stornos sind schon in den Einnahmen enthalten, weil der Tagesumsatz am Tagesende eingetragen wird. „Auffällig“ heißt: deutlich mehr Stornos, Freigetränke oder Abschreibungen als der Durchschnitt aller Filialen. Die Zahlen stammen aus den Einträgen der Filialen, „fehlt“ heißt: Für einen abgeschlossenen Tag, der kein Ruhetag der Filiale ist, wurde nichts im Kassenbuch eingetragen. Der heutige Tag zählt erst ab morgen.</div>';
+    h += '</tbody><tfoot><tr><td>Summe (angezeigte Filialen)</td><td>' + euro(sum('ergebnis')) + '</td><td></td></tr></tfoot></table></div>';
+    h += '<div class="hinweis">Auf eine Filiale klicken öffnet den Monatsbericht und ein Auswahlfeld mit allen Einzelheiten (Tage, Abschreibungen, Schichtplan, Belege und mehr). Die Spaltenköpfe sortieren die Tabelle. Der Gewinn ist Einnahmen minus Ausgaben (Wareneinkauf und Sonstiges). Stornos sind schon in den Einnahmen enthalten, weil der Tagesumsatz am Tagesende eingetragen wird. „Auffällig“ heißt: deutlich mehr Stornos, Freigetränke oder Abschreibungen als der Durchschnitt aller Filialen. Die Zahlen stammen aus den Einträgen der Filialen, „fehlt“ heißt: Für einen abgeschlossenen Tag, der kein Ruhetag der Filiale ist, wurde nichts im Kassenbuch eingetragen. Der heutige Tag zählt erst ab morgen.</div>';
     box.innerHTML = h;
 
     Array.prototype.forEach.call(box.querySelectorAll('th[data-k]'), function (th) {
@@ -360,29 +368,34 @@ tfoot td { background:#1a2a4a; color:#fff; font-weight:700; border-color:#1a2a4a
     var sumSt = d.stornos.reduce(function (a, i) { return a + i.betrag; }, 0);
     var sumFg = d.freigetraenke.reduce(function (a, i) { return a + i.wert; }, 0);
     var sumAb = d.abschreibungen.reduce(function (a, i) { return a + i.wert; }, 0);
-    h += '<div class="det-titel">Abschreibungen &amp; Co (Stornos, Freigetränke, Abschreibungen) · ' + esc(zeitraum) + '</div>';
-    h += '<div class="verw-hinweis" style="background:#f5f0e8;color:#1a2a4a;">Ohne Einnahme abgegeben oder weggeworfen: Freigetränke <strong>' + euro(sumFg) + '</strong> · Abschreibungen <strong>' + euro(sumAb) + '</strong> · Stornos <strong>' + euro(sumSt) + '</strong>. Diese Beträge sind nicht noch einmal vom Gewinn abgezogen: Die Ware steckt im Wareneinkauf, und die Stornos sind schon im Tagesumsatz berücksichtigt.</div>';
-    if (zeilen2.length === 0) h += '<div class="meldung" style="padding:6px 0;">Keine Einträge in diesem Zeitraum.</div>';
+    var hA = '';
+    hA += '<div class="det-titel">Abschreibungen &amp; Co (Stornos, Freigetränke, Abschreibungen) · ' + esc(zeitraum) + '</div>';
+    hA += '<div class="verw-hinweis" style="background:#f5f0e8;color:#1a2a4a;">Ohne Einnahme abgegeben oder weggeworfen: Freigetränke <strong>' + euro(sumFg) + '</strong> · Abschreibungen <strong>' + euro(sumAb) + '</strong> · Stornos <strong>' + euro(sumSt) + '</strong>. Diese Beträge sind nicht noch einmal vom Gewinn abgezogen: Die Ware steckt im Wareneinkauf, und die Stornos sind schon im Tagesumsatz berücksichtigt.</div>';
+    if (zeilen2.length === 0) hA += '<div class="meldung" style="padding:6px 0;">Keine Einträge in diesem Zeitraum.</div>';
     else {
-      h += '<div class="tabwrap"><table><thead><tr><th>Datum</th><th>Art</th><th>Was</th><th>Menge</th><th>Wert</th><th>Grund</th></tr></thead><tbody>';
+      hA += '<div class="tabwrap"><table><thead><tr><th>Datum</th><th>Art</th><th>Was</th><th>Menge</th><th>Wert</th><th>Grund</th></tr></thead><tbody>';
       zeilen2.forEach(function (z) {
-        h += '<tr><td>' + deDatum(z.datum) + '</td><td style="text-align:left;">' + esc(z.art) + '</td><td style="text-align:left;">' + esc(z.was) + '</td><td>' + esc(z.menge) + '</td><td>' + euro(z.wert) + '</td><td style="text-align:left;white-space:normal;">' + esc(z.grund) + '</td></tr>';
+        hA += '<tr><td>' + deDatum(z.datum) + '</td><td style="text-align:left;">' + esc(z.art) + '</td><td style="text-align:left;">' + esc(z.was) + '</td><td>' + esc(z.menge) + '</td><td>' + euro(z.wert) + '</td><td style="text-align:left;white-space:normal;">' + esc(z.grund) + '</td></tr>';
       });
-      h += '</tbody></table></div>';
+      hA += '</tbody></table></div>';
     }
 
-    h += '<div class="det-titel">Schichtplan · nächste 14 Tage</div>';
-    if (d.schichten.length === 0) h += '<div class="meldung" style="padding:6px 0;">Keine Schichten eingetragen.</div>';
+    var hS = '';
+    hS += '<div class="det-titel">Schichtplan · nächste 14 Tage</div>';
+    if (d.schichten.length === 0) hS += '<div class="meldung" style="padding:6px 0;">Keine Schichten eingetragen.</div>';
     else {
       var sl = d.schichten.slice().sort(function (a, b) { return a.datum < b.datum ? -1 : a.datum > b.datum ? 1 : (a.von < b.von ? -1 : 1); });
-      h += '<div class="tabwrap"><table><thead><tr><th>Datum</th><th>Mitarbeiter</th><th>Zeit</th><th>Notiz</th></tr></thead><tbody>';
+      hS += '<div class="tabwrap"><table><thead><tr><th>Datum</th><th>Mitarbeiter</th><th>Zeit</th><th>Notiz</th></tr></thead><tbody>';
       sl.forEach(function (x) {
-        h += '<tr><td>' + deDatum(x.datum) + '</td><td style="text-align:left;">' + esc(x.name) + '</td><td>' + esc(x.von) + ' – ' + esc(x.bis) + '</td><td style="text-align:left;white-space:normal;">' + esc(x.notiz) + '</td></tr>';
+        hS += '<tr><td>' + deDatum(x.datum) + '</td><td style="text-align:left;">' + esc(x.name) + '</td><td>' + esc(x.von) + ' – ' + esc(x.bis) + '</td><td style="text-align:left;white-space:normal;">' + esc(x.notiz) + '</td></tr>';
       });
-      h += '</tbody></table></div>';
+      hS += '</tbody></table></div>';
     }
-    h += '<div class="det-titel">Weitere Bereiche ansehen</div><div style="margin-bottom:10px;"><select class="bereich-select" style="width:100%;max-width:360px;padding:10px 12px;border:1px solid #d8cfae;border-radius:10px;background:#fff;font-family:inherit;font-size:14px;font-weight:600;color:#1a2a4a;cursor:pointer;">' +
+    h += '<div class="det-titel">Was möchtest du ansehen?</div><div style="margin-bottom:10px;"><select class="bereich-select" style="width:100%;max-width:360px;padding:10px 12px;border:1px solid #d8cfae;border-radius:10px;background:#fff;font-family:inherit;font-size:14px;font-weight:600;color:#1a2a4a;cursor:pointer;">' +
       '<option value="">Bereich auswählen …</option>' +
+      '<option value="@tage">Einzelne Tage</option>' +
+      '<option value="@abschr">Abschreibungen &amp; Co</option>' +
+      '<option value="@schicht">Schichtplan</option>' +
       BEREICHE.map(function (b) { return '<option value="' + b[0] + '">' + b[1] + '</option>'; }).join('') +
       '</select></div><div class="bereich-out"></div>';
     el.innerHTML = h;
@@ -390,6 +403,9 @@ tfoot td { background:#1a2a4a; color:#fff; font-weight:700; border-color:#1a2a4a
     sel.onchange = function () {
       var out = el.querySelector('.bereich-out');
       if (!sel.value) { out.innerHTML = ''; return; }
+      if (sel.value === '@tage') { out.innerHTML = tageCache[name] || ''; return; }
+      if (sel.value === '@abschr') { out.innerHTML = hA; return; }
+      if (sel.value === '@schicht') { out.innerHTML = hS; return; }
       bereichZeigen(mail, sel.value, out);
     };
   }
