@@ -381,7 +381,101 @@ tfoot td { background:#1a2a4a; color:#fff; font-weight:700; border-color:#1a2a4a
       });
       h += '</tbody></table></div>';
     }
+    h += '<div class="det-titel">Weitere Bereiche ansehen</div><div class="bereich-chips" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;">' +
+      BEREICHE.map(function (b) { return '<button type="button" class="chip" data-b="' + b[0] + '">' + b[1] + '</button>'; }).join('') +
+      '</div><div class="bereich-out"></div>';
     el.innerHTML = h;
+    Array.prototype.forEach.call(el.querySelectorAll('.bereich-chips .chip'), function (c) {
+      c.onclick = function () {
+        Array.prototype.forEach.call(el.querySelectorAll('.bereich-chips .chip'), function (x) { x.classList.toggle('aktiv', x === c); });
+        bereichZeigen(mail, c.getAttribute('data-b'), el.querySelector('.bereich-out'));
+      };
+    });
+  }
+
+  // ── Weitere Bereiche einer Filiale (nur lesen): Name im System, Anzeigename, Datumsfeld
+  var BEREICHE = [
+    ['tagesgeschaeft-belege', 'Belege & Z-Bons'],
+    ['tagesgeschaeft-kassenbuch', 'Kassenbuch'],
+    ['tagesgeschaeft-wareneingang', 'Wareneingang'],
+    ['tagesgeschaeft-haccp', 'Temperaturprotokoll'],
+    ['temperaturen-meldungen', 'Temperatur-Meldungen'],
+    ['tagesgeschaeft-schicht', 'Übergabebuch'],
+    ['reservierungen', 'Reservierungen'],
+    ['zeiterfassung', 'Zeiterfassung'],
+    ['tagesgeschaeft-notizen', 'Notizen'],
+    ['tagesgeschaeft-artikelberichte', 'Artikelberichte'],
+    ['tagesgeschaeft-speisekarte', 'Speisekarte'],
+    ['tagesgeschaeft-belege-lieferanten', 'Lieferanten']
+  ];
+  var SPALTEN = { datum: 'Datum', plattform: 'Art', betrag: 'Betrag', rechnungsnr: 'Rechnungs-Nr.', steuerId: 'Steuer-ID', bar: 'Bar', karte: 'Karte', status: 'Status', dateiname: 'Datei', name: 'Name', text: 'Text', notiz: 'Notiz', menge: 'Menge', einheit: 'Einheit', wert: 'Wert', grund: 'Grund', lieferant: 'Lieferant', artikel: 'Artikel', zeitpunkt: 'Zeitpunkt', von: 'Von', bis: 'Bis', zeit: 'Zeit', gaeste: 'Gäste', uhrzeit: 'Uhrzeit', temperatur: 'Temperatur', geraet: 'Gerät', umsatz: 'Umsatz', ausgaben: 'Ausgaben', bemerkung: 'Bemerkung' };
+  var VERSTECKT = ['id', 'storagePath', 'pin', 'code', 'passwort', 'password', 'hash'];
+  function zelle(k, v) {
+    if (v == null || v === '') return '';
+    if (typeof v === 'number') return /betrag|wert|bar|karte|umsatz|ausgaben|preis|summe/i.test(k) ? euro(v) : String(v);
+    if (typeof v === 'object') return '';
+    var t = String(v);
+    if (/^\d{4}-\d{2}-\d{2}$/.test(t)) return deDatum(t);
+    if (/^\d{4}-\d{2}-\d{2}T/.test(t)) return deDatum(t.slice(0, 10)) + ' ' + t.slice(11, 16);
+    return t.length > 200 ? t.slice(0, 200) + ' …' : t;
+  }
+  function zeilenAus(data) {
+    if (Array.isArray(data)) return data;
+    if (data && Array.isArray(data.items)) return data.items;
+    var out = [];
+    if (data && typeof data === 'object') {
+      Object.keys(data).forEach(function (k) {
+        var v = data[k];
+        if (Array.isArray(v) && v.length && typeof v[0] === 'object') { v.forEach(function (x) { out.push(x); }); }
+        else if (v && typeof v === 'object' && !Array.isArray(v)) {
+          // z. B. Kassenbuch: Datum → Werte
+          if (/^\d{4}-\d{2}-\d{2}$/.test(k)) { var o = { datum: k }; Object.keys(v).forEach(function (kk) { if (typeof v[kk] !== 'object') o[kk] = v[kk]; }); out.push(o); }
+        }
+      });
+    }
+    return out;
+  }
+  async function bereichZeigen(mail, tool, box) {
+    box.innerHTML = '<div class="meldung">Lade …</div>';
+    try {
+      var res = await fetch('/api/tool-data?tool=' + encodeURIComponent(tool) + '&filiale=' + encodeURIComponent(mail));
+      if (!res.ok) { box.innerHTML = '<div class="meldung fehler">Dieser Bereich konnte nicht geladen werden.</div>'; return; }
+      var data = (await res.json()).data || {};
+      var rows = zeilenAus(data).filter(function (r) { return r && typeof r === 'object'; });
+      rows.sort(function (a, b) {
+        var x = String(a.datum || a.zeitpunkt || ''), y = String(b.datum || b.zeitpunkt || '');
+        return x < y ? 1 : x > y ? -1 : 0;
+      });
+      if (rows.length === 0) { box.innerHTML = '<div class="meldung">Noch keine Einträge vorhanden.</div>'; return; }
+      var gesamt = rows.length; rows = rows.slice(0, 200);
+      var keys = [];
+      rows.forEach(function (r) { Object.keys(r).forEach(function (k) {
+        if (VERSTECKT.indexOf(k) < 0 && typeof r[k] !== 'object' && keys.indexOf(k) < 0) keys.push(k);
+      }); });
+      keys.sort(function (a, b) { return (a === 'datum' ? -1 : 0) - (b === 'datum' ? -1 : 0); });
+      keys = keys.slice(0, 9);
+      var hat = tool === 'tagesgeschaeft-belege';
+      var h = '<div class="tabwrap"><table><thead><tr>' + keys.map(function (k) { return '<th>' + esc(SPALTEN[k] || k) + '</th>'; }).join('') + (hat ? '<th>Beleg</th>' : '') + '</tr></thead><tbody>';
+      rows.forEach(function (r) {
+        h += '<tr>' + keys.map(function (k) { return '<td style="text-align:left;white-space:normal;">' + esc(zelle(k, r[k])) + '</td>'; }).join('');
+        if (hat) h += '<td>' + (r.storagePath ? '<button class="btn-klein" data-p="' + esc(r.storagePath) + '">Öffnen</button>' : '') + '</td>';
+        h += '</tr>';
+      });
+      h += '</tbody></table></div>';
+      if (gesamt > rows.length) h += '<div class="hinweis">Es werden die neuesten ' + rows.length + ' von ' + gesamt + ' Einträgen angezeigt.</div>';
+      box.innerHTML = h;
+      Array.prototype.forEach.call(box.querySelectorAll('button[data-p]'), function (b) {
+        b.onclick = async function () {
+          b.disabled = true;
+          try {
+            var r2 = await fetch('/api/beleg-upload?path=' + encodeURIComponent(b.getAttribute('data-p')) + '&filiale=' + encodeURIComponent(mail));
+            var j = await r2.json();
+            if (r2.ok && j.url) window.open(j.url, '_blank'); else alert((j && j.error) || 'Der Beleg konnte nicht geöffnet werden.');
+          } catch (e) { alert('Der Beleg konnte nicht geöffnet werden.'); }
+          b.disabled = false;
+        };
+      });
+    } catch (e) { box.innerHTML = '<div class="meldung fehler">Dieser Bereich konnte nicht geladen werden.</div>'; }
   }
 
   Array.prototype.forEach.call(document.querySelectorAll('#presets .chip[data-p]'), function (b) {
