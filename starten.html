@@ -514,11 +514,38 @@
       .hero { padding: 48px 20px 64px; }
       .decision { padding: 56px 20px; }
     }
+
+    /* NEU: Zentrale */
+    @keyframes starBlink { 0%,100%{opacity:1; transform:scale(1) rotate(0deg);} 50%{opacity:.25; transform:scale(1.35) rotate(25deg);} }
+    @keyframes newGlow { 0%,100%{box-shadow:0 0 0 0 rgba(196,165,90,.55);} 50%{box-shadow:0 0 0 12px rgba(196,165,90,0);} }
+    .new-star { display:inline-block; color:#E8C766; animation:starBlink 1.2s ease-in-out infinite; }
+    .new-banner { display:block; background:linear-gradient(90deg,#9A7D3A,#C4A55A,#9A7D3A); color:#1C2340; text-align:center; padding:12px 16px; font-weight:700; font-size:15px; text-decoration:none; letter-spacing:.02em; }
+    .new-banner:hover { filter:brightness(1.07); }
+    .new-banner .new-star { color:#1C2340; margin:0 6px; }
+    .zentrale { background:var(--navy); color:var(--white); padding:72px 24px; position:relative; overflow:hidden; }
+    .zentrale::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 50% 0%, rgba(196,165,90,.25) 0%, transparent 65%); pointer-events:none; }
+    .zentrale-inner { max-width:880px; margin:0 auto; position:relative; text-align:center; }
+    .new-badge { display:inline-flex; align-items:center; gap:10px; background:linear-gradient(135deg,#C4A55A,#E8C766); color:#1C2340; font-weight:800; font-size:14px; letter-spacing:.14em; text-transform:uppercase; padding:10px 22px; border-radius:100px; margin-bottom:24px; animation:newGlow 1.8s ease-out infinite; }
+    .new-badge .new-star { color:#1C2340; font-size:18px; }
+    .zentrale h2 { font-family:'Playfair Display',serif; font-size:clamp(26px,4.5vw,40px); line-height:1.25; margin-bottom:16px; }
+    .zentrale h2 em { font-style:normal; color:var(--gold-light); }
+    .zentrale-lead { font-size:clamp(16px,2vw,19px); color:rgba(255,255,255,.78); max-width:640px; margin:0 auto 36px; font-weight:300; }
+    .zentrale-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; text-align:left; margin-bottom:32px; }
+    @media (max-width:640px){ .zentrale-grid { grid-template-columns:1fr; } }
+    .zentrale-item { background:rgba(255,255,255,.06); border:1px solid rgba(196,165,90,.35); border-radius:14px; padding:20px 22px; }
+    .zentrale-item strong { display:block; color:var(--gold-light); font-size:16px; margin-bottom:6px; }
+    .zentrale-item span { font-size:14.5px; color:rgba(255,255,255,.8); }
+    .zentrale-note { font-size:15px; color:rgba(255,255,255,.85); margin-bottom:24px; }
+    .zentrale-cta { display:inline-block; background:linear-gradient(135deg,#C4A55A,#E8C766); color:#1C2340; font-weight:700; font-size:16px; padding:16px 32px; border-radius:12px; text-decoration:none; }
+    .zentrale-cta:hover { filter:brightness(1.08); }
+    @media (prefers-reduced-motion: reduce){ .new-star, .new-badge { animation:none; } }
   </style>
   <!-- Cookie-Consent + Google Analytics: ausgelagert in cookie-consent.js -->
 <script src="/cookie-consent.js"></script>
 </head>
 <body>
+
+<a class="new-banner" href="#zentrale"><span class="new-star">★</span> NEU: Die Zentrale für Betriebe mit mehreren Filialen <span class="new-star">★</span> Jetzt ansehen</a>
 
 <section class="hero">
   <div class="logo-badge">GASTRO-OS · System · Strategie · Erfolg</div>
@@ -566,6 +593,22 @@
   </div>
 </section>
 
+<section class="zentrale" id="zentrale">
+  <div class="zentrale-inner">
+    <div class="new-badge"><span class="new-star">★</span> NEU <span class="new-star">★</span></div>
+    <h2>Mehrere Filialen? <em>Alles an einem Ort.</em><br>Die GASTRO-OS Zentrale.</h2>
+    <p class="zentrale-lead">Jede Filiale trägt ihre täglichen Dinge selbst ein. Du behältst den Überblick, ohne anzurufen, nachzufragen oder Zettel zusammenzusuchen.</p>
+    <div class="zentrale-grid">
+      <div class="zentrale-item"><strong>Eigener Zugang pro Filiale</strong><span>Jede Filiale arbeitet in ihrem eigenen Bereich und trägt dort Belege, Schichtplan, Zeiterfassung &amp; Co. ein.</span></div>
+      <div class="zentrale-item"><strong>Jederzeit Einblick</strong><span>Du siehst alle Daten und Zahlen deiner Standorte, ohne nachzufragen.</span></div>
+      <div class="zentrale-item"><strong>Du wählst, was wichtig ist</strong><span>Blende genau die Daten ein, die du gerade brauchst.</span></div>
+      <div class="zentrale-item"><strong>Ein Bericht, auch als PDF</strong><span>Alles in einem Bericht zum Herunterladen. Das macht die Buchhaltung einfacher.</span></div>
+    </div>
+    <p class="zentrale-note">Ob zwei Filialen oder zwanzig: Die Anzahl der Standorte ist kein Problem.</p>
+    <a class="zentrale-cta" href="mailto:info@mein-gastro-system.de?subject=Zentrale%20f%C3%BCr%20mehrere%20Filialen">Fragen zur Zentrale? Schreib uns</a>
+  </div>
+</section>
+
 <section class="faq-price">
   <div class="faq-price-inner">
 
@@ -574,6 +617,11 @@
       <div class="faq-item">
           <button class="faq-q" onclick="toggle(this)">Was ist genau in GASTRO-OS enthalten? <span class="plus">+</span></button>
           <div class="faq-a">Zwei Bereiche: Erstens dein Tagesgeschäft – Kassenbuch, Belege, Zeiterfassung, Schichtplan, Übergabebuch, Reservierungen und mehr, sofort nutzbar für dich und dein Team. Zweitens dein Wissen – aufeinander aufbauende Module mit Ankervideos, Wissenswerkzeugen und dem Küchenfunk-Podcast, wenn du Zeit dafür hast.</div>
+        </div>
+
+      <div class="faq-item">
+          <button class="faq-q" onclick="toggle(this)">Ich habe mehrere Filialen. Geht das? <span class="plus">+</span></button>
+          <div class="faq-a">Ja, dafür gibt es die neue Zentrale. Jede Filiale hat ihren eigenen Zugang und trägt die täglichen Dinge selbst ein. Du hast jederzeit Einblick in alle Daten und Zahlen, wählst aus, was gerade wichtig ist, und kannst alles als Bericht auch als PDF herunterladen. Schreib uns einfach kurz an info@mein-gastro-system.de, dann klären wir alles Weitere für deine Standorte.</div>
         </div>
 
       <div class="faq-item">
