@@ -543,7 +543,7 @@ tfoot td { background:#1a2a4a; color:#fff; font-weight:700; border-color:#1a2a4a
     }
     if (n === 0) h += '<div class="meldung">Noch keine Filialen eingetragen.</div>';
     stand.filialen.forEach(function (f) {
-      var status = f.status === 'angefragt' ? '<span class="badge b-gelb">wartet auf Zustimmung</span>' : '<span class="badge b-ok">verbunden</span>';
+      var status = f.status === 'angefragt' ? '<span class="badge b-gelb">wartet auf Bestätigung</span>' : '<span class="badge b-ok">verbunden</span>';
       h += '<div class="verw-zeile" data-e="' + esc(f.email) + '">' +
            '<input type="text" class="verw-name" maxlength="80" value="' + esc(f.name) + '">' +
            '<div class="verw-mail">' + esc(f.email) + '</div>' +
@@ -556,7 +556,7 @@ tfoot td { background:#1a2a4a; color:#fff; font-weight:700; border-color:#1a2a4a
          '<input type="text" class="verw-name" id="neu-mail" maxlength="160" placeholder="E-Mail der Filiale" style="width:240px;">' +
          '<span style="font-size:11px;font-weight:700;color:#8090a8;text-transform:uppercase;">Ruhetage</span>' + tageHtml('') +
          '<button class="btn-gold" id="neu-btn"' + (voll ? ' disabled' : '') + '>Hinzufügen</button></div>' +
-         '<div class="hinweis">Die E-Mail ist die, mit der sich die Filiale bei GASTRO-OS anmeldet. Die Filiale sieht beim nächsten Login im Dashboard eine Anfrage und muss zustimmen, bevor ihre Zahlen hier erscheinen. Ruhetage sorgen dafür, dass an diesen Tagen kein Eintrag als fehlend zählt.</div>' +
+         '<div class="hinweis">Die E-Mail ist die, mit der sich die Filiale bei GASTRO-OS anmeldet. Die Filiale muss beim nächsten Login im Dashboard die Verbindung bestätigen, bevor ihre Daten hier erscheinen. Ruhetage sorgen dafür, dass an diesen Tagen kein Eintrag als fehlend zählt.</div>' +
          '<div id="verw-meldung"></div></div>' +
          '<div class="verw-neu"><h3>Mehrere Filialen auf einmal</h3>' +
          '<div class="hinweis" style="margin-top:0;">Eine Filiale pro Zeile: Name und E-Mail, getrennt durch Semikolon. Du kannst die Liste auch direkt aus Excel einfügen (zwei Spalten).</div>' +
@@ -586,7 +586,7 @@ tfoot td { background:#1a2a4a; color:#fff; font-weight:700; border-color:#1a2a4a
     var x = await senden({ gruppe: 'hinzufuegen', name: name, filiale_email: mail, ruhetage: tageLesen(document.getElementById('neu-zeile')) });
     if (x.ok) {
       await laden();
-      meldung(x.d.status === 'aktiv' ? 'Filiale hinzugefügt.' : 'Filiale hinzugefügt. Sie muss im eigenen Dashboard noch zustimmen.', false);
+      meldung(x.d.status === 'aktiv' ? 'Filiale hinzugefügt.' : 'Filiale hinzugefügt. Sie muss die Verbindung im eigenen Dashboard noch bestätigen.', false);
       window.dispatchEvent(new Event('filialen-geaendert'));
       return;
     }
@@ -608,7 +608,7 @@ tfoot td { background:#1a2a4a; color:#fff; font-weight:700; border-color:#1a2a4a
       if (feld2 && d.fehlerzeilen && d.fehlerzeilen.length) feld2.value = d.fehlerzeilen.join('\n');
       var m = document.getElementById('liste-meldung');
       var h = '';
-      if (d.angelegt > 0) h += '<div class="verw-ok">' + esc(d.angelegt + (d.angelegt === 1 ? ' Filiale' : ' Filialen') + ' hinzugefügt (siehe Liste oben). Jede muss im eigenen Dashboard noch zustimmen.') + '</div>';
+      if (d.angelegt > 0) h += '<div class="verw-ok">' + esc(d.angelegt + (d.angelegt === 1 ? ' Filiale' : ' Filialen') + ' hinzugefügt (siehe Liste oben). Jede muss die Verbindung im eigenen Dashboard noch bestätigen.') + '</div>';
       if (d.fehler && d.fehler.length) h += '<div class="verw-fehler"><strong>Diese Zeilen wurden nicht übernommen und stehen unten noch im Feld:</strong><br>' + d.fehler.map(esc).join('<br>') + '</div>';
       if (m) m.innerHTML = h;
       window.dispatchEvent(new Event('filialen-geaendert'));
