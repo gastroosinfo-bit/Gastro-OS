@@ -510,9 +510,12 @@ tfoot td { background:#1a2a4a; color:#fff; font-weight:700; border-color:#1a2a4a
     if (x.ok) {
       var d = x.d || {};
       await laden();
+      var feld2 = document.getElementById('liste-feld');
+      if (feld2 && d.fehlerzeilen && d.fehlerzeilen.length) feld2.value = d.fehlerzeilen.join('\n');
       var m = document.getElementById('liste-meldung');
-      var h = '<div class="verw-ok">' + esc(d.angelegt + ' Filialen hinzugefügt. Jede muss im eigenen Dashboard noch zustimmen.') + '</div>';
-      if (d.fehler && d.fehler.length) h += '<div class="verw-fehler">' + d.fehler.map(esc).join('<br>') + '</div>';
+      var h = '';
+      if (d.angelegt > 0) h += '<div class="verw-ok">' + esc(d.angelegt + (d.angelegt === 1 ? ' Filiale' : ' Filialen') + ' hinzugefügt (siehe Liste oben). Jede muss im eigenen Dashboard noch zustimmen.') + '</div>';
+      if (d.fehler && d.fehler.length) h += '<div class="verw-fehler"><strong>Diese Zeilen wurden nicht übernommen und stehen unten noch im Feld:</strong><br>' + d.fehler.map(esc).join('<br>') + '</div>';
       if (m) m.innerHTML = h;
       window.dispatchEvent(new Event('filialen-geaendert'));
       return;
