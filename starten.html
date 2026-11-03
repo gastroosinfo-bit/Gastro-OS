@@ -579,7 +579,7 @@
 
     /* FAQ-Pille im Hero (Stil wie im Dashboard) */
     .hero { overflow:visible; z-index:5; }
-    .faqpill { position:absolute; left:24px; top:196px; width:380px; text-align:left; z-index:20; }
+    .faqpill { position:absolute; left:24px; top:344px; width:380px; text-align:left; z-index:20; }
     .faqpill-btn { width:100%; display:flex; align-items:center; gap:10px; background:linear-gradient(90deg,#9A7D3A,#C4A55A,#9A7D3A); border:1px solid #9A7D3A; border-radius:30px; padding:8px 16px 8px 9px; cursor:pointer; font-family:inherit; text-align:left; box-shadow:0 4px 16px rgba(196,165,90,.45); }
     .faqpill-btn:hover { filter:brightness(1.07); }
     .faqpill-btn:focus:not(:focus-visible) { outline:none; }
@@ -615,8 +615,8 @@
     .pricemini-sub { font-size:12.5px; color:rgba(255,255,255,.75); margin:6px 0 12px; }
     .pricemini-btn { display:block; background:linear-gradient(90deg,#9A7D3A,#C4A55A,#9A7D3A); color:#1C2340; font-weight:700; font-size:15px; text-decoration:none; padding:12px 16px; border-radius:10px; }
     .pricemini-btn:hover { filter:brightness(1.08); }
-    .pricemini-d { position:absolute; left:24px; top:28px; width:380px; z-index:10; }
-    .pricemini-m { display:none; width:min(420px,100%); margin:28px auto 0; }
+    .pricemini-d { position:absolute; left:24px; top:176px; width:380px; z-index:10; }
+    .pricemini-m { display:none; width:min(420px,100%); margin:10px auto 0; }
     @media (max-width:1399px){ .pricemini-d { display:none; } .pricemini-m { display:block; } }
 
     /* Dashboard-Kacheln */
@@ -638,6 +638,29 @@
     .tile-new { position:absolute; top:-12px; left:50%; transform:translateX(-50%); white-space:nowrap; background:linear-gradient(135deg,#C4A55A,#E8C766); color:#1C2340; font-size:10.5px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; padding:5px 12px; border-radius:100px; }
     .tile-new .new-star { color:#1C2340; }
     .tile-new-card:hover { filter:brightness(1.08); }
+
+    /* NEU-Stern links über dem Preis */
+    @keyframes nsPulse { 0%,100%{ transform:scale(1) rotate(-6deg); filter:drop-shadow(0 0 8px rgba(255,224,130,.55)); } 50%{ transform:scale(1.1) rotate(6deg); filter:drop-shadow(0 0 24px rgba(255,224,130,1)); } }
+    @keyframes nsBlink { 0%,100%{ opacity:1; } 50%{ opacity:.72; } }
+    .newstar { position:absolute; left:139px; top:14px; width:150px; height:150px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-decoration:none; z-index:12; animation:nsPulse 1.4s ease-in-out infinite; }
+    .newstar::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,#FFE9A0,#E8C766 50%,#F3D67A); clip-path:polygon(50.0% 0.0%, 58.0% 9.8%, 69.1% 3.8%, 72.8% 15.9%, 85.4% 14.6%, 84.1% 27.2%, 96.2% 30.9%, 90.2% 42.0%, 100.0% 50.0%, 90.2% 58.0%, 96.2% 69.1%, 84.1% 72.8%, 85.4% 85.4%, 72.8% 84.1%, 69.1% 96.2%, 58.0% 90.2%, 50.0% 100.0%, 42.0% 90.2%, 30.9% 96.2%, 27.2% 84.1%, 14.6% 85.4%, 15.9% 72.8%, 3.8% 69.1%, 9.8% 58.0%, 0.0% 50.0%, 9.8% 42.0%, 3.8% 30.9%, 15.9% 27.2%, 14.6% 14.6%, 27.2% 15.9%, 30.9% 3.8%, 42.0% 9.8%); animation:nsBlink 1.4s ease-in-out infinite; }
+    .newstar-neu { position:relative; font-family:'DM Sans',sans-serif; font-weight:900; font-size:30px; letter-spacing:.04em; color:#1C2340; line-height:1; }
+    .newstar-sub { position:relative; font-family:'DM Sans',sans-serif; font-weight:800; font-size:12px; color:#1C2340; margin-top:4px; }
+    @keyframes nsPulseM { 0%,100%{ transform:scale(1) rotate(-6deg); } 50%{ transform:scale(1.1) rotate(6deg); } }
+    @media (max-width:1399px){ .newstar { position:relative; left:auto; top:auto; margin:26px auto 0; animation-name:nsPulseM; } }
+    @media (prefers-reduced-motion: reduce){ .newstar, .newstar::before { animation:none; } }
+
+    /* "Das sind wir" Dropdown */
+    .wir-section { padding:8px 24px 40px; }
+    .wir { max-width:680px; margin:0 auto; }
+    .wir-btn { width:100%; display:flex; align-items:center; gap:10px; background:linear-gradient(90deg,#9A7D3A,#C4A55A,#9A7D3A); border:1px solid #9A7D3A; border-radius:30px; padding:9px 18px 9px 10px; cursor:pointer; font-family:inherit; text-align:left; box-shadow:0 4px 16px rgba(196,165,90,.45); }
+    .wir-btn:hover { filter:brightness(1.07); }
+    .wir-btn:focus:not(:focus-visible) { outline:none; }
+    .wir-btn .faqpill-arrow { color:#1a2a4a; }
+    .wir.open .faqpill-arrow { transform:rotate(180deg); }
+    .wir-panel { display:none; margin-top:10px; background:rgba(255,255,255,.94); border:1px solid #e8dfc8; border-radius:18px; padding:26px 28px; box-shadow:0 10px 30px rgba(28,35,64,.15); }
+    .wir.open .wir-panel { display:block; }
+    .wir-panel .decision-text h2 { font-size:clamp(20px,3vw,26px); }
   </style>
   <!-- Cookie-Consent + Google Analytics: ausgelagert in cookie-consent.js -->
 <script src="/cookie-consent.js"></script>
@@ -653,8 +676,9 @@
     <a class="pricemini-btn" href="https://whop.com/gastro-os-81b8/starten/">Jetzt Zugriff erhalten</a>
   </div>
   <div class="logo-badge">GASTRO-OS · System · Strategie · Erfolg</div>
-  <h1>Dein Betrieb digital organisiert: Tagesgeschäft, <span class="nowrap">Team &amp; Wissen<a class="hero-star" href="#zentrale" aria-label="Neu: Die Zentrale für mehrere Standorte"><span>NEU</span></a></span><br>an einem Ort. <em>Sofort einsatzbereit.</em></h1>
+  <h1>Dein Betrieb digital organisiert: Tagesgeschäft, <span class="nowrap">Team &amp; Wissen</span><br>an einem Ort. <em>Sofort einsatzbereit.</em></h1>
   <p class="hero-sub">Für Inhaber von Restaurants, Cafés, Bistros und Gaststätten, auch mit mehreren Standorten, die ihren Betrieb noch strukturierter und profitabler führen wollen.</p>
+  <a class="newstar" href="#zentrale" aria-label="Neu: Deine Zentrale für mehrere Standorte"><span class="newstar-neu">NEU</span><span class="newstar-sub">deine Zentrale</span></a>
   <div class="pricemini pricemini-m">
     <div class="pricemini-amount">299 € <span>/ Monat, inkl. 19% MwSt.</span></div>
     <div class="pricemini-sub">Monatlich kündbar · Keine Mindestlaufzeit</div>
@@ -755,11 +779,15 @@
 
 
 
-<section class="decision">
-  <div class="decision-inner">
-    <div class="decision-grid" style="display:block;">
-
-      <div class="decision-text" style="max-width:640px;margin:0 auto;">
+<section class="wir-section">
+  <div class="wir" id="hk-wir">
+    <button class="wir-btn" onclick="hkToggle('hk-wir')">
+      <span class="faqpill-icon">♥</span>
+      <span class="faqpill-titles"><span class="faqpill-title">Wer steckt hinter GASTRO-OS?</span></span>
+      <span class="faqpill-arrow">▼</span>
+    </button>
+    <div class="wir-panel">
+      <div class="decision-text">
         <h2>Dein Betrieb läuft – aber du läufst hinterher.</h2>
         <p>Kassenbuch, Belege, Schichtplan, Zeiterfassung. Im Gastro-Alltag frisst das jeden Tag Zeit, die dir eigentlich fehlt. GASTRO-OS bündelt dein Tagesgeschäft und dein Team an einem Ort, damit du diese Zeit zurückgewinnst. Als Bonus bekommst du zusätzlich das Wissen und die Werkzeuge, mit denen am Ende auch mehr Gewinn übrig bleibt.</p>
 
@@ -775,7 +803,6 @@
           </div>
         </details>
       </div>
-
     </div>
   </div>
 </section>
