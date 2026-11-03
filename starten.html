@@ -567,6 +567,12 @@
     .hk-dark .hk-title, .hk-dark .hk-arrow { color:#1a2a4a; }
     .hk-dark .hk-sub { color:#1C2340; opacity:.8; }
     .zentrale-cta-wrap { text-align:left; }
+    .zentrale-layout { display:grid; grid-template-columns:320px 1fr; gap:20px; align-items:start; text-align:left; }
+    .zentrale-layout .zentrale-grid { grid-template-columns:repeat(2,1fr); margin-bottom:0; }
+    .zentrale-layout .hk-dark { max-width:none; }
+    .zentrale-layout .zentrale-cta { display:block; text-align:center; padding:16px 18px; }
+    @media (max-width:1000px){ .zentrale-layout { grid-template-columns:1fr; } }
+    @media (max-width:560px){ .zentrale-layout .zentrale-grid { grid-template-columns:1fr; } }
     .faq-col .hk { margin-top:4px; }
     .price-extra { background:rgba(154,125,58,.10); border:1px solid rgba(154,125,58,.4); border-radius:10px; padding:12px 14px; margin:0 0 18px; font-size:14px; color:var(--navy); }
     .price-extra strong { color:var(--gold); }
@@ -825,12 +831,8 @@
     <div class="new-badge"><span class="new-star">★</span> NEU · Zusatzprodukt für mehrere Standorte <span class="new-star">★</span></div>
     <h2>Du hast mehr als einen Standort? <em>Kein Problem.</em><br>Die GASTRO-OS Zentrale.</h2>
     <p class="zentrale-lead">Ob zwei Standorte oder dreißig: kein Problem. Zusätzlich zu GASTRO-OS trägt jeder Standort seine täglichen Dinge selbst ein. Der Benutzer der Zentrale behält den Überblick, ohne anzurufen, nachzufragen oder Zettel zusammenzusuchen.</p>
-    <div class="zentrale-grid">
-      <div class="zentrale-item"><strong>Eigener Zugang pro Standort</strong><span>Jeder Standort arbeitet in seinem eigenen Bereich und trägt dort Belege, Schichtplan, Zeiterfassung &amp; Co. ein.</span></div>
-      <div class="zentrale-item"><strong>Jederzeit Einblick</strong><span>Der Benutzer der Zentrale kann sich die Daten und Zahlen aller Standorte jederzeit abrufen, ohne nachzufragen.</span></div>
-      <div class="zentrale-item"><strong>Auswahl nach Bedarf</strong><span>Der Benutzer der Zentrale blendet genau die Daten ein, die gerade wichtig sind.</span></div>
-      <div class="zentrale-item"><strong>Bericht als PDF</strong><span>Monatsbericht jedes Standorts ansehen und als PDF herunterladen. Das macht die Buchhaltung einfacher.</span></div>
-    </div>
+    <div class="zentrale-layout">
+      <div class="zentrale-side">
     <div class="hk hk-dark" id="hk-zentrale">
       <button class="hk-head" onclick="hkToggle('hk-zentrale')">
         <span class="hk-icon">?</span>
@@ -857,6 +859,14 @@
       </div>
     </div>
     <div class="zentrale-cta-wrap"><a class="zentrale-cta" href="mailto:info@mein-gastro-system.de?subject=Zentrale%20f%C3%BCr%20mehrere%20Standorte">Fragen zur Zentrale? Schreib uns</a></div>
+      </div>
+    <div class="zentrale-grid">
+      <div class="zentrale-item"><strong>Eigener Zugang pro Standort</strong><span>Jeder Standort arbeitet in seinem eigenen Bereich und trägt dort Belege, Schichtplan, Zeiterfassung &amp; Co. ein.</span></div>
+      <div class="zentrale-item"><strong>Jederzeit Einblick</strong><span>Der Benutzer der Zentrale kann sich die Daten und Zahlen aller Standorte jederzeit abrufen, ohne nachzufragen.</span></div>
+      <div class="zentrale-item"><strong>Auswahl nach Bedarf</strong><span>Der Benutzer der Zentrale blendet genau die Daten ein, die gerade wichtig sind.</span></div>
+      <div class="zentrale-item"><strong>Bericht als PDF</strong><span>Monatsbericht jedes Standorts ansehen und als PDF herunterladen. Das macht die Buchhaltung einfacher.</span></div>
+    </div>
+    </div>
   </div>
 </section>
 
