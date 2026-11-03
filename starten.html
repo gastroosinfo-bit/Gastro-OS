@@ -522,7 +522,7 @@
     .new-banner { display:block; background:linear-gradient(90deg,#9A7D3A,#C4A55A,#9A7D3A); color:#1C2340; text-align:center; padding:12px 16px; font-weight:700; font-size:15px; text-decoration:none; letter-spacing:.02em; }
     .new-banner:hover { filter:brightness(1.07); }
     .new-banner .new-star { color:#1C2340; margin:0 6px; }
-    .zentrale { background:var(--navy); color:var(--white); padding:72px 24px; position:relative; overflow:hidden; }
+    .zentrale { background:var(--navy); color:var(--white); padding:72px 24px; position:relative; overflow:visible; }
     .zentrale::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 50% 0%, rgba(196,165,90,.25) 0%, transparent 65%); pointer-events:none; }
     .zentrale-inner { max-width:1040px; margin:0 auto; position:relative; text-align:center; }
     .new-badge { display:inline-flex; align-items:center; gap:10px; background:linear-gradient(135deg,#C4A55A,#E8C766); color:#1C2340; font-weight:800; font-size:14px; letter-spacing:.14em; text-transform:uppercase; padding:10px 22px; border-radius:100px; margin-bottom:24px; animation:newGlow 1.8s ease-out infinite; }
@@ -572,7 +572,7 @@
     .zentrale-side { margin-top:20px; }
     .zentrale-layout .hk-dark { max-width:none; }
     .zentrale-layout .zentrale-cta { display:block; text-align:center; padding:16px 18px; }
-    @media (min-width:1400px){ .zentrale-side { position:absolute; right:calc(100% + 24px); top:0; width:290px; margin-top:0; } }
+    @media (min-width:1400px){ .zentrale-layout { display:grid; grid-template-columns:minmax(0,1fr) 720px minmax(0,1fr); gap:24px; width:min(1300px,calc(100vw - 64px)); max-width:none; left:50%; transform:translateX(-50%); align-items:start; } .zentrale-layout .zentrale-grid { grid-column:2; grid-row:1; } .zentrale-side { grid-column:1; grid-row:1; justify-self:end; width:100%; max-width:290px; margin-top:0; } }
     @media (max-width:560px){ .zentrale-layout .zentrale-grid { grid-template-columns:1fr; } }
     .faq-col .hk { margin-top:4px; }
     .price-extra { background:rgba(154,125,58,.10); border:1px solid rgba(154,125,58,.4); border-radius:10px; padding:12px 14px; margin:0 0 18px; font-size:14px; color:var(--navy); }
