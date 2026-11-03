@@ -21,7 +21,7 @@
 
     body {
       font-family: 'DM Sans', sans-serif;
-      background: var(--cream);
+      background: #f5f0e8 url('/bg-restaurant.jpg') center top / cover no-repeat;
       color: var(--dark);
       line-height: 1.6;
     }
@@ -110,7 +110,7 @@
 
     /* Decision section */
     .decision {
-      background: var(--white);
+      background: rgba(255,255,255,0.82);
       padding: 72px 24px;
     }
     .decision-inner {
@@ -524,17 +524,19 @@
     .new-banner .new-star { color:#1C2340; margin:0 6px; }
     .zentrale { background:var(--navy); color:var(--white); padding:72px 24px; position:relative; overflow:hidden; }
     .zentrale::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 50% 0%, rgba(196,165,90,.25) 0%, transparent 65%); pointer-events:none; }
-    .zentrale-inner { max-width:880px; margin:0 auto; position:relative; text-align:center; }
+    .zentrale-inner { max-width:1040px; margin:0 auto; position:relative; text-align:center; }
     .new-badge { display:inline-flex; align-items:center; gap:10px; background:linear-gradient(135deg,#C4A55A,#E8C766); color:#1C2340; font-weight:800; font-size:14px; letter-spacing:.14em; text-transform:uppercase; padding:10px 22px; border-radius:100px; margin-bottom:24px; animation:newGlow 1.8s ease-out infinite; }
     .new-badge .new-star { color:#1C2340; font-size:18px; }
     .zentrale h2 { font-family:'Playfair Display',serif; font-size:clamp(26px,4.5vw,40px); line-height:1.25; margin-bottom:16px; }
     .zentrale h2 em { font-style:normal; color:var(--gold-light); }
     .zentrale-lead { font-size:clamp(16px,2vw,19px); color:rgba(255,255,255,.78); max-width:640px; margin:0 auto 36px; font-weight:300; }
-    .zentrale-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; text-align:left; margin-bottom:32px; }
-    @media (max-width:640px){ .zentrale-grid { grid-template-columns:1fr; } }
-    .zentrale-item { background:rgba(255,255,255,.06); border:1px solid rgba(196,165,90,.35); border-radius:14px; padding:20px 22px; }
-    .zentrale-item strong { display:block; color:var(--gold-light); font-size:16px; margin-bottom:6px; }
-    .zentrale-item span { font-size:14.5px; color:rgba(255,255,255,.8); }
+    .zentrale-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; text-align:left; margin-bottom:32px; }
+    @media (max-width:1000px){ .zentrale-grid { grid-template-columns:repeat(2,1fr); } }
+    @media (max-width:560px){ .zentrale-grid { grid-template-columns:1fr; } }
+    .zentrale-item { background:rgba(255,255,255,.06); border:1px solid rgba(196,165,90,.35); border-radius:14px; padding:20px 18px; }
+    .zentrale-item strong { display:block; color:#fff; font-family:'Playfair Display',serif; font-size:16px; margin-bottom:8px; }
+    .zentrale-item strong::before { content:"★"; display:flex; align-items:center; justify-content:center; width:34px; height:34px; border-radius:50%; background:linear-gradient(135deg,#f0d36b,#d4af37); color:#1a2a4a; font-size:15px; margin-bottom:10px; }
+    .zentrale-item span { font-size:13.5px; color:rgba(255,255,255,.8); }
     .zentrale-note { font-size:15px; color:rgba(255,255,255,.85); margin-bottom:24px; }
     .zentrale-cta { display:inline-block; background:linear-gradient(135deg,#C4A55A,#E8C766); color:#1C2340; font-weight:700; font-size:16px; padding:16px 32px; border-radius:12px; text-decoration:none; }
     .zentrale-cta:hover { filter:brightness(1.08); }
@@ -577,7 +579,7 @@
 
     /* FAQ-Pille im Hero (Stil wie im Dashboard) */
     .hero { overflow:visible; z-index:5; }
-    .faqpill { position:absolute; left:24px; top:28px; width:380px; text-align:left; z-index:20; }
+    .faqpill { position:absolute; left:24px; top:196px; width:380px; text-align:left; z-index:20; }
     .faqpill-btn { width:100%; display:flex; align-items:center; gap:10px; background:linear-gradient(90deg,#9A7D3A,#C4A55A,#9A7D3A); border:1px solid #9A7D3A; border-radius:30px; padding:8px 16px 8px 9px; cursor:pointer; font-family:inherit; text-align:left; box-shadow:0 4px 16px rgba(196,165,90,.45); }
     .faqpill-btn:hover { filter:brightness(1.07); }
     .faqpill-btn:focus:not(:focus-visible) { outline:none; }
@@ -593,7 +595,7 @@
     .faqpill .hk-a { font-size:13.5px; line-height:1.65; padding:0 2px 14px; }
     .hk-a strong { color:#1a2a4a; }
     .faqpill .hk-a strong { color:#1a2a4a; }
-    @media (max-width:1399px){ .faqpill { position:relative; left:auto; top:auto; width:min(420px,100%); margin:0 auto 28px; } .hero { padding-top:40px; } }
+    @media (max-width:1399px){ .faqpill { position:relative; left:auto; top:auto; width:min(420px,100%); margin:14px auto 0; } .hero { padding-top:40px; padding-bottom:40px; } }
     .faq-price-inner.price-only { grid-template-columns:1fr; max-width:480px; }
     .faq-price-inner.price-only .price-col { position:static; }
 
@@ -613,9 +615,29 @@
     .pricemini-sub { font-size:12.5px; color:rgba(255,255,255,.75); margin:6px 0 12px; }
     .pricemini-btn { display:block; background:linear-gradient(90deg,#9A7D3A,#C4A55A,#9A7D3A); color:#1C2340; font-weight:700; font-size:15px; text-decoration:none; padding:12px 16px; border-radius:10px; }
     .pricemini-btn:hover { filter:brightness(1.08); }
-    .pricemini-d { position:absolute; left:24px; top:96px; width:380px; z-index:10; }
+    .pricemini-d { position:absolute; left:24px; top:28px; width:380px; z-index:10; }
     .pricemini-m { display:none; width:min(420px,100%); margin:28px auto 0; }
     @media (max-width:1399px){ .pricemini-d { display:none; } .pricemini-m { display:block; } }
+
+    /* Dashboard-Kacheln */
+    .tiles { background:transparent; padding:44px 24px 36px; }
+    .tiles-inner { max-width:1100px; margin:0 auto; }
+    .tiles-badge { text-align:center; font-size:13px; color:#3a4a65; margin-bottom:22px; }
+    .tiles-badge span { display:inline-block; background:#1d6b45; color:#fff; font-weight:800; font-size:11px; letter-spacing:.08em; padding:5px 12px; border-radius:100px; margin-right:8px; }
+    .tiles-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    @media (max-width:1000px){ .tiles-grid { grid-template-columns:repeat(2,1fr); } }
+    @media (max-width:560px){ .tiles-grid { grid-template-columns:1fr; } }
+    .tile { position:relative; display:flex; flex-direction:column; align-items:center; text-align:center; background:linear-gradient(160deg,#1a2a4a,#223660); border:1px solid rgba(212,175,55,.35); border-radius:18px; padding:22px 16px 20px; color:#fff; text-decoration:none; box-shadow:0 6px 18px rgba(28,35,64,.18); }
+    .tile-icon { width:44px; height:44px; border-radius:50%; background:linear-gradient(135deg,#f0d36b,#d4af37); color:#1a2a4a; display:flex; align-items:center; justify-content:center; margin-bottom:12px; }
+    .tile-icon svg { width:22px; height:22px; }
+    .tile-title { font-family:'Playfair Display',serif; font-weight:700; font-size:17px; }
+    .tile-sub { font-size:12px; color:rgba(255,255,255,.6); margin:3px 0 14px; padding-bottom:12px; border-bottom:1px solid rgba(212,175,55,.3); width:100%; }
+    .tile-chips { display:flex; flex-wrap:wrap; gap:6px; justify-content:center; }
+    .tile-chip { font-size:11.5px; color:#fff; background:rgba(255,255,255,.08); border:1px solid rgba(212,175,55,.35); border-radius:10px; padding:5px 9px; }
+    .tile-new-card { border:2px solid #E8C766; animation:newGlow 1.8s ease-out infinite; padding-top:30px; }
+    .tile-new { position:absolute; top:-12px; left:50%; transform:translateX(-50%); white-space:nowrap; background:linear-gradient(135deg,#C4A55A,#E8C766); color:#1C2340; font-size:10.5px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; padding:5px 12px; border-radius:100px; }
+    .tile-new .new-star { color:#1C2340; }
+    .tile-new-card:hover { filter:brightness(1.08); }
   </style>
   <!-- Cookie-Consent + Google Analytics: ausgelagert in cookie-consent.js -->
 <script src="/cookie-consent.js"></script>
@@ -625,6 +647,19 @@
 <a class="new-banner" href="#zentrale"><span class="new-star">★</span> NEU: Die Zentrale, das Zusatzprodukt für mehrere Standorte <span class="new-star">★</span> Jetzt ansehen</a>
 
 <section class="hero">
+  <div class="pricemini pricemini-d">
+    <div class="pricemini-amount">299 € <span>/ Monat, inkl. 19% MwSt.</span></div>
+    <div class="pricemini-sub">Monatlich kündbar · Keine Mindestlaufzeit</div>
+    <a class="pricemini-btn" href="https://whop.com/gastro-os-81b8/starten/">Jetzt Zugriff erhalten</a>
+  </div>
+  <div class="logo-badge">GASTRO-OS · System · Strategie · Erfolg</div>
+  <h1>Dein Betrieb digital organisiert: Tagesgeschäft, <span class="nowrap">Team &amp; Wissen<a class="hero-star" href="#zentrale" aria-label="Neu: Die Zentrale für mehrere Standorte"><span>NEU</span></a></span><br>an einem Ort. <em>Sofort einsatzbereit.</em></h1>
+  <p class="hero-sub">Für Inhaber von Restaurants, Cafés, Bistros und Gaststätten, auch mit mehreren Standorten, die ihren Betrieb noch strukturierter und profitabler führen wollen.</p>
+  <div class="pricemini pricemini-m">
+    <div class="pricemini-amount">299 € <span>/ Monat, inkl. 19% MwSt.</span></div>
+    <div class="pricemini-sub">Monatlich kündbar · Keine Mindestlaufzeit</div>
+    <a class="pricemini-btn" href="https://whop.com/gastro-os-81b8/starten/">Jetzt Zugriff erhalten</a>
+  </div>
   <div class="faqpill" id="faqpill">
     <button class="faqpill-btn" onclick="hkToggle('faqpill')" aria-expanded="false">
       <span class="faqpill-icon">?</span>
@@ -678,21 +713,45 @@
         </div>
     </div>
   </div>
-  <div class="pricemini pricemini-d">
-    <div class="pricemini-amount">299 € <span>/ Monat, inkl. 19% MwSt.</span></div>
-    <div class="pricemini-sub">Monatlich kündbar · Keine Mindestlaufzeit</div>
-    <a class="pricemini-btn" href="https://whop.com/gastro-os-81b8/starten/">Jetzt Zugriff erhalten</a>
-  </div>
-  <div class="logo-badge">GASTRO-OS · System · Strategie · Erfolg</div>
-  <h1>Dein Betrieb digital organisiert: Tagesgeschäft, <span class="nowrap">Team &amp; Wissen<a class="hero-star" href="#zentrale" aria-label="Neu: Die Zentrale für mehrere Standorte"><span>NEU</span></a></span><br>an einem Ort. <em>Sofort einsatzbereit.</em></h1>
-  <p class="hero-sub">Für Inhaber von Restaurants, Cafés, Bistros und Gaststätten, auch mit mehreren Standorten, die ihren Betrieb noch strukturierter und profitabler führen wollen.</p>
-  <div class="pricemini pricemini-m">
-    <div class="pricemini-amount">299 € <span>/ Monat, inkl. 19% MwSt.</span></div>
-    <div class="pricemini-sub">Monatlich kündbar · Keine Mindestlaufzeit</div>
-    <a class="pricemini-btn" href="https://whop.com/gastro-os-81b8/starten/">Jetzt Zugriff erhalten</a>
-  </div>
 
 </section>
+
+<section class="tiles">
+  <div class="tiles-inner">
+    <div class="tiles-badge"><span>✓ SOFORT NUTZBAR</span> Ab dem ersten Tag einsatzbereit, ganz ohne Vorbereitung</div>
+    <div class="tiles-grid">
+    <div class="tile ">
+      
+      <span class="tile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg></span>
+      <span class="tile-title">Meine Buchhaltung</span>
+      <span class="tile-sub">Jeden Tag</span>
+      <span class="tile-chips"><span class="tile-chip">Zahlen eintragen</span><span class="tile-chip">Belege hochladen</span><span class="tile-chip">Wareneingang</span><span class="tile-chip">Monatsbericht als PDF</span></span>
+    </div>
+    <div class="tile ">
+      
+      <span class="tile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9"/><path d="M16 3.1a4 4 0 0 1 0 7.8"/></svg></span>
+      <span class="tile-title">Mein Team</span>
+      <span class="tile-sub">Mit eigener PIN</span>
+      <span class="tile-chips"><span class="tile-chip">Zeiterfassung</span><span class="tile-chip">Schichtplan</span><span class="tile-chip">Übergabe</span><span class="tile-chip">Reservierung</span><span class="tile-chip">Temperaturprotokoll</span></span>
+    </div>
+    <div class="tile ">
+      
+      <span class="tile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 2 9 2 12 0v-5"/></svg></span>
+      <span class="tile-title">Mein Wissen</span>
+      <span class="tile-sub">Freiwillig, aber wertvoll</span>
+      <span class="tile-chips"><span class="tile-chip">Module</span><span class="tile-chip">Ankervideos</span><span class="tile-chip">Quiz</span><span class="tile-chip">Podcast</span><span class="tile-chip">Checklisten</span></span>
+    </div>
+    <a class="tile tile-new-card" href="#zentrale">
+      <span class="tile-new"><span class="new-star">★</span> NEU · Zusatzprodukt</span>
+      <span class="tile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/></svg></span>
+      <span class="tile-title">Meine Standorte</span>
+      <span class="tile-sub">Für mehr als einen Standort</span>
+      <span class="tile-chips"><span class="tile-chip">Eigener Zugang pro Standort</span><span class="tile-chip">Überblick an einem Ort</span></span>
+    </a>
+    </div>
+  </div>
+</section>
+
 
 
 
@@ -721,20 +780,6 @@
   </div>
 </section>
 
-<section class="dual">
-  <div class="dual-inner">
-    <div class="dual-col">
-      <h3>✅ Sofort nutzbar</h3>
-      <p class="dual-tag">Ab dem ersten Tag einsatzbereit – ganz ohne Vorbereitung.</p>
-      <p class="dual-list"><strong>Jeden Tag:</strong> Zahlen eintragen (Kassenbuch, Z-Bon) · Rechnungen und Belege hochladen · Wareneingang prüfen<br><strong>Im Team:</strong> Zeiterfassung · Schichtplan · Temperaturprotokoll · Übergabebuch · Reservierungen · Zugänge mit eigener PIN<br><strong>Am Monatsende:</strong> alles gebündelt als PDF, bereit für den Steuerberater</p>
-    </div>
-    <div class="dual-col dual-col-light">
-      <h3>🎓 Dein Wissen wächst mit dir</h3>
-      <p class="dual-tag">Freiwillig, in deinem Tempo, wenn du Zeit hast.</p>
-      <p class="dual-list">Aufeinander aufbauende Module · Ankervideos · Wissenswerkzeuge · kurzes Quiz · Küchenfunk-Podcast · Mindmaps · Checklisten</p>
-    </div>
-  </div>
-</section>
 
 <section class="zentrale" id="zentrale">
   <div class="zentrale-inner">
