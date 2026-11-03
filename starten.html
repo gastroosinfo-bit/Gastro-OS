@@ -594,6 +594,15 @@
     @media (max-width:1399px){ .faqpill { position:relative; left:auto; top:auto; width:min(420px,100%); margin:0 auto 28px; } .hero { padding-top:40px; } }
     .faq-price-inner.price-only { grid-template-columns:1fr; max-width:480px; }
     .faq-price-inner.price-only .price-col { position:static; }
+
+    .price-list { list-style:none; text-align:left; margin:0 0 22px; padding:0; }
+    .price-list li { position:relative; padding:9px 0 9px 28px; font-size:15px; color:var(--navy); border-bottom:1px solid #f0e8d4; }
+    .price-list li:last-child { border-bottom:none; }
+    .price-list li::before { content:'✓'; position:absolute; left:2px; top:9px; color:var(--gold); font-weight:800; }
+    .price-list li.price-new { margin-top:6px; background:rgba(154,125,58,.10); border:1px solid rgba(154,125,58,.4); border-radius:10px; padding:11px 12px; border-bottom:1px solid rgba(154,125,58,.4); }
+    .price-list li.price-new::before { content:''; }
+    .price-list li.price-new strong { color:var(--gold); }
+    .price-list li.price-new a { color:var(--navy); font-weight:700; white-space:nowrap; }
   </style>
   <!-- Cookie-Consent + Google Analytics: ausgelagert in cookie-consent.js -->
 <script src="/cookie-consent.js"></script>
@@ -755,8 +764,12 @@
           <div class="price-amount">299 € <span>/ Monat, inkl. 19% MwSt.</span></div>
         </div>
         <div class="price-card-body">
-          <p>Monatlich kündbar. Keine Mindestlaufzeit.</p>
-          <div class="price-extra"><strong>★ Neu:</strong> Mehr als ein Standort? Die Zentrale gibt es als Zusatzprodukt. <a href="mailto:info@mein-gastro-system.de?subject=Zentrale%20f%C3%BCr%20mehrere%20Standorte" style="color:var(--navy);font-weight:600;">Jetzt anfragen</a></div>
+          <ul class="price-list">
+            <li>Monatlich kündbar</li>
+            <li>Keine Mindestlaufzeit</li>
+            <li>Sofort startklar: Tagesgeschäft, Team &amp; Wissen</li>
+            <li class="price-new"><strong>★ Neu:</strong> Zentrale für mehrere Standorte, als Zusatzprodukt. <a href="mailto:info@mein-gastro-system.de?subject=Zentrale%20f%C3%BCr%20mehrere%20Standorte">Jetzt anfragen</a></li>
+          </ul>
           <a href="https://whop.com/gastro-os-81b8/starten/" class="cta-btn">Jetzt Zugriff erhalten</a>
         </div>
       </div>
