@@ -574,7 +574,11 @@
     .zentrale-side { margin-top:20px; }
     .zentrale-layout .hk-dark { max-width:none; }
     .zentrale-layout .zentrale-cta { display:block; text-align:center; padding:16px 18px; }
-    @media (min-width:1400px){ .zentrale-layout { display:grid; grid-template-columns:minmax(0,1fr) 720px minmax(0,1fr); gap:24px; width:min(1300px,calc(100vw - 64px)); max-width:none; left:50%; transform:translateX(-50%); align-items:start; } .zentrale-layout .zentrale-grid { grid-column:2; grid-row:1; } .zentrale-side { grid-column:1; grid-row:1; justify-self:end; width:100%; max-width:290px; margin-top:0; } }
+    /* Kasten und goldene Felder mittig: Fragen-Feld und CTA stehen zentriert unter den vier Karten */
+    .zentrale-side { max-width:720px; margin:24px auto 0; }
+    .zentrale-cta-wrap { text-align:center; }
+    .zentrale-layout .zentrale-cta { max-width:420px; margin:0 auto; }
+    .zentrale-hinweis { text-align:center; }
     @media (max-width:560px){ .zentrale-layout .zentrale-grid { grid-template-columns:1fr; } }
     .faq-col .hk { margin-top:4px; }
     .price-extra { background:rgba(154,125,58,.10); border:1px solid rgba(154,125,58,.4); border-radius:10px; padding:12px 14px; margin:0 0 18px; font-size:14px; color:var(--navy); }
