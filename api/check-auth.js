@@ -14,7 +14,7 @@ const SESSION_DAYS = 30;
 const DEMO_ACCESS = {
   'westerwinter@dehoga-nrw.de': { expires: '2026-08-15' },
   'franz.perner@wkbgld.at': { expires: '2026-08-15' },
-  'z.asel@dehogabw.de': { expires: '2026-09-04' },
+  'z.asel@dehogabw.de': { expires: '2026-11-15' },
   'natascha.kummer@wkbgld.at': { expires: '2026-09-02' },
   'info@gastronomen.koeln': { expires: '2026-10-31' },
   'koslowski@progres.de': { expires: '2026-09-16' },
@@ -86,6 +86,59 @@ async function logLogin(email) {
   }
 }
 
+// Hat diese E-Mail ein Abo beim Whop-Produkt? true / false / 'fehler' (Whop nicht erreichbar)
+async function whopHatAbo(email) {
+  try {
+    const membershipRes = await fetch(
+      `https://api.whop.com/v5/company/memberships?product_id=${WHOP_PRODUCT_ID}`,
+      { headers: { 'Authorization': `Bearer ${WHOP_API_KEY}`, 'Content-Type': 'application/json' } }
+    );
+    if (!membershipRes.ok) return 'fehler';
+    const membershipData = await membershipRes.json();
+    const memberships = membershipData.data || [];
+    for (const membership of memberships) {
+      const userId = membership.user_id;
+      if (!userId) continue;
+      const userRes = await fetch(
+        `https://api.whop.com/v5/company/users/${userId}`,
+        { headers: { 'Authorization': `Bearer ${WHOP_API_KEY}`, 'Content-Type': 'application/json' } }
+      );
+      if (!userRes.ok) continue;
+      const user = await userRes.json();
+      if (user.email?.toLowerCase() === email.toLowerCase()) return true;
+    }
+    return false;
+  } catch (e) { return 'fehler'; }
+}
+
+// Sammel-Abo: Standort einer Zentrale, deren Chef ein Sammel-Abo hat (zentrale_plaene.sammel = true)
+// und selbst ein gültiges Whop-Abo besitzt. Der Standort braucht dann kein eigenes Abo.
+async function istSammelStandort(email) {
+  try {
+    const h = { 'apikey': SUPABASE_SERVICE_KEY, 'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}` };
+    const r = await fetch(
+      `${SUPABASE_URL}/rest/v1/filial_gruppen?filiale_email=eq.${encodeURIComponent(email.toLowerCase())}&status=neq.getrennt&select=zentrale_email&limit=10`,
+      { headers: h }
+    );
+    if (!r.ok) return false;
+    const rows = await r.json();
+    if (!Array.isArray(rows)) return false;
+    for (const row of rows) {
+      const zEmail = String(row.zentrale_email || '').toLowerCase();
+      if (!zEmail || zEmail === email.toLowerCase()) continue;
+      const pr = await fetch(
+        `${SUPABASE_URL}/rest/v1/zentrale_plaene?zentrale_email=eq.${encodeURIComponent(zEmail)}&sammel=eq.true&select=zentrale_email&limit=1`,
+        { headers: h }
+      );
+      if (!pr.ok) continue;
+      const plan = await pr.json();
+      if (!Array.isArray(plan) || plan.length === 0) continue;
+      if ((await whopHatAbo(zEmail)) === true) return true;
+    }
+    return false;
+  } catch (e) { return false; }
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -108,28 +161,12 @@ export default async function handler(req, res) {
   if (step === 'check_email') {
 
     if (!hasFreeAccess && !nurZentrale) {
-      // Whop-Prüfung
-      const membershipRes = await fetch(
-        `https://api.whop.com/v5/company/memberships?product_id=${WHOP_PRODUCT_ID}`,
-        { headers: { 'Authorization': `Bearer ${WHOP_API_KEY}`, 'Content-Type': 'application/json' } }
-      );
-      if (!membershipRes.ok) {
+      // Whop-Prüfung (eigenes Abo) oder Standort eines Sammel-Abos
+      let found = await whopHatAbo(email);
+      if (found === 'fehler') {
         return res.status(500).json({ error: 'Whop API nicht erreichbar' });
       }
-      const membershipData = await membershipRes.json();
-      const memberships = membershipData.data || [];
-      let found = false;
-      for (const membership of memberships) {
-        const userId = membership.user_id;
-        if (!userId) continue;
-        const userRes = await fetch(
-          `https://api.whop.com/v5/company/users/${userId}`,
-          { headers: { 'Authorization': `Bearer ${WHOP_API_KEY}`, 'Content-Type': 'application/json' } }
-        );
-        if (!userRes.ok) continue;
-        const user = await userRes.json();
-        if (user.email?.toLowerCase() === email.toLowerCase()) { found = true; break; }
-      }
+      if (!found) found = await istSammelStandort(email);
       if (!found) {
         return res.status(403).json({ error: 'Kein aktives Gastro-OS Abonnement für diese E-Mail gefunden.' });
       }
