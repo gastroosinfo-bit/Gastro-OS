@@ -23,7 +23,7 @@ function verifySession(token) {
 // zentral hier, also auf jeder Seite, die /api/verify-session nutzt.
 const BEFRISTETE_ZUGAENGE = {
   'koslowski@progres.de': '2026-09-22',
-  'z.asel@dehogabw.de': '2026-09-15',
+  'z.asel@dehogabw.de': '2026-11-16',
   'natascha.kummer@wkbgld.at': '2026-09-15',
   'westerwinter@dehoga-nrw.de': '2026-09-15',
   'franz.perner@wkbgld.at': '2026-09-15',
