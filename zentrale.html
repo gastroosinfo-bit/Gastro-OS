@@ -134,7 +134,7 @@ tfoot td { background:#1a2a4a; color:#fff; font-weight:700; border-color:#1a2a4a
     <div class="bar">
       <input type="text" id="suche" placeholder="Filiale suchen …">
       <label class="check"><input type="checkbox" id="f-auff"> Nur Auffälligkeiten</label>
-      <label class="check"><input type="checkbox" id="f-fehlt"> Nur Filialen mit fehlenden Einträgen</label>
+      <label class="check"><input type="checkbox" id="f-fehlt"> Nur Filialen mit fehlenden Einnahmen &amp; Ausgaben</label>
     </div>
 
     <div id="inhalt"><div class="meldung">Lade Daten …</div></div>
@@ -274,7 +274,7 @@ tfoot td { background:#1a2a4a; color:#fff; font-weight:700; border-color:#1a2a4a
 
   var tageCache = {};
   function tagesTabelle(r) {
-    var h = '<div class="tabwrap"><table><thead><tr><th>Datum</th><th>Einnahmen</th><th>Ausgaben</th><th>Gewinn</th><th>Eintrag</th></tr></thead><tbody>';
+    var h = '<div class="tabwrap"><table><thead><tr><th>Datum</th><th>Einnahmen</th><th>Ausgaben</th><th>Gewinn</th><th>Einnahmen &amp; Ausgaben</th></tr></thead><tbody>';
     r.tageListe.slice().reverse().forEach(function (d) {
       var t = r.tage[d] || { eintrag: false, umsatz: 0, wareneinkauf: 0, sonstiges: 0 };
       var tAus = (t.wareneinkauf || 0) + (t.sonstiges || 0);
@@ -302,10 +302,10 @@ tfoot td { background:#1a2a4a; color:#fff; font-weight:700; border-color:#1a2a4a
     h += '<div class="kpi"><div class="z">' + euro(sum('ausgaben')) + '</div><div class="l">Ausgaben</div></div>';
     h += '<div class="kpi"><div class="z">' + euro(sum('ergebnis')) + '</div><div class="l">Gewinn</div></div>';
     h += '<div class="kpi' + (auffAnz ? ' warn' : '') + '"><div class="z">' + auffAnz + '</div><div class="l">Filialen mit Auffälligkeiten</div></div>';
-    h += '<div class="kpi' + (ohneEintrag ? ' warn' : '') + '"><div class="z">' + ohneEintrag + '</div><div class="l">Filialen mit fehlenden Einträgen</div></div>';
+    h += '<div class="kpi' + (ohneEintrag ? ' warn' : '') + '"><div class="z">' + ohneEintrag + '</div><div class="l">Filialen mit fehlenden Einnahmen &amp; Ausgaben</div></div>';
     h += '</div><div style="height:12px"></div>';
 
-    var cols = [['name','Filiale'],['ergebnis','Gewinn'],['fehlt','Einträge']];
+    var cols = [['name','Filiale'],['ergebnis','Gewinn'],['fehlt','Einnahmen & Ausgaben']];
     h += '<div class="tabwrap"><table><thead><tr>';
     cols.forEach(function (c) {
       var pf = sortKey === c[0] ? (sortDir === 1 ? ' ▲' : ' ▼') : '';
@@ -315,8 +315,8 @@ tfoot td { background:#1a2a4a; color:#fff; font-weight:700; border-color:#1a2a4a
     if (l.length === 0) h += '<tr><td colspan="3" style="text-align:left;">Keine Filiale passt zu den Filtern.</td></tr>';
     l.forEach(function (r, idx) {
       var eint;
-      if (r.fehlt > 0) eint = '<span class="badge ' + (r.tageMitEintrag === 0 ? 'b-rot' : 'b-gelb') + '">' + r.tageMitEintrag + ' von ' + r.erwartet + ' Tagen</span>';
-      else if (r.erwartet > 0) eint = '<span class="badge b-ok">vollständig</span>';
+      if (r.fehlt > 0) eint = '<span class="badge ' + (r.tageMitEintrag === 0 ? 'b-rot' : 'b-gelb') + '">' + r.tageMitEintrag + ' von ' + r.erwartet + ' Tagen eingetragen</span>';
+      else if (r.erwartet > 0) eint = '<span class="badge b-ok">vollständig eingetragen</span>';
       else eint = '<span class="badge b-grau">noch offen / Ruhetag</span>';
       var badges = r.auff.map(function (a) { return '<span class="badge b-rot">' + esc(a) + '</span>'; }).join('');
       h += '<tr class="fil" data-n="' + esc(r.name) + '"><td><strong>' + esc(r.name) + '</strong>' + badges + '</td><td>' + euro(r.ergebnis) + '</td><td>' + eint + '</td></tr>';
@@ -326,7 +326,7 @@ tfoot td { background:#1a2a4a; color:#fff; font-weight:700; border-color:#1a2a4a
       }
     });
     h += '</tbody><tfoot><tr><td>Summe (angezeigte Filialen)</td><td>' + euro(sum('ergebnis')) + '</td><td></td></tr></tfoot></table></div>';
-    h += '<div class="hinweis">Auf eine Filiale klicken öffnet den Monatsbericht und ein Auswahlfeld mit allen Einzelheiten (Tage, Abschreibungen, Schichtplan, Belege und mehr). Die Spaltenköpfe sortieren die Tabelle. Der Gewinn ist Einnahmen minus Ausgaben (Wareneinkauf und Sonstiges). Stornos sind schon in den Einnahmen enthalten, weil der Tagesumsatz am Tagesende eingetragen wird. „Auffällig“ heißt: deutlich mehr Stornos, Freigetränke oder Abschreibungen als der Durchschnitt aller Filialen. Die Zahlen stammen aus den Einträgen der Filialen, „fehlt“ heißt: Für einen abgeschlossenen Tag, der kein Ruhetag der Filiale ist, wurde nichts im Kassenbuch eingetragen. Der heutige Tag zählt erst ab morgen.</div>';
+    h += '<div class="hinweis">Die Spalte „Einnahmen &amp; Ausgaben“ zeigt, ob die Filiale für die Tage des Zeitraums ihre Einnahmen und Ausgaben im Kassenbuch eingetragen hat. Alles Weitere siehst du in den Einzelheiten. Auf eine Filiale klicken öffnet den Monatsbericht und ein Auswahlfeld mit allen Einzelheiten (Tage, Abschreibungen, Schichtplan, Belege und mehr). Die Spaltenköpfe sortieren die Tabelle. Der Gewinn ist Einnahmen minus Ausgaben (Wareneinkauf und Sonstiges). Stornos sind schon in den Einnahmen enthalten, weil der Tagesumsatz am Tagesende eingetragen wird. „Auffällig“ heißt: deutlich mehr Stornos, Freigetränke oder Abschreibungen als der Durchschnitt aller Filialen. Die Zahlen stammen aus den Einträgen der Filialen, „fehlt“ heißt: Für einen abgeschlossenen Tag, der kein Ruhetag der Filiale ist, wurde nichts im Kassenbuch eingetragen. Der heutige Tag zählt erst ab morgen.</div>';
     box.innerHTML = h;
 
     Array.prototype.forEach.call(box.querySelectorAll('th[data-k]'), function (th) {
