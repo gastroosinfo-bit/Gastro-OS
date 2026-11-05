@@ -652,6 +652,9 @@
     .tile-new { position:absolute; top:-12px; left:50%; transform:translateX(-50%); white-space:nowrap; background:linear-gradient(135deg,#C4A55A,#E8C766); color:#1C2340; font-size:10.5px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; padding:5px 12px; border-radius:100px; }
     .tile-new .new-star { color:#1C2340; }
     .tile-new-card:hover { filter:brightness(1.08); }
+    /* Fragen & Antworten + Wer steckt dahinter: mittig unter den Infos der Zentrale, heller Streifen über die ganze Breite */
+    .faq-light { padding:36px 24px 44px; }
+    .faq-light .pillcol { position:static !important; left:auto !important; top:auto !important; width:min(440px,100%) !important; margin:0 auto !important; }
 
     /* NEU-Stern links über dem Preis */
     @keyframes nsPulse { 0%,100%{ transform:scale(1) rotate(-6deg); filter:drop-shadow(0 0 8px rgba(255,224,130,.55)); } 50%{ transform:scale(1.1) rotate(6deg); filter:drop-shadow(0 0 24px rgba(255,224,130,1)); } }
@@ -711,84 +714,7 @@
     <div class="pricemini-sub">Monatlich kündbar · Keine Mindestlaufzeit</div>
     <a class="pricemini-btn" href="https://whop.com/gastro-os-81b8/starten/">Jetzt Zugang erhalten</a>
   </div>
-  <div class="pillcol">
-  <div class="faqpill" id="faqpill">
-    <button class="faqpill-btn" onclick="hkToggle('faqpill')" aria-expanded="false">
-      <span class="faqpill-icon">?</span>
-      <span class="faqpill-titles"><span class="faqpill-title">Fragen &amp; Antworten</span></span>
-      <span class="faqpill-arrow">▼</span>
-    </button>
-    <div class="faqpill-panel hk-body">
-<div class="hk-item">
-          <button class="hk-q" onclick="hkItem(this)">Was ist genau in GASTRO-OS enthalten? <span class="hk-pfeil">▼</span></button>
-          <div class="hk-a"><strong>1. Dein Tagesgeschäft</strong><br>Zahlen eintragen, Rechnungen und Belege hochladen, Kassenbuch, Zeiterfassung, Schichtplan, Temperaturprotokoll, Übergabebuch, Reservierungen und mehr. Sofort nutzbar für dich und dein Team.<br><br><strong>2. Dein Wissen</strong><br>Aufeinander aufbauende Module mit Ankervideos, Wissenswerkzeugen und dem Küchenfunk-Podcast, wenn du Zeit dafür hast.<br><br><strong>Zusätzlich für mehrere Standorte</strong><br>Die Zentrale, als eigenes Zusatzprodukt.</div>
-        </div>
-<div class="hk-item">
-          <button class="hk-q" onclick="hkItem(this)">Ich habe mehrere Standorte. Geht das? <span class="hk-pfeil">▼</span></button>
-          <div class="hk-a">Ja, mit der Zentrale. Sie ist ein eigenes Zusatzprodukt zu GASTRO-OS.<br><br><strong>Jeder Standort</strong><br>Hat seinen eigenen Zugang und trägt die täglichen Dinge selbst ein.<br><br><strong>Der Benutzer der Zentrale</strong><br>Kann sich die Daten und Zahlen aller Standorte jederzeit abrufen und wählt aus, was gerade wichtig ist.<br><br><strong>Wie viele Standorte?</strong><br>Ob zwei oder dreißig: kein Problem.</div>
-        </div>
-<div class="hk-item">
-          <button class="hk-q" onclick="hkItem(this)">Können auch meine Mitarbeiter GASTRO-OS nutzen? <span class="hk-pfeil">▼</span></button>
-          <div class="hk-a">Ja. Du legst für jeden Mitarbeiter einen eigenen PIN-Zugang an und entscheidest, welche Bereiche er nutzen darf – zum Beispiel Übergabe, Reservierung oder Zeiterfassung.</div>
-        </div>
-<div class="hk-item">
-          <button class="hk-q" onclick="hkItem(this)">Für wen ist das gemacht? <span class="hk-pfeil">▼</span></button>
-          <div class="hk-a"><strong>Für jeden Betrieb</strong><br>Restaurant, Café, Bistro oder Gaststätte, mit einem Standort oder mehreren.<br><br><strong>Für jeden Stand</strong><br>Egal ob du gerade erst übernommen hast oder schon seit Jahren im Geschäft bist. Tagesgeschäft und Team nutzt du sofort, die Module bauen in deinem Tempo aufeinander auf.</div>
-        </div>
-<div class="hk-item">
-          <button class="hk-q" onclick="hkItem(this)">Wie viel Zeit muss ich investieren? <span class="hk-pfeil">▼</span></button>
-          <div class="hk-a"><strong>Tagesgeschäft und Team</strong><br>Keine Einarbeitung nötig, einfach loslegen.<br><br><strong>Module</strong><br>Freiwillig und ohne festes Pensum. Du gehst sie in deinem eigenen Tempo durch, wenn du Zeit dafür hast.</div>
-        </div>
-<div class="hk-item">
-          <button class="hk-q" onclick="hkItem(this)">Was unterscheidet GASTRO-OS von einem Berater oder Kurs? <span class="hk-pfeil">▼</span></button>
-          <div class="hk-a"><strong>Ein Berater</strong><br>Ist irgendwann wieder weg.<br><br><strong>Ein Kurs</strong><br>Ist irgendwann durch.<br><br><strong>GASTRO-OS</strong><br>Ist ein System für dein Tagesgeschäft, dein Team, dein Wissen und auf Wunsch alle deine Standorte. Es bleibt dauerhaft nutzbar und wird laufend erweitert. Als Mitglied bekommst du das automatisch dazu.</div>
-        </div>
-<div class="hk-item">
-          <button class="hk-q" onclick="hkItem(this)">Was genau bekomme ich nach dem Kauf? <span class="hk-pfeil">▼</span></button>
-          <div class="hk-a"><strong>Sofort</strong><br>Zugang zu Tagesgeschäft und Team-Bereich.<br><br><strong>Schritt für Schritt</strong><br>Die Module auf mein-gastro-system.de, mit Videos, Lektionen, Wissenswerkzeugen, Quiz und Podcast.<br><br><strong>Direkt im Browser</strong><br>Kein Download nötig.<br><br><strong>Mehrere Standorte?</strong><br>Die Zentrale gibt es als Zusatzprodukt. Dafür schreibst du uns kurz.</div>
-        </div>
-<div class="hk-item">
-          <button class="hk-q" onclick="hkItem(this)">Wie lange ist die Mindestlaufzeit? <span class="hk-pfeil">▼</span></button>
-          <div class="hk-a">Es gibt keine Mindestlaufzeit. Du zahlst monatlich und kannst jederzeit kündigen.</div>
-        </div>
-<div class="hk-item">
-          <button class="hk-q" onclick="hkItem(this)">Gibt es eine Geld-zurück-Garantie? <span class="hk-pfeil">▼</span></button>
-          <div class="hk-a">Da GASTRO-OS ein digitales Produkt ist, zu dem du sofort vollen Zugang auf alle Inhalte bekommst, gibt es keine gesonderte Geld-zurück-Garantie. Dafür bist du durch die monatliche Kündbarkeit jederzeit flexibel – ohne dass du dich langfristig bindest.</div>
-        </div>
-<div class="hk-item">
-          <button class="hk-q" onclick="hkItem(this)">Brauche ich Vorwissen, um zu starten? <span class="hk-pfeil">▼</span></button>
-          <div class="hk-a"><strong>Tagesgeschäft</strong><br>Ab dem ersten Tag nutzbar, ganz ohne Vorwissen.<br><br><strong>Module</strong><br>Bauen Schritt für Schritt aufeinander auf, egal auf welchem Stand du gerade bist.</div>
-        </div>
-<div class="hk-item">
-          <button class="hk-q" onclick="hkItem(this)">Bekomme ich auch neue Inhalte wenn ich bereits Mitglied bin? <span class="hk-pfeil">▼</span></button>
-          <div class="hk-a">Ja. GASTRO-OS wird laufend erweitert – neue Module, Tools und Inhalte kommen regelmäßig dazu. Als Mitglied profitierst du automatisch davon.</div>
-        </div>
-    </div>
-  </div>
-  <div class="faqpill wirpill" id="wirpill">
-    <button class="faqpill-btn" onclick="hkToggle('wirpill')">
-      <span class="faqpill-icon">♥</span>
-      <span class="faqpill-titles"><span class="faqpill-title">Wer steckt hinter GASTRO-OS?</span></span>
-      <span class="faqpill-arrow">▼</span>
-    </button>
-    <div class="faqpill-panel wir-in"><div class="decision-text">
-        <h2>Dein Betrieb läuft – aber du läufst hinterher.</h2>
-        <p>Kassenbuch, Belege, Schichtplan, Zeiterfassung. Im Gastro-Alltag frisst das jeden Tag Zeit, die dir eigentlich fehlt. GASTRO-OS bündelt dein Tagesgeschäft und dein Team an einem Ort, damit du diese Zeit zurückgewinnst. Als Bonus bekommst du zusätzlich das Wissen und die Werkzeuge, mit denen am Ende auch mehr Gewinn übrig bleibt.</p>
 
-        <div class="founder-row">
-          <img src="/sandra-story.jpg" alt="Sandra, Gründerin von GASTRO-OS" class="founder-photo" onclick="openLightbox(this.src)">
-          <div class="founder-caption"><strong>Sandra</strong><br>Gründerin von GASTRO-OS</div>
-        </div>
-
-        <details class="origin-details">
-          <summary>Wie GASTRO-OS entstanden ist</summary>
-          <div class="origin-story">
-            Ich bin Sandra. Bevor es GASTRO-OS gab, stand ich selbst jahrelang jeden Tag im eigenen Laden – morgens rein, abends raus. Und wenn der Laden zu war, ging die Arbeit erst richtig los: Kassenbuch führen, Belege sortieren, Temperaturen eintragen, Schichtpläne schreiben, Übergaben festhalten, Reservierungen im Kopf behalten – dazu Einkaufslisten, Kalkulationen, Eventplanung, alles noch nach Feierabend, verteilt auf zehn verschiedenen Zetteln und halbfertigen Excel-Tabellen. Die Arbeit, die niemand sieht. Irgendwann war klar: Das muss nicht so verteilt sein – es geht auch gebündelt, an einem Ort. Weil ich technisch selbst ziemlich fit bin, habe ich genau das zuerst für mich selbst entwickelt. Und es hat gut funktioniert. Dann dachte ich: Wenn es gut für mich ist, warum nicht auch für andere Gastronomen? So ist GASTRO-OS entstanden – und es wächst bis heute weiter, mit neuen Werkzeugen für genau die Aufgaben, die im Alltag wirklich anfallen.
-          </div>
-        </details></div></div>
-  </div>
-
-  </div>
 </section>
 
 <section class="tiles">
@@ -874,6 +800,88 @@
       <p class="zentrale-hinweis"><strong>Interesse an der Zentrale?</strong> Bitte melde dich zuerst bei uns. Wir besprechen alles persönlich und richten die Zentrale für dich ein.</p></div>
       </div>
     </div>
+  </div>
+</section>
+
+<section class="tiles faq-light">
+  <div class="tiles-inner">
+  <div class="pillcol">
+  <div class="faqpill" id="faqpill">
+    <button class="faqpill-btn" onclick="hkToggle('faqpill')" aria-expanded="false">
+      <span class="faqpill-icon">?</span>
+      <span class="faqpill-titles"><span class="faqpill-title">Fragen &amp; Antworten</span></span>
+      <span class="faqpill-arrow">▼</span>
+    </button>
+    <div class="faqpill-panel hk-body">
+<div class="hk-item">
+          <button class="hk-q" onclick="hkItem(this)">Was ist genau in GASTRO-OS enthalten? <span class="hk-pfeil">▼</span></button>
+          <div class="hk-a"><strong>1. Dein Tagesgeschäft</strong><br>Zahlen eintragen, Rechnungen und Belege hochladen, Kassenbuch, Zeiterfassung, Schichtplan, Temperaturprotokoll, Übergabebuch, Reservierungen und mehr. Sofort nutzbar für dich und dein Team.<br><br><strong>2. Dein Wissen</strong><br>Aufeinander aufbauende Module mit Ankervideos, Wissenswerkzeugen und dem Küchenfunk-Podcast, wenn du Zeit dafür hast.<br><br><strong>Zusätzlich für mehrere Standorte</strong><br>Die Zentrale, als eigenes Zusatzprodukt.</div>
+        </div>
+<div class="hk-item">
+          <button class="hk-q" onclick="hkItem(this)">Ich habe mehrere Standorte. Geht das? <span class="hk-pfeil">▼</span></button>
+          <div class="hk-a">Ja, mit der Zentrale. Sie ist ein eigenes Zusatzprodukt zu GASTRO-OS.<br><br><strong>Jeder Standort</strong><br>Hat seinen eigenen Zugang und trägt die täglichen Dinge selbst ein.<br><br><strong>Der Benutzer der Zentrale</strong><br>Kann sich die Daten und Zahlen aller Standorte jederzeit abrufen und wählt aus, was gerade wichtig ist.<br><br><strong>Wie viele Standorte?</strong><br>Ob zwei oder dreißig: kein Problem.</div>
+        </div>
+<div class="hk-item">
+          <button class="hk-q" onclick="hkItem(this)">Können auch meine Mitarbeiter GASTRO-OS nutzen? <span class="hk-pfeil">▼</span></button>
+          <div class="hk-a">Ja. Du legst für jeden Mitarbeiter einen eigenen PIN-Zugang an und entscheidest, welche Bereiche er nutzen darf – zum Beispiel Übergabe, Reservierung oder Zeiterfassung.</div>
+        </div>
+<div class="hk-item">
+          <button class="hk-q" onclick="hkItem(this)">Für wen ist das gemacht? <span class="hk-pfeil">▼</span></button>
+          <div class="hk-a"><strong>Für jeden Betrieb</strong><br>Restaurant, Café, Bistro oder Gaststätte, mit einem Standort oder mehreren.<br><br><strong>Für jeden Stand</strong><br>Egal ob du gerade erst übernommen hast oder schon seit Jahren im Geschäft bist. Tagesgeschäft und Team nutzt du sofort, die Module bauen in deinem Tempo aufeinander auf.</div>
+        </div>
+<div class="hk-item">
+          <button class="hk-q" onclick="hkItem(this)">Wie viel Zeit muss ich investieren? <span class="hk-pfeil">▼</span></button>
+          <div class="hk-a"><strong>Tagesgeschäft und Team</strong><br>Keine Einarbeitung nötig, einfach loslegen.<br><br><strong>Module</strong><br>Freiwillig und ohne festes Pensum. Du gehst sie in deinem eigenen Tempo durch, wenn du Zeit dafür hast.</div>
+        </div>
+<div class="hk-item">
+          <button class="hk-q" onclick="hkItem(this)">Was unterscheidet GASTRO-OS von einem Berater oder Kurs? <span class="hk-pfeil">▼</span></button>
+          <div class="hk-a"><strong>Ein Berater</strong><br>Ist irgendwann wieder weg.<br><br><strong>Ein Kurs</strong><br>Ist irgendwann durch.<br><br><strong>GASTRO-OS</strong><br>Ist ein System für dein Tagesgeschäft, dein Team, dein Wissen und auf Wunsch alle deine Standorte. Es bleibt dauerhaft nutzbar und wird laufend erweitert. Als Mitglied bekommst du das automatisch dazu.</div>
+        </div>
+<div class="hk-item">
+          <button class="hk-q" onclick="hkItem(this)">Was genau bekomme ich nach dem Kauf? <span class="hk-pfeil">▼</span></button>
+          <div class="hk-a"><strong>Sofort</strong><br>Zugang zu Tagesgeschäft und Team-Bereich.<br><br><strong>Schritt für Schritt</strong><br>Die Module auf mein-gastro-system.de, mit Videos, Lektionen, Wissenswerkzeugen, Quiz und Podcast.<br><br><strong>Direkt im Browser</strong><br>Kein Download nötig.<br><br><strong>Mehrere Standorte?</strong><br>Die Zentrale gibt es als Zusatzprodukt. Dafür schreibst du uns kurz.</div>
+        </div>
+<div class="hk-item">
+          <button class="hk-q" onclick="hkItem(this)">Wie lange ist die Mindestlaufzeit? <span class="hk-pfeil">▼</span></button>
+          <div class="hk-a">Es gibt keine Mindestlaufzeit. Du zahlst monatlich und kannst jederzeit kündigen.</div>
+        </div>
+<div class="hk-item">
+          <button class="hk-q" onclick="hkItem(this)">Gibt es eine Geld-zurück-Garantie? <span class="hk-pfeil">▼</span></button>
+          <div class="hk-a">Da GASTRO-OS ein digitales Produkt ist, zu dem du sofort vollen Zugang auf alle Inhalte bekommst, gibt es keine gesonderte Geld-zurück-Garantie. Dafür bist du durch die monatliche Kündbarkeit jederzeit flexibel – ohne dass du dich langfristig bindest.</div>
+        </div>
+<div class="hk-item">
+          <button class="hk-q" onclick="hkItem(this)">Brauche ich Vorwissen, um zu starten? <span class="hk-pfeil">▼</span></button>
+          <div class="hk-a"><strong>Tagesgeschäft</strong><br>Ab dem ersten Tag nutzbar, ganz ohne Vorwissen.<br><br><strong>Module</strong><br>Bauen Schritt für Schritt aufeinander auf, egal auf welchem Stand du gerade bist.</div>
+        </div>
+<div class="hk-item">
+          <button class="hk-q" onclick="hkItem(this)">Bekomme ich auch neue Inhalte wenn ich bereits Mitglied bin? <span class="hk-pfeil">▼</span></button>
+          <div class="hk-a">Ja. GASTRO-OS wird laufend erweitert – neue Module, Tools und Inhalte kommen regelmäßig dazu. Als Mitglied profitierst du automatisch davon.</div>
+        </div>
+    </div>
+  </div>
+  <div class="faqpill wirpill" id="wirpill">
+    <button class="faqpill-btn" onclick="hkToggle('wirpill')">
+      <span class="faqpill-icon">♥</span>
+      <span class="faqpill-titles"><span class="faqpill-title">Wer steckt hinter GASTRO-OS?</span></span>
+      <span class="faqpill-arrow">▼</span>
+    </button>
+    <div class="faqpill-panel wir-in"><div class="decision-text">
+        <h2>Dein Betrieb läuft – aber du läufst hinterher.</h2>
+        <p>Kassenbuch, Belege, Schichtplan, Zeiterfassung. Im Gastro-Alltag frisst das jeden Tag Zeit, die dir eigentlich fehlt. GASTRO-OS bündelt dein Tagesgeschäft und dein Team an einem Ort, damit du diese Zeit zurückgewinnst. Als Bonus bekommst du zusätzlich das Wissen und die Werkzeuge, mit denen am Ende auch mehr Gewinn übrig bleibt.</p>
+
+        <div class="founder-row">
+          <img src="/sandra-story.jpg" alt="Sandra, Gründerin von GASTRO-OS" class="founder-photo" onclick="openLightbox(this.src)">
+          <div class="founder-caption"><strong>Sandra</strong><br>Gründerin von GASTRO-OS</div>
+        </div>
+
+        <details class="origin-details">
+          <summary>Wie GASTRO-OS entstanden ist</summary>
+          <div class="origin-story">
+            Ich bin Sandra. Bevor es GASTRO-OS gab, stand ich selbst jahrelang jeden Tag im eigenen Laden – morgens rein, abends raus. Und wenn der Laden zu war, ging die Arbeit erst richtig los: Kassenbuch führen, Belege sortieren, Temperaturen eintragen, Schichtpläne schreiben, Übergaben festhalten, Reservierungen im Kopf behalten – dazu Einkaufslisten, Kalkulationen, Eventplanung, alles noch nach Feierabend, verteilt auf zehn verschiedenen Zetteln und halbfertigen Excel-Tabellen. Die Arbeit, die niemand sieht. Irgendwann war klar: Das muss nicht so verteilt sein – es geht auch gebündelt, an einem Ort. Weil ich technisch selbst ziemlich fit bin, habe ich genau das zuerst für mich selbst entwickelt. Und es hat gut funktioniert. Dann dachte ich: Wenn es gut für mich ist, warum nicht auch für andere Gastronomen? So ist GASTRO-OS entstanden – und es wächst bis heute weiter, mit neuen Werkzeugen für genau die Aufgaben, die im Alltag wirklich anfallen.
+          </div>
+        </details></div></div>
+  </div>
+  </div>
   </div>
 </section>
 
