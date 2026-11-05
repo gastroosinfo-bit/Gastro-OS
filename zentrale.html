@@ -62,6 +62,8 @@ tfoot td { background:#1a2a4a; color:#fff; font-weight:700; border-color:#1a2a4a
 .verw-zeile input[type=text] { border:1px solid #e0d8c8; border-radius:6px; padding:7px 10px; font-size:13px; color:#1a2a4a; background:#eaf2ff; font-family:inherit; }
 .verw-name { width:200px; max-width:100%; }
 .verw-mail { font-size:12.5px; color:#5a6a80; min-width:200px; word-break:break-all; }
+.fehlt-tage { font-size:11.5px; color:#c0392b; margin-top:4px; white-space:normal; }
+.fehlt-tage strong { font-weight:700; }
 .tage-block { display:flex; flex-direction:column; gap:4px; }
 .tage-lbl { font-size:11px; font-weight:700; color:#8090a8; }
 .tage-wahl { display:flex; gap:4px; flex-wrap:wrap; }
@@ -318,6 +320,12 @@ tfoot td { background:#1a2a4a; color:#fff; font-weight:700; border-color:#1a2a4a
       if (r.fehlt > 0) eint = '<span class="badge ' + (r.tageMitEintrag === 0 ? 'b-rot' : 'b-gelb') + '">' + r.tageMitEintrag + ' von ' + r.erwartet + ' Tagen eingetragen</span>';
       else if (r.erwartet > 0) eint = '<span class="badge b-ok">vollständig eingetragen</span>';
       else eint = '<span class="badge b-grau">noch offen / Ruhetag</span>';
+      if (r.fehlt > 0) {
+        var fehlTage = r.tageListe.filter(function (d) { return r.status[d] === 'fehlt'; });
+        var kurz = function (d) { var q = deDatum(d).split('.'); return q[0] + '.' + q[1] + '.'; };
+        var zeigen = fehlTage.length <= 4 ? fehlTage.map(function (d) { return fehlTage.length === 1 ? deDatum(d) : kurz(d); }) : fehlTage.slice(0, 4).map(kurz);
+        eint += '<div class="fehlt-tage"><strong>Es fehlt:</strong> ' + esc(zeigen.join(', ')) + (fehlTage.length > 4 ? ' und ' + (fehlTage.length - 4) + ' weitere' : '') + '</div>';
+      }
       var badges = r.auff.map(function (a) { return '<span class="badge b-rot">' + esc(a) + '</span>'; }).join('');
       h += '<tr class="fil" data-n="' + esc(r.name) + '"><td><strong>' + esc(r.name) + '</strong>' + badges + '</td><td>' + euro(r.ergebnis) + '</td><td>' + eint + '</td></tr>';
       tageCache[r.name] = tagesTabelle(r);
