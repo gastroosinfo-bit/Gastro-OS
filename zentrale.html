@@ -427,11 +427,26 @@ tfoot td { background:#1a2a4a; color:#fff; font-weight:700; border-color:#1a2a4a
     ['tagesgeschaeft-speisekarte', 'Speisekarte'],
     ['tagesgeschaeft-belege-lieferanten', 'Lieferanten']
   ];
-  var SPALTEN = { datum: 'Datum', plattform: 'Art', betrag: 'Betrag', rechnungsnr: 'Rechnungs-Nr.', steuerId: 'Steuer-ID', bar: 'Bar', karte: 'Karte', status: 'Status', dateiname: 'Datei', name: 'Name', text: 'Text', notiz: 'Notiz', menge: 'Menge', einheit: 'Einheit', wert: 'Wert', grund: 'Grund', lieferant: 'Lieferant', artikel: 'Artikel', zeitpunkt: 'Zeitpunkt', von: 'Von', bis: 'Bis', zeit: 'Zeit', gaeste: 'Gäste', uhrzeit: 'Uhrzeit', temperatur: 'Temperatur', geraet: 'Gerät', umsatz: 'Umsatz', ausgaben: 'Ausgaben', bemerkung: 'Bemerkung' };
-  var VERSTECKT = ['id', 'storagePath', 'pin', 'code', 'passwort', 'password', 'hash'];
+  var SPALTEN = { datum: 'Datum', plattform: 'Art', betrag: 'Betrag', rechnungsnr: 'Rechnungs-Nr.', steuerId: 'Steuer-ID', bar: 'Bar', karte: 'Karte', status: 'Status', dateiname: 'Datei', name: 'Name', text: 'Text', notiz: 'Notiz', menge: 'Menge', einheit: 'Einheit', wert: 'Wert', grund: 'Grund', lieferant: 'Lieferant', artikel: 'Artikel', zeitpunkt: 'Zeitpunkt', von: 'Von', bis: 'Bis', zeit: 'Zeit', gaeste: 'Gäste', uhrzeit: 'Uhrzeit', temperatur: 'Temperatur', geraet: 'Gerät', umsatz: 'Umsatz', ausgaben: 'Ausgaben', bemerkung: 'Bemerkung',
+    kasse: 'Kasse', lieferdienste: 'Lieferdienste', ueberweisung: 'Überweisung',
+    wareneinkauf: 'Wareneinkauf', wareneinkaufBar: 'Wareneinkauf Bar', wareneinkaufKarte: 'Wareneinkauf Karte', wareneinkaufUeberweisung: 'Wareneinkauf Überweisung',
+    sonstiges: 'Sonstiges', sonstigesBar: 'Sonstiges Bar', sonstigesKarte: 'Sonstiges Karte', sonstigesUeberweisung: 'Sonstiges Überweisung',
+    mwst19: 'MwSt. 19 %', mwst7: 'MwSt. 7 %', faelligkeit: 'Fälligkeit', hochgeladenAm: 'Hochgeladen am', genehmigtAm: 'Genehmigt am',
+    getraenk: 'Getränk', temp: 'Temperatur', mengeOk: 'Menge in Ordnung', mhdOk: 'MHD in Ordnung', zustandOk: 'Zustand in Ordnung', ok: 'In Ordnung',
+    mitarbeiter: 'Mitarbeiter', mitarbeiterName: 'Mitarbeiter', pause: 'Pause', stunden: 'Stunden', personen: 'Personen', tisch: 'Tisch', telefon: 'Telefon',
+    preis: 'Preis', summe: 'Summe', kategorie: 'Kategorie', beschreibung: 'Beschreibung', titel: 'Titel', typ: 'Typ', art: 'Art', was: 'Was', ort: 'Ort', kontakt: 'Kontakt' };
+  // Unbekannte Feldnamen lesbar machen: camelCase trennen, erster Buchstabe groß, ue/ae/oe → Umlaut nur bei bekannten Wörtern
+  function spaltenName(k) {
+    if (SPALTEN[k]) return SPALTEN[k];
+    var t = String(k).replace(/[-_]+/g, ' ').replace(/([a-zäöü])([A-Z])/g, '$1 $2').trim();
+    t = t.replace(/ueber/gi, function (m) { return m[0] === 'U' ? 'Über' : 'über'; });
+    return t.charAt(0).toUpperCase() + t.slice(1);
+  }
+  var VERSTECKT = ['id', 'path', 'contentType', 'storagePath', 'pin', 'code', 'passwort', 'password', 'hash'];
   function zelle(k, v) {
     if (v == null || v === '') return '';
-    if (typeof v === 'number') return /betrag|wert|bar|karte|umsatz|ausgaben|preis|summe/i.test(k) ? euro(v) : String(v);
+    if (typeof v === 'boolean') return v ? 'Ja' : 'Nein';
+    if (typeof v === 'number') return /betrag|wert|bar|karte|umsatz|ausgaben|preis|summe|kasse|lieferdienste|ueberweisung|wareneinkauf|sonstiges/i.test(k) ? euro(v) : String(v);
     if (typeof v === 'object') return '';
     var t = String(v);
     if (/^\d{4}-\d{2}-\d{2}$/.test(t)) return deDatum(t);
@@ -474,7 +489,7 @@ tfoot td { background:#1a2a4a; color:#fff; font-weight:700; border-color:#1a2a4a
       keys.sort(function (a, b) { return (a === 'datum' ? -1 : 0) - (b === 'datum' ? -1 : 0); });
       keys = keys.slice(0, 9);
       var hat = tool === 'tagesgeschaeft-belege';
-      var h = '<div class="tabwrap"><table><thead><tr>' + keys.map(function (k) { return '<th>' + esc(SPALTEN[k] || k) + '</th>'; }).join('') + (hat ? '<th>Beleg</th>' : '') + '</tr></thead><tbody>';
+      var h = '<div class="tabwrap"><table><thead><tr>' + keys.map(function (k) { return '<th>' + esc(spaltenName(k)) + '</th>'; }).join('') + (hat ? '<th>Beleg</th>' : '') + '</tr></thead><tbody>';
       rows.forEach(function (r) {
         h += '<tr>' + keys.map(function (k) { return '<td style="text-align:left;white-space:normal;">' + esc(zelle(k, r[k])) + '</td>'; }).join('');
         if (hat) h += '<td>' + (r.storagePath ? '<button class="btn-klein" data-p="' + esc(r.storagePath) + '">Öffnen</button>' : '') + '</td>';
