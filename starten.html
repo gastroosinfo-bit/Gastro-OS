@@ -634,6 +634,13 @@
     .pricemini-btn { display:block; background:linear-gradient(90deg,#9A7D3A,#C4A55A,#9A7D3A); color:#1C2340; font-weight:700; font-size:15px; text-decoration:none; padding:12px 16px; border-radius:10px; }
     .pricemini-btn:hover { filter:brightness(1.08); }
     .pricemini-d { position:absolute; left:max(24px, calc(25vw - 330px)); top:28px; width:380px; z-index:10; }
+    /* Partner-Karte: rechts im Kopfbereich, spiegelt die Preisbox links */
+    .partnercard { background:#fff; border:1px solid var(--gold-light); border-radius:16px; padding:14px 18px 16px; text-align:center; box-shadow:0 8px 24px rgba(0,0,0,.3); }
+    .partnercard-label { font-size:11px; font-weight:700; letter-spacing:1.4px; text-transform:uppercase; color:#8a6e2c; margin-bottom:8px; }
+    .partnercard img { display:block; width:100%; max-width:210px; height:auto; margin:0 auto; }
+    .partnercard-d { position:absolute; right:max(24px, calc(25vw - 330px)); top:28px; width:260px; z-index:10; }
+    .partnercard-m { display:none; width:min(260px,100%); margin:14px auto 0; }
+    @media (max-width:1399px){ .partnercard-d { display:none; } .partnercard-m { display:block; } }
     .pricemini-m { display:none; width:min(420px,100%); margin:10px auto 0; }
     @media (max-width:1399px){ .pricemini-d { display:none; } .pricemini-m { display:block; } }
 
@@ -710,6 +717,10 @@
     <div class="pricemini-sub">Monatlich kündbar</div>
     <a class="pricemini-btn" href="https://whop.com/gastro-os-81b8/starten/">Jetzt Zugang erhalten</a>
   </div>
+  <div class="partnercard partnercard-d">
+    <div class="partnercard-label">Unser Partner</div>
+    <img src="img/partner-ig-koelner-gastro.jpg" alt="IG Kölner Gastro e. V." width="640" height="439" loading="lazy">
+  </div>
   <div class="logo-badge">GASTRO-OS · System · Strategie · Erfolg</div>
   <h1>Dein Betrieb digital organisiert: Tagesgeschäft, <span class="nowrap">Team &amp; Wissen<a class="hero-star" href="#zentrale" aria-label="Neu: Deine Zentrale für mehrere Standorte"><span class="hs-neu">NEU</span><span class="hs-sub">deine Zentrale</span></a></span><br>an einem Ort. <em>Sofort einsatzbereit.</em></h1>
   <p class="hero-sub">Für Inhaber von Restaurants, Cafés, Bistros und Gaststätten, auch mit mehreren Standorten, die ihren Betrieb noch strukturierter und profitabler führen wollen.</p>
@@ -717,6 +728,10 @@
     <div class="pricemini-amount">299 € <span>/ Monat, inkl. 19% MwSt.</span></div>
     <div class="pricemini-sub">Monatlich kündbar</div>
     <a class="pricemini-btn" href="https://whop.com/gastro-os-81b8/starten/">Jetzt Zugang erhalten</a>
+  </div>
+  <div class="partnercard partnercard-m">
+    <div class="partnercard-label">Unser Partner</div>
+    <img src="img/partner-ig-koelner-gastro.jpg" alt="IG Kölner Gastro e. V." width="640" height="439" loading="lazy">
   </div>
 
 </section>
