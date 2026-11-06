@@ -635,12 +635,10 @@
     .pricemini-btn:hover { filter:brightness(1.08); }
     .pricemini-d { position:absolute; left:max(24px, calc(25vw - 330px)); top:28px; width:380px; z-index:10; }
     /* Partner-Karte: rechts im Kopfbereich, spiegelt die Preisbox links */
-    .partnercard { background:#fff; border:1px solid var(--gold-light); border-radius:16px; padding:14px 18px 16px; text-align:center; box-shadow:0 8px 24px rgba(0,0,0,.3); }
-    .partnercard-label { font-size:11px; font-weight:700; letter-spacing:1.4px; text-transform:uppercase; color:#8a6e2c; margin-bottom:8px; }
-    .partnercard img { display:block; width:100%; max-width:210px; height:auto; margin:0 auto; }
-    .partnercard-d { position:absolute; right:max(24px, calc(25vw - 330px)); top:28px; width:260px; z-index:10; }
-    .partnercard-m { display:none; width:min(260px,100%); margin:14px auto 0; }
-    @media (max-width:1399px){ .partnercard-d { display:none; } .partnercard-m { display:block; } }
+    .partnerpill-img { display:block; width:100%; max-width:240px; height:auto; margin:10px auto; }
+    .partnerpill-d { position:absolute !important; left:auto !important; bottom:auto !important; right:max(24px, calc(25vw - 330px)); top:28px; width:300px; z-index:10; }
+    .partnerpill-m { display:none; }
+    @media (max-width:1399px){ .partnerpill-d { display:none; } .partnerpill-m { display:block; width:min(300px,100%); margin:14px auto 0; } }
     .pricemini-m { display:none; width:min(420px,100%); margin:10px auto 0; }
     @media (max-width:1399px){ .pricemini-d { display:none; } .pricemini-m { display:block; } }
 
@@ -717,9 +715,15 @@
     <div class="pricemini-sub">Monatlich kündbar</div>
     <a class="pricemini-btn" href="https://whop.com/gastro-os-81b8/starten/">Jetzt Zugang erhalten</a>
   </div>
-  <div class="partnercard partnercard-d">
-    <div class="partnercard-label">Unser Partner</div>
-    <img src="img/partner-ig-koelner-gastro.jpg" alt="IG Kölner Gastro e. V." width="640" height="439" loading="lazy">
+  <div class="faqpill partnerpill partnerpill-d" id="partnerpill-d">
+    <button class="faqpill-btn" onclick="hkToggle('partnerpill-d')" aria-expanded="false">
+      <span class="faqpill-icon">&#10022;</span>
+      <span class="faqpill-titles"><span class="faqpill-title">Unsere Partner</span></span>
+      <span class="faqpill-arrow">▼</span>
+    </button>
+    <div class="faqpill-panel">
+      <img class="partnerpill-img" src="img/partner-ig-koelner-gastro.jpg" alt="IG Kölner Gastro e. V." width="640" height="439" loading="lazy">
+    </div>
   </div>
   <div class="logo-badge">GASTRO-OS · System · Strategie · Erfolg</div>
   <h1>Dein Betrieb digital organisiert: Tagesgeschäft, <span class="nowrap">Team &amp; Wissen<a class="hero-star" href="#zentrale" aria-label="Neu: Deine Zentrale für mehrere Standorte"><span class="hs-neu">NEU</span><span class="hs-sub">deine Zentrale</span></a></span><br>an einem Ort. <em>Sofort einsatzbereit.</em></h1>
@@ -729,9 +733,15 @@
     <div class="pricemini-sub">Monatlich kündbar</div>
     <a class="pricemini-btn" href="https://whop.com/gastro-os-81b8/starten/">Jetzt Zugang erhalten</a>
   </div>
-  <div class="partnercard partnercard-m">
-    <div class="partnercard-label">Unser Partner</div>
-    <img src="img/partner-ig-koelner-gastro.jpg" alt="IG Kölner Gastro e. V." width="640" height="439" loading="lazy">
+  <div class="faqpill partnerpill partnerpill-m" id="partnerpill-m">
+    <button class="faqpill-btn" onclick="hkToggle('partnerpill-m')" aria-expanded="false">
+      <span class="faqpill-icon">&#10022;</span>
+      <span class="faqpill-titles"><span class="faqpill-title">Unsere Partner</span></span>
+      <span class="faqpill-arrow">▼</span>
+    </button>
+    <div class="faqpill-panel">
+      <img class="partnerpill-img" src="img/partner-ig-koelner-gastro.jpg" alt="IG Kölner Gastro e. V." width="640" height="439" loading="lazy">
+    </div>
   </div>
 
 </section>
