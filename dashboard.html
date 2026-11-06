@@ -183,11 +183,6 @@ html, body { max-width:100%; overflow-x:hidden; }
 <div class="gold-bar"></div>
 <div class="main">
 
-<div class="partner-karte partner-karte-d">
-  <div class="partner-karte-label">Unser Partner</div>
-  <img src="img/partner-ig-koelner-gastro.jpg" alt="IG Kölner Gastro e. V." width="640" height="439" loading="lazy">
-</div>
-
 <div class="dash-grid">
 
   <!-- LINKE SPALTE: Module (kompakt, als Zusatz) -->
@@ -280,6 +275,21 @@ html, body { max-width:100%; overflow-x:hidden; }
           </div>
         </div>
 
+        <div class="module-card hub-card" id="partner-card" style="margin-top:14px; max-width:100%;">
+          <div class="hub-head" onclick="hilfeKachelUmschalten('partner-card','partner-content','partner-arrow')" style="padding:11px 15px; flex-direction:row; text-align:left; gap:10px;">
+            <div class="hub-circle" style="width:26px;height:26px;font-size:12px;flex-shrink:0;"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 17a1 1 0 0 0 1.414 0l4.586-4.586a2 2 0 0 0 0-2.828l-2-2a2 2 0 0 0-2.828 0L12 8.586l-.586-.586a2 2 0 0 0-2.828 0L4 12.586a2 2 0 0 0 0 2.828L7 18" /><path d="m21 3-4 4" /></svg></div>
+            <div style="flex:1;">
+              <div class="hub-title" style="font-size:12.5px; margin-top:0;">Unsere Partner</div>
+              <div style="font-size:10.5px;color:rgba(255,255,255,0.55);margin-top:1px;">Gemeinsam für die Gastronomie</div>
+            </div>
+            <span class="module-arrow" id="partner-arrow" style="color:#d4af37;font-size:14px;flex-shrink:0;margin-left:0;">▼</span>
+          </div>
+          <div class="module-content" id="partner-content">
+            <div style="padding:14px 16px;">
+              <div class="partner-karte"><img src="img/partner-ig-koelner-gastro.jpg" alt="IG Kölner Gastro e. V." width="640" height="439" loading="lazy"></div>
+            </div>
+          </div>
+        </div>
 
     <!-- Skript für Hilfe von A bis Z -->
 <script>
@@ -495,12 +505,7 @@ function faqRender() {
 faqRender();
 </script>
 
-<div class="partner-karte partner-karte-m">
-    <div class="partner-karte-label">Unser Partner</div>
-    <img src="img/partner-ig-koelner-gastro.jpg" alt="IG Kölner Gastro e. V." width="640" height="439" loading="lazy">
-  </div>
 
-  </div>
 
   <!-- RECHTE SPALTE: Tägliche Tools (Hauptfokus) -->
   <div class="dash-right">
