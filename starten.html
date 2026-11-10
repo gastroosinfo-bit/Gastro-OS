@@ -704,6 +704,13 @@
       .login-bar{background:#1C2340;text-align:right;padding:8px 16px;font-family:'DM Sans',sans-serif;font-size:14px;}
     .login-bar a{color:#E8C766;text-decoration:none;font-weight:700;}
     .login-bar a:hover{text-decoration:underline;}
+    @keyframes miniStar { 0%,100%{ transform:scale(1) rotate(-8deg); filter:drop-shadow(0 0 4px rgba(232,199,102,.5)); } 50%{ transform:scale(1.12) rotate(8deg); filter:drop-shadow(0 0 14px rgba(255,224,130,.95)); } }
+    .hk-item:has(.hk-star) { position:relative; }
+    .hk-q-star { padding-right:140px; }
+    .hk-item > .hk-star { flex:0 0 auto; width:78px; height:78px; display:flex; align-items:center; justify-content:center; text-align:center; text-decoration:none; animation:miniStar 1.4s ease-in-out infinite; position:absolute; right:56px; top:-16px; z-index:2; cursor:pointer; }
+    .hk-item > .hk-star::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,#FFE9A0,#E8C766 50%,#F3D67A); clip-path:polygon(50.0% 0.0%, 58.5% 13.0%, 71.7% 5.0%, 73.7% 20.3%, 89.1% 18.8%, 84.2% 33.5%, 98.7% 38.9%, 88.0% 50.0%, 98.7% 61.1%, 84.2% 66.5%, 89.1% 81.2%, 73.7% 79.7%, 71.7% 95.0%, 58.5% 87.0%, 50.0% 100.0%, 41.5% 87.0%, 28.3% 95.0%, 26.3% 79.7%, 10.9% 81.2%, 15.8% 66.5%, 1.3% 61.1%, 12.0% 50.0%, 1.3% 38.9%, 15.8% 33.5%, 10.9% 18.8%, 26.3% 20.3%, 28.3% 5.0%, 41.5% 13.0%); animation:bigStarBlink 1.4s ease-in-out infinite; }
+    .hk-item > .hk-star span { position:relative; font-family:'DM Sans',sans-serif; font-weight:800; font-size:10.5px; line-height:1.15; color:#1C2340; transform:none; letter-spacing:0; }
+    @media (prefers-reduced-motion: reduce){ .hk-item > .hk-star, .hk-item > .hk-star::before { animation:none; } }
   </style>
   <!-- Cookie-Consent + Google Analytics: ausgelagert in cookie-consent.js -->
 <script src="/cookie-consent.js"></script>
@@ -825,7 +832,8 @@
           <div class="hk-a"><strong>Alle Standorte</strong><br>Der Benutzer der Zentrale kann sich die Daten und Zahlen aller Standorte jederzeit abrufen und wählt aus, was gerade wichtig ist.<br><br><strong>Monatsbericht</strong><br>Eines Standorts in Ruhe ansehen und als PDF herunterladen. Das macht die Buchhaltung einfacher.</div>
         </div>
         <div class="hk-item">
-          <button class="hk-q" onclick="hkItem(this)">Ist die Zentrale im Abo enthalten? <span class="hk-pfeil">▼</span></button>
+          <button class="hk-q hk-q-star" onclick="hkItem(this)">Ist die Zentrale im Abo enthalten? <span class="hk-pfeil">▼</span></button>
+          <a class="hk-star" href="mailto:info@mein-gastro-system.de?subject=Preis%20f%C3%BCr%20die%20Zentrale" aria-label="Preis der Zentrale per Mail anfragen"><span>Preis<br>per Mail<br>anfragen</span></a>
           <div class="hk-a"><strong>Nein</strong><br>Die Zentrale ist ein Zusatzprodukt zu GASTRO-OS, speziell für Betriebe mit mehreren Standorten.<br><br><strong>Preis</strong><br>Den Preis besprechen wir persönlich. Schreib uns dazu kurz an info@mein-gastro-system.de.</div>
         </div>
       </div>
