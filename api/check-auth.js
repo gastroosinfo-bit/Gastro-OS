@@ -18,7 +18,8 @@ const DEMO_ACCESS = {
   'natascha.kummer@wkbgld.at': { expires: '2026-09-02' },
   'info@gastronomen.koeln': { expires: '2026-10-31' },
   'koslowski@progres.de': { expires: '2026-09-16' },
-  'kahnert@kh-handwerk.de': { expires: '2026-10-14' }
+  'kahnert@kh-handwerk.de': { expires: '2026-10-14' },
+  'office@bvgg.eu': { expires: '2026-12-09' }
 };
 
 function getDemoAccess(email) {
