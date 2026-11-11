@@ -28,7 +28,8 @@ const BEFRISTETE_ZUGAENGE = {
   'westerwinter@dehoga-nrw.de': '2026-09-15',
   'franz.perner@wkbgld.at': '2026-09-15',
   'info@gastronomen.koeln': '2026-11-01',
-  'kahnert@kh-handwerk.de': '2026-10-15'
+  'kahnert@kh-handwerk.de': '2026-10-15',
+  'office@bvgg.eu': '2026-12-10'
 };
 
 function heutigesDatumString() {
