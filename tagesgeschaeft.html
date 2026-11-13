@@ -109,7 +109,8 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
   <div class="tab-panel active" id="panel-kassenbuch">
     <div class="section">
       <div class="section-head">Tageseintrag <span id="kb-datum-anzeige"></span></div>
-      <div class="field-group" style="margin-bottom:16px;max-width:220px;"><label>Datum</label><input type="date" id="kb-datum"></div>
+      <div class="field-group" style="margin-bottom:16px;max-width:220px;"><label>Datum</label><input type="date" id="kb-datum" onchange="kbFormLaden()"></div>
+      <div id="kb-beleg-hinweis" style="display:none;font-size:12.5px;color:#1f6b3a;background:#eaf6ee;border-radius:8px;padding:8px 12px;margin-bottom:14px;"></div>
 
       <div style="font-size:11px;font-weight:700;color:#8090a8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Einnahmen</div>
       <div class="grid3" style="margin-bottom:8px;">
@@ -611,7 +612,44 @@ let kassenbuchDaten = {};
 async function kbInit() {
   kassenbuchDaten = await toolLoad('tagesgeschaeft-kassenbuch');
   document.getElementById('kb-datum').value = heute();
+  kbFormLaden(true);
   kbRenderTabelle();
+}
+// Lädt die bereits gespeicherten Werte des gewählten Tages ins Formular
+// (z. B. Beträge, die aus der Belegablage gebucht wurden), damit sie beim
+// Speichern nicht überschrieben werden.
+async function kbFormLaden(ohneNeuLaden) {
+  const datum = document.getElementById('kb-datum').value;
+  if (!ohneNeuLaden) {
+    const frisch = await kbFrischLaden();
+    if (frisch) { kassenbuchDaten = frisch; kbRenderTabelle(); }
+  }
+  const t = kassenbuchDaten[datum] || {};
+  const set = (id, v) => { document.getElementById(id).value = v ? v : ''; };
+  set('kb-kasse', t.kasse); set('kb-karte', t.karte);
+  set('kb-lieferdienste', t.lieferdienste); set('kb-ueberweisung', t.ueberweisung);
+  const neuWare = t.wareneinkaufBar != null || t.wareneinkaufKarte != null || t.wareneinkaufUeberweisung != null;
+  set('kb-wareneinkauf-bar', neuWare ? t.wareneinkaufBar : t.wareneinkauf);
+  set('kb-wareneinkauf-karte', t.wareneinkaufKarte); set('kb-wareneinkauf-ueberweisung', t.wareneinkaufUeberweisung);
+  const neuSonst = t.sonstigesBar != null || t.sonstigesKarte != null || t.sonstigesUeberweisung != null;
+  set('kb-sonstiges-bar', neuSonst ? t.sonstigesBar : t.sonstiges);
+  set('kb-sonstiges-karte', t.sonstigesKarte); set('kb-sonstiges-ueberweisung', t.sonstigesUeberweisung);
+  document.getElementById('kb-notiz').value = t.notiz || '';
+  const h = document.getElementById('kb-beleg-hinweis');
+  if (h) {
+    if (Object.keys(t).length) { h.style.display = 'block'; h.textContent = 'Für diesen Tag gibt es schon einen Eintrag (auch aus der Belegablage). Die Werte sind unten übernommen. Ergänze z. B. Lieferdienste oder Überweisungen dazu.'; }
+    else h.style.display = 'none';
+  }
+  kbZwischensumme();
+}
+// Frische Daten vom Server; bei Fehler null (damit nichts überschrieben wird)
+async function kbFrischLaden() {
+  try {
+    const res = await fetch('/api/tool-data?tool=' + encodeURIComponent('tagesgeschaeft-kassenbuch'));
+    if (!res.ok) return null;
+    const d = await res.json();
+    return (d && d.data) ? d.data : {};
+  } catch (e) { return null; }
 }
 // Hilfsfunktionen: unterstützen sowohl das neue Format (Bar/Karte/Überweisung
 // getrennt) als auch alte, bereits gespeicherte Einträge (nur ein Gesamtwert).
@@ -647,6 +685,10 @@ function kbZwischensumme() {
 async function kbSpeichernTag() {
   const datum = document.getElementById('kb-datum').value;
   if (!datum) return;
+  // Erst frisch laden, damit zwischenzeitlich gebuchte Belege anderer Tage nicht überschrieben werden
+  const frisch = await kbFrischLaden();
+  if (frisch === null) { alert('Speichern abgebrochen: Die vorhandenen Daten konnten nicht geladen werden. Bitte Seite neu laden und noch einmal versuchen.'); return; }
+  kassenbuchDaten = frisch;
   kassenbuchDaten[datum] = {
     kasse: parseFloat(document.getElementById('kb-kasse').value) || 0,
     karte: parseFloat(document.getElementById('kb-karte').value) || 0,
