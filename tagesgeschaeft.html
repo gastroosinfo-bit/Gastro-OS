@@ -615,9 +615,7 @@ async function kbInit() {
   kbFormLaden(true);
   kbRenderTabelle();
 }
-// Lädt die bereits gespeicherten Werte des gewählten Tages ins Formular
-// (z. B. Beträge, die aus der Belegablage gebucht wurden), damit sie beim
-// Speichern nicht überschrieben werden.
+// Zeigt für den gewählten Tag, was schon gebucht ist (Formular bleibt leer).
 async function kbFormLaden(ohneNeuLaden) {
   const datum = document.getElementById('kb-datum').value;
   if (!ohneNeuLaden) {
@@ -625,22 +623,13 @@ async function kbFormLaden(ohneNeuLaden) {
     if (frisch) { kassenbuchDaten = frisch; kbRenderTabelle(); }
   }
   const t = kassenbuchDaten[datum] || {};
-  const set = (id, v) => { document.getElementById(id).value = v ? v : ''; };
-  set('kb-kasse', t.kasse); set('kb-karte', t.karte);
-  set('kb-lieferdienste', t.lieferdienste); set('kb-ueberweisung', t.ueberweisung);
-  const neuWare = t.wareneinkaufBar != null || t.wareneinkaufKarte != null || t.wareneinkaufUeberweisung != null;
-  set('kb-wareneinkauf-bar', neuWare ? t.wareneinkaufBar : t.wareneinkauf);
-  set('kb-wareneinkauf-karte', t.wareneinkaufKarte); set('kb-wareneinkauf-ueberweisung', t.wareneinkaufUeberweisung);
-  const neuSonst = t.sonstigesBar != null || t.sonstigesKarte != null || t.sonstigesUeberweisung != null;
-  set('kb-sonstiges-bar', neuSonst ? t.sonstigesBar : t.sonstiges);
-  set('kb-sonstiges-karte', t.sonstigesKarte); set('kb-sonstiges-ueberweisung', t.sonstigesUeberweisung);
-  document.getElementById('kb-notiz').value = t.notiz || '';
+  const ein = (t.kasse || 0) + (t.karte || 0) + (t.lieferdienste || 0) + (t.ueberweisung || 0);
+  const aus = kbWareneinkaufGesamt(t) + kbSonstigesGesamt(t);
   const h = document.getElementById('kb-beleg-hinweis');
   if (h) {
-    if (Object.keys(t).length) { h.style.display = 'block'; h.textContent = 'Für diesen Tag gibt es schon einen Eintrag (auch aus der Belegablage). Die Werte sind unten übernommen. Ergänze z. B. Lieferdienste oder Überweisungen dazu.'; }
+    if (Object.keys(t).length) { h.style.display = 'block'; h.textContent = 'Für diesen Tag ist schon gebucht (z. B. aus der Belegablage): Einnahmen ' + euro(ein) + ', Ausgaben ' + euro(aus) + '. Was du unten einträgst, kommt dazu.'; }
     else h.style.display = 'none';
   }
-  kbZwischensumme();
 }
 // Frische Daten vom Server; bei Fehler null (damit nichts überschrieben wird)
 async function kbFrischLaden() {
@@ -689,22 +678,34 @@ async function kbSpeichernTag() {
   const frisch = await kbFrischLaden();
   if (frisch === null) { alert('Speichern abgebrochen: Die vorhandenen Daten konnten nicht geladen werden. Bitte Seite neu laden und noch einmal versuchen.'); return; }
   kassenbuchDaten = frisch;
-  kassenbuchDaten[datum] = {
-    kasse: parseFloat(document.getElementById('kb-kasse').value) || 0,
-    karte: parseFloat(document.getElementById('kb-karte').value) || 0,
-    lieferdienste: parseFloat(document.getElementById('kb-lieferdienste').value) || 0,
-    ueberweisung: parseFloat(document.getElementById('kb-ueberweisung').value) || 0,
-    wareneinkaufBar: parseFloat(document.getElementById('kb-wareneinkauf-bar').value) || 0,
-    wareneinkaufKarte: parseFloat(document.getElementById('kb-wareneinkauf-karte').value) || 0,
-    wareneinkaufUeberweisung: parseFloat(document.getElementById('kb-wareneinkauf-ueberweisung').value) || 0,
-    sonstigesBar: parseFloat(document.getElementById('kb-sonstiges-bar').value) || 0,
-    sonstigesKarte: parseFloat(document.getElementById('kb-sonstiges-karte').value) || 0,
-    sonstigesUeberweisung: parseFloat(document.getElementById('kb-sonstiges-ueberweisung').value) || 0,
-    notiz: document.getElementById('kb-notiz').value || ''
+  const alt = kassenbuchDaten[datum] || {};
+  const rd = x => Math.round(x * 100) / 100;
+  const f = (id, feld) => rd((alt[feld] || 0) + (parseFloat(document.getElementById(id).value) || 0));
+  // Das Formular ist immer leer; neue Eingaben werden zu den schon gebuchten Beträgen ADDIERT
+  const neu = {
+    kasse: f('kb-kasse', 'kasse'),
+    karte: f('kb-karte', 'karte'),
+    lieferdienste: f('kb-lieferdienste', 'lieferdienste'),
+    ueberweisung: f('kb-ueberweisung', 'ueberweisung'),
+    wareneinkaufBar: f('kb-wareneinkauf-bar', 'wareneinkaufBar'),
+    wareneinkaufKarte: f('kb-wareneinkauf-karte', 'wareneinkaufKarte'),
+    wareneinkaufUeberweisung: f('kb-wareneinkauf-ueberweisung', 'wareneinkaufUeberweisung'),
+    sonstigesBar: f('kb-sonstiges-bar', 'sonstigesBar'),
+    sonstigesKarte: f('kb-sonstiges-karte', 'sonstigesKarte'),
+    sonstigesUeberweisung: f('kb-sonstiges-ueberweisung', 'sonstigesUeberweisung')
   };
+  // Alter Gesamtwert aus dem früheren Format bleibt erhalten
+  if (alt.wareneinkauf && neu.wareneinkaufBar === 0 && alt.wareneinkaufBar == null) neu.wareneinkaufBar = rd(alt.wareneinkauf + (parseFloat(document.getElementById('kb-wareneinkauf-bar').value) || 0));
+  if (alt.sonstiges && neu.sonstigesBar === 0 && alt.sonstigesBar == null) neu.sonstigesBar = rd(alt.sonstiges + (parseFloat(document.getElementById('kb-sonstiges-bar').value) || 0));
+  const notizNeu = (document.getElementById('kb-notiz').value || '').trim();
+  neu.notiz = notizNeu ? (alt.notiz ? alt.notiz + ' · ' + notizNeu : notizNeu) : (alt.notiz || '');
+  kassenbuchDaten[datum] = neu;
   await toolSave('tagesgeschaeft-kassenbuch', kassenbuchDaten);
   flashSaved('kb-save-msg');
   kbRenderTabelle();
+  ['kb-kasse','kb-karte','kb-lieferdienste','kb-ueberweisung','kb-wareneinkauf-bar','kb-wareneinkauf-karte','kb-wareneinkauf-ueberweisung','kb-sonstiges-bar','kb-sonstiges-karte','kb-sonstiges-ueberweisung','kb-notiz'].forEach(id => { document.getElementById(id).value = ''; });
+  kbZwischensumme();
+  kbFormLaden(true);
 }
 function kbLoeschen(datum) {
   if (!confirm('Diesen Kassenbuch-Eintrag wirklich löschen? Das kann nicht rückgängig gemacht werden.')) return;
