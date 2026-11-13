@@ -489,10 +489,16 @@ async function belegHochladen() {
   const status = document.getElementById('beleg-status').value;
   const faelligkeit = status === 'faellig' ? document.getElementById('beleg-faelligkeit').value : null;
 
-  // Z-Bon: Werte landen automatisch im Kassenbuch — vorher kurz bestätigen lassen
-  if (plattform === 'Z-Bon' && (bar != null || karte != null)) {
-    const ok = confirm('Alles überprüft?\n\nDatum: ' + datum + '\nBar: ' + euro(bar || 0) + '\nKarte: ' + euro(karte || 0) + '\n\nDiese Werte werden ins Kassenbuch übernommen (falls für den Tag noch kein Eintrag besteht). Bitte vergleiche sie mit deinem Z-Bon.\n\nJetzt hochladen?');
-    if (!ok) return;
+  // Vor jedem Upload kurz bestätigen lassen, dass die (automatisch erkannten) Werte stimmen
+  {
+    let frage = 'Alles überprüft?\n\nAnbieter: ' + plattform + '\nDatum: ' + datum + '\nBetrag: ' + euro(betrag);
+    if (rechnungsnr) frage += '\nRechnungs-/Liefernr.: ' + rechnungsnr;
+    if (plattform === 'Z-Bon' && (bar != null || karte != null)) {
+      frage += '\nBar: ' + euro(bar || 0) + '\nKarte: ' + euro(karte || 0) +
+        '\n\nBar und Karte werden ins Kassenbuch übernommen (falls für den Tag noch kein Eintrag besteht).';
+    }
+    frage += '\n\nBitte vergleiche die Werte mit deinem Beleg.\n\nJetzt hochladen?';
+    if (!confirm(frage)) return;
   }
 
   const duplikat = belegeDaten.find(b => belegNormalisierePlattform(b.plattform) === belegNormalisierePlattform(plattform) && b.datum === datum && Math.abs((b.betrag || 0) - betrag) < 0.01);
