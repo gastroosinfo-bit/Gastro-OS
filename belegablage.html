@@ -600,7 +600,9 @@ async function belegHochladen() {
     document.getElementById('beleg-kb-nein').checked = false;
     if (plattform === 'Z-Bon' && neuerBeleg.kbUebernehmen && (bar != null || karte != null)) {
       neuerBeleg.kbZbonErledigt = await zBonKassenbuchAbgleich(datum, bar, karte);
+      if (neuerBeleg.kbZbonErledigt) neuerBeleg.status = 'abgeglichen';
       await toolSave('tagesgeschaeft-belege', { items: belegeDaten });
+      belegRenderTabelle();
     } else if (kbHinweis) {
       const h = document.getElementById('beleg-auto-hinweis');
       h.className = 'auto-hinweis'; h.style.display = 'block'; h.textContent = kbHinweis;
@@ -774,6 +776,7 @@ async function belegZBonNachtragen(id) {
   if (!confirm('Alles überprüft?\n\nZ-Bon vom ' + item.datum + '\nBar: ' + euro(item.bar || 0) + '\nKarte: ' + euro(item.karte || 0) + '\n\nJetzt ins Kassenbuch übernehmen?')) return;
   item.kbUebernehmen = true;
   item.kbZbonErledigt = await zBonKassenbuchAbgleich(item.datum, item.bar || 0, item.karte || 0);
+  if (item.kbZbonErledigt) item.status = 'abgeglichen';
   await toolSave('tagesgeschaeft-belege', { items: belegeDaten });
   belegRenderTabelle();
 }
