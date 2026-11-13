@@ -121,6 +121,25 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
       <div class="field-group"><label>Bar (€)</label><input type="number" step="0.01" id="beleg-bar" placeholder="0,00"></div>
       <div class="field-group"><label>Kartenzahlung (€)</label><input type="number" step="0.01" id="beleg-karte" placeholder="0,00"></div>
     </div>
+    <div class="grid4" id="beleg-ausgabe-wrap" style="margin-top:14px;display:none;">
+      <div class="field-group"><label>Wie bezahlt?</label>
+        <select id="beleg-zahlart">
+          <option value="ueberweisung">Überweisung</option>
+          <option value="bar">Bar</option>
+          <option value="karte">Karte</option>
+        </select>
+      </div>
+      <div class="field-group"><label>Kassenbuch-Art</label>
+        <select id="beleg-kbart">
+          <option value="wareneinkauf">Wareneinkauf</option>
+          <option value="sonstiges">Sonstiges</option>
+        </select>
+      </div>
+    </div>
+    <div style="margin-top:14px;">
+      <label style="display:flex;align-items:center;gap:8px;font-size:13.5px;cursor:pointer;"><input type="checkbox" id="beleg-kb-uebernehmen" checked> Ins Kassenbuch übernehmen</label>
+      <div style="font-size:11.5px;color:#8090a8;margin-top:4px;">Einnahmen (Z-Bon, Lieferdienste) kommen ins Kassenbuch, sobald sie erhalten bzw. abgeglichen sind. Ausgaben, sobald sie als „Bezahlt“ markiert sind. Haken weg, wenn du den Eintrag schon selbst gemacht hast.</div>
+    </div>
 
     <button class="btn-add" style="margin-top:16px;" onclick="belegHochladen()">⬆️ Hochladen</button>
     <span class="save-msg" id="beleg-save-msg">✓ Hochgeladen</span>
@@ -327,6 +346,7 @@ function belegPlattformGeaendert() {
   const istZBon = select.value === 'Z-Bon';
   const istLieferdienst = LIEFERDIENSTE.includes(select.value);
   document.getElementById('beleg-barkarte-wrap').style.display = istZBon ? 'grid' : 'none';
+  document.getElementById('beleg-ausgabe-wrap').style.display = (!istZBon && !istLieferdienst) ? 'grid' : 'none';
 
   const statusSelect = document.getElementById('beleg-status');
   const statusLabel = document.getElementById('beleg-status-label');
@@ -497,6 +517,12 @@ async function belegHochladen() {
       frage += '\nBar: ' + euro(bar || 0) + '\nKarte: ' + euro(karte || 0) +
         '\n\nBar und Karte werden ins Kassenbuch übernommen (falls für den Tag noch kein Eintrag besteht).';
     }
+    const kbUeb = document.getElementById('beleg-kb-uebernehmen').checked;
+    if (plattform !== 'Z-Bon') {
+      if (!kbUeb) frage += '\n\nKassenbuch: wird NICHT übernommen.';
+      else if (LIEFERDIENSTE.includes(plattform)) frage += '\n\nKassenbuch: wird als Einnahme „Lieferdienste“ übernommen, sobald die Auszahlung als erhalten markiert ist.';
+      else frage += '\n\nKassenbuch: wird als ' + (document.getElementById('beleg-kbart').value === 'sonstiges' ? 'Sonstiges' : 'Wareneinkauf') + ' (' + document.getElementById('beleg-zahlart').selectedOptions[0].textContent + ') übernommen, sobald der Beleg als „Bezahlt“ markiert ist.';
+    }
     frage += '\n\nBitte vergleiche die Werte mit deinem Beleg.\n\nJetzt hochladen?';
     if (!confirm(frage)) return;
   }
@@ -521,9 +547,15 @@ async function belegHochladen() {
       id: Date.now(),
       datum, plattform, betrag,
       rechnungsnr, steuerId, mwst19, mwst7, bar, karte, status, faelligkeit,
+      zahlart: document.getElementById('beleg-zahlart').value,
+      kbart: document.getElementById('beleg-kbart').value,
+      kbUebernehmen: document.getElementById('beleg-kb-uebernehmen').checked,
       dateiname: belegAusgewaehlteDatei.name,
       storagePath: result.path
     });
+    const neuerBeleg = belegeDaten[belegeDaten.length - 1];
+    let kbHinweis = '';
+    if (plattform !== 'Z-Bon') kbHinweis = await belegKassenbuchSync(neuerBeleg);
     await toolSave('tagesgeschaeft-belege', { items: belegeDaten });
     flashSaved('beleg-save-msg');
     belegAusgewaehlteDatei = null;
@@ -546,12 +578,71 @@ async function belegHochladen() {
     document.getElementById('beleg-auto-hinweis').style.display = 'none';
     belegRenderTabelle();
 
-    if (plattform === 'Z-Bon' && (bar != null || karte != null)) {
+    document.getElementById('beleg-zahlart').value = 'ueberweisung';
+    document.getElementById('beleg-kbart').value = 'wareneinkauf';
+    const kbHaken = document.getElementById('beleg-kb-uebernehmen');
+    const kbWarAn = neuerBeleg.kbUebernehmen;
+    kbHaken.checked = true;
+    if (plattform === 'Z-Bon' && kbWarAn && (bar != null || karte != null)) {
       await zBonKassenbuchAbgleich(datum, bar, karte);
+    } else if (kbHinweis) {
+      const h = document.getElementById('beleg-auto-hinweis');
+      h.className = 'auto-hinweis'; h.style.display = 'block'; h.textContent = kbHinweis;
     }
   } catch (e) {
     alert('Fehler beim Hochladen.');
   }
+}
+
+// ─── Belege → Kassenbuch (Einnahmen Lieferdienste, Ausgaben Wareneinkauf/Sonstiges) ───
+// Jeder Beleg merkt sich in b.kbBuchung, was er ins Kassenbuch gebucht hat.
+// Ändert sich Status/Haken oder wird der Beleg gelöscht, wird genau das wieder abgezogen.
+function kbRund(n) { return Math.round(n * 100) / 100; }
+const KB_ZAHLART_SUFFIX = { bar: 'Bar', karte: 'Karte', ueberweisung: 'Ueberweisung' };
+const KB_FELDER_AUSGABEN = ['wareneinkaufBar', 'wareneinkaufKarte', 'wareneinkaufUeberweisung', 'sonstigesBar', 'sonstigesKarte', 'sonstigesUeberweisung'];
+function belegKbSoll(b) {
+  if (!b.kbUebernehmen || b.plattform === 'Z-Bon' || !(b.betrag > 0) || !b.datum) return null;
+  if (LIEFERDIENSTE.includes(b.plattform)) {
+    return (b.status === 'erhalten' || b.status === 'bezahlt') ? { datum: b.datum, feld: 'lieferdienste', betrag: kbRund(b.betrag) } : null;
+  }
+  if (b.status !== 'bezahlt') return null;
+  const basis = b.kbart === 'sonstiges' ? 'sonstiges' : 'wareneinkauf';
+  const feld = basis + (KB_ZAHLART_SUFFIX[b.zahlart] || 'Ueberweisung');
+  return { datum: b.datum, feld, betrag: kbRund(b.betrag) };
+}
+function kbEintragLeer(e) {
+  return !(e.kasse || 0) && !(e.karte || 0) && !(e.lieferdienste || 0) && !(e.ueberweisung || 0) && KB_FELDER_AUSGABEN.every(f => !(e[f] || 0));
+}
+// Gibt einen kurzen Hinweistext zurück (oder '')
+async function belegKassenbuchSync(b) {
+  const soll = belegKbSoll(b);
+  const ist = b.kbBuchung || null;
+  const gleich = soll && ist && soll.datum === ist.datum && soll.feld === ist.feld && soll.betrag === ist.betrag;
+  if (gleich || (!soll && !ist)) return '';
+  const kb = await toolLoad('tagesgeschaeft-kassenbuch');
+  if (ist) {
+    const e = kb[ist.datum];
+    if (e) {
+      e[ist.feld] = kbRund((e[ist.feld] || 0) - ist.betrag);
+      if (kbEintragLeer(e) && String(e.notiz || '').startsWith('Automatisch')) delete kb[ist.datum];
+    }
+    b.kbBuchung = null;
+  }
+  let text = ist ? '↩️ Kassenbuch-Buchung vom ' + ist.datum + ' wieder zurückgenommen.' : '';
+  if (soll) {
+    const e = kb[soll.datum] || (kb[soll.datum] = {
+      kasse: 0, karte: 0, lieferdienste: 0, ueberweisung: 0,
+      wareneinkaufBar: 0, wareneinkaufKarte: 0, wareneinkaufUeberweisung: 0,
+      sonstigesBar: 0, sonstigesKarte: 0, sonstigesUeberweisung: 0,
+      notiz: 'Automatisch aus Belegen übernommen'
+    });
+    e[soll.feld] = kbRund((e[soll.feld] || 0) + soll.betrag);
+    b.kbBuchung = soll;
+    const namen = { lieferdienste: 'Einnahme Lieferdienste', wareneinkaufBar: 'Wareneinkauf Bar', wareneinkaufKarte: 'Wareneinkauf Karte', wareneinkaufUeberweisung: 'Wareneinkauf Überweisung', sonstigesBar: 'Sonstiges Bar', sonstigesKarte: 'Sonstiges Karte', sonstigesUeberweisung: 'Sonstiges Überweisung' };
+    text = '✓ Ins Kassenbuch übernommen: ' + (namen[soll.feld] || soll.feld) + ' ' + euro(soll.betrag) + ' am ' + soll.datum + '.';
+  }
+  await toolSave('tagesgeschaeft-kassenbuch', kb);
+  return text;
 }
 
 // Gleicht einen hochgeladenen Z-Bon automatisch mit dem Kassenbuch ab:
@@ -561,6 +652,18 @@ async function belegHochladen() {
 async function zBonKassenbuchAbgleich(datum, bar, karte) {
   const kassenbuchDaten = await toolLoad('tagesgeschaeft-kassenbuch');
   const hinweis = document.getElementById('beleg-auto-hinweis');
+  const vorhanden = kassenbuchDaten[datum];
+  if (vorhanden && String(vorhanden.notiz || '').startsWith('Automatisch') && !(vorhanden.kasse || 0) && !(vorhanden.karte || 0)) {
+    // Eintrag wurde automatisch aus Belegen angelegt und hat noch keine Einnahmen → Z-Bon dort eintragen
+    vorhanden.kasse = bar || 0;
+    vorhanden.karte = karte || 0;
+    vorhanden.notiz = 'Automatisch aus Z-Bon und Belegen übernommen';
+    await toolSave('tagesgeschaeft-kassenbuch', kassenbuchDaten);
+    hinweis.className = 'auto-hinweis';
+    hinweis.style.display = 'block';
+    hinweis.textContent = '✓ Kassenbuch für den ' + datum + ' ergänzt aus dem Z-Bon (Kasse: ' + euro(bar) + ', Karte: ' + euro(karte) + ').';
+    return;
+  }
   if (kassenbuchDaten[datum]) {
     hinweis.className = 'auto-hinweis';
     hinweis.style.display = 'block';
@@ -592,6 +695,7 @@ async function belegOeffnen(path) {
 async function belegLoeschen(id) {
   if (!confirm('Diesen Beleg wirklich löschen? Das kann nicht rückgängig gemacht werden.')) return;
   const item = belegeDaten.find(b => b.id === id);
+  if (item && item.kbBuchung) { item.kbUebernehmen = false; await belegKassenbuchSync(item); }
   belegeDaten = belegeDaten.filter(b => b.id !== id);
   await toolSave('tagesgeschaeft-belege', { items: belegeDaten });
   if (item) {
@@ -623,8 +727,13 @@ async function belegStatusInlineGeaendert(id, neuerStatus) {
   if (!item) return;
   item.status = neuerStatus;
   if (belegDatumFeldNoetig(neuerStatus) && !item.faelligkeit) item.faelligkeit = heute();
+  const kbText = await belegKassenbuchSync(item);
   await toolSave('tagesgeschaeft-belege', { items: belegeDaten });
   belegRenderTabelle();
+  if (kbText) {
+    const h = document.getElementById('beleg-auto-hinweis');
+    h.className = 'auto-hinweis'; h.style.display = 'block'; h.textContent = kbText;
+  }
 }
 async function belegFaelligkeitInlineGeaendert(id, neuesDatum) {
   const item = belegeDaten.find(b => b.id === id);
