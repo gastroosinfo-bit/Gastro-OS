@@ -62,10 +62,18 @@ function belegDatumFinden(text) {
   monat = monat.padStart(2, '0');
   return `${jahr}-${monat}-${tag}`;
 }
+// Geldbetrag mit optionalem Tausendertrenner: 842,50 | 1.842,50 | 1,842.50 | 1842.50
+const BETRAG_MUSTER = '(\\d{1,3}(?:[.,]\\d{3})+[.,]\\d{2}|\\d+[.,]\\d{2})(?!\\d)';
+function betragZuZahl(str) {
+  const t = String(str).trim();
+  if (/,\d{2}$/.test(t)) return parseFloat(t.replace(/\./g, '').replace(',', '.'));
+  if (/\.\d{2}$/.test(t)) return parseFloat(t.replace(/,/g, ''));
+  return null;
+}
 function belegBetragFinden(text) {
-  const keywordMatch = text.match(/(Gesamtbetrag|Gesamtsumme|Rechnungsbetrag|Endbetrag|Zu\s*zahlen|Gesamt)[^\d]{0,25}(\d{1,4}[.,]\d{2})/i);
-  if (keywordMatch) return parseFloat(keywordMatch[2].replace(',', '.'));
-  const alle = [...text.matchAll(/(\d{1,4})[,.](\d{2})(?!\d)/g)].map(m => parseFloat(m[1] + '.' + m[2]));
+  const keywordMatch = text.match(new RegExp('(Gesamtbetrag|Gesamtsumme|Rechnungsbetrag|Endbetrag|Zu\\s*zahlen|Gesamtumsatz|Summe\\s*Umsatz|Umsatz\\s*(?:brutto|gesamt)|Gesamt)[^\\d]{0,25}' + BETRAG_MUSTER, 'i'));
+  if (keywordMatch) return betragZuZahl(keywordMatch[2]);
+  const alle = [...text.matchAll(new RegExp(BETRAG_MUSTER, 'g'))].map(m => betragZuZahl(m[1])).filter(v => v != null);
   if (alle.length) return Math.max(...alle);
   return null;
 }
@@ -78,11 +86,11 @@ function belegPlattformFinden(text) {
   return null;
 }
 function belegMwstFinden(text) {
-  const m19 = text.match(/(19\s*%[^\d]{0,20}|MwSt\.?\s*19\s*%[^\d]{0,20})(\d{1,4}[,.]\d{2})/i);
-  const m7 = text.match(/(7\s*%[^\d]{0,20}|MwSt\.?\s*7\s*%[^\d]{0,20})(\d{1,4}[,.]\d{2})/i);
+  const m19 = text.match(new RegExp('(19\\s*%[^\\d]{0,20}|MwSt\\.?\\s*19\\s*%[^\\d]{0,20})' + BETRAG_MUSTER, 'i'));
+  const m7 = text.match(new RegExp('(7\\s*%[^\\d]{0,20}|MwSt\\.?\\s*7\\s*%[^\\d]{0,20})' + BETRAG_MUSTER, 'i'));
   return {
-    mwst19Betrag: m19 ? parseFloat(m19[2].replace(',', '.')) : null,
-    mwst7Betrag: m7 ? parseFloat(m7[2].replace(',', '.')) : null
+    mwst19Betrag: m19 ? betragZuZahl(m19[2]) : null,
+    mwst7Betrag: m7 ? betragZuZahl(m7[2]) : null
   };
 }
 function belegRechnungsnrFinden(text) {
@@ -102,11 +110,13 @@ function belegIstZBon(text) {
   return /(Z-?BON|TAGESABSCHLUSS|KASSENABSCHLUSS)/i.test(text);
 }
 function belegBarKarteFinden(text) {
-  const bar = text.match(/(Bar)[^\d]{0,15}(\d{1,4}[,.]\d{2})/i);
-  const karte = text.match(/(Karte|Kartenzahlung|EC-?Karte)[^\d]{0,15}(\d{1,4}[,.]\d{2})/i);
+  // Optional eine ganze Zahl (Anzahl der Buchungen) vor dem Betrag überspringen:
+  // "Bar   41   1.120,00"
+  const bar = text.match(new RegExp('(Bar)[^\\d]{0,15}(?:\\d{1,4}\\s+)?' + BETRAG_MUSTER, 'i'));
+  const karte = text.match(new RegExp('(Karte|Kartenzahlung|EC-?Karte)[^\\d]{0,15}(?:\\d{1,4}\\s+)?' + BETRAG_MUSTER, 'i'));
   return {
-    barBetrag: bar ? parseFloat(bar[2].replace(',', '.')) : null,
-    kartenBetrag: karte ? parseFloat(karte[2].replace(',', '.')) : null
+    barBetrag: bar ? betragZuZahl(bar[2]) : null,
+    kartenBetrag: karte ? betragZuZahl(karte[2]) : null
   };
 }
 
@@ -226,6 +236,12 @@ async function belegAuslesen(buffer, contentType) {
     // Kein Text gefunden (z. B. eingescannte PDF) — zusätzlich über Claude versuchen.
     if (belegErgebnisLeer(perText)) {
       return belegAuslesenClaude(buffer, contentType);
+    }
+    // Z-Bon erkannt, aber Bar- oder Kartenbetrag fehlt (z. B. Tabellen-Layout):
+    // zusätzlich per KI versuchen und deren Ergebnis nur nehmen, wenn sie etwas findet.
+    if (perText.istZBon && (perText.barBetrag == null || perText.kartenBetrag == null)) {
+      const perKi = await belegAuslesenClaude(buffer, contentType);
+      if (perKi && (perKi.barBetrag != null || perKi.kartenBetrag != null)) return perKi;
     }
     return perText;
   }
