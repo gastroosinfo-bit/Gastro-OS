@@ -160,7 +160,7 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
       </div>
       <div style="font-size:11.5px;color:#8090a8;margin-bottom:8px;">💡 Zeile antippen, um alle Details des Tages zu sehen</div>
       <table class="data-table" id="kb-tabelle">
-        <thead><tr><th>Datum</th><th>Einnahmen</th><th>Ausgaben</th><th>Ergebnis</th><th>Notiz</th><th></th><th></th></tr></thead>
+        <thead><tr><th>Datum</th><th>Einnahmen</th><th>Ausgaben</th><th>Ergebnis</th><th>Notiz</th><th>Details</th><th></th></tr></thead>
         <tbody></tbody>
       </table>
     </div>
@@ -337,7 +337,7 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
       <div class="section-head">Verlauf</div>
       <div style="font-size:11.5px;color:#8090a8;margin-bottom:8px;">💡 Zeile antippen, um die Artikel des Tages im Detail zu sehen</div>
       <table class="data-table" id="ab-verlauf-tabelle">
-        <thead><tr><th>Datum</th><th>Anzahl Artikel-Zeilen</th><th>Menge gesamt</th><th></th><th></th></tr></thead>
+        <thead><tr><th>Datum</th><th>Anzahl Artikel-Zeilen</th><th>Menge gesamt</th><th>Details</th><th></th></tr></thead>
         <tbody></tbody>
       </table>
     </div>
@@ -408,7 +408,7 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
       <div style="margin-top:12px;font-size:13px;"><strong>Gesamt bisher:</strong> <span id="fg-gesamt">0,00 €</span></div>
       <div style="font-size:11.5px;color:#8090a8;margin:8px 0;">💡 Zeile antippen für Details</div>
       <table class="data-table" style="margin-top:0;">
-        <thead><tr><th>Datum</th><th>Getränk</th><th>Menge</th><th>Gesamt</th><th>Grund</th><th></th><th></th></tr></thead>
+        <thead><tr><th>Datum</th><th>Getränk</th><th>Menge</th><th>Gesamt</th><th>Grund</th><th>Details</th><th></th></tr></thead>
         <tbody id="fg-tbody"></tbody>
       </table>
     </div>
@@ -461,7 +461,7 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
       <div style="margin-top:12px;font-size:13px;"><strong>Gesamt bisher:</strong> <span id="ac-gesamt">0,00 €</span></div>
       <div style="font-size:11.5px;color:#8090a8;margin:8px 0;">💡 Zeile antippen für Details</div>
       <table class="data-table" style="margin-top:0;">
-        <thead><tr><th>Datum</th><th>Artikel</th><th>Menge</th><th>Gesamt</th><th>Grund</th><th></th><th></th></tr></thead>
+        <thead><tr><th>Datum</th><th>Artikel</th><th>Menge</th><th>Gesamt</th><th>Grund</th><th>Details</th><th></th></tr></thead>
         <tbody id="ac-tbody"></tbody>
       </table>
     </div>
@@ -485,7 +485,7 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
       <div style="margin-top:12px;font-size:13px;"><strong>Gesamt bisher:</strong> <span id="sb-gesamt">0,00 €</span></div>
       <div style="font-size:11.5px;color:#8090a8;margin:8px 0;">💡 Zeile antippen für Details</div>
       <table class="data-table" style="margin-top:0;">
-        <thead><tr><th>Datum</th><th>Betrag</th><th>Grund</th><th>Datei</th><th></th><th></th></tr></thead>
+        <thead><tr><th>Datum</th><th>Betrag</th><th>Grund</th><th>Datei</th><th>Details</th><th></th></tr></thead>
         <tbody id="sb-tbody"></tbody>
       </table>
     </div>
@@ -727,7 +727,7 @@ function kbRenderTabelle() {
     tr.className = 'kb-klickbare-zeile';
     tr.style.cursor = 'pointer';
     tr.onclick = () => kbDetailAnzeigen(datum);
-    tr.innerHTML = `<td>${datum}</td><td>${euro(einnahmen)}</td><td>${euro(ausgaben)}</td><td>${euro(einnahmen - ausgaben)}</td><td>${t.notiz || ''}</td><td style="text-align:center;color:#d4af37;font-size:13px;">🔍</td><td><button class="btn-del" onclick="event.stopPropagation();kbLoeschen('${datum}')">✕</button></td>`;
+    tr.innerHTML = `<td>${datum}</td><td>${euro(einnahmen)}</td><td>${euro(ausgaben)}</td><td>${euro(einnahmen - ausgaben)}</td><td>${t.notiz || ''}</td><td style="text-align:center;color:#b8941f;font-size:12.5px;font-weight:700;white-space:nowrap;">🔍 Details</td><td><button class="btn-del" onclick="event.stopPropagation();kbLoeschen('${datum}')">✕</button></td>`;
     tbody.appendChild(tr);
   });
   document.getElementById('kb-sum-einnahmen').textContent = euro(sumEin);
@@ -1317,7 +1317,7 @@ function abRenderVerlauf() {
     const tr = document.createElement('tr');
     tr.style.cursor = 'pointer';
     tr.onclick = () => abDetailAnzeigen(datum);
-    tr.innerHTML = `<td>${datum}</td><td>${items.length}</td><td>${mengeGesamt}</td><td style="text-align:center;color:#d4af37;">🔍</td><td><button class="btn-del" onclick="event.stopPropagation();abLoeschen('${datum}')">✕</button></td>`;
+    tr.innerHTML = `<td>${datum}</td><td>${items.length}</td><td>${mengeGesamt}</td><td style="text-align:center;color:#b8941f;font-size:12.5px;font-weight:700;white-space:nowrap;">🔍 Details</td><td><button class="btn-del" onclick="event.stopPropagation();abLoeschen('${datum}')">✕</button></td>`;
     tbody.appendChild(tr);
   });
 }
@@ -1495,7 +1495,7 @@ function fgRender() {
     tr.className = 'kb-klickbare-zeile';
     tr.style.cursor = 'pointer';
     tr.onclick = () => fgDetailAnzeigen(i.id);
-    tr.innerHTML = `<td>${i.datum}</td><td>${i.getraenk}</td><td>${i.menge != null ? i.menge : 1} ${i.einheit || ''}</td><td>${euro(zeilenGesamt)}</td><td>${i.grund || '–'}</td><td style="text-align:center;color:#d4af37;">🔍</td><td><button class="btn-del" onclick="event.stopPropagation();fgLoeschen('${i.id}')">✕</button></td>`;
+    tr.innerHTML = `<td>${i.datum}</td><td>${i.getraenk}</td><td>${i.menge != null ? i.menge : 1} ${i.einheit || ''}</td><td>${euro(zeilenGesamt)}</td><td>${i.grund || '–'}</td><td style="text-align:center;color:#b8941f;font-size:12.5px;font-weight:700;white-space:nowrap;">🔍 Details</td><td><button class="btn-del" onclick="event.stopPropagation();fgLoeschen('${i.id}')">✕</button></td>`;
     tbody.appendChild(tr);
   });
   document.getElementById('fg-gesamt').textContent = euro(gesamt);
@@ -1602,7 +1602,7 @@ function acRender() {
     tr.className = 'kb-klickbare-zeile';
     tr.style.cursor = 'pointer';
     tr.onclick = () => acDetailAnzeigen(i.id);
-    tr.innerHTML = `<td>${i.datum}</td><td>${i.artikel}</td><td>${i.menge != null ? i.menge : 1} ${i.einheit || ''}</td><td>${euro(zeilenGesamt)}</td><td>${i.grund || '–'}</td><td style="text-align:center;color:#d4af37;">🔍</td><td><button class="btn-del" onclick="event.stopPropagation();acLoeschen('${i.id}')">✕</button></td>`;
+    tr.innerHTML = `<td>${i.datum}</td><td>${i.artikel}</td><td>${i.menge != null ? i.menge : 1} ${i.einheit || ''}</td><td>${euro(zeilenGesamt)}</td><td>${i.grund || '–'}</td><td style="text-align:center;color:#b8941f;font-size:12.5px;font-weight:700;white-space:nowrap;">🔍 Details</td><td><button class="btn-del" onclick="event.stopPropagation();acLoeschen('${i.id}')">✕</button></td>`;
     tbody.appendChild(tr);
   });
   document.getElementById('ac-gesamt').textContent = euro(gesamt);
@@ -1679,7 +1679,7 @@ function sbRender() {
     tr.className = 'kb-klickbare-zeile';
     tr.style.cursor = 'pointer';
     tr.onclick = () => sbDetailAnzeigen(i.id);
-    tr.innerHTML = `<td>${i.datum}</td><td>${euro(i.betrag)}</td><td>${i.grund || '–'}</td><td>${dateiLink}</td><td style="text-align:center;color:#d4af37;">🔍</td><td><button class="btn-del" onclick="event.stopPropagation();sbLoeschen('${i.id}')">✕</button></td>`;
+    tr.innerHTML = `<td>${i.datum}</td><td>${euro(i.betrag)}</td><td>${i.grund || '–'}</td><td>${dateiLink}</td><td style="text-align:center;color:#b8941f;font-size:12.5px;font-weight:700;white-space:nowrap;">🔍 Details</td><td><button class="btn-del" onclick="event.stopPropagation();sbLoeschen('${i.id}')">✕</button></td>`;
     tbody.appendChild(tr);
   });
   document.getElementById('sb-gesamt').textContent = euro(gesamt);
