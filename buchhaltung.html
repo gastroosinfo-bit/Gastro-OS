@@ -154,11 +154,7 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8 url('/bg-rest
       <label style="font-size:13px;">Mandantennummer<br><input type="text" id="dv-mandant" value="9999" style="width:100%;padding:8px;border:1px solid #d0c8b8;border-radius:6px;"></label>
       <label style="font-size:13px;">Kontenrahmen<br><select id="dv-skr" style="width:100%;padding:8px;border:1px solid #d0c8b8;border-radius:6px;"><option value="03">SKR03</option><option value="04">SKR04</option></select></label>
     </div>
-    <div class="grid3" style="row-gap:14px;margin-bottom:18px;">
-      <label style="font-size:13px;">Anteil 7 % an den Einnahmen (in %)<br><input type="number" id="dv-anteil-ein" value="0" min="0" max="100" step="1" style="width:100%;padding:8px;border:1px solid #d0c8b8;border-radius:6px;"></label>
-      <label style="font-size:13px;">Anteil 7 % beim Wareneinkauf (in %)<br><input type="number" id="dv-anteil-we" value="0" min="0" max="100" step="1" style="width:100%;padding:8px;border:1px solid #d0c8b8;border-radius:6px;"></label>
-    </div>
-    <div style="font-size:12px;color:#8090a8;margin-bottom:14px;">Das Kassenbuch kennt die Steuersätze nicht. Hier legst du fest, welcher Anteil mit 7 % gebucht wird, der Rest wird mit 19 % gebucht. Nimm Werte, die du mit deinem Steuerberater abgestimmt hast.</div>
+    <div id="dv-hinweis" style="font-size:12.5px;color:#5a6a85;margin-bottom:14px;line-height:1.6;"></div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;">
       <button class="btn-add" onclick="bhDatevExport()">⬇ DATEV-Datei (EXTF)</button>
       <button class="btn-add" onclick="bhExcelExport()">⬇ Lexware-Datei (CSV)</button>
@@ -309,6 +305,7 @@ function bhAuswertungZeigen(monatSchluessel) {
 
 function bhUebersichtAktualisieren() {
   const monatSchluessel = bhAktuellerMonatSchluessel();
+  try { bhHinweisAktualisieren(); } catch (e) {}
   document.getElementById('bh-monat-label').textContent = '· ' + MONATSNAMEN[parseInt(monatSchluessel.slice(5,7))] + ' ' + monatSchluessel.slice(0,4);
 
   let sumEin = 0, sumAus = 0;
@@ -395,36 +392,60 @@ const BH_KONTEN = {
   '04': { kasse:'1600', transit:'1460', bank:'1800', erloes:'4400', erloes7:'4300', ware:'5400', ware7:'5300', sonst:'6850' }
 };
 function bhRund(n) { return Math.round((Number(n) || 0) * 100) / 100; }
-function bhAnteile() {
-  const lies = id => { const v = parseFloat(String(document.getElementById(id).value || '0').replace(',', '.')); return isNaN(v) ? 0 : Math.min(100, Math.max(0, v)); };
-  return { ein: lies('dv-anteil-ein'), we: lies('dv-anteil-we') };
+// Steuersätze automatisch: Einnahmen aus den Z-Bons (MwSt.-Beträge des Belegs),
+// Wareneinkauf aus den Rechnungen des Monats. Ohne Angaben gilt 19 %.
+function bhBrutto(b) {
+  return { g19: (b.mwst19 || 0) * 119 / 19, g7: (b.mwst7 || 0) * 107 / 7 };
+}
+function bhAnteil7(liste) {
+  let g19 = 0, g7 = 0;
+  liste.forEach(b => { const x = bhBrutto(b); g19 += x.g19; g7 += x.g7; });
+  return (g19 + g7) > 0 ? g7 / (g19 + g7) : null;
+}
+function bhSteuerAnteile(monatSchluessel) {
+  const imMonat = belegeDaten.filter(b => b.datum && b.datum.slice(0, 7) === monatSchluessel && (b.mwst19 != null || b.mwst7 != null));
+  const zbons = imMonat.filter(b => b.plattform === 'Z-Bon');
+  const rechnungen = imMonat.filter(b => belegRichtung(b) === 'ausgabe');
+  const proTag = {};
+  zbons.forEach(b => { (proTag[b.datum] = proTag[b.datum] || []).push(b); });
+  const tagesAnteil = {};
+  Object.keys(proTag).forEach(d => { const a = bhAnteil7(proTag[d]); if (a != null) tagesAnteil[d] = a; });
+  const monatEin = bhAnteil7(zbons);
+  const we = bhAnteil7(rechnungen);
+  return { tag: tagesAnteil, ein: monatEin, we: we, anzahlZbon: Object.keys(tagesAnteil).length, anzahlRechnungen: rechnungen.length };
+}
+function bhHinweisAktualisieren() {
+  const el = document.getElementById('dv-hinweis');
+  if (!el) return;
+  const an = bhSteuerAnteile(bhAktuellerMonatSchluessel());
+  const pr = x => (Math.round(x * 1000) / 10).toString().replace('.', ',') + ' %';
+  const e = an.ein != null ? 'Einnahmen: ' + pr(an.ein) + ' mit 7 % (aus ' + an.anzahlZbon + ' Z-Bon' + (an.anzahlZbon === 1 ? '' : 's') + ')' : 'Einnahmen: alles mit 19 % (kein Z-Bon mit MwSt.-Angabe)';
+  const w = an.we != null ? 'Wareneinkauf: ' + pr(an.we) + ' mit 7 % (aus ' + an.anzahlRechnungen + ' Rechnung' + (an.anzahlRechnungen === 1 ? '' : 'en') + ')' : 'Wareneinkauf: alles mit 19 % (keine Rechnung mit MwSt.-Angabe)';
+  el.innerHTML = 'Die Steuersätze werden automatisch aus deinen hochgeladenen Belegen berechnet.<br>' + e + '<br>' + w;
 }
 function bhBuchungssaetze(monatSchluessel, skr) {
   const k = BH_KONTEN[skr];
-  const an = bhAnteile();
+  const an = bhSteuerAnteile(monatSchluessel);
   const liste = [];
   Object.keys(kassenbuchDaten).filter(d => d.slice(0, 7) === monatSchluessel).sort().forEach(datum => {
     const t = kassenbuchDaten[datum];
     const dm = datum.slice(8, 10) + datum.slice(5, 7);
     const bel = 'KB' + dm;
     const zeile = (b, soll, haben, text) => { if (b > 0) liste.push({ datum, dm, betrag: b, soll, haben, text: text.slice(0, 60), beleg: bel }); };
-    // Betrag auf 7 % und 19 % aufteilen (Anteil in Prozent, der Rest ist 19 %)
-    const add = (betrag, soll, haben, text) => {
-      const b = bhRund(betrag);
-      if (b <= 0) return;
-      zeile(b, soll, haben, text);
-    };
+    const add = (betrag, soll, haben, text) => zeile(bhRund(betrag), soll, haben, text);
+    const anteilEin = an.tag[datum] != null ? an.tag[datum] : (an.ein != null ? an.ein : 0);
+    const anteilWe = an.we != null ? an.we : 0;
     const addEin = (betrag, konto, text) => {
       const b = bhRund(betrag);
       if (b <= 0) return;
-      const b7 = bhRund(b * an.ein / 100), b19 = bhRund(b - b7);
+      const b7 = bhRund(b * anteilEin), b19 = bhRund(b - b7);
       zeile(b19, konto, k.erloes, text + ' 19 %');
       zeile(b7, konto, k.erloes7, text + ' 7 %');
     };
     const addWe = (betrag, gegen, text) => {
       const b = bhRund(betrag);
       if (b <= 0) return;
-      const b7 = bhRund(b * an.we / 100), b19 = bhRund(b - b7);
+      const b7 = bhRund(b * anteilWe), b19 = bhRund(b - b7);
       zeile(b19, k.ware, gegen, text + ' 19 %');
       zeile(b7, k.ware7, gegen, text + ' 7 %');
     };
