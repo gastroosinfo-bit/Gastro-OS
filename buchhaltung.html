@@ -1058,7 +1058,7 @@ function bhBerichtErstellen() {
   ]);
   kassenbuchDaten = kb || {};
   weDaten = (we && we.items) || [];
-  belegeDaten = (bel && bel.items) || [];
+  belegeDaten = ((bel && bel.items) || []).filter(x => x.art !== 'ausgangsrechnung');
   freigetraenkeDaten = (fg && fg.items) || [];
   abschreibungenDaten = (ac && ac.items) || [];
   stornoDaten = (sb && sb.items) || [];

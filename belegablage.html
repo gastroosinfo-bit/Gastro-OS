@@ -714,6 +714,7 @@ async function belegOeffnen(path) {
 async function belegLoeschen(id) {
   if (!confirm('Diesen Beleg wirklich löschen? Das kann nicht rückgängig gemacht werden.')) return;
   const item = belegeDaten.find(b => b.id === id);
+  if (item && item.art === 'ausgangsrechnung') { alert('Ausgangsrechnungen löschst du unter E-Rechnung → Meine Rechnungen.'); return; }
   if (item && item.kbBuchung) { item.kbUebernehmen = false; await belegKassenbuchSync(item); }
   belegeDaten = belegeDaten.filter(b => b.id !== id);
   await toolSave('tagesgeschaeft-belege', { items: belegeDaten });
@@ -819,7 +820,17 @@ async function belegFaelligkeitInlineGeaendert(id, neuesDatum) {
   await toolSave('tagesgeschaeft-belege', { items: belegeDaten });
   belegRenderTabelle();
 }
+function belegAusgangStatus(b) {
+  const bezahlt = b.status === 'erhalten';
+  return '<div style="min-width:170px;font-size:12px;"><span style="font-weight:700;color:' + (bezahlt ? '#1a6030' : '#8a6400') + ';">' + (bezahlt ? '✓ Kunde hat bezahlt' : '⏳ Zahlung erwartet' + (b.faelligkeit ? ' bis ' + b.faelligkeit : '')) + '</span><div style="font-size:10.5px;color:#8090a8;margin-top:3px;">Ändern unter E-Rechnung → Meine Rechnungen</div></div>';
+}
+function belegAusgangDateien(b) {
+  let h = '<a href="#" onclick="belegOeffnen(\'' + b.storagePath + '\');return false;">XML</a>';
+  if (b.pdfPath) h += ' · <a href="#" onclick="belegOeffnen(\'' + b.pdfPath + '\');return false;">PDF</a>';
+  return h;
+}
 function belegBrauchtHandlung(b) {
+  if (b.art === 'ausgangsrechnung') return false;
   if (STATUS_ERLEDIGT_WERTE.includes(b.status)) return false;
   if (b.status === 'offen' || b.status === 'ausstehend') return true;
   if (b.status === 'faellig' && b.faelligkeit && b.faelligkeit <= heute()) return true;
@@ -836,11 +847,12 @@ function belegRenderTabelle() {
   document.getElementById('beleg-sum-label').textContent = istAktuellerMonat ? 'Diesen Monat gesamt:' : aktMonat + ' gesamt:';
   let sumMonat = 0;
   sorted.forEach(b => {
-    if (b.datum.slice(0, 7) === aktMonat) sumMonat += b.betrag;
+    const ausg = b.art === 'ausgangsrechnung';
+    if (!ausg && b.datum.slice(0, 7) === aktMonat) sumMonat += b.betrag;
     const tr = document.createElement('tr');
     const handlungHinweis = b.status === 'offen' ? 'Noch abzugleichen' : (b.status === 'ausstehend' ? 'Auszahlung ausstehend' : 'Zahlung fällig');
     const warnZelle = belegBrauchtHandlung(b) ? `<span title="${handlungHinweis}" style="font-size:15px;">⚠️</span>` : '';
-    tr.innerHTML = `<td style="text-align:center;">${warnZelle}</td><td>${b.datum}</td><td>${b.plattform}</td><td>${b.rechnungsnr || '–'}</td><td>${b.steuerId || '–'}</td><td>${euro(b.betrag)}</td><td>${b.mwst19 != null ? euro(b.mwst19) : '–'}</td><td>${b.mwst7 != null ? euro(b.mwst7) : '–'}</td><td>${belegStatusZelle(b)}</td><td>${belegKbZelle(b)}</td><td><a href="#" onclick="belegOeffnen('${b.storagePath}');return false;">${b.dateiname}</a></td><td><button class="btn-del" onclick="belegLoeschen(${b.id})">✕</button></td>`;
+    tr.innerHTML = `<td style="text-align:center;">${warnZelle}</td><td>${b.datum}</td><td>${ausg ? 'Ausgangsrechnung<br><span style="font-size:11px;color:#8090a8;">' + (b.kunde || '') + '</span>' : b.plattform}</td><td>${b.rechnungsnr || '–'}</td><td>${b.steuerId || '–'}</td><td>${euro(b.betrag)}</td><td>${b.mwst19 != null ? euro(b.mwst19) : '–'}</td><td>${b.mwst7 != null ? euro(b.mwst7) : '–'}</td><td>${ausg ? belegAusgangStatus(b) : belegStatusZelle(b)}</td><td>${ausg ? '<span style="font-size:11px;color:#5a6a85;line-height:1.5;display:block;min-width:150px;">Zählt hier nicht mit. Steht in der Buchhaltung unter „Ausgangsrechnungen“.</span>' : belegKbZelle(b)}</td><td>${ausg ? belegAusgangDateien(b) : '<a href="#" onclick="belegOeffnen(\'' + b.storagePath + '\');return false;">' + b.dateiname + '</a>'}</td><td>${ausg ? '<span title="Rechnungen löschst du unter E-Rechnung → Meine Rechnungen" style="cursor:help;">🔒</span>' : '<button class="btn-del" onclick="belegLoeschen(' + b.id + ')">✕</button>'}</td>`;
     tbody.appendChild(tr);
   });
   document.getElementById('beleg-sum-monat').textContent = euro(sumMonat);
@@ -900,7 +912,7 @@ function belegMonatsberichtErstellen() {
 
   let sumBetrag = 0, sumMwst19 = 0, sumMwst7 = 0;
   const zeilen = gefiltert.map(b => {
-    sumBetrag += b.betrag || 0;
+    if (b.art !== 'ausgangsrechnung') sumBetrag += b.betrag || 0;
     sumMwst19 += b.mwst19 || 0;
     sumMwst7 += b.mwst7 || 0;
     const statusText = belegStatusText(b);

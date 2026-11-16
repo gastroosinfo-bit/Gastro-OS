@@ -481,25 +481,86 @@ async function rechnungErstellen() {
   ausgang.push({ id: r.id, nr: r.nr, datum: r.datum, kunde: r.kunde.name, brutto: berechnen(r.positionen).brutto, bezahltAm: null, rechnung: r, firma: Object.assign({}, einst, { logo: '', logoW: 0, logoH: 0, letzte: null }) });
   await toolSave('e-rechnung-einstellungen', einst);
   await toolSave('e-rechnung-ausgang', { items: ausgang });
+  let belegText = ' Sie liegt auch in den Belegen.';
+  try { await belegAnlegen(ausgang[ausgang.length - 1]); } catch (err) { belegText = ' Ablegen in den Belegen ist fehlgeschlagen. Du kannst es in „Meine Rechnungen“ nachholen.'; }
   $('r-nr').value = naechsteNummer();
-  $('r-fehler').innerHTML = '<span class="ok">✓ Rechnung ' + esc(r.nr) + ' erstellt und gespeichert. XML und PDF wurden heruntergeladen.</span>';
+  $('r-fehler').innerHTML = '<span class="ok">✓ Rechnung ' + esc(r.nr) + ' erstellt und gespeichert. XML und PDF wurden heruntergeladen.' + esc(belegText) + '</span>';
 }
 function listeZeigen() {
   if (!ausgang.length) { $('liste-inhalt').innerHTML = '<div class="hint">Noch keine Rechnung erstellt.</div>'; return; }
-  let h = '<div class="hint">Trage bei „Bezahlt am“ das Datum ein, sobald der Kunde bezahlt hat. Trage diesen Zahlungseingang bitte nicht zusätzlich im Kassenbuch ein, sonst zählt die Einnahme doppelt.</div>';
-  h += '<table><thead><tr><th>Nummer</th><th>Datum</th><th>Kunde</th><th>Betrag</th><th>Bezahlt am</th><th></th></tr></thead><tbody>';
+  let h = '<div class="hint">Trage bei „Bezahlt am“ das Datum ein, sobald der Kunde bezahlt hat. Trage diesen Zahlungseingang bitte nicht zusätzlich im Kassenbuch ein, sonst zählt die Einnahme doppelt. Jede Rechnung liegt zusätzlich als „Ausgangsrechnung“ in den Belegen (zählt dort nicht mit).</div>';
+  h += '<table><thead><tr><th>Nummer</th><th>Datum</th><th>Kunde</th><th>Betrag</th><th>Bezahlt am</th><th>Belege</th><th></th></tr></thead><tbody>';
   ausgang.slice().reverse().forEach(a => {
     h += '<tr><td>' + esc(a.nr) + '</td><td>' + datumDe(a.datum) + '</td><td>' + esc(a.kunde) + '</td><td>' + eur(a.brutto) + '</td>' +
-      '<td><input type="date" value="' + esc(a.bezahltAm || '') + '" onchange="bezahltSetzen(' + a.id + ', this.value)" style="width:150px;"></td><td>' +
-      '<button class="btn-add" style="padding:6px 12px;" onclick="listeXml(' + a.id + ')">XML</button> <button class="btn-add" style="padding:6px 12px;" onclick="listePdf(' + a.id + ')">PDF</button></td></tr>';
+      '<td><input type="date" value="' + esc(a.bezahltAm || '') + '" onchange="bezahltSetzen(' + a.id + ', this.value)" style="width:150px;"></td>' +
+      '<td>' + (a.belegId ? '<span class="ok">✓ abgelegt</span>' : '<button class="btn-add" style="padding:6px 12px;" onclick="belegNachtragen(' + a.id + ')">In Belege ablegen</button>') + '</td><td style="white-space:nowrap;">' +
+      '<button class="btn-add" style="padding:6px 12px;" onclick="listeXml(' + a.id + ')">XML</button> <button class="btn-add" style="padding:6px 12px;" onclick="listePdf(' + a.id + ')">PDF</button> ' +
+      '<button class="btn-del" onclick="rechnungLoeschen(' + a.id + ')" title="Löschen">✕</button></td></tr>';
   });
-  $('liste-inhalt').innerHTML = h + '</tbody></table>';
+  $('liste-inhalt').innerHTML = h + '</tbody></table><div id="liste-status" class="hint" style="margin-top:10px;"></div>';
 }
 async function bezahltSetzen(id, wert) {
   const a = ausgang.find(x => x.id === id);
   if (!a) return;
   a.bezahltAm = wert || null;
   await toolSave('e-rechnung-ausgang', { items: ausgang });
+  if (a.belegId) {
+    const bel = await toolLoad('tagesgeschaeft-belege');
+    const items = (bel && bel.items) || [];
+    const b = items.find(x => x.id === a.belegId);
+    if (b) { b.status = a.bezahltAm ? 'erhalten' : 'ausstehend'; await toolSave('tagesgeschaeft-belege', { items }); }
+  }
+}
+// Rechnung als Beleg (Art „Ausgangsrechnung“) ablegen: XML + PDF im Original, zählt in den Belegen nicht mit
+async function belegAnlegen(a) {
+  const e = Object.assign({}, a.firma, { logo: einst.logo || '', logoW: einst.logoW || 0, logoH: einst.logoH || 0 });
+  const xml = xmlErzeugen(a.rechnung, a.firma);
+  const xrName = ((a.rechnung.kunde.mail || '').trim() ? 'XRechnung_' : 'E-Rechnung_') + a.nr + '.xml';
+  const pdfBytes = await pdfMitXml(a.rechnung, e, xml);
+  const hoch = async (name, typ, bytes) => {
+    let bin = ''; const u8 = new Uint8Array(bytes); for (let i = 0; i < u8.length; i += 8192) bin += String.fromCharCode.apply(null, u8.subarray(i, i + 8192));
+    const res = await fetch('/api/beleg-upload', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ filename: name, contentBase64: btoa(bin), contentType: typ }) });
+    const r = await res.json(); if (!res.ok) throw new Error(r.error || 'Upload'); return r.path;
+  };
+  const xmlBytes = new TextEncoder().encode(xml);
+  if (xmlBytes.length > 3 * 1024 * 1024) throw new Error('Datei zu groß');
+  const xmlPfad = await hoch(xrName, 'application/xml', xmlBytes);
+  let pdfPfad = null;
+  if (pdfBytes.length <= 3 * 1024 * 1024) pdfPfad = await hoch('Rechnung_' + a.nr + '.pdf', 'application/pdf', pdfBytes);
+  const bel = await toolLoad('tagesgeschaeft-belege');
+  const items = (bel && bel.items) || [];
+  const x = berechnen(a.rechnung.positionen);
+  const id = Date.now();
+  items.push({
+    id, art: 'ausgangsrechnung', ausgangId: a.id, datum: a.datum, plattform: 'Ausgangsrechnung', kunde: a.kunde, betrag: a.brutto,
+    rechnungsnr: a.nr, steuerId: '', mwst19: null, mwst7: null, bar: null, karte: null,
+    status: a.bezahltAm ? 'erhalten' : 'ausstehend', faelligkeit: a.rechnung.faellig || null,
+    zahlart: '', kbart: '', kbUebernehmen: false,
+    dateiname: xrName, storagePath: xmlPfad, pdfName: 'Rechnung_' + a.nr + '.pdf', pdfPath: pdfPfad
+  });
+  await toolSave('tagesgeschaeft-belege', { items });
+  a.belegId = id;
+  await toolSave('e-rechnung-ausgang', { items: ausgang });
+}
+async function belegNachtragen(id) {
+  const a = ausgang.find(x => x.id === id); if (!a) return;
+  $('liste-status').textContent = 'Wird abgelegt …';
+  try { await belegAnlegen(a); listeZeigen(); $('liste-status').innerHTML = '<span class="ok">✓ ' + esc(a.nr) + ' liegt jetzt in den Belegen.</span>'; }
+  catch (err) { $('liste-status').innerHTML = '<span class="fehler">Ablegen fehlgeschlagen.</span>'; }
+}
+async function rechnungLoeschen(id) {
+  const a = ausgang.find(x => x.id === id); if (!a) return;
+  if (!confirm('Rechnung ' + a.nr + ' wirklich löschen?\n\nSie wird auch aus den Belegen, der Buchhaltung und dem Export entfernt. Das kann nicht rückgängig gemacht werden.\n\nEine echte, schon verschickte Rechnung solltest du nicht löschen, sondern stornieren (Gutschrift). Das Löschen ist nur zum Testen gedacht.')) return;
+  const bel = await toolLoad('tagesgeschaeft-belege');
+  let items = (bel && bel.items) || [];
+  items.filter(b => b.art === 'ausgangsrechnung' && b.ausgangId === id).forEach(b => {
+    [b.storagePath, b.pdfPath].filter(Boolean).forEach(pf => fetch('/api/beleg-upload', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ path: pf }) }).catch(() => {}));
+  });
+  items = items.filter(b => !(b.art === 'ausgangsrechnung' && b.ausgangId === id));
+  await toolSave('tagesgeschaeft-belege', { items });
+  ausgang = ausgang.filter(x => x.id !== id);
+  await toolSave('e-rechnung-ausgang', { items: ausgang });
+  listeZeigen();
 }
 function listeXml(id) { const a = ausgang.find(x => x.id === id); if (a) datei(xmlErzeugen(a.rechnung, a.firma), ((a.rechnung.kunde.mail || '').trim() ? 'XRechnung_' : 'E-Rechnung_') + a.nr + '.xml', 'application/xml'); }
 async function listePdf(id) { const a = ausgang.find(x => x.id === id); if (!a) return; const e = Object.assign({}, a.firma, { logo: einst.logo || '', logoW: einst.logoW || 0, logoH: einst.logoH || 0 }); pdfSpeichern(await pdfMitXml(a.rechnung, e, xmlErzeugen(a.rechnung, a.firma)), 'Rechnung_' + a.nr + '.pdf'); }
