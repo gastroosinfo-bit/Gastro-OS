@@ -674,6 +674,9 @@ async function empfangenUebernehmen() {
   const { file, daten: d } = empfangenAktuell;
   const st = $('emp-status');
   if (file.size > 3 * 1024 * 1024) { st.innerHTML = '<span class="fehler">Datei zu groß (max. 3 MB).</span>'; return; }
+  const nm = x => String(x || '').trim().toLowerCase();
+  const eigene = nm(d.verkaeufer) === nm(einst.firma) || (d.ustid && nm(d.ustid) === nm(einst.steuernr));
+  if (eigene) { st.innerHTML = '<span class="warn">Das ist deine eigene Rechnung (du bist der Aussteller). Sie liegt schon als „Ausgangsrechnung" in den Belegen und wird hier nicht als Eingangsrechnung übernommen.</span>'; return; }
   st.textContent = 'Wird gespeichert …';
   const bel = await toolLoadSicher('tagesgeschaeft-belege');
   const items = (bel && bel.items) || [];
