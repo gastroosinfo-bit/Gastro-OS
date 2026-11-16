@@ -14,7 +14,7 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8 url('/bg-rest
 .btn-back { background:#d4af37; color:#1a2a4a; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
 .btn-back:hover { background:#c8a030; }
 .gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
-.wrap { max-width:920px; margin:0 auto; padding:28px 24px 60px; }
+.wrap { max-width:1360px; margin:0 auto; padding:28px 24px 60px; }
 .tool-label { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:4px; }
 .tool-title { font-family:Georgia,serif; font-size:22px; color:#1a2a4a; margin-bottom:4px; }
 .tool-sub { font-size:13px; color:#5a6a80; margin-bottom:20px; }
@@ -40,9 +40,11 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8 url('/bg-rest
 .auto-hinweis { font-size:11.5px; color:#1a6640; margin-top:8px; display:none; }
 .auto-hinweis.loading { color:#8090a8; }
 
-table.data-table { width:100%; border-collapse:collapse; font-size:12px; margin-top:14px; }
-table.data-table th { background:#f5f0e8; padding:7px 8px; font-size:10.5px; font-weight:700; color:#1a2a4a; text-align:left; border:1px solid #e8dfc8; white-space:nowrap; }
-table.data-table td { padding:7px 8px; border:1px solid #e8dfc8; }
+table.data-table { width:100%; border-collapse:collapse; font-size:11.5px; margin-top:14px; table-layout:auto; }
+table.data-table th { background:#f5f0e8; padding:6px 5px; font-size:10px; font-weight:700; color:#1a2a4a; text-align:left; border:1px solid #e8dfc8; }
+table.data-table td { padding:6px 5px; border:1px solid #e8dfc8; vertical-align:top; word-break:break-word; }
+table.data-table td:nth-child(2), table.data-table td:nth-child(6) { white-space:nowrap; }
+table.data-table select, table.data-table input[type=date] { max-width:150px; }
 table.data-table tr:nth-child(even) td { background:#faf8f4; }
 .status-badge { font-size:10.5px; font-weight:700; padding:3px 8px; border-radius:10px; white-space:nowrap; }
 .status-bezahlt { background:#e4f5e8; color:#1a6030; }
@@ -152,11 +154,13 @@ table.data-table tr:nth-child(even) td { background:#faf8f4; }
   <div class="section">
     <div class="section-head">Hochgeladene Belege</div>
     <div class="auto-hinweis" id="beleg-ma-hinweis" style="display:none;"></div>
+    <div class="auto-hinweis" id="beleg-versteckt-hinweis" style="display:none;color:#8a6400;"></div>
     <div class="grid3" style="margin-bottom:10px;align-items:center;">
       <div><strong id="beleg-sum-label">Diesen Monat gesamt:</strong> <span id="beleg-sum-monat">0,00 €</span></div>
       <div class="field-group" style="margin-bottom:0;">
         <label>Monat</label>
         <select id="beleg-monat-auswahl" onchange="belegRenderTabelle()">
+          <option value="alle">Alle Monate</option>
           <option value="01">Januar</option>
           <option value="02">Februar</option>
           <option value="03">März</option>
@@ -732,7 +736,7 @@ function belegKbZelle(b) {
   }
   const ja = !!b.kbUebernehmen;
   const maOffen = b.erfasstVon && b.kbUebernehmen === undefined;
-  let html = `<div style="display:flex;flex-direction:column;gap:4px;min-width:150px;">
+  let html = `<div style="display:flex;flex-direction:column;gap:4px;min-width:0;">
     ${maOffen ? '<span style="font-size:10.5px;color:#c0392b;font-weight:700;">👤 von ' + b.erfasstVon + ' — bitte prüfen</span>' : ''}
     <label style="display:flex;align-items:center;gap:6px;font-size:11.5px;"><input type="checkbox" ${ja ? 'checked' : ''} onchange="belegKbInline(${b.id}, 'uebernehmen', this.checked)"> im Kassenbuch</label>`;
   if (!LIEFERDIENSTE.includes(b.plattform)) {
@@ -791,7 +795,7 @@ function belegStatusZelle(b) {
   else if (b.status === 'ausstehend') warnLabel = ueberfaellig ? '⚠ überfällig' : '⏳ ausstehend';
   else if (b.status === 'faellig' && ueberfaellig) warnLabel = '⚠ überfällig';
   return `
-    <div style="display:flex;flex-direction:column;gap:4px;min-width:170px;">
+    <div style="display:flex;flex-direction:column;gap:4px;min-width:0;">
       <select onchange="belegStatusInlineGeaendert(${b.id}, this.value)" style="border:1px solid ${rahmenFarbe};border-radius:5px;padding:4px 6px;font-size:11.5px;background:#fff;">
         ${belegStatusOptionenHtml(b.status)}
       </select>
@@ -822,7 +826,7 @@ async function belegFaelligkeitInlineGeaendert(id, neuesDatum) {
 }
 function belegAusgangStatus(b) {
   const bezahlt = b.status === 'erhalten';
-  return '<div style="min-width:170px;font-size:12px;"><span style="font-weight:700;color:' + (bezahlt ? '#1a6030' : '#8a6400') + ';">' + (bezahlt ? '✓ Kunde hat bezahlt' : '⏳ Zahlung erwartet' + (b.faelligkeit ? ' bis ' + b.faelligkeit : '')) + '</span><div style="font-size:10.5px;color:#8090a8;margin-top:3px;">Ändern unter E-Rechnung → Meine Rechnungen</div></div>';
+  return '<div style="min-width:0;font-size:12px;"><span style="font-weight:700;color:' + (bezahlt ? '#1a6030' : '#8a6400') + ';">' + (bezahlt ? '✓ Kunde hat bezahlt' : '⏳ Zahlung erwartet' + (b.faelligkeit ? ' bis ' + b.faelligkeit : '')) + '</span><div style="font-size:10.5px;color:#8090a8;margin-top:3px;">Ändern unter E-Rechnung → Meine Rechnungen</div></div>';
 }
 function belegAusgangDateien(b) {
   let h = '<a href="#" onclick="belegOeffnen(\'' + b.storagePath + '\');return false;">XML</a>';
@@ -839,23 +843,29 @@ function belegBrauchtHandlung(b) {
 function belegRenderTabelle() {
   const tbody = document.querySelector('#beleg-tabelle tbody');
   tbody.innerHTML = '';
-  const sorted = [...belegeDaten].sort((a, b) => b.datum.localeCompare(a.datum));
   const monatWert = document.getElementById('beleg-monat-auswahl').value;
   const jahrWert = document.getElementById('beleg-jahr-auswahl').value;
+  const ganzesJahr = monatWert === 'alle';
   const aktMonat = jahrWert + '-' + monatWert;
-  const istAktuellerMonat = aktMonat === heute().slice(0, 7);
-  document.getElementById('beleg-sum-label').textContent = istAktuellerMonat ? 'Diesen Monat gesamt:' : aktMonat + ' gesamt:';
+  const passt = b => ganzesJahr ? b.datum.slice(0, 4) === jahrWert : b.datum.slice(0, 7) === aktMonat;
+  const sorted = [...belegeDaten].sort((a, b) => b.datum.localeCompare(a.datum)).filter(passt);
+  const istAktuellerMonat = !ganzesJahr && aktMonat === heute().slice(0, 7);
+  document.getElementById('beleg-sum-label').textContent = ganzesJahr ? 'Jahr ' + jahrWert + ' gesamt:' : (istAktuellerMonat ? 'Diesen Monat gesamt:' : aktMonat + ' gesamt:');
   let sumMonat = 0;
+  if (!sorted.length) { const tr0 = document.createElement('tr'); tr0.innerHTML = '<td colspan="12" style="text-align:center;color:#8090a8;padding:16px;">Keine Belege in diesem Zeitraum.</td>'; tbody.appendChild(tr0); }
   sorted.forEach(b => {
     const ausg = b.art === 'ausgangsrechnung';
-    if (!ausg && b.datum.slice(0, 7) === aktMonat) sumMonat += b.betrag;
+    if (!ausg) sumMonat += b.betrag;
     const tr = document.createElement('tr');
     const handlungHinweis = b.status === 'offen' ? 'Noch abzugleichen' : (b.status === 'ausstehend' ? 'Auszahlung ausstehend' : 'Zahlung fällig');
     const warnZelle = belegBrauchtHandlung(b) ? `<span title="${handlungHinweis}" style="font-size:15px;">⚠️</span>` : '';
-    tr.innerHTML = `<td style="text-align:center;">${warnZelle}</td><td>${b.datum}</td><td>${ausg ? 'Ausgangsrechnung<br><span style="font-size:11px;color:#8090a8;">' + (b.kunde || '') + '</span>' : b.plattform}</td><td>${b.rechnungsnr || '–'}</td><td>${b.steuerId || '–'}</td><td>${euro(b.betrag)}</td><td>${b.mwst19 != null ? euro(b.mwst19) : '–'}</td><td>${b.mwst7 != null ? euro(b.mwst7) : '–'}</td><td>${ausg ? belegAusgangStatus(b) : belegStatusZelle(b)}</td><td>${ausg ? '<span style="font-size:11px;color:#5a6a85;line-height:1.5;display:block;min-width:150px;">Zählt hier nicht mit. Steht in der Buchhaltung unter „Ausgangsrechnungen“.</span>' : belegKbZelle(b)}</td><td>${ausg ? belegAusgangDateien(b) : '<a href="#" onclick="belegOeffnen(\'' + b.storagePath + '\');return false;">' + b.dateiname + '</a>'}</td><td>${ausg ? '<span title="Rechnungen löschst du unter E-Rechnung → Meine Rechnungen" style="cursor:help;">🔒</span>' : '<button class="btn-del" onclick="belegLoeschen(' + b.id + ')">✕</button>'}</td>`;
+    tr.innerHTML = `<td style="text-align:center;">${warnZelle}</td><td>${b.datum}</td><td>${ausg ? 'Ausgangsrechnung<br><span style="font-size:11px;color:#8090a8;">' + (b.kunde || '') + '</span>' : b.plattform}</td><td>${b.rechnungsnr || '–'}</td><td>${b.steuerId || '–'}</td><td>${euro(b.betrag)}</td><td>${b.mwst19 != null ? euro(b.mwst19) : '–'}</td><td>${b.mwst7 != null ? euro(b.mwst7) : '–'}</td><td>${ausg ? belegAusgangStatus(b) : belegStatusZelle(b)}</td><td>${ausg ? '<span style="font-size:11px;color:#5a6a85;line-height:1.5;display:block;min-width:0;">Zählt hier nicht mit. Steht in der Buchhaltung unter „Ausgangsrechnungen“.</span>' : belegKbZelle(b)}</td><td>${ausg ? belegAusgangDateien(b) : '<a href="#" onclick="belegOeffnen(\'' + b.storagePath + '\');return false;">' + b.dateiname + '</a>'}</td><td>${ausg ? '<span title="Rechnungen löschst du unter E-Rechnung → Meine Rechnungen" style="cursor:help;">🔒</span>' : '<button class="btn-del" onclick="belegLoeschen(' + b.id + ')">✕</button>'}</td>`;
     tbody.appendChild(tr);
   });
   document.getElementById('beleg-sum-monat').textContent = euro(sumMonat);
+  const versteckt = belegeDaten.filter(b => b.datum && !passt(b) && belegBrauchtHandlung(b)).length;
+  const vb = document.getElementById('beleg-versteckt-hinweis');
+  if (versteckt) { vb.style.display = 'block'; vb.textContent = '⚠️ ' + versteckt + (versteckt === 1 ? ' weiterer Beleg in einem anderen Zeitraum braucht' : ' weitere Belege in anderen Zeiträumen brauchen') + ' noch eine Handlung (offen, ausstehend oder fällig). Wähle „Alle Monate“, um sie zu sehen.'; } else { vb.style.display = 'none'; }
   // Hinweis auf Belege von Mitarbeitern, über die der Chef noch entscheiden muss
   const offeneMa = belegeDaten.filter(b => b.erfasstVon && (b.plattform === 'Z-Bon' ? !b.kbZbonErledigt : b.kbUebernehmen === undefined));
   const maBox = document.getElementById('beleg-ma-hinweis');

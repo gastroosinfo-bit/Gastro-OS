@@ -191,6 +191,13 @@ async function toolLoad(tool) {
     return (d && d.data) ? d.data : {};
   } catch (e) { return {}; }
 }
+// Wie toolLoad, bricht aber bei einem Ladefehler ab, damit nie eine leere Liste die echten Belege überschreibt
+async function toolLoadSicher(tool) {
+  const res = await fetch('/api/tool-data?tool=' + encodeURIComponent(tool));
+  if (!res.ok) throw new Error('Laden fehlgeschlagen');
+  const d = await res.json();
+  return (d && d.data) ? d.data : {};
+}
 async function toolSave(tool, data) {
   try {
     const r = await fetch('/api/tool-data', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ tool, data }) });
@@ -502,10 +509,13 @@ function listeZeigen() {
 async function bezahltSetzen(id, wert) {
   const a = ausgang.find(x => x.id === id);
   if (!a) return;
+  if (wert && (wert.length !== 10 || parseInt(wert.slice(0, 4), 10) < 2000 || parseInt(wert.slice(0, 4), 10) > 2100)) {
+    return; // Jahr noch unvollständig (z. B. beim Tippen), erst das fertige Datum wird gespeichert
+  }
   a.bezahltAm = wert || null;
   await toolSave('e-rechnung-ausgang', { items: ausgang });
   if (a.belegId) {
-    const bel = await toolLoad('tagesgeschaeft-belege');
+    const bel = await toolLoadSicher('tagesgeschaeft-belege');
     const items = (bel && bel.items) || [];
     const b = items.find(x => x.id === a.belegId);
     if (b) { b.status = a.bezahltAm ? 'erhalten' : 'ausstehend'; await toolSave('tagesgeschaeft-belege', { items }); }
@@ -527,7 +537,7 @@ async function belegAnlegen(a) {
   const xmlPfad = await hoch(xrName, 'application/xml', xmlBytes);
   let pdfPfad = null;
   if (pdfBytes.length <= 3 * 1024 * 1024) pdfPfad = await hoch('Rechnung_' + a.nr + '.pdf', 'application/pdf', pdfBytes);
-  const bel = await toolLoad('tagesgeschaeft-belege');
+  const bel = await toolLoadSicher('tagesgeschaeft-belege');
   const items = (bel && bel.items) || [];
   const x = berechnen(a.rechnung.positionen);
   const id = Date.now();
@@ -551,7 +561,7 @@ async function belegNachtragen(id) {
 async function rechnungLoeschen(id) {
   const a = ausgang.find(x => x.id === id); if (!a) return;
   if (!confirm('Rechnung ' + a.nr + ' wirklich löschen?\n\nSie wird auch aus den Belegen, der Buchhaltung und dem Export entfernt. Das kann nicht rückgängig gemacht werden.\n\nEine echte, schon verschickte Rechnung solltest du nicht löschen, sondern stornieren (Gutschrift). Das Löschen ist nur zum Testen gedacht.')) return;
-  const bel = await toolLoad('tagesgeschaeft-belege');
+  const bel = await toolLoadSicher('tagesgeschaeft-belege');
   let items = (bel && bel.items) || [];
   items.filter(b => b.art === 'ausgangsrechnung' && b.ausgangId === id).forEach(b => {
     [b.storagePath, b.pdfPath].filter(Boolean).forEach(pf => fetch('/api/beleg-upload', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ path: pf }) }).catch(() => {}));
@@ -665,7 +675,7 @@ async function empfangenUebernehmen() {
   const st = $('emp-status');
   if (file.size > 3 * 1024 * 1024) { st.innerHTML = '<span class="fehler">Datei zu groß (max. 3 MB).</span>'; return; }
   st.textContent = 'Wird gespeichert …';
-  const bel = await toolLoad('tagesgeschaeft-belege');
+  const bel = await toolLoadSicher('tagesgeschaeft-belege');
   const items = (bel && bel.items) || [];
   const norm = s => String(s || '').trim().toLowerCase();
   if (items.some(b => norm(b.plattform) === norm(d.verkaeufer) && norm(b.rechnungsnr) === norm(d.nr))) { st.innerHTML = '<span class="warn">Diese Rechnung gibt es schon in den Belegen.</span>'; return; }
