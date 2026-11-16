@@ -493,18 +493,31 @@ async function rechnungErstellen() {
   $('r-nr').value = naechsteNummer();
   $('r-fehler').innerHTML = '<span class="ok">✓ Rechnung ' + esc(r.nr) + ' erstellt und gespeichert. XML und PDF wurden heruntergeladen.' + esc(belegText) + '</span>';
 }
+let listeMonat = 'alle', listeJahr = '';
+function listeFilterAendern() { listeMonat = $('l-monat').value; listeJahr = $('l-jahr').value; listeZeigen(); }
 function listeZeigen() {
   if (!ausgang.length) { $('liste-inhalt').innerHTML = '<div class="hint">Noch keine Rechnung erstellt.</div>'; return; }
-  let h = '<div class="hint">Trage bei „Bezahlt am“ das Datum ein, sobald der Kunde bezahlt hat. Trage diesen Zahlungseingang bitte nicht zusätzlich im Kassenbuch ein, sonst zählt die Einnahme doppelt. Jede Rechnung liegt zusätzlich als „Ausgangsrechnung“ in den Belegen (zählt dort nicht mit).</div>';
+  const jahre = Array.from(new Set(ausgang.map(a => a.datum.slice(0, 4)).concat([new Date().getFullYear() + ''] ))).sort().reverse();
+  if (!listeJahr || !jahre.includes(listeJahr)) listeJahr = jahre[0];
+  const MON = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+  const sichtbar = ausgang.filter(a => a.datum.slice(0, 4) === listeJahr && (listeMonat === 'alle' || a.datum.slice(5, 7) === listeMonat));
+  const sumAlle = sichtbar.reduce((x, a) => x + a.brutto, 0);
+  const sumBez = sichtbar.filter(a => a.bezahltAm).reduce((x, a) => x + a.brutto, 0);
+  let h = '<div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px;"><div class="field" style="min-width:180px;"><label>Monat</label><select id="l-monat" onchange="listeFilterAendern()"><option value="alle"' + (listeMonat === 'alle' ? ' selected' : '') + '>Alle Monate</option>' +
+    MON.map((m, k) => { const v = String(k + 1).padStart(2, '0'); return '<option value="' + v + '"' + (listeMonat === v ? ' selected' : '') + '>' + m + '</option>'; }).join('') + '</select></div>' +
+    '<div class="field" style="min-width:120px;"><label>Jahr</label><select id="l-jahr" onchange="listeFilterAendern()">' + jahre.map(y => '<option value="' + y + '"' + (listeJahr === y ? ' selected' : '') + '>' + y + '</option>').join('') + '</select></div></div>';
+  h += '<div class="hint">Trage bei „Bezahlt am“ das Datum ein, sobald der Kunde bezahlt hat. Trage diesen Zahlungseingang bitte nicht zusätzlich im Kassenbuch ein, sonst zählt die Einnahme doppelt. Jede Rechnung liegt zusätzlich als „Ausgangsrechnung“ in den Belegen (zählt dort nicht mit). In der Buchhaltung erscheint sie, sobald sie bezahlt ist.</div>';
+  if (!sichtbar.length) return void ($('liste-inhalt').innerHTML = h + '<div class="hint">Keine Rechnungen in diesem Zeitraum.</div><div id="liste-status" class="hint"></div>');
   h += '<table><thead><tr><th>Nummer</th><th>Datum</th><th>Kunde</th><th>Betrag</th><th>Bezahlt am</th><th>Belege</th><th></th></tr></thead><tbody>';
-  ausgang.slice().reverse().forEach(a => {
+  sichtbar.slice().sort((a, b) => b.datum.localeCompare(a.datum) || b.id - a.id).forEach(a => {
     h += '<tr><td>' + esc(a.nr) + '</td><td>' + datumDe(a.datum) + '</td><td>' + esc(a.kunde) + '</td><td>' + eur(a.brutto) + '</td>' +
       '<td><input type="date" value="' + esc(a.bezahltAm || '') + '" onchange="bezahltSetzen(' + a.id + ', this.value)" style="width:150px;"></td>' +
       '<td>' + (a.belegId ? '<span class="ok">✓ abgelegt</span>' : '<button class="btn-add" style="padding:6px 12px;" onclick="belegNachtragen(' + a.id + ')">In Belege ablegen</button>') + '</td><td style="white-space:nowrap;">' +
       '<button class="btn-add" style="padding:6px 12px;" onclick="listeXml(' + a.id + ')">XML</button> <button class="btn-add" style="padding:6px 12px;" onclick="listePdf(' + a.id + ')">PDF</button> ' +
       '<button class="btn-del" onclick="rechnungLoeschen(' + a.id + ')" title="Löschen">✕</button></td></tr>';
   });
-  $('liste-inhalt').innerHTML = h + '</tbody></table><div id="liste-status" class="hint" style="margin-top:10px;"></div>';
+  h += '</tbody></table><div style="margin-top:12px;font-size:13px;text-align:right;color:#5a6a85;">' + sichtbar.length + (sichtbar.length === 1 ? ' Rechnung' : ' Rechnungen') + ' · Gesamt <b style="color:#1a2a4a;">' + eur(sumAlle) + '</b> · davon bezahlt <b style="color:#1a6640;">' + eur(sumBez) + '</b> · offen <b style="color:#a06a10;">' + eur(sumAlle - sumBez) + '</b></div>';
+  $('liste-inhalt').innerHTML = h + '<div id="liste-status" class="hint" style="margin-top:10px;"></div>';
 }
 async function bezahltSetzen(id, wert) {
   const a = ausgang.find(x => x.id === id);
