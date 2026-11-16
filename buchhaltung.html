@@ -478,7 +478,7 @@ function bhBuchungssaetze(monatSchluessel, skr) {
     }
   });
   // Ausgangsrechnungen: Forderung gegen Erlös (je Steuersatz), bei Zahlung Bank gegen Forderung
-  bhAusgangMonat(monatSchluessel).forEach(a => {
+  bhAusgangRechnungsMonat(monatSchluessel).forEach(a => {
     const x = bhRechnungSummen(a.rechnung);
     const dm = a.datum.slice(8, 10) + a.datum.slice(5, 7);
     [19, 7, 0].forEach(satz => {
@@ -583,11 +583,11 @@ function bhZeigeAusgang() {
     const m7 = x.steuer[7] ? x.steuer[7].betrag : 0, m19 = x.steuer[19] ? x.steuer[19].betrag : 0, f = x.steuer[0] ? x.steuer[0].basis : 0;
     return [bhDe(a.datum), a.nr, a.kunde || '', euro(x.netto), euro(f), euro(m7), euro(m19), euro(x.brutto), a.bezahltAm ? 'Bezahlt am ' + bhDe(a.bezahltAm) : 'Offen'];
   });
-  bhModal('Ausgangsrechnungen im Monat ' + monat.slice(5, 7) + '/' + monat.slice(0, 4),
-    '<p style="font-size:12.5px;color:#5a6a85;line-height:1.6;margin-bottom:12px;">Diese Rechnungen hast du mit dem E-Rechnungs-Werkzeug erstellt. Die Liste zeigt die Rechnungen nach <b>Rechnungsdatum</b>. Als Einnahme in deinem Ergebnis zählt eine Rechnung <b>erst, wenn sie bezahlt ist</b>, und zwar im Monat des Bezahlt-Datums. Im DATEV-/Lexware-Export steht sie dagegen schon mit dem Rechnungsdatum als Erlös.</p>' +
+  bhModal('Bezahlte Ausgangsrechnungen im Monat ' + monat.slice(5, 7) + '/' + monat.slice(0, 4),
+    '<p style="font-size:12.5px;color:#5a6a85;line-height:1.6;margin-bottom:12px;">Diese Rechnungen hast du mit dem E-Rechnungs-Werkzeug erstellt. Hier stehen nur <b>bezahlte</b> Rechnungen, und zwar im Monat des Zahlungseingangs (Bezahlt am). Unbezahlte Rechnungen findest du unter E-Rechnung → Meine Rechnungen.</p>' +
     bhTabelle(['Datum', 'Nummer', 'Kunde', 'Netto', 'Steuerfrei', 'MwSt. 7 %', 'MwSt. 19 %', 'Brutto', 'Status'], zeilen, [3, 4, 5, 6, 7]) +
     '<p style="margin-top:12px;font-size:14px;text-align:right;"><b>Summe brutto: ' + euro(sum) + '</b></p>' +
-    '<p style="margin-top:4px;font-size:13px;text-align:right;color:#1a6030;">Davon im Monat bezahlt (zählt als Einnahme): <b>' + euro(bhAusgangBezahltSumme(monat)) + '</b></p>');
+    '<p style="margin-top:4px;font-size:13px;text-align:right;color:#1a6030;">Zählt als Einnahme in deinem Ergebnis.</p>');
 }
 function bhZeigeVorschau() {
   const monat = bhAktuellerMonatSchluessel();
@@ -606,8 +606,13 @@ function bhAusgangBezahltMonat(monatSchluessel) {
 function bhAusgangBezahltSumme(monatSchluessel) {
   return bhAusgangBezahltMonat(monatSchluessel).reduce((s, a) => s + bhRechnungSummen(a.rechnung).brutto, 0);
 }
-function bhAusgangMonat(monatSchluessel) {
+// Für den Export: alle Rechnungen nach Rechnungsdatum
+function bhAusgangRechnungsMonat(monatSchluessel) {
   return (ausgangsDaten || []).filter(a => a && a.rechnung && a.datum && a.datum.slice(0, 7) === monatSchluessel).sort((a, b) => a.datum.localeCompare(b.datum));
+}
+// Für Übersicht und Monatsbericht: nur bezahlte Rechnungen, im Monat des Zahlungseingangs
+function bhAusgangMonat(monatSchluessel) {
+  return bhAusgangBezahltMonat(monatSchluessel).sort((a, b) => a.bezahltAm.localeCompare(b.bezahltAm));
 }
 function bhRechnungSummen(r) {
   const zeilen = r.positionen.map(p => { const g = bhRund(p.menge * p.preis); return bhRund(g - bhRund(g * (p.rabatt || 0) / 100)); });
@@ -622,11 +627,11 @@ function bhAbschnittAusgang(doc, y, monatSchluessel) {
   const liste = bhAusgangMonat(monatSchluessel);
   doc.setFontSize(13);
   doc.setTextColor(26, 42, 74);
-  doc.text('Ausgangsrechnungen', 14, y);
+  doc.text('Ausgangsrechnungen (bezahlt)', 14, y);
   y += 4;
   if (!liste.length) {
     doc.setFontSize(10); doc.setTextColor(140, 140, 140);
-    doc.text('Keine Ausgangsrechnungen in diesem Monat.', 14, y + 4);
+    doc.text('Keine bezahlten Ausgangsrechnungen in diesem Monat.', 14, y + 4);
     return y + 16;
   }
   let sN = 0, s7 = 0, s19 = 0, sB = 0, sF = 0;
@@ -640,7 +645,7 @@ function bhAbschnittAusgang(doc, y, monatSchluessel) {
   });
   doc.autoTable({
     startY: y,
-    head: [['Datum', 'Nummer', 'Kunde', 'Netto', 'Steuerfrei', 'MwSt. 7%', 'MwSt. 19%', 'Brutto', 'Status']],
+    head: [['Rechnungs-datum', 'Nummer', 'Kunde', 'Netto', 'Steuerfrei', 'MwSt. 7%', 'MwSt. 19%', 'Brutto', 'Status']],
     body: zeilen,
     styles: { fontSize: 8, cellPadding: 1.5 },
     headStyles: { fillColor: [26, 42, 74], textColor: [212, 175, 55] },
@@ -654,8 +659,7 @@ function bhAbschnittAusgang(doc, y, monatSchluessel) {
   y += 6;
   doc.setFontSize(8.5);
   doc.setTextColor(120, 130, 150);
-  const bz = bhAusgangBezahltSumme(monatSchluessel);
-  doc.text(doc.splitTextToSize('Im Gesamtergebnis zählt eine Ausgangsrechnung erst, wenn sie bezahlt ist, und zwar im Monat des Zahlungseingangs. In diesem Monat bezahlt: ' + euro(bz) + '. Trage Zahlungseingänge nicht zusätzlich im Kassenbuch ein.', 182), 14, y);
+  doc.text(doc.splitTextToSize('Hier stehen nur bezahlte Rechnungen, im Monat des Zahlungseingangs. Sie zählen als Einnahme im Gesamtergebnis. Trage Zahlungseingänge nicht zusätzlich im Kassenbuch ein.', 182), 14, y);
   y += 5;
   return y + 12;
 }
