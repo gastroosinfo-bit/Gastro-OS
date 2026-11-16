@@ -49,8 +49,20 @@ td { padding:9px 12px; border-bottom:1px solid #efe6d0; color:#334455; vertical-
     if (!res.ok) { window.location.href = 'login.html'; return; }
     const d = await res.json();
     if (!d.valid) { window.location.href = 'login.html'; return; }
+    if ((d.email || '').toLowerCase() === 'feelfree2022@web.de') werkzeugeZeigen();
   } catch (e) { window.location.href = 'login.html'; }
 })();
+function werkzeugeZeigen() {
+  const box = document.getElementById('werkzeuge');
+  const fr = document.getElementById('werkzeuge-frame');
+  fr.src = 'e-rechnung-tool.html?eingebettet=1';
+  box.style.display = '';
+  const bald = document.querySelector('.bald'); if (bald) bald.style.display = 'none';
+  fr.addEventListener('load', function () {
+    const anpassen = function () { try { const h = fr.contentDocument.documentElement.scrollHeight; if (h) fr.style.height = (h + 10) + 'px'; } catch (e) {} };
+    anpassen(); setInterval(anpassen, 500);
+  });
+}
 </script>
 
 <div class="header">
@@ -60,6 +72,13 @@ td { padding:9px 12px; border-bottom:1px solid #efe6d0; color:#334455; vertical-
 <div class="gold-bar"></div>
 
 <div class="main">
+  <div id="werkzeuge" style="display:none;margin-bottom:28px;">
+    <div class="card" style="padding:20px 22px;">
+      <h1 style="font-size:22px;">E-Rechnungen schreiben und empfangen</h1>
+      <div class="gold-rule"></div>
+      <iframe id="werkzeuge-frame" title="E-Rechnung" style="width:100%;height:900px;border:0;display:block;background:transparent;"></iframe>
+    </div>
+  </div>
   <div class="card">
     <h1>Die E-Rechnung einfach erklärt</h1>
     <div class="gold-rule"></div>
