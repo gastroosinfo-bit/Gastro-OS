@@ -726,19 +726,34 @@ async function empfangenUebernehmen() {
 }
 
 // Liste der über dieses Werkzeug empfangenen Rechnungen (kommt live aus den Belegen, bleibt also nach dem Ablegen stehen)
+let empListe = [], empMonat = 'alle', empJahr = '';
 async function empfangenListeZeigen() {
   const box = $('emp-liste'); if (!box) return;
   box.innerHTML = '<div class="hint">Wird geladen …</div>';
   const bel = await toolLoadSicher('tagesgeschaeft-belege');
-  const liste = ((bel && bel.items) || []).filter(b => b.eingangDurchTool).sort((a, b) => (b.datum || '').localeCompare(a.datum || '') || b.id - a.id);
-  if (!liste.length) { box.innerHTML = '<div class="hint">Noch keine Rechnung empfangen.</div>'; return; }
+  empListe = ((bel && bel.items) || []).filter(b => b.eingangDurchTool && b.datum).sort((a, b) => b.datum.localeCompare(a.datum) || b.id - a.id);
+  empfangenListeRendern();
+}
+function empfangenFilterAendern() { empMonat = $('emp-monat').value; empJahr = $('emp-jahr').value; empfangenListeRendern(); }
+function empfangenListeRendern() {
+  const box = $('emp-liste');
+  if (!empListe.length) { box.innerHTML = '<div class="hint">Noch keine Rechnung empfangen.</div>'; return; }
+  const jahre = Array.from(new Set(empListe.map(b => b.datum.slice(0, 4)).concat([new Date().getFullYear() + '']))).sort().reverse();
+  if (!empJahr || !jahre.includes(empJahr)) empJahr = jahre[0];
+  const MON = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+  const sichtbar = empListe.filter(b => b.datum.slice(0, 4) === empJahr && (empMonat === 'alle' || b.datum.slice(5, 7) === empMonat));
+  const summe = sichtbar.reduce((x, b) => x + (b.betrag || 0), 0);
   const ST = { bezahlt: 'bezahlt', faellig: 'fällig', ausstehend: 'ausstehend', erhalten: 'erhalten', offen: 'offen', abgeglichen: 'abgeglichen' };
-  let h = '<table><thead><tr><th>Datum</th><th>Lieferant</th><th>Rechnungsnr.</th><th>Betrag</th><th>Status</th><th>Belege</th><th>Datei</th></tr></thead><tbody>';
-  liste.forEach(b => {
+  let h = '<div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px;"><div class="field" style="min-width:180px;"><label>Monat</label><select id="emp-monat" onchange="empfangenFilterAendern()"><option value="alle"' + (empMonat === 'alle' ? ' selected' : '') + '>Alle Monate</option>' +
+    MON.map((m, k) => { const v = String(k + 1).padStart(2, '0'); return '<option value="' + v + '"' + (empMonat === v ? ' selected' : '') + '>' + m + '</option>'; }).join('') + '</select></div>' +
+    '<div class="field" style="min-width:120px;"><label>Jahr</label><select id="emp-jahr" onchange="empfangenFilterAendern()">' + jahre.map(y => '<option value="' + y + '"' + (empJahr === y ? ' selected' : '') + '>' + y + '</option>').join('') + '</select></div></div>';
+  if (!sichtbar.length) { box.innerHTML = h + '<div class="hint">Keine Rechnungen in diesem Zeitraum.</div>'; return; }
+  h += '<table><thead><tr><th>Datum</th><th>Lieferant</th><th>Rechnungsnr.</th><th>Betrag</th><th>Status</th><th>Belege</th><th>Datei</th></tr></thead><tbody>';
+  sichtbar.forEach(b => {
     h += '<tr><td>' + datumDe(b.datum) + '</td><td>' + esc(b.plattform) + '</td><td>' + esc(b.rechnungsnr) + '</td><td>' + eur(b.betrag) + '</td><td>' + esc(ST[b.status] || b.status || '') + '</td>' +
       '<td><span class="ok">✓ abgelegt</span></td><td><button class="btn-add" style="padding:6px 12px;" onclick="empfangenDatei(' + b.id + ')">Original</button></td></tr>';
   });
-  box.innerHTML = h + '</tbody></table><div style="margin-top:12px;font-size:13px;text-align:right;color:#5a6a85;">' + liste.length + (liste.length === 1 ? ' Rechnung' : ' Rechnungen') + '</div><div class="hint">Status und Kassenbuch änderst du in den Belegen. Löschst du eine Rechnung dort, verschwindet sie auch hier.</div>';
+  box.innerHTML = h + '</tbody></table><div style="margin-top:12px;font-size:13px;text-align:right;color:#5a6a85;">' + sichtbar.length + (sichtbar.length === 1 ? ' Rechnung' : ' Rechnungen') + ' · Gesamt <b style="color:#1a2a4a;">' + eur(summe) + '</b></div><div class="hint">Status und Kassenbuch änderst du in den Belegen. Löschst du eine Rechnung dort, verschwindet sie auch hier.</div>';
 }
 async function empfangenDatei(id) {
   const bel = await toolLoadSicher('tagesgeschaeft-belege');
