@@ -172,6 +172,7 @@ let currentUser = null;
 let kassenbuchDaten = {};
 let weDaten = [];
 let belegeDaten = [];
+let ausgangBelegDaten = [];
 let freigetraenkeDaten = [];
 let abschreibungenDaten = [];
 let stornoDaten = [];
@@ -335,7 +336,7 @@ function bhUebersichtAktualisieren() {
   const weDesMonats = weDaten.filter(w => w.datum && w.datum.slice(0, 7) === monatSchluessel);
   document.getElementById('bh-anzahl-we').textContent = String(weDesMonats.length);
 
-  const anzahlBelegdateien = belegeDesMonats.filter(b => b.storagePath).length;
+  const anzahlBelegdateien = belegeDesMonats.filter(b => b.storagePath).length + bhAusgangDateien(monatSchluessel).length;
   document.getElementById('bh-zip-anzahl-text').textContent = anzahlBelegdateien + (anzahlBelegdateien === 1 ? ' Belegdatei' : ' Belegdateien') + ' des Monats';
 
   const fgDesMonats = freigetraenkeDaten.filter(f => f.datum && f.datum.slice(0, 7) === monatSchluessel);
@@ -357,7 +358,8 @@ function bhUebersichtAktualisieren() {
 async function bhBelegeAlsZip(btn) {
   const monatSchluessel = bhAktuellerMonatSchluessel();
   const belegeDesMonats = belegeDaten.filter(b => b.datum && b.datum.slice(0, 7) === monatSchluessel && b.storagePath);
-  if (!belegeDesMonats.length) { alert('Keine Belegdateien in diesem Monat gefunden.'); return; }
+  const ausgangDateien = bhAusgangDateien(monatSchluessel);
+  if (!belegeDesMonats.length && !ausgangDateien.length) { alert('Keine Belegdateien in diesem Monat gefunden.'); return; }
 
   const urspruenglicherText = btn.innerHTML;
   btn.textContent = 'Wird vorbereitet …';
@@ -377,6 +379,15 @@ async function bhBelegeAlsZip(btn) {
         const dateiname = String(zaehler).padStart(2, '0') + '_' + b.datum + '_' + (b.plattform || 'Beleg').replace(/[^a-zA-Z0-9äöüÄÖÜß_-]/g, '_') + endung;
         zip.file(dateiname, blob);
         zaehler++;
+      } catch (e) {}
+    }
+    for (const d of ausgangDateien) {
+      try {
+        const signRes = await fetch('/api/beleg-upload?path=' + encodeURIComponent(d.pfad));
+        const signData = await signRes.json();
+        if (!signData.url) continue;
+        const dateiRes = await fetch(signData.url);
+        zip.file(d.name, await dateiRes.blob());
       } catch (e) {}
     }
     const inhalt = await zip.generateAsync({ type: 'blob' });
@@ -603,6 +614,17 @@ function bhAusgangBezahltSumme(monatSchluessel) {
   return bhAusgangBezahltMonat(monatSchluessel).reduce((s, a) => s + bhRechnungSummen(a.rechnung).brutto, 0);
 }
 // Für den Export: alle Rechnungen nach Rechnungsdatum
+// Dateien der bezahlten Ausgangsrechnungen des Monats (PDF + XML), für den ZIP-Download
+function bhAusgangDateien(monatSchluessel) {
+  const liste = [];
+  bhAusgangMonat(monatSchluessel).forEach(a => {
+    const b = ausgangBelegDaten.find(x => x.id === a.belegId || x.ausgangId === a.id);
+    if (!b) return;
+    if (b.pdfPath) liste.push({ pfad: b.pdfPath, name: 'Ausgangsrechnung_' + a.nr + '.pdf' });
+    if (b.storagePath) liste.push({ pfad: b.storagePath, name: 'Ausgangsrechnung_' + a.nr + '.xml' });
+  });
+  return liste;
+}
 function bhAusgangRechnungsMonat(monatSchluessel) {
   return (ausgangsDaten || []).filter(a => a && a.rechnung && a.datum && a.datum.slice(0, 7) === monatSchluessel).sort((a, b) => a.datum.localeCompare(b.datum));
 }
@@ -1072,6 +1094,7 @@ function bhBerichtErstellen() {
   kassenbuchDaten = kb || {};
   weDaten = (we && we.items) || [];
   belegeDaten = ((bel && bel.items) || []).filter(x => x.art !== 'ausgangsrechnung');
+  ausgangBelegDaten = ((bel && bel.items) || []).filter(x => x.art === 'ausgangsrechnung');
   freigetraenkeDaten = (fg && fg.items) || [];
   abschreibungenDaten = (ac && ac.items) || [];
   stornoDaten = (sb && sb.items) || [];
