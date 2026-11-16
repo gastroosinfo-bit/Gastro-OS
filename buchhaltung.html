@@ -154,9 +154,14 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8 url('/bg-rest
       <label style="font-size:13px;">Mandantennummer<br><input type="text" id="dv-mandant" value="9999" style="width:100%;padding:8px;border:1px solid #d0c8b8;border-radius:6px;"></label>
       <label style="font-size:13px;">Kontenrahmen<br><select id="dv-skr" style="width:100%;padding:8px;border:1px solid #d0c8b8;border-radius:6px;"><option value="03">SKR03</option><option value="04">SKR04</option></select></label>
     </div>
+    <div class="grid3" style="row-gap:14px;margin-bottom:18px;">
+      <label style="font-size:13px;">Anteil 7 % an den Einnahmen (in %)<br><input type="number" id="dv-anteil-ein" value="0" min="0" max="100" step="1" style="width:100%;padding:8px;border:1px solid #d0c8b8;border-radius:6px;"></label>
+      <label style="font-size:13px;">Anteil 7 % beim Wareneinkauf (in %)<br><input type="number" id="dv-anteil-we" value="0" min="0" max="100" step="1" style="width:100%;padding:8px;border:1px solid #d0c8b8;border-radius:6px;"></label>
+    </div>
+    <div style="font-size:12px;color:#8090a8;margin-bottom:14px;">Das Kassenbuch kennt die Steuersätze nicht. Hier legst du fest, welcher Anteil mit 7 % gebucht wird, der Rest wird mit 19 % gebucht. Nimm Werte, die du mit deinem Steuerberater abgestimmt hast.</div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;">
       <button class="btn-add" onclick="bhDatevExport()">⬇ DATEV-Datei (EXTF)</button>
-      <button class="btn-add" style="background:transparent;color:#1a2a4a;border:1px solid #d4af37;" onclick="bhExcelExport()">⬇ Lexware-Datei (CSV)</button>
+      <button class="btn-add" onclick="bhExcelExport()">⬇ Lexware-Datei (CSV)</button>
     </div>
   </div>
 </div>
@@ -386,31 +391,53 @@ async function bhBelegeAlsZip(btn) {
 // ── Export für Steuerberater (Test): Buchungssätze aus dem Kassenbuch ──
 const BH_TEST_MAIL = 'feelfree2022@web.de';
 const BH_KONTEN = {
-  '03': { kasse:'1000', transit:'1360', bank:'1200', erloes:'8400', ware:'3400', sonst:'4980' },
-  '04': { kasse:'1600', transit:'1460', bank:'1800', erloes:'4400', ware:'5400', sonst:'6850' }
+  '03': { kasse:'1000', transit:'1360', bank:'1200', erloes:'8400', erloes7:'8300', ware:'3400', ware7:'3300', sonst:'4980' },
+  '04': { kasse:'1600', transit:'1460', bank:'1800', erloes:'4400', erloes7:'4300', ware:'5400', ware7:'5300', sonst:'6850' }
 };
 function bhRund(n) { return Math.round((Number(n) || 0) * 100) / 100; }
+function bhAnteile() {
+  const lies = id => { const v = parseFloat(String(document.getElementById(id).value || '0').replace(',', '.')); return isNaN(v) ? 0 : Math.min(100, Math.max(0, v)); };
+  return { ein: lies('dv-anteil-ein'), we: lies('dv-anteil-we') };
+}
 function bhBuchungssaetze(monatSchluessel, skr) {
   const k = BH_KONTEN[skr];
+  const an = bhAnteile();
   const liste = [];
   Object.keys(kassenbuchDaten).filter(d => d.slice(0, 7) === monatSchluessel).sort().forEach(datum => {
     const t = kassenbuchDaten[datum];
     const dm = datum.slice(8, 10) + datum.slice(5, 7);
     const bel = 'KB' + dm;
+    const zeile = (b, soll, haben, text) => { if (b > 0) liste.push({ datum, dm, betrag: b, soll, haben, text: text.slice(0, 60), beleg: bel }); };
+    // Betrag auf 7 % und 19 % aufteilen (Anteil in Prozent, der Rest ist 19 %)
     const add = (betrag, soll, haben, text) => {
       const b = bhRund(betrag);
-      if (b > 0) liste.push({ datum, dm, betrag: b, soll, haben, text: text.slice(0, 60), beleg: bel });
+      if (b <= 0) return;
+      zeile(b, soll, haben, text);
     };
-    add(t.kasse, k.kasse, k.erloes, 'Tageseinnahmen Kasse');
-    add(t.karte, k.transit, k.erloes, 'Tageseinnahmen Karte');
-    add(t.lieferdienste, k.transit, k.erloes, 'Einnahmen Lieferdienste');
-    add(t.ueberweisung, k.bank, k.erloes, 'Einnahmen Überweisung');
+    const addEin = (betrag, konto, text) => {
+      const b = bhRund(betrag);
+      if (b <= 0) return;
+      const b7 = bhRund(b * an.ein / 100), b19 = bhRund(b - b7);
+      zeile(b19, konto, k.erloes, text + ' 19 %');
+      zeile(b7, konto, k.erloes7, text + ' 7 %');
+    };
+    const addWe = (betrag, gegen, text) => {
+      const b = bhRund(betrag);
+      if (b <= 0) return;
+      const b7 = bhRund(b * an.we / 100), b19 = bhRund(b - b7);
+      zeile(b19, k.ware, gegen, text + ' 19 %');
+      zeile(b7, k.ware7, gegen, text + ' 7 %');
+    };
+    addEin(t.kasse, k.kasse, 'Tageseinnahmen Kasse');
+    addEin(t.karte, k.transit, 'Tageseinnahmen Karte');
+    addEin(t.lieferdienste, k.transit, 'Einnahmen Lieferdienste');
+    addEin(t.ueberweisung, k.bank, 'Einnahmen Überweisung');
     if (t.wareneinkaufBar != null || t.wareneinkaufKarte != null || t.wareneinkaufUeberweisung != null) {
-      add(t.wareneinkaufBar, k.ware, k.kasse, 'Wareneinkauf bar');
-      add(t.wareneinkaufKarte, k.ware, k.bank, 'Wareneinkauf Karte');
-      add(t.wareneinkaufUeberweisung, k.ware, k.bank, 'Wareneinkauf Überweisung');
+      addWe(t.wareneinkaufBar, k.kasse, 'Wareneinkauf bar');
+      addWe(t.wareneinkaufKarte, k.bank, 'Wareneinkauf Karte');
+      addWe(t.wareneinkaufUeberweisung, k.bank, 'Wareneinkauf Überweisung');
     } else {
-      add(t.wareneinkauf, k.ware, k.kasse, 'Wareneinkauf');
+      addWe(t.wareneinkauf, k.kasse, 'Wareneinkauf');
     }
     if (t.sonstigesBar != null || t.sonstigesKarte != null || t.sonstigesUeberweisung != null) {
       add(t.sonstigesBar, k.sonst, k.kasse, 'Sonstige Ausgaben bar');
