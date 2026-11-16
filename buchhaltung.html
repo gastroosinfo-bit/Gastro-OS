@@ -114,7 +114,7 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8 url('/bg-rest
         <div><span>Abschreibungen</span><b id="bh-sum-abschreibungen">0,00 €</b></div>
         <div><span>Belege gesamt</span><b id="bh-sum-belege">0,00 €</b></div>
         <div><span>Stornobelege</span><b id="bh-sum-stornos">0,00 €</b></div>
-        <div id="bh-ausgang-zeile" style="display:none;"><span>Ausgangsrechnungen</span><b id="bh-sum-ausgang">0,00 €</b></div>
+        <div id="bh-ausgang-zeile" style="display:none;"><span>Ausgangsrechnungen <a href="#" onclick="bhZeigeAusgang();return false;" style="font-size:12px;color:#9A7D3A;margin-left:6px;">anzeigen</a></span><b id="bh-sum-ausgang">0,00 €</b></div>
       </div>
     </div>
   </div>
@@ -158,6 +158,7 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8 url('/bg-rest
     </div>
     <div id="dv-hinweis" style="font-size:12.5px;color:#5a6a85;margin-bottom:14px;line-height:1.6;"></div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button class="btn-add" style="background:#1a2a4a;color:#d4af37;" onclick="bhZeigeVorschau()">👁 Vorschau: Was steht in der Datei?</button>
       <button class="btn-add" onclick="bhDatevExport()">⬇ DATEV-Datei (EXTF)</button>
       <button class="btn-add" onclick="bhExcelExport()">⬇ Lexware-Datei (CSV)</button>
     </div>
@@ -552,6 +553,49 @@ function bhAuswahlPreset(preset) {
 
 // ── Einzelne Berichtsabschnitte: jede Funktion zeichnet ihren Teil und gibt die neue Y-Position zurück ──
 
+function bhModal(titel, html) {
+  let m = document.getElementById('bh-modal');
+  if (!m) {
+    m = document.createElement('div'); m.id = 'bh-modal';
+    m.style.cssText = 'position:fixed;inset:0;background:rgba(10,20,40,.6);z-index:9999;display:flex;align-items:flex-start;justify-content:center;padding:30px 14px;overflow:auto;';
+    m.onclick = e => { if (e.target === m) m.remove(); };
+    document.body.appendChild(m);
+  }
+  m.innerHTML = '<div style="background:#fff;border-radius:10px;max-width:1000px;width:100%;padding:22px 26px;box-shadow:0 8px 30px rgba(0,0,0,.3);">' +
+    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;"><div style="font-family:Georgia,serif;font-size:19px;color:#1a2a4a;">' + titel + '</div>' +
+    '<button class="btn-add" style="background:#1a2a4a;color:#d4af37;" onclick="document.getElementById(\'bh-modal\').remove()">Schließen</button></div>' + html + '</div>';
+}
+function bhTabelle(kopf, zeilen, rechts) {
+  const th = kopf.map((k, i) => '<th style="text-align:' + (rechts.includes(i) ? 'right' : 'left') + ';background:#f5f0e8;color:#5a6a85;font-size:11px;text-transform:uppercase;padding:8px 6px;">' + k + '</th>').join('');
+  const tr = zeilen.map(z => '<tr>' + z.map((c, i) => '<td style="text-align:' + (rechts.includes(i) ? 'right' : 'left') + ';padding:7px 6px;border-bottom:1px solid #f0e8d4;font-size:13px;">' + c + '</td>').join('') + '</tr>').join('');
+  return '<div style="overflow:auto;"><table style="width:100%;border-collapse:collapse;"><thead><tr>' + th + '</tr></thead><tbody>' + tr + '</tbody></table></div>';
+}
+function bhDe(d) { return d && d.length >= 10 ? d.slice(8, 10) + '.' + d.slice(5, 7) + '.' + d.slice(0, 4) : (d || ''); }
+function bhZeigeAusgang() {
+  const monat = bhAktuellerMonatSchluessel();
+  const liste = bhAusgangMonat(monat);
+  let sum = 0;
+  const zeilen = liste.map(a => {
+    const x = bhRechnungSummen(a.rechnung);
+    sum += x.brutto;
+    const m7 = x.steuer[7] ? x.steuer[7].betrag : 0, m19 = x.steuer[19] ? x.steuer[19].betrag : 0, f = x.steuer[0] ? x.steuer[0].basis : 0;
+    return [bhDe(a.datum), a.nr, a.kunde || '', euro(x.netto), euro(f), euro(m7), euro(m19), euro(x.brutto), a.bezahltAm ? 'Bezahlt am ' + bhDe(a.bezahltAm) : 'Offen'];
+  });
+  bhModal('Ausgangsrechnungen im Monat ' + monat.slice(5, 7) + '/' + monat.slice(0, 4),
+    '<p style="font-size:12.5px;color:#5a6a85;line-height:1.6;margin-bottom:12px;">Diese Rechnungen hast du mit dem E-Rechnungs-Werkzeug erstellt. Sie zählen im Monat des <b>Rechnungsdatums</b>, egal ob schon bezahlt. Das Bezahlt-Datum ändert nur den Status und die Buchung im Export.</p>' +
+    bhTabelle(['Datum', 'Nummer', 'Kunde', 'Netto', 'Steuerfrei', 'MwSt. 7 %', 'MwSt. 19 %', 'Brutto', 'Status'], zeilen, [3, 4, 5, 6, 7]) +
+    '<p style="margin-top:12px;font-size:14px;text-align:right;"><b>Summe brutto: ' + euro(sum) + '</b></p>');
+}
+function bhZeigeVorschau() {
+  const monat = bhAktuellerMonatSchluessel();
+  const skr = document.getElementById('dv-skr').value;
+  const saetze = bhBuchungssaetze(monat, skr);
+  if (!saetze.length) { bhModal('Vorschau Export', '<p style="font-size:13.5px;">Für diesen Monat gibt es keine Buchungen.</p>'); return; }
+  const zeilen = saetze.map(b => [b.datum ? bhDe(b.datum) : b.dm, b.beleg || '', b.text || '', b.soll, b.haben, euro(bhRund(b.betrag))]);
+  bhModal('Vorschau: Das steht in der Export-Datei (' + monat.slice(5, 7) + '/' + monat.slice(0, 4) + ', SKR' + skr + ')',
+    '<p style="font-size:12.5px;color:#5a6a85;line-height:1.6;margin-bottom:12px;">Jede Zeile ist eine Buchung. „Soll" ist das Konto, auf dem der Betrag belastet wird, „Haben" das Gegenkonto. DATEV und Lexware lesen genau diese ' + saetze.length + ' Zeilen. Die Datei selbst lädst du mit den Buttons darunter herunter.</p>' +
+    bhTabelle(['Datum', 'Beleg', 'Buchungstext', 'Soll', 'Haben', 'Betrag'], zeilen, [5]));
+}
 function bhAusgangMonat(monatSchluessel) {
   return (ausgangsDaten || []).filter(a => a && a.rechnung && a.datum && a.datum.slice(0, 7) === monatSchluessel).sort((a, b) => a.datum.localeCompare(b.datum));
 }
