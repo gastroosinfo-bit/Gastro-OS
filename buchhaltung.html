@@ -319,6 +319,7 @@ function bhUebersichtAktualisieren() {
     sumAus += kbWareneinkaufGesamt(t) + kbSonstigesGesamt(t);
   });
   bhAuswertungZeigen(monatSchluessel);
+  sumEin += bhAusgangBezahltSumme(monatSchluessel);
   document.getElementById('bh-sum-einnahmen').textContent = euro(sumEin);
   document.getElementById('bh-sum-ausgaben').textContent = euro(sumAus);
 
@@ -582,9 +583,10 @@ function bhZeigeAusgang() {
     return [bhDe(a.datum), a.nr, a.kunde || '', euro(x.netto), euro(f), euro(m7), euro(m19), euro(x.brutto), a.bezahltAm ? 'Bezahlt am ' + bhDe(a.bezahltAm) : 'Offen'];
   });
   bhModal('Ausgangsrechnungen im Monat ' + monat.slice(5, 7) + '/' + monat.slice(0, 4),
-    '<p style="font-size:12.5px;color:#5a6a85;line-height:1.6;margin-bottom:12px;">Diese Rechnungen hast du mit dem E-Rechnungs-Werkzeug erstellt. Sie zählen im Monat des <b>Rechnungsdatums</b>, egal ob schon bezahlt. Das Bezahlt-Datum ändert nur den Status und die Buchung im Export.</p>' +
+    '<p style="font-size:12.5px;color:#5a6a85;line-height:1.6;margin-bottom:12px;">Diese Rechnungen hast du mit dem E-Rechnungs-Werkzeug erstellt. Die Liste zeigt die Rechnungen nach <b>Rechnungsdatum</b>. Als Einnahme in deinem Ergebnis zählt eine Rechnung <b>erst, wenn sie bezahlt ist</b>, und zwar im Monat des Bezahlt-Datums. Im DATEV-/Lexware-Export steht sie dagegen schon mit dem Rechnungsdatum als Erlös.</p>' +
     bhTabelle(['Datum', 'Nummer', 'Kunde', 'Netto', 'Steuerfrei', 'MwSt. 7 %', 'MwSt. 19 %', 'Brutto', 'Status'], zeilen, [3, 4, 5, 6, 7]) +
-    '<p style="margin-top:12px;font-size:14px;text-align:right;"><b>Summe brutto: ' + euro(sum) + '</b></p>');
+    '<p style="margin-top:12px;font-size:14px;text-align:right;"><b>Summe brutto: ' + euro(sum) + '</b></p>' +
+    '<p style="margin-top:4px;font-size:13px;text-align:right;color:#1a6030;">Davon im Monat bezahlt (zählt als Einnahme): <b>' + euro(bhAusgangBezahltSumme(monat)) + '</b></p>');
 }
 function bhZeigeVorschau() {
   const monat = bhAktuellerMonatSchluessel();
@@ -595,6 +597,13 @@ function bhZeigeVorschau() {
   bhModal('Vorschau: Das steht in der Export-Datei (' + monat.slice(5, 7) + '/' + monat.slice(0, 4) + ', SKR' + skr + ')',
     '<p style="font-size:12.5px;color:#5a6a85;line-height:1.6;margin-bottom:12px;">Jede Zeile ist eine Buchung. „Soll" ist das Konto, auf dem der Betrag belastet wird, „Haben" das Gegenkonto. DATEV und Lexware lesen genau diese ' + saetze.length + ' Zeilen. Die Datei selbst lädst du mit den Buttons darunter herunter.</p>' +
     bhTabelle(['Datum', 'Beleg', 'Buchungstext', 'Soll', 'Haben', 'Betrag'], zeilen, [5]));
+}
+// Bezahlte Ausgangsrechnungen zählen als Einnahme im Monat des Zahlungseingangs (Bezahlt am), brutto
+function bhAusgangBezahltMonat(monatSchluessel) {
+  return (ausgangsDaten || []).filter(a => a && a.rechnung && a.bezahltAm && a.bezahltAm.slice(0, 7) === monatSchluessel);
+}
+function bhAusgangBezahltSumme(monatSchluessel) {
+  return bhAusgangBezahltMonat(monatSchluessel).reduce((s, a) => s + bhRechnungSummen(a.rechnung).brutto, 0);
 }
 function bhAusgangMonat(monatSchluessel) {
   return (ausgangsDaten || []).filter(a => a && a.rechnung && a.datum && a.datum.slice(0, 7) === monatSchluessel).sort((a, b) => a.datum.localeCompare(b.datum));
@@ -644,7 +653,9 @@ function bhAbschnittAusgang(doc, y, monatSchluessel) {
   y += 6;
   doc.setFontSize(8.5);
   doc.setTextColor(120, 130, 150);
-  doc.text('Ausgangsrechnungen sind nicht im Gesamtergebnis enthalten, damit keine Einnahme doppelt zählt.', 14, y);
+  const bz = bhAusgangBezahltSumme(monatSchluessel);
+  doc.text(doc.splitTextToSize('Im Gesamtergebnis zählt eine Ausgangsrechnung erst, wenn sie bezahlt ist, und zwar im Monat des Zahlungseingangs. In diesem Monat bezahlt: ' + euro(bz) + '. Trage Zahlungseingänge nicht zusätzlich im Kassenbuch ein.', 182), 14, y);
+  y += 5;
   return y + 12;
 }
 
@@ -965,6 +976,7 @@ function bhGesamtErgebnisBerechnen(monatSchluessel, ausgewaehlt) {
       if (belegRichtung(b) === 'einnahme') einnahmen += b.betrag || 0; else ausgaben += b.betrag || 0;
     });
   }
+  if (ausgewaehlt.ausgang) einnahmen += bhAusgangBezahltSumme(monatSchluessel);
   if (ausgewaehlt.abweichungen) {
     freigetraenkeDaten.filter(f => f.datum && f.datum.slice(0, 7) === monatSchluessel).forEach(f => { ausgaben += f.wert || 0; });
     abschreibungenDaten.filter(a => a.datum && a.datum.slice(0, 7) === monatSchluessel).forEach(a => { ausgaben += a.wert || 0; });
@@ -1012,7 +1024,7 @@ function bhBerichtErstellen() {
   if (ausgewaehlt.artikelbericht) { y = bhAbschnittArtikelbericht(doc, y, monatSchluessel); }
 
   // ── Gesamtergebnis: nur wenn mindestens ein finanzieller Bereich gewählt wurde ──
-  if (ausgewaehlt.kassenbuch || ausgewaehlt.belege || ausgewaehlt.abweichungen) {
+  if (ausgewaehlt.kassenbuch || ausgewaehlt.belege || ausgewaehlt.abweichungen || ausgewaehlt.ausgang) {
     const { einnahmen, ausgaben } = bhGesamtErgebnisBerechnen(monatSchluessel, ausgewaehlt);
     const ergebnis = einnahmen - ausgaben;
     if (y > 250) { doc.addPage(); y = 20; }
