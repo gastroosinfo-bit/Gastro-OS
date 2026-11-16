@@ -518,7 +518,7 @@ async function bezahltSetzen(id, wert) {
     const bel = await toolLoadSicher('tagesgeschaeft-belege');
     const items = (bel && bel.items) || [];
     const b = items.find(x => x.id === a.belegId);
-    if (b) { b.status = a.bezahltAm ? 'erhalten' : 'ausstehend'; await toolSave('tagesgeschaeft-belege', { items }); }
+    if (b) { b.status = a.bezahltAm ? 'erhalten' : 'ausstehend'; b.bezahltAm = a.bezahltAm || null; await toolSave('tagesgeschaeft-belege', { items }); }
   }
 }
 // Rechnung als Beleg (Art „Ausgangsrechnung“) ablegen: XML + PDF im Original, zählt in den Belegen nicht mit
@@ -544,7 +544,7 @@ async function belegAnlegen(a) {
   items.push({
     id, art: 'ausgangsrechnung', ausgangId: a.id, datum: a.datum, plattform: 'Ausgangsrechnung', kunde: a.kunde, betrag: a.brutto,
     rechnungsnr: a.nr, steuerId: '', mwst19: null, mwst7: null, bar: null, karte: null,
-    status: a.bezahltAm ? 'erhalten' : 'ausstehend', faelligkeit: a.rechnung.faellig || null,
+    status: a.bezahltAm ? 'erhalten' : 'ausstehend', bezahltAm: a.bezahltAm || null, faelligkeit: a.rechnung.faellig || null,
     zahlart: '', kbart: '', kbUebernehmen: false,
     dateiname: xrName, storagePath: xmlPfad, pdfName: 'Rechnung_' + a.nr + '.pdf', pdfPath: pdfPfad
   });

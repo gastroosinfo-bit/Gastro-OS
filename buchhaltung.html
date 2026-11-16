@@ -276,6 +276,7 @@ function bhMonatSummen(schluessel) {
     ware += kbWareneinkaufGesamt(t);
     aus += kbWareneinkaufGesamt(t) + kbSonstigesGesamt(t);
   });
+  ein += bhAusgangBezahltSumme(schluessel);
   return { ein, aus, ware, tage, gewinn: ein - aus };
 }
 function bhVormonatSchluessel(schluessel) {
