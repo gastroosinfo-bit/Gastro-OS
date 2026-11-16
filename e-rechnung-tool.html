@@ -55,6 +55,7 @@ td input, td select { border:1px solid #e0d8c8; border-radius:5px; padding:6px 8
 .footer-brand { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
 .footer-brand strong { color:#d4af37; }
 </style>
+<script>if (location.search.indexOf('eingebettet') > -1) document.write('<style>body{background:transparent!important}.header,.gold-bar,.footer-brand,.tool-label,.tool-title,.tool-sub{display:none!important}.wrap{padding:0 0 10px!important;max-width:none!important}</style>');</script>
 </head>
 <body>
 
@@ -100,7 +101,7 @@ td input, td select { border:1px solid #e0d8c8; border-radius:5px; padding:6px 8
           <select id="e-steuerart"><option value="VA">USt-IdNr. (z. B. DE123456789)</option><option value="FC">Steuernummer</option></select></div>
         <div class="field"><label>Nummer</label><input id="e-steuernr" type="text"></div>
       </div>
-      <div class="field" style="margin-bottom:14px;"><label style="display:flex;gap:8px;align-items:flex-start;cursor:pointer;font-weight:400;"><input type="checkbox" id="e-klein" onchange="summenAktualisieren()" style="margin-top:3px;"> <span>Ich bin Kleinunternehmer (§ 19 UStG). Meine Rechnungen enthalten dann keine Umsatzsteuer und den passenden Hinweis.</span></label></div>
+      <div style="margin-bottom:14px;"><label style="display:flex;gap:10px;align-items:flex-start;cursor:pointer;font-size:13px;color:#1a2a4a;"><input type="checkbox" id="e-klein" onchange="summenAktualisieren()" style="width:auto;margin-top:2px;flex-shrink:0;"> <span>Ich bin Kleinunternehmer (§ 19 UStG). Meine Rechnungen enthalten dann keine Umsatzsteuer und den passenden Hinweis.</span></label></div>
       <div class="field" style="margin-bottom:14px;"><label>Logo (optional, erscheint oben auf der PDF)</label>
         <input id="e-logo-datei" type="file" accept="image/png,image/jpeg" onchange="logoLesen(event)">
         <div id="e-logo-vorschau" style="margin-top:8px;"></div></div>
