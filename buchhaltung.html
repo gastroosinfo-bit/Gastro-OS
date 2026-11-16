@@ -114,6 +114,7 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8 url('/bg-rest
         <div><span>Abschreibungen</span><b id="bh-sum-abschreibungen">0,00 €</b></div>
         <div><span>Belege gesamt</span><b id="bh-sum-belege">0,00 €</b></div>
         <div><span>Stornobelege</span><b id="bh-sum-stornos">0,00 €</b></div>
+        <div id="bh-ausgang-zeile" style="display:none;"><span>Ausgangsrechnungen</span><b id="bh-sum-ausgang">0,00 €</b></div>
       </div>
     </div>
   </div>
@@ -135,6 +136,7 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8 url('/bg-rest
       <label style="display:flex;align-items:center;gap:8px;font-size:13.5px;cursor:pointer;"><input type="checkbox" id="bh-check-temperaturen"> Temperaturen</label>
       <label style="display:flex;align-items:center;gap:8px;font-size:13.5px;cursor:pointer;"><input type="checkbox" id="bh-check-notizen"> Notizen</label>
       <label style="display:flex;align-items:center;gap:8px;font-size:13.5px;cursor:pointer;"><input type="checkbox" id="bh-check-artikelbericht"> Artikelbericht</label>
+      <label id="bh-label-ausgang" style="display:none;align-items:center;gap:8px;font-size:13.5px;cursor:pointer;"><input type="checkbox" id="bh-check-ausgang" checked> Ausgangsrechnungen</label>
     </div>
     <button class="btn-add" onclick="bhBerichtErstellen()">📄 Ausgewählte Bereiche als PDF</button>
   </div>
@@ -158,6 +160,7 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8 url('/bg-rest
     <div style="display:flex;gap:8px;flex-wrap:wrap;">
       <button class="btn-add" onclick="bhDatevExport()">⬇ DATEV-Datei (EXTF)</button>
       <button class="btn-add" onclick="bhExcelExport()">⬇ Lexware-Datei (CSV)</button>
+      <a href="e-rechnung-tool.html" class="btn-add" style="text-decoration:none;display:inline-block;">🧾 E-Rechnung (Test) öffnen</a>
     </div>
   </div>
 </div>
@@ -175,6 +178,7 @@ let stornoDaten = [];
 let haccpDaten = { geraete: [], eintraege: {} };
 let notizDaten = [];
 let artikelberichteDaten = {};
+let ausgangsDaten = [];
 
 async function checkAuth() {
   try {
@@ -343,6 +347,9 @@ function bhUebersichtAktualisieren() {
 
   const sbDesMonats = stornoDaten.filter(s => s.datum && s.datum.slice(0, 7) === monatSchluessel);
   document.getElementById('bh-sum-stornos').textContent = euro(sbDesMonats.reduce((s, x) => s + (x.betrag || 0), 0));
+  const ausDesMonats = bhAusgangMonat(monatSchluessel);
+  document.getElementById('bh-ausgang-zeile').style.display = ausDesMonats.length ? '' : 'none';
+  document.getElementById('bh-sum-ausgang').textContent = euro(ausDesMonats.reduce((s, a) => s + bhRechnungSummen(a.rechnung).brutto, 0));
 }
 
 async function bhBelegeAlsZip(btn) {
@@ -388,8 +395,8 @@ async function bhBelegeAlsZip(btn) {
 // ── Export für Steuerberater (Test): Buchungssätze aus dem Kassenbuch ──
 const BH_TEST_MAIL = 'feelfree2022@web.de';
 const BH_KONTEN = {
-  '03': { kasse:'1000', transit:'1360', bank:'1200', erloes:'8400', erloes7:'8300', ware:'3400', ware7:'3300', sonst:'4980' },
-  '04': { kasse:'1600', transit:'1460', bank:'1800', erloes:'4400', erloes7:'4300', ware:'5400', ware7:'5300', sonst:'6850' }
+  '03': { forderung:'1400', kasse:'1000', transit:'1360', bank:'1200', erloes:'8400', erloes7:'8300', erloes0:'8100', erlKlein:'8192', ware:'3400', ware7:'3300', sonst:'4980' },
+  '04': { forderung:'1200', kasse:'1600', transit:'1460', bank:'1800', erloes:'4400', erloes7:'4300', erloes0:'4100', erlKlein:'4184', ware:'5400', ware7:'5300', sonst:'6850' }
 };
 function bhRund(n) { return Math.round((Number(n) || 0) * 100) / 100; }
 // Steuersätze automatisch: Einnahmen aus den Z-Bons (MwSt.-Beträge des Belegs),
@@ -468,6 +475,23 @@ function bhBuchungssaetze(monatSchluessel, skr) {
       add(t.sonstiges, k.sonst, k.kasse, 'Sonstige Ausgaben');
     }
   });
+  // Ausgangsrechnungen: Forderung gegen Erlös (je Steuersatz), bei Zahlung Bank gegen Forderung
+  bhAusgangMonat(monatSchluessel).forEach(a => {
+    const x = bhRechnungSummen(a.rechnung);
+    const dm = a.datum.slice(8, 10) + a.datum.slice(5, 7);
+    [19, 7, 0].forEach(satz => {
+      if (!x.steuer[satz]) return;
+      const b = bhRund(x.steuer[satz].basis + x.steuer[satz].betrag);
+      const klein = !!(a.firma && a.firma.klein);
+      const erl = satz === 7 ? k.erloes7 : satz === 0 ? (klein ? k.erlKlein : k.erloes0) : k.erloes;
+      const bez = satz === 0 ? (klein ? ' Kleinunternehmer' : ' steuerfrei') : ' ' + satz + ' %';
+      if (b > 0) liste.push({ datum: a.datum, dm, betrag: b, soll: k.forderung, haben: erl, text: ('Ausgangsrechnung ' + a.nr + bez).slice(0, 60), beleg: a.nr });
+    });
+  });
+  (ausgangsDaten || []).filter(a => a && a.rechnung && a.bezahltAm && a.bezahltAm.slice(0, 7) === monatSchluessel).forEach(a => {
+    const x = bhRechnungSummen(a.rechnung);
+    liste.push({ datum: a.bezahltAm, dm: a.bezahltAm.slice(8, 10) + a.bezahltAm.slice(5, 7), betrag: x.brutto, soll: k.bank, haben: k.forderung, text: ('Zahlungseingang ' + a.nr).slice(0, 60), beleg: a.nr });
+  });
   return liste;
 }
 function bhDatei(inhaltBytes, name, typ) {
@@ -514,8 +538,8 @@ function bhExcelExport() {
 }
 
 function bhAuswahlPreset(preset) {
-  const alle = ['kassenbuch', 'belege', 'wareneingang', 'abweichungen', 'temperaturen', 'notizen', 'artikelbericht'];
-  const steuerberater = ['kassenbuch', 'belege', 'wareneingang', 'abweichungen'];
+  const alle = ['kassenbuch', 'belege', 'wareneingang', 'abweichungen', 'temperaturen', 'notizen', 'artikelbericht', 'ausgang'];
+  const steuerberater = ['kassenbuch', 'belege', 'wareneingang', 'abweichungen', 'ausgang'];
   const intern = ['temperaturen', 'notizen', 'artikelbericht'];
   let aktiv = [];
   if (preset === 'steuerberater') aktiv = steuerberater;
@@ -528,6 +552,58 @@ function bhAuswahlPreset(preset) {
 }
 
 // ── Einzelne Berichtsabschnitte: jede Funktion zeichnet ihren Teil und gibt die neue Y-Position zurück ──
+
+function bhAusgangMonat(monatSchluessel) {
+  return (ausgangsDaten || []).filter(a => a && a.rechnung && a.datum && a.datum.slice(0, 7) === monatSchluessel).sort((a, b) => a.datum.localeCompare(b.datum));
+}
+function bhRechnungSummen(r) {
+  const zeilen = r.positionen.map(p => { const g = bhRund(p.menge * p.preis); return bhRund(g - bhRund(g * (p.rabatt || 0) / 100)); });
+  const basis = {};
+  r.positionen.forEach((p, i) => { basis[p.satz] = bhRund((basis[p.satz] || 0) + zeilen[i]); });
+  const steuer = {};
+  let netto = 0, st = 0;
+  Object.keys(basis).forEach(k => { const betrag = bhRund(basis[k] * k / 100); steuer[k] = { basis: basis[k], betrag }; netto = bhRund(netto + basis[k]); st = bhRund(st + betrag); });
+  return { steuer, netto, steuerGesamt: st, brutto: bhRund(netto + st) };
+}
+function bhAbschnittAusgang(doc, y, monatSchluessel) {
+  const liste = bhAusgangMonat(monatSchluessel);
+  doc.setFontSize(13);
+  doc.setTextColor(26, 42, 74);
+  doc.text('Ausgangsrechnungen', 14, y);
+  y += 4;
+  if (!liste.length) {
+    doc.setFontSize(10); doc.setTextColor(140, 140, 140);
+    doc.text('Keine Ausgangsrechnungen in diesem Monat.', 14, y + 4);
+    return y + 16;
+  }
+  let sN = 0, s7 = 0, s19 = 0, sB = 0, sF = 0;
+  const zeilen = liste.map(a => {
+    const x = bhRechnungSummen(a.rechnung);
+    const m7 = x.steuer[7] ? x.steuer[7].betrag : 0, m19 = x.steuer[19] ? x.steuer[19].betrag : 0;
+    sF += x.steuer[0] ? x.steuer[0].basis : 0;
+    sN += x.netto; s7 += m7; s19 += m19; sB += x.brutto;
+    const de = d => d.slice(8, 10) + '.' + d.slice(5, 7) + '.' + d.slice(0, 4);
+    return [de(a.datum), a.nr, a.kunde, euro(x.netto), euro(x.steuer[0] ? x.steuer[0].basis : 0), euro(m7), euro(m19), euro(x.brutto), a.bezahltAm ? 'Bezahlt am ' + de(a.bezahltAm) : 'Offen'];
+  });
+  doc.autoTable({
+    startY: y,
+    head: [['Datum', 'Nummer', 'Kunde', 'Netto', 'Steuerfrei', 'MwSt. 7%', 'MwSt. 19%', 'Brutto', 'Status']],
+    body: zeilen,
+    styles: { fontSize: 8, cellPadding: 1.5 },
+    headStyles: { fillColor: [26, 42, 74], textColor: [212, 175, 55] },
+    margin: { left: 14, right: 14 }
+  });
+  y = doc.lastAutoTable.finalY + 6;
+  doc.setFontSize(10);
+  doc.setTextColor(26, 42, 74);
+  doc.text(doc.splitTextToSize('Netto: ' + euro(sN) + '   ·   davon steuerfrei: ' + euro(sF) + '   ·   MwSt. 7%: ' + euro(s7) + '   ·   MwSt. 19%: ' + euro(s19) + '   ·   Brutto: ' + euro(sB), 182), 14, y);
+  y += 6;
+  y += 6;
+  doc.setFontSize(8.5);
+  doc.setTextColor(120, 130, 150);
+  doc.text('Ausgangsrechnungen sind nicht im Gesamtergebnis enthalten, damit keine Einnahme doppelt zählt.', 14, y);
+  return y + 12;
+}
 
 function bhAbschnittKassenbuch(doc, y, monatSchluessel) {
   const kbTage = Object.keys(kassenbuchDaten).filter(d => d.slice(0, 7) === monatSchluessel).sort();
@@ -586,7 +662,7 @@ function bhAbschnittBelege(doc, y, monatSchluessel) {
       startY: y,
       head: [['Datum', 'Anbieter', 'Einnahme/Ausgabe', 'Betrag', 'MwSt. 19%', 'MwSt. 7%', 'Status']],
       body: belegeZeilen,
-      styles: { fontSize: 8.5 },
+      styles: { fontSize: 8, cellPadding: 1.5 },
       headStyles: { fillColor: [26, 42, 74], textColor: [212, 175, 55] },
       margin: { left: 14, right: 14 },
       didParseCell: function(data) {
@@ -674,7 +750,7 @@ function bhAbschnittAbweichungen(doc, y, monatSchluessel) {
       startY: y + 7,
       head: [['Datum', 'Getränk', 'Menge', 'Wert', 'Grund']],
       body: fgZeilen,
-      styles: { fontSize: 8.5 },
+      styles: { fontSize: 8, cellPadding: 1.5 },
       headStyles: { fillColor: [26, 42, 74], textColor: [212, 175, 55] },
       margin: { left: 14, right: 14 }
     });
@@ -689,7 +765,7 @@ function bhAbschnittAbweichungen(doc, y, monatSchluessel) {
       startY: y + 7,
       head: [['Datum', 'Artikel', 'Menge', 'Wert', 'Grund']],
       body: acZeilen,
-      styles: { fontSize: 8.5 },
+      styles: { fontSize: 8, cellPadding: 1.5 },
       headStyles: { fillColor: [26, 42, 74], textColor: [212, 175, 55] },
       margin: { left: 14, right: 14 }
     });
@@ -704,7 +780,7 @@ function bhAbschnittAbweichungen(doc, y, monatSchluessel) {
       startY: y + 7,
       head: [['Datum', 'Betrag', 'Grund', 'Datei']],
       body: sbZeilen,
-      styles: { fontSize: 8.5 },
+      styles: { fontSize: 8, cellPadding: 1.5 },
       headStyles: { fillColor: [26, 42, 74], textColor: [212, 175, 55] },
       margin: { left: 14, right: 14 }
     });
@@ -807,7 +883,7 @@ function bhAbschnittArtikelbericht(doc, y, monatSchluessel) {
       startY: y + 7,
       head: [['Gericht', 'Menge verkauft']],
       body: speisen,
-      styles: { fontSize: 8.5 },
+      styles: { fontSize: 8, cellPadding: 1.5 },
       headStyles: { fillColor: [26, 42, 74], textColor: [212, 175, 55] },
       margin: { left: 14, right: 14 }
     });
@@ -822,7 +898,7 @@ function bhAbschnittArtikelbericht(doc, y, monatSchluessel) {
       startY: y + 7,
       head: [['Gericht', 'Menge verkauft']],
       body: getraenke,
-      styles: { fontSize: 8.5 },
+      styles: { fontSize: 8, cellPadding: 1.5 },
       headStyles: { fillColor: [26, 42, 74], textColor: [212, 175, 55] },
       margin: { left: 14, right: 14 }
     });
@@ -867,7 +943,8 @@ function bhBerichtErstellen() {
     abweichungen: document.getElementById('bh-check-abweichungen').checked,
     temperaturen: document.getElementById('bh-check-temperaturen').checked,
     notizen: document.getElementById('bh-check-notizen').checked,
-    artikelbericht: document.getElementById('bh-check-artikelbericht').checked
+    artikelbericht: document.getElementById('bh-check-artikelbericht').checked,
+    ausgang: document.getElementById('bh-label-ausgang').style.display !== 'none' && document.getElementById('bh-check-ausgang').checked
   };
   if (!Object.values(ausgewaehlt).some(v => v)) { alert('Bitte mindestens einen Bereich auswählen.'); return; }
 
@@ -888,6 +965,7 @@ function bhBerichtErstellen() {
   if (ausgewaehlt.abweichungen) { y = bhAbschnittAbweichungen(doc, y, monatSchluessel); if (y > 250) { doc.addPage(); y = 20; } }
   if (ausgewaehlt.temperaturen) { y = bhAbschnittTemperaturen(doc, y, monatSchluessel); if (y > 250) { doc.addPage(); y = 20; } }
   if (ausgewaehlt.notizen) { y = bhAbschnittNotizen(doc, y, monatSchluessel); if (y > 250) { doc.addPage(); y = 20; } }
+  if (ausgewaehlt.ausgang) { y = bhAbschnittAusgang(doc, y, monatSchluessel); if (y > 250) { doc.addPage(); y = 20; } }
   if (ausgewaehlt.artikelbericht) { y = bhAbschnittArtikelbericht(doc, y, monatSchluessel); }
 
   // ── Gesamtergebnis: nur wenn mindestens ein finanzieller Bereich gewählt wurde ──
@@ -923,7 +1001,7 @@ function bhBerichtErstellen() {
     const lab = document.querySelector('.tool-label');
     if (lab) lab.textContent = 'Filial-Überblick · Monatsbericht';
   }
-  const [kb, we, bel, fg, ac, sb, hc, nz, ab] = await Promise.all([
+  const [kb, we, bel, fg, ac, sb, hc, nz, ab, aus] = await Promise.all([
     toolLoad('tagesgeschaeft-kassenbuch'),
     toolLoad('tagesgeschaeft-wareneingang'),
     toolLoad('tagesgeschaeft-belege'),
@@ -932,7 +1010,8 @@ function bhBerichtErstellen() {
     toolLoad('tagesgeschaeft-stornos'),
     toolLoad('tagesgeschaeft-haccp'),
     toolLoad('tagesgeschaeft-notizen'),
-    toolLoad('tagesgeschaeft-artikelberichte')
+    toolLoad('tagesgeschaeft-artikelberichte'),
+    toolLoad('e-rechnung-ausgang')
   ]);
   kassenbuchDaten = kb || {};
   weDaten = (we && we.items) || [];
@@ -943,6 +1022,8 @@ function bhBerichtErstellen() {
   haccpDaten = { geraete: (hc && hc.geraete) || [], eintraege: (hc && hc.eintraege) || {} };
   notizDaten = (nz && nz.items) || [];
   artikelberichteDaten = ab || {};
+  ausgangsDaten = (aus && aus.items) || [];
+  if (ausgangsDaten.length) document.getElementById('bh-label-ausgang').style.display = 'flex';
   bhAuswahlInitialisieren();
   bhUebersichtAktualisieren();
   if (!FILIALE && currentUser && (currentUser.email || '').toLowerCase() === BH_TEST_MAIL) {

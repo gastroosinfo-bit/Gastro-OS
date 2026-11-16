@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>E-Rechnung (Test) – GASTRO-OS</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8 url('/bg-restaurant.jpg') center top / cover no-repeat; color:#1a2a4a; min-height:100vh; }
+.header{background:#1a2a4a;padding:14px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
+.brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
+.btn-back { background:#d4af37; color:#1a2a4a; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+.wrap { max-width:900px; margin:0 auto; padding:28px 24px 60px; }
+.tool-label { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:4px; }
+.tool-title { font-family:Georgia,serif; font-size:22px; color:#1a2a4a; margin-bottom:4px; }
+.tool-sub { font-size:13px; color:#5a6a80; margin-bottom:20px; }
+.testbox { background:#fff8e0; border:1px solid #e8d48a; border-radius:8px; padding:12px 16px; font-size:12.5px; color:#6a5a20; margin-bottom:20px; line-height:1.6; }
+.tabs { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:18px; }
+.tab { background:#fff; border:1px solid #d4af37; color:#1a2a4a; padding:9px 18px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; }
+.tab.aktiv { background:#1a2a4a; color:#d4af37; }
+.section { background:#fff; border:1px solid #e8dfc8; border-radius:10px; padding:22px 26px; margin-bottom:20px; box-shadow:0 2px 6px rgba(0,0,0,0.04); }
+.section-head { background:#1a2a4a; color:#d4af37; font-size:13px; font-weight:700; letter-spacing:1px; padding:10px 14px; border-radius:6px; margin-bottom:16px; }
+.hint { font-size:12.5px; color:#5a6a85; margin-bottom:14px; line-height:1.6; }
+.field { display:flex; flex-direction:column; gap:5px; }
+.field label { font-size:11px; font-weight:700; color:#8090a8; text-transform:uppercase; letter-spacing:0.5px; }
+.field input, .field select, .field textarea { border:1px solid #e0d8c8; border-radius:6px; padding:8px 12px; font-size:13px; color:#1a2a4a; background:#fff; font-family:inherit; width:100%; }
+.field input:focus, .field select:focus { outline:none; border-color:#d4af37; }
+.grid2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px; }
+.grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; margin-bottom:14px; }
+@media(max-width:640px){ .grid2,.grid3{ grid-template-columns:1fr; } }
+.btn-add { background:#1a6640; color:#fff; border:none; padding:10px 20px; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; }
+.btn-add:hover { background:#d4af37; color:#1a2a4a; }
+.btn-del { background:transparent; border:1px solid #d9b0b0; color:#a01818; border-radius:6px; padding:6px 10px; cursor:pointer; font-size:12px; }
+table { width:100%; border-collapse:collapse; font-size:12.5px; }
+th { text-align:left; background:#f5f0e8; color:#5a6a85; font-size:11px; text-transform:uppercase; letter-spacing:0.5px; padding:8px 6px; }
+td { text-align:left; padding:6px; border-bottom:1px solid #f0e8d4; vertical-align:middle; }
+td input, td select { border:1px solid #e0d8c8; border-radius:5px; padding:6px 8px; font-size:12.5px; width:100%; font-family:inherit; }
+.summen { margin-top:14px; display:flex; flex-direction:column; align-items:flex-end; gap:4px; font-size:13px; color:#5a6a85; }
+.summen b { color:#1a2a4a; }
+.summen .gesamt { font-size:16px; color:#1a2a4a; font-weight:700; }
+.upload { border:2px dashed #d4af37; border-radius:10px; padding:28px; text-align:center; cursor:pointer; background:#fffdf5; font-size:13.5px; color:#5a6a85; }
+.upload:hover { background:#fff8e0; }
+.kv { display:grid; grid-template-columns:200px 1fr; gap:6px 14px; font-size:13px; margin:12px 0; }
+.kv span { color:#8090a8; }
+.kv b { color:#1a2a4a; font-weight:600; }
+.ok { color:#1a6640; font-weight:600; }
+.fehler { color:#a01818; font-weight:600; }
+.warn { color:#9a6a10; }
+.footer-brand { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-brand strong { color:#d4af37; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <span class="brand">GASTRO-OS</span>
+  <a href="buchhaltung.html" class="btn-back">← Zurück zur Buchhaltung</a>
+</div>
+<div class="gold-bar"></div>
+
+<div class="wrap">
+  <div class="tool-label">Toolbox · Test</div>
+  <div class="tool-title">🧾 E-Rechnung</div>
+  <div class="tool-sub">E-Rechnungen schreiben und empfangen.</div>
+  <div class="testbox"><b>Testversion.</b> Nur für dein Testkonto sichtbar. Die erzeugte Datei ist eine XRechnung (XML). Lass sie von deinem Steuerberater oder einer Rechnungssoftware prüfen, bevor du sie an Kunden schickst.</div>
+
+  <div class="tabs">
+    <button class="tab aktiv" id="tab-schreiben" onclick="tabWechseln('schreiben')">Rechnung schreiben</button>
+    <button class="tab" id="tab-empfangen" onclick="tabWechseln('empfangen')">Rechnung empfangen</button>
+    <button class="tab" id="tab-liste" onclick="tabWechseln('liste')">Meine Rechnungen</button>
+  </div>
+
+  <!-- ───────────── SCHREIBEN ───────────── -->
+  <div id="bereich-schreiben">
+    <div class="section">
+      <div class="section-head">Meine Firmendaten (einmalig)</div>
+      <div class="hint">Diese Angaben stehen auf jeder Rechnung. Du trägst sie nur einmal ein.</div>
+      <div class="grid2">
+        <div class="field"><label>Firma</label><input id="e-firma" type="text" placeholder="z. B. Restaurant Muster"></div>
+        <div class="field"><label>Ansprechpartner</label><input id="e-kontakt" type="text" placeholder="Vor- und Nachname"></div>
+      </div>
+      <div class="grid3">
+        <div class="field"><label>Straße und Hausnummer</label><input id="e-strasse" type="text"></div>
+        <div class="field"><label>PLZ</label><input id="e-plz" type="text" maxlength="5"></div>
+        <div class="field"><label>Ort</label><input id="e-ort" type="text"></div>
+      </div>
+      <div class="grid3">
+        <div class="field"><label>Telefon</label><input id="e-tel" type="text"></div>
+        <div class="field"><label>E-Mail</label><input id="e-mail" type="text"></div>
+        <div class="field"><label>IBAN</label><input id="e-iban" type="text" placeholder="DE00 0000 0000 0000 0000 00"></div>
+      </div>
+      <div class="grid2">
+        <div class="field"><label>Steuernummer oder USt-IdNr.</label>
+          <select id="e-steuerart"><option value="VA">USt-IdNr. (z. B. DE123456789)</option><option value="FC">Steuernummer</option></select></div>
+        <div class="field"><label>Nummer</label><input id="e-steuernr" type="text"></div>
+      </div>
+      <div class="field" style="margin-bottom:14px;"><label style="display:flex;gap:8px;align-items:flex-start;cursor:pointer;font-weight:400;"><input type="checkbox" id="e-klein" onchange="summenAktualisieren()" style="margin-top:3px;"> <span>Ich bin Kleinunternehmer (§ 19 UStG). Meine Rechnungen enthalten dann keine Umsatzsteuer und den passenden Hinweis.</span></label></div>
+      <div class="field" style="margin-bottom:14px;"><label>Logo (optional, erscheint oben auf der PDF)</label>
+        <input id="e-logo-datei" type="file" accept="image/png,image/jpeg" onchange="logoLesen(event)">
+        <div id="e-logo-vorschau" style="margin-top:8px;"></div></div>
+      <button class="btn-add" onclick="einstellungenSpeichern()">Firmendaten speichern</button>
+      <span id="e-gespeichert" class="ok" style="display:none;margin-left:10px;">✓ Gespeichert</span>
+    </div>
+
+    <div class="section">
+      <div class="section-head">Neue Rechnung</div>
+      <div class="grid2">
+        <div class="field"><label>Kunde (Firma)</label><input id="r-name" type="text"></div>
+        <div class="field"><label>E-Mail des Kunden (optional)</label><input id="r-mail" type="text"></div>
+      </div>
+      <div class="grid3">
+        <div class="field"><label>Straße und Hausnummer</label><input id="r-strasse" type="text"></div>
+        <div class="field"><label>PLZ</label><input id="r-plz" type="text" maxlength="5"></div>
+        <div class="field"><label>Ort</label><input id="r-ort" type="text"></div>
+      </div>
+      <div class="grid3">
+        <div class="field"><label>Rechnungsnummer</label><input id="r-nr" type="text"></div>
+        <div class="field"><label>Rechnungsdatum</label><input id="r-datum" type="date"></div>
+        <div class="field"><label>Leistungsdatum</label><input id="r-leistung" type="date"></div>
+      </div>
+      <div class="grid3">
+        <div class="field"><label>Zahlungsziel (Tage)</label><input id="r-ziel" type="number" min="0" value="14"></div>
+        <div class="field"><label>Referenz des Kunden (optional)</label><input id="r-ref" type="text" placeholder="z. B. Bestellnummer"></div>
+        <div class="field"><label>Hinweis auf der Rechnung (optional)</label><input id="r-hinweis" type="text"></div>
+      </div>
+
+      <table>
+        <thead><tr><th style="width:30%">Beschreibung</th><th>Menge</th><th>Einheit</th><th>Preis netto</th><th>Rabatt %</th><th>MwSt.</th><th>Summe netto</th><th></th></tr></thead>
+        <tbody id="pos-body"></tbody>
+      </table>
+      <div style="margin-top:10px;"><button class="btn-add" style="background:transparent;color:#1a2a4a;border:1px solid #d4af37;" onclick="posHinzufuegen()">+ Position</button></div>
+      <div class="summen" id="summen"></div>
+      <div class="field" id="r-grund-feld" style="display:none;margin-top:12px;"><label>Grund der Steuerfreiheit (Pflicht bei Positionen mit 0 %)</label><input id="r-grund" type="text" placeholder="z. B. Steuerfrei nach § 4 Nr. 8 UStG"></div>
+      <div id="r-fehler" class="fehler" style="margin-top:14px;"></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;">
+        <button class="btn-add" onclick="rechnungErstellen()">⬇ Rechnung erstellen (XML + PDF)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ───────────── EMPFANGEN ───────────── -->
+  <div id="bereich-empfangen" style="display:none;">
+    <div class="section">
+      <div class="section-head">E-Rechnung empfangen</div>
+      <div class="hint">Wähle eine E-Rechnung aus: entweder eine XML-Datei (XRechnung) oder eine PDF mit eingebetteten Daten (ZUGFeRD). Das System liest die Angaben direkt aus der Datei. Das Original bleibt unverändert.</div>
+      <label class="upload" for="emp-datei">📎 Klicken, um eine E-Rechnung auszuwählen (XML oder PDF)</label>
+      <input type="file" id="emp-datei" accept=".xml,.pdf,application/xml,text/xml,application/pdf" style="display:none;" onchange="empfangenLesen(event)">
+      <div id="emp-ergebnis"></div>
+    </div>
+  </div>
+
+  <!-- ───────────── LISTE ───────────── -->
+  <div id="bereich-liste" style="display:none;">
+    <div class="section">
+      <div class="section-head">Meine Rechnungen</div>
+      <div id="liste-inhalt"></div>
+    </div>
+  </div>
+</div>
+
+<div class="footer-brand"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Struktur · Erfolg</div>
+
+<script>
+const TEST_MAIL = 'feelfree2022@web.de';
+let einst = {};
+let ausgang = [];
+let empfangenAktuell = null; // { datei, daten }
+
+async function checkAuth() {
+  try {
+    const res = await fetch('/api/verify-session');
+    if (!res.ok) { location.href = 'login.html'; return false; }
+    const d = await res.json();
+    if (!d.valid) { location.href = 'login.html'; return false; }
+    if ((d.email || '').toLowerCase() !== TEST_MAIL) { location.href = 'dashboard.html'; return false; }
+    return true;
+  } catch (e) { location.href = 'login.html'; return false; }
+}
+async function toolLoad(tool) {
+  try {
+    const res = await fetch('/api/tool-data?tool=' + encodeURIComponent(tool));
+    if (!res.ok) return {};
+    const d = await res.json();
+    return (d && d.data) ? d.data : {};
+  } catch (e) { return {}; }
+}
+async function toolSave(tool, data) {
+  try {
+    const r = await fetch('/api/tool-data', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ tool, data }) });
+    return r.ok;
+  } catch (e) { return false; }
+}
+
+// ───────── Hilfsfunktionen ─────────
+const $ = id => document.getElementById(id);
+function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+function rund(n) { return Math.round((Number(n) + Number.EPSILON) * 100) / 100; }
+function f2(n) { return rund(n).toFixed(2); }
+function eur(n) { return (Number(n) || 0).toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €'; }
+function heute() { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+function plusTage(iso, tage) { const d = new Date(iso + 'T12:00:00'); d.setDate(d.getDate() + tage); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+function ymd(iso) { return iso.replace(/-/g, ''); }
+function datumDe(iso) { return iso ? iso.slice(8, 10) + '.' + iso.slice(5, 7) + '.' + iso.slice(0, 4) : ''; }
+function ibanOk(s) { return /^[A-Z]{2}[0-9]{2}[A-Z0-9]{11,30}$/.test(s.replace(/\s+/g, '').toUpperCase()); }
+function mailOk(s) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s); }
+function tabWechseln(t) {
+  ['schreiben', 'empfangen', 'liste'].forEach(x => {
+    $('bereich-' + x).style.display = x === t ? '' : 'none';
+    $('tab-' + x).classList.toggle('aktiv', x === t);
+  });
+  if (t === 'liste') listeZeigen();
+}
+
+// ───────── Firmendaten ─────────
+const E_FELDER = { firma: 'e-firma', kontakt: 'e-kontakt', strasse: 'e-strasse', plz: 'e-plz', ort: 'e-ort', tel: 'e-tel', mail: 'e-mail', iban: 'e-iban', steuerart: 'e-steuerart', steuernr: 'e-steuernr' };
+function einstellungenLesen() { const o = {}; Object.keys(E_FELDER).forEach(k => { o[k] = ($(E_FELDER[k]).value || '').trim(); }); o.iban = o.iban.replace(/\s+/g, '').toUpperCase(); o.klein = !!$('e-klein').checked; o.letzte = einst.letzte || {}; o.logo = einst.logo || ''; o.logoW = einst.logoW || 0; o.logoH = einst.logoH || 0; return o; }
+function einstellungenFuellen() { Object.keys(E_FELDER).forEach(k => { if (einst[k] != null) $(E_FELDER[k]).value = einst[k]; }); $('e-klein').checked = !!einst.klein; logoVorschau(); summenAktualisieren(); }
+function logoVorschau() {
+  const el = $('e-logo-vorschau');
+  el.innerHTML = einst.logo ? '<img src="' + einst.logo + '" style="max-height:50px;max-width:160px;border:1px solid #e0d8c8;border-radius:4px;padding:3px;background:#fff;"> <button class="btn-del" onclick="logoEntfernen()">Logo entfernen</button>' : '';
+}
+function logoEntfernen() { einst.logo = ''; einst.logoW = 0; einst.logoH = 0; $('e-logo-datei').value = ''; logoVorschau(); }
+function logoLesen(ev) {
+  const f = ev.target.files && ev.target.files[0];
+  if (!f) return;
+  const img = new Image();
+  const url = URL.createObjectURL(f);
+  img.onload = () => {
+    const maxW = 400, maxH = 200;
+    const sk = Math.min(1, maxW / img.width, maxH / img.height);
+    const w = Math.max(1, Math.round(img.width * sk)), h = Math.max(1, Math.round(img.height * sk));
+    const c = document.createElement('canvas'); c.width = w; c.height = h;
+    const ctx = c.getContext('2d'); ctx.drawImage(img, 0, 0, w, h);
+    let data = c.toDataURL('image/png');
+    if (data.length > 150000) { ctx.globalCompositeOperation = 'destination-over'; ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, w, h); data = c.toDataURL('image/jpeg', 0.85); }
+    URL.revokeObjectURL(url);
+    einst.logo = data; einst.logoW = w; einst.logoH = h;
+    logoVorschau();
+  };
+  img.onerror = () => { URL.revokeObjectURL(url); alert('Das Bild konnte nicht gelesen werden.'); };
+  img.src = url;
+}
+async function einstellungenSpeichern() {
+  einst = einstellungenLesen();
+  await toolSave('e-rechnung-einstellungen', einst);
+  $('e-gespeichert').style.display = 'inline';
+  setTimeout(() => { $('e-gespeichert').style.display = 'none'; }, 2000);
+}
+function naechsteNummer() {
+  const jahr = String(new Date().getFullYear());
+  const n = ((einst.letzte || {})[jahr] || 0) + 1;
+  return 'RE-' + jahr + '-' + String(n).padStart(3, '0');
+}
+
+// ───────── Positionen ─────────
+const EINHEITEN = [['C62', 'Stück'], ['HUR', 'Stunde'], ['LS', 'Pauschale'], ['KGM', 'Kilogramm'], ['LTR', 'Liter']];
+function posHinzufuegen(p) {
+  p = p || { text: '', menge: 1, einheit: 'C62', preis: '', rabatt: '', satz: 19 };
+  const tr = document.createElement('tr');
+  tr.innerHTML =
+    '<td><input class="p-text" type="text" value="' + esc(p.text) + '"></td>' +
+    '<td><input class="p-menge" type="number" step="0.01" min="0" value="' + esc(p.menge) + '"></td>' +
+    '<td><select class="p-einheit">' + EINHEITEN.map(e => '<option value="' + e[0] + '"' + (e[0] === p.einheit ? ' selected' : '') + '>' + e[1] + '</option>').join('') + '</select></td>' +
+    '<td><input class="p-preis" type="number" step="0.01" min="0" value="' + esc(p.preis) + '"></td>' +
+    '<td><input class="p-rabatt" type="number" step="0.01" min="0" max="100" value="' + esc(p.rabatt) + '" placeholder="0" style="width:70px;"></td>' +
+    '<td><select class="p-satz"><option value="19"' + (p.satz == 19 ? ' selected' : '') + '>19 %</option><option value="7"' + (p.satz == 7 ? ' selected' : '') + '>7 %</option><option value="0"' + (p.satz == 0 ? ' selected' : '') + '>0 % steuerfrei</option></select></td>' +
+    '<td class="p-summe">0,00 €</td>' +
+    '<td><button class="btn-del" onclick="this.closest(\'tr\').remove();summenAktualisieren();">✕</button></td>';
+  tr.querySelectorAll('input,select').forEach(el => el.addEventListener('input', summenAktualisieren));
+  $('pos-body').appendChild(tr);
+  summenAktualisieren();
+}
+function positionenLesen() {
+  return Array.from($('pos-body').querySelectorAll('tr')).map(tr => ({
+    text: tr.querySelector('.p-text').value.trim(),
+    menge: parseFloat(tr.querySelector('.p-menge').value) || 0,
+    einheit: tr.querySelector('.p-einheit').value,
+    preis: parseFloat(tr.querySelector('.p-preis').value) || 0,
+    rabatt: Math.min(100, Math.max(0, parseFloat(tr.querySelector('.p-rabatt').value) || 0)),
+    satz: $('e-klein').checked ? 0 : parseInt(tr.querySelector('.p-satz').value, 10)
+  }));
+}
+function berechnen(pos) {
+  const brutto0 = pos.map(p => rund(p.menge * p.preis));
+  const zeilen = pos.map((p, i) => rund(brutto0[i] - rund(brutto0[i] * (p.rabatt || 0) / 100)));
+  const rabattBetrag = pos.map((p, i) => rund(brutto0[i] - zeilen[i]));
+  const saetze = {};
+  pos.forEach((p, i) => { saetze[p.satz] = rund((saetze[p.satz] || 0) + zeilen[i]); });
+  const steuer = {};
+  let netto = 0, st = 0;
+  Object.keys(saetze).forEach(s => { const basis = saetze[s]; const betrag = rund(basis * s / 100); steuer[s] = { basis, betrag }; netto = rund(netto + basis); st = rund(st + betrag); });
+  return { zeilen, vorRabatt: brutto0, rabattBetrag, steuer, netto, steuerGesamt: st, brutto: rund(netto + st) };
+}
+function summenAktualisieren() {
+  const pos = positionenLesen();
+  const b = berechnen(pos);
+  Array.from($('pos-body').querySelectorAll('tr')).forEach((tr, i) => { tr.querySelector('.p-summe').textContent = eur(b.zeilen[i]); });
+  const klein = $('e-klein').checked;
+  Array.from($('pos-body').querySelectorAll('.p-satz')).forEach(el => { if (klein) el.value = '0'; el.disabled = klein; });
+  const hatNull = !klein && pos.some(p => p.satz === 0);
+  $('r-grund-feld').style.display = hatNull ? '' : 'none';
+  let h = '<div>Netto: <b>' + eur(b.netto) + '</b></div>';
+  if (klein) h += '<div style="color:#8090a8;font-size:12px;">Kleinunternehmer: keine Umsatzsteuer (§ 19 UStG)</div>';
+  Object.keys(b.steuer).sort((a, c) => c - a).forEach(s => { if (!klein) h += '<div>' + (s === '0' ? 'Steuerfrei (0 %)' : 'MwSt. ' + s + ' %') + ': <b>' + eur(b.steuer[s].betrag) + '</b></div>'; });
+  h += '<div class="gesamt">Gesamt: ' + eur(b.brutto) + '</div>';
+  $('summen').innerHTML = h;
+}
+
+// ───────── XRechnung (CII) erzeugen ─────────
+function steuerfreiText(r, e) { return e.klein ? 'Kein Ausweis von Umsatzsteuer, da Kleinunternehmer gemäß § 19 UStG' : (r.grund || 'Steuerfrei'); }
+function menge4(n) { return String(Math.round(n * 10000) / 10000); }
+function xmlErzeugen(r, e) {
+  const b = berechnen(r.positionen);
+  const x = [];
+  x.push('<?xml version="1.0" encoding="UTF-8"?>');
+  x.push('<rsm:CrossIndustryInvoice xmlns:rsm="urn:un:unece:uncefact:data:standard:CrossIndustryInvoice:100" xmlns:ram="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:100" xmlns:udt="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:100" xmlns:qdt="urn:un:unece:uncefact:data:standard:QualifiedDataType:100" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">');
+  const xr = !!(r.kunde.mail && r.kunde.mail.trim());
+  x.push('<rsm:ExchangedDocumentContext><ram:GuidelineSpecifiedDocumentContextParameter><ram:ID>' + (xr ? 'urn:cen.eu:en16931:2017#compliant#urn:xeinkauf.de:kosit:xrechnung_3.0' : 'urn:cen.eu:en16931:2017') + '</ram:ID></ram:GuidelineSpecifiedDocumentContextParameter></rsm:ExchangedDocumentContext>');
+  x.push('<rsm:ExchangedDocument><ram:ID>' + esc(r.nr) + '</ram:ID><ram:TypeCode>380</ram:TypeCode><ram:IssueDateTime><udt:DateTimeString format="102">' + ymd(r.datum) + '</udt:DateTimeString></ram:IssueDateTime>' +
+    (r.hinweis ? '<ram:IncludedNote><ram:Content>' + esc(r.hinweis) + '</ram:Content></ram:IncludedNote>' : '') + '</rsm:ExchangedDocument>');
+  x.push('<rsm:SupplyChainTradeTransaction>');
+  r.positionen.forEach((p, i) => {
+    x.push('<ram:IncludedSupplyChainTradeLineItem>' +
+      '<ram:AssociatedDocumentLineDocument><ram:LineID>' + (i + 1) + '</ram:LineID></ram:AssociatedDocumentLineDocument>' +
+      '<ram:SpecifiedTradeProduct><ram:Name>' + esc(p.text) + '</ram:Name></ram:SpecifiedTradeProduct>' +
+      '<ram:SpecifiedLineTradeAgreement><ram:NetPriceProductTradePrice><ram:ChargeAmount>' + f2(p.preis) + '</ram:ChargeAmount></ram:NetPriceProductTradePrice></ram:SpecifiedLineTradeAgreement>' +
+      '<ram:SpecifiedLineTradeDelivery><ram:BilledQuantity unitCode="' + esc(p.einheit) + '">' + menge4(p.menge) + '</ram:BilledQuantity></ram:SpecifiedLineTradeDelivery>' +
+      '<ram:SpecifiedLineTradeSettlement><ram:ApplicableTradeTax><ram:TypeCode>VAT</ram:TypeCode><ram:CategoryCode>' + (p.satz === 0 ? 'E' : 'S') + '</ram:CategoryCode><ram:RateApplicablePercent>' + p.satz + '</ram:RateApplicablePercent></ram:ApplicableTradeTax>' +
+      (b.rabattBetrag[i] > 0 ? '<ram:SpecifiedTradeAllowanceCharge><ram:ChargeIndicator><udt:Indicator>false</udt:Indicator></ram:ChargeIndicator><ram:CalculationPercent>' + f2(p.rabatt) + '</ram:CalculationPercent><ram:BasisAmount>' + f2(b.vorRabatt[i]) + '</ram:BasisAmount><ram:ActualAmount>' + f2(b.rabattBetrag[i]) + '</ram:ActualAmount><ram:Reason>Rabatt</ram:Reason></ram:SpecifiedTradeAllowanceCharge>' : '') +
+      '<ram:SpecifiedTradeSettlementLineMonetarySummation><ram:LineTotalAmount>' + f2(b.zeilen[i]) + '</ram:LineTotalAmount></ram:SpecifiedTradeSettlementLineMonetarySummation></ram:SpecifiedLineTradeSettlement>' +
+      '</ram:IncludedSupplyChainTradeLineItem>');
+  });
+  x.push('<ram:ApplicableHeaderTradeAgreement>');
+  x.push('<ram:BuyerReference>' + esc(r.ref || r.nr) + '</ram:BuyerReference>');
+  x.push('<ram:SellerTradeParty><ram:Name>' + esc(e.firma) + '</ram:Name>' +
+    '<ram:DefinedTradeContact><ram:PersonName>' + esc(e.kontakt) + '</ram:PersonName><ram:TelephoneUniversalCommunication><ram:CompleteNumber>' + esc(e.tel) + '</ram:CompleteNumber></ram:TelephoneUniversalCommunication><ram:EmailURIUniversalCommunication><ram:URIID>' + esc(e.mail) + '</ram:URIID></ram:EmailURIUniversalCommunication></ram:DefinedTradeContact>' +
+    '<ram:PostalTradeAddress><ram:PostcodeCode>' + esc(e.plz) + '</ram:PostcodeCode><ram:LineOne>' + esc(e.strasse) + '</ram:LineOne><ram:CityName>' + esc(e.ort) + '</ram:CityName><ram:CountryID>DE</ram:CountryID></ram:PostalTradeAddress>' +
+    '<ram:URIUniversalCommunication><ram:URIID schemeID="EM">' + esc(e.mail) + '</ram:URIID></ram:URIUniversalCommunication>' +
+    '<ram:SpecifiedTaxRegistration><ram:ID schemeID="' + esc(e.steuerart) + '">' + esc(e.steuernr) + '</ram:ID></ram:SpecifiedTaxRegistration></ram:SellerTradeParty>');
+  x.push('<ram:BuyerTradeParty><ram:Name>' + esc(r.kunde.name) + '</ram:Name>' +
+    '<ram:PostalTradeAddress><ram:PostcodeCode>' + esc(r.kunde.plz) + '</ram:PostcodeCode><ram:LineOne>' + esc(r.kunde.strasse) + '</ram:LineOne><ram:CityName>' + esc(r.kunde.ort) + '</ram:CityName><ram:CountryID>DE</ram:CountryID></ram:PostalTradeAddress>' +
+    (xr ? '<ram:URIUniversalCommunication><ram:URIID schemeID="EM">' + esc(r.kunde.mail) + '</ram:URIID></ram:URIUniversalCommunication>' : '') + '</ram:BuyerTradeParty>');
+  x.push('</ram:ApplicableHeaderTradeAgreement>');
+  x.push('<ram:ApplicableHeaderTradeDelivery><ram:ActualDeliverySupplyChainEvent><ram:OccurrenceDateTime><udt:DateTimeString format="102">' + ymd(r.leistung) + '</udt:DateTimeString></ram:OccurrenceDateTime></ram:ActualDeliverySupplyChainEvent></ram:ApplicableHeaderTradeDelivery>');
+  x.push('<ram:ApplicableHeaderTradeSettlement><ram:PaymentReference>' + esc(r.nr) + '</ram:PaymentReference><ram:InvoiceCurrencyCode>EUR</ram:InvoiceCurrencyCode>');
+  x.push('<ram:SpecifiedTradeSettlementPaymentMeans><ram:TypeCode>58</ram:TypeCode><ram:PayeePartyCreditorFinancialAccount><ram:IBANID>' + esc(e.iban) + '</ram:IBANID></ram:PayeePartyCreditorFinancialAccount></ram:SpecifiedTradeSettlementPaymentMeans>');
+  Object.keys(b.steuer).sort((a, c) => c - a).forEach(s => {
+    x.push('<ram:ApplicableTradeTax><ram:CalculatedAmount>' + f2(b.steuer[s].betrag) + '</ram:CalculatedAmount><ram:TypeCode>VAT</ram:TypeCode>' + (s === '0' ? '<ram:ExemptionReason>' + esc(steuerfreiText(r, e)) + '</ram:ExemptionReason>' : '') + '<ram:BasisAmount>' + f2(b.steuer[s].basis) + '</ram:BasisAmount><ram:CategoryCode>' + (s === '0' ? 'E' : 'S') + '</ram:CategoryCode><ram:RateApplicablePercent>' + s + '</ram:RateApplicablePercent></ram:ApplicableTradeTax>');
+  });
+  x.push('<ram:SpecifiedTradePaymentTerms><ram:Description>Zahlbar bis ' + datumDe(r.faellig) + ' ohne Abzug.</ram:Description><ram:DueDateDateTime><udt:DateTimeString format="102">' + ymd(r.faellig) + '</udt:DateTimeString></ram:DueDateDateTime></ram:SpecifiedTradePaymentTerms>');
+  x.push('<ram:SpecifiedTradeSettlementHeaderMonetarySummation><ram:LineTotalAmount>' + f2(b.netto) + '</ram:LineTotalAmount><ram:TaxBasisTotalAmount>' + f2(b.netto) + '</ram:TaxBasisTotalAmount><ram:TaxTotalAmount currencyID="EUR">' + f2(b.steuerGesamt) + '</ram:TaxTotalAmount><ram:GrandTotalAmount>' + f2(b.brutto) + '</ram:GrandTotalAmount><ram:DuePayableAmount>' + f2(b.brutto) + '</ram:DuePayableAmount></ram:SpecifiedTradeSettlementHeaderMonetarySummation>');
+  x.push('</ram:ApplicableHeaderTradeSettlement>');
+  x.push('</rsm:SupplyChainTradeTransaction></rsm:CrossIndustryInvoice>');
+  return x.join('\n');
+}
+
+// ───────── Lesbares PDF ─────────
+function pdfErzeugen(r, e) {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  const b = berechnen(r.positionen);
+  if (e.logo && e.logoW && e.logoH) {
+    const sk = Math.min(45 / e.logoW, 16 / e.logoH);
+    const w = e.logoW * sk, h = e.logoH * sk;
+    try { doc.addImage(e.logo, e.logo.indexOf('image/png') > -1 ? 'PNG' : 'JPEG', 196 - w, 6, w, h); } catch (x) {}
+  }
+  doc.setFontSize(8); doc.setTextColor(120);
+  doc.text(e.firma + ' · ' + e.strasse + ' · ' + e.plz + ' ' + e.ort, 14, 20);
+  doc.setFontSize(11); doc.setTextColor(26, 42, 74);
+  doc.text([r.kunde.name, r.kunde.strasse, r.kunde.plz + ' ' + r.kunde.ort], 14, 30);
+  doc.setFontSize(9);
+  const rechts = [['Rechnungsnummer', r.nr], ['Rechnungsdatum', datumDe(r.datum)], ['Leistungsdatum', datumDe(r.leistung)], ['Zahlbar bis', datumDe(r.faellig)]];
+  if (r.ref) rechts.push(['Ihre Referenz', r.ref]);
+  rechts.forEach((z, i) => { doc.text(z[0] + ':', 120, 30 + i * 5); doc.text(z[1], 160, 30 + i * 5); });
+  doc.setFontSize(16); doc.text('Rechnung ' + r.nr, 14, 62);
+  const einheitName = c => (EINHEITEN.find(x => x[0] === c) || [c, c])[1];
+  doc.autoTable({
+    startY: 68,
+    head: [['Pos.', 'Beschreibung', 'Menge', 'Einheit', 'Einzelpreis', 'Rabatt', 'MwSt.', 'Netto']],
+    body: r.positionen.map((p, i) => [i + 1, p.text, menge4(p.menge).replace('.', ','), einheitName(p.einheit), eur(p.preis), p.rabatt ? String(p.rabatt).replace('.', ',') + ' %' : '', e.klein ? '–' : p.satz + ' %', eur(b.zeilen[i])]),
+    styles: { fontSize: 9 }, headStyles: { fillColor: [26, 42, 74], textColor: [212, 175, 55] }, margin: { left: 14, right: 14 }
+  });
+  let y = doc.lastAutoTable.finalY + 8;
+  doc.setFontSize(10);
+  const zeile = (t, v, fett) => { doc.setFont(undefined, fett ? 'bold' : 'normal'); doc.text(t, 130, y); doc.text(v, 196, y, { align: 'right' }); y += 6; };
+  if (!e.klein) zeile('Netto', eur(b.netto));
+  if (!e.klein) Object.keys(b.steuer).sort((a, c) => c - a).forEach(s => zeile(s === '0' ? 'Steuerfrei (0 %) auf ' + eur(b.steuer[s].basis) : 'MwSt. ' + s + ' % auf ' + eur(b.steuer[s].basis), eur(b.steuer[s].betrag)));
+  zeile('Gesamtbetrag', eur(b.brutto), true);
+  doc.setFont(undefined, 'normal'); y += 6;
+  doc.setFontSize(9);
+  const text = ['Bitte überweisen Sie den Betrag bis ' + datumDe(r.faellig) + ' auf folgendes Konto:', 'IBAN: ' + e.iban.replace(/(.{4})/g, '$1 ').trim() + ' · Verwendungszweck: ' + r.nr,
+    (e.steuerart === 'VA' ? 'USt-IdNr.: ' : 'Steuernummer: ') + e.steuernr];
+  if (b.steuer[0]) text.push(steuerfreiText(r, e));
+  if (r.hinweis) text.push(r.hinweis);
+  doc.text(text, 14, y);
+  doc.setFontSize(8); doc.setTextColor(120);
+  doc.text('Diese PDF enthält die strukturierte E-Rechnung (XML) als Anhang. Maßgeblich sind die Daten der eingebetteten XML-Datei.', 14, 285);
+  return doc.output('arraybuffer');
+}
+// PDF mit eingebetteter XML (ZUGFeRD / Factur-X): die XML hängt als Datei in der PDF
+async function pdfMitXml(r, e, xml) {
+  const { PDFDocument, PDFName, PDFString, PDFArray, AFRelationship } = window.PDFLib;
+  const xr = !!(r.kunde.mail && r.kunde.mail.trim());
+  const dateiName = xr ? 'xrechnung.xml' : 'factur-x.xml';
+  const stufe = xr ? 'XRECHNUNG' : 'EN 16931';
+  const pdf = await PDFDocument.load(pdfErzeugen(r, e));
+  const jetzt = new Date();
+  pdf.setTitle('Rechnung ' + r.nr); pdf.setAuthor(e.firma); pdf.setProducer('GASTRO-OS'); pdf.setCreator('GASTRO-OS');
+  await pdf.attach(new TextEncoder().encode(xml), dateiName, { mimeType: 'text/xml', description: 'E-Rechnung ' + r.nr, creationDate: jetzt, modificationDate: jetzt, afRelationship: AFRelationship.Alternative });
+  const xmp = '<?xpacket begin="\uFEFF" id="W5M0MpCehiHzreSzNTczkc9d"?>\n<x:xmpmeta xmlns:x="adobe:ns:meta/"><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">' +
+    '<rdf:Description rdf:about="" xmlns:pdfaid="http://www.aiim.org/pdfa/ns/id/"><pdfaid:part>3</pdfaid:part><pdfaid:conformance>B</pdfaid:conformance></rdf:Description>' +
+    '<rdf:Description rdf:about="" xmlns:fx="urn:factur-x:pdfa:CrossIndustryDocument:invoice:1p0#"><fx:DocumentType>INVOICE</fx:DocumentType><fx:DocumentFileName>' + dateiName + '</fx:DocumentFileName><fx:Version>1.0</fx:Version><fx:ConformanceLevel>' + stufe + '</fx:ConformanceLevel></rdf:Description>' +
+    '</rdf:RDF></x:xmpmeta>\n<?xpacket end="w"?>';
+  const meta = pdf.context.stream(new TextEncoder().encode(xmp), { Type: 'Metadata', Subtype: 'XML' });
+  pdf.catalog.set(PDFName.of('Metadata'), pdf.context.register(meta));
+  return await pdf.save();
+}
+function pdfSpeichern(bytes, name) { datei(bytes, name, 'application/pdf'); }
+
+function datei(inhalt, name, typ) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([inhalt], { type: typ }));
+  a.download = name;
+  document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+}
+
+// ───────── Rechnung erstellen ─────────
+function rechnungLesen() {
+  const datum = $('r-datum').value;
+  return {
+    id: Date.now(),
+    nr: $('r-nr').value.trim(),
+    datum, leistung: $('r-leistung').value || datum,
+    faellig: datum ? plusTage(datum, parseInt($('r-ziel').value, 10) || 0) : '',
+    grund: $('r-grund').value.trim(),
+    ref: $('r-ref').value.trim(), hinweis: $('r-hinweis').value.trim(),
+    kunde: { name: $('r-name').value.trim(), strasse: $('r-strasse').value.trim(), plz: $('r-plz').value.trim(), ort: $('r-ort').value.trim(), mail: $('r-mail').value.trim() },
+    positionen: positionenLesen()
+  };
+}
+function pruefen(r, e) {
+  const f = [];
+  if (!e.firma) f.push('Firmenname fehlt (Firmendaten).');
+  if (!e.kontakt) f.push('Ansprechpartner fehlt (Firmendaten).');
+  if (!e.strasse || !/^\d{5}$/.test(e.plz) || !e.ort) f.push('Adresse in den Firmendaten ist unvollständig (PLZ mit 5 Ziffern).');
+  if (!e.tel) f.push('Telefon fehlt (Firmendaten).');
+  if (!mailOk(e.mail || '')) f.push('E-Mail in den Firmendaten ist ungültig.');
+  if (!ibanOk(e.iban || '')) f.push('IBAN in den Firmendaten ist ungültig.');
+  if (!e.steuernr) f.push('Steuernummer oder USt-IdNr. fehlt (Firmendaten).');
+  if (!r.kunde.name || !r.kunde.strasse || !/^\d{5}$/.test(r.kunde.plz) || !r.kunde.ort) f.push('Kundenadresse ist unvollständig (PLZ mit 5 Ziffern).');
+  if (r.kunde.mail && !mailOk(r.kunde.mail)) f.push('E-Mail des Kunden ist ungültig. Du kannst das Feld auch leer lassen.');
+  if (!einst.klein && r.positionen.some(p => p.satz === 0) && !r.grund) f.push('Bitte gib den Grund der Steuerfreiheit an (Positionen mit 0 %).');
+  if (!r.nr) f.push('Rechnungsnummer fehlt.');
+  if (!r.datum) f.push('Rechnungsdatum fehlt.');
+  if (!r.positionen.length) f.push('Mindestens eine Position fehlt.');
+  r.positionen.forEach((p, i) => { if (!p.text || p.menge <= 0 || p.preis < 0) f.push('Position ' + (i + 1) + ' ist unvollständig.'); });
+  if (ausgang.some(a => a.nr === r.nr)) f.push('Die Rechnungsnummer ' + r.nr + ' gibt es schon.');
+  return f;
+}
+async function rechnungErstellen() {
+  einst = Object.assign(einstellungenLesen(), { letzte: einst.letzte || {} });
+  const r = rechnungLesen();
+  const f = pruefen(r, einst);
+  $('r-fehler').innerHTML = f.map(x => '• ' + esc(x)).join('<br>');
+  if (f.length) return;
+  const xml = xmlErzeugen(r, einst);
+  const xrName = (r.kunde.mail && r.kunde.mail.trim()) ? 'XRechnung_' : 'E-Rechnung_';
+  datei(xml, xrName + r.nr + '.xml', 'application/xml');
+  pdfSpeichern(await pdfMitXml(r, einst, xml), 'Rechnung_' + r.nr + '.pdf');
+  const jahr = r.datum.slice(0, 4);
+  const m = r.nr.match(/(\d+)$/);
+  if (m) { einst.letzte = einst.letzte || {}; einst.letzte[jahr] = Math.max(einst.letzte[jahr] || 0, parseInt(m[1], 10)); }
+  ausgang.push({ id: r.id, nr: r.nr, datum: r.datum, kunde: r.kunde.name, brutto: berechnen(r.positionen).brutto, bezahltAm: null, rechnung: r, firma: Object.assign({}, einst, { logo: '', logoW: 0, logoH: 0, letzte: null }) });
+  await toolSave('e-rechnung-einstellungen', einst);
+  await toolSave('e-rechnung-ausgang', { items: ausgang });
+  $('r-nr').value = naechsteNummer();
+  $('r-fehler').innerHTML = '<span class="ok">✓ Rechnung ' + esc(r.nr) + ' erstellt und gespeichert. XML und PDF wurden heruntergeladen.</span>';
+}
+function listeZeigen() {
+  if (!ausgang.length) { $('liste-inhalt').innerHTML = '<div class="hint">Noch keine Rechnung erstellt.</div>'; return; }
+  let h = '<div class="hint">Trage bei „Bezahlt am“ das Datum ein, sobald der Kunde bezahlt hat. Trage diesen Zahlungseingang bitte nicht zusätzlich im Kassenbuch ein, sonst zählt die Einnahme doppelt.</div>';
+  h += '<table><thead><tr><th>Nummer</th><th>Datum</th><th>Kunde</th><th>Betrag</th><th>Bezahlt am</th><th></th></tr></thead><tbody>';
+  ausgang.slice().reverse().forEach(a => {
+    h += '<tr><td>' + esc(a.nr) + '</td><td>' + datumDe(a.datum) + '</td><td>' + esc(a.kunde) + '</td><td>' + eur(a.brutto) + '</td>' +
+      '<td><input type="date" value="' + esc(a.bezahltAm || '') + '" onchange="bezahltSetzen(' + a.id + ', this.value)" style="width:150px;"></td><td>' +
+      '<button class="btn-add" style="padding:6px 12px;" onclick="listeXml(' + a.id + ')">XML</button> <button class="btn-add" style="padding:6px 12px;" onclick="listePdf(' + a.id + ')">PDF</button></td></tr>';
+  });
+  $('liste-inhalt').innerHTML = h + '</tbody></table>';
+}
+async function bezahltSetzen(id, wert) {
+  const a = ausgang.find(x => x.id === id);
+  if (!a) return;
+  a.bezahltAm = wert || null;
+  await toolSave('e-rechnung-ausgang', { items: ausgang });
+}
+function listeXml(id) { const a = ausgang.find(x => x.id === id); if (a) datei(xmlErzeugen(a.rechnung, a.firma), ((a.rechnung.kunde.mail || '').trim() ? 'XRechnung_' : 'E-Rechnung_') + a.nr + '.xml', 'application/xml'); }
+async function listePdf(id) { const a = ausgang.find(x => x.id === id); if (!a) return; const e = Object.assign({}, a.firma, { logo: einst.logo || '', logoW: einst.logoW || 0, logoH: einst.logoH || 0 }); pdfSpeichern(await pdfMitXml(a.rechnung, e, xmlErzeugen(a.rechnung, a.firma)), 'Rechnung_' + a.nr + '.pdf'); }
+
+// ───────── Empfangen ─────────
+function kinder(n, name) { return n ? Array.from(n.children).filter(c => c.localName === name) : []; }
+function pfad(n, namen) { let a = [n]; namen.forEach(nm => { let neu = []; a.forEach(x => { neu = neu.concat(kinder(x, nm)); }); a = neu; }); return a; }
+function txt(n, namen) { const a = pfad(n, namen); return a.length ? (a[0].textContent || '').trim() : ''; }
+function zahl(s) { const v = parseFloat(s); return isNaN(v) ? 0 : v; }
+function datumIso(s) { s = (s || '').trim(); if (/^\d{8}$/.test(s)) return s.slice(0, 4) + '-' + s.slice(4, 6) + '-' + s.slice(6, 8); if (/^\d{4}-\d{2}-\d{2}/.test(s)) return s.slice(0, 10); return ''; }
+function xmlLesen(text) {
+  const doc = new DOMParser().parseFromString(text, 'application/xml');
+  if (doc.getElementsByTagName('parsererror').length) throw new Error('Die XML-Datei ist nicht lesbar.');
+  const w = doc.documentElement;
+  const o = { format: '', nr: '', datum: '', faellig: '', verkaeufer: '', ustid: '', iban: '', waehrung: 'EUR', netto: 0, steuer: 0, brutto: 0, zeilen: [], gutschrift: false };
+  if (w.localName === 'CrossIndustryInvoice') {
+    o.format = 'XRechnung / ZUGFeRD (CII)';
+    const dok = pfad(w, ['ExchangedDocument'])[0];
+    o.nr = txt(dok, ['ID']);
+    o.gutschrift = txt(dok, ['TypeCode']) === '381';
+    o.datum = datumIso(txt(dok, ['IssueDateTime', 'DateTimeString']));
+    const tr = pfad(w, ['SupplyChainTradeTransaction'])[0];
+    const ag = pfad(tr, ['ApplicableHeaderTradeAgreement'])[0];
+    o.verkaeufer = txt(ag, ['SellerTradeParty', 'Name']);
+    o.ustid = pfad(ag, ['SellerTradeParty', 'SpecifiedTaxRegistration', 'ID']).map(n => n.textContent.trim()).find(Boolean) || '';
+    const se = pfad(tr, ['ApplicableHeaderTradeSettlement'])[0];
+    o.waehrung = txt(se, ['InvoiceCurrencyCode']) || 'EUR';
+    o.iban = txt(se, ['SpecifiedTradeSettlementPaymentMeans', 'PayeePartyCreditorFinancialAccount', 'IBANID']);
+    o.faellig = datumIso(txt(se, ['SpecifiedTradePaymentTerms', 'DueDateDateTime', 'DateTimeString']));
+    const sum = pfad(se, ['SpecifiedTradeSettlementHeaderMonetarySummation'])[0];
+    o.netto = zahl(txt(sum, ['TaxBasisTotalAmount']));
+    o.steuer = zahl(txt(sum, ['TaxTotalAmount']));
+    o.brutto = zahl(txt(sum, ['GrandTotalAmount']));
+    kinder(se, 'ApplicableTradeTax').forEach(t => o.zeilen.push({ satz: zahl(txt(t, ['RateApplicablePercent'])), basis: zahl(txt(t, ['BasisAmount'])), betrag: zahl(txt(t, ['CalculatedAmount'])) }));
+  } else if (w.localName === 'Invoice' || w.localName === 'CreditNote') {
+    o.format = 'XRechnung (UBL)';
+    o.gutschrift = w.localName === 'CreditNote';
+    o.nr = txt(w, ['ID']);
+    o.datum = datumIso(txt(w, ['IssueDate']));
+    o.faellig = datumIso(txt(w, ['DueDate']));
+    o.waehrung = txt(w, ['DocumentCurrencyCode']) || 'EUR';
+    const party = pfad(w, ['AccountingSupplierParty', 'Party'])[0];
+    o.verkaeufer = txt(party, ['PartyLegalEntity', 'RegistrationName']) || txt(party, ['PartyName', 'Name']);
+    o.ustid = txt(party, ['PartyTaxScheme', 'CompanyID']);
+    o.iban = txt(w, ['PaymentMeans', 'PayeeFinancialAccount', 'ID']);
+    const mon = pfad(w, ['LegalMonetaryTotal'])[0];
+    o.netto = zahl(txt(mon, ['TaxExclusiveAmount']));
+    o.brutto = zahl(txt(mon, ['PayableAmount'])) || zahl(txt(mon, ['TaxInclusiveAmount']));
+    o.steuer = zahl(txt(w, ['TaxTotal', 'TaxAmount']));
+    pfad(w, ['TaxTotal', 'TaxSubtotal']).forEach(t => o.zeilen.push({ satz: zahl(txt(t, ['TaxCategory', 'Percent'])), basis: zahl(txt(t, ['TaxableAmount'])), betrag: zahl(txt(t, ['TaxAmount'])) }));
+  } else {
+    throw new Error('Das ist keine erkennbare E-Rechnung (weder XRechnung noch ZUGFeRD).');
+  }
+  if (!o.nr || !o.datum) throw new Error('In der Datei fehlen Rechnungsnummer oder Datum.');
+  return o;
+}
+async function xmlAusPdf(buf) {
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  const pdf = await pdfjsLib.getDocument({ data: buf }).promise;
+  const anh = await pdf.getAttachments();
+  const liste = anh ? Object.keys(anh).map(k => anh[k]) : [];
+  const treffer = liste.find(a => /\.xml$/i.test(a.filename || '')) || null;
+  if (!treffer) throw new Error('In dieser PDF sind keine E-Rechnungs-Daten enthalten. Es ist eine normale PDF-Rechnung. Lade sie bitte unter „Belege“ hoch.');
+  return new TextDecoder('utf-8').decode(treffer.content);
+}
+async function empfangenLesen(ev) {
+  const file = ev.target.files && ev.target.files[0];
+  if (!file) return;
+  const aus = $('emp-ergebnis');
+  aus.innerHTML = '<div class="hint">Wird gelesen …</div>';
+  empfangenAktuell = null;
+  try {
+    let text;
+    if (/\.pdf$/i.test(file.name) || file.type === 'application/pdf') text = await xmlAusPdf(await file.arrayBuffer());
+    else text = await file.text();
+    const d = xmlLesen(text);
+    empfangenAktuell = { file, daten: d };
+    const satzZeilen = d.zeilen.map(z => z.satz + ' %: Netto ' + eur(z.basis) + ', MwSt. ' + eur(z.betrag)).join('<br>') || '–';
+    aus.innerHTML = '<div class="kv">' +
+      '<span>Format</span><b>' + esc(d.format) + '</b>' +
+      '<span>Lieferant</span><b>' + esc(d.verkaeufer) + '</b>' +
+      '<span>Rechnungsnummer</span><b>' + esc(d.nr) + '</b>' +
+      '<span>Rechnungsdatum</span><b>' + datumDe(d.datum) + '</b>' +
+      '<span>Zahlbar bis</span><b>' + (d.faellig ? datumDe(d.faellig) : '–') + '</b>' +
+      '<span>Gesamtbetrag</span><b>' + eur(d.brutto) + (d.waehrung !== 'EUR' ? ' (' + esc(d.waehrung) + ')' : '') + '</b>' +
+      '<span>MwSt.</span><b>' + satzZeilen + '</b>' +
+      '<span>USt-IdNr. / Steuernr.</span><b>' + esc(d.ustid || '–') + '</b>' +
+      '<span>IBAN</span><b>' + esc(d.iban || '–') + '</b></div>' +
+      (d.gutschrift ? '<div class="warn" style="margin-bottom:10px;">Achtung: Das ist eine Gutschrift. Sie wird nicht automatisch als Ausgabe verbucht.</div>' : '') +
+      (d.waehrung !== 'EUR' ? '<div class="warn" style="margin-bottom:10px;">Achtung: Die Rechnung ist nicht in Euro.</div>' : '') +
+      '<button class="btn-add" onclick="empfangenUebernehmen()">In Belege übernehmen</button> <span id="emp-status"></span>';
+  } catch (e) {
+    aus.innerHTML = '<div class="fehler">' + esc(e.message || 'Die Datei konnte nicht gelesen werden.') + '</div>';
+  }
+}
+function base64Von(file) {
+  return new Promise((ok, nein) => { const r = new FileReader(); r.onload = () => ok(String(r.result).split(',')[1]); r.onerror = nein; r.readAsDataURL(file); });
+}
+async function empfangenUebernehmen() {
+  if (!empfangenAktuell) return;
+  const { file, daten: d } = empfangenAktuell;
+  const st = $('emp-status');
+  if (file.size > 3 * 1024 * 1024) { st.innerHTML = '<span class="fehler">Datei zu groß (max. 3 MB).</span>'; return; }
+  st.textContent = 'Wird gespeichert …';
+  const bel = await toolLoad('tagesgeschaeft-belege');
+  const items = (bel && bel.items) || [];
+  const norm = s => String(s || '').trim().toLowerCase();
+  if (items.some(b => norm(b.plattform) === norm(d.verkaeufer) && norm(b.rechnungsnr) === norm(d.nr))) { st.innerHTML = '<span class="warn">Diese Rechnung gibt es schon in den Belegen.</span>'; return; }
+  try {
+    const res = await fetch('/api/beleg-upload', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ filename: file.name, contentBase64: await base64Von(file), contentType: file.type || (/\.pdf$/i.test(file.name) ? 'application/pdf' : 'application/xml') }) });
+    const r = await res.json();
+    if (!res.ok) { st.innerHTML = '<span class="fehler">Upload fehlgeschlagen: ' + esc(r.error || '') + '</span>'; return; }
+    const summe = satz => { const l = d.zeilen.filter(z => z.satz === satz); return l.length ? rund(l.reduce((a, z) => a + z.betrag, 0)) : null; };
+    items.push({
+      id: Date.now(), datum: d.datum, plattform: d.verkaeufer, betrag: d.brutto,
+      rechnungsnr: d.nr, steuerId: d.ustid, mwst19: summe(19), mwst7: summe(7), bar: null, karte: null,
+      status: d.faellig ? 'faellig' : 'offen', faelligkeit: d.faellig || null,
+      zahlart: '', kbart: '', kbUebernehmen: false,
+      dateiname: file.name, storagePath: r.path
+    });
+    await toolSave('tagesgeschaeft-belege', { items });
+    const lief = await toolLoad('tagesgeschaeft-belege-lieferanten');
+    const namen = (lief && lief.namen) || [];
+    if (d.verkaeufer && !namen.includes(d.verkaeufer) && !['Lieferando', 'Wolt', 'Uber Eats', 'Z-Bon'].includes(d.verkaeufer)) { namen.push(d.verkaeufer); await toolSave('tagesgeschaeft-belege-lieferanten', { namen }); }
+    st.innerHTML = '<span class="ok">✓ In den Belegen gespeichert. Dort kannst du Status und Kassenbuch festlegen.</span>';
+  } catch (e) {
+    st.innerHTML = '<span class="fehler">Speichern fehlgeschlagen.</span>';
+  }
+}
+
+// ───────── Start ─────────
+(async function () {
+  const ok = await checkAuth();
+  if (!ok) return;
+  const [ei, au] = await Promise.all([toolLoad('e-rechnung-einstellungen'), toolLoad('e-rechnung-ausgang')]);
+  einst = ei || {};
+  ausgang = (au && au.items) || [];
+  einstellungenFuellen();
+  $('r-datum').value = heute();
+  $('r-leistung').value = heute();
+  $('r-nr').value = naechsteNummer();
+  posHinzufuegen();
+})();
+</script>
+</body>
+</html>
