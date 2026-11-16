@@ -477,22 +477,18 @@ function bhBuchungssaetze(monatSchluessel, skr) {
       add(t.sonstiges, k.sonst, k.kasse, 'Sonstige Ausgaben');
     }
   });
-  // Ausgangsrechnungen: Forderung gegen Erlös (je Steuersatz), bei Zahlung Bank gegen Forderung
-  bhAusgangRechnungsMonat(monatSchluessel).forEach(a => {
+  // Ausgangsrechnungen: nur bezahlte, im Monat des Zahlungseingangs. Eine Buchung je Steuersatz: Bank an Erlös
+  bhAusgangMonat(monatSchluessel).forEach(a => {
     const x = bhRechnungSummen(a.rechnung);
-    const dm = a.datum.slice(8, 10) + a.datum.slice(5, 7);
+    const dm = a.bezahltAm.slice(8, 10) + a.bezahltAm.slice(5, 7);
     [19, 7, 0].forEach(satz => {
       if (!x.steuer[satz]) return;
       const b = bhRund(x.steuer[satz].basis + x.steuer[satz].betrag);
       const klein = !!(a.firma && a.firma.klein);
       const erl = satz === 7 ? k.erloes7 : satz === 0 ? (klein ? k.erlKlein : k.erloes0) : k.erloes;
       const bez = satz === 0 ? (klein ? ' Kleinunternehmer' : ' steuerfrei') : ' ' + satz + ' %';
-      if (b > 0) liste.push({ datum: a.datum, dm, betrag: b, soll: k.forderung, haben: erl, text: ('Ausgangsrechnung ' + a.nr + bez).slice(0, 60), beleg: a.nr });
+      if (b > 0) liste.push({ datum: a.bezahltAm, dm, betrag: b, soll: k.bank, haben: erl, text: ('Ausgangsrechnung ' + a.nr + bez + ' bezahlt').slice(0, 60), beleg: a.nr });
     });
-  });
-  (ausgangsDaten || []).filter(a => a && a.rechnung && a.bezahltAm && a.bezahltAm.slice(0, 7) === monatSchluessel).forEach(a => {
-    const x = bhRechnungSummen(a.rechnung);
-    liste.push({ datum: a.bezahltAm, dm: a.bezahltAm.slice(8, 10) + a.bezahltAm.slice(5, 7), betrag: x.brutto, soll: k.bank, haben: k.forderung, text: ('Zahlungseingang ' + a.nr).slice(0, 60), beleg: a.nr });
   });
   return liste;
 }
