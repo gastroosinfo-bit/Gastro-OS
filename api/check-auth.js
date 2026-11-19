@@ -19,7 +19,8 @@ const DEMO_ACCESS = {
   'info@gastronomen.koeln': { expires: '2026-10-31' },
   'koslowski@progres.de': { expires: '2026-09-16' },
   'kahnert@kh-handwerk.de': { expires: '2026-10-14' },
-  'office@bvgg.eu': { expires: '2026-12-09' }
+  'office@bvgg.eu': { expires: '2026-12-09' },
+  'info@avvazon.de': { expires: '2026-12-03' }
 };
 
 function getDemoAccess(email) {
