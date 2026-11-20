@@ -593,6 +593,15 @@ export default async function handler(req, res) {
       let erlaubt = false;
       if (fil && (path.startsWith(safeUserFolder(fil) + '/') || path.startsWith(encodeURIComponent(fil) + '/'))) {
         try {
+          // Abgelaufene Zentrale (Spalte gueltig_bis in zentrale_plaene) darf nichts mehr ansehen
+          const zp = await fetch(
+            SUPABASE_URL + '/rest/v1/zentrale_plaene?zentrale_email=eq.' + encodeURIComponent(email.toLowerCase()) + '&select=gueltig_bis&limit=1',
+            { headers: { 'apikey': SUPABASE_SERVICE_KEY, 'Authorization': 'Bearer ' + SUPABASE_SERVICE_KEY } }
+          );
+          const zpRows = zp.ok ? await zp.json() : [];
+          const gb = Array.isArray(zpRows) && zpRows.length > 0 ? zpRows[0].gueltig_bis : null;
+          const heute = new Date().toLocaleDateString('sv-SE', { timeZone: 'Europe/Berlin' });
+          if (gb && String(gb).slice(0, 10) < heute) throw new Error('Zentrale abgelaufen');
           const g = await fetch(
             SUPABASE_URL + '/rest/v1/filial_gruppen?zentrale_email=eq.' + encodeURIComponent(email.toLowerCase()) +
             '&filiale_email=eq.' + encodeURIComponent(fil) + '&status=eq.aktiv&select=filiale_email&limit=1',
