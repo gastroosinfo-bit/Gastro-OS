@@ -53,8 +53,25 @@ function ruhetageNormal(v) {
 function emailOk(e) { return typeof e === 'string' && e.length <= 160 && /^[^\s@,"'()]+@[^\s@,"'()]+\.[^\s@,"'()]+$/.test(e); }
 function q(v) { return encodeURIComponent(v); }
 
+// Ablaufdatum der Zentrale (Spalte gueltig_bis in zentrale_plaene, Format JJJJ-MM-TT; leer = unbegrenzt).
+// Der letzte Tag gilt noch. Danach ist die Zentrale für diese Adresse gesperrt.
+function heuteBerlin() { return new Date().toLocaleDateString('sv-SE', { timeZone: 'Europe/Berlin' }); }
+async function zentraleAbgelaufen(email) {
+  try {
+    const r = await fetch(
+      SUPABASE_URL + '/rest/v1/zentrale_plaene?zentrale_email=eq.' + q(email.toLowerCase()) + '&select=gueltig_bis&limit=1',
+      { headers: sbHeaders() }
+    );
+    if (!r.ok) return false;
+    const rows = await r.json();
+    const g = Array.isArray(rows) && rows.length > 0 ? rows[0].gueltig_bis : null;
+    return !!g && String(g).slice(0, 10) < heuteBerlin();
+  } catch (e) { return false; }
+}
+
 // Stufe/Plan der Zentrale (Tabelle zentrale_plaene); null = keine Zentrale
 async function zentralePlan(email) {
+  if (await zentraleAbgelaufen(email)) return null;
   const r = await fetch(
     SUPABASE_URL + '/rest/v1/zentrale_plaene?zentrale_email=eq.' + q(email.toLowerCase()) + '&select=max_filialen,plan,nur_zentrale&limit=1',
     { headers: sbHeaders() }
@@ -64,6 +81,7 @@ async function zentralePlan(email) {
   return Array.isArray(rows) && rows.length > 0 ? rows[0] : null;
 }
 async function zentraleFilialen(email) {
+  if (await zentraleAbgelaufen(email)) return [];
   const r = await fetch(
     SUPABASE_URL + '/rest/v1/filial_gruppen?zentrale_email=eq.' + q(email.toLowerCase()) +
     '&status=neq.getrennt&select=filiale_email,filiale_name,ruhetage,status&order=filiale_name.asc&limit=500',
@@ -251,6 +269,7 @@ async function gruppeAktion(req, res, email) {
 // Darf diese Zentrale die Daten der Filiale lesen? (nur wenn die Filiale zugestimmt hat)
 async function istAktiveFiliale(zentrale, filiale) {
   try {
+    if (await zentraleAbgelaufen(zentrale)) return false;
     const r = await fetch(
       SUPABASE_URL + '/rest/v1/filial_gruppen?zentrale_email=eq.' + q(zentrale.toLowerCase()) +
       '&filiale_email=eq.' + q(filiale.toLowerCase()) + '&status=eq.aktiv&select=filiale_email&limit=1',
@@ -326,6 +345,7 @@ async function gruppeUebersicht(req, res, email) {
     return res.status(400).json({ error: 'Zeitraum zu lang (max. 92 Tage).' });
   }
   try {
+    if (await zentraleAbgelaufen(email)) return res.status(403).json({ error: 'Kein Zentrale-Zugang.' });
     const gRes = await fetch(
       SUPABASE_URL + '/rest/v1/filial_gruppen?zentrale_email=eq.' + encodeURIComponent(email) +
       '&status=eq.aktiv&select=filiale_email,filiale_name,ruhetage&order=filiale_name.asc&limit=500',
