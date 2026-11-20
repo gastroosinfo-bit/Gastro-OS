@@ -20,7 +20,8 @@ const DEMO_ACCESS = {
   'koslowski@progres.de': { expires: '2026-09-16' },
   'kahnert@kh-handwerk.de': { expires: '2026-10-14' },
   'office@bvgg.eu': { expires: '2026-12-09' },
-  'info@avvazon.com': { expires: '2026-12-03' }
+  'info@avvazon.com': { expires: '2026-12-03' },
+  'veddel-diner@outlook.de': { expires: '2026-11-27' }
 };
 
 function getDemoAccess(email) {
