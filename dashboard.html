@@ -618,7 +618,7 @@ faqRender();
     <div class="module-card hub-card" id="zentrale-card" style="display:none;margin-top:16px;max-width:490px;">
       <div class="hub-head" style="cursor:default;">
         <div class="hub-circle"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18" /><path d="M5 21V7l8-4v18" /><path d="M19 21V11l-6-4" /><path d="M9 9v.01" /><path d="M9 12v.01" /><path d="M9 15v.01" /></svg></div>
-        <div class="hub-title">Meine Filialen</div>
+        <div class="hub-title">Meine Zentrale</div>
         <div class="hub-connector"></div>
         <div class="hub-pillars">
           <a href="zentrale.html" class="hub-pillar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16" /> <path d="M18 17V9" /> <path d="M13 17V5" /> <path d="M8 17v-3" /></svg><span>Filial-Überblick</span></a>
@@ -1185,7 +1185,7 @@ async function init() {
   } catch(e) { window.location.href = 'login.html'; return; }
 
   currentUser = { id: userEmail, email: userEmail };
-  // Kachel "Meine Filialen" nur für Zentrale-Zugänge
+  // Kachel "Meine Zentrale" nur für Zentrale-Zugänge
   try {
     const gr = await fetch('/api/tool-data?gruppe=check');
     const gd = gr.ok ? await gr.json() : null;
@@ -1209,7 +1209,7 @@ async function init() {
   const INTERNAL_EMAILS = ["kistartklar24@web.de","gastro.os.info@gmail.com","m.pritchard1978@web.de"];
   if (INTERNAL_EMAILS.includes(userEmail.toLowerCase())) { for (let n = 1; n <= 13; n++) quizBestanden[n] = true; }
 
-  const DEMO_UNLOCK_EMAILS = ["westerwinter@dehoga-nrw.de", "franz.perner@wkbgld.at", "z.asel@dehogabw.de", "natascha.kummer@wkbgld.at", "info@gastronomen.koeln", "koslowski@progres.de", "kahnert@kh-handwerk.de", "office@bvgg.eu", "info@avvazon.com", "veddel-diner@outlook.de"];
+  const DEMO_UNLOCK_EMAILS = ["westerwinter@dehoga-nrw.de", "franz.perner@wkbgld.at", "z.asel@dehogabw.de", "natascha.kummer@wkbgld.at", "info@gastronomen.koeln", "koslowski@progres.de", "kahnert@kh-handwerk.de", "office@bvgg.eu", "info@avvazon.com", "veddel-diner@outlook.de", "sen@progres.de"];
   if (DEMO_UNLOCK_EMAILS.includes(userEmail.toLowerCase())) { for (let n = 1; n <= 13; n++) quizBestanden[n] = true; }
 
   document.getElementById('modul-card-2').style.display = 'block';
