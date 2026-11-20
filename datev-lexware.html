@@ -49,6 +49,14 @@ details[open] summary { color:#9A7D3A; }
   } catch (e) { window.location.href = 'login.html'; }
 })();
 </script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const fr = document.getElementById('export-frame');
+  if (!fr) return;
+  const anpassen = function () { try { const w = fr.contentDocument.querySelector('.wrap'); const h = w ? w.offsetHeight + 30 : 0; if (h) fr.style.height = h + 'px'; } catch (e) {} };
+  fr.addEventListener('load', function () { anpassen(); setInterval(anpassen, 500); });
+});
+</script>
 
 <div class="header">
   <div class="brand">GASTRO-OS</div>
@@ -57,6 +65,11 @@ details[open] summary { color:#9A7D3A; }
 <div class="gold-bar"></div>
 
 <div class="main">
+  <div class="card" style="padding:20px 22px;margin-bottom:28px;">
+    <h1 style="font-size:22px;">Export für DATEV und Lexware erstellen</h1>
+    <div class="gold-rule"></div>
+    <iframe id="export-frame" title="Export für Steuerberater" src="buchhaltung.html?eingebettet=1" style="width:100%;height:900px;border:0;display:block;background:transparent;"></iframe>
+  </div>
   <div class="card">
     <h1>Export für DATEV und Co. einfach erklärt</h1>
     <div class="gold-rule"></div>
