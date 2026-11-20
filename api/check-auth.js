@@ -36,8 +36,10 @@ function getDemoAccess(email) {
 // Zugänge, die in filial_gruppen als "nur Zentrale" markiert sind (eigenständiges Zentrale-Produkt, ohne normales Abo)
 async function istNurZentrale(email) {
   try {
+    // Ablaufdatum (Spalte gueltig_bis, leer = unbegrenzt; der letzte Tag gilt noch)
+    const heute = new Date().toLocaleDateString('sv-SE', { timeZone: 'Europe/Berlin' });
     const r = await fetch(
-      `${SUPABASE_URL}/rest/v1/zentrale_plaene?zentrale_email=eq.${encodeURIComponent(email.toLowerCase())}&nur_zentrale=eq.true&select=zentrale_email&limit=1`,
+      `${SUPABASE_URL}/rest/v1/zentrale_plaene?zentrale_email=eq.${encodeURIComponent(email.toLowerCase())}&nur_zentrale=eq.true&or=(gueltig_bis.is.null,gueltig_bis.gte.${heute})&select=zentrale_email&limit=1`,
       { headers: { 'apikey': SUPABASE_SERVICE_KEY, 'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}` } }
     );
     if (!r.ok) return false;
