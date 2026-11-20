@@ -49,7 +49,7 @@ td { padding:9px 12px; border-bottom:1px solid #efe6d0; color:#334455; vertical-
     if (!res.ok) { window.location.href = 'login.html'; return; }
     const d = await res.json();
     if (!d.valid) { window.location.href = 'login.html'; return; }
-    if ((d.email || '').toLowerCase() === 'feelfree2022@web.de') werkzeugeZeigen();
+    werkzeugeZeigen();
   } catch (e) { window.location.href = 'login.html'; }
 })();
 function werkzeugeZeigen() {
@@ -215,10 +215,6 @@ function werkzeugeZeigen() {
         <p>Beim Bundesfinanzministerium unter <a href="https://www.bundesfinanzministerium.de" target="_blank" rel="noopener">bundesfinanzministerium.de</a>. Dort stehen die Schreiben zur Einführung der E-Rechnung vom 15. Oktober 2024 und vom 15. Oktober 2025. Auch dein Steuerberater und deine IHK helfen dir weiter.</p>
       </div>
     </details>
-
-    <div class="bald">
-      <strong>Geplant:</strong> Eine E-Rechnungs-Funktion direkt im System ist vorgesehen. Sobald sie verfügbar ist, findest du sie hier im Dashboard. GASTRO-OS wird laufend weiterentwickelt.
-    </div>
 
     <p style="margin-top:26px;font-size:12px;color:#8090a8;">Stand: Oktober 2026. Allgemeine Information, keine Steuer- oder Rechtsberatung.</p>
   </div>

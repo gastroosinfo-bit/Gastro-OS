@@ -149,8 +149,8 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8 url('/bg-rest
   </div>
 
   <div class="section" id="bh-datev-bereich" style="display:none;">
-    <div class="section-head">🧪 Export für Steuerberater (Test)</div>
-    <div style="font-size:12.5px;color:#5a6a85;margin-bottom:14px;">Erzeugt aus dem Kassenbuch des gewählten Monats eine Buchungsdatei. Nur sichtbar für dein Testkonto. Die Konten sind Standardwerte und müssen mit dem Steuerberater abgestimmt werden.</div>
+    <div class="section-head">Export für Steuerberater</div>
+    <div style="font-size:12.5px;color:#5a6a85;margin-bottom:14px;">Erzeugt aus dem Kassenbuch des gewählten Monats eine Buchungsdatei. Die Konten sind Standardwerte und müssen mit dem Steuerberater abgestimmt werden. Lass die erste Datei von ihm probeweise einlesen.</div>
     <div class="grid3" style="row-gap:14px;margin-bottom:18px;">
       <label style="font-size:13px;">Beraternummer<br><input type="text" id="dv-berater" value="99999" style="width:100%;padding:8px;border:1px solid #d0c8b8;border-radius:6px;"></label>
       <label style="font-size:13px;">Mandantennummer<br><input type="text" id="dv-mandant" value="9999" style="width:100%;padding:8px;border:1px solid #d0c8b8;border-radius:6px;"></label>
@@ -406,7 +406,6 @@ async function bhBelegeAlsZip(btn) {
 }
 
 // ── Export für Steuerberater (Test): Buchungssätze aus dem Kassenbuch ──
-const BH_TEST_MAIL = 'feelfree2022@web.de';
 const BH_KONTEN = {
   '03': { forderung:'1400', kasse:'1000', transit:'1360', bank:'1200', erloes:'8400', erloes7:'8300', erloes0:'8100', erlKlein:'8192', ware:'3400', ware7:'3300', sonst:'4980' },
   '04': { forderung:'1200', kasse:'1600', transit:'1460', bank:'1800', erloes:'4400', erloes7:'4300', erloes0:'4100', erlKlein:'4184', ware:'5400', ware7:'5300', sonst:'6850' }
@@ -1105,7 +1104,7 @@ function bhBerichtErstellen() {
   if (ausgangsDaten.length) document.getElementById('bh-label-ausgang').style.display = 'flex';
   bhAuswahlInitialisieren();
   bhUebersichtAktualisieren();
-  if (!FILIALE && currentUser && (currentUser.email || '').toLowerCase() === BH_TEST_MAIL) {
+  if (!FILIALE) {
     const dv = document.getElementById('bh-datev-bereich'); if (dv) dv.style.display = '';
   }
 })();

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<title>E-Rechnung (Test) – GASTRO-OS</title>
+<title>E-Rechnung – GASTRO-OS</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -66,10 +66,10 @@ td input, td select { border:1px solid #e0d8c8; border-radius:5px; padding:6px 8
 <div class="gold-bar"></div>
 
 <div class="wrap">
-  <div class="tool-label">Toolbox · Test</div>
+  <div class="tool-label">Toolbox</div>
   <div class="tool-title">🧾 E-Rechnung</div>
   <div class="tool-sub">E-Rechnungen schreiben und empfangen.</div>
-  <div class="testbox"><b>Testversion.</b> Nur für dein Testkonto sichtbar. Die erzeugte Datei ist eine XRechnung (XML). Lass sie von deinem Steuerberater oder einer Rechnungssoftware prüfen, bevor du sie an Kunden schickst.</div>
+  <div class="testbox"><b>Hinweis.</b> Die erzeugte Datei ist eine XRechnung (XML). Lass sie von deinem Steuerberater oder einer Rechnungssoftware prüfen, bevor du sie an Kunden schickst.</div>
 
   <div class="tabs">
     <button class="tab aktiv" id="tab-schreiben" onclick="tabWechseln('schreiben')">Rechnung schreiben</button>
@@ -172,7 +172,6 @@ td input, td select { border:1px solid #e0d8c8; border-radius:5px; padding:6px 8
 <div class="footer-brand"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Struktur · Erfolg</div>
 
 <script>
-const TEST_MAIL = 'feelfree2022@web.de';
 let einst = {};
 let ausgang = [];
 let empfangenAktuell = null; // { datei, daten }
@@ -183,7 +182,6 @@ async function checkAuth() {
     if (!res.ok) { location.href = 'login.html'; return false; }
     const d = await res.json();
     if (!d.valid) { location.href = 'login.html'; return false; }
-    if ((d.email || '').toLowerCase() !== TEST_MAIL) { location.href = 'dashboard.html'; return false; }
     return true;
   } catch (e) { location.href = 'login.html'; return false; }
 }
