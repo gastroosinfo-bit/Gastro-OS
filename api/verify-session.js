@@ -30,7 +30,8 @@ const BEFRISTETE_ZUGAENGE = {
   'info@gastronomen.koeln': '2026-11-01',
   'kahnert@kh-handwerk.de': '2026-10-15',
   'office@bvgg.eu': '2026-12-10',
-  'info@avvazon.com': '2026-12-04'
+  'info@avvazon.com': '2026-12-04',
+  'veddel-diner@outlook.de': '2026-11-28'
 };
 
 function heutigesDatumString() {
