@@ -11,6 +11,8 @@
 // zeiterfassung (Mitarbeiter tragen Kommen/Pause/Gehen ein, sehen aber nur ihre
 // eigenen Zeiten), belege (Mitarbeiter laden Belege/Z-Bons hoch) und
 // temperaturen (Mitarbeiter tragen HACCP-Temperaturen ein).
+// Dazu kommt aufgaben (Abhak-Listen wie "Öffnen"/"Schließen": der Chef legt Listen an,
+// Mitarbeiter haken sie pro Tag ab, der Verlauf wird 60 Tage aufbewahrt).
 
 const { sendPushToAll, sendPushNurAnChef } = require('../lib/push-helper');
 const { sbHeaders, findOwnerByCode, loadMitarbeiter } = require('../lib/pin-auth');
@@ -24,7 +26,8 @@ const TOOL_NAME_BY_TYPE = {
   schichtplan: 'schichtplaene',
   zeiterfassung: 'zeiterfassung',
   belege: 'tagesgeschaeft-belege',
-  temperaturen: 'tagesgeschaeft-haccp'
+  temperaturen: 'tagesgeschaeft-haccp',
+  aufgaben: 'aufgaben-protokoll'
 };
 
 async function loadRaw(userId, toolName) {
@@ -69,7 +72,7 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Methode nicht erlaubt.' });
   if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) return res.status(500).json({ error: 'Server nicht konfiguriert.' });
 
-  const { code, pin, bookType, action, text, eintrag, datum, zeit, werte, korrekturId, korrekturStart, korrekturEnde, korrekturPausen, loeschId } = req.body || {};
+  const { code, pin, bookType, action, text, eintrag, datum, zeit, werte, korrekturId, korrekturStart, korrekturEnde, korrekturPausen, loeschId, listId, punktId, erledigt } = req.body || {};
   if (!code || !pin) return res.status(400).json({ error: 'Code oder PIN fehlt.' });
 
   // ─── "team": nur Person + ihre Rechte ermitteln (für die Team-Zugang-Startseite
@@ -258,6 +261,56 @@ export default async function handler(req, res) {
       items, meinName: name, kannBearbeiten: darfBearbeiten, sollStd, meineZeiten,
       mitarbeiterNamen: darfBearbeiten ? mitarbeiterListe.map(m => m.name) : undefined
     });
+  }
+
+  // ─── Aufgaben-Listen (z. B. "Öffnen", "Schließen"): Der Chef legt Listen und Punkte im
+  // Tool 'aufgaben-listen' an (über die normale Tool-Speicherung im Dashboard/auf aufgaben.html).
+  // Hier haken Mitarbeiter die Punkte für HEUTE ab. Jeder Tag wird einzeln im Tool
+  // 'aufgaben-protokoll' gespeichert (inkl. Kopie der Listen vom jeweiligen Tag, damit der Chef
+  // auch später sieht, was damals zu tun war). Tage älter als 60 Tage werden automatisch gelöscht.
+  // Der Chef schreibt NIE ins Protokoll, nur hier — so überschreiben sich beide nicht gegenseitig. ──
+  if (bookType === 'aufgaben') {
+    const heute = new Date().toLocaleDateString('sv-SE', { timeZone: 'Europe/Berlin' });
+    const uhrzeit = new Date().toLocaleTimeString('de-DE', { timeZone: 'Europe/Berlin', hour: '2-digit', minute: '2-digit' });
+    const listenRaw = await loadRaw(owner.user_id, 'aufgaben-listen');
+    const alleListen = Array.isArray(listenRaw.listen) ? listenRaw.listen : [];
+    const meineListen = alleListen.filter(l => !Array.isArray(l.fuer) || l.fuer.length === 0 || l.fuer.includes(name));
+    const kopie = () => alleListen.map(l => ({ id: l.id, name: l.name, punkte: (l.punkte || []).map(p => ({ id: p.id, text: p.text })) }));
+
+    const prot = await loadRaw(owner.user_id, toolName);
+    const tage = (prot && prot.tage && typeof prot.tage === 'object') ? prot.tage : {};
+    let geaendert = false;
+
+    if (!tage[heute]) { tage[heute] = { listen: kopie(), erledigt: {} }; geaendert = true; }
+
+    if (action === 'abhaken') {
+      const liste = meineListen.find(l => String(l.id) === String(listId));
+      const punkt = liste && (liste.punkte || []).find(p => String(p.id) === String(punktId));
+      if (!liste || !punkt) return res.status(404).json({ error: 'Liste oder Punkt nicht gefunden.' });
+      const tag = tage[heute];
+      tag.listen = kopie(); // Stand der Listen von heute aktuell halten
+      tag.erledigt = tag.erledigt || {};
+      const eintr = tag.erledigt[liste.id] = tag.erledigt[liste.id] || {};
+      const vorherAlleFertig = (liste.punkte || []).length > 0 && (liste.punkte || []).every(p => eintr[p.id]);
+      if (erledigt === false) {
+        delete eintr[punkt.id];
+      } else {
+        eintr[punkt.id] = { von: name, zeit: uhrzeit };
+      }
+      const jetztAlleFertig = (liste.punkte || []).length > 0 && (liste.punkte || []).every(p => eintr[p.id]);
+      geaendert = true;
+      // Alte Tage (über 60 Tage) wegräumen
+      const grenze = new Date(Date.now() - 60 * 24 * 3600 * 1000).toLocaleDateString('sv-SE', { timeZone: 'Europe/Berlin' });
+      Object.keys(tage).forEach(k => { if (k < grenze) delete tage[k]; });
+      await saveRaw(owner.user_id, toolName, { tage });
+      geaendert = false;
+      if (jetztAlleFertig && !vorherAlleFertig) {
+        await sendPushNurAnChef(owner.user_id, '✅ Liste erledigt', 'Liste "' + liste.name + '" ist komplett abgehakt (zuletzt von ' + name + ').', '/aufgaben.html');
+      }
+    }
+    if (geaendert) await saveRaw(owner.user_id, toolName, { tage });
+
+    return res.status(200).json({ listen: meineListen, heute, erledigt: (tage[heute] && tage[heute].erledigt) || {}, meinName: name });
   }
 
   // ─── Default (auch für uebergabe/reservierung ohne action="add"): nur lesen ──
