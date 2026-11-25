@@ -12,7 +12,8 @@ const TITEL = {
   zeiterfassung: { name: 'Zeiterfassung – GASTRO-OS', short_name: 'Zeiterfassung' },
   team: { name: 'Team-Zugang – GASTRO-OS', short_name: 'Team-Zugang' },
   belege: { name: 'Belege eintragen – GASTRO-OS', short_name: 'Belege' },
-  temperaturen: { name: 'Temperaturen eintragen – GASTRO-OS', short_name: 'Temperaturen' }
+  temperaturen: { name: 'Temperaturen eintragen – GASTRO-OS', short_name: 'Temperaturen' },
+  aufgaben: { name: 'Aufgaben – GASTRO-OS', short_name: 'Aufgaben' }
 };
 // Der Dateiname weicht bei manchen Typen von "type" ab.
 const DATEINAME = { team: 'team-zugang', belege: 'belege-eintragen', temperaturen: 'temperaturen-eintragen' };
