@@ -62,6 +62,20 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8 url('/bg-rest
 
 /* Chef: Listen bearbeiten */
 .edit-karte { border:1px solid #e8dfc8; border-radius:10px; margin-bottom:16px; background:#fff; padding:14px 16px; }
+details.edit-karte > summary, details.tag-block > summary, details.fuer-wen-box > summary { cursor:pointer; list-style:none; }
+details.edit-karte > summary::-webkit-details-marker, details.tag-block > summary::-webkit-details-marker, details.fuer-wen-box > summary::-webkit-details-marker { display:none; }
+.edit-summary { display:flex; align-items:center; gap:10px; font-size:14.5px; font-weight:700; color:#1a2a4a; }
+.edit-summary .info { font-size:12px; font-weight:400; color:#8090a8; flex:1; }
+.edit-summary .pfeil { color:#d4af37; font-size:13px; transition:transform .15s; }
+details[open] > summary .pfeil { transform:rotate(180deg); }
+.edit-body { margin-top:14px; }
+details.fuer-wen-box { margin-top:12px; border-top:1px solid #f0e8d4; padding-top:10px; }
+details.fuer-wen-box > summary { font-size:12.5px; color:#5a6a85; display:flex; align-items:center; gap:8px; }
+.tag-summary { display:flex; align-items:center; gap:10px; }
+.tag-summary .tag-titel { margin-bottom:0; }
+.tag-summary .info { font-size:12px; color:#5a6a85; flex:1; }
+.tag-summary .pfeil { color:#d4af37; font-size:13px; transition:transform .15s; }
+.tag-inhalt { margin-top:10px; }
 .edit-kopf { display:flex; align-items:center; gap:8px; margin-bottom:10px; flex-wrap:wrap; }
 .edit-kopf input { flex:1; min-width:140px; border:1px solid #e0d8c8; border-radius:6px; padding:8px 10px; font-size:14px; font-weight:700; color:#1a2a4a; background:#eaf2ff; font-family:inherit; }
 .edit-punkt { display:flex; align-items:center; gap:8px; margin-bottom:6px; }
@@ -333,6 +347,7 @@ async function initInhaberModus() {
   verlaufAnzeigen();
 }
 
+const offeneListen = new Set();
 function editRender() {
   const box = document.getElementById('edit-listen');
   box.innerHTML = '';
@@ -341,25 +356,33 @@ function editRender() {
     return;
   }
   listen.forEach((l, li) => {
-    const k = document.createElement('div');
+    const k = document.createElement('details');
     k.className = 'edit-karte';
-    let html = '<div class="edit-kopf"><input type="text" value="' + esc(l.name) + '" data-aktion="name" data-li="' + li + '" placeholder="Name der Liste"><button class="btn-del" data-aktion="liste-loeschen" data-li="' + li + '">✕ Liste löschen</button></div>';
+    k.dataset.id = l.id;
+    if (offeneListen.has(String(l.id))) k.open = true;
+    const fuer = Array.isArray(l.fuer) ? l.fuer : [];
+    const wer = fuer.length ? (fuer.length === 1 ? fuer[0] : fuer.length + ' Mitarbeiter') : 'alle Mitarbeiter';
+    const anzahl = (l.punkte || []).length;
+    let html = '<summary class="edit-summary"><span>' + esc(l.name) + '</span><span class="info">' + anzahl + (anzahl === 1 ? ' Aufgabe' : ' Aufgaben') + ' · ' + esc(wer) + '</span><span class="pfeil">▼</span></summary><div class="edit-body">';
+    html += '<div class="edit-kopf"><input type="text" value="' + esc(l.name) + '" data-aktion="name" data-li="' + li + '" placeholder="Name der Liste"><button class="btn-del" data-aktion="liste-loeschen" data-li="' + li + '">✕ Liste löschen</button></div>';
     (l.punkte || []).forEach((p, pi) => {
       html += '<div class="edit-punkt"><input type="text" value="' + esc(p.text) + '" data-aktion="punkt-text" data-li="' + li + '" data-pi="' + pi + '"><button class="btn-del" data-aktion="punkt-loeschen" data-li="' + li + '" data-pi="' + pi + '">✕</button></div>';
     });
     html += '<div class="neu-punkt"><input type="text" placeholder="Neue Aufgabe eintragen" data-aktion="neu-text" data-li="' + li + '"><button class="btn-add" data-aktion="punkt-neu" data-li="' + li + '">+ Hinzufügen</button></div>';
     if (teamNamen.length) {
-      const fuer = Array.isArray(l.fuer) ? l.fuer : [];
-      html += '<div class="fuer-wen"><strong>Wer sieht diese Liste?</strong> (Wenn nichts angehakt ist, sehen alle Mitarbeiter sie.)<br>' +
-        teamNamen.map(n => '<label><input type="checkbox" data-aktion="fuer" data-li="' + li + '" data-name="' + esc(n) + '"' + (fuer.includes(n) ? ' checked' : '') + '> ' + esc(n) + '</label>').join('') + '</div>';
+      html += '<details class="fuer-wen-box"' + (fuer.length ? '' : '') + '><summary><span class="pfeil" style="color:#d4af37;">▼</span> <strong>Wer sieht diese Liste?</strong> <span style="color:#8090a8;">(' + esc(wer) + ')</span></summary>' +
+        '<div class="fuer-wen">Wenn nichts angehakt ist, sehen alle Mitarbeiter die Liste.<br>' +
+        teamNamen.map(n => '<label><input type="checkbox" data-aktion="fuer" data-li="' + li + '" data-name="' + esc(n) + '"' + (fuer.includes(n) ? ' checked' : '') + '> ' + esc(n) + '</label>').join('') + '</div></details>';
     }
+    html += '</div>';
     k.innerHTML = html;
+    k.addEventListener('toggle', () => { if (k.open) offeneListen.add(String(l.id)); else offeneListen.delete(String(l.id)); });
     box.appendChild(k);
   });
 
   box.querySelectorAll('[data-aktion]').forEach(el => {
     const a = el.dataset.aktion, li = Number(el.dataset.li), pi = Number(el.dataset.pi);
-    if (a === 'name') el.addEventListener('change', async () => { listen[li].name = el.value.trim() || 'Liste'; await listenSpeichern(); });
+    if (a === 'name') el.addEventListener('change', async () => { listen[li].name = el.value.trim() || 'Liste'; await listenSpeichern(); editRender(); });
     else if (a === 'punkt-text') el.addEventListener('change', async () => {
       const t = el.value.trim();
       if (!t) { el.value = listen[li].punkte[pi].text; return; }
@@ -379,6 +402,14 @@ function editRender() {
       if (el.checked) f.push(n);
       listen[li].fuer = f;
       await listenSpeichern();
+      // Zusammenfassung oben aktualisieren, ohne die Ansicht neu aufzubauen
+      const karte = el.closest('details.edit-karte');
+      const wer = f.length ? (f.length === 1 ? f[0] : f.length + ' Mitarbeiter') : 'alle Mitarbeiter';
+      const anz = (listen[li].punkte || []).length;
+      const info = karte.querySelector('.edit-summary .info');
+      if (info) info.textContent = anz + (anz === 1 ? ' Aufgabe' : ' Aufgaben') + ' · ' + wer;
+      const kl = karte.querySelector('details.fuer-wen-box > summary span:last-child');
+      if (kl) kl.textContent = '(' + wer + ')';
     });
   });
 }
@@ -414,7 +445,8 @@ window.alleSpeichern = async function() {
 window.neueListe = async function() {
   const name = prompt('Wie soll die Liste heißen? Zum Beispiel: Öffnen');
   if (!name || !name.trim()) return;
-  listen.push({ id: neueId(), name: name.trim(), punkte: [], fuer: [] });
+  const nl = { id: neueId(), name: name.trim(), punkte: [], fuer: [] };
+  listen.push(nl); offeneListen.add(String(nl.id));
   await listenSpeichern();
   editRender();
 };
@@ -425,7 +457,8 @@ const VORLAGEN = {
 };
 window.vorlageHinzu = async function(key) {
   const v = VORLAGEN[key];
-  listen.push({ id: neueId(), name: v.name, punkte: v.punkte.map(t => ({ id: neueId(), text: t })), fuer: [] });
+  const nl = { id: neueId(), name: v.name, punkte: v.punkte.map(t => ({ id: neueId(), text: t })), fuer: [] };
+  listen.push(nl); offeneListen.add(String(nl.id));
   await listenSpeichern();
   editRender();
 };
@@ -436,40 +469,49 @@ function verlaufHtml(von, bis) {
   const out = [];
   let d = new Date(bis + 'T12:00:00');
   const ende = new Date(von + 'T12:00:00');
-  let schutz = 0;
+  let schutz = 0, erster = true;
   while (d >= ende && schutz++ < 80) {
     const iso = d.toLocaleDateString('sv-SE');
-    const tag = tages(iso, tage);
-    out.push(tag);
+    out.push(tagesBlock(iso, tage, erster));
+    erster = false;
     d = new Date(d.getTime() - 86400000);
   }
   return out.join('') || '<div class="v-leer">Für diesen Zeitraum gibt es nichts anzuzeigen.</div>';
 }
-function tages(iso, tage) {
+function tagesBlock(iso, tage, offen) {
   const eintrag = tage[iso];
-  let html = '<div class="tag-block"><div class="tag-titel">' + esc(datumDe(iso)) + '</div>';
+  const kopf = (info) => '<summary class="tag-summary"><span class="tag-titel">' + esc(datumDe(iso)) + '</span><span class="info">' + esc(info) + '</span><span class="pfeil">▼</span></summary>';
   if (!eintrag || !Array.isArray(eintrag.listen) || !eintrag.listen.length) {
-    html += '<div class="v-leer">An diesem Tag wurde keine Liste geöffnet oder abgehakt.</div></div>';
-    return html;
+    return '<details class="tag-block">' + kopf('keine Aktivität') + '<div class="tag-inhalt"><div class="v-leer">An diesem Tag wurde keine Liste geöffnet oder abgehakt.</div></div></details>';
   }
   const erl = eintrag.erledigt || {};
+  const kurz = [];
+  let inhalt = '';
   eintrag.listen.forEach(l => {
     const e = erl[l.id] || {};
     const punkte = l.punkte || [];
     const n = punkte.filter(p => e[p.id]).length;
-    html += '<div class="v-liste"><div class="v-liste-name">' + esc(l.name) + ' · ' + n + ' von ' + punkte.length + ' erledigt</div>';
+    kurz.push(l.name + ' ' + n + '/' + punkte.length);
+    inhalt += '<div class="v-liste"><div class="v-liste-name">' + esc(l.name) + ' · ' + n + ' von ' + punkte.length + ' erledigt</div>';
     punkte.forEach(p => {
       const x = e[p.id];
-      html += x
+      inhalt += x
         ? '<div class="v-punkt v-ok">✓ ' + esc(p.text) + ' <span style="color:#8090a8;">(' + esc(x.von) + ', ' + esc(x.zeit) + ' Uhr)</span></div>'
         : '<div class="v-punkt v-offen">○ ' + esc(p.text) + ' <span style="color:#c0392b;">– nicht abgehakt</span></div>';
     });
-    if (!punkte.length) html += '<div class="v-leer">Keine Punkte in dieser Liste.</div>';
-    html += '</div>';
+    if (!punkte.length) inhalt += '<div class="v-leer">Keine Punkte in dieser Liste.</div>';
+    inhalt += '</div>';
   });
-  html += '</div>';
-  return html;
+  return '<details class="tag-block"' + (offen ? ' open' : '') + '>' + kopf(kurz.join(' · ')) + '<div class="tag-inhalt">' + inhalt + '</div></details>';
 }
+
+// Beim Drucken/PDF alle Tage aufklappen, danach wieder wie vorher
+let warZu = [];
+window.addEventListener('beforeprint', () => {
+  warZu = [];
+  document.querySelectorAll('#verlauf-ergebnis details').forEach(d => { if (!d.open) { warZu.push(d); d.open = true; } });
+});
+window.addEventListener('afterprint', () => { warZu.forEach(d => { d.open = false; }); warZu = []; });
 
 window.verlaufAnzeigen = async function() {
   const von = document.getElementById('v-von').value;

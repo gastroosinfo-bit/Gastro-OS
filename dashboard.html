@@ -568,27 +568,33 @@ faqRender();
           </div>
         </div>
 
-        <!-- SCHRITT 3: AUFGABEN/RECHTE ZUWEISEN (bleibt immer offen — das ist der Teil, den man am häufigsten braucht) -->
-        <div style="padding:18px 20px;">
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+        <!-- SCHRITT 3: AUFGABEN/RECHTE ZUWEISEN -->
+        <div style="border-bottom:1px solid #f0e8d4;">
+          <div onclick="schrittAufklappen(3)" style="padding:18px 20px 12px;display:flex;align-items:center;gap:10px;cursor:pointer;">
             <span style="background:#1a2a4a;color:#d4af37;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;">3</span>
-            <div style="font-weight:700;font-size:13.5px;color:#1a2a4a;">Aufgaben zuweisen</div>
+            <div style="font-weight:700;font-size:13.5px;color:#1a2a4a;flex:1;">Aufgaben zuweisen</div>
+            <span class="module-arrow" id="schritt-3-pfeil" style="color:#d4af37;font-size:13px;">▼</span>
           </div>
-          <div style="font-size:11.5px;color:#8090a8;margin-bottom:10px;padding-left:34px;">Häkchen setzen, welche Bereiche diese Person nutzen darf — der Rest bleibt für sie gesperrt.</div>
-          <div style="padding-left:34px;">
-            <div id="team-mitarbeiter-liste"></div>
+          <div id="schritt-3-inhalt" style="display:none;padding:0 20px 18px;">
+            <div style="font-size:11.5px;color:#8090a8;margin-bottom:10px;padding-left:34px;">Häkchen setzen, welche Bereiche diese Person nutzen darf — der Rest bleibt für sie gesperrt.</div>
+            <div style="padding-left:34px;">
+              <div id="team-mitarbeiter-liste"></div>
+            </div>
           </div>
         </div>
 
         <!-- SCHRITT 4: AUFGABEN-LISTEN (Öffnen/Schließen o. Ä.) -->
-        <div style="padding:18px 20px;border-top:1px solid #f0e8d4;">
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+        <div>
+          <div onclick="schrittAufklappen(4)" style="padding:18px 20px 12px;display:flex;align-items:center;gap:10px;cursor:pointer;">
             <span style="background:#1a2a4a;color:#d4af37;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;">4</span>
-            <div style="font-weight:700;font-size:13.5px;color:#1a2a4a;">Aufgaben-Listen</div>
+            <div style="font-weight:700;font-size:13.5px;color:#1a2a4a;flex:1;">Aufgaben-Listen</div>
+            <span class="module-arrow" id="schritt-4-pfeil" style="color:#d4af37;font-size:13px;">▼</span>
           </div>
-          <div style="font-size:11.5px;color:#8090a8;margin-bottom:12px;padding-left:34px;">Lege Listen wie „Öffnen“ oder „Schließen“ an. Dein Team hakt sie auf dem Handy ab, und du siehst im Verlauf, was erledigt wurde.</div>
-          <div style="padding-left:34px;">
-            <a href="aufgaben.html" onclick="markiereAlsGelesen('aufgaben')" style="display:inline-block;background:#1a6640;color:#fff;text-decoration:none;padding:9px 16px;border-radius:6px;font-size:12.5px;font-weight:600;">✅ Listen anlegen &amp; Verlauf ansehen</a>
+          <div id="schritt-4-inhalt" style="display:none;padding:0 20px 18px;">
+            <div style="font-size:11.5px;color:#8090a8;margin-bottom:12px;padding-left:34px;">Lege Listen wie „Öffnen“ oder „Schließen“ an. Dein Team hakt sie auf dem Handy ab, und du siehst im Verlauf, was erledigt wurde.</div>
+            <div style="padding-left:34px;">
+              <a href="aufgaben.html" onclick="markiereAlsGelesen('aufgaben')" style="display:inline-block;background:#1a6640;color:#fff;text-decoration:none;padding:9px 16px;border-radius:6px;font-size:12.5px;font-weight:600;">✅ Listen anlegen &amp; Verlauf ansehen</a>
+            </div>
           </div>
         </div>
 
