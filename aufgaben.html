@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aufgaben – GASTRO-OS</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Aufgaben">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png">
+<script>
+  (function() {
+    var code = new URLSearchParams(window.location.search).get('u');
+    if (code) {
+      document.write('<link rel="manifest" href="/api/manifest?type=aufgaben&code=' + encodeURIComponent(code) + '">');
+    }
+  })();
+</script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f5f0e8 url('/bg-restaurant.jpg') center top / cover no-repeat; color:#1a2a4a; min-height:100vh; }
+.header{background:#1a2a4a;padding:14px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
+.brand{font-family:Georgia,serif;font-size:20px;color:#d4af37;letter-spacing:3px;font-weight:normal}
+.btn-back { background:#d4af37; color:#1a2a4a; border:none; padding:10px 22px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.btn-back:hover { background:#c8a030; }
+.gold-bar { height:3px; background:linear-gradient(90deg,#1a2a4a,#d4af37,#1a2a4a); }
+.wrap { max-width:760px; margin:0 auto; padding:28px 24px 60px; }
+.tool-label { font-size:11px; color:#d4af37; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:4px; }
+.tool-title { font-family:Georgia,serif; font-size:22px; color:#1a2a4a; margin-bottom:4px; }
+.tool-sub { font-size:13px; color:#5a6a80; margin-bottom:20px; }
+
+.section { background:#fff; border:1px solid #e8dfc8; border-radius:10px; padding:22px 26px; margin-bottom:20px; box-shadow:0 2px 6px rgba(0,0,0,0.04); }
+.section-head { background:#1a2a4a; color:#d4af37; font-size:13px; font-weight:700; letter-spacing:1px; padding:10px 14px; border-radius:6px; margin-bottom:16px; }
+
+.btn-add { background:#1a6640; color:#fff; border:none; padding:10px 18px; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; }
+.btn-add:hover { background:#d4af37; color:#1a2a4a; }
+.btn-sec { background:#fff; color:#1a2a4a; border:1px solid #d4af37; padding:9px 16px; border-radius:6px; font-size:12.5px; font-weight:600; cursor:pointer; }
+.btn-sec:hover { background:#fff8e0; }
+.btn-del { background:transparent; border:1px solid #c0392b; color:#c0392b; padding:4px 9px; border-radius:5px; font-size:11px; font-weight:600; cursor:pointer; }
+.btn-del:hover { background:#c0392b; color:#fff; }
+.error-msg { font-size:12.5px; color:#c0392b; margin-top:8px; display:none; }
+.hinweis { background:#fff8e0; border:1px solid #d4af37; border-radius:8px; padding:12px 16px; margin-bottom:20px; font-size:12.5px; color:#5a6a85; line-height:1.5; }
+
+.pin-screen { text-align:center; padding:40px 20px; }
+.pin-input { font-size:24px; letter-spacing:8px; text-align:center; width:160px; padding:12px; border:2px solid #d4af37; border-radius:8px; margin:16px auto; display:block; }
+
+/* Listen (Mitarbeiter-Ansicht: abhaken) */
+.liste-karte { border:1px solid #e8dfc8; border-radius:10px; margin-bottom:16px; overflow:hidden; background:#fff; }
+.liste-kopf { background:#1a2a4a; color:#d4af37; padding:11px 16px; font-size:14px; font-weight:700; display:flex; justify-content:space-between; align-items:center; gap:10px; }
+.liste-kopf .zaehler { font-size:12px; color:#fff; font-weight:600; white-space:nowrap; }
+.liste-fertig .liste-kopf { background:#1a6640; color:#fff; }
+.punkt { display:flex; align-items:center; gap:12px; padding:13px 16px; border-bottom:1px solid #f0e8d4; font-size:14px; cursor:pointer; text-align:left; }
+.punkt:last-child { border-bottom:none; }
+.punkt input[type=checkbox] { width:22px; height:22px; flex-shrink:0; cursor:pointer; accent-color:#1a6640; }
+.punkt .text { flex:1; }
+.punkt.erledigt .text { color:#8090a8; text-decoration:line-through; }
+.punkt .wer { font-size:11px; color:#8090a8; white-space:nowrap; }
+
+/* Chef: Listen bearbeiten */
+.edit-karte { border:1px solid #e8dfc8; border-radius:10px; margin-bottom:16px; background:#fff; padding:14px 16px; }
+.edit-kopf { display:flex; align-items:center; gap:8px; margin-bottom:10px; flex-wrap:wrap; }
+.edit-kopf input { flex:1; min-width:140px; border:1px solid #e0d8c8; border-radius:6px; padding:8px 10px; font-size:14px; font-weight:700; color:#1a2a4a; background:#eaf2ff; font-family:inherit; }
+.edit-punkt { display:flex; align-items:center; gap:8px; margin-bottom:6px; }
+.edit-punkt input { flex:1; border:1px solid #e0d8c8; border-radius:6px; padding:8px 10px; font-size:13.5px; color:#1a2a4a; background:#fff; font-family:inherit; }
+.neu-punkt { display:flex; gap:8px; margin-top:10px; }
+.neu-punkt input { flex:1; border:1px solid #e0d8c8; border-radius:6px; padding:9px 10px; font-size:13.5px; background:#eaf2ff; font-family:inherit; }
+.fuer-wen { margin-top:12px; font-size:12px; color:#5a6a85; }
+.fuer-wen label { display:inline-flex; align-items:center; gap:5px; margin:4px 12px 0 0; cursor:pointer; }
+
+/* Verlauf */
+.filter { display:flex; flex-wrap:wrap; gap:12px; align-items:flex-end; margin-bottom:16px; }
+.filter label { font-size:11px; font-weight:700; color:#8090a8; text-transform:uppercase; letter-spacing:0.5px; display:flex; flex-direction:column; gap:4px; }
+.filter input[type=date] { border:1px solid #e0d8c8; border-radius:6px; padding:8px 10px; font-size:13.5px; background:#eaf2ff; font-family:inherit; color:#1a2a4a; }
+.tag-block { border-top:2px solid #d4af37; padding-top:10px; margin-top:18px; page-break-inside:avoid; }
+.tag-titel { font-family:Georgia,serif; font-size:16px; color:#1a2a4a; margin-bottom:8px; }
+.v-liste { margin:8px 0 12px; }
+.v-liste-name { font-size:13.5px; font-weight:700; margin-bottom:4px; }
+.v-punkt { font-size:13px; padding:3px 0; text-align:left; }
+.v-ok { color:#1a6640; }
+.v-offen { color:#c0392b; }
+.v-leer { font-size:12.5px; color:#8090a8; }
+.print-only { display:none; }
+
+.footer-brand { background:#1a2a4a; margin-top:48px; padding:14px 40px; text-align:center; font-size:11px; color:#8090a8; letter-spacing:1px; }
+.footer-brand strong { color:#d4af37; }
+
+@media print {
+  .no-print { display:none !important; }
+  .print-only { display:block; }
+  body { background:#fff !important; }
+  .wrap { max-width:none; padding:0; }
+  .section { border:none; box-shadow:none; padding:0; }
+}
+</style>
+</head>
+<body>
+
+<a href="team-zugang.html" id="btn-zurueck-team" class="no-print" style="display:none;position:fixed;bottom:18px;left:18px;background:#1a2a4a;color:#d4af37;border:1px solid #d4af37;padding:10px 18px;border-radius:24px;font-size:13px;font-weight:700;text-decoration:none;box-shadow:0 3px 12px rgba(0,0,0,0.25);z-index:200;">← Zurück</a>
+
+<div class="header no-print">
+  <span class="brand">GASTRO-OS</span>
+  <a href="dashboard.html" class="btn-back" id="btn-dashboard" style="display:none;">← Zurück zum Dashboard</a>
+</div>
+<div class="gold-bar no-print"></div>
+
+<div class="wrap">
+  <div class="no-print">
+    <div class="tool-label">Toolbox · Intern</div>
+    <div class="tool-title">✅ Aufgaben</div>
+    <div class="tool-sub" id="tool-sub-text">Wird geladen …</div>
+  </div>
+
+  <!-- ═══ MITARBEITER: PIN-EINGABE ═══ -->
+  <div id="pin-screen" class="section pin-screen no-print" style="display:none;">
+    <div style="font-size:15px;margin-bottom:6px;">Bitte PIN eingeben</div>
+    <input type="password" inputmode="numeric" maxlength="4" class="pin-input" id="pin-input" placeholder="••••">
+    <button class="btn-add" onclick="pinPruefen()">Entsperren</button>
+    <div class="error-msg" id="pin-error">Falsche PIN, bitte nochmal versuchen.</div>
+  </div>
+
+  <!-- ═══ MITARBEITER: LISTEN ABHAKEN ═══ -->
+  <div id="mitarbeiter-bereich" class="no-print" style="display:none;">
+    <div class="hinweis" id="ma-datum"></div>
+    <div id="ma-listen"></div>
+  </div>
+
+  <!-- ═══ INHABER ═══ -->
+  <div id="inhaber-bereich" style="display:none;">
+
+    <div class="section no-print">
+      <div class="section-head">Meine Listen</div>
+      <div class="hinweis">Lege hier Listen an, zum Beispiel „Öffnen“ oder „Schließen“, und trage die einzelnen Aufgaben ein. Deine Mitarbeiter haken die Punkte jeden Tag auf ihrem Handy ab. Am nächsten Morgen ist jede Liste wieder leer. Du bekommst eine Nachricht aufs Handy, sobald eine Liste komplett abgehakt ist.</div>
+      <div id="edit-listen"></div>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:6px;">
+        <button class="btn-add" onclick="neueListe()">+ Neue Liste</button>
+        <button class="btn-sec" onclick="vorlageHinzu('oeffnen')">Beispiel „Öffnen“ übernehmen</button>
+        <button class="btn-sec" onclick="vorlageHinzu('schliessen')">Beispiel „Schließen“ übernehmen</button>
+      </div>
+      <div style="font-size:11.5px;color:#8090a8;margin-top:10px;">Die Beispiele sind nur ein Startpunkt. Du kannst alle Punkte ändern, löschen oder ergänzen.</div>
+    </div>
+
+    <div class="section">
+      <div class="section-head no-print">Verlauf</div>
+      <div class="hinweis no-print">Hier siehst du für jeden Tag, welche Punkte abgehakt wurden, von wem und um wie viel Uhr. Der Verlauf wird <strong>60 Tage</strong> aufbewahrt, ältere Tage werden automatisch gelöscht. Wenn du etwas länger aufheben möchtest, speichere es als PDF.</div>
+      <div class="filter no-print">
+        <label>Von <input type="date" id="v-von"></label>
+        <label>Bis <input type="date" id="v-bis"></label>
+        <button class="btn-add" onclick="verlaufAnzeigen()">Anzeigen</button>
+        <button class="btn-sec" onclick="verlaufPdf()">📄 Als PDF speichern</button>
+      </div>
+      <div class="print-only" style="margin-bottom:10px;">
+        <div style="font-family:Georgia,serif;font-size:20px;">GASTRO-OS · Aufgaben-Verlauf</div>
+        <div id="druck-zeitraum" style="font-size:13px;color:#5a6a85;"></div>
+      </div>
+      <div id="verlauf-ergebnis"></div>
+    </div>
+  </div>
+</div>
+
+<div class="footer-brand no-print"><strong>GASTRO-OS</strong> &nbsp;·&nbsp; System · Struktur · Erfolg</div>
+
+<script>
+function esc(s) {
+  return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+function neueId() { return Date.now() * 1000 + Math.floor(Math.random() * 1000); }
+function datumDe(iso) {
+  const [j, m, t] = iso.split('-');
+  const tage = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+  const d = new Date(Number(j), Number(m) - 1, Number(t));
+  return tage[d.getDay()] + ', ' + t + '.' + m + '.' + j;
+}
+function isoHeute() { return new Date().toLocaleDateString('sv-SE', { timeZone: 'Europe/Berlin' }); }
+function isoVorTagen(n) { return new Date(Date.now() - n * 86400000).toLocaleDateString('sv-SE', { timeZone: 'Europe/Berlin' }); }
+
+const urlParams = new URLSearchParams(window.location.search);
+const codeAusUrl = urlParams.get('u');
+if (codeAusUrl) { initMitarbeiterModus(codeAusUrl); } else { initInhaberModus(); }
+
+// ═══════════════ MITARBEITER-MODUS ═══════════════
+function initMitarbeiterModus(code) {
+  document.getElementById('tool-sub-text').textContent = 'Gib deine PIN ein, um deine Listen zu sehen.';
+  window.pinPruefen = async function() {
+    const pin = document.getElementById('pin-input').value.trim();
+    if (pin.length !== 4) return;
+    await pinPruefenMitWert(code, pin, false);
+  };
+  const gespeichertePin = localStorage.getItem('gastroos_team_pin');
+  if (gespeichertePin) {
+    pinPruefenMitWert(code, gespeichertePin, true);
+  } else {
+    document.getElementById('pin-screen').style.display = 'block';
+    document.getElementById('pin-input').focus();
+  }
+}
+
+async function maAnfrage(code, pin, extra) {
+  const res = await fetch('/api/buch-public', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(Object.assign({ code, pin, bookType: 'aufgaben' }, extra || {}))
+  });
+  return res;
+}
+
+async function pinPruefenMitWert(code, pin, stillLaden) {
+  try {
+    const res = await maAnfrage(code, pin);
+    if (!res.ok) {
+      let fehlertext = 'Falsche PIN, bitte nochmal versuchen.';
+      try { const f = await res.json(); if (f && f.error) fehlertext = f.error; } catch (e) {}
+      if (!stillLaden) {
+        const errEl = document.getElementById('pin-error');
+        errEl.textContent = fehlertext;
+        errEl.style.display = 'block';
+      } else {
+        document.getElementById('pin-screen').style.display = 'block';
+        document.getElementById('pin-input').focus();
+      }
+      return;
+    }
+    const d = await res.json();
+    document.getElementById('pin-screen').style.display = 'none';
+    document.getElementById('mitarbeiter-bereich').style.display = 'block';
+    const btnZurueck = document.getElementById('btn-zurueck-team');
+    if (btnZurueck) { btnZurueck.href = 'team-zugang.html?u=' + code; btnZurueck.style.display = 'inline-block'; }
+    document.getElementById('tool-sub-text').textContent = 'Hallo, ' + (d.meinName || '') + '! Hak ab, was erledigt ist.';
+    if ('clearAppBadge' in navigator) { navigator.clearAppBadge().catch(() => {}); }
+    maRender(d);
+
+    window.maAbhaken = async function(listId, punktId, an) {
+      try {
+        const r2 = await maAnfrage(code, pin, { action: 'abhaken', listId, punktId, erledigt: an });
+        if (r2.ok) { maRender(await r2.json()); }
+        else { alert('Das konnte leider nicht gespeichert werden. Bitte nochmal versuchen.'); const r3 = await maAnfrage(code, pin); if (r3.ok) maRender(await r3.json()); }
+      } catch (e) { alert('Keine Verbindung. Bitte nochmal versuchen.'); }
+    };
+  } catch (e) {
+    if (!stillLaden) document.getElementById('pin-error').style.display = 'block';
+  }
+}
+
+function maRender(d) {
+  document.getElementById('ma-datum').textContent = 'Heute: ' + datumDe(d.heute) + '. Morgen früh sind alle Listen wieder leer.';
+  const box = document.getElementById('ma-listen');
+  box.innerHTML = '';
+  const listen = d.listen || [];
+  if (!listen.length) {
+    box.innerHTML = '<div class="section" style="color:#8090a8;font-size:13px;">Für dich gibt es noch keine Listen. Bitte den Chef fragen.</div>';
+    return;
+  }
+  listen.forEach(l => {
+    const punkte = l.punkte || [];
+    const erl = (d.erledigt && d.erledigt[l.id]) || {};
+    const anzahl = punkte.filter(p => erl[p.id]).length;
+    const fertig = punkte.length > 0 && anzahl === punkte.length;
+    const karte = document.createElement('div');
+    karte.className = 'liste-karte' + (fertig ? ' liste-fertig' : '');
+    let html = '<div class="liste-kopf"><span>' + esc(l.name) + '</span><span class="zaehler">' + anzahl + ' von ' + punkte.length + (fertig ? ' ✓' : '') + '</span></div>';
+    if (!punkte.length) html += '<div class="punkt" style="cursor:default;color:#8090a8;">In dieser Liste sind noch keine Punkte.</div>';
+    punkte.forEach(p => {
+      const e = erl[p.id];
+      html += '<label class="punkt' + (e ? ' erledigt' : '') + '">' +
+        '<input type="checkbox" ' + (e ? 'checked ' : '') + 'data-l="' + esc(l.id) + '" data-p="' + esc(p.id) + '">' +
+        '<span class="text">' + esc(p.text) + '</span>' +
+        (e ? '<span class="wer">' + esc(e.von) + ' · ' + esc(e.zeit) + '</span>' : '') +
+        '</label>';
+    });
+    karte.innerHTML = html;
+    karte.querySelectorAll('input[type=checkbox]').forEach(cb => {
+      cb.addEventListener('change', () => window.maAbhaken(cb.dataset.l, cb.dataset.p, cb.checked));
+    });
+    box.appendChild(karte);
+  });
+}
+
+// ═══════════════ INHABER-MODUS ═══════════════
+let listen = [];
+let teamNamen = [];
+let protokoll = { tage: {} };
+
+async function toolLoad(tool) {
+  try {
+    const res = await fetch('/api/tool-data?tool=' + encodeURIComponent(tool));
+    if (!res.ok) return {};
+    const d = await res.json();
+    return (d && d.data) ? d.data : {};
+  } catch (e) { return {}; }
+}
+async function toolSave(tool, data) {
+  try {
+    await fetch('/api/tool-data', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tool, data })
+    });
+  } catch (e) {}
+}
+async function listenSpeichern() { await toolSave('aufgaben-listen', { listen }); }
+
+async function initInhaberModus() {
+  try {
+    const res = await fetch('/api/verify-session');
+    if (!res.ok) { window.location.href = 'login.html'; return; }
+    const d = await res.json();
+    if (!d.valid) { window.location.href = 'login.html'; return; }
+  } catch (e) { window.location.href = 'login.html'; return; }
+
+  document.getElementById('btn-dashboard').style.display = 'inline-block';
+  document.getElementById('tool-sub-text').textContent = 'Lege Listen für dein Team an und sieh dir an, was erledigt wurde.';
+  document.getElementById('inhaber-bereich').style.display = 'block';
+
+  const l = await toolLoad('aufgaben-listen');
+  listen = Array.isArray(l.listen) ? l.listen : [];
+  const m = await toolLoad('schichtplan-mitarbeiter');
+  teamNamen = Array.isArray(m.mitarbeiter) ? m.mitarbeiter.map(x => x.name).filter(Boolean) : [];
+  protokoll = await toolLoad('aufgaben-protokoll');
+  if (!protokoll || typeof protokoll.tage !== 'object' || !protokoll.tage) protokoll = { tage: {} };
+
+  document.getElementById('v-bis').value = isoHeute();
+  document.getElementById('v-von').value = isoVorTagen(6);
+  document.getElementById('v-von').min = isoVorTagen(60);
+  document.getElementById('v-bis').max = isoHeute();
+  editRender();
+  verlaufAnzeigen();
+}
+
+function editRender() {
+  const box = document.getElementById('edit-listen');
+  box.innerHTML = '';
+  if (!listen.length) {
+    box.innerHTML = '<div style="color:#8090a8;font-size:13px;margin-bottom:14px;">Noch keine Listen angelegt.</div>';
+    return;
+  }
+  listen.forEach((l, li) => {
+    const k = document.createElement('div');
+    k.className = 'edit-karte';
+    let html = '<div class="edit-kopf"><input type="text" value="' + esc(l.name) + '" data-aktion="name" data-li="' + li + '" placeholder="Name der Liste"><button class="btn-del" data-aktion="liste-loeschen" data-li="' + li + '">✕ Liste löschen</button></div>';
+    (l.punkte || []).forEach((p, pi) => {
+      html += '<div class="edit-punkt"><input type="text" value="' + esc(p.text) + '" data-aktion="punkt-text" data-li="' + li + '" data-pi="' + pi + '"><button class="btn-del" data-aktion="punkt-loeschen" data-li="' + li + '" data-pi="' + pi + '">✕</button></div>';
+    });
+    html += '<div class="neu-punkt"><input type="text" placeholder="Neue Aufgabe eintragen" data-aktion="neu-text" data-li="' + li + '"><button class="btn-add" data-aktion="punkt-neu" data-li="' + li + '">+ Hinzufügen</button></div>';
+    if (teamNamen.length) {
+      const fuer = Array.isArray(l.fuer) ? l.fuer : [];
+      html += '<div class="fuer-wen"><strong>Wer sieht diese Liste?</strong> (Wenn nichts angehakt ist, sehen alle Mitarbeiter sie.)<br>' +
+        teamNamen.map(n => '<label><input type="checkbox" data-aktion="fuer" data-li="' + li + '" data-name="' + esc(n) + '"' + (fuer.includes(n) ? ' checked' : '') + '> ' + esc(n) + '</label>').join('') + '</div>';
+    }
+    k.innerHTML = html;
+    box.appendChild(k);
+  });
+
+  box.querySelectorAll('[data-aktion]').forEach(el => {
+    const a = el.dataset.aktion, li = Number(el.dataset.li), pi = Number(el.dataset.pi);
+    if (a === 'name') el.addEventListener('change', async () => { listen[li].name = el.value.trim() || 'Liste'; await listenSpeichern(); });
+    else if (a === 'punkt-text') el.addEventListener('change', async () => {
+      const t = el.value.trim();
+      if (!t) { el.value = listen[li].punkte[pi].text; return; }
+      listen[li].punkte[pi].text = t; await listenSpeichern();
+    });
+    else if (a === 'punkt-loeschen') el.addEventListener('click', async () => { listen[li].punkte.splice(pi, 1); await listenSpeichern(); editRender(); });
+    else if (a === 'liste-loeschen') el.addEventListener('click', async () => {
+      if (!confirm('Diese Liste mit allen Aufgaben wirklich löschen? Der bisherige Verlauf bleibt erhalten.')) return;
+      listen.splice(li, 1); await listenSpeichern(); editRender();
+    });
+    else if (a === 'punkt-neu') el.addEventListener('click', () => punktNeu(li));
+    else if (a === 'neu-text') el.addEventListener('keydown', ev => { if (ev.key === 'Enter') punktNeu(li); });
+    else if (a === 'fuer') el.addEventListener('change', async () => {
+      const n = el.dataset.name;
+      let f = Array.isArray(listen[li].fuer) ? listen[li].fuer.slice() : [];
+      f = f.filter(x => x !== n);
+      if (el.checked) f.push(n);
+      listen[li].fuer = f;
+      await listenSpeichern();
+    });
+  });
+}
+
+async function punktNeu(li) {
+  const inp = document.querySelector('[data-aktion="neu-text"][data-li="' + li + '"]');
+  const t = inp ? inp.value.trim() : '';
+  if (!t) return;
+  listen[li].punkte = listen[li].punkte || [];
+  listen[li].punkte.push({ id: neueId(), text: t });
+  await listenSpeichern();
+  editRender();
+  const neu = document.querySelector('[data-aktion="neu-text"][data-li="' + li + '"]');
+  if (neu) neu.focus();
+}
+
+window.neueListe = async function() {
+  const name = prompt('Wie soll die Liste heißen? Zum Beispiel: Öffnen');
+  if (!name || !name.trim()) return;
+  listen.push({ id: neueId(), name: name.trim(), punkte: [], fuer: [] });
+  await listenSpeichern();
+  editRender();
+};
+
+const VORLAGEN = {
+  oeffnen: { name: 'Öffnen', punkte: ['Licht und Lüftung einschalten', 'Kasse hochfahren und Wechselgeld prüfen', 'Temperaturen der Kühlgeräte prüfen', 'Toiletten kontrollieren', 'Tische eindecken', 'Getränke- und Speisekarten bereitlegen', 'Eingang und Terrasse kontrollieren'] },
+  schliessen: { name: 'Schließen', punkte: ['Kasse abrechnen und Z-Bon ausdrucken', 'Küche und Geräte reinigen', 'Kühlhaus und Kühlschränke kontrollieren', 'Müll rausbringen', 'Fenster und Türen schließen', 'Licht und Geräte ausschalten', 'Alarmanlage scharf schalten'] }
+};
+window.vorlageHinzu = async function(key) {
+  const v = VORLAGEN[key];
+  listen.push({ id: neueId(), name: v.name, punkte: v.punkte.map(t => ({ id: neueId(), text: t })), fuer: [] });
+  await listenSpeichern();
+  editRender();
+};
+
+// ─── Verlauf ───
+function verlaufHtml(von, bis) {
+  const tage = protokoll.tage || {};
+  const out = [];
+  let d = new Date(bis + 'T12:00:00');
+  const ende = new Date(von + 'T12:00:00');
+  let schutz = 0;
+  while (d >= ende && schutz++ < 80) {
+    const iso = d.toLocaleDateString('sv-SE');
+    const tag = tages(iso, tage);
+    out.push(tag);
+    d = new Date(d.getTime() - 86400000);
+  }
+  return out.join('') || '<div class="v-leer">Für diesen Zeitraum gibt es nichts anzuzeigen.</div>';
+}
+function tages(iso, tage) {
+  const eintrag = tage[iso];
+  let html = '<div class="tag-block"><div class="tag-titel">' + esc(datumDe(iso)) + '</div>';
+  if (!eintrag || !Array.isArray(eintrag.listen) || !eintrag.listen.length) {
+    html += '<div class="v-leer">An diesem Tag wurde keine Liste geöffnet oder abgehakt.</div></div>';
+    return html;
+  }
+  const erl = eintrag.erledigt || {};
+  eintrag.listen.forEach(l => {
+    const e = erl[l.id] || {};
+    const punkte = l.punkte || [];
+    const n = punkte.filter(p => e[p.id]).length;
+    html += '<div class="v-liste"><div class="v-liste-name">' + esc(l.name) + ' · ' + n + ' von ' + punkte.length + ' erledigt</div>';
+    punkte.forEach(p => {
+      const x = e[p.id];
+      html += x
+        ? '<div class="v-punkt v-ok">✓ ' + esc(p.text) + ' <span style="color:#8090a8;">(' + esc(x.von) + ', ' + esc(x.zeit) + ' Uhr)</span></div>'
+        : '<div class="v-punkt v-offen">○ ' + esc(p.text) + ' <span style="color:#c0392b;">– nicht abgehakt</span></div>';
+    });
+    if (!punkte.length) html += '<div class="v-leer">Keine Punkte in dieser Liste.</div>';
+    html += '</div>';
+  });
+  html += '</div>';
+  return html;
+}
+
+window.verlaufAnzeigen = async function() {
+  const von = document.getElementById('v-von').value;
+  const bis = document.getElementById('v-bis').value;
+  if (!von || !bis || von > bis) { document.getElementById('verlauf-ergebnis').innerHTML = '<div class="v-leer">Bitte einen gültigen Zeitraum wählen.</div>'; return; }
+  protokoll = await toolLoad('aufgaben-protokoll');
+  if (!protokoll || typeof protokoll.tage !== 'object' || !protokoll.tage) protokoll = { tage: {} };
+  document.getElementById('verlauf-ergebnis').innerHTML = verlaufHtml(von, bis);
+  const deVon = von.split('-').reverse().join('.'), deBis = bis.split('-').reverse().join('.');
+  document.getElementById('druck-zeitraum').textContent = deVon === deBis ? deVon : (deVon + ' bis ' + deBis);
+};
+window.verlaufPdf = async function() {
+  await window.verlaufAnzeigen();
+  alert('Gleich öffnet sich das Druckfenster. Wähle dort als Drucker „Als PDF speichern“ (am Handy: „Teilen“ bzw. „Als PDF sichern“).');
+  window.print();
+};
+</script>
+</body>
+</html>

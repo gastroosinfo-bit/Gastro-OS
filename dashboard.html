@@ -1617,7 +1617,8 @@ const TEAM_BEREICHE = [
   ['schichtplanBearbeiten', 'Schichtplan bearbeiten'],
   ['zeiterfassung', 'Zeiterfassung'],
   ['belege', 'Belege'],
-  ['temperaturen', 'Temperaturen']
+  ['temperaturen', 'Temperaturen'],
+  ['aufgaben', 'Aufgaben-Listen']
 ];
 let teamMitarbeiterListe = [];
 async function teamMitarbeiterLaden() {
@@ -1627,7 +1628,7 @@ async function teamMitarbeiterLaden() {
   } else if (Array.isArray(data.namen) && data.namen.length) {
     // Altformat (nur Namen, keine persönlichen PINs) — automatisch umwandeln, nichts geht verloren.
     // Rechte erstmal für alle Bereiche an, PIN ist leer und muss noch vergeben werden.
-    teamMitarbeiterListe = data.namen.map(n => ({ name: n, pin: '', rechte: { uebergabe: true, reservierung: true, schichtplan: true, schichtplanBearbeiten: false, zeiterfassung: true, belege: true, temperaturen: true } }));
+    teamMitarbeiterListe = data.namen.map(n => ({ name: n, pin: '', rechte: { uebergabe: true, reservierung: true, schichtplan: true, schichtplanBearbeiten: false, zeiterfassung: true, belege: true, temperaturen: true, aufgaben: true } }));
     await teamMitarbeiterSpeichern();
   } else {
     teamMitarbeiterListe = [];
@@ -1712,7 +1713,7 @@ window.teamMitarbeiterHinzufuegen = async function() {
   if (!name) return;
   if (pin && !/^\d{4}$/.test(pin)) { alert('Die PIN muss 4-stellig sein (oder erstmal leer lassen).'); return; }
   if (pin && teamMitarbeiterListe.some(m => m.pin === pin)) { alert('Diese PIN ist schon an einen anderen Mitarbeiter vergeben — bitte eine andere wählen.'); return; }
-  teamMitarbeiterListe.push({ name, pin, rechte: { uebergabe: true, reservierung: true, schichtplan: true, schichtplanBearbeiten: false, zeiterfassung: true, belege: true, temperaturen: true } });
+  teamMitarbeiterListe.push({ name, pin, rechte: { uebergabe: true, reservierung: true, schichtplan: true, schichtplanBearbeiten: false, zeiterfassung: true, belege: true, temperaturen: true, aufgaben: true } });
   await teamMitarbeiterSpeichern();
   document.getElementById('team-neu-name').value = '';
   document.getElementById('team-neu-pin').value = '';
@@ -1897,7 +1898,7 @@ function renderInternTools() {
 // als Startseite mit Bereichs-Buttons. Der gleiche Code wird beim Einrichten
 // gleichzeitig für 'team' und alle vier Bereiche hinterlegt, damit die direkten
 // Links (z. B. aus Push-Benachrichtigungen) weiterhin unverändert funktionieren.
-const TEAM_ZUGANG_BEREICHE = ['team', 'uebergabe', 'reservierung', 'schichtplan', 'zeiterfassung', 'belege', 'temperaturen'];
+const TEAM_ZUGANG_BEREICHE = ['team', 'uebergabe', 'reservierung', 'schichtplan', 'zeiterfassung', 'belege', 'temperaturen', 'aufgaben'];
 
 async function renderTeamZugangPanel() {
   const content = document.getElementById('team-zugang-content');

@@ -1,0 +1,84 @@
+// api/zugang-setup.js
+// Nur für eingeloggte Abonnenten: legt den Zugangs-Code für den Übergabe-,
+// Reservierungs-, Schichtplan- ODER Zeiterfassungs-Bereich fest (je nach "bookType").
+// Der Code identifiziert nur noch den Betrieb/Bereich (per Link/QR-Code geteilt) —
+// die eigentliche Identifikation läuft über die persönliche PIN jedes Mitarbeiters,
+// die bei "Team-Mitarbeiter" im Dashboard verwaltet wird (siehe api/buch-public.js).
+
+const crypto = require('crypto');
+
+const SESSION_SECRET = process.env.SESSION_SECRET;
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
+
+function verifySession(token) {
+  try {
+    const decoded = Buffer.from(token, 'base64').toString('utf8');
+    const parts = decoded.split('|');
+    if (parts.length !== 3) return null;
+    const [email, expires, sig] = parts;
+    if (Date.now() > parseInt(expires)) return null;
+    const data = `${email}|${expires}`;
+    const expected = crypto.createHmac('sha256', SESSION_SECRET).update(data).digest('hex');
+    if (sig !== expected) return null;
+    return email;
+  } catch (e) {
+    return null;
+  }
+}
+function getEmailFromRequest(req) {
+  const cookie = req.headers.cookie || '';
+  const match = cookie.match(/gastro_os_session=([^;]+)/);
+  if (!match) return null;
+  return verifySession(decodeURIComponent(match[1]));
+}
+function sbHeaders() {
+  return {
+    'Content-Type': 'application/json',
+    'apikey': SUPABASE_SERVICE_KEY,
+    'Authorization': 'Bearer ' + SUPABASE_SERVICE_KEY
+  };
+}
+
+export default async function handler(req, res) {
+  const email = getEmailFromRequest(req);
+  if (!email) return res.status(401).json({ error: 'Nicht angemeldet.' });
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Methode nicht erlaubt.' });
+
+  const { code, bookType } = req.body || {};
+  if (!code || code.length < 6) {
+    return res.status(400).json({ error: 'Code fehlt/ungültig.' });
+  }
+  if (!['uebergabe', 'reservierung', 'schichtplan', 'zeiterfassung', 'team', 'belege', 'temperaturen', 'aufgaben'].includes(bookType)) {
+    return res.status(400).json({ error: 'Ungültiger bookType.' });
+  }
+
+  const zugangTool = bookType + '-zugang';
+  const data = { code };
+
+  try {
+    const existingRes = await fetch(
+      SUPABASE_URL + '/rest/v1/user_tool_data?user_id=eq.' + encodeURIComponent(email) +
+      '&tool_name=eq.' + zugangTool + '&select=id&order=updated_at.desc',
+      { headers: sbHeaders() }
+    );
+    const existingRows = await existingRes.json();
+
+    if (existingRows && existingRows.length > 0) {
+      await fetch(SUPABASE_URL + '/rest/v1/user_tool_data?id=eq.' + existingRows[0].id, {
+        method: 'PATCH',
+        headers: sbHeaders(),
+        body: JSON.stringify({ data, updated_at: new Date().toISOString() })
+      });
+    } else {
+      await fetch(SUPABASE_URL + '/rest/v1/user_tool_data', {
+        method: 'POST',
+        headers: { ...sbHeaders(), 'Prefer': 'return=minimal' },
+        body: JSON.stringify({ user_id: email, tool_name: zugangTool, data })
+      });
+    }
+    return res.status(200).json({ ok: true });
+  } catch (e) {
+    return res.status(500).json({ error: 'Fehler beim Speichern.' });
+  }
+}

@@ -102,7 +102,8 @@ const BEREICHE = [
   { key: 'schichtplan',  icon: '🗂️', titel: 'Schichtplan',       desc: 'Deinen Dienstplan ansehen',                seite: 'schichtplan.html' },
   { key: 'zeiterfassung',icon: '⏱️', titel: 'Zeiterfassung',     desc: 'Kommen, Pause und Gehen eintragen',        seite: 'zeiterfassung.html' },
   { key: 'belege',       icon: '🧾', titel: 'Belege eintragen',  desc: 'Rechnungen und Z-Bons hochladen',          seite: 'belege-eintragen.html' },
-  { key: 'temperaturen', icon: '🌡️', titel: 'Temperaturen',      desc: 'HACCP-Temperaturen eintragen',             seite: 'temperaturen-eintragen.html' }
+  { key: 'temperaturen', icon: '🌡️', titel: 'Temperaturen',      desc: 'HACCP-Temperaturen eintragen',             seite: 'temperaturen-eintragen.html' },
+  { key: 'aufgaben',     icon: '✅', titel: 'Aufgaben',          desc: 'Listen wie Öffnen und Schließen abhaken',  seite: 'aufgaben.html' }
 ];
 
 const urlParams = new URLSearchParams(window.location.search);
@@ -175,7 +176,7 @@ async function pinPruefenMitWert(pin, stillLaden) {
         liste.appendChild(a);
       });
       if (d.rechte && d.rechte.zeiterfassung) zeitBadgeLaden(pin);
-      pushTogglesRendern(erlaubt, pin);
+      pushTogglesRendern(erlaubt.filter(b => b.key !== 'aufgaben'), pin);
     }
     await badgesLadenUndZuruecksetzen(erlaubt);
   } catch (e) {
