@@ -295,7 +295,7 @@ export default async function handler(req, res) {
       if (erledigt === false) {
         delete eintr[punkt.id];
       } else {
-        eintr[punkt.id] = { von: name, zeit: uhrzeit };
+        eintr[punkt.id] = { von: name, zeit: uhrzeit, ts: Date.now() }; // ts = für die rote Zahl im Dashboard
       }
       const jetztAlleFertig = (liste.punkte || []).length > 0 && (liste.punkte || []).every(p => eintr[p.id]);
       geaendert = true;
