@@ -23,7 +23,8 @@ const DEMO_ACCESS = {
   'info@avvazon.com': { expires: '2026-12-03' },
   'veddel-diner@outlook.de': { expires: '2026-11-27' },
   'sen@progres.de': { expires: '2026-11-27' },
-  'arda.rah.sueer@gmail.com': { expires: '2026-12-01' }
+  'arda.rah.sueer@gmail.com': { expires: '2026-12-01' },
+  'ottensergastro@gmx.de': { expires: '2026-12-03' }
 };
 
 function getDemoAccess(email) {
