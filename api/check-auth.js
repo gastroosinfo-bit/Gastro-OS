@@ -25,7 +25,8 @@ const DEMO_ACCESS = {
   'sen@progres.de': { expires: '2026-11-27' },
   'arda.rah.sueer@gmail.com': { expires: '2026-12-01' },
   'ottensergastro@gmx.de': { expires: '2026-12-03' },
-  'servus@sorryjohnny.de': { expires: '2026-12-03' }
+  'servus@sorryjohnny.de': { expires: '2026-12-03' },
+  'info@schiffercafe.de': { expires: '2026-12-03' }
 };
 
 function getDemoAccess(email) {
