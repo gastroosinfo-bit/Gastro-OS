@@ -35,7 +35,8 @@ const BEFRISTETE_ZUGAENGE = {
   'sen@progres.de': '2026-11-28',
   'arda.rah.sueer@gmail.com': '2026-12-02',
   'ottensergastro@gmx.de': '2026-12-04',
-  'servus@sorryjohnny.de': '2026-12-04'
+  'servus@sorryjohnny.de': '2026-12-04',
+  'info@schiffercafe.de': '2026-12-04'
 };
 
 function heutigesDatumString() {
